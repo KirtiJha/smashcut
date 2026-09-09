@@ -171,6 +171,11 @@ claude-design-smashcut-video/
 huly-*/
 raycast-*/
 *-demo-*/
+# ...but a shipped skill is not a scratch project. `app-demo-video` matched
+# `*-demo-*/` and was silently never committed: the route table and the route
+# file landed, so the front door pointed at a workflow that did not exist in the
+# repository at all. The rule above is about generated project directories.
+!skills/*-demo-*/
 test-runs/
 test-outputs/
 
