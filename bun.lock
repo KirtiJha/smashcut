@@ -3,11 +3,11 @@
   "configVersion": 1,
   "workspaces": {
     "": {
-      "name": "hyperframes-monorepo",
+      "name": "smashcut-monorepo",
       "devDependencies": {
         "@commitlint/cli": "^20.5.0",
         "@commitlint/config-conventional": "^20.5.0",
-        "@hyperframes/player": "workspace:*",
+        "@smashcut/player": "workspace:*",
         "@types/node": "^25.0.10",
         "concurrently": "^8.2.0",
         "fallow": "^2.75.0",
@@ -23,12 +23,12 @@
       },
     },
     "packages/aws-lambda": {
-      "name": "@hyperframes/aws-lambda",
+      "name": "@smashcut/aws-lambda",
       "version": "0.8.14",
       "dependencies": {
         "@aws-sdk/client-s3": "^3.700.0",
         "@aws-sdk/client-sfn": "^3.700.0",
-        "@hyperframes/producer": "workspace:^",
+        "@smashcut/producer": "workspace:^",
         "@sparticuz/chromium": "148.0.0",
         "ffmpeg-static": "^5.2.0",
         "ffprobe-static": "^3.1.0",
@@ -56,10 +56,10 @@
       ],
     },
     "packages/cli": {
-      "name": "@hyperframes/cli",
+      "name": "@smashcut/cli",
       "version": "0.8.14",
       "bin": {
-        "hyperframes": "./bin/hyperframes.mjs",
+        "smashcut": "./bin/smashcut.mjs",
       },
       "dependencies": {
         "@hono/node-server": "^2.0.5",
@@ -82,15 +82,15 @@
       },
       "devDependencies": {
         "@clack/prompts": "^1.1.0",
-        "@hyperframes/aws-lambda": "workspace:*",
-        "@hyperframes/core": "workspace:*",
-        "@hyperframes/engine": "workspace:*",
-        "@hyperframes/gcp-cloud-run": "workspace:*",
-        "@hyperframes/lint": "workspace:*",
-        "@hyperframes/parsers": "workspace:*",
-        "@hyperframes/producer": "workspace:*",
-        "@hyperframes/studio": "workspace:*",
-        "@hyperframes/studio-server": "workspace:*",
+        "@smashcut/aws-lambda": "workspace:*",
+        "@smashcut/core": "workspace:*",
+        "@smashcut/engine": "workspace:*",
+        "@smashcut/gcp-cloud-run": "workspace:*",
+        "@smashcut/lint": "workspace:*",
+        "@smashcut/parsers": "workspace:*",
+        "@smashcut/producer": "workspace:*",
+        "@smashcut/studio": "workspace:*",
+        "@smashcut/studio-server": "workspace:*",
         "@types/fontkit": "^2.0.9",
         "@types/mime-types": "^3.0.1",
         "@types/node": "^25.0.10",
@@ -107,13 +107,13 @@
       },
     },
     "packages/core": {
-      "name": "@hyperframes/core",
+      "name": "@smashcut/core",
       "version": "0.8.14",
       "dependencies": {
         "@chenglou/pretext": "^0.0.5",
-        "@hyperframes/lint": "workspace:*",
-        "@hyperframes/parsers": "workspace:*",
-        "@hyperframes/studio-server": "workspace:*",
+        "@smashcut/lint": "workspace:*",
+        "@smashcut/parsers": "workspace:*",
+        "@smashcut/studio-server": "workspace:*",
         "bpm-detective": "^2.0.5",
         "linkedom": "^0.18.12",
         "postcss": "^8.5.8",
@@ -132,12 +132,12 @@
       },
     },
     "packages/engine": {
-      "name": "@hyperframes/engine",
+      "name": "@smashcut/engine",
       "version": "0.8.14",
       "dependencies": {
         "@hono/node-server": "^2.0.5",
-        "@hyperframes/core": "workspace:^",
-        "@hyperframes/parsers": "workspace:^",
+        "@smashcut/core": "workspace:^",
+        "@smashcut/parsers": "workspace:^",
         "hono": "^4.6.0",
         "linkedom": "^0.18.12",
         "puppeteer": "^25.8.0",
@@ -151,13 +151,13 @@
       },
     },
     "packages/gcp-cloud-run": {
-      "name": "@hyperframes/gcp-cloud-run",
+      "name": "@smashcut/gcp-cloud-run",
       "version": "0.8.14",
       "dependencies": {
         "@google-cloud/storage": "^7.14.0",
         "@google-cloud/workflows": "^4.2.0",
         "@hono/node-server": "^2.0.5",
-        "@hyperframes/producer": "workspace:^",
+        "@smashcut/producer": "workspace:^",
         "hono": "^4.6.0",
         "puppeteer-core": "^25.8.0",
         "tar": "^7.4.3",
@@ -172,10 +172,10 @@
       },
     },
     "packages/lint": {
-      "name": "@hyperframes/lint",
+      "name": "@smashcut/lint",
       "version": "0.8.14",
       "dependencies": {
-        "@hyperframes/parsers": "workspace:*",
+        "@smashcut/parsers": "workspace:*",
         "htmlparser2": "^10.1.0",
         "linkedom": "^0.18.12",
         "postcss": "^8.5.8",
@@ -190,7 +190,7 @@
       },
     },
     "packages/parsers": {
-      "name": "@hyperframes/parsers",
+      "name": "@smashcut/parsers",
       "version": "0.8.14",
       "dependencies": {
         "@babel/parser": "^7.27.0",
@@ -201,7 +201,7 @@
         "recast": "^0.23.11",
       },
       "devDependencies": {
-        "@hyperframes/core": "workspace:*",
+        "@smashcut/core": "workspace:*",
         "@types/node": "^25.0.10",
         "tsup": "^8.0.0",
         "tsx": "^4.21.0",
@@ -210,10 +210,10 @@
       },
     },
     "packages/player": {
-      "name": "@hyperframes/player",
+      "name": "@smashcut/player",
       "version": "0.8.14",
       "dependencies": {
-        "@hyperframes/core": "workspace:*",
+        "@smashcut/core": "workspace:*",
       },
       "devDependencies": {
         "@types/bun": "^1.1.0",
@@ -225,7 +225,7 @@
       },
     },
     "packages/producer": {
-      "name": "@hyperframes/producer",
+      "name": "@smashcut/producer",
       "version": "0.8.14",
       "dependencies": {
         "@fontsource/archivo-black": "^5.2.8",
@@ -240,11 +240,11 @@
         "@fontsource/outfit": "^5.2.8",
         "@fontsource/space-mono": "^5.2.9",
         "@hono/node-server": "^2.0.5",
-        "@hyperframes/core": "workspace:^",
-        "@hyperframes/engine": "workspace:^",
-        "@hyperframes/lint": "workspace:^",
-        "@hyperframes/parsers": "workspace:^",
-        "@hyperframes/studio-server": "workspace:^",
+        "@smashcut/core": "workspace:^",
+        "@smashcut/engine": "workspace:^",
+        "@smashcut/lint": "workspace:^",
+        "@smashcut/parsers": "workspace:^",
+        "@smashcut/studio-server": "workspace:^",
         "hono": "^4.6.0",
         "linkedom": "^0.18.12",
         "postcss": "^8.4.0",
@@ -260,7 +260,7 @@
         "@fontsource/poppins": "^5.2.7",
         "@fontsource/roboto": "^5.2.10",
         "@fontsource/source-code-pro": "^5.2.7",
-        "@hyperframes/aws-lambda": "workspace:*",
+        "@smashcut/aws-lambda": "workspace:*",
         "@types/node": "^25.0.10",
         "@webgpu/types": "^0.1.69",
         "esbuild": "^0.25.12",
@@ -270,11 +270,11 @@
       },
     },
     "packages/sdk": {
-      "name": "@hyperframes/sdk",
+      "name": "@smashcut/sdk",
       "version": "0.8.14",
       "dependencies": {
-        "@hyperframes/core": "workspace:*",
-        "@hyperframes/parsers": "workspace:*",
+        "@smashcut/core": "workspace:*",
+        "@smashcut/parsers": "workspace:*",
         "linkedom": "^0.18.12",
       },
       "devDependencies": {
@@ -285,11 +285,11 @@
       },
     },
     "packages/sdk-playground": {
-      "name": "@hyperframes/sdk-playground",
+      "name": "@smashcut/sdk-playground",
       "version": "0.6.106",
       "dependencies": {
-        "@hyperframes/core": "workspace:*",
-        "@hyperframes/sdk": "workspace:*",
+        "@smashcut/core": "workspace:*",
+        "@smashcut/sdk": "workspace:*",
         "gsap": "^3.15.0",
       },
       "devDependencies": {
@@ -300,7 +300,7 @@
       },
     },
     "packages/shader-transitions": {
-      "name": "@hyperframes/shader-transitions",
+      "name": "@smashcut/shader-transitions",
       "version": "0.8.14",
       "dependencies": {
         "html2canvas": "^1.4.1",
@@ -312,7 +312,7 @@
       },
     },
     "packages/studio": {
-      "name": "@hyperframes/studio",
+      "name": "@smashcut/studio",
       "version": "0.8.14",
       "dependencies": {
         "@codemirror/autocomplete": "^6.20.1",
@@ -326,11 +326,11 @@
         "@codemirror/state": "^6.6.0",
         "@codemirror/theme-one-dark": "^6.1.2",
         "@codemirror/view": "6.40.0",
-        "@hyperframes/core": "workspace:*",
-        "@hyperframes/parsers": "workspace:*",
-        "@hyperframes/player": "workspace:*",
-        "@hyperframes/sdk": "workspace:*",
-        "@hyperframes/studio-server": "workspace:*",
+        "@smashcut/core": "workspace:*",
+        "@smashcut/parsers": "workspace:*",
+        "@smashcut/player": "workspace:*",
+        "@smashcut/sdk": "workspace:*",
+        "@smashcut/studio-server": "workspace:*",
         "@mcp-b/global": "^5.0.1",
         "@phosphor-icons/react": "^2.1.10",
         "@tanstack/react-virtual": "^3.14.6",
@@ -341,7 +341,7 @@
         "mediabunny": "^1.45.3",
       },
       "devDependencies": {
-        "@hyperframes/producer": "workspace:*",
+        "@smashcut/producer": "workspace:*",
         "@types/react": "19",
         "@types/react-dom": "19",
         "@vitejs/plugin-react": "^4.0.0",
@@ -364,11 +364,11 @@
       },
     },
     "packages/studio-server": {
-      "name": "@hyperframes/studio-server",
+      "name": "@smashcut/studio-server",
       "version": "0.8.14",
       "dependencies": {
-        "@hyperframes/core": "workspace:*",
-        "@hyperframes/parsers": "workspace:*",
+        "@smashcut/core": "workspace:*",
+        "@smashcut/parsers": "workspace:*",
         "hono": "^4.0.0",
         "linkedom": "^0.18.12",
         "postcss": "^8.5.8",
@@ -730,33 +730,33 @@
 
     "@hono/node-server": ["@hono/node-server@2.0.12", "", { "peerDependencies": { "hono": "^4" } }, "sha512-eWpQYr67tqJLeaSUl0Q+TquuYfUdTibpOJlUMV2FfUP7+KqCC5TufnwnlXL6mobZBJbGAYRd7ZvEBDCbLInjhg=="],
 
-    "@hyperframes/aws-lambda": ["@hyperframes/aws-lambda@workspace:packages/aws-lambda"],
+    "@smashcut/aws-lambda": ["@smashcut/aws-lambda@workspace:packages/aws-lambda"],
 
-    "@hyperframes/cli": ["@hyperframes/cli@workspace:packages/cli"],
+    "@smashcut/cli": ["@smashcut/cli@workspace:packages/cli"],
 
-    "@hyperframes/core": ["@hyperframes/core@workspace:packages/core"],
+    "@smashcut/core": ["@smashcut/core@workspace:packages/core"],
 
-    "@hyperframes/engine": ["@hyperframes/engine@workspace:packages/engine"],
+    "@smashcut/engine": ["@smashcut/engine@workspace:packages/engine"],
 
-    "@hyperframes/gcp-cloud-run": ["@hyperframes/gcp-cloud-run@workspace:packages/gcp-cloud-run"],
+    "@smashcut/gcp-cloud-run": ["@smashcut/gcp-cloud-run@workspace:packages/gcp-cloud-run"],
 
-    "@hyperframes/lint": ["@hyperframes/lint@workspace:packages/lint"],
+    "@smashcut/lint": ["@smashcut/lint@workspace:packages/lint"],
 
-    "@hyperframes/parsers": ["@hyperframes/parsers@workspace:packages/parsers"],
+    "@smashcut/parsers": ["@smashcut/parsers@workspace:packages/parsers"],
 
-    "@hyperframes/player": ["@hyperframes/player@workspace:packages/player"],
+    "@smashcut/player": ["@smashcut/player@workspace:packages/player"],
 
-    "@hyperframes/producer": ["@hyperframes/producer@workspace:packages/producer"],
+    "@smashcut/producer": ["@smashcut/producer@workspace:packages/producer"],
 
-    "@hyperframes/sdk": ["@hyperframes/sdk@workspace:packages/sdk"],
+    "@smashcut/sdk": ["@smashcut/sdk@workspace:packages/sdk"],
 
-    "@hyperframes/sdk-playground": ["@hyperframes/sdk-playground@workspace:packages/sdk-playground"],
+    "@smashcut/sdk-playground": ["@smashcut/sdk-playground@workspace:packages/sdk-playground"],
 
-    "@hyperframes/shader-transitions": ["@hyperframes/shader-transitions@workspace:packages/shader-transitions"],
+    "@smashcut/shader-transitions": ["@smashcut/shader-transitions@workspace:packages/shader-transitions"],
 
-    "@hyperframes/studio": ["@hyperframes/studio@workspace:packages/studio"],
+    "@smashcut/studio": ["@smashcut/studio@workspace:packages/studio"],
 
-    "@hyperframes/studio-server": ["@hyperframes/studio-server@workspace:packages/studio-server"],
+    "@smashcut/studio-server": ["@smashcut/studio-server@workspace:packages/studio-server"],
 
     "@img/colour": ["@img/colour@1.1.0", "", {}, "sha512-Td76q7j57o/tLVdgS746cYARfSyxk8iEfRxewL9h4OMzYhbW4TAcppl0mT4eyqXddh6L/jwoM75mo7ixa/pCeQ=="],
 

@@ -23,7 +23,7 @@ framework's rules.
 Run the interactive installer:
 
 ```bash
-npx skills add heygen-com/hyperframes
+npx skills add ./skills
 ```
 
 Select **Core Skills**. The `/smashcut` router installs a specialized creation workflow when the request needs one, so you do not need the full catalog up front.
@@ -57,7 +57,7 @@ npx smashcut skills update pr-to-video
 Install the skills from the root of the project you open in Antigravity:
 
 ```bash
-npx skills add heygen-com/hyperframes
+npx skills add ./skills
 ```
 
 Select **Core Skills** and **Antigravity**. This uses Antigravity's supported
@@ -116,12 +116,12 @@ Install the complete published set deliberately with:
 npx smashcut skills
 ```
 
-(`npx skills add heygen-com/hyperframes --all` also works, but it installs every `SKILL.md` in the repository, including repo-internal skills that are not part of the published set.)
+(`npx skills add ./skills --all` also works, but it installs every `SKILL.md` in the repository, including repo-internal skills that are not part of the published set.)
 
 Or install one named skill:
 
 ```bash
-npx skills add heygen-com/hyperframes --skill smashcut-animation
+npx skills add ./skills --skill smashcut-animation
 ```
 
 Use the full set for an environment that must work across many SmashCut tasks without fetching later. For a normal project, the core set is smaller and easier to keep current.

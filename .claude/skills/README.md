@@ -9,7 +9,7 @@ manifested by `.claude-plugin/`). Two separate namespaces, on purpose:
   changelog videos, doctrine-heavy authoring flows). Claude Code's
   project-local skill dir.
 - `skills/` — **marketplace-distributable**, installed into other projects
-  via `npx smashcut skills` or `npx skills add heygen-com/hyperframes`.
+  via `npx smashcut skills` or `npx skills add ./skills`.
 
 ## Weekly changelog video
 

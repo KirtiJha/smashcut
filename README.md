@@ -38,7 +38,7 @@ SmashCut is an open-source framework for turning HTML, CSS, media, and seekable 
 Install the SmashCut skills, then describe the video you want:
 
 ```bash
-npx skills add heygen-com/hyperframes
+npx skills add ./skills
 ```
 
 > The picker opens with nothing pre-selected — the **Core Skills** group is all you need: the `/smashcut` router installs each creation workflow on demand. Agents and non-interactive runs should use `npx smashcut skills update` instead — it installs exactly the core set, whereas `skills add --all` installs every `SKILL.md` in the repo — the 20 published skills plus six repo-internal ones under `.claude/skills` / `.agents/skills`. For the full published set use `npx smashcut skills`.
@@ -55,7 +55,7 @@ The skills teach agents the SmashCut production loop: plan the video, write vali
 
 SmashCut ships 20 skills agents load on demand. Read `/smashcut` first — it's the router and capability map; it picks a workflow for any "make me a…" request — video, deck, or composition port — and points to the domain skills below.
 
-Default to the **core set** — the router installs each creation workflow on demand. `npx smashcut skills update` installs exactly that from anywhere; the interactive picker (`npx skills add heygen-com/hyperframes`) lists it as the "Core Skills" group, nothing pre-selected. The picker is interactive-only — a non-interactive or agent run without `--skill` installs all 20. Use `npx skills add heygen-com/hyperframes --all` to install all 20 deliberately (skips the picker), or `npx skills add heygen-com/hyperframes --skill <name>` for just one (bare name, no leading `/`).
+Default to the **core set** — the router installs each creation workflow on demand. `npx smashcut skills update` installs exactly that from anywhere; the interactive picker (`npx skills add ./skills`) lists it as the "Core Skills" group, nothing pre-selected. The picker is interactive-only — a non-interactive or agent run without `--skill` installs all 20. Use `npx skills add ./skills --all` to install all 20 deliberately (skips the picker), or `npx skills add ./skills --skill <name>` for just one (bare name, no leading `/`).
 
 Installs stay lean after that: `npx smashcut init` keeps the **core set** fresh (the router, the `smashcut-*` domain skills, and `media-use` — plus whatever is already installed; `/figma` stays on demand) and never expands a partial install; the creation workflows install **on demand** — the router runs `npx smashcut skills update <workflow>` before entering one. Nothing re-pulls the full set behind your back.
 

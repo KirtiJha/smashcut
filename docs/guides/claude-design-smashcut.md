@@ -501,7 +501,7 @@ Opens the SmashCut Studio at `http://localhost:3002` with frame-accurate scrubbi
 This project was drafted in Claude Design. To polish animations, timing, and pacing:
 
 ```bash
-npx skills add heygen-com/hyperframes   # install SmashCut skills (one-time)
+npx skills add ./skills   # install SmashCut skills (one-time)
 npx smashcut lint                     # verify structure (should pass with zero errors)
 npx smashcut preview                  # open the studio for live feedback
 ```
