@@ -16,7 +16,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 ```html stitched-text-draw.html
 <!doctype html>
 <!--
-  stitched-text-draw: HyperFrames video primitive (type / craft, Wave M
+  stitched-text-draw: SmashCut video primitive (type / craft, Wave M
   experiment M6)
 
   Text drawn as thread stitches. Letters come from a single-stroke display
@@ -159,8 +159,8 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
             var stage = root.querySelector(".std-stage");
             var svg = root.querySelector(".std-svg");
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             var text = (vars.text == null || vars.text === "" ? "STITCH" : String(vars.text))
@@ -885,7 +885,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 
 ## Install
 
-<InstallCommand command="npx hyperframes add stitched-text-draw" item="stitched-text-draw" />
+<InstallCommand command="npx smashcut add stitched-text-draw" item="stitched-text-draw" />
 
 That writes one file: `compositions/components/stitched-text-draw.html`.
 
@@ -926,7 +926,7 @@ defaults, so this behaves exactly like the preview above until you change one:
 ```html
 <!doctype html>
 <!--
-  stitched-text-draw: HyperFrames video primitive (type / craft, Wave M
+  stitched-text-draw: SmashCut video primitive (type / craft, Wave M
   experiment M6)
 
   Text drawn as thread stitches. Letters come from a single-stroke display
@@ -1069,8 +1069,8 @@ defaults, so this behaves exactly like the preview above until you change one:
             var stage = root.querySelector(".std-stage");
             var svg = root.querySelector(".std-svg");
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             var text = (vars.text == null || vars.text === "" ? "STITCH" : String(vars.text))

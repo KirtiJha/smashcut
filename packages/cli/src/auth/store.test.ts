@@ -13,7 +13,7 @@ import {
 } from "./store.js";
 
 async function makeTmpDir(): Promise<string> {
-  return fs.mkdtemp(join(tmpdir(), "hf-auth-store-"));
+  return fs.mkdtemp(join(tmpdir(), "sc-auth-store-"));
 }
 
 // POSIX file modes don't apply on Windows — `fs.chmod` only toggles the
@@ -218,7 +218,7 @@ describe("auth/store", () => {
 
   it("preserves the heygen-cli `user` block when this CLI rewrites only the credential", async () => {
     // The exact cross-CLI data-loss scenario: heygen-cli wrote a `user`
-    // block; hyperframes-cli updates the api_key and must not drop it.
+    // block; smashcut-cli updates the api_key and must not drop it.
     await fs.writeFile(
       path,
       JSON.stringify({

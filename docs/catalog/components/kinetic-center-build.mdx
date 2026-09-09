@@ -21,7 +21,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
   Words enter from the right while the existing phrase shifts left, keeping
   every intermediate phrase centered until the final line locks in place.
 
-  Native HyperFrames port prepared through Hyfrme from:
+  Native SmashCut port prepared through Hyfrme from:
   https://github.com/Remocn/remocn/blob/ea730a20b4ab09430ee7292aebc847c002375151/registry/remocn/kinetic-center-build/index.tsx
 
   MIT License
@@ -135,8 +135,8 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
             var root = document.getElementById("root");
             var stage = document.getElementById("kcb-stage");
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             function numberBetween(value, fallback, min, max) {
@@ -304,7 +304,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 
 ## Install
 
-<InstallCommand command="npx hyperframes add kinetic-center-build" item="kinetic-center-build" />
+<InstallCommand command="npx smashcut add kinetic-center-build" item="kinetic-center-build" />
 
 That writes one file: `compositions/components/kinetic-center-build.html`.
 
@@ -351,7 +351,7 @@ defaults, so this behaves exactly like the preview above until you change one:
   Words enter from the right while the existing phrase shifts left, keeping
   every intermediate phrase centered until the final line locks in place.
 
-  Native HyperFrames port prepared through Hyfrme from:
+  Native SmashCut port prepared through Hyfrme from:
   https://github.com/Remocn/remocn/blob/ea730a20b4ab09430ee7292aebc847c002375151/registry/remocn/kinetic-center-build/index.tsx
 
   MIT License
@@ -465,8 +465,8 @@ defaults, so this behaves exactly like the preview above until you change one:
             var root = document.getElementById("root");
             var stage = document.getElementById("kcb-stage");
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             function numberBetween(value, fallback, min, max) {

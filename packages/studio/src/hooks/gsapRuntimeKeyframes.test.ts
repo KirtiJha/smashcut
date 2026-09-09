@@ -23,10 +23,10 @@ describe("readRuntimeKeyframes — zero-duration set must not shadow the keyfram
   const el = { id: "puck-b" };
   const holdSet = {
     targets: () => [el],
-    // `data` is the STUDIO_HOLD_MARKER sentinel ("hf-hold") from core's gsapParser.
-    // TODO(core follow-up): re-export STUDIO_HOLD_MARKER via the @hyperframes/core/
+    // `data` is the STUDIO_HOLD_MARKER sentinel ("sc-hold") from core's gsapParser.
+    // TODO(core follow-up): re-export STUDIO_HOLD_MARKER via the @smashcut/core/
     // gsap-parser subpath so this fixture can import the const instead of the literal.
-    vars: { x: 0, y: 0, data: "hf-hold" },
+    vars: { x: 0, y: 0, data: "sc-hold" },
     duration: () => 0,
     startTime: () => 0,
   };
@@ -152,7 +152,7 @@ describe("hasNonHoldTweenForElement — strict live-tween existence (drag stale-
   const el = { id: "puck-b" };
   const holdSet = {
     targets: () => [el],
-    vars: { x: 0, y: 0, data: "hf-hold" },
+    vars: { x: 0, y: 0, data: "sc-hold" },
     duration: () => 0,
     startTime: () => 0,
   };

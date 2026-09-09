@@ -3,7 +3,7 @@ import {
   safeDownloadUrlIdentity,
   type ExtractionResult,
   type VideoElement,
-} from "@hyperframes/engine";
+} from "@smashcut/engine";
 import { describe, expect, it, vi } from "vitest";
 import type { ProducerLogger } from "../../../logger.js";
 
@@ -12,8 +12,8 @@ const extractionCalls = vi.hoisted(
 );
 const fixtureState = vi.hoisted(() => ({ sourceDurationSeconds: 60 }));
 
-vi.mock("@hyperframes/engine", async (importOriginal) => {
-  const real = await importOriginal<typeof import("@hyperframes/engine")>();
+vi.mock("@smashcut/engine", async (importOriginal) => {
+  const real = await importOriginal<typeof import("@smashcut/engine")>();
   return {
     ...real,
     extractAllVideoFrames: async (
@@ -91,8 +91,8 @@ async function runStage(
     height: 1080,
   };
   await runExtractVideosStage({
-    projectDir: "/tmp/hf-timeline-bound-project",
-    compiledDir: "/tmp/hf-timeline-bound-compiled",
+    projectDir: "/tmp/sc-timeline-bound-project",
+    compiledDir: "/tmp/sc-timeline-bound-compiled",
     job: createRenderJob({
       fps: { num: 30, den: 1 },
       quality: "standard",

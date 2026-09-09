@@ -9,12 +9,12 @@ import { InstallCommand } from "/snippets/install-command.jsx";
   className="w-full aspect-video rounded-xl border-0 bg-zinc-100 dark:bg-zinc-800"
   title="freeze-frame-dressing preview"
   loading="lazy"
-  srcDoc={`<!doctype html><html><head><meta charset="utf-8"><style>html,body{margin:0;height:100%;overflow:hidden;background:transparent}hyperframes-player{display:block;width:100%;height:100%}</style><script src="https://cdn.jsdelivr.net/npm/@hyperframes/player@latest/dist/hyperframes-player.global.js"><\/script></head><body><script>fetch("/public/catalog/blocks/freeze-frame-dressing.json").then(function(r){return r.json()}).then(function(d){var p=document.createElement("hyperframes-player");p.setAttribute("srcdoc",d.html);p.setAttribute("controls","");p.setAttribute("autoplay","");p.setAttribute("loop","");p.setAttribute("muted","");p.setAttribute("poster","https://static.heygen.ai/hyperframes-oss/docs/images/catalog/blocks/freeze-frame-dressing.png");document.body.appendChild(p)});<\/script></body></html>`}
+  srcDoc={`<!doctype html><html><head><meta charset="utf-8"><style>html,body{margin:0;height:100%;overflow:hidden;background:transparent}smashcut-player{display:block;width:100%;height:100%}</style><script src="https://cdn.jsdelivr.net/npm/@smashcut/player@latest/dist/smashcut-player.global.js"><\/script></head><body><script>fetch("/public/catalog/blocks/freeze-frame-dressing.json").then(function(r){return r.json()}).then(function(d){var p=document.createElement("smashcut-player");p.setAttribute("srcdoc",d.html);p.setAttribute("controls","");p.setAttribute("autoplay","");p.setAttribute("loop","");p.setAttribute("muted","");p.setAttribute("poster","https://static.heygen.ai/smashcut-oss/docs/images/catalog/blocks/freeze-frame-dressing.png");document.body.appendChild(p)});<\/script></body></html>`}
 />
 
 ## Install
 
-<InstallCommand command="npx hyperframes add freeze-frame-dressing" item="freeze-frame-dressing" />
+<InstallCommand command="npx smashcut add freeze-frame-dressing" item="freeze-frame-dressing" />
 
 That writes one file: `compositions/freeze-frame-dressing.html`.
 
@@ -63,7 +63,7 @@ Move it in time with `data-start`. Put it on a different timeline row with
         background: transparent;
       }
 
-      #hf-freeze-paper {
+      #sc-freeze-paper {
         position: absolute;
         inset: 0;
         opacity: 0;
@@ -76,7 +76,7 @@ Move it in time with `data-start`. Put it on a different timeline row with
         pointer-events: none;
       }
 
-      .hf-freeze-tape {
+      .sc-freeze-tape {
         position: absolute;
         width: 12.5vmin;
         height: 2.9vmin;
@@ -87,19 +87,19 @@ Move it in time with `data-start`. Put it on a different timeline row with
         pointer-events: none;
       }
 
-      #hf-freeze-tape-a {
+      #sc-freeze-tape-a {
         top: 8%;
         left: 12.5%;
         transform: rotate(-8deg);
       }
 
-      #hf-freeze-tape-b {
+      #sc-freeze-tape-b {
         right: 12.5%;
         bottom: 7%;
         transform: rotate(7deg);
       }
 
-      #hf-freeze-flash {
+      #sc-freeze-flash {
         position: absolute;
         inset: 0;
         opacity: 0;
@@ -117,16 +117,16 @@ Move it in time with `data-start`. Put it on a different timeline row with
       data-width="1920"
       data-height="1080"
     >
-      <div id="hf-freeze-paper" aria-hidden="true"></div>
-      <div id="hf-freeze-tape-a" class="hf-freeze-tape" aria-hidden="true"></div>
-      <div id="hf-freeze-tape-b" class="hf-freeze-tape" aria-hidden="true"></div>
-      <div id="hf-freeze-flash" aria-hidden="true"></div>
+      <div id="sc-freeze-paper" aria-hidden="true"></div>
+      <div id="sc-freeze-tape-a" class="sc-freeze-tape" aria-hidden="true"></div>
+      <div id="sc-freeze-tape-b" class="sc-freeze-tape" aria-hidden="true"></div>
+      <div id="sc-freeze-flash" aria-hidden="true"></div>
     </div>
 
     <script>
       window.__timelines = window.__timelines || {};
 
-      var paper = document.getElementById("hf-freeze-paper");
+      var paper = document.getElementById("sc-freeze-paper");
       var host = paper && paper.closest("[data-composition-id]");
       if (!host) throw new Error("Freeze-Frame Dressing could not find its composition host");
 
@@ -137,23 +137,23 @@ Move it in time with `data-start`. Put it on a different timeline row with
       var tl = gsap.timeline({ paused: true });
 
       tl.to({}, { duration: duration, ease: "none" }, 0);
-      tl.to("#hf-freeze-flash", { opacity: 0.95, duration: 0.06, ease: "power2.out" }, hit);
-      tl.to("#hf-freeze-flash", { opacity: 0, duration: 0.24, ease: "power2.in" }, hit + 0.06);
-      tl.to("#hf-freeze-paper", { opacity: 0.64, duration: 0.18, ease: "power2.out" }, hit + 0.04);
+      tl.to("#sc-freeze-flash", { opacity: 0.95, duration: 0.06, ease: "power2.out" }, hit);
+      tl.to("#sc-freeze-flash", { opacity: 0, duration: 0.24, ease: "power2.in" }, hit + 0.06);
+      tl.to("#sc-freeze-paper", { opacity: 0.64, duration: 0.18, ease: "power2.out" }, hit + 0.04);
       tl.fromTo(
-        "#hf-freeze-tape-a",
+        "#sc-freeze-tape-a",
         { opacity: 0, scale: 1.18 },
         { opacity: 1, scale: 1, duration: 0.24, ease: "power2.out" },
         hit + 0.3,
       );
       tl.fromTo(
-        "#hf-freeze-tape-b",
+        "#sc-freeze-tape-b",
         { opacity: 0, scale: 1.18 },
         { opacity: 1, scale: 1, duration: 0.24, ease: "power2.out" },
         hit + 0.42,
       );
       tl.to(
-        ["#hf-freeze-paper", "#hf-freeze-tape-a", "#hf-freeze-tape-b"],
+        ["#sc-freeze-paper", "#sc-freeze-tape-a", "#sc-freeze-tape-b"],
         { opacity: 0, duration: 0.24, ease: "power2.in" },
         exit,
       );

@@ -145,7 +145,7 @@ describe("downloadAndRewriteFonts — attempt caps", () => {
   afterEach(() => vi.unstubAllGlobals());
 
   async function expectFailedFontAttempts(css: string, expectedAttempts: number): Promise<void> {
-    const dir = mkdtempSync(join(tmpdir(), "hf-font-attempts-"));
+    const dir = mkdtempSync(join(tmpdir(), "sc-font-attempts-"));
     const fetchMock = vi.fn(async () => new Response("failed", { status: 503 }));
     vi.stubGlobal("fetch", fetchMock);
 
@@ -176,7 +176,7 @@ describe("downloadAndRewriteFonts — attempt caps", () => {
   });
 
   it("does not start a font request after the capture budget is exhausted", async () => {
-    const dir = mkdtempSync(join(tmpdir(), "hf-font-budget-"));
+    const dir = mkdtempSync(join(tmpdir(), "sc-font-budget-"));
     const css = "@font-face { font-family: Budget; src: url(https://fonts.example/budget.woff2); }";
     const fetchMock = vi.fn();
     vi.stubGlobal("fetch", fetchMock);
@@ -191,7 +191,7 @@ describe("downloadAndRewriteFonts — attempt caps", () => {
 });
 
 function withTempDir<T>(run: (dir: string) => Promise<T>): Promise<T> {
-  const dir = mkdtempSync(join(tmpdir(), "hf-drops-"));
+  const dir = mkdtempSync(join(tmpdir(), "sc-drops-"));
   return run(dir).finally(() => rmSync(dir, { recursive: true, force: true }));
 }
 
@@ -362,7 +362,7 @@ describe("asset fetches present the same identity as the page navigation", () =>
 
   /**
    * Measured against the real origin: `GET /favicon.svg` answers `403 text/html` to
-   * `User-Agent: HyperFrames/1.0` and `200 image/svg+xml` to the browser UA the capture
+   * `User-Agent: SmashCut/1.0` and `200 image/svg+xml` to the browser UA the capture
    * already navigates with. The other two icons are served to either agent.
    */
   function serveLikeAnAntiBotEdge() {

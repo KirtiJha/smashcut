@@ -4,7 +4,7 @@
  * The studio → runtime boundary, which nothing else crosses.
  *
  * Studio addresses rows by `buildTimelineElementKey`'s composite
- * `<sourceFile>#<domId>`; every audio predicate in `@hyperframes/core` keys off
+ * `<sourceFile>#<domId>`; every audio predicate in `@smashcut/core` keys off
  * the live document instead. Both halves have their own passing tests — one
  * with composite keys, one with bare ids — and the mismatch between them lived
  * in the gap. These parse a real document, take the ids the way the UI does,
@@ -12,7 +12,7 @@
  */
 
 import { describe, expect, it } from "vitest";
-import { resolveAudioGroups } from "@hyperframes/core/audio-groups";
+import { resolveAudioGroups } from "@smashcut/core/audio-groups";
 import { parseTimelineFromDOM } from "./timelineDOM";
 import { runtimeAudioId } from "./timelineElementHelpers";
 
@@ -27,7 +27,7 @@ const COMPOSITION = `
   <audio id="voice-1" data-start="0" data-duration="10" data-audio-group="voiceover"></audio>
   <audio id="voice-2" data-start="10" data-duration="10" data-audio-group="voiceover"></audio>
   <audio id="music-bed" data-start="0" data-duration="30"></audio>
-  <hf-audio-group id="voiceover"></hf-audio-group>
+  <sc-audio-group id="voiceover"></sc-audio-group>
 `;
 
 describe("group membership ids cross into the runtime", () => {

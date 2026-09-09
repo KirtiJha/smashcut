@@ -3,8 +3,8 @@
  * selector -> element id resolution.
  * Split from useGsapTweenCache to keep that file under the 600-line limit.
  */
-import type { GsapAnimation, GsapKeyframesData, ParsedGsap } from "@hyperframes/core/gsap-parser";
-import { isStudioHoldSet } from "@hyperframes/core/gsap-parser";
+import type { GsapAnimation, GsapKeyframesData, ParsedGsap } from "@smashcut/core/gsap-parser";
+import { isStudioHoldSet } from "@smashcut/core/gsap-parser";
 import { usePlayerStore } from "../player/store/playerStore";
 import { replaceKeyframeCacheForFile } from "./gsapKeyframeCacheHelpers";
 import { resolveClipTimingBasis, resolveSelectorElementIds, toClipKeyframes } from "./gsapShared";

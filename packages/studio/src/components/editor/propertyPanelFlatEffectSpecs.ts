@@ -4,7 +4,7 @@ import {
   type HfColorGradingActiveEffectKey,
   type HfColorGradingEffectKey,
   type HfColorGradingPresetId,
-} from "@hyperframes/core/color-grading";
+} from "@smashcut/core/color-grading";
 
 type SliderControl = {
   kind: "slider";

@@ -19,7 +19,7 @@ describe("isTransientBrowserError", () => {
     // pollHfReady timed out before window.__renderReady flipped true — the
     // classic symptom of a slow/contended host (e.g. several renders running
     // concurrently); a fresh browser session on retry usually clears it.
-    "[FrameCapture] Composition has zero duration.\n  Runtime ready: false, __player: true, __hf.seek: true, GSAP timeline: true, data-duration: 53.3s",
+    "[FrameCapture] Composition has zero duration.\n  Runtime ready: false, __player: true, __sc.seek: true, GSAP timeline: true, data-duration: 53.3s",
   ])("returns true for transient error: %s", (message) => {
     expect(isTransientBrowserError(new Error(message))).toBe(true);
   });
@@ -33,7 +33,7 @@ describe("isTransientBrowserError", () => {
     // The runtime finished initializing (renderReady: true) and still reports
     // zero duration — a genuine authoring bug (no timeline, no data-duration),
     // not a transient host hiccup. Must keep fast-failing without a retry.
-    "[FrameCapture] Composition has zero duration.\n  Runtime ready: true, __player: true, __hf.seek: true, GSAP timeline: false, data-duration: not set",
+    "[FrameCapture] Composition has zero duration.\n  Runtime ready: true, __player: true, __sc.seek: true, GSAP timeline: false, data-duration: not set",
   ])("returns false for non-transient error: %s", (message) => {
     expect(isTransientBrowserError(new Error(message))).toBe(false);
   });

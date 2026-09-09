@@ -58,11 +58,11 @@ export interface CompareSuccessPayload {
 export const examples: Example[] = [
   [
     "Compare two agent-authored composition variants",
-    "hyperframes compare ./variants/a ./variants/b --out compare.png",
+    "smashcut compare ./variants/a ./variants/b --out compare.png",
   ],
   [
     "Compare three variants at a specific timeline time",
-    "hyperframes compare ./a ./b ./c --at 2.5 --labels classic,bold,quiet --json",
+    "smashcut compare ./a ./b ./c --at 2.5 --labels classic,bold,quiet --json",
   ],
 ];
 
@@ -198,7 +198,7 @@ function inputError(variant: CompareVariantSpec): Error {
 }
 
 function stageHtmlVariant(variant: CompareVariantSpec): PreparedCompareVariant {
-  const stagedDir = mkdtempSync(join(tmpdir(), "hf-compare-variant-"));
+  const stagedDir = mkdtempSync(join(tmpdir(), "sc-compare-variant-"));
   try {
     // Copy the composition's sibling files but skip heavy/irrelevant trees — a
     // variant sitting next to node_modules or .git shouldn't drag them into tmp.
@@ -271,7 +271,7 @@ async function renderCompareVariant(
   opts: { atSeconds: number; framePath: string; timeoutMs: number },
 ): Promise<{ framePath: string; renderReadyTimedOut: boolean }> {
   try {
-    const { bundleToSingleHtml } = await import("@hyperframes/core/compiler");
+    const { bundleToSingleHtml } = await import("@smashcut/core/compiler");
     const html = await bundleToSingleHtml(variant.projectDir);
     const server = await serveStaticProjectHtml(variant.projectDir, html);
     try {
@@ -306,7 +306,7 @@ async function renderCompareSheet(parsed: ParsedCompareArgs): Promise<CompareSuc
   const capResult = capCompareVariants(parsed.variants);
   const variants = capResult.variants;
   const prepared = prepareCompareVariantProjects(variants);
-  const frameDir = mkdtempSync(join(tmpdir(), "hf-compare-frames-"));
+  const frameDir = mkdtempSync(join(tmpdir(), "sc-compare-frames-"));
   const framePaths: string[] = [];
 
   try {

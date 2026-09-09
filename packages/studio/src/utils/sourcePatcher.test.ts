@@ -279,21 +279,21 @@ describe("applyPatchByTarget", () => {
 
     const patched = applyPatch(html, "card", {
       type: "attribute",
-      property: "data-hf-studio-motion",
+      property: "data-sc-studio-motion",
       value: motionJson,
     });
 
     // The raw HTML must NOT contain unescaped quotes inside the attribute
-    expect(patched).not.toMatch(/data-hf-studio-motion="[^"]*"[^"]*"/);
+    expect(patched).not.toMatch(/data-sc-studio-motion="[^"]*"[^"]*"/);
     // Entities should be present
     expect(patched).toContain("&quot;");
 
     // Reading the attribute back should return the original JSON
-    const readBack = readAttributeByTarget(patched, { id: "card" }, "data-hf-studio-motion");
+    const readBack = readAttributeByTarget(patched, { id: "card" }, "data-sc-studio-motion");
     expect(readBack).toBe(motionJson);
   });
 
-  it("escapes and round-trips data-hf-studio-motion-original-transform with quotes", () => {
+  it("escapes and round-trips data-sc-studio-motion-original-transform with quotes", () => {
     const html = `<div id="hero" data-start="0"></div>`;
     const transform = `rotate(15deg) translate("50px", "100px")`;
 
@@ -302,18 +302,18 @@ describe("applyPatchByTarget", () => {
       { id: "hero" },
       {
         type: "attribute",
-        property: "data-hf-studio-motion-original-transform",
+        property: "data-sc-studio-motion-original-transform",
         value: transform,
       },
     );
 
     // No broken attribute boundary
-    expect(patched).not.toMatch(/data-hf-studio-motion-original-transform="[^"]*"[^"]*"/);
+    expect(patched).not.toMatch(/data-sc-studio-motion-original-transform="[^"]*"[^"]*"/);
 
     const readBack = readAttributeByTarget(
       patched,
       { id: "hero" },
-      "data-hf-studio-motion-original-transform",
+      "data-sc-studio-motion-original-transform",
     );
     expect(readBack).toBe(transform);
   });
@@ -341,22 +341,22 @@ describe("applyPatchByTarget", () => {
 
     const patched1 = applyPatch(html, "card", {
       type: "attribute",
-      property: "data-hf-studio-motion",
+      property: "data-sc-studio-motion",
       value: first,
     });
     const patched2 = applyPatch(patched1, "card", {
       type: "attribute",
-      property: "data-hf-studio-motion",
+      property: "data-sc-studio-motion",
       value: second,
     });
 
-    const readBack = readAttributeByTarget(patched2, { id: "card" }, "data-hf-studio-motion");
+    const readBack = readAttributeByTarget(patched2, { id: "card" }, "data-sc-studio-motion");
     expect(readBack).toBe(second);
   });
 });
 
 describe("motion attribute round-trip via sourcePatcher", () => {
-  it("round-trips data-hf-studio-motion JSON through patch and read", () => {
+  it("round-trips data-sc-studio-motion JSON through patch and read", () => {
     const html = `<div id="hero" style="position: absolute">Hero</div>`;
     const motion = {
       start: 0.5,
@@ -370,10 +370,10 @@ describe("motion attribute round-trip via sourcePatcher", () => {
     const patched = applyPatchByTarget(
       html,
       { id: "hero" },
-      { type: "attribute", property: "data-hf-studio-motion", value: motionJson },
+      { type: "attribute", property: "data-sc-studio-motion", value: motionJson },
     );
 
-    const readBack = readAttributeByTarget(patched, { id: "hero" }, "data-hf-studio-motion");
+    const readBack = readAttributeByTarget(patched, { id: "hero" }, "data-sc-studio-motion");
     expect(readBack).toBeDefined();
     expect(JSON.parse(readBack!)).toEqual(motion);
   });
@@ -393,10 +393,10 @@ describe("motion attribute round-trip via sourcePatcher", () => {
     const patched = applyPatchByTarget(
       html,
       { id: "card" },
-      { type: "attribute", property: "data-hf-studio-motion", value: motionJson },
+      { type: "attribute", property: "data-sc-studio-motion", value: motionJson },
     );
 
-    const readBack = readAttributeByTarget(patched, { id: "card" }, "data-hf-studio-motion");
+    const readBack = readAttributeByTarget(patched, { id: "card" }, "data-sc-studio-motion");
     expect(readBack).toBeDefined();
     expect(JSON.parse(readBack!)).toEqual(motion);
   });
@@ -416,43 +416,43 @@ describe("motion attribute round-trip via sourcePatcher", () => {
     result = applyPatchByTarget(
       result,
       { id: "hero" },
-      { type: "attribute", property: "data-hf-studio-motion", value: JSON.stringify(motion) },
+      { type: "attribute", property: "data-sc-studio-motion", value: JSON.stringify(motion) },
     );
     result = applyPatchByTarget(
       result,
       { id: "hero" },
       {
         type: "attribute",
-        property: "data-hf-studio-motion-original-transform",
+        property: "data-sc-studio-motion-original-transform",
         value: "rotate(5deg)",
       },
     );
     result = applyPatchByTarget(
       result,
       { id: "hero" },
-      { type: "attribute", property: "data-hf-studio-motion-original-opacity", value: "0.8" },
+      { type: "attribute", property: "data-sc-studio-motion-original-opacity", value: "0.8" },
     );
     result = applyPatchByTarget(
       result,
       { id: "hero" },
       {
         type: "attribute",
-        property: "data-hf-studio-motion-original-visibility",
+        property: "data-sc-studio-motion-original-visibility",
         value: "visible",
       },
     );
 
     expect(
-      JSON.parse(readAttributeByTarget(result, { id: "hero" }, "data-hf-studio-motion")!),
+      JSON.parse(readAttributeByTarget(result, { id: "hero" }, "data-sc-studio-motion")!),
     ).toEqual(motion);
     expect(
-      readAttributeByTarget(result, { id: "hero" }, "data-hf-studio-motion-original-transform"),
+      readAttributeByTarget(result, { id: "hero" }, "data-sc-studio-motion-original-transform"),
     ).toBe("rotate(5deg)");
     expect(
-      readAttributeByTarget(result, { id: "hero" }, "data-hf-studio-motion-original-opacity"),
+      readAttributeByTarget(result, { id: "hero" }, "data-sc-studio-motion-original-opacity"),
     ).toBe("0.8");
     expect(
-      readAttributeByTarget(result, { id: "hero" }, "data-hf-studio-motion-original-visibility"),
+      readAttributeByTarget(result, { id: "hero" }, "data-sc-studio-motion-original-visibility"),
     ).toBe("visible");
   });
 
@@ -471,67 +471,67 @@ describe("motion attribute round-trip via sourcePatcher", () => {
     result = applyPatchByTarget(
       result,
       { id: "hero" },
-      { type: "attribute", property: "data-hf-studio-motion", value: JSON.stringify(motion) },
+      { type: "attribute", property: "data-sc-studio-motion", value: JSON.stringify(motion) },
     );
     result = applyPatchByTarget(
       result,
       { id: "hero" },
-      { type: "attribute", property: "data-hf-studio-motion-original-transform", value: "" },
+      { type: "attribute", property: "data-sc-studio-motion-original-transform", value: "" },
     );
     result = applyPatchByTarget(
       result,
       { id: "hero" },
-      { type: "attribute", property: "data-hf-studio-motion-original-opacity", value: "1" },
+      { type: "attribute", property: "data-sc-studio-motion-original-opacity", value: "1" },
     );
     result = applyPatchByTarget(
       result,
       { id: "hero" },
-      { type: "attribute", property: "data-hf-studio-motion-original-visibility", value: "" },
+      { type: "attribute", property: "data-sc-studio-motion-original-visibility", value: "" },
     );
 
     // Verify all four attributes exist
-    expect(readAttributeByTarget(result, { id: "hero" }, "data-hf-studio-motion")).toBeDefined();
+    expect(readAttributeByTarget(result, { id: "hero" }, "data-sc-studio-motion")).toBeDefined();
     expect(
-      readAttributeByTarget(result, { id: "hero" }, "data-hf-studio-motion-original-transform"),
+      readAttributeByTarget(result, { id: "hero" }, "data-sc-studio-motion-original-transform"),
     ).toBeDefined();
     expect(
-      readAttributeByTarget(result, { id: "hero" }, "data-hf-studio-motion-original-opacity"),
+      readAttributeByTarget(result, { id: "hero" }, "data-sc-studio-motion-original-opacity"),
     ).toBeDefined();
     expect(
-      readAttributeByTarget(result, { id: "hero" }, "data-hf-studio-motion-original-visibility"),
+      readAttributeByTarget(result, { id: "hero" }, "data-sc-studio-motion-original-visibility"),
     ).toBeDefined();
 
     // Remove all four
     result = applyPatchByTarget(
       result,
       { id: "hero" },
-      { type: "attribute", property: "data-hf-studio-motion", value: null },
+      { type: "attribute", property: "data-sc-studio-motion", value: null },
     );
     result = applyPatchByTarget(
       result,
       { id: "hero" },
-      { type: "attribute", property: "data-hf-studio-motion-original-transform", value: null },
+      { type: "attribute", property: "data-sc-studio-motion-original-transform", value: null },
     );
     result = applyPatchByTarget(
       result,
       { id: "hero" },
-      { type: "attribute", property: "data-hf-studio-motion-original-opacity", value: null },
+      { type: "attribute", property: "data-sc-studio-motion-original-opacity", value: null },
     );
     result = applyPatchByTarget(
       result,
       { id: "hero" },
-      { type: "attribute", property: "data-hf-studio-motion-original-visibility", value: null },
+      { type: "attribute", property: "data-sc-studio-motion-original-visibility", value: null },
     );
 
-    expect(readAttributeByTarget(result, { id: "hero" }, "data-hf-studio-motion")).toBeUndefined();
+    expect(readAttributeByTarget(result, { id: "hero" }, "data-sc-studio-motion")).toBeUndefined();
     expect(
-      readAttributeByTarget(result, { id: "hero" }, "data-hf-studio-motion-original-transform"),
+      readAttributeByTarget(result, { id: "hero" }, "data-sc-studio-motion-original-transform"),
     ).toBeUndefined();
     expect(
-      readAttributeByTarget(result, { id: "hero" }, "data-hf-studio-motion-original-opacity"),
+      readAttributeByTarget(result, { id: "hero" }, "data-sc-studio-motion-original-opacity"),
     ).toBeUndefined();
     expect(
-      readAttributeByTarget(result, { id: "hero" }, "data-hf-studio-motion-original-visibility"),
+      readAttributeByTarget(result, { id: "hero" }, "data-sc-studio-motion-original-visibility"),
     ).toBeUndefined();
   });
 
@@ -548,13 +548,13 @@ describe("motion attribute round-trip via sourcePatcher", () => {
     const patched = applyPatchByTarget(
       html,
       { selector: ".headline" },
-      { type: "attribute", property: "data-hf-studio-motion", value: JSON.stringify(motion) },
+      { type: "attribute", property: "data-sc-studio-motion", value: JSON.stringify(motion) },
     );
 
     const readBack = readAttributeByTarget(
       patched,
       { selector: ".headline" },
-      "data-hf-studio-motion",
+      "data-sc-studio-motion",
     );
     expect(readBack).toBeDefined();
     expect(JSON.parse(readBack!)).toEqual(motion);
@@ -563,11 +563,11 @@ describe("motion attribute round-trip via sourcePatcher", () => {
 
 // T3 — id-based targeting (R1).
 describe("T3 — hfId targeting (spec for R1)", () => {
-  it("updates inline style by data-hf-id", () => {
-    const html = `<h1 data-hf-id="hf-x7k2" style="color: red">Hello</h1>`;
+  it("updates inline style by data-sc-id", () => {
+    const html = `<h1 data-sc-id="sc-x7k2" style="color: red">Hello</h1>`;
     const result = applyPatchByTarget(
       html,
-      { hfId: "hf-x7k2" },
+      { hfId: "sc-x7k2" },
       {
         type: "inline-style",
         property: "color",
@@ -575,14 +575,14 @@ describe("T3 — hfId targeting (spec for R1)", () => {
       },
     );
     expect(result).toContain("color: blue");
-    expect(result).toContain('data-hf-id="hf-x7k2"');
+    expect(result).toContain('data-sc-id="sc-x7k2"');
   });
 
-  it("updates text content by data-hf-id", () => {
-    const html = `<p data-hf-id="hf-a1b2">Old text</p>`;
+  it("updates text content by data-sc-id", () => {
+    const html = `<p data-sc-id="sc-a1b2">Old text</p>`;
     const result = applyPatchByTarget(
       html,
-      { hfId: "hf-a1b2" },
+      { hfId: "sc-a1b2" },
       {
         type: "text-content",
         property: "",
@@ -592,11 +592,11 @@ describe("T3 — hfId targeting (spec for R1)", () => {
     expect(result).toContain(">New text<");
   });
 
-  it("updates attribute by data-hf-id", () => {
-    const html = `<div data-hf-id="hf-c3d4" data-start="0"></div>`;
+  it("updates attribute by data-sc-id", () => {
+    const html = `<div data-sc-id="sc-c3d4" data-start="0"></div>`;
     const result = applyPatchByTarget(
       html,
-      { hfId: "hf-c3d4" },
+      { hfId: "sc-c3d4" },
       {
         type: "attribute",
         property: "start",
@@ -606,25 +606,25 @@ describe("T3 — hfId targeting (spec for R1)", () => {
     expect(result).toContain('data-start="2.5"');
   });
 
-  it("data-hf-id attribute is preserved after a style patch", () => {
-    const html = `<h1 data-hf-id="hf-x7k2" style="color: red">Hello</h1>`;
+  it("data-sc-id attribute is preserved after a style patch", () => {
+    const html = `<h1 data-sc-id="sc-x7k2" style="color: red">Hello</h1>`;
     const patched = applyPatchByTarget(
       html,
-      { hfId: "hf-x7k2" },
+      { hfId: "sc-x7k2" },
       {
         type: "inline-style",
         property: "color",
         value: "blue",
       },
     );
-    expect(readAttributeByTarget(patched, { hfId: "hf-x7k2" }, "data-hf-id")).toBe("hf-x7k2");
+    expect(readAttributeByTarget(patched, { hfId: "sc-x7k2" }, "data-sc-id")).toBe("sc-x7k2");
   });
 
   it("hfId lookup falls through to selector when hfId not found", () => {
     const html = `<h1 class="headline" style="color: red">Hello</h1>`;
     const result = applyPatchByTarget(
       html,
-      { hfId: "hf-missing", selector: ".headline" },
+      { hfId: "sc-missing", selector: ".headline" },
       { type: "inline-style", property: "color", value: "blue" },
     );
     expect(result).toContain("color: blue");
@@ -632,13 +632,13 @@ describe("T3 — hfId targeting (spec for R1)", () => {
 
   it("hfId match is authoritative — selector is not used as a narrowing filter", () => {
     // hfId matches h1; selector points at h2. hfId wins — patch lands on h1, h2 untouched.
-    const html = `<h1 data-hf-id="hf-x7k2" class="a">A</h1><h2 class="b">B</h2>`;
+    const html = `<h1 data-sc-id="sc-x7k2" class="a">A</h1><h2 class="b">B</h2>`;
     const result = applyPatchByTarget(
       html,
-      { hfId: "hf-x7k2", selector: ".b" },
+      { hfId: "sc-x7k2", selector: ".b" },
       { type: "inline-style", property: "color", value: "blue" },
     );
-    expect(result).toContain('data-hf-id="hf-x7k2"');
+    expect(result).toContain('data-sc-id="sc-x7k2"');
     const h1End = result.indexOf("</h1>");
     const bluePos = result.indexOf("color: blue");
     expect(bluePos).toBeGreaterThan(-1);

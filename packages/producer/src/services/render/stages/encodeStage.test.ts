@@ -31,7 +31,7 @@ const runFfmpegMock = mock(async () => ({
   durationMs: 1,
 }));
 
-mock.module("@hyperframes/engine", () => ({
+mock.module("@smashcut/engine", () => ({
   MIXED_AUDIO_FILENAME: "audio.m4a",
   DEFAULT_CONFIG: { ffmpegEncodeTimeout: 600_000 },
   encodeFramesChunkedConcat: encodeFramesChunkedConcatMock,
@@ -59,7 +59,7 @@ afterEach(() => {
 });
 
 function createFramesDir(ext: "jpg" | "png"): { root: string; framesDir: string } {
-  const root = mkdtempSync(join(tmpdir(), "hf-encode-stage-"));
+  const root = mkdtempSync(join(tmpdir(), "sc-encode-stage-"));
   tempDirs.push(root);
   const framesDir = join(root, "frames");
   mkdirSync(framesDir);

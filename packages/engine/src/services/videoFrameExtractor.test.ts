@@ -57,7 +57,7 @@ import {
 import { runFfmpeg } from "../utils/runFfmpeg.js";
 import { COMPLETE_SENTINEL, GC_MARKER, SCHEMA_PREFIX } from "./extractionCache.js";
 import { resolveRuntimeMediaClipDuration } from "../../../core/src/runtime/media.js";
-import { compileTimingAttrs } from "@hyperframes/core";
+import { compileTimingAttrs } from "@smashcut/core";
 
 // ffmpeg is not preinstalled on GitHub's ubuntu-24.04 runners. The producer
 // regression test at packages/producer/tests/vfr-screen-recording/ runs inside
@@ -407,7 +407,7 @@ describe("video extraction failure taxonomy and bounded retry", () => {
   });
 
   it("retries one transient failure, cleaning partial output before the retry", async () => {
-    const retryDir = mkdtempSync(join(tmpdir(), "hf-extract-retry-"));
+    const retryDir = mkdtempSync(join(tmpdir(), "sc-extract-retry-"));
     const partialPath = join(retryDir, "frame-00001.jpg");
     let attempts = 0;
     try {
@@ -595,7 +595,7 @@ describe("resolveProjectRelativeSrc — sub-composition path clamping", () => {
   let tmp: string;
 
   beforeAll(() => {
-    tmp = mkdtempSync(join(tmpdir(), "hf-resolver-"));
+    tmp = mkdtempSync(join(tmpdir(), "sc-resolver-"));
     mkdirSync(join(tmp, "project", "assets"), { recursive: true });
     writeFileSync(join(tmp, "project", "assets", "foo.mp4"), "");
   });
@@ -753,7 +753,7 @@ describe("parseVideoElements", () => {
 
     expect(videos).toHaveLength(1);
     expect(videos[0]).toMatchObject({
-      id: "hf-video-0",
+      id: "sc-video-0",
       src: "clip.mp4",
       start: 0,
       end: Infinity,
@@ -1169,8 +1169,8 @@ describe("parseImageElements", () => {
     );
 
     expect(images).toHaveLength(2);
-    expect(images[0]!.id).toBe("hf-img-0");
-    expect(images[1]!.id).toBe("hf-img-1");
+    expect(images[0]!.id).toBe("sc-img-0");
+    expect(images[1]!.id).toBe("sc-img-1");
   });
 
   it("defaults start to 0 and end to Infinity when attributes missing", () => {
@@ -1245,7 +1245,7 @@ function maxChannelDelta(a: Rgb, b: Rgb): number {
 // high-chroma reds before browser capture. Forcing PNG should keep extracted
 // source-video frames effectively identical to the decoded source pixels.
 describe.skipIf(!HAS_FFMPEG)("video frame extraction format", () => {
-  const FIXTURE_DIR = mkdtempSync(join(tmpdir(), "hf-video-frame-format-"));
+  const FIXTURE_DIR = mkdtempSync(join(tmpdir(), "sc-video-frame-format-"));
   const UI_FIXTURE = join(FIXTURE_DIR, "ui-red.mp4");
 
   beforeAll(async () => {
@@ -1339,7 +1339,7 @@ describe.skipIf(!HAS_FFMPEG)("video frame extraction format", () => {
   }, 60_000);
 
   it("keeps jpg and png extraction caches separate", async () => {
-    const cacheDir = mkdtempSync(join(tmpdir(), "hf-extract-format-cache-"));
+    const cacheDir = mkdtempSync(join(tmpdir(), "sc-extract-format-cache-"));
     try {
       const defaultOut = join(FIXTURE_DIR, "cache-default");
       const pngOut = join(FIXTURE_DIR, "cache-png");
@@ -1420,7 +1420,7 @@ describe.skipIf(!HAS_FFMPEG)("video frame extraction format", () => {
 });
 
 describe.skipIf(!HAS_FFMPEG)("held tails on sparse-timestamp sources", () => {
-  const fixtureDir = mkdtempSync(join(tmpdir(), "hf-sparse-held-tail-"));
+  const fixtureDir = mkdtempSync(join(tmpdir(), "sc-sparse-held-tail-"));
   const cfrFixture = join(fixtureDir, "sub-1fps-cfr.mp4");
   const vfrFixture = join(fixtureDir, "sparse-vfr.mp4");
   const nonZeroStartFixture = join(fixtureDir, "nonzero-start.mp4");
@@ -1561,7 +1561,7 @@ describe.skipIf(!HAS_FFMPEG)("held tails on sparse-timestamp sources", () => {
 // FFmpeg's one-pass `-fps_mode cfr -r` extraction path to fix this without a
 // separate normalization encode.
 describe.skipIf(!HAS_FFMPEG)("extractAllVideoFrames on a VFR source", () => {
-  const FIXTURE_DIR = mkdtempSync(join(tmpdir(), "hf-vfr-test-"));
+  const FIXTURE_DIR = mkdtempSync(join(tmpdir(), "sc-vfr-test-"));
   const VFR_FIXTURE = join(FIXTURE_DIR, "vfr_screen.mp4");
 
   beforeAll(async () => {
@@ -1924,7 +1924,7 @@ describe.skipIf(!HAS_FFMPEG)("extractAllVideoFrames on a VFR source", () => {
   }
 
   it("reuses extracted frames on a warm cache hit", async () => {
-    const CACHE_DIR = mkdtempSync(join(tmpdir(), "hf-extract-cache-test-"));
+    const CACHE_DIR = mkdtempSync(join(tmpdir(), "sc-extract-cache-test-"));
     const SRC = await synthCfrClip("cache-src.mp4", 2);
     const video = cfrClipElement("cv1", SRC, 2);
 
@@ -1948,7 +1948,7 @@ describe.skipIf(!HAS_FFMPEG)("extractAllVideoFrames on a VFR source", () => {
   }, 60_000);
 
   it("does not reuse a decimal-rate VFR cache entry for the exact rational rate", async () => {
-    const cacheDir = mkdtempSync(join(tmpdir(), "hf-extract-cache-ntsc-rate-test-"));
+    const cacheDir = mkdtempSync(join(tmpdir(), "sc-extract-cache-ntsc-rate-test-"));
     const decimalOutputDir = join(FIXTURE_DIR, "out-cache-vfr-ntsc-decimal");
     const rationalOutputDir = join(FIXTURE_DIR, "out-cache-vfr-ntsc-rational");
     mkdirSync(decimalOutputDir, { recursive: true });
@@ -1991,7 +1991,7 @@ describe.skipIf(!HAS_FFMPEG)("extractAllVideoFrames on a VFR source", () => {
   }, 60_000);
 
   it("reuses one-cycle loop extraction across different authored starts", async () => {
-    const cacheDir = mkdtempSync(join(tmpdir(), "hf-extract-loop-phase-cache-test-"));
+    const cacheDir = mkdtempSync(join(tmpdir(), "sc-extract-loop-phase-cache-test-"));
     const src = await synthCfrClip("cache-loop-phase-src.mp4", 3);
     try {
       const firstOutputDir = join(FIXTURE_DIR, "out-cache-loop-phase-first");
@@ -2037,7 +2037,7 @@ describe.skipIf(!HAS_FFMPEG)("extractAllVideoFrames on a VFR source", () => {
   }, 60_000);
 
   it("updates the cache sentinel mtime on a hit", async () => {
-    const CACHE_DIR = mkdtempSync(join(tmpdir(), "hf-extract-cache-touch-test-"));
+    const CACHE_DIR = mkdtempSync(join(tmpdir(), "sc-extract-cache-touch-test-"));
     const SRC = await synthCfrClip("cache-touch-src.mp4", 1);
     const video = cfrClipElement("touch", SRC, 1);
 
@@ -2062,7 +2062,7 @@ describe.skipIf(!HAS_FFMPEG)("extractAllVideoFrames on a VFR source", () => {
   }, 60_000);
 
   it("skips cache GC on all-hit renders", async () => {
-    const CACHE_DIR = mkdtempSync(join(tmpdir(), "hf-extract-cache-gc-skip-test-"));
+    const CACHE_DIR = mkdtempSync(join(tmpdir(), "sc-extract-cache-gc-skip-test-"));
     const SRC = await synthCfrClip("cache-gc-skip-src.mp4", 1);
     const video = cfrClipElement("gc-skip", SRC, 1);
 
@@ -2111,7 +2111,7 @@ describe.skipIf(!HAS_FFMPEG)("extractAllVideoFrames on a VFR source", () => {
   }, 60_000);
 
   it("invalidates the cache when fps changes", async () => {
-    const CACHE_DIR = mkdtempSync(join(tmpdir(), "hf-extract-cache-test-"));
+    const CACHE_DIR = mkdtempSync(join(tmpdir(), "sc-extract-cache-test-"));
     const SRC = await synthCfrClip("cache-fps-src.mp4", 1);
     const video = cfrClipElement("cv2", SRC, 1);
 
@@ -2169,7 +2169,7 @@ describe.skipIf(!HAS_FFMPEG)("extractAllVideoFrames on a VFR source", () => {
   }, 60_000);
 
   it("keeps SDR→HDR cache entries distinct from plain SDR entries", async () => {
-    const CACHE_DIR = mkdtempSync(join(tmpdir(), "hf-extract-hdr-cache-test-"));
+    const CACHE_DIR = mkdtempSync(join(tmpdir(), "sc-extract-hdr-cache-test-"));
     const SDR = await synthCfrClip("cache-hdr-sdr.mp4", 1);
     const HDR = await synthHdrTaggedClip("cache-hdr-hdr.mp4", 1);
     try {
@@ -2264,7 +2264,7 @@ describe.skipIf(!HAS_FFMPEG)("extractAllVideoFrames on a VFR source", () => {
   }, 60_000);
 
   it("runs the GC staleness fallback sweep on all-hit renders with a stale marker", async () => {
-    const CACHE_DIR = mkdtempSync(join(tmpdir(), "hf-extract-cache-gc-stale-test-"));
+    const CACHE_DIR = mkdtempSync(join(tmpdir(), "sc-extract-cache-gc-stale-test-"));
     const SRC = await synthCfrClip("cache-gc-stale-src.mp4", 1);
     const video = cfrClipElement("gc-stale", SRC, 1);
 
@@ -2521,7 +2521,7 @@ describe.skipIf(!HAS_FFMPEG)("extractAllVideoFrames on a VFR source", () => {
   }, 60_000);
 
   it("publishes overlapping superset slices to cache entries and hits them on the next render", async () => {
-    const CACHE_DIR = mkdtempSync(join(tmpdir(), "hf-extract-superset-cache-test-"));
+    const CACHE_DIR = mkdtempSync(join(tmpdir(), "sc-extract-superset-cache-test-"));
     const SRC = await synthCfrClip("superset-cache-src.mp4", 10);
     try {
       const firstOutputDir = join(FIXTURE_DIR, "out-superset-cache-first");

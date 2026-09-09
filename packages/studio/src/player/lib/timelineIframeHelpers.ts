@@ -12,7 +12,7 @@
 
 import type { TimelineElement } from "../store/playerStore";
 import type { IframeWindow } from "./playbackTypes";
-import { readClipTiming } from "@hyperframes/core/composition-contract";
+import { readClipTiming } from "@smashcut/core/composition-contract";
 import {
   getTimelineElementSelector,
   getTimelineElementSourceFile,
@@ -178,7 +178,7 @@ export function setPreviewPlaybackRate(
 /**
  * Resolve the underlying iframe from any host element. Supports:
  * - Direct `<iframe>` element (most common — studio's own `Player.tsx`)
- * - Custom elements (e.g. `<hyperframes-player>`) whose shadow DOM contains an iframe
+ * - Custom elements (e.g. `<smashcut-player>`) whose shadow DOM contains an iframe
  * - Wrapper elements whose light DOM contains a descendant iframe
  *
  * Exported so web-component consumers can pre-resolve the iframe before
@@ -188,7 +188,7 @@ export function setPreviewPlaybackRate(
  * @example
  * ```tsx
  * const { iframeRef } = useTimelinePlayer();
- * const playerElRef = useRef<HyperframesPlayer>(null);
+ * const playerElRef = useRef<SmashcutPlayer>(null);
  *
  * useEffect(() => {
  *   iframeRef.current = resolveIframe(playerElRef.current);
@@ -308,7 +308,7 @@ function createTimedElementLookup(doc: Document): Map<string, Element> {
   for (const timed of doc.querySelectorAll("[data-start]")) {
     for (const id of [
       timed.id,
-      timed.getAttribute("data-hf-id"),
+      timed.getAttribute("data-sc-id"),
       timed.getAttribute("data-composition-id"),
     ]) {
       if (id) timedById.set(id, timed);
@@ -421,7 +421,7 @@ function buildMissingCompositionEntry(params: {
     duration: window.duration,
     track: timing.trackIndex,
     domId: optionalNonEmpty(element.id),
-    hfId: optionalNonEmpty(element.getAttribute("data-hf-id")),
+    hfId: optionalNonEmpty(element.getAttribute("data-sc-id")),
     selector,
     selectorIndex,
     sourceFile,

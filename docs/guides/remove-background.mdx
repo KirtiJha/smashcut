@@ -1,17 +1,17 @@
 ---
 title: "Remove a background"
-description: "Turn footage of a person or a portrait image into transparent media you can layer over a HyperFrames scene."
+description: "Turn footage of a person or a portrait image into transparent media you can layer over a SmashCut scene."
 ---
 
 import { DocsVideo } from "/snippets/docs-video.jsx";
 
 Use background removal when a person needs to appear over designed text,
-graphics, or another scene. HyperFrames runs the included human-segmentation
+graphics, or another scene. SmashCut runs the included human-segmentation
 model locally; it does not upload the source or require an API key.
 
 <Frame caption="The same real frame before and after the local model. The softer hair and hand edges are the model’s actual limit on this source.">
   <img
-    src="https://static.heygen.ai/hyperframes-oss/docs/images/showcase/remove-background-before-after-v1.png"
+    src="https://static.heygen.ai/smashcut-oss/docs/images/showcase/remove-background-before-after-v1.png"
     alt="The original presenter frame beside its transparent cutout over a green background"
   />
 </Frame>
@@ -19,8 +19,8 @@ model locally; it does not upload the source or require an API key.
 
 <DocsVideo
   title="A presenter cut out of a real room, shown against the original and magnified at the hard edges"
-  src="https://static.heygen.ai/hyperframes-oss/docs/images/showcase/remove-background-demo-v3.mp4"
-  poster="https://static.heygen.ai/hyperframes-oss/docs/images/showcase/remove-background-demo-v1.jpg"
+  src="https://static.heygen.ai/smashcut-oss/docs/images/showcase/remove-background-demo-v3.mp4"
+  poster="https://static.heygen.ai/smashcut-oss/docs/images/showcase/remove-background-demo-v1.jpg"
 />
 
 Every frame is real CLI output. The magnified panels sit on the hair edge and on
@@ -31,7 +31,7 @@ a shoulder a plant used to overlap, because those are where matting usually fail
 Make sure FFmpeg is installed, then run:
 
 ```bash
-npx hyperframes remove-background subject.mp4 -o subject.webm
+npx smashcut remove-background subject.mp4 -o subject.webm
 ```
 
 The first run downloads the model. Later runs reuse it.
@@ -40,13 +40,13 @@ Choose the output by destination:
 
 | Output              | Use it for                                                       |
 | ------------------- | ---------------------------------------------------------------- |
-| Transparent `.webm` | A subject layered inside a web or HyperFrames composition        |
+| Transparent `.webm` | A subject layered inside a web or SmashCut composition        |
 | Transparent `.mov`  | A ProRes 4444 round trip through Premiere, Resolve, or Final Cut |
 | Transparent `.png`  | A single portrait image                                          |
 
 ```bash
-npx hyperframes remove-background subject.mp4 -o subject.mov
-npx hyperframes remove-background portrait.jpg -o portrait.png
+npx smashcut remove-background subject.mp4 -o subject.mov
+npx smashcut remove-background portrait.jpg -o portrait.png
 ```
 
 ## Use the cutout
@@ -75,7 +75,7 @@ For text-behind-subject or another three-layer effect, you can create both the
 foreground cutout and an inverse-alpha background plate in one pass:
 
 ```bash
-npx hyperframes remove-background subject.mp4 \
+npx smashcut remove-background subject.mp4 \
   -o subject.webm \
   --background-output plate.webm
 ```
@@ -105,7 +105,7 @@ in the project, and reuse it.
 provider with:
 
 ```bash
-npx hyperframes remove-background --info
+npx smashcut remove-background --info
 ```
 
 For WebM output, `--quality balanced` is the default. Use `best` when the

@@ -19,7 +19,7 @@ describe("createCaptureSession construction ownership", () => {
   });
 
   it("closes the page and releases its exact browser lease when bootstrap fails", async () => {
-    const outputDir = mkdtempSync(join(tmpdir(), "hf-session-owner-"));
+    const outputDir = mkdtempSync(join(tmpdir(), "sc-session-owner-"));
     const page = {
       evaluateOnNewDocument: vi.fn().mockRejectedValue(new Error("bootstrap failed")),
       close: vi.fn().mockResolvedValue(undefined),
@@ -60,7 +60,7 @@ describe("createCaptureSession construction ownership", () => {
 
   it("force-releases its browser lease when rollback page close never settles", async () => {
     vi.useFakeTimers();
-    const outputDir = mkdtempSync(join(tmpdir(), "hf-session-owner-timeout-"));
+    const outputDir = mkdtempSync(join(tmpdir(), "sc-session-owner-timeout-"));
     const page = {
       evaluateOnNewDocument: vi.fn().mockRejectedValue(new Error("bootstrap failed")),
       close: vi.fn().mockReturnValue(new Promise<void>(() => {})),
@@ -106,7 +106,7 @@ describe("createCaptureSession construction ownership", () => {
 
   it("force-releases its browser lease when rollback browser close never settles", async () => {
     vi.useFakeTimers();
-    const outputDir = mkdtempSync(join(tmpdir(), "hf-session-browser-timeout-"));
+    const outputDir = mkdtempSync(join(tmpdir(), "sc-session-browser-timeout-"));
     const page = {
       evaluateOnNewDocument: vi.fn().mockRejectedValue(new Error("bootstrap failed")),
       close: vi.fn().mockResolvedValue(undefined),

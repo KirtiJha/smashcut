@@ -12,40 +12,40 @@ describe("seek-dispatch", () => {
     resetSeekDispatchState();
   });
 
-  it("dispatchSeekEvent fires an hf-seek event with the time", () => {
+  it("dispatchSeekEvent fires an sc-seek event with the time", () => {
     const handler = vi.fn();
-    window.addEventListener("hf-seek", handler);
+    window.addEventListener("sc-seek", handler);
     dispatchSeekEvent(2.5);
-    window.removeEventListener("hf-seek", handler);
+    window.removeEventListener("sc-seek", handler);
     expect(handler).toHaveBeenCalledTimes(1);
     expect((handler.mock.calls[0][0] as CustomEvent).detail.time).toBe(2.5);
   });
 
   it("dispatchSeekEvent dedups consecutive same-time dispatches", () => {
     const handler = vi.fn();
-    window.addEventListener("hf-seek", handler);
+    window.addEventListener("sc-seek", handler);
     dispatchSeekEvent(4);
     dispatchSeekEvent(4);
-    window.removeEventListener("hf-seek", handler);
+    window.removeEventListener("sc-seek", handler);
     expect(handler).toHaveBeenCalledTimes(1);
   });
 
   it("forceDispatchSeekEvent re-fires even at the same time (post-injection re-render)", () => {
     const handler = vi.fn();
-    window.addEventListener("hf-seek", handler);
+    window.addEventListener("sc-seek", handler);
     dispatchSeekEvent(6); // GPU adapters' first render at t=6
     forceDispatchSeekEvent(6); // engine re-render after video injection, same t
-    window.removeEventListener("hf-seek", handler);
+    window.removeEventListener("sc-seek", handler);
     expect(handler).toHaveBeenCalledTimes(2);
     expect((handler.mock.calls[1][0] as CustomEvent).detail.time).toBe(6);
   });
 
   it("after a force dispatch, the same time still dedups on the normal path", () => {
     const handler = vi.fn();
-    window.addEventListener("hf-seek", handler);
+    window.addEventListener("sc-seek", handler);
     forceDispatchSeekEvent(8);
     dispatchSeekEvent(8); // deduped — force already recorded t=8
-    window.removeEventListener("hf-seek", handler);
+    window.removeEventListener("sc-seek", handler);
     expect(handler).toHaveBeenCalledTimes(1);
   });
 
@@ -57,9 +57,9 @@ describe("seek-dispatch", () => {
     const handler = (event: Event) => {
       (event as CustomEvent<HfSeekEventDetail>).detail.waitUntil(gpuWork);
     };
-    window.addEventListener("hf-seek", handler);
+    window.addEventListener("sc-seek", handler);
     dispatchSeekEvent(9);
-    window.removeEventListener("hf-seek", handler);
+    window.removeEventListener("sc-seek", handler);
 
     let settled = false;
     const pending = waitForSeekCompletion().then(() => {
@@ -85,10 +85,10 @@ describe("seek-dispatch", () => {
       const detail = (event as CustomEvent<HfSeekEventDetail>).detail;
       detail.waitUntil(detail.time === 10 ? firstGpuWork : secondGpuWork);
     };
-    window.addEventListener("hf-seek", handler);
+    window.addEventListener("sc-seek", handler);
     dispatchSeekEvent(10);
     dispatchSeekEvent(11);
-    window.removeEventListener("hf-seek", handler);
+    window.removeEventListener("sc-seek", handler);
 
     let settled = false;
     const pending = waitForSeekCompletion().then(() => {
@@ -122,7 +122,7 @@ describe("seek-dispatch", () => {
         detail.time === 13 ? firstGpuWork : detail.time === 14 ? secondGpuWork : thirdGpuWork;
       detail.waitUntil(gpuWork);
     };
-    window.addEventListener("hf-seek", handler);
+    window.addEventListener("sc-seek", handler);
     dispatchSeekEvent(13);
 
     let settled = false;
@@ -149,7 +149,7 @@ describe("seek-dispatch", () => {
 
     failThird?.(failure);
     await expect(pending).rejects.toBe(failure);
-    window.removeEventListener("hf-seek", handler);
+    window.removeEventListener("sc-seek", handler);
     await expect(waitForSeekCompletion()).resolves.toBeUndefined();
   });
 
@@ -161,11 +161,11 @@ describe("seek-dispatch", () => {
     const handler = (event: Event) => {
       (event as CustomEvent<HfSeekEventDetail>).detail.waitUntil(Promise.resolve());
     };
-    window.addEventListener("hf-seek", handler);
+    window.addEventListener("sc-seek", handler);
     for (let i = 0; i < 20; i += 1) {
       forceDispatchSeekEvent(21);
     }
-    window.removeEventListener("hf-seek", handler);
+    window.removeEventListener("sc-seek", handler);
     await new Promise<void>((resolve) => {
       setTimeout(resolve, 0);
     });
@@ -180,9 +180,9 @@ describe("seek-dispatch", () => {
     const handler = (event: Event) => {
       (event as CustomEvent<HfSeekEventDetail>).detail.waitUntil(Promise.reject(failure));
     };
-    window.addEventListener("hf-seek", handler);
+    window.addEventListener("sc-seek", handler);
     dispatchSeekEvent(12);
-    window.removeEventListener("hf-seek", handler);
+    window.removeEventListener("sc-seek", handler);
 
     await expect(waitForSeekCompletion()).rejects.toBe(failure);
     await expect(waitForSeekCompletion()).resolves.toBeUndefined();
@@ -197,9 +197,9 @@ describe("seek-dispatch", () => {
     const handler = (event: Event) => {
       (event as CustomEvent<HfSeekEventDetail>).detail.waitUntil(gpuWork);
     };
-    window.addEventListener("hf-seek", handler);
+    window.addEventListener("sc-seek", handler);
     dispatchSeekEvent(22);
-    window.removeEventListener("hf-seek", handler);
+    window.removeEventListener("sc-seek", handler);
 
     const firstCapture = waitForSeekCompletion();
     const secondCapture = waitForSeekCompletion();

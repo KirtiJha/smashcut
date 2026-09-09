@@ -6,7 +6,7 @@ import { describe, expect, it, vi } from "vitest";
 import {
   HF_COLOR_GRADING_ACTIVE_EFFECT_KEYS,
   getHfColorGradingCapabilities,
-} from "@hyperframes/core";
+} from "@smashcut/core";
 import {
   applyMediaTreatmentToHtml,
   getMediaTreatmentCapabilityDetail,
@@ -56,7 +56,7 @@ describe("applyMediaTreatmentToHtml", () => {
       apply: { effects: { kuwahara: 1 } },
       animation: {
         property: expect.objectContaining({ path: "effects.kuwahara" }),
-        initial: expect.stringContaining("--hf-color-grading-kuwahara"),
+        initial: expect.stringContaining("--sc-color-grading-kuwahara"),
         tween: expect.stringContaining("timeline.to"),
       },
     });
@@ -134,7 +134,7 @@ describe("applyMediaTreatmentToHtml", () => {
       kuwaharaRadius: 1 / 7,
     });
     expect(capabilities.animatable.find(({ path }) => path === "effects.blur")?.name).toBe(
-      "--hf-color-grading-blur",
+      "--sc-color-grading-blur",
     );
   });
 
@@ -210,7 +210,7 @@ describe("applyMediaTreatmentToHtml", () => {
   });
 
   it("resolves nested composition media through the shared project-root contract", () => {
-    const project = mkdtempSync(join(tmpdir(), "hf-media-treatment-assets-"));
+    const project = mkdtempSync(join(tmpdir(), "sc-media-treatment-assets-"));
     const escapedAsset = join(project, "..", `${basename(project)}-escape.mp4`);
     mkdirSync(join(project, "capture"), { recursive: true });
     mkdirSync(join(project, "assets"), { recursive: true });
@@ -369,7 +369,7 @@ describe("applyMediaTreatmentToHtml", () => {
   });
 
   it("requires --apply for --grading while keeping --clear explicit", async () => {
-    const project = mkdtempSync(join(tmpdir(), "hf-media-treatment-"));
+    const project = mkdtempSync(join(tmpdir(), "sc-media-treatment-"));
     const file = join(project, "index.html");
     const grading = '{"adjust":{"exposure":0.1}}';
     const log = vi.spyOn(console, "log").mockImplementation(() => undefined);

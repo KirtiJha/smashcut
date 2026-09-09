@@ -1,7 +1,7 @@
 {
   "$schema": "https://hyperframes.heygen.com/schema/registry-item.json",
   "name": "oversized-cursor",
-  "type": "hyperframes:component",
+  "type": "smashcut:component",
   "title": "Oversized Cursor",
   "description": "A deliberately oversized macOS-style pointer that enters off-screen, travels to a target, clicks to ignite a visible response, then exits",
   "tags": ["motion-primitive", "actor", "cursor", "pointer", "interaction"],
@@ -9,7 +9,7 @@
     {
       "path": "oversized-cursor.html",
       "target": "compositions/components/oversized-cursor.html",
-      "type": "hyperframes:snippet"
+      "type": "smashcut:snippet"
     }
   ],
   "jobs": ["demonstrate"],

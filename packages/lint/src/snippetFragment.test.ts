@@ -16,7 +16,7 @@ const INDEX = `<html><body>
 </body></html>`;
 
 async function lintWithFragment(name: string, html: string) {
-  const dir = mkdtempSync(join(tmpdir(), "hf-snippet-lint-"));
+  const dir = mkdtempSync(join(tmpdir(), "sc-snippet-lint-"));
   dirs.push(dir);
   writeFileSync(join(dir, "index.html"), INDEX);
   mkdirSync(join(dir, "compositions"), { recursive: true });
@@ -26,10 +26,10 @@ async function lintWithFragment(name: string, html: string) {
 }
 
 describe("snippet fragment exemption", () => {
-  it("skips composition-root rules for files whose ROOT carries data-hf-snippet", async () => {
+  it("skips composition-root rules for files whose ROOT carries data-sc-snippet", async () => {
     const findings = await lintWithFragment(
       "frag.html",
-      '<div id="frag" data-hf-snippet="" data-figma-id="1:1" style="width: 10px"></div>\n',
+      '<div id="frag" data-sc-snippet="" data-figma-id="1:1" style="width: 10px"></div>\n',
     );
     expect(findings).toHaveLength(0);
   });
@@ -37,7 +37,7 @@ describe("snippet fragment exemption", () => {
   it("still lints a composition that merely CONTAINS snippet markup", async () => {
     const results = await lintWithFragment(
       "scene.html",
-      '<div id="scene"><div data-hf-snippet="" data-figma-id="1:1"></div></div>\n',
+      '<div id="scene"><div data-sc-snippet="" data-figma-id="1:1"></div></div>\n',
     );
     expect(results).toHaveLength(1);
     expect(results[0]?.result.findings.some((f) => f.code === "root_missing_composition_id")).toBe(

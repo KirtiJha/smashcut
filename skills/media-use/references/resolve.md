@@ -16,7 +16,7 @@ Returns one line: `resolved <id> → <path> (<type>, <metadata>)`
 | `icon`  | Icons, symbols                   | HeyGen asset search (type=icon)                              |
 | `logo`  | Official brand marks             | svgl → simple-icons → GitHub org avatar → domain favicon     |
 | `voice` | TTS voiceover                    | HeyGen TTS free-usage path; optional local Kokoro            |
-| `grade` | HyperFrames color-grading blocks | Core preset → look index params/CDN LUT → deterministic cube |
+| `grade` | SmashCut color-grading blocks | Core preset → look index params/CDN LUT → deterministic cube |
 | `lut`   | Reusable `.cube` LUT files       | Look index params/CDN LUT → deterministic cube               |
 
 ## Examples
@@ -107,7 +107,7 @@ Steps 1 and 3 are the **deterministic floor**: they only auto-reuse an exact-nor
 
 ## Adopt existing projects
 
-Most HyperFrames projects already have assets in `assets/`. media-use adopts them:
+Most SmashCut projects already have assets in `assets/`. media-use adopts them:
 
 ```bash
 node <SKILL_DIR>/scripts/resolve.mjs --adopt --project .

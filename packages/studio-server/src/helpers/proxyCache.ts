@@ -43,11 +43,11 @@ function proxyCacheCleanupDefaults(): Required<
   Pick<ProxyCacheCleanupOptions, "maxBytes" | "maxIdleMs" | "staleTempMs" | "minSweepIntervalMs">
 > {
   return {
-    maxBytes: positiveEnvNumber("HYPERFRAMES_PROXY_CACHE_MAX_BYTES", DEFAULT_MAX_BYTES),
-    maxIdleMs: positiveEnvNumber("HYPERFRAMES_PROXY_CACHE_MAX_IDLE_DAYS", 30) * 24 * 60 * 60 * 1000,
-    staleTempMs: positiveEnvNumber("HYPERFRAMES_PROXY_CACHE_STALE_TEMP_MS", DEFAULT_STALE_TEMP_MS),
+    maxBytes: positiveEnvNumber("SMASHCUT_PROXY_CACHE_MAX_BYTES", DEFAULT_MAX_BYTES),
+    maxIdleMs: positiveEnvNumber("SMASHCUT_PROXY_CACHE_MAX_IDLE_DAYS", 30) * 24 * 60 * 60 * 1000,
+    staleTempMs: positiveEnvNumber("SMASHCUT_PROXY_CACHE_STALE_TEMP_MS", DEFAULT_STALE_TEMP_MS),
     minSweepIntervalMs: positiveEnvNumber(
-      "HYPERFRAMES_PROXY_CACHE_SWEEP_INTERVAL_MS",
+      "SMASHCUT_PROXY_CACHE_SWEEP_INTERVAL_MS",
       DEFAULT_MIN_SWEEP_INTERVAL_MS,
     ),
   };

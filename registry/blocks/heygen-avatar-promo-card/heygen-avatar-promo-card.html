@@ -346,8 +346,8 @@
 
     <script>
       const variables =
-        window.__hyperframes && typeof window.__hyperframes.getVariables === "function"
-          ? window.__hyperframes.getVariables()
+        window.__smashcut && typeof window.__smashcut.getVariables === "function"
+          ? window.__smashcut.getVariables()
           : {};
       const root = document.getElementById("heygen-avatar-promo-card");
       const text = (id, fallback) =>

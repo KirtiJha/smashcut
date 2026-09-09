@@ -18,10 +18,10 @@ import {
   type HfAudioFxNode,
   type HfAudioFxParam,
   type HfAudioFxParamValues,
-} from "@hyperframes/core/audio-fx";
-import { EFFECT_COPY, SUMMARY } from "@hyperframes/core/audio-fx-copy";
+} from "@smashcut/core/audio-fx";
+import { EFFECT_COPY, SUMMARY } from "@smashcut/core/audio-fx-copy";
 import { trackNodeBypassed } from "./audioFxTelemetry.js";
-import { getAudioFxProfile } from "@hyperframes/core/audio-fx-profiles";
+import { getAudioFxProfile } from "@smashcut/core/audio-fx-profiles";
 import { FX_FAMILY_TYPE, fxFamilyOf, fxFamilyTint } from "./propertyPanelFxFamily.js";
 import { FxNodeOpenBody } from "./propertyPanelFxNodeOpenBody.js";
 
@@ -132,7 +132,7 @@ function FxMoveButton({
   return (
     <button
       type="button"
-      className="hf-fx-move px-1 font-mono text-[10px] text-panel-text-2 hover:text-panel-text-0 disabled:opacity-25"
+      className="sc-fx-move px-1 font-mono text-[10px] text-panel-text-2 hover:text-panel-text-0 disabled:opacity-25"
       title={label}
       disabled={disabled}
       onClick={onClick}
@@ -172,18 +172,18 @@ function FxNodeHeader({
   onRemove(): void;
 }) {
   return (
-    <div className="hf-fx-node-head flex min-h-7 items-center gap-1 px-1.5">
+    <div className="sc-fx-node-head flex min-h-7 items-center gap-1 px-1.5">
       {/* Two digits, because a rack reads as a path when its steps are numbered
           and as a list when they are not — and the difference decides whether an
           author thinks the order matters. It does; it is audible. */}
       {position !== undefined ? (
-        <span className="hf-fx-node-index shrink-0 font-mono text-[9px] tabular-nums text-panel-text-2">
+        <span className="sc-fx-node-index shrink-0 font-mono text-[9px] tabular-nums text-panel-text-2">
           {String(position).padStart(2, "0")}
         </span>
       ) : null}
       <button
         type="button"
-        className={`hf-fx-node-name flex-1 truncate text-left text-[11px] text-panel-text-1 hover:text-panel-text-0 ${family}`}
+        className={`sc-fx-node-name flex-1 truncate text-left text-[11px] text-panel-text-1 hover:text-panel-text-0 ${family}`}
         // Truncated in the same narrow column as the param labels below, so it
         // needs the same fallback to the full text on hover.
         title={label}
@@ -194,7 +194,7 @@ function FxNodeHeader({
       </button>
       <button
         type="button"
-        className="hf-fx-bypass rounded-[3px] border border-panel-border-input px-1.5 py-0.5 font-mono text-[9px] text-panel-text-2 hover:text-panel-text-0 disabled:opacity-40"
+        className="sc-fx-bypass rounded-[3px] border border-panel-border-input px-1.5 py-0.5 font-mono text-[9px] text-panel-text-2 hover:text-panel-text-0 disabled:opacity-40"
         aria-pressed={bypassed}
         title={bypassed ? "Enable" : "Bypass"}
         disabled={disabled}
@@ -216,7 +216,7 @@ function FxNodeHeader({
       />
       <button
         type="button"
-        className="hf-fx-remove px-1 font-mono text-[11px] text-panel-text-2 hover:text-red-400 disabled:opacity-40"
+        className="sc-fx-remove px-1 font-mono text-[11px] text-panel-text-2 hover:text-red-400 disabled:opacity-40"
         title="Remove"
         disabled={disabled}
         onClick={onRemove}
@@ -277,7 +277,7 @@ export function FxNodeRow({
   const summary = SUMMARY[node.type]?.(params);
   return (
     <div
-      className={`hf-fx-node rounded-[4px] border border-l-2 border-panel-border-input${bypassed ? " opacity-50" : ""}`}
+      className={`sc-fx-node rounded-[4px] border border-l-2 border-panel-border-input${bypassed ? " opacity-50" : ""}`}
       data-fx-node={node.type}
       data-fx-family={fxFamilyOf(node)}
       // The scroll anchor a revealed automation lane lands on. Keyed by node id
@@ -312,7 +312,7 @@ export function FxNodeRow({
       />
       {summary ? (
         <p
-          className="hf-fx-node-summary truncate px-1.5 pb-1 text-[10px] text-panel-text-2"
+          className="sc-fx-node-summary truncate px-1.5 pb-1 text-[10px] text-panel-text-2"
           title={summary}
         >
           {summary}

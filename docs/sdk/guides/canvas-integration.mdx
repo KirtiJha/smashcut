@@ -14,7 +14,7 @@ The SDK's `PreviewAdapter` interface decouples the editing model from the visual
 Render the composition HTML into a same-origin `<iframe>` in your editor shell, then pass that element plus a dispatch callback to `createIframePreviewAdapter`:
 
 ```typescript
-import { openComposition, createIframePreviewAdapter } from "@hyperframes/sdk";
+import { openComposition, createIframePreviewAdapter } from "@smashcut/sdk";
 
 // Assume `compositionHtml` is the composition's source HTML string.
 const iframe = document.querySelector<HTMLIFrameElement>("#composition-frame")!;
@@ -51,7 +51,7 @@ detach();
 
 ## Hit-testing: finding what the user clicked
 
-`preview.elementAtPoint(x, y)` performs a synchronous hit-test at coordinates in the iframe's own coordinate space and returns the nearest `[data-hf-id]` element, or `null` for a transparent hit.
+`preview.elementAtPoint(x, y)` performs a synchronous hit-test at coordinates in the iframe's own coordinate space and returns the nearest `[data-sc-id]` element, or `null` for a transparent hit.
 
 ```typescript
 iframe.addEventListener("load", () => {
@@ -62,7 +62,7 @@ iframe.addEventListener("load", () => {
   frameDocument.addEventListener("click", (event) => {
     const hit = preview.elementAtPoint(event.clientX, event.clientY);
     if (hit) {
-      // hit.id  — the data-hf-id value
+      // hit.id  — the data-sc-id value
       // hit.tag — the lowercased tag name (e.g. "div", "img", "video")
       preview.select([hit.id]);
     }
@@ -76,10 +76,10 @@ The `opts.atTime` parameter is accepted but does not seek the GSAP timeline. It 
 
 ### Walking a click target to the nearest HF element
 
-If you are working with events on the iframe's `contentDocument` directly (e.g. via a `message` bridge), use the exported `resolveNearestHfElement` function. It walks up the DOM from any node until it finds a `[data-hf-id]` ancestor, skipping the root:
+If you are working with events on the iframe's `contentDocument` directly (e.g. via a `message` bridge), use the exported `resolveNearestHfElement` function. It walks up the DOM from any node until it finds a `[data-sc-id]` ancestor, skipping the root:
 
 ```typescript
-import { resolveNearestHfElement } from "@hyperframes/sdk";
+import { resolveNearestHfElement } from "@smashcut/sdk";
 
 // Inside the iframe's own document context:
 iframeDoc.addEventListener("click", (e) => {
@@ -97,7 +97,7 @@ iframeDoc.addEventListener("click", (e) => {
 });
 ```
 
-`resolveNearestHfElement` returns `null` when the walk exits the tree without finding a `[data-hf-id]` node, when the matching node carries `[data-hf-root]` (the root is transparent to selection), or when `isVisible` returns `false` for that node.
+`resolveNearestHfElement` returns `null` when the walk exits the tree without finding a `[data-sc-id]` node, when the matching node carries `[data-sc-root]` (the root is transparent to selection), or when `isVisible` returns `false` for that node.
 
 ## Transparent compositions over other content
 
@@ -223,10 +223,10 @@ Call `cancelPreview()` instead of `commitPreview()` to discard the drag without 
 
 ```typescript
 // Replace selection
-preview.select(["hf-title"]);
+preview.select(["sc-title"]);
 
 // Extend selection (e.g. shift-click)
-preview.select(["hf-logo"], { additive: true });
+preview.select(["sc-logo"], { additive: true });
 
 // Clear selection
 preview.select([]);

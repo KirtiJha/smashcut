@@ -1,8 +1,8 @@
 // fallow-ignore-file code-duplication
 // Add/remove operation-family transaction shapes stay parallel until SDK graduation.
 import { useCallback } from "react";
-import type { GsapAnimation } from "@hyperframes/core/gsap-parser";
-import type { Composition } from "@hyperframes/sdk";
+import type { GsapAnimation } from "@smashcut/core/gsap-parser";
+import type { Composition } from "@smashcut/sdk";
 import type { DomEditSelection } from "../components/editor/domEditingTypes";
 import { executeOptimistic } from "../utils/optimisticUpdate";
 import {

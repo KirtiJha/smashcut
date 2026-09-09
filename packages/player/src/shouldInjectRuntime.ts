@@ -1,9 +1,9 @@
 /**
- * Decide whether the player should inject the HyperFrames runtime on the
+ * Decide whether the player should inject the SmashCut runtime on the
  * current probe tick.
  *
  * The player polls the loaded iframe every 200ms to discover either:
- *   - a runtime bridge already installed (`window.__hf` / `window.__player`), or
+ *   - a runtime bridge already installed (`window.__sc` / `window.__player`), or
  *   - GSAP timelines registered at `window.__timelines`.
  *
  * Two classes of composition require different injection timing:

@@ -12,7 +12,7 @@ import { deploySite } from "./deploySite.js";
 
 const tmpDirs: string[] = [];
 function mkProject(content: string): string {
-  const dir = mkdtempSync(join(tmpdir(), "hf-site-"));
+  const dir = mkdtempSync(join(tmpdir(), "sc-site-"));
   tmpDirs.push(dir);
   writeFileSync(join(dir, "index.html"), content);
   return dir;

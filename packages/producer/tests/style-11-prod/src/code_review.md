@@ -1,4 +1,4 @@
-# HyperFrame Schema Compliance Review
+# SmashCut Schema Compliance Review
 
 ## Executive Summary
 
@@ -8,7 +8,7 @@
 
 ## Critical Issues
 
-None. The compositions follow the HyperFrame schema correctly, including deterministic logic, finite timelines, and proper registration.
+None. The compositions follow the SmashCut schema correctly, including deterministic logic, finite timelines, and proper registration.
 
 ## Compliance Checklist
 

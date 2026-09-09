@@ -10,7 +10,7 @@
  * Translate a studio drag offset into absolute GSAP x/y, accounting for the
  * element's rotation and its drag-start base pose. Reads the drag-start
  * attributes stamped by `createManualOffsetDragMember`
- * (`data-hf-drag-initial-offset-*`, `data-hf-drag-gsap-base-*`); `fallbackBase`
+ * (`data-sc-drag-initial-offset-*`, `data-sc-drag-gsap-base-*`); `fallbackBase`
  * is used when the base attributes are absent (e.g. a static element that GSAP
  * hasn't given an x/y yet).
  *
@@ -23,19 +23,19 @@ export function computeDraggedGsapPosition(
   studioOffset: { x: number; y: number },
   fallbackBase: { x: number; y: number },
 ): { newX: number; newY: number; baseGsapX: number; baseGsapY: number } {
-  const rotStyle = element.style.getPropertyValue("--hf-studio-rotation");
+  const rotStyle = element.style.getPropertyValue("--sc-studio-rotation");
   const rotDeg = Number.parseFloat(rotStyle) || 0;
   const rad = (-rotDeg * Math.PI) / 180;
   const cos = Math.cos(rad);
   const sin = Math.sin(rad);
-  const origX = Number.parseFloat(element.getAttribute("data-hf-drag-initial-offset-x") ?? "") || 0;
-  const origY = Number.parseFloat(element.getAttribute("data-hf-drag-initial-offset-y") ?? "") || 0;
+  const origX = Number.parseFloat(element.getAttribute("data-sc-drag-initial-offset-x") ?? "") || 0;
+  const origY = Number.parseFloat(element.getAttribute("data-sc-drag-initial-offset-y") ?? "") || 0;
   const deltaX = studioOffset.x - origX;
   const deltaY = studioOffset.y - origY;
   const adjX = deltaX * cos - deltaY * sin;
   const adjY = deltaX * sin + deltaY * cos;
-  const parsedBaseX = Number.parseFloat(element.getAttribute("data-hf-drag-gsap-base-x") ?? "");
-  const parsedBaseY = Number.parseFloat(element.getAttribute("data-hf-drag-gsap-base-y") ?? "");
+  const parsedBaseX = Number.parseFloat(element.getAttribute("data-sc-drag-gsap-base-x") ?? "");
+  const parsedBaseY = Number.parseFloat(element.getAttribute("data-sc-drag-gsap-base-y") ?? "");
   const baseGsapX = Number.isFinite(parsedBaseX) ? parsedBaseX : fallbackBase.x;
   const baseGsapY = Number.isFinite(parsedBaseY) ? parsedBaseY : fallbackBase.y;
   return {

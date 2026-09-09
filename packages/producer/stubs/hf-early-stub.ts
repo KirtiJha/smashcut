@@ -1,16 +1,16 @@
 // fallow-ignore-file unused-file complexity
 /**
- * HyperFrames early stub — injected at the very start of `<head>` before any
- * other scripts run. Compiled to an IIFE by scripts/build-hf-early-stub.ts.
+ * SmashCut early stub — injected at the very start of `<head>` before any
+ * other scripts run. Compiled to an IIFE by scripts/build-sc-early-stub.ts.
  *
  * This file lives outside `src/` intentionally: it is compiled by a separate
  * esbuild step, NOT by the producer's tsc. Only the generated output
- * (src/generated/hf-early-stub-inline.ts) is type-checked by tsc.
+ * (src/generated/sc-early-stub-inline.ts) is type-checked by tsc.
  *
  * Responsibilities
  * ─────────────────────────────────────────────────────────────────────────────
- *   1. Create `window.__hf` so page scripts can write to it before the bridge
- *      loads (e.g. @hyperframes/shader-transitions writes transition metadata
+ *   1. Create `window.__sc` so page scripts can write to it before the bridge
+ *      loads (e.g. @smashcut/shader-transitions writes transition metadata
  *      during its init() call, which runs before end-of-body scripts).
  *
  *   2. Intercept `window.gsap` assignment and batch `timeline.to/from/fromTo/set`
@@ -32,17 +32,17 @@
  * them immediately. A `requestAnimationFrame` loop drains the queue in batches
  * of BATCH_SIZE, yielding the main thread between batches so DCL can fire.
  *
- * When all queues are empty a `"hf-timelines-built"` CustomEvent is dispatched
- * on `window` and `window.__hfTimelinesBuilding` is set to `false`. The runtime
+ * When all queues are empty a `"sc-timelines-built"` CustomEvent is dispatched
+ * on `window` and `window.__scTimelinesBuilding` is set to `false`. The runtime
  * in `init.ts` listens for this event to rebind the timeline after batching
  * completes (the captured timeline reference remains valid — the proxy delegates
  * all non-mutating calls to the real timeline throughout).
  *
  * Render-mode correctness: `init.ts` gates `__renderReady` on
- * `__hfTimelinesBuilding` via `maybePublishRenderReady()`. When batching
+ * `__scTimelinesBuilding` via `maybePublishRenderReady()`. When batching
  * starts after init (setTimeout-deferred timelines), `maybePublishRenderReady`
- * re-registers a `hf-timelines-built` listener to retry once the batch
- * completes. The bridge's `__hf.duration` getter returns 0 until
+ * re-registers a `sc-timelines-built` listener to retry once the batch
+ * completes. The bridge's `__sc.duration` getter returns 0 until
  * `__renderReady` is true, keeping `pollHfReady` waiting.
  *
  * Batch size: ~100 tweens per rAF budget. Each batch completes in <4 ms on a
@@ -56,8 +56,8 @@ export {};
 
 declare global {
   interface Window {
-    __hf?: Record<string, unknown>;
-    __hfTimelinesBuilding?: boolean;
+    __sc?: Record<string, unknown>;
+    __scTimelinesBuilding?: boolean;
     __HF_VIRTUAL_TIME__?: {
       originalRequestAnimationFrame?: typeof window.requestAnimationFrame;
       originalSetTimeout?: typeof window.setTimeout;
@@ -81,7 +81,7 @@ interface TimelineOperation {
  * All methods return `unknown` for values (rather than `this`) so that
  * `TimelineProxy` can implement them without strict subtype constraints.
  * Callers that need the real return value (e.g. duration()) receive it via
- * forwarded delegation on `proxy.__hfReal`.
+ * forwarded delegation on `proxy.__scReal`.
  */
 interface GsapTimeline {
   to(...args: unknown[]): unknown;
@@ -115,9 +115,9 @@ interface GsapInstance {
  * and also return `proxy` for chaining, so composed call chains work correctly.
  */
 interface TimelineProxy extends GsapTimeline {
-  __hfReal: GsapTimeline;
-  __hfQueue: TimelineOperation[];
-  __hfIsProxy?: true;
+  __scReal: GsapTimeline;
+  __scQueue: TimelineOperation[];
+  __scIsProxy?: true;
 }
 
 // ─── Module-level state ───────────────────────────────────────────────────────
@@ -133,7 +133,7 @@ let publishCheckScheduled = false;
  * engine's threeDProjection module re-projects these elements via WebGL and
  * reads this list at init to find targets whose transform is still flat at
  * t=0 (to()-style tweens never show up in a computed-style scan). Exposed as
- * window.__hf3dTweenTargets. rotationZ/rotation stay 2D and are not
+ * window.__sc3dTweenTargets. rotationZ/rotation stay 2D and are not
  * recorded; a bare `z` without perspective has no visual effect.
  */
 const threeDTweenTargets = new Set<unknown>();
@@ -161,9 +161,9 @@ function unwrapTimelineArg(arg: unknown): unknown {
   if (
     arg !== null &&
     typeof arg === "object" &&
-    "__hfIsProxy" in (arg as Record<string, unknown>)
+    "__scIsProxy" in (arg as Record<string, unknown>)
   ) {
-    return (arg as TimelineProxy).__hfReal;
+    return (arg as TimelineProxy).__scReal;
   }
   return arg;
 }
@@ -201,21 +201,21 @@ function recordThreeDTweenTarget(args: unknown[]): void {
   const target = args[0];
   if (target === null || target === undefined) return;
   const w = window as Window & {
-    __hf3dTweenTargets?: unknown[];
-    __hfAllTweenTargets?: unknown[];
+    __sc3dTweenTargets?: unknown[];
+    __scAllTweenTargets?: unknown[];
   };
   if (!allTweenTargets.has(target)) {
     allTweenTargets.add(target);
-    w.__hfAllTweenTargets = Array.from(allTweenTargets);
+    w.__scAllTweenTargets = Array.from(allTweenTargets);
   }
   if (varsHasThreeD(args[1]) || varsHasThreeD(args[2])) {
     threeDTweenTargets.add(target);
-    w.__hf3dTweenTargets = Array.from(threeDTweenTargets);
+    w.__sc3dTweenTargets = Array.from(threeDTweenTargets);
   }
 }
 
 function applyTimelineOperation(entry: TimelineOperation): void {
-  const real = entry.proxy.__hfReal;
+  const real = entry.proxy.__scReal;
   const fn = real[entry.method];
   if (typeof fn === "function") {
     const args = entry.method === "add" ? entry.args.map(unwrapTimelineArg) : entry.args;
@@ -230,15 +230,15 @@ function enqueueTimelineOperation(
 ): TimelineProxy {
   observeTweenCall(method, args);
   const entry = { proxy, method, args };
-  proxy.__hfQueue.push(entry);
+  proxy.__scQueue.push(entry);
   pendingOperations.push(entry);
   scheduleBatch();
   return proxy;
 }
 
 function removeProxyQueueEntry(entry: TimelineOperation): void {
-  const index = entry.proxy.__hfQueue.indexOf(entry);
-  if (index >= 0) entry.proxy.__hfQueue.splice(index, 1);
+  const index = entry.proxy.__scQueue.indexOf(entry);
+  if (index >= 0) entry.proxy.__scQueue.splice(index, 1);
 }
 
 function flushPendingOperations(): void {
@@ -253,9 +253,9 @@ function flushPendingOperations(): void {
 
 function publishTimelinesBuilt(): void {
   publishCheckScheduled = false;
-  window.__hfTimelinesBuilding = false;
+  window.__scTimelinesBuilding = false;
   try {
-    window.dispatchEvent(new CustomEvent("hf-timelines-built"));
+    window.dispatchEvent(new CustomEvent("sc-timelines-built"));
   } catch {
     // ignore — CustomEvent unavailable in some test environments
   }
@@ -293,7 +293,7 @@ function flushBatch(): void {
 function scheduleBatch(): void {
   if (!batchScheduled) {
     batchScheduled = true;
-    window.__hfTimelinesBuilding = true;
+    window.__scTimelinesBuilding = true;
     requestBatchFrame(flushBatch);
   }
 }
@@ -351,9 +351,9 @@ function forwardRemainingMethods(proxy: TimelineProxy, real: GsapTimeline): void
  */
 function wrapTimeline(real: GsapTimeline): TimelineProxy {
   const proxy: TimelineProxy = {
-    __hfReal: real,
-    __hfQueue: [],
-    __hfIsProxy: true,
+    __scReal: real,
+    __scQueue: [],
+    __scIsProxy: true,
 
     to(...args: unknown[]): TimelineProxy {
       return enqueueTimelineOperation(proxy, "to", args);
@@ -446,16 +446,16 @@ function wrapTimeline(real: GsapTimeline): TimelineProxy {
 // ─── Entry point ─────────────────────────────────────────────────────────────
 
 if (typeof window !== "undefined") {
-  if (!window.__hf) window.__hf = {};
-  window.__hfTimelinesBuilding = false;
+  if (!window.__sc) window.__sc = {};
+  window.__scTimelinesBuilding = false;
   // Expose a synchronous flush so headless renderers can drain the queue
   // instantly instead of waiting for rAF-based batch ticks. Also force-
   // publishes the "timelines built" signal immediately (normally deferred
   // via setTimeout(0)) — the caller guarantees page scripts have finished
   // loading, so no more operations can arrive after the flush.
-  (window as Record<string, unknown>).__hfFlushSync = () => {
+  (window as Record<string, unknown>).__scFlushSync = () => {
     flushPendingOperations();
-    if (pendingOperations.length === 0 && window.__hfTimelinesBuilding) {
+    if (pendingOperations.length === 0 && window.__scTimelinesBuilding) {
       publishTimelinesBuilt();
     }
   };

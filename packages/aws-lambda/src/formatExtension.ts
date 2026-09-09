@@ -6,9 +6,9 @@
  * looks like vs a png-sequence.
  */
 
-import type { DistributedFormat } from "@hyperframes/producer/distributed";
+import type { DistributedFormat } from "@smashcut/producer/distributed";
 
-export type { DistributedFormat } from "@hyperframes/producer/distributed";
+export type { DistributedFormat } from "@smashcut/producer/distributed";
 
 // Closed-enum lookup table. TS enforces exhaustiveness via the
 // `Record<DistributedFormat, string>` annotation — adding a format to

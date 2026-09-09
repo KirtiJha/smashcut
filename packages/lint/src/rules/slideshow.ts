@@ -5,7 +5,7 @@ import {
   parseSlideshowManifest,
   resolveSlideshow,
   isSceneLikeCompositionId,
-} from "@hyperframes/parsers/slideshow";
+} from "@smashcut/parsers/slideshow";
 
 type Scene = { id: string; start: number; duration: number };
 
@@ -20,7 +20,7 @@ function parseTiming(raw: string): { start: number; duration: number } | null {
     const duration = Number(durationStr);
     if (Number.isFinite(duration)) return { start, duration };
   }
-  const endStr = readAttr(raw, "data-end") ?? readAttr(raw, "data-hf-authored-end");
+  const endStr = readAttr(raw, "data-end") ?? readAttr(raw, "data-sc-authored-end");
   if (endStr !== null) {
     const end = Number(endStr);
     if (Number.isFinite(end) && end > start) return { start, duration: end - start };
@@ -60,7 +60,7 @@ export const slideshowRules: LintRule<LintContext>[] = [
         severity: "error",
         message: `Slideshow island contains invalid JSON or structure: ${e instanceof Error ? e.message : String(e)}`,
         fixHint:
-          'Ensure the <script type="application/hyperframes-slideshow+json"> block contains valid JSON matching the SlideshowManifest schema.',
+          'Ensure the <script type="application/smashcut-slideshow+json"> block contains valid JSON matching the SlideshowManifest schema.',
       });
       return findings;
     }

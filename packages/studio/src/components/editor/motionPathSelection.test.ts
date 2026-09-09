@@ -13,7 +13,7 @@ function selectionFor(el: HTMLElement): DomEditSelection {
   return {
     element: el,
     id: el.id || undefined,
-    hfId: el.getAttribute("data-hf-id") || undefined,
+    hfId: el.getAttribute("data-sc-id") || undefined,
     selector,
     selectorIndex: getSelectorIndex(document, el, selector, "index.html", null),
     sourceFile: "index.html",

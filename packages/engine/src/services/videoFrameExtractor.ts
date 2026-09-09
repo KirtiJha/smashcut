@@ -20,7 +20,7 @@ import {
   readMediaStart,
   toFps,
   type FpsInput,
-} from "@hyperframes/core";
+} from "@smashcut/core";
 import { resolveReferencedStart, type RefResolverEl } from "./referenceResolver.js";
 import { isKnownInactiveTimelineWindow } from "./mediaTimelineWindow.js";
 import {
@@ -357,7 +357,7 @@ function downloadFailureGroup(
 }
 
 export class VideoSourceExtractionError extends Error {
-  readonly hyperframesVideoSourceExtractionError = true as const;
+  readonly smashcutVideoSourceExtractionError = true as const;
 
   constructor(
     readonly kind: VideoExtractionFailureKind,
@@ -374,8 +374,8 @@ export function isVideoSourceExtractionError(error: unknown): error is VideoSour
   return (
     typeof error === "object" &&
     error !== null &&
-    "hyperframesVideoSourceExtractionError" in error &&
-    error.hyperframesVideoSourceExtractionError === true
+    "smashcutVideoSourceExtractionError" in error &&
+    error.smashcutVideoSourceExtractionError === true
   );
 }
 
@@ -639,7 +639,7 @@ export function parseVideoElements(html: string): VideoElement[] {
     const id =
       el.getAttribute(MEDIA_RENDER_ID_ATTR) ||
       el.getAttribute("id") ||
-      `hf-video-${autoIdCounter++}`;
+      `sc-video-${autoIdCounter++}`;
     if (!el.getAttribute("id")) {
       el.setAttribute("id", id);
     }
@@ -711,7 +711,7 @@ export function parseImageElements(html: string): ImageElement[] {
 
     // See parseVideoElements: the stamped render id wins over the authored id.
     const id =
-      el.getAttribute(MEDIA_RENDER_ID_ATTR) || el.getAttribute("id") || `hf-img-${autoIdCounter++}`;
+      el.getAttribute(MEDIA_RENDER_ID_ATTR) || el.getAttribute("id") || `sc-img-${autoIdCounter++}`;
     if (!el.getAttribute("id")) {
       el.setAttribute("id", id);
     }
@@ -1592,7 +1592,7 @@ export async function extractAllVideoFrames(
         if (!warnedSrcs.has(video.src)) {
           warnedSrcs.add(video.src);
           process.stderr.write(
-            `[hyperframes:render] WARNING: video src="${video.src}" ` +
+            `[smashcut:render] WARNING: video src="${video.src}" ` +
               `could not be resolved on disk (looked for ${videoPath}). ` +
               `The rendered output will show this video's first frame for the entire clip duration. ` +
               `If your <video> lives inside a sub-composition, prefer project-root-relative paths ` +
@@ -1784,7 +1784,7 @@ export async function extractAllVideoFrames(
       cacheRootDir = configuredCacheRootDir;
     } catch {
       process.stderr.write(
-        `[hyperframes:render] WARNING: extraction cache dir ${configuredCacheRootDir} is not writable; caching disabled for this render\n`,
+        `[smashcut:render] WARNING: extraction cache dir ${configuredCacheRootDir} is not writable; caching disabled for this render\n`,
       );
     }
   }

@@ -236,7 +236,7 @@ describe("injectVideoFramesBatch replacement layout", () => {
     globals.window = window;
     globals.document = document;
     const redraw = vi.fn(() => events.push("redraw"));
-    (window as unknown as { __hf: { colorGrading: { redraw: () => void } } }).__hf = {
+    (window as unknown as { __sc: { colorGrading: { redraw: () => void } } }).__sc = {
       colorGrading: { redraw },
     };
     try {
@@ -552,7 +552,7 @@ describe("video-frame injection respects ancestor visibility", () => {
     const { teardown, setup } = withGlobals(
       setupHostHiddenScenario({}, { videoStyle: { opacity: "0" } }),
     );
-    setup.video.setAttribute("data-hf-color-grading-source-hidden", "true");
+    setup.video.setAttribute("data-sc-color-grading-source-hidden", "true");
 
     try {
       await injectVideoFramesBatch(passthroughPage(), [
@@ -573,13 +573,13 @@ describe("video-frame injection respects ancestor visibility", () => {
 
   it("repairs stale injected-frame opacity while syncing color-graded active videos", async () => {
     const { teardown, setup } = withGlobals(setupHostHiddenScenario({}));
-    setup.video.setAttribute("data-hf-color-grading-source-hidden", "true");
+    setup.video.setAttribute("data-sc-color-grading-source-hidden", "true");
     const seededImg = setup.document.createElement("img");
     seededImg.classList.add("__render_frame__");
     seededImg.style.opacity = "0";
     setup.video.parentNode?.insertBefore(seededImg, setup.video.nextSibling);
     const setSourceVisibility = vi.fn();
-    (setup.window as unknown as { __hf: unknown }).__hf = {
+    (setup.window as unknown as { __sc: unknown }).__sc = {
       colorGrading: { setSourceVisibility },
     };
 
@@ -658,7 +658,7 @@ describe("video-frame injection respects ancestor visibility", () => {
     setup.video.parentNode?.insertBefore(seededImg, setup.video.nextSibling);
     const setPropertySpy = vi.spyOn(seededImg.style, "setProperty");
     const setSourceVisibility = vi.fn();
-    (setup.window as unknown as { __hf: unknown }).__hf = {
+    (setup.window as unknown as { __sc: unknown }).__sc = {
       colorGrading: { setSourceVisibility },
     };
 
@@ -701,7 +701,7 @@ describe("video-frame injection respects ancestor visibility", () => {
 
       await removeDomLayerMask(passthroughPage(), []);
       expect(label.style.visibility).toBe("hidden");
-      expect(label.hasAttribute("data-hf-dom-layer-mask-hidden")).toBe(false);
+      expect(label.hasAttribute("data-sc-dom-layer-mask-hidden")).toBe(false);
     } finally {
       teardown();
     }
@@ -732,7 +732,7 @@ describe("video-frame injection respects ancestor visibility", () => {
       await removeDomLayerMask(passthroughPage(), ["caption"]);
 
       expect(caption.style.visibility).toBe("hidden");
-      expect(caption.hasAttribute("data-hf-dom-layer-mask-hidden")).toBe(false);
+      expect(caption.hasAttribute("data-sc-dom-layer-mask-hidden")).toBe(false);
     } finally {
       teardown();
     }
@@ -776,17 +776,17 @@ describe("video-frame injection respects ancestor visibility", () => {
 
   it("applyDomLayerMask carries color grading canvases with their media element", async () => {
     const { window, document } = parseHTML(
-      '<html><head></head><body><div id="root"><video id="pip"></video><canvas id="__hf_color_grading_pip"></canvas></div></body></html>',
+      '<html><head></head><body><div id="root"><video id="pip"></video><canvas id="__sc_color_grading_pip"></canvas></div></body></html>',
     );
     const teardown = installDomMaskGlobals({ window, document });
     try {
       await applyDomLayerMask(passthroughPage(), ["pip"], []);
       expect(document.getElementById(DOM_LAYER_MASK_STYLE_ID)?.textContent).toContain(
-        "#__hf_color_grading_pip",
+        "#__sc_color_grading_pip",
       );
 
       await applyDomLayerMask(passthroughPage(), ["root"], ["pip"]);
-      const canvas = document.getElementById("__hf_color_grading_pip") as HTMLCanvasElement;
+      const canvas = document.getElementById("__sc_color_grading_pip") as HTMLCanvasElement;
       expect(canvas.style.visibility).toBe("hidden");
 
       await removeDomLayerMask(passthroughPage(), ["pip"]);

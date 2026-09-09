@@ -7,7 +7,7 @@
 import { describe, it, expect } from "vitest";
 import { openComposition } from "./session.js";
 import { variableDeclPath, pathToKey, keyToPath } from "./engine/patches.js";
-import type { CompositionVariable } from "@hyperframes/core/variables";
+import type { CompositionVariable } from "@smashcut/core/variables";
 
 const TITLE_DECL: CompositionVariable = {
   id: "title",
@@ -26,8 +26,8 @@ const COUNT_DECL: CompositionVariable = {
 };
 
 const BARE_HTML = `
-<div data-hf-id="hf-stage" data-hf-root style="width: 1280px; height: 720px" data-duration="5">
-  <h1 data-hf-id="hf-title" data-start="0" data-end="3">Hello</h1>
+<div data-sc-id="sc-stage" data-sc-root style="width: 1280px; height: 720px" data-duration="5">
+  <h1 data-sc-id="sc-title" data-start="0" data-end="3">Hello</h1>
 </div>
 `.trim();
 
@@ -144,14 +144,14 @@ describe("updateVariableDeclaration", () => {
   it("syncs the CSS compat prop when a scalar default changes", async () => {
     const comp = await openComposition(DECLARED_HTML);
     comp.updateVariableDeclaration("count", { ...COUNT_DECL, default: 7 });
-    const root = comp.getElements().find((e) => e.id === "hf-stage");
+    const root = comp.getElements().find((e) => e.id === "sc-stage");
     expect(root?.inlineStyles["--count"]).toBe("7");
   });
 
   it("keeps CSS untouched when the default is unchanged", async () => {
     const comp = await openComposition(DECLARED_HTML);
     comp.updateVariableDeclaration("count", { ...COUNT_DECL, label: "Renamed only" });
-    const root = comp.getElements().find((e) => e.id === "hf-stage");
+    const root = comp.getElements().find((e) => e.id === "sc-stage");
     expect(root?.inlineStyles["--count"]).toBeUndefined();
   });
 
@@ -190,16 +190,16 @@ describe("removeVariableDeclaration", () => {
   it("clears the CSS compat prop and undo restores declaration + CSS", async () => {
     const comp = await openComposition(DECLARED_HTML);
     comp.setVariableValue("count", 5);
-    const rootBefore = comp.getElements().find((e) => e.id === "hf-stage");
+    const rootBefore = comp.getElements().find((e) => e.id === "sc-stage");
     expect(rootBefore?.inlineStyles["--count"]).toBe("5");
 
     comp.removeVariableDeclaration("count");
-    const rootAfter = comp.getElements().find((e) => e.id === "hf-stage");
+    const rootAfter = comp.getElements().find((e) => e.id === "sc-stage");
     expect(rootAfter?.inlineStyles["--count"]).toBeUndefined();
     expect(comp.getVariableDeclarations().map((d) => d.id)).toEqual(["title"]);
 
     comp.undo();
-    const rootRestored = comp.getElements().find((e) => e.id === "hf-stage");
+    const rootRestored = comp.getElements().find((e) => e.id === "sc-stage");
     expect(rootRestored?.inlineStyles["--count"]).toBe("5");
     expect(comp.getVariableDeclarations().find((d) => d.id === "count")?.default).toBe(5);
   });
@@ -237,9 +237,9 @@ describe("patch grammar", () => {
     // Declaration ops also maintain the --{id} CSS compat prop (scalar defaults).
     expect(events).toEqual([
       "add /variableDeclarations/title",
-      "add /elements/hf-stage/inlineStyles/--title",
+      "add /elements/sc-stage/inlineStyles/--title",
       "remove /variableDeclarations/title",
-      "remove /elements/hf-stage/inlineStyles/--title",
+      "remove /elements/sc-stage/inlineStyles/--title",
     ]);
   });
 });

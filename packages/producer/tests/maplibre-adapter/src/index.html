@@ -31,7 +31,7 @@
   <script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
   <script>
     window.__timelines = window.__timelines || {};
-    window.__hfMaplibre = window.__hfMaplibre || [];
+    window.__scMaplibre = window.__scMaplibre || [];
 
     // Initialize MapLibre map
     var map = new maplibregl.Map({
@@ -43,7 +43,7 @@
     });
 
     // Register for adapter
-    window.__hfMaplibre = [map];
+    window.__scMaplibre = [map];
 
     // GSAP timeline
     var compId = 'maplibre-test';

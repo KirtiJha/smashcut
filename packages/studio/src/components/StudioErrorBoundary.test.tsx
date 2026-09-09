@@ -61,21 +61,21 @@ describe("StudioErrorBoundary", () => {
 
   it("asks what the user was doing, since the stack trace cannot say", () => {
     renderCrashed();
-    const card = container.querySelector('[aria-label="Send feedback to the HyperFrames team"]');
+    const card = container.querySelector('[aria-label="Send feedback to the SmashCut team"]');
     expect(card).not.toBeNull();
     expect(card?.textContent).toContain("Studio crashed. What were you doing?");
   });
 
   it("offers one-tap answers instead of a 0-10 score", () => {
     renderCrashed();
-    const card = container.querySelector('[aria-label="Send feedback to the HyperFrames team"]');
+    const card = container.querySelector('[aria-label="Send feedback to the SmashCut team"]');
     const chips = [...(card?.querySelectorAll("button") ?? [])]
       .map((b) => b.textContent?.trim())
       .filter((t) => t && t !== "Send");
     expect(chips).toContain("Editing the timeline");
     expect(chips).toContain("Just opened it");
     // Rating a crash is a question with no useful answer.
-    expect(card?.querySelector('input[name="hf-studio-feedback-rating"]')).toBeNull();
+    expect(card?.querySelector('input[name="sc-studio-feedback-rating"]')).toBeNull();
   });
 
   it("reports the crash prompt to telemetry so the funnel is visible", () => {
@@ -86,12 +86,12 @@ describe("StudioErrorBoundary", () => {
   });
 
   it("stays quiet when the user already gave feedback recently", () => {
-    localStorage.setItem("hyperframes-studio:feedbackAnsweredAt", String(Date.now()));
+    localStorage.setItem("smashcut-studio:feedbackAnsweredAt", String(Date.now()));
     renderCrashed();
     // The crash screen itself still works; only the ask is suppressed.
     expect(container.textContent).toContain("Something went wrong");
     expect(
-      container.querySelector('[aria-label="Send feedback to the HyperFrames team"]'),
+      container.querySelector('[aria-label="Send feedback to the SmashCut team"]'),
     ).toBeNull();
   });
 });

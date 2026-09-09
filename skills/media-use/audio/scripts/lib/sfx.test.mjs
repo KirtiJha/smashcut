@@ -13,7 +13,7 @@ import { resolveSfx } from "./sfx.mjs";
 // anomaly and NO dangling entry.
 
 async function withDirs(fn) {
-  const root = mkdtempSync(join(tmpdir(), "hf-sfx-"));
+  const root = mkdtempSync(join(tmpdir(), "sc-sfx-"));
   const libDir = join(root, "lib");
   const projDir = join(root, "proj");
   mkdirSync(libDir, { recursive: true });
@@ -37,7 +37,7 @@ test("offline: copies and references a present bundled file", async () => {
     const { sfx, anomalies } = await resolveSfx({
       cues: [{ id: "s1", name: "whoosh" }],
       heygenOK: false,
-      hyperframesDir: projDir,
+      smashcutDir: projDir,
       sfxLibDir: libDir,
     });
     assert.equal(sfx.length, 1);
@@ -58,7 +58,7 @@ test("offline: a matched-but-missing bundled file yields an anomaly and NO dangl
     const { sfx, anomalies } = await resolveSfx({
       cues: [{ id: "s1", name: "whoosh" }],
       heygenOK: false,
-      hyperframesDir: projDir,
+      smashcutDir: projDir,
       sfxLibDir: libDir,
     });
     assert.equal(sfx.length, 0, "no dangling entry for a file that was never copied");

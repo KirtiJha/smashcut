@@ -1,5 +1,5 @@
 /**
- * Lambda event + result types for the HyperFrames distributed render handler.
+ * Lambda event + result types for the SmashCut distributed render handler.
  *
  * The Step Functions state machine in `examples/aws-lambda/template.yaml`
  * dispatches on the `Action` field. Each action maps 1:1 onto one of the
@@ -19,9 +19,9 @@
 import type {
   DistributedFormat,
   SerializableDistributedRenderConfig,
-} from "@hyperframes/producer/distributed";
+} from "@smashcut/producer/distributed";
 
-export type { SerializableDistributedRenderConfig } from "@hyperframes/producer/distributed";
+export type { SerializableDistributedRenderConfig } from "@smashcut/producer/distributed";
 
 /** Discriminator for the three roles the one Lambda image fulfills. */
 export type LambdaAction = "plan" | "renderChunk" | "assemble";

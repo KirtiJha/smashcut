@@ -35,7 +35,7 @@ describe("dark-launch gate — STUDIO_SDK_CUTOVER_ENABLED=false ⇒ persist decl
   it("sdkTimingPersist falls back without writing", async () => {
     const deps = makeDeps();
     expect(
-      await sdkTimingPersist("hf-a", "/c.html", { start: 1 }, makeSession(), deps),
+      await sdkTimingPersist("sc-a", "/c.html", { start: 1 }, makeSession(), deps),
     ).toMatchObject({ status: "declined", reason: "feature_disabled" });
     expect(
       (deps as unknown as { writeProjectFile: ReturnType<typeof vi.fn> }).writeProjectFile,
@@ -55,7 +55,7 @@ describe("dark-launch gate — STUDIO_SDK_CUTOVER_ENABLED=false ⇒ persist decl
 
   it("sdkDeletePersist falls back", async () => {
     expect(
-      await sdkDeletePersist("hf-a", "<html></html>", "/c.html", makeSession(), makeDeps()),
+      await sdkDeletePersist("sc-a", "<html></html>", "/c.html", makeSession(), makeDeps()),
     ).toMatchObject({ status: "declined", reason: "feature_disabled" });
   });
 });

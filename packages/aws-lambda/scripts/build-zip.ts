@@ -129,10 +129,10 @@ async function main(): Promise<void> {
   // 3. Stage the ffmpeg binary.
   stageFfmpeg(stagingDir);
 
-  // 3b. Stage the hyperframe runtime manifest + IIFE as siblings of
+  // 3b. Stage the smashcut runtime manifest + IIFE as siblings of
   //     handler.mjs. The producer's `hyperframeRuntimeLoader` checks
   //     SIBLING_MANIFEST_PATH first, so dropping the manifest alongside
-  //     the bundled handler at /var/task/hyperframe.manifest.json lets
+  //     the bundled handler at /var/task/smashcut.manifest.json lets
   //     renderChunk find it without needing PRODUCER_HYPERFRAME_MANIFEST_PATH.
   stageHyperframeRuntime(stagingDir);
 
@@ -190,25 +190,25 @@ async function bundleHandler(stagingDir: string): Promise<void> {
   const workspaceAliasPlugin: esbuild.Plugin = {
     name: "workspace-alias",
     setup(build) {
-      build.onResolve({ filter: /^@hyperframes\/producer\/distributed$/ }, () => ({
+      build.onResolve({ filter: /^@smashcut\/producer\/distributed$/ }, () => ({
         path: resolve(monorepoRoot, "packages/producer/src/distributed.ts"),
       }));
-      build.onResolve({ filter: /^@hyperframes\/producer$/ }, () => ({
+      build.onResolve({ filter: /^@smashcut\/producer$/ }, () => ({
         path: resolve(monorepoRoot, "packages/producer/src/index.ts"),
       }));
-      build.onResolve({ filter: /^@hyperframes\/engine$/ }, () => ({
+      build.onResolve({ filter: /^@smashcut\/engine$/ }, () => ({
         path: resolve(monorepoRoot, "packages/engine/src/index.ts"),
       }));
-      build.onResolve({ filter: /^@hyperframes\/engine\/alpha-blit$/ }, () => ({
+      build.onResolve({ filter: /^@smashcut\/engine\/alpha-blit$/ }, () => ({
         path: resolve(monorepoRoot, "packages/engine/src/utils/alphaBlit.ts"),
       }));
-      build.onResolve({ filter: /^@hyperframes\/engine\/shader-transitions$/ }, () => ({
+      build.onResolve({ filter: /^@smashcut\/engine\/shader-transitions$/ }, () => ({
         path: resolve(monorepoRoot, "packages/engine/src/utils/shaderTransitions.ts"),
       }));
-      build.onResolve({ filter: /^@hyperframes\/core$/ }, () => ({
+      build.onResolve({ filter: /^@smashcut\/core$/ }, () => ({
         path: resolve(monorepoRoot, "packages/core/src/index.ts"),
       }));
-      build.onResolve({ filter: /^@hyperframes\/core\/lint$/ }, () => ({
+      build.onResolve({ filter: /^@smashcut\/core\/lint$/ }, () => ({
         path: resolve(monorepoRoot, "packages/core/src/lint/index.ts"),
       }));
     },
@@ -256,7 +256,7 @@ function stageRuntimeModules(stagingDir: string, source: BuildOptions["source"])
   // into staging/ that declares the production deps, then `npm install`
   // there. npm flattens transitive deps into staging/node_modules/.
   const pkg: Record<string, unknown> = {
-    name: "hyperframes-aws-lambda-bundled",
+    name: "smashcut-aws-lambda-bundled",
     version: "0.0.0",
     private: true,
     dependencies: {
@@ -330,17 +330,17 @@ function resolveModuleDir(moduleName: string): string {
 
 function stageHyperframeRuntime(stagingDir: string): void {
   const coreDist = resolve(monorepoRoot, "packages/core/dist");
-  const manifestSrc = join(coreDist, "hyperframe.manifest.json");
-  const iifeSrc = join(coreDist, "hyperframe.runtime.iife.js");
+  const manifestSrc = join(coreDist, "smashcut.manifest.json");
+  const iifeSrc = join(coreDist, "smashcut.runtime.iife.js");
   if (!existsSync(manifestSrc) || !existsSync(iifeSrc)) {
     throw new Error(
-      `[build-zip] hyperframe runtime artifacts missing under ${coreDist}. ` +
-        `Run 'bun run --filter @hyperframes/core build:hyperframes-runtime:modular' first.`,
+      `[build-zip] smashcut runtime artifacts missing under ${coreDist}. ` +
+        `Run 'bun run --filter @smashcut/core build:smashcut-runtime:modular' first.`,
     );
   }
-  cpSync(manifestSrc, join(stagingDir, "hyperframe.manifest.json"));
-  cpSync(iifeSrc, join(stagingDir, "hyperframe.runtime.iife.js"));
-  console.log(`[build-zip] staged hyperframe.manifest.json + hyperframe.runtime.iife.js`);
+  cpSync(manifestSrc, join(stagingDir, "smashcut.manifest.json"));
+  cpSync(iifeSrc, join(stagingDir, "smashcut.runtime.iife.js"));
+  console.log(`[build-zip] staged smashcut.manifest.json + smashcut.runtime.iife.js`);
 }
 
 // ELF header constants used by `assertLinuxX86_64Elf`. Header layout:

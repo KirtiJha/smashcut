@@ -60,7 +60,7 @@ import {
   probeBeginFrameLiveness,
   readWebGlVendorInfoFromCanvas,
   resolveConfig,
-} from "@hyperframes/engine";
+} from "@smashcut/engine";
 import { defaultLogger } from "../../logger.js";
 import { runEncodeStage } from "../render/stages/encodeStage.js";
 import { runCaptureStage } from "../render/stages/captureStage.js";
@@ -433,11 +433,11 @@ interface PlanJson {
  */
 export { applyRuntimeEnvSnapshot } from "../render/runtimeEnvSnapshot.js";
 
-// `readWebGlVendorInfoFromCanvas` lives in `@hyperframes/engine` (it's
+// `readWebGlVendorInfoFromCanvas` lives in `@smashcut/engine` (it's
 // used both here and by `parallelCoordinator.executeWorkerTask`). Re-exported
 // from this subpath so downstream consumers that already import it from
-// `@hyperframes/producer/distributed` keep working.
-export { readWebGlVendorInfoFromCanvas } from "@hyperframes/engine";
+// `@smashcut/producer/distributed` keep working.
+export { readWebGlVendorInfoFromCanvas } from "@smashcut/engine";
 
 /**
  * Compute a deterministic SHA-256 fingerprint for the chunk's output.
@@ -717,7 +717,7 @@ export async function renderChunk(
       quality: plan.dimensions.format === "mp4" ? 80 : undefined,
       deviceScaleFactor: encoder.deviceScaleFactor,
       // Re-inject the controller's snapshotted variables so the chunk's
-      // first capture sees the same `window.__hfVariables` the in-process
+      // first capture sees the same `window.__scVariables` the in-process
       // renderer would have seen. Optional — compositions that don't
       // declare `data-composition-variables` leave this undefined and the
       // engine skips the `evaluateOnNewDocument` injection.

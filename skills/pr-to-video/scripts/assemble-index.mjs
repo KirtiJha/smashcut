@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // assemble-index.mjs — deterministic top-level index.html assembly for a
-// HyperFrames project. No subagent, no judgment: turns STORYBOARD.md + the
+// SmashCut project. No subagent, no judgment: turns STORYBOARD.md + the
 // built frame files (+ optional audio_meta.json) into the standalone index.html
 // the renderer consumes, and stages the frame-named capture assets into assets/.
 //
@@ -31,7 +31,7 @@
 //     "sfx":   [ { "frame": 3, "file": "assets/sfx/x.mp3", "offset_s": 0,
 //                  "duration_s": 1.0, "volume": 0.35 } ] }
 //
-// Reads:  --storyboard STORYBOARD.md, --hyperframes <project root>,
+// Reads:  --storyboard STORYBOARD.md, --smashcut <project root>,
 //         [--audio-meta audio_meta.json]. On disk: each built frame's src html,
 //         capture/{assets,assets/videos,screenshots}/<basename> for staging, compositions/captions.html.
 // Writes: <project>/index.html  +  stages assets/<basename>  +  (guard ① below)
@@ -81,8 +81,8 @@ function die(msg) {
 // (with a 0.4s fade-in + 1.5s fade-out) into a sibling *.loop.mp3 and return that path.
 // Needs ffprobe+ffmpeg (present in the render env); degrades to the original + a warning
 // when they're absent, so assembly never hard-fails on audio tooling.
-function ensureBgmCovers(relPath, hyperframesDir, total) {
-  const abs = join(hyperframesDir, relPath);
+function ensureBgmCovers(relPath, smashcutDir, total) {
+  const abs = join(smashcutDir, relPath);
   const probe = spawnSync(
     "ffprobe",
     ["-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0", "--", abs],
@@ -94,7 +94,7 @@ function ensureBgmCovers(relPath, hyperframesDir, total) {
     return { looped: false, short: false, reason: "unreadable duration" };
   if (dur >= total - 0.1) return { looped: false, short: false, dur }; // already covers
   const relOut = relPath.replace(/\.([^./]+)$/, ".loop.$1");
-  const absOut = join(hyperframesDir, relOut);
+  const absOut = join(smashcutDir, relOut);
   const fadeOut = Math.max(0, total - 1.5);
   const ff = spawnSync(
     "ffmpeg",
@@ -121,10 +121,10 @@ function ensureBgmCovers(relPath, hyperframesDir, total) {
   return { looped: true, rel: relOut, from: dur };
 }
 
-const hyperframesDir = resolve(flag("hyperframes", "."));
-const storyboardPath = resolve(flag("storyboard", join(hyperframesDir, "STORYBOARD.md")));
-const audioMetaPath = resolve(flag("audio-meta", join(hyperframesDir, "audio_meta.json")));
-const outPath = resolve(flag("out", join(hyperframesDir, "index.html")));
+const smashcutDir = resolve(flag("smashcut", "."));
+const storyboardPath = resolve(flag("storyboard", join(smashcutDir, "STORYBOARD.md")));
+const audioMetaPath = resolve(flag("audio-meta", join(smashcutDir, "audio_meta.json")));
+const outPath = resolve(flag("out", join(smashcutDir, "index.html")));
 
 const r3 = (x) => Math.round(x * 1000) / 1000;
 const anomalies = [];
@@ -258,7 +258,7 @@ for (const f of manifest.frames) {
     anomalies.push(`${label}: status ${f.status}, no src — skipped`);
     continue;
   }
-  const compAbs = join(hyperframesDir, f.src);
+  const compAbs = join(smashcutDir, f.src);
   // Read directly and handle ENOENT here rather than an existsSync precheck — the
   // check→read/write pair is a TOCTOU race CodeQL flags (js/file-system-race).
   let html;
@@ -396,7 +396,7 @@ for (const m of mounted) {
   // (track 10) voice — only when the file is actually on disk.
   const v = m.frame.number != null ? voiceByFrame.get(m.frame.number) : undefined;
   if (v?.path) {
-    if (existsSync(join(hyperframesDir, v.path))) {
+    if (existsSync(join(smashcutDir, v.path))) {
       body.push(
         `      <audio`,
         `        id="el-${m.compId}-voice"`,
@@ -420,9 +420,9 @@ for (const m of mounted) {
 let bgmEmitted = false;
 let bgmNote = "";
 if (audio.bgm?.path) {
-  if (existsSync(join(hyperframesDir, audio.bgm.path))) {
+  if (existsSync(join(smashcutDir, audio.bgm.path))) {
     let bgmSrc = audio.bgm.path;
-    const cov = ensureBgmCovers(audio.bgm.path, hyperframesDir, TOTAL);
+    const cov = ensureBgmCovers(audio.bgm.path, smashcutDir, TOTAL);
     if (cov.looped) {
       bgmSrc = cov.rel;
       bgmNote = ` (looped ${cov.from.toFixed(1)}s→${TOTAL}s)`;
@@ -468,7 +468,7 @@ if (audio.bgm?.path) {
 
 // (track 2) captions — captions.mjs writes this or legally skips; key off existence.
 let captionsEmitted = false;
-if (existsSync(join(hyperframesDir, "compositions/captions.html"))) {
+if (existsSync(join(smashcutDir, "compositions/captions.html"))) {
   body.push(
     `      <!-- captions -->`,
     `      <div`,
@@ -494,7 +494,7 @@ audio.sfx.forEach((cue, i) => {
     return;
   }
   const rel = cue.file;
-  if (!existsSync(join(hyperframesDir, rel))) {
+  if (!existsSync(join(smashcutDir, rel))) {
     anomalies.push(`sfx ${rel} not on disk — skipped`);
     return;
   }
@@ -524,7 +524,7 @@ const {
   wanted,
   anomalies: assetAnomalies,
 } = stageAssets({
-  hyperframesDir,
+  smashcutDir,
   frames: manifest.frames,
 });
 for (const a of assetAnomalies) anomalies.push(a);
@@ -538,7 +538,7 @@ for (const a of assetAnomalies) anomalies.push(a);
 // ground on the always-present root composition instead, using the project's frame.md
 // canvas color (the same ground role the caption skin maps to --cap-canvas). Falls
 // back to the body letterbox color when frame.md is absent or has no resolvable ground.
-const framePath = join(hyperframesDir, "frame.md");
+const framePath = join(smashcutDir, "frame.md");
 let groundColor = null;
 if (existsSync(framePath)) {
   try {

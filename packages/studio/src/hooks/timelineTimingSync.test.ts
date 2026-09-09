@@ -296,10 +296,10 @@ function buildLivePreviewIframe(liveScripts: string[] = [LIVE_SCRIPT]) {
 
   const contentWindow = {
     gsap: { timeline: vi.fn(), set: vi.fn() },
-    __hfForceTimelineRebind: vi.fn() as unknown,
+    __scForceTimelineRebind: vi.fn() as unknown,
     __timelines: { root: { kill: vi.fn() } } as Record<string, unknown>,
     __player: { getTime: () => 0, seek: vi.fn() },
-    __hfStudioManualEditsApply: vi.fn(),
+    __scStudioManualEditsApply: vi.fn(),
   };
 
   const appendedScripts: string[] = [];
@@ -344,9 +344,9 @@ describe("nothing-to-rewrite timing edits rebind in place (no script re-executio
     });
 
     expect(reloadPreview).not.toHaveBeenCalled();
-    expect(contentWindow.__hfForceTimelineRebind).toHaveBeenCalledTimes(1);
+    expect(contentWindow.__scForceTimelineRebind).toHaveBeenCalledTimes(1);
     expect(contentWindow.__player.seek).toHaveBeenCalledTimes(1);
-    expect(contentWindow.__hfStudioManualEditsApply).toHaveBeenCalledTimes(1);
+    expect(contentWindow.__scStudioManualEditsApply).toHaveBeenCalledTimes(1);
     // NO script executed, the original script element untouched in place.
     expect(appendedScripts).toHaveLength(0);
     expect(container.contains(scriptEls[0]!)).toBe(true);
@@ -382,7 +382,7 @@ describe("nothing-to-rewrite timing edits rebind in place (no script re-executio
     expect(contentWindow.__timelines.captions).toBeDefined();
     // One finalization: one seek, one rebind.
     expect(contentWindow.__player.seek).toHaveBeenCalledTimes(1);
-    expect(contentWindow.__hfForceTimelineRebind).toHaveBeenCalledTimes(1);
+    expect(contentWindow.__scForceTimelineRebind).toHaveBeenCalledTimes(1);
   });
 
   it("server-confirmed no-op with an unchanged script rebinds without executing any script", async () => {
@@ -405,7 +405,7 @@ describe("nothing-to-rewrite timing edits rebind in place (no script re-executio
     expect(reloadPreview).not.toHaveBeenCalled();
     expect(appendedScripts).toHaveLength(0);
     expect(scriptEls.every((script) => container.contains(script))).toBe(true);
-    expect(contentWindow.__hfForceTimelineRebind).toHaveBeenCalledTimes(1);
+    expect(contentWindow.__scForceTimelineRebind).toHaveBeenCalledTimes(1);
   });
 
   it("comp with ZERO GSAP scripts also rebinds in place (previously full-reloaded)", async () => {
@@ -421,14 +421,14 @@ describe("nothing-to-rewrite timing edits rebind in place (no script re-executio
     });
 
     expect(reloadPreview).not.toHaveBeenCalled();
-    expect(contentWindow.__hfForceTimelineRebind).toHaveBeenCalledTimes(1);
+    expect(contentWindow.__scForceTimelineRebind).toHaveBeenCalledTimes(1);
     expect(contentWindow.__player.seek).toHaveBeenCalledTimes(1);
     expect(appendedScripts).toHaveLength(0);
   });
 
   it("full-reloads when the runtime rebind hook is unavailable", async () => {
     const { iframe, contentWindow, appendedScripts } = buildLivePreviewIframe();
-    contentWindow.__hfForceTimelineRebind = undefined;
+    contentWindow.__scForceTimelineRebind = undefined;
     const reloadPreview = vi.fn();
 
     await finishClipTimingFallback({
@@ -460,7 +460,7 @@ describe("nothing-to-rewrite timing edits rebind in place (no script re-executio
     });
 
     expect(reloadPreview).toHaveBeenCalledTimes(1);
-    expect(contentWindow.__hfForceTimelineRebind).not.toHaveBeenCalled();
+    expect(contentWindow.__scForceTimelineRebind).not.toHaveBeenCalled();
     expect(appendedScripts).toHaveLength(0);
   });
 
@@ -484,7 +484,7 @@ describe("nothing-to-rewrite timing edits rebind in place (no script re-executio
     expect(reloadPreview).not.toHaveBeenCalled();
     expect(appendedScripts).toHaveLength(1);
     expect(appendedScripts[0]).toContain('__timelines["root"] = tl2;');
-    expect(contentWindow.__hfForceTimelineRebind).toHaveBeenCalledTimes(1);
+    expect(contentWindow.__scForceTimelineRebind).toHaveBeenCalledTimes(1);
   });
 
   it("group batch where every change had nothing to rewrite (gap close over no-domId clips) rebinds in place", async () => {
@@ -509,7 +509,7 @@ describe("nothing-to-rewrite timing edits rebind in place (no script re-executio
     });
 
     expect(reloadPreview).not.toHaveBeenCalled();
-    expect(contentWindow.__hfForceTimelineRebind).toHaveBeenCalledTimes(1);
+    expect(contentWindow.__scForceTimelineRebind).toHaveBeenCalledTimes(1);
     expect(contentWindow.__player.seek).toHaveBeenCalledTimes(1);
     // No script executed, the live script element untouched.
     expect(appendedScripts).toHaveLength(0);
@@ -538,7 +538,7 @@ describe("nothing-to-rewrite timing edits rebind in place (no script re-executio
     });
 
     expect(reloadPreview).toHaveBeenCalledTimes(1);
-    expect(contentWindow.__hfForceTimelineRebind).not.toHaveBeenCalled();
+    expect(contentWindow.__scForceTimelineRebind).not.toHaveBeenCalled();
     expect(appendedScripts).toHaveLength(0);
   });
 });

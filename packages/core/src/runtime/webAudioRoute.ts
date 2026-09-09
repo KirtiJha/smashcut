@@ -171,7 +171,7 @@ export function isRouteSelectionSettled(el: HTMLMediaElement): boolean {
 /**
  * Pure — no node creation, no diagnostics, no element mutation. Called from
  * both the schedule path (where it withholds the node) and the discovery path
- * (where it only reports), which is the point: `hyperframes check` never calls
+ * (where it only reports), which is the point: `smashcut check` never calls
  * `play()`, so a verdict reachable only from the transport would be invisible
  * to the very gate meant to surface it.
  */
@@ -261,7 +261,7 @@ export function reportWebAudioMediaRoute(el: HTMLMediaElement, route: WebAudioMe
     note: "cross-origin media without a `crossorigin` opt-in is silent through createMediaElementSource (Web Audio spec); using native playback instead",
   };
   postRuntimeMessage({
-    source: "hf-preview",
+    source: "sc-preview",
     type: "diagnostic",
     code: DIAGNOSTIC_BYPASS_CODE,
     details,
@@ -274,7 +274,7 @@ export function reportWebAudioMediaRoute(el: HTMLMediaElement, route: WebAudioMe
       ? ` Native playback cannot reproduce: ${lost.join(", ")} — proxy or download the asset to a same-origin URL to keep it.`
       : "";
   console.info(
-    `[hyperframes] ${DIAGNOSTIC_BYPASS_CODE}: "${route.asset}" (${route.reason}): ` +
+    `[smashcut] ${DIAGNOSTIC_BYPASS_CODE}: "${route.asset}" (${route.reason}): ` +
       `Web Audio capture withheld; the track plays through native HTMLMediaElement output.${lostNote}`,
   );
 }

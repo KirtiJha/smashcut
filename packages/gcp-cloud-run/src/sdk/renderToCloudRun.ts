@@ -78,7 +78,7 @@ export interface RenderToCloudRunOptions {
    */
   outputKey?: string;
   /**
-   * Client-generated render id. Defaults to `hf-render-<uuid>`. Used as the
+   * Client-generated render id. Defaults to `sc-render-<uuid>`. Used as the
    * GCS key prefix and echoed into the workflow argument; not the same as
    * the server-assigned execution id.
    */
@@ -115,7 +115,7 @@ export async function renderToCloudRun(opts: RenderToCloudRunOptions): Promise<R
     throw new Error("[renderToCloudRun] either siteHandle or projectDir must be supplied");
   }
 
-  const renderId = opts.renderId ?? `hf-render-${randomUUID()}`;
+  const renderId = opts.renderId ?? `sc-render-${randomUUID()}`;
   // `renderId` is interpolated directly into GCS object keys
   // (`renders/<renderId>/…`). Reject anything that could escape that prefix
   // or build a malformed key — `..`, slashes, or other path metacharacters —

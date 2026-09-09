@@ -1,4 +1,4 @@
-import type { resolveEditingSections } from "@hyperframes/core/editing";
+import type { resolveEditingSections } from "@smashcut/core/editing";
 import type { DomEditSelection } from "./domEditing";
 import type { PropertyPanelProps } from "./propertyPanelHelpers";
 import type { FlatLayoutSection } from "./propertyPanelFlatLayoutSection";

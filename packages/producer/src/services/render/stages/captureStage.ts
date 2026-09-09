@@ -53,7 +53,7 @@ import {
   getCapturePerfSummary,
   initializeSession,
   prepareCaptureSessionForReuse,
-} from "@hyperframes/engine";
+} from "@smashcut/engine";
 import type { FileServerHandle } from "../../fileServer.js";
 import type { ProducerLogger } from "../../../logger.js";
 import {

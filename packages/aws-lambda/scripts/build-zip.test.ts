@@ -23,7 +23,7 @@ import { HANDLER_BANNER } from "./_handlerBanner.js";
 // present in CI alongside bun) to reproduce the deploy target faithfully.
 describe("build-zip handler banner", () => {
   it("shims require/__filename/__dirname so inlined CJS deps import under Node", () => {
-    const dir = mkdtempSync(join(tmpdir(), "hf-banner-test-"));
+    const dir = mkdtempSync(join(tmpdir(), "sc-banner-test-"));
     try {
       const entry = join(dir, "fixture.ts");
       const outfile = join(dir, "out.mjs");

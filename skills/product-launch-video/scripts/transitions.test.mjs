@@ -11,7 +11,7 @@ const workflowScripts = [
 ];
 
 function runInject(script, rootId) {
-  const project = mkdtempSync(join(tmpdir(), "hf-transition-root-"));
+  const project = mkdtempSync(join(tmpdir(), "sc-transition-root-"));
   const framesDir = join(project, "compositions", "frames");
   mkdirSync(framesDir, { recursive: true });
   writeFileSync(
@@ -35,7 +35,7 @@ function runInject(script, rootId) {
   );
   const result = spawnSync(
     process.execPath,
-    [script, "inject", "--storyboard", join(project, "STORYBOARD.md"), "--hyperframes", project],
+    [script, "inject", "--storyboard", join(project, "STORYBOARD.md"), "--smashcut", project],
     { encoding: "utf8" },
   );
   return {

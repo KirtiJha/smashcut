@@ -9,14 +9,14 @@ import { sampleMarkerOnionElements, seekAllAdaptersInBrowser } from "./motionSho
 const motionShotSourcePath = join(dirname(fileURLToPath(import.meta.url)), "motionShot.ts");
 const motionWindow = window as Window & {
   __player?: { renderSeek?: (time: number) => void };
-  __hfWaitForSeekCompletion?: () => Promise<void>;
-  __hfSeekAllAdapters?: (time: number) => Promise<void>;
+  __scWaitForSeekCompletion?: () => Promise<void>;
+  __scSeekAllAdapters?: (time: number) => Promise<void>;
 };
 
 afterEach(() => {
   delete motionWindow.__player;
-  delete motionWindow.__hfWaitForSeekCompletion;
-  delete motionWindow.__hfSeekAllAdapters;
+  delete motionWindow.__scWaitForSeekCompletion;
+  delete motionWindow.__scSeekAllAdapters;
   document.body.innerHTML = "";
   vi.restoreAllMocks();
 });
@@ -33,7 +33,7 @@ describe("motion-shot adapter seeking", () => {
         value: () => ({ a: 1, b: 0, c: 0, d: 1, e: 60, f: 200 }),
       },
     });
-    motionWindow.__hfSeekAllAdapters = vi.fn(async () => undefined);
+    motionWindow.__scSeekAllAdapters = vi.fn(async () => undefined);
     const [element] = await sampleMarkerOnionElements(["#bike"], [2]);
 
     expect(element).toBeDefined();
@@ -50,7 +50,7 @@ describe("motion-shot adapter seeking", () => {
     expect(sample.c).toEqual({ x: 135, y: 162 });
   });
 
-  it("awaits GPU work registered by a standalone hf-seek listener", async () => {
+  it("awaits GPU work registered by a standalone sc-seek listener", async () => {
     document.body.innerHTML =
       '<div data-composition-id="gpu" data-requires-webgpu data-duration="2"></div>';
     let finishGpuWork!: () => void;
@@ -64,7 +64,7 @@ describe("motion-shot adapter seeking", () => {
         }>
       ).detail.waitUntil(gpuWork);
     };
-    window.addEventListener("hf-seek", handler);
+    window.addEventListener("sc-seek", handler);
 
     let settled = false;
     const seeking = seekAllAdaptersInBrowser(1.5).then(() => {
@@ -75,7 +75,7 @@ describe("motion-shot adapter seeking", () => {
 
     finishGpuWork();
     await seeking;
-    window.removeEventListener("hf-seek", handler);
+    window.removeEventListener("sc-seek", handler);
     expect(settled).toBe(true);
   });
 
@@ -94,13 +94,13 @@ describe("motion-shot adapter seeking", () => {
       finishGpuWork = resolve;
     });
     const handler = vi.fn();
-    window.addEventListener("hf-seek", handler);
+    window.addEventListener("sc-seek", handler);
     motionWindow.__player = {
       renderSeek(time) {
-        window.dispatchEvent(new CustomEvent("hf-seek", { detail: { time } }));
+        window.dispatchEvent(new CustomEvent("sc-seek", { detail: { time } }));
       },
     };
-    motionWindow.__hfWaitForSeekCompletion = () => gpuWork;
+    motionWindow.__scWaitForSeekCompletion = () => gpuWork;
 
     let settled = false;
     const seeking = seekAllAdaptersInBrowser(2).then(() => {
@@ -112,11 +112,11 @@ describe("motion-shot adapter seeking", () => {
 
     finishGpuWork();
     await seeking;
-    window.removeEventListener("hf-seek", handler);
+    window.removeEventListener("sc-seek", handler);
     expect(settled).toBe(true);
   });
 
-  it("falls back to a completion-aware hf-seek when the runtime seek hook throws", async () => {
+  it("falls back to a completion-aware sc-seek when the runtime seek hook throws", async () => {
     let finishGpuWork!: () => void;
     const gpuWork = new Promise<void>((resolve) => {
       finishGpuWork = resolve;
@@ -128,7 +128,7 @@ describe("motion-shot adapter seeking", () => {
         }>
       ).detail.waitUntil(gpuWork);
     });
-    window.addEventListener("hf-seek", handler);
+    window.addEventListener("sc-seek", handler);
     motionWindow.__player = {
       renderSeek() {
         throw new Error("runtime seek failed");
@@ -145,7 +145,7 @@ describe("motion-shot adapter seeking", () => {
 
     finishGpuWork();
     await seeking;
-    window.removeEventListener("hf-seek", handler);
+    window.removeEventListener("sc-seek", handler);
     expect(settled).toBe(true);
   });
 
@@ -168,12 +168,12 @@ describe("motion-shot adapter seeking", () => {
         }>
       ).detail.waitUntil(dispatchCount === 1 ? runtimeGpuWork : fallbackGpuWork);
     };
-    window.addEventListener("hf-seek", handler);
+    window.addEventListener("sc-seek", handler);
     motionWindow.__player = {
       renderSeek(time) {
         const pending: PromiseLike<unknown>[] = [];
         window.dispatchEvent(
-          new CustomEvent("hf-seek", {
+          new CustomEvent("sc-seek", {
             detail: {
               time,
               waitUntil(promise: PromiseLike<unknown>) {
@@ -186,7 +186,7 @@ describe("motion-shot adapter seeking", () => {
         throw new Error("runtime seek failed after dispatch");
       },
     };
-    motionWindow.__hfWaitForSeekCompletion = () => runtimeCompletion ?? Promise.resolve();
+    motionWindow.__scWaitForSeekCompletion = () => runtimeCompletion ?? Promise.resolve();
 
     let settled = false;
     const seeking = seekAllAdaptersInBrowser(3).then(() => {
@@ -201,7 +201,7 @@ describe("motion-shot adapter seeking", () => {
 
     finishRuntimeGpuWork();
     await seeking;
-    window.removeEventListener("hf-seek", handler);
+    window.removeEventListener("sc-seek", handler);
     expect(settled).toBe(true);
   });
 });

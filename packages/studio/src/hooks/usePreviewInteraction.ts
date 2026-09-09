@@ -118,7 +118,7 @@ export function usePreviewInteraction({
           cycle.candidates.length > 1 &&
           Math.hypot(e.clientX - cycle.x, e.clientY - cycle.y) < CYCLE_RADIUS_PX &&
           downTs - cycle.at < CYCLE_WINDOW_MS;
-        if (hit?.element.hasAttribute("data-hf-group")) {
+        if (hit?.element.hasAttribute("data-sc-group")) {
           e.preventDefault();
           e.stopPropagation();
           cycleRef.current = null;

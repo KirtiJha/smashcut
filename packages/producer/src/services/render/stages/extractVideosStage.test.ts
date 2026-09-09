@@ -7,8 +7,8 @@ import type {
   ExtractionResult,
   VideoElement,
   VideoExtractionFailure,
-} from "@hyperframes/engine";
-import { resolveProjectRelativeSrc } from "@hyperframes/engine";
+} from "@smashcut/engine";
+import { resolveProjectRelativeSrc } from "@smashcut/engine";
 import {
   appendAutoDetectedVideoAudio,
   assertVideoExtractionSucceeded,
@@ -148,8 +148,8 @@ describe("appendAutoDetectedVideoAudio", () => {
 // percent-encoded, so the HDR image never resolved and the render shipped SDR.
 describe("HDR probe src resolution (PRINFRA-349)", () => {
   it("decodes a percent-encoded CJK src to the real on-disk path", () => {
-    const projectDir = mkdtempSync(join(tmpdir(), "hf-probe-cjk-"));
-    const compiledDir = mkdtempSync(join(tmpdir(), "hf-probe-compiled-"));
+    const projectDir = mkdtempSync(join(tmpdir(), "sc-probe-cjk-"));
+    const compiledDir = mkdtempSync(join(tmpdir(), "sc-probe-compiled-"));
     try {
       const realName = "图1.png";
       writeFileSync(join(projectDir, realName), "x");
@@ -168,7 +168,7 @@ describe("HDR probe src resolution (PRINFRA-349)", () => {
     // Regression guard: `isAbsolute("/assets/%E5%9B%BE1.png")` is true on POSIX,
     // so a pre-check would return it verbatim, existsSync would fail, and the
     // image would never enter nativeHdrImageIds — a silent SDR render.
-    const projectDir = mkdtempSync(join(tmpdir(), "hf-probe-root-"));
+    const projectDir = mkdtempSync(join(tmpdir(), "sc-probe-root-"));
     try {
       mkdirSync(join(projectDir, "assets"));
       const realName = "图1.png";
@@ -183,8 +183,8 @@ describe("HDR probe src resolution (PRINFRA-349)", () => {
   });
 
   it("prefers compiledDir over projectDir when both hold the asset", () => {
-    const projectDir = mkdtempSync(join(tmpdir(), "hf-probe-proj-"));
-    const compiledDir = mkdtempSync(join(tmpdir(), "hf-probe-comp-"));
+    const projectDir = mkdtempSync(join(tmpdir(), "sc-probe-proj-"));
+    const compiledDir = mkdtempSync(join(tmpdir(), "sc-probe-comp-"));
     try {
       writeFileSync(join(projectDir, "clip.mp4"), "x");
       writeFileSync(join(compiledDir, "clip.mp4"), "x");
@@ -198,7 +198,7 @@ describe("HDR probe src resolution (PRINFRA-349)", () => {
   });
 
   it("returns an existing absolute path unchanged", () => {
-    const projectDir = mkdtempSync(join(tmpdir(), "hf-probe-abs-"));
+    const projectDir = mkdtempSync(join(tmpdir(), "sc-probe-abs-"));
     try {
       const abs = join(projectDir, "clip.mp4");
       writeFileSync(abs, "x");

@@ -1,5 +1,5 @@
-import type { CanvasResolution } from "@hyperframes/parsers";
-import type { RegistryItem } from "@hyperframes/core";
+import type { CanvasResolution } from "@smashcut/parsers";
+import type { RegistryItem } from "@smashcut/core";
 
 /** Resolved info about a single project. */
 export interface ResolvedProject {
@@ -122,7 +122,7 @@ export interface StudioApiAdapter {
    */
   lintProject?: (projectDir: string) => Promise<ProjectLintResult> | ProjectLintResult;
 
-  /** URL to the hyperframe runtime JS (injected into preview HTML). */
+  /** URL to the smashcut runtime JS (injected into preview HTML). */
   runtimeUrl: string;
 
   /**
@@ -153,7 +153,7 @@ export interface StudioApiAdapter {
      * route normalizes both into `Fps` before invoking the adapter, so
      * adapter implementations only ever see the rational form.
      */
-    fps: import("@hyperframes/core").Fps;
+    fps: import("@smashcut/core").Fps;
     quality: string;
     jobId: string;
     /**
@@ -172,8 +172,8 @@ export interface StudioApiAdapter {
     composition?: string;
     /**
      * Composition-variable overrides ({variableId: value}), forwarded to the
-     * producer's RenderConfig.variables and injected as window.__hfVariables —
-     * the same channel `hyperframes render --variables` uses.
+     * producer's RenderConfig.variables and injected as window.__scVariables —
+     * the same channel `smashcut render --variables` uses.
      */
     variables?: Record<string, unknown>;
     /**

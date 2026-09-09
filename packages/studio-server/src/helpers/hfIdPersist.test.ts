@@ -20,13 +20,13 @@ describe("persistHfIdsIfNeeded", () => {
     return file;
   }
 
-  it("writes data-hf-id to disk when source is untagged", () => {
+  it("writes data-sc-id to disk when source is untagged", () => {
     const raw = `<!doctype html><html><body><div>hello</div></body></html>`;
     const file = tmpFile(raw);
     const returned = persistHfIdsIfNeeded(file, raw);
-    expect(returned).toContain('data-hf-id="hf-');
+    expect(returned).toContain('data-sc-id="hf-');
     const onDisk = readFileSync(file, "utf-8");
-    expect(onDisk).toContain('data-hf-id="hf-');
+    expect(onDisk).toContain('data-sc-id="hf-');
     expect(onDisk).toBe(returned);
   });
 
@@ -43,7 +43,7 @@ describe("persistHfIdsIfNeeded", () => {
   it("does not rewrite when source is already tagged with non-standard HTML formatting", () => {
     // Single-quoted attrs would cause a false-positive write under string-equality
     // change detection; count-based detection handles this correctly.
-    const alreadyTagged = `<!doctype html><html><body><div data-hf-id='hf-ab12'>hello</div></body></html>`;
+    const alreadyTagged = `<!doctype html><html><body><div data-sc-id='sc-ab12'>hello</div></body></html>`;
     const file = tmpFile(alreadyTagged);
     persistHfIdsIfNeeded(file, alreadyTagged);
     expect(readFileSync(file, "utf-8")).toBe(alreadyTagged);
@@ -64,7 +64,7 @@ describe("persistHfIdsIfNeeded", () => {
     const file = tmpFile(newer);
     const returned = persistHfIdsIfNeeded(file, old);
     // Serve-time HTML gets ids based on what we read.
-    expect(returned).toContain('data-hf-id="hf-');
+    expect(returned).toContain('data-sc-id="hf-');
     // Disk must not be overwritten — user's concurrent save is preserved.
     expect(readFileSync(file, "utf-8")).toBe(newer);
   });
@@ -89,15 +89,15 @@ describe("stampFileHfIds", () => {
   it("stamps ids and writes back through the same fd", () => {
     const file = tmpFile(`<div class="clip" data-start="0" data-end="3">Hi</div>`);
     const returned = stampFileHfIds(file);
-    expect(returned).toContain('data-hf-id="hf-');
+    expect(returned).toContain('data-sc-id="hf-');
     expect(readFileSync(file, "utf-8")).toBe(returned);
   });
 
   it("does not rewrite an already-stamped file", () => {
-    const file = tmpFile(`<div data-hf-id="hf-keep">Hi</div>`);
+    const file = tmpFile(`<div data-sc-id="sc-keep">Hi</div>`);
     const before = readFileSync(file, "utf-8");
     const returned = stampFileHfIds(file);
-    expect(returned).toContain('data-hf-id="hf-keep"');
+    expect(returned).toContain('data-sc-id="sc-keep"');
     expect(readFileSync(file, "utf-8")).toBe(before); // byte-identical, no write
   });
 

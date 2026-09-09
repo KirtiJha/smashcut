@@ -1,5 +1,5 @@
-// Preview full-reload diagnostics — grep [hf-reload]. Off by default; opt in per
-// session with `localStorage.setItem("hf-reload-debug", "1")` (then reload).
+// Preview full-reload diagnostics — grep [sc-reload]. Off by default; opt in per
+// session with `localStorage.setItem("sc-reload-debug", "1")` (then reload).
 //
 // A full reload blanks the stage for ~100-300ms, so any reload the user did not
 // ask for reads as a flash. These lines answer the only question that matters

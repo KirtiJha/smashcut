@@ -16,7 +16,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 ```html multiplayer-cursors.html
 <!doctype html>
 <!--
-  multiplayer-cursors, HyperFrames video primitive (pointers / loop / prove)
+  multiplayer-cursors, SmashCut video primitive (pointers / loop / prove)
 
   Concept: labeled collaborator cursors, each with an SVG pointer, matching
   name chip, and soft color glow, reveal from spread positions and glide into
@@ -58,7 +58,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
   stay container-relative. The root is styled by #root, never by a class. The
   hardcoded timeline key remains "multiplayer-cursors" after mount flattening
   strips data-composition-id from the mounted root. Variables come only from
-  window.__hyperframes.getVariables(), which owns merged defaults and host
+  window.__smashcut.getVariables(), which owns merged defaults and host
   overrides inside a mounted composition.
 -->
 <html
@@ -288,8 +288,8 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
             // EDIT ZONE: variable defaults mirror the outer declaration.
             // getVariables owns the declared-defaults-plus-host-overrides merge.
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             // INVARIANT: count is always an integer in the declared 2 to 6 range.
@@ -449,7 +449,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 
 ## Install
 
-<InstallCommand command="npx hyperframes add multiplayer-cursors" item="multiplayer-cursors" />
+<InstallCommand command="npx smashcut add multiplayer-cursors" item="multiplayer-cursors" />
 
 That writes one file: `compositions/components/multiplayer-cursors.html`.
 
@@ -488,7 +488,7 @@ defaults, so this behaves exactly like the preview above until you change one:
 ```html
 <!doctype html>
 <!--
-  multiplayer-cursors, HyperFrames video primitive (pointers / loop / prove)
+  multiplayer-cursors, SmashCut video primitive (pointers / loop / prove)
 
   Concept: labeled collaborator cursors, each with an SVG pointer, matching
   name chip, and soft color glow, reveal from spread positions and glide into
@@ -530,7 +530,7 @@ defaults, so this behaves exactly like the preview above until you change one:
   stay container-relative. The root is styled by #root, never by a class. The
   hardcoded timeline key remains "multiplayer-cursors" after mount flattening
   strips data-composition-id from the mounted root. Variables come only from
-  window.__hyperframes.getVariables(), which owns merged defaults and host
+  window.__smashcut.getVariables(), which owns merged defaults and host
   overrides inside a mounted composition.
 -->
 <html
@@ -760,8 +760,8 @@ defaults, so this behaves exactly like the preview above until you change one:
             // EDIT ZONE: variable defaults mirror the outer declaration.
             // getVariables owns the declared-defaults-plus-host-overrides merge.
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             // INVARIANT: count is always an integer in the declared 2 to 6 range.

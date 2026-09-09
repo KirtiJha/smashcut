@@ -118,7 +118,7 @@ export function safeDownloadUrlIdentity(url: string): SafeDownloadUrlIdentity {
 /** Default safe structured sink for engine media call sites without a logger. */
 export function writeUrlDownloadTelemetry(event: UrlDownloadTelemetry): void {
   try {
-    process.stderr.write(`[hyperframes:download] ${JSON.stringify(event)}\n`);
+    process.stderr.write(`[smashcut:download] ${JSON.stringify(event)}\n`);
   } catch {
     // Observability must never change download correctness.
   }
@@ -270,8 +270,8 @@ function sameFileIdentity(left: Stats, right: Stats): boolean {
 
 const CACHE_LOCK_POLL_MS = 10;
 const CACHE_LOCK_STALE_MS = 5 * 60_000;
-const CACHE_LOCK_RECLAIM_NAME = ".hf-reclaim";
-const CACHE_LOCK_OWNER_PREFIX = ".hf-owner-";
+const CACHE_LOCK_RECLAIM_NAME = ".sc-reclaim";
+const CACHE_LOCK_OWNER_PREFIX = ".sc-owner-";
 
 interface CacheLockObservation {
   stats: Stats;
@@ -352,7 +352,7 @@ async function acquireCachePathLock(
   timeoutMs: number,
   signal?: AbortSignal,
 ): Promise<() => void> {
-  const lockPath = `${localPath}.hf-lock`;
+  const lockPath = `${localPath}.sc-lock`;
   const startedAt = Date.now();
   for (;;) {
     if (signal?.aborted) {
@@ -991,7 +991,7 @@ async function runDownloadAttempt(
 ): Promise<string> {
   // A private, unguessable directory prevents symlink planting and keeps the
   // partial on the destination filesystem so the final rename stays atomic.
-  const attemptDir = mkdtempSync(join(dirname(localPath), ".hf-download-"));
+  const attemptDir = mkdtempSync(join(dirname(localPath), ".sc-download-"));
   const partialPath = join(attemptDir, "payload");
   const controller = new AbortController();
   let timedOut = false;

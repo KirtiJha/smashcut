@@ -9,12 +9,12 @@ import { InstallCommand } from "/snippets/install-command.jsx";
   className="w-full aspect-video rounded-xl border-0 bg-zinc-100 dark:bg-zinc-800"
   title="vignette preview"
   loading="lazy"
-  srcDoc={`<!doctype html><html><head><meta charset="utf-8"><style>html,body{margin:0;height:100%;overflow:hidden;background:transparent}hyperframes-player{display:block;width:100%;height:100%}</style><script src="https://cdn.jsdelivr.net/npm/@hyperframes/player@latest/dist/hyperframes-player.global.js"><\/script></head><body><script>fetch("/public/catalog/components/vignette.json").then(function(r){return r.json()}).then(function(d){var p=document.createElement("hyperframes-player");p.setAttribute("srcdoc",d.html);p.setAttribute("controls","");p.setAttribute("autoplay","");p.setAttribute("loop","");p.setAttribute("muted","");p.setAttribute("poster","https://static.heygen.ai/hyperframes-oss/docs/images/catalog/components/vignette.png");document.body.appendChild(p)});<\/script></body></html>`}
+  srcDoc={`<!doctype html><html><head><meta charset="utf-8"><style>html,body{margin:0;height:100%;overflow:hidden;background:transparent}smashcut-player{display:block;width:100%;height:100%}</style><script src="https://cdn.jsdelivr.net/npm/@smashcut/player@latest/dist/smashcut-player.global.js"><\/script></head><body><script>fetch("/public/catalog/components/vignette.json").then(function(r){return r.json()}).then(function(d){var p=document.createElement("smashcut-player");p.setAttribute("srcdoc",d.html);p.setAttribute("controls","");p.setAttribute("autoplay","");p.setAttribute("loop","");p.setAttribute("muted","");p.setAttribute("poster","https://static.heygen.ai/smashcut-oss/docs/images/catalog/components/vignette.png");document.body.appendChild(p)});<\/script></body></html>`}
 />
 
 ## Install
 
-<InstallCommand command="npx hyperframes add vignette" item="vignette" />
+<InstallCommand command="npx smashcut add vignette" item="vignette" />
 
 That writes one file: `compositions/components/vignette.html`.
 
@@ -39,7 +39,7 @@ That writes one file: `compositions/components/vignette.html`.
 -->
 
 <div
-  id="hf-vignette"
+  id="sc-vignette"
   style="
     position: absolute;
     top: 0;
@@ -52,7 +52,7 @@ That writes one file: `compositions/components/vignette.html`.
 ></div>
 
 <style>
-  #hf-vignette {
+  #sc-vignette {
     background: radial-gradient(
       var(--vignette-shape, ellipse) at center,
       transparent var(--vignette-size, 45%),
@@ -65,14 +65,14 @@ That writes one file: `compositions/components/vignette.html`.
   Timeline integration example (add to your composition's GSAP timeline):
 
   // Fade the vignette in over the first second
-  tl.fromTo("#hf-vignette",
+  tl.fromTo("#sc-vignette",
     { "--vignette-color": "rgba(0, 0, 0, 0)" },
     { "--vignette-color": "rgba(0, 0, 0, 0.7)", duration: 1, ease: "power2.out" },
     0,
   );
 
   // Or breathe the size in and out (works with any easing)
-  tl.to("#hf-vignette", { "--vignette-size": "35%", duration: 1, ease: "sine.inOut" }, 2);
+  tl.to("#sc-vignette", { "--vignette-size": "35%", duration: 1, ease: "sine.inOut" }, 2);
 -->
 ```
 

@@ -1,6 +1,6 @@
 <!doctype html>
 <!--
-  press-ripple: HyperFrames video primitive (product demo / payoff)
+  press-ripple: SmashCut video primitive (product demo / payoff)
 
   A cursor decel-arrives from off-stage (power2.out, it arrives, never passes
   through), lands a few px off-center on a caller-positioned target zone, the
@@ -209,8 +209,8 @@
             var cursorPath = root.querySelector(".pr-cursor-path");
 
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             function num(value, fallback, min, max) {

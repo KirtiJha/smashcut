@@ -17,12 +17,12 @@ import { serializeDocument } from "./serialize.js";
 
 // No trailing semicolons in style attrs — serializeStyleAttr never adds them.
 const BASE_HTML = `
-<div data-hf-id="hf-stage" data-hf-root style="width: 1280px; height: 720px; background: #000" data-duration="5">
-  <h1 data-hf-id="hf-title" data-start="0" data-end="3" data-track-index="0"
+<div data-sc-id="sc-stage" data-sc-root style="width: 1280px; height: 720px; background: #000" data-duration="5">
+  <h1 data-sc-id="sc-title" data-start="0" data-end="3" data-track-index="0"
       style="color: #fff; font-size: 64px">Hello World</h1>
-  <img data-hf-id="hf-logo" src="/logo.png" alt="Logo" />
-  <div data-hf-id="hf-sub">
-    <span data-hf-id="hf-span" style="opacity: 0.5">sub text</span>
+  <img data-sc-id="sc-logo" src="/logo.png" alt="Logo" />
+  <div data-sc-id="sc-sub">
+    <span data-sc-id="sc-span" style="opacity: 0.5">sub text</span>
   </div>
 </div>
 `.trim();
@@ -56,7 +56,7 @@ const VARIABLES_HTML = `<!DOCTYPE html>
   ],
 )}'>
 <body>
-<div data-hf-id="hf-stage" data-hf-root style="width: 1280px; height: 720px" data-duration="5">
+<div data-sc-id="sc-stage" data-sc-root style="width: 1280px; height: 720px" data-duration="5">
 </div>
 </body></html>`;
 
@@ -79,22 +79,22 @@ describe("setStyle", () => {
     const parsed = fresh();
     const result = applyOp(parsed, {
       type: "setStyle",
-      target: "hf-title",
+      target: "sc-title",
       styles: { fontSize: "96px" },
     });
     expect(result.forward).toHaveLength(1);
     expect(result.forward[0]).toEqual({
       op: "replace",
-      path: "/elements/hf-title/inlineStyles/fontSize",
+      path: "/elements/sc-title/inlineStyles/fontSize",
       value: "96px",
     });
     expect(result.inverse[0]).toEqual({
       op: "replace",
-      path: "/elements/hf-title/inlineStyles/fontSize",
+      path: "/elements/sc-title/inlineStyles/fontSize",
       value: "64px",
     });
     // DOM mutated
-    const el = parsed.document.querySelector('[data-hf-id="hf-title"]');
+    const el = parsed.document.querySelector('[data-sc-id="sc-title"]');
     expect(el?.getAttribute("style")).toContain("font-size: 96px");
   });
 
@@ -102,7 +102,7 @@ describe("setStyle", () => {
     const parsed = fresh();
     const result = applyOp(parsed, {
       type: "setStyle",
-      target: "hf-logo",
+      target: "sc-logo",
       styles: { opacity: "0.8" },
     });
     expect(result.forward[0]?.op).toBe("add");
@@ -113,7 +113,7 @@ describe("setStyle", () => {
     const parsed = fresh();
     const result = applyOp(parsed, {
       type: "setStyle",
-      target: "hf-title",
+      target: "sc-title",
       styles: { color: null },
     });
     expect(result.forward[0]?.op).toBe("remove");
@@ -126,7 +126,7 @@ describe("setStyle", () => {
     const before = serializeDocument(parsed);
     const { inverse } = applyOp(parsed, {
       type: "setStyle",
-      target: "hf-title",
+      target: "sc-title",
       styles: { fontSize: "96px", color: "#f00" },
     });
     applyPatchesToDocument(parsed, inverse);
@@ -137,15 +137,15 @@ describe("setStyle", () => {
     const parsed = fresh();
     const result = applyOp(parsed, {
       type: "setStyle",
-      target: ["hf-title", "hf-span"],
+      target: ["sc-title", "sc-span"],
       styles: { opacity: "1" },
     });
     expect(result.forward).toHaveLength(2);
   });
 
   it("override-set key maps correctly", () => {
-    const key = pathToKey("/elements/hf-title/inlineStyles/fontSize");
-    expect(key).toBe("hf-title.style.fontSize");
+    const key = pathToKey("/elements/sc-title/inlineStyles/fontSize");
+    expect(key).toBe("sc-title.style.fontSize");
   });
 
   // Regression: a HYPHENATED (kebab) style key must derive its inverse against
@@ -155,13 +155,13 @@ describe("setStyle", () => {
     const parsed = fresh();
     const result = applyOp(parsed, {
       type: "setStyle",
-      target: "hf-title",
+      target: "sc-title",
       styles: { "font-size": "96px" },
     });
     // inverse restores the prior 64px (replace), not a remove
     expect(result.inverse[0]).toEqual({
       op: "replace",
-      path: "/elements/hf-title/inlineStyles/fontSize",
+      path: "/elements/sc-title/inlineStyles/fontSize",
       value: "64px",
     });
   });
@@ -170,17 +170,17 @@ describe("setStyle", () => {
     const parsed = fresh();
     const result = applyOp(parsed, {
       type: "setStyle",
-      target: "hf-title",
+      target: "sc-title",
       styles: { "font-size": null },
     });
     // removal must be recorded (forward remove + inverse add restoring 64px)
     expect(result.forward[0]?.op).toBe("remove");
     expect(result.inverse[0]).toEqual({
       op: "add",
-      path: "/elements/hf-title/inlineStyles/fontSize",
+      path: "/elements/sc-title/inlineStyles/fontSize",
       value: "64px",
     });
-    const el = parsed.document.querySelector('[data-hf-id="hf-title"]');
+    const el = parsed.document.querySelector('[data-sc-id="sc-title"]');
     expect(el?.getAttribute("style") ?? "").not.toContain("font-size");
   });
 });
@@ -192,15 +192,15 @@ describe("setText", () => {
     const parsed = fresh();
     const result = applyOp(parsed, {
       type: "setText",
-      target: "hf-title",
+      target: "sc-title",
       value: "Goodbye World",
     });
     expect(result.forward[0]).toEqual({
       op: "replace",
-      path: "/elements/hf-title/text",
+      path: "/elements/sc-title/text",
       value: "Goodbye World",
     });
-    const el = parsed.document.querySelector('[data-hf-id="hf-title"]');
+    const el = parsed.document.querySelector('[data-sc-id="sc-title"]');
     // text node should contain new value
     expect(el?.textContent).toContain("Goodbye World");
   });
@@ -210,7 +210,7 @@ describe("setText", () => {
     const before = serializeDocument(parsed);
     const { inverse } = applyOp(parsed, {
       type: "setText",
-      target: "hf-title",
+      target: "sc-title",
       value: "Changed",
     });
     applyPatchesToDocument(parsed, inverse);
@@ -219,10 +219,10 @@ describe("setText", () => {
 
   it("creates text node when element has no existing text node", () => {
     const parsed = parseMutable(
-      '<div data-hf-id="hf-s" data-hf-root><span data-hf-id="hf-empty"></span></div>',
+      '<div data-sc-id="sc-s" data-sc-root><span data-sc-id="sc-empty"></span></div>',
     );
-    const result = applyOp(parsed, { type: "setText", target: "hf-empty", value: "Added" });
-    const el = parsed.document.querySelector('[data-hf-id="hf-empty"]');
+    const result = applyOp(parsed, { type: "setText", target: "sc-empty", value: "Added" });
+    const el = parsed.document.querySelector('[data-sc-id="sc-empty"]');
     expect(el?.textContent).toBe("Added");
     expect(result.forward[0]?.op).toBe("replace");
     expect(result.forward[0]?.value).toBe("Added");
@@ -230,37 +230,37 @@ describe("setText", () => {
 
   it("matches legacy single-child text targeting", () => {
     const parsed = parseMutable(
-      '<button data-hf-id="hf-target"><span data-hf-id="hf-child">Old</span></button>',
+      '<button data-sc-id="sc-target"><span data-sc-id="sc-child">Old</span></button>',
     );
-    const result = applyOp(parsed, { type: "setText", target: "hf-target", value: "New" });
+    const result = applyOp(parsed, { type: "setText", target: "sc-target", value: "New" });
     expect(serializeDocument(parsed)).toContain(
-      '<button data-hf-id="hf-target"><span data-hf-id="hf-child">New</span></button>',
+      '<button data-sc-id="sc-target"><span data-sc-id="sc-child">New</span></button>',
     );
     expect(result.inverse[0]?.value).toBe("Old");
   });
 
   it("preserves parent text when the legacy target is a single child", () => {
     const parsed = parseMutable(
-      '<div data-hf-id="hf-target">Lead <span data-hf-id="hf-child">Old</span></div>',
+      '<div data-sc-id="sc-target">Lead <span data-sc-id="sc-child">Old</span></div>',
     );
-    applyOp(parsed, { type: "setText", target: "hf-target", value: "New" });
+    applyOp(parsed, { type: "setText", target: "sc-target", value: "New" });
     expect(serializeDocument(parsed)).toContain(
-      '<div data-hf-id="hf-target">Lead <span data-hf-id="hf-child">New</span></div>',
+      '<div data-sc-id="sc-target">Lead <span data-sc-id="sc-child">New</span></div>',
     );
   });
 
   it("keeps non-HTML single children out of the child text shortcut", () => {
     const parsed = parseMutable(
-      '<div data-hf-id="hf-target"><svg data-hf-id="hf-child"><text>Old</text></svg></div>',
+      '<div data-sc-id="sc-target"><svg data-sc-id="sc-child"><text>Old</text></svg></div>',
     );
-    applyOp(parsed, { type: "setText", target: "hf-target", value: "New" });
+    applyOp(parsed, { type: "setText", target: "sc-target", value: "New" });
     const html = serializeDocument(parsed);
-    expect(html).toContain('<svg data-hf-id="hf-child"><text');
+    expect(html).toContain('<svg data-sc-id="sc-child"><text');
     expect(html).toContain("Old</text></svg>New</div>");
   });
 
   it("override-set key maps correctly", () => {
-    expect(pathToKey("/elements/hf-title/text")).toBe("hf-title.text");
+    expect(pathToKey("/elements/sc-title/text")).toBe("sc-title.text");
   });
 
   // A `<br>` line break is a void element, not the element's text target. It
@@ -269,7 +269,7 @@ describe("setText", () => {
   describe("<br> line-break leaves", () => {
     const brDoc = () =>
       parseMutable(
-        '<div data-hf-id="hf-s" data-hf-root><h1 data-hf-id="hf-br">Centrifugal<br>Force</h1></div>',
+        '<div data-sc-id="sc-s" data-sc-root><h1 data-sc-id="sc-br">Centrifugal<br>Force</h1></div>',
       );
 
     it("reads a <br>-split heading as editable text (newline-joined), not empty", () => {
@@ -277,43 +277,43 @@ describe("setText", () => {
       // The inverse patch value is the pre-edit text — proves getOwnText read
       // the heading as "Centrifugal\nForce" rather than "" (which surfaced as
       // `text: null` → "not editable" in the studio panel).
-      const { inverse } = applyOp(parsed, { type: "setText", target: "hf-br", value: "x" });
+      const { inverse } = applyOp(parsed, { type: "setText", target: "sc-br", value: "x" });
       expect(inverse[0]).toMatchObject({ value: "Centrifugal\nForce" });
     });
 
     it("preserves the <br> when setting text (no </br> corruption)", () => {
       const parsed = brDoc();
-      applyOp(parsed, { type: "setText", target: "hf-br", value: "Centripetal\nForce" });
+      applyOp(parsed, { type: "setText", target: "sc-br", value: "Centripetal\nForce" });
       const html = serializeDocument(parsed);
       expect(html).toContain("Centripetal");
       expect(html).toContain("Force");
       expect(html).toContain("<br");
       // The <br> must stay empty — never gains a text child.
-      const br = parsed.document.querySelector('[data-hf-id="hf-br"] br');
+      const br = parsed.document.querySelector('[data-sc-id="sc-br"] br');
       expect(br?.textContent).toBe("");
     });
 
     it("drops the line break when the new text has no newline", () => {
       const parsed = brDoc();
-      applyOp(parsed, { type: "setText", target: "hf-br", value: "Centrifugal Force" });
-      const h1 = parsed.document.querySelector('[data-hf-id="hf-br"]');
+      applyOp(parsed, { type: "setText", target: "sc-br", value: "Centrifugal Force" });
+      const h1 = parsed.document.querySelector('[data-sc-id="sc-br"]');
       expect(h1?.querySelector("br")).toBeNull();
       expect(h1?.textContent).toBe("Centrifugal Force");
     });
 
     it("reuses the existing <br> node so an in-place edit round-trips exactly", () => {
       const parsed = parseMutable(
-        '<div data-hf-id="hf-s" data-hf-root><h1 data-hf-id="hf-br">Centrifugal<br data-hf-id="hf-x5px">Force</h1></div>',
+        '<div data-sc-id="sc-s" data-sc-root><h1 data-sc-id="sc-br">Centrifugal<br data-sc-id="sc-x5px">Force</h1></div>',
       );
       const before = serializeDocument(parsed);
-      // Same line count → the <br> (and its data-hf-id) is preserved, and undo
+      // Same line count → the <br> (and its data-sc-id) is preserved, and undo
       // is byte-exact.
       const { inverse } = applyOp(parsed, {
         type: "setText",
-        target: "hf-br",
+        target: "sc-br",
         value: "Angular\nMomentum",
       });
-      expect(serializeDocument(parsed)).toContain('<br data-hf-id="hf-x5px">');
+      expect(serializeDocument(parsed)).toContain('<br data-sc-id="sc-x5px">');
       applyPatchesToDocument(parsed, inverse);
       expect(serializeDocument(parsed)).toBe(before);
     });
@@ -327,13 +327,13 @@ describe("setAttribute", () => {
     const parsed = fresh();
     const result = applyOp(parsed, {
       type: "setAttribute",
-      target: "hf-logo",
+      target: "sc-logo",
       name: "src",
       value: "/new-logo.png",
     });
     expect(result.forward[0]).toEqual({
       op: "replace",
-      path: "/elements/hf-logo/attributes/src",
+      path: "/elements/sc-logo/attributes/src",
       value: "/new-logo.png",
     });
   });
@@ -342,7 +342,7 @@ describe("setAttribute", () => {
     const parsed = fresh();
     const result = applyOp(parsed, {
       type: "setAttribute",
-      target: "hf-logo",
+      target: "sc-logo",
       name: "alt",
       value: null,
     });
@@ -355,7 +355,7 @@ describe("setAttribute", () => {
     const before = serializeDocument(parsed);
     const { inverse } = applyOp(parsed, {
       type: "setAttribute",
-      target: "hf-logo",
+      target: "sc-logo",
       name: "src",
       value: "/changed.png",
     });
@@ -371,10 +371,10 @@ describe("setTiming", () => {
     const parsed = fresh();
     const result = applyOp(parsed, {
       type: "setTiming",
-      target: "hf-title",
+      target: "sc-title",
       start: 1,
     });
-    const el = parsed.document.querySelector('[data-hf-id="hf-title"]');
+    const el = parsed.document.querySelector('[data-sc-id="sc-title"]');
     expect(el?.getAttribute("data-start")).toBe("1");
     // duration was 3 (0→3), so end = 1+3 = 4
     expect(el?.getAttribute("data-duration")).toBe("3");
@@ -385,8 +385,8 @@ describe("setTiming", () => {
 
   it("updates duration and recalculates end", () => {
     const parsed = fresh();
-    applyOp(parsed, { type: "setTiming", target: "hf-title", duration: 2 });
-    const el = parsed.document.querySelector('[data-hf-id="hf-title"]');
+    applyOp(parsed, { type: "setTiming", target: "sc-title", duration: 2 });
+    const el = parsed.document.querySelector('[data-sc-id="sc-title"]');
     expect(el?.getAttribute("data-duration")).toBe("2");
     expect(el?.getAttribute("data-end")).toBeNull();
   });
@@ -395,13 +395,13 @@ describe("setTiming", () => {
     const parsed = fresh();
     const { inverse } = applyOp(parsed, {
       type: "setTiming",
-      target: "hf-title",
+      target: "sc-title",
       start: 1,
       duration: 2,
       trackIndex: 1,
     });
     applyPatchesToDocument(parsed, inverse);
-    const restored = parsed.document.querySelector('[data-hf-id="hf-title"]');
+    const restored = parsed.document.querySelector('[data-sc-id="sc-title"]');
     expect(restored?.getAttribute("data-start")).toBe("0");
     expect(restored?.getAttribute("data-duration")).toBeNull();
     expect(restored?.getAttribute("data-end")).toBe("3");
@@ -416,18 +416,18 @@ describe("removeElement", () => {
     const parsed = fresh();
     const result = applyOp(parsed, {
       type: "removeElement",
-      target: "hf-span",
+      target: "sc-span",
     });
     expect(result.forward[0]?.op).toBe("remove");
-    expect(result.forward[0]?.path).toBe("/elements/hf-span");
-    expect(parsed.document.querySelector('[data-hf-id="hf-span"]')).toBeNull();
+    expect(result.forward[0]?.path).toBe("/elements/sc-span");
+    expect(parsed.document.querySelector('[data-sc-id="sc-span"]')).toBeNull();
   });
 
   it("inverse patch carries html and restore position", () => {
     const parsed = fresh();
     const { inverse } = applyOp(parsed, {
       type: "removeElement",
-      target: "hf-span",
+      target: "sc-span",
     });
     expect(inverse[0]?.op).toBe("add");
     const val = inverse[0]?.value as {
@@ -435,8 +435,8 @@ describe("removeElement", () => {
       parentId: string | null;
       siblingIndex: number;
     };
-    expect(val.html).toContain("hf-span");
-    expect(val.parentId).toBe("hf-sub");
+    expect(val.html).toContain("sc-span");
+    expect(val.parentId).toBe("sc-sub");
     expect(val.siblingIndex).toBe(0);
   });
 
@@ -444,12 +444,12 @@ describe("removeElement", () => {
     const parsed = fresh();
     const { inverse } = applyOp(parsed, {
       type: "removeElement",
-      target: "hf-span",
+      target: "sc-span",
     });
     applyPatchesToDocument(parsed, inverse);
-    const restored = parsed.document.querySelector('[data-hf-id="hf-span"]');
+    const restored = parsed.document.querySelector('[data-sc-id="sc-span"]');
     expect(restored).not.toBeNull();
-    expect(restored?.parentElement?.getAttribute("data-hf-id")).toBe("hf-sub");
+    expect(restored?.parentElement?.getAttribute("data-sc-id")).toBe("sc-sub");
     expect(restored?.getAttribute("style")).toBe("opacity: 0.5");
     expect(restored?.textContent).toBe("sub text");
   });
@@ -462,33 +462,33 @@ describe("addElement", () => {
     const parsed = fresh();
     const result = applyOp(parsed, {
       type: "addElement",
-      parent: "hf-stage",
+      parent: "sc-stage",
       index: 0,
       html: '<p class="new">inserted</p>',
     });
     expect(result.meta?.newId).toBeTruthy();
     const newId = result.meta!.newId!;
-    const el = parsed.document.querySelector(`[data-hf-id="${newId}"]`);
+    const el = parsed.document.querySelector(`[data-sc-id="${newId}"]`);
     expect(el).not.toBeNull();
     expect(el?.tagName.toLowerCase()).toBe("p");
-    // Inserted at index 0 → first child of hf-stage
-    const stage = parsed.document.querySelector('[data-hf-id="hf-stage"]');
-    expect(stage?.firstElementChild?.getAttribute("data-hf-id")).toBe(newId);
+    // Inserted at index 0 → first child of sc-stage
+    const stage = parsed.document.querySelector('[data-sc-id="sc-stage"]');
+    expect(stage?.firstElementChild?.getAttribute("data-sc-id")).toBe(newId);
   });
 
   it("insert at index >= childCount appends to parent", () => {
     const parsed = fresh();
-    const stage = parsed.document.querySelector('[data-hf-id="hf-stage"]');
+    const stage = parsed.document.querySelector('[data-sc-id="sc-stage"]');
     const countBefore = stage ? Array.from(stage.children).length : 0;
     const result = applyOp(parsed, {
       type: "addElement",
-      parent: "hf-stage",
+      parent: "sc-stage",
       index: 9999,
       html: '<span class="tail">tail</span>',
     });
     const newId = result.meta!.newId!;
-    const stageAfter = parsed.document.querySelector('[data-hf-id="hf-stage"]');
-    expect(stageAfter?.lastElementChild?.getAttribute("data-hf-id")).toBe(newId);
+    const stageAfter = parsed.document.querySelector('[data-sc-id="sc-stage"]');
+    expect(stageAfter?.lastElementChild?.getAttribute("data-sc-id")).toBe(newId);
     expect(Array.from(stageAfter?.children ?? []).length).toBe(countBefore + 1);
   });
 
@@ -496,34 +496,34 @@ describe("addElement", () => {
     const parsed = fresh();
     const result = applyOp(parsed, {
       type: "addElement",
-      parent: "hf-stage",
+      parent: "sc-stage",
       index: 0,
       html: '<div class="unique-new">content</div>',
     });
     const newId = result.meta!.newId!;
     // Must not collide with any pre-existing id
-    const existingIds = ["hf-stage", "hf-title", "hf-logo", "hf-sub", "hf-span"];
+    const existingIds = ["sc-stage", "sc-title", "sc-logo", "sc-sub", "sc-span"];
     expect(existingIds).not.toContain(newId);
     // Must appear exactly once in the document
-    const all = Array.from(parsed.document.querySelectorAll(`[data-hf-id="${newId}"]`));
+    const all = Array.from(parsed.document.querySelectorAll(`[data-sc-id="${newId}"]`));
     expect(all).toHaveLength(1);
   });
 
   it("content-collision with existing element yields a distinct rehashed id", () => {
     // Insert a fragment with identical content to an existing element → dup-rehash must yield a distinct id
     const parsed = fresh();
-    // hf-logo is <img data-hf-id="hf-logo" src="/logo.png" alt="Logo" />
-    // Insert the same HTML without the data-hf-id so mintHfId runs fresh
+    // sc-logo is <img data-sc-id="sc-logo" src="/logo.png" alt="Logo" />
+    // Insert the same HTML without the data-sc-id so mintHfId runs fresh
     const result = applyOp(parsed, {
       type: "addElement",
-      parent: "hf-stage",
+      parent: "sc-stage",
       index: 0,
       html: '<img src="/logo.png" alt="Logo" />',
     });
     const newId = result.meta!.newId!;
-    expect(newId).not.toBe("hf-logo");
+    expect(newId).not.toBe("sc-logo");
     expect(newId.startsWith("hf-")).toBe(true);
-    const el = parsed.document.querySelector(`[data-hf-id="${newId}"]`);
+    const el = parsed.document.querySelector(`[data-sc-id="${newId}"]`);
     expect(el).not.toBeNull();
   });
 
@@ -531,20 +531,20 @@ describe("addElement", () => {
     const parsed = fresh();
     const result = applyOp(parsed, {
       type: "addElement",
-      parent: "hf-stage",
+      parent: "sc-stage",
       index: 0,
       html: '<div class="outer"><span class="inner-a">a</span><span class="inner-b">b</span></div>',
     });
     const rootId = result.meta!.newId!;
-    const root = parsed.document.querySelector(`[data-hf-id="${rootId}"]`);
+    const root = parsed.document.querySelector(`[data-sc-id="${rootId}"]`);
     expect(root).not.toBeNull();
-    // All children must have data-hf-id
+    // All children must have data-sc-id
     const children = root ? Array.from(root.querySelectorAll("*")) : [];
     for (const child of children) {
-      expect(child.getAttribute("data-hf-id")).toBeTruthy();
+      expect(child.getAttribute("data-sc-id")).toBeTruthy();
     }
     // All ids must be distinct
-    const allIds = [rootId, ...children.map((c) => c.getAttribute("data-hf-id") as string)];
+    const allIds = [rootId, ...children.map((c) => c.getAttribute("data-sc-id") as string)];
     expect(new Set(allIds).size).toBe(allIds.length);
   });
 
@@ -552,7 +552,7 @@ describe("addElement", () => {
     const parsed = fresh();
     const result = applyOp(parsed, {
       type: "addElement",
-      parent: "hf-sub",
+      parent: "sc-sub",
       index: 0,
       html: '<em class="em">em text</em>',
     });
@@ -569,14 +569,14 @@ describe("addElement", () => {
     const parsed = fresh();
     const { inverse, meta } = applyOp(parsed, {
       type: "addElement",
-      parent: "hf-stage",
+      parent: "sc-stage",
       index: 0,
       html: '<div class="to-undo">undo me</div>',
     });
     const newId = meta!.newId!;
-    expect(parsed.document.querySelector(`[data-hf-id="${newId}"]`)).not.toBeNull();
+    expect(parsed.document.querySelector(`[data-sc-id="${newId}"]`)).not.toBeNull();
     applyPatchesToDocument(parsed, inverse);
-    expect(parsed.document.querySelector(`[data-hf-id="${newId}"]`)).toBeNull();
+    expect(parsed.document.querySelector(`[data-sc-id="${newId}"]`)).toBeNull();
   });
 
   it("add → undo → redo: element returns with the same id (id stability)", () => {
@@ -584,25 +584,25 @@ describe("addElement", () => {
     // add
     const { forward, inverse, meta } = applyOp(parsed, {
       type: "addElement",
-      parent: "hf-stage",
+      parent: "sc-stage",
       index: 1,
       html: '<section class="redo-test">redo</section>',
     });
     const newId = meta!.newId!;
     // undo
     applyPatchesToDocument(parsed, inverse);
-    expect(parsed.document.querySelector(`[data-hf-id="${newId}"]`)).toBeNull();
+    expect(parsed.document.querySelector(`[data-sc-id="${newId}"]`)).toBeNull();
     // redo (replay forward patches)
     applyPatchesToDocument(parsed, forward);
-    const restored = parsed.document.querySelector(`[data-hf-id="${newId}"]`);
+    const restored = parsed.document.querySelector(`[data-sc-id="${newId}"]`);
     expect(restored).not.toBeNull();
-    expect(restored?.getAttribute("data-hf-id")).toBe(newId);
+    expect(restored?.getAttribute("data-sc-id")).toBe(newId);
   });
 
   it("parent: null inserts at document body root level", () => {
     // Use a simple fragment doc
     const parsed = parseMutable(
-      '<div data-hf-id="hf-root" data-hf-root style="width:100px;height:100px"></div>',
+      '<div data-sc-id="sc-root" data-sc-root style="width:100px;height:100px"></div>',
     );
     const result = applyOp(parsed, {
       type: "addElement",
@@ -611,7 +611,7 @@ describe("addElement", () => {
       html: '<aside class="body-child">aside</aside>',
     });
     const newId = result.meta!.newId!;
-    const el = parsed.document.querySelector(`[data-hf-id="${newId}"]`);
+    const el = parsed.document.querySelector(`[data-sc-id="${newId}"]`);
     expect(el).not.toBeNull();
     expect(el?.parentElement?.tagName.toLowerCase()).toBe("body");
   });
@@ -620,13 +620,13 @@ describe("addElement", () => {
     const parsed = fresh();
     const result = applyOp(parsed, {
       type: "addElement",
-      parent: "hf-sub",
+      parent: "sc-sub",
       index: 0,
       html: '<b class="bold">bold</b>',
     });
     const newId = result.meta!.newId!;
     const serialized = serializeDocument(parsed);
-    expect(serialized).toContain(`data-hf-id="${newId}"`);
+    expect(serialized).toContain(`data-sc-id="${newId}"`);
     expect(serialized).toContain("bold");
   });
 
@@ -636,7 +636,7 @@ describe("addElement", () => {
     const parsed = fresh();
     const r = validateOp(parsed, {
       type: "addElement",
-      parent: "hf-nonexistent",
+      parent: "sc-nonexistent",
       index: 0,
       html: "<div>x</div>",
     });
@@ -648,7 +648,7 @@ describe("addElement", () => {
     const parsed = fresh();
     const r = validateOp(parsed, {
       type: "addElement",
-      parent: "hf-stage",
+      parent: "sc-stage",
       index: -1,
       html: "<div>x</div>",
     });
@@ -660,7 +660,7 @@ describe("addElement", () => {
     const parsed = fresh();
     const r = validateOp(parsed, {
       type: "addElement",
-      parent: "hf-stage",
+      parent: "sc-stage",
       index: 0,
       html: "",
     });
@@ -672,7 +672,7 @@ describe("addElement", () => {
     const parsed = fresh();
     const r = validateOp(parsed, {
       type: "addElement",
-      parent: "hf-stage",
+      parent: "sc-stage",
       index: 0,
       html: "just text no element",
     });
@@ -684,7 +684,7 @@ describe("addElement", () => {
     const parsed = fresh();
     const r = validateOp(parsed, {
       type: "addElement",
-      parent: "hf-stage",
+      parent: "sc-stage",
       index: 0,
       html: "<div><script>alert(1)</scr" + "ipt></div>",
     });
@@ -706,15 +706,15 @@ describe("addElement", () => {
   // The dispatch path runs applyOp WITHOUT validateOp, so the handler must
   // re-enforce these guards itself (return EMPTY) rather than crash or insert.
   it.each([
-    { name: "unknown parent id (no crash)", parent: "hf-does-not-exist", html: "<div>x</div>" },
+    { name: "unknown parent id (no crash)", parent: "sc-does-not-exist", html: "<div>x</div>" },
     {
       name: "fragment with <script> (never inserts raw markup)",
-      parent: "hf-stage",
+      parent: "sc-stage",
       html: "<div><scr" + "ipt>alert(1)</scr" + "ipt></div>",
     },
     {
       name: "multi-root fragment (no silent drop of extra roots)",
-      parent: "hf-stage",
+      parent: "sc-stage",
       html: "<p>a</p><p>b</p>",
     },
   ])("handler guard: $name → no-op", ({ parent, html }) => {
@@ -723,30 +723,30 @@ describe("addElement", () => {
     expect(result.meta?.newId).toBeUndefined();
   });
 
-  // Regression: a scoped sub-comp parent ("hf-host/hf-leaf") whose bare leaf id
+  // Regression: a scoped sub-comp parent ("sc-host/sc-leaf") whose bare leaf id
   // also exists at top level. The forward patch must keep the scoped path so
   // redo/replay re-inserts under the SAME parent (resolveScoped), not the
   // canonical top-level dup.
   it("scoped parent: forward patch keeps the scoped path so redo targets the right parent", () => {
     const parsed = parseMutable(
-      '<div data-hf-id="hf-stage" data-hf-root style="width:100px;height:100px">' +
-        '<div data-hf-id="hf-host"><p data-hf-id="hf-leaf">in host</p></div>' +
-        '<p data-hf-id="hf-leaf">top-level dup</p>' +
+      '<div data-sc-id="sc-stage" data-sc-root style="width:100px;height:100px">' +
+        '<div data-sc-id="sc-host"><p data-sc-id="sc-leaf">in host</p></div>' +
+        '<p data-sc-id="sc-leaf">top-level dup</p>' +
         "</div>",
     );
     const result = applyOp(parsed, {
       type: "addElement",
-      parent: "hf-host/hf-leaf",
+      parent: "sc-host/sc-leaf",
       index: 0,
       html: '<span class="ins">x</span>',
     });
-    expect((result.forward[0]!.value as { parentId: string }).parentId).toBe("hf-host/hf-leaf");
+    expect((result.forward[0]!.value as { parentId: string }).parentId).toBe("sc-host/sc-leaf");
     const newId = result.meta!.newId!;
     // undo, then redo: the element must return under the HOST's leaf, not the dup.
     applyPatchesToDocument(parsed, result.inverse);
     applyPatchesToDocument(parsed, result.forward);
-    const host = parsed.document.querySelector('[data-hf-id="hf-host"]');
-    const inserted = parsed.document.querySelector(`[data-hf-id="${newId}"]`);
+    const host = parsed.document.querySelector('[data-sc-id="sc-host"]');
+    const inserted = parsed.document.querySelector(`[data-sc-id="${newId}"]`);
     expect(inserted).not.toBeNull();
     expect(host?.contains(inserted as Node)).toBe(true);
   });
@@ -756,8 +756,8 @@ describe("addElement", () => {
 
 describe("setElementStyles key normalization", () => {
   function elWith(style: string): Element {
-    const parsed = parseMutable(`<div data-hf-id="hf-x" data-hf-root style="${style}"></div>`);
-    const el = parsed.document.querySelector('[data-hf-id="hf-x"]');
+    const parsed = parseMutable(`<div data-sc-id="sc-x" data-sc-root style="${style}"></div>`);
+    const el = parsed.document.querySelector('[data-sc-id="sc-x"]');
     if (!el) throw new Error("fixture element missing");
     return el;
   }
@@ -823,7 +823,7 @@ describe("setVariableValue", () => {
     });
     expect(result.forward[0]?.path).toBe("/variables/brand-color-primary");
     expect(result.forward[0]?.value).toBe("#ff0000");
-    const root = parsed.document.querySelector("[data-hf-root]");
+    const root = parsed.document.querySelector("[data-sc-root]");
     expect(root?.getAttribute("style")).toContain("--brand-color-primary: #ff0000");
   });
 
@@ -846,7 +846,7 @@ describe("setVariableValue", () => {
     // JSON model updated
     expect(readVarDefault(parsed, "brand-color-primary")).toBe("#ff0000");
     // CSS compat prop also written
-    const root = parsed.document.querySelector("[data-hf-root]");
+    const root = parsed.document.querySelector("[data-sc-root]");
     expect(root?.getAttribute("style")).toContain("--brand-color-primary: #ff0000");
     // inverse restores
     applyPatchesToDocument(parsed, result.inverse);
@@ -884,7 +884,7 @@ describe("setVariableValue", () => {
     // JSON model updated
     expect(readVarDefault(parsed, "brand-font")).toEqual(fontValue);
     // NO CSS custom prop for object values
-    const root = parsed.document.querySelector("[data-hf-root]");
+    const root = parsed.document.querySelector("[data-sc-root]");
     const style = root?.getAttribute("style") ?? "";
     expect(style).not.toContain("--brand-font");
     // override-set key holds the object (one var.{id} key, no sub-key explosion)
@@ -916,7 +916,7 @@ describe("setVariableValue", () => {
     expect(result.forward[0]?.path).toBe("/variables/brand-logo");
     expect(result.forward[0]?.value).toEqual(imgValue);
     expect(readVarDefault(parsed, "brand-logo")).toEqual(imgValue);
-    const root = parsed.document.querySelector("[data-hf-root]");
+    const root = parsed.document.querySelector("[data-sc-root]");
     expect(root?.getAttribute("style") ?? "").not.toContain("--brand-logo");
   });
 
@@ -953,7 +953,7 @@ describe("setVariableValue", () => {
   it("B1: undo of a set on a default-less variable restores the no-default state", () => {
     const html = `<!DOCTYPE html><html data-composition-id="c1" data-composition-duration="5" data-composition-variables='${JSON.stringify(
       [{ id: "brand-x", type: "color", label: "X" }],
-    )}'><body><div data-hf-id="hf-stage" data-hf-root style="width: 1280px; height: 720px" data-duration="5"></div></body></html>`;
+    )}'><body><div data-sc-id="sc-stage" data-sc-root style="width: 1280px; height: 720px" data-duration="5"></div></body></html>`;
     const parsed = parseMutable(html);
     const before = serializeDocument(parsed);
     const result = applyOp(parsed, { type: "setVariableValue", id: "brand-x", value: "#ff0000" });
@@ -970,7 +970,7 @@ describe("setVariableValue", () => {
     const parsed = freshWithVars();
     applyOverrideSet(parsed, { "var.brand-color-primary": "#ff0000" });
     expect(readVarDefault(parsed, "brand-color-primary")).toBe("#ff0000");
-    const root = parsed.document.querySelector("[data-hf-root]");
+    const root = parsed.document.querySelector("[data-sc-root]");
     expect(root?.getAttribute("style")).toContain("--brand-color-primary: #ff0000");
   });
 
@@ -978,7 +978,7 @@ describe("setVariableValue", () => {
     const parsed = freshWithVars();
     applyOverrideSet(parsed, { "var.brand-font": { name: "Roboto", source: "x" } });
     expect(readVarDefault(parsed, "brand-font")).toEqual({ name: "Roboto", source: "x" });
-    const root = parsed.document.querySelector("[data-hf-root]");
+    const root = parsed.document.querySelector("[data-sc-root]");
     expect(root?.getAttribute("style") ?? "").not.toContain("--brand-font");
   });
 });
@@ -1089,7 +1089,7 @@ describe("removeVariable", () => {
 
   it("no-ops (empty forward/inverse) when the id isn't declared", () => {
     const parsed = freshWithVars();
-    const result = applyOp(parsed, { type: "removeVariable", id: "hf-nonexistent" });
+    const result = applyOp(parsed, { type: "removeVariable", id: "sc-nonexistent" });
     expect(result.forward).toHaveLength(0);
     expect(result.inverse).toHaveLength(0);
   });
@@ -1118,7 +1118,7 @@ describe("setCompositionMetadata", () => {
       height: 1080,
       duration: 10,
     });
-    const root = parsed.document.querySelector("[data-hf-root]");
+    const root = parsed.document.querySelector("[data-sc-root]");
     expect(root?.getAttribute("style")).toContain("width: 1920px");
     expect(root?.getAttribute("style")).toContain("height: 1080px");
     expect(root?.getAttribute("data-duration")).toBe("10");
@@ -1145,11 +1145,11 @@ describe("moveElement", () => {
     const parsed = fresh();
     const result = applyOp(parsed, {
       type: "moveElement",
-      target: "hf-title",
+      target: "sc-title",
       x: 100,
       y: 200,
     });
-    const el = parsed.document.querySelector('[data-hf-id="hf-title"]');
+    const el = parsed.document.querySelector('[data-sc-id="sc-title"]');
     expect(el?.getAttribute("data-x")).toBe("100");
     expect(el?.getAttribute("data-y")).toBe("200");
     expect(result.forward.some((p) => p.path.endsWith("/data-x"))).toBe(true);
@@ -1158,10 +1158,10 @@ describe("moveElement", () => {
 
   it("inverse restores prior data-x/data-y", () => {
     const parsed = fresh();
-    const el = parsed.document.querySelector('[data-hf-id="hf-title"]') as Element;
+    const el = parsed.document.querySelector('[data-sc-id="sc-title"]') as Element;
     el.setAttribute("data-x", "50");
     el.setAttribute("data-y", "75");
-    const result = applyOp(parsed, { type: "moveElement", target: "hf-title", x: 100, y: 200 });
+    const result = applyOp(parsed, { type: "moveElement", target: "sc-title", x: 100, y: 200 });
     applyPatchesToDocument(parsed, result.inverse);
     expect(el.getAttribute("data-x")).toBe("50");
     expect(el.getAttribute("data-y")).toBe("75");
@@ -1169,27 +1169,27 @@ describe("moveElement", () => {
 
   it("captures the pre-edit baseline on first move only", () => {
     const parsed = fresh();
-    const el = parsed.document.querySelector('[data-hf-id="hf-title"]') as Element;
+    const el = parsed.document.querySelector('[data-sc-id="sc-title"]') as Element;
     el.setAttribute("data-x", "50");
-    applyOp(parsed, { type: "moveElement", target: "hf-title", x: 100, y: 200 });
+    applyOp(parsed, { type: "moveElement", target: "sc-title", x: 100, y: 200 });
     // Baseline = the values before the first edit (absent data-y → "0").
-    expect(el.getAttribute("data-hf-edit-base-x")).toBe("50");
-    expect(el.getAttribute("data-hf-edit-base-y")).toBe("0");
+    expect(el.getAttribute("data-sc-edit-base-x")).toBe("50");
+    expect(el.getAttribute("data-sc-edit-base-y")).toBe("0");
     // A second move keeps the original baseline.
-    applyOp(parsed, { type: "moveElement", target: "hf-title", x: 300, y: 400 });
-    expect(el.getAttribute("data-hf-edit-base-x")).toBe("50");
-    expect(el.getAttribute("data-hf-edit-base-y")).toBe("0");
+    applyOp(parsed, { type: "moveElement", target: "sc-title", x: 300, y: 400 });
+    expect(el.getAttribute("data-sc-edit-base-x")).toBe("50");
+    expect(el.getAttribute("data-sc-edit-base-y")).toBe("0");
     expect(el.getAttribute("data-x")).toBe("300");
     expect(el.getAttribute("data-y")).toBe("400");
   });
 
   it("inverse of the first move removes the baseline attributes", () => {
     const parsed = fresh();
-    const el = parsed.document.querySelector('[data-hf-id="hf-title"]') as Element;
-    const result = applyOp(parsed, { type: "moveElement", target: "hf-title", x: 100, y: 200 });
+    const el = parsed.document.querySelector('[data-sc-id="sc-title"]') as Element;
+    const result = applyOp(parsed, { type: "moveElement", target: "sc-title", x: 100, y: 200 });
     applyPatchesToDocument(parsed, result.inverse);
-    expect(el.getAttribute("data-hf-edit-base-x")).toBeNull();
-    expect(el.getAttribute("data-hf-edit-base-y")).toBeNull();
+    expect(el.getAttribute("data-sc-edit-base-x")).toBeNull();
+    expect(el.getAttribute("data-sc-edit-base-y")).toBeNull();
     expect(el.getAttribute("data-x")).toBeNull();
     expect(el.getAttribute("data-y")).toBeNull();
   });
@@ -1199,11 +1199,11 @@ describe("moveElement", () => {
 
 describe("validateOp", () => {
   it("returns ok:true for existing element", () => {
-    expect(validateOp(fresh(), { type: "setStyle", target: "hf-title", styles: {} }).ok).toBe(true);
+    expect(validateOp(fresh(), { type: "setStyle", target: "sc-title", styles: {} }).ok).toBe(true);
   });
 
   it("returns ok:false / E_TARGET_NOT_FOUND for unknown element id", () => {
-    const r = validateOp(fresh(), { type: "setStyle", target: "hf-unknown", styles: {} });
+    const r = validateOp(fresh(), { type: "setStyle", target: "sc-unknown", styles: {} });
     expect(r.ok).toBe(false);
     if (!r.ok) expect(r.code).toBe("E_TARGET_NOT_FOUND");
   });
@@ -1246,7 +1246,7 @@ describe("Phase 3b ops", () => {
     expect(() =>
       applyOp(fresh(), {
         type: "addGsapTween",
-        target: "hf-title",
+        target: "sc-title",
         tween: { method: "from", properties: { opacity: 0 } },
       }),
     ).toThrow();
@@ -1258,7 +1258,7 @@ describe("Phase 3b ops", () => {
     if (!r1.ok) expect(r1.code).toBe("E_NO_GSAP_SCRIPT");
     const r2 = validateOp(fresh(), {
       type: "addGsapTween",
-      target: "hf-title",
+      target: "sc-title",
       tween: { method: "from", properties: { opacity: 0 } },
     });
     expect(r2.ok).toBe(false);
@@ -1267,7 +1267,7 @@ describe("Phase 3b ops", () => {
 
   it("unrollDynamicAnimations rejects an empty element list (would delete the animation)", () => {
     const parsed = parseMutable(
-      `<div data-hf-id="hf-r" data-hf-root></div>` +
+      `<div data-sc-id="sc-r" data-sc-root></div>` +
         `<script>var tl = gsap.timeline({ paused: true }); tl.to("#x", { x: 1 }, 0);</script>`,
     );
     const r = validateOp(parsed, {
@@ -1281,7 +1281,7 @@ describe("Phase 3b ops", () => {
 
   it("materializeKeyframes rejects an empty keyframe list (would empty the animation)", () => {
     const parsed = parseMutable(
-      `<div data-hf-id="hf-r" data-hf-root></div>` +
+      `<div data-sc-id="sc-r" data-sc-root></div>` +
         `<script>var tl = gsap.timeline({ paused: true }); tl.to("#x", { x: 1 }, 0);</script>`,
     );
     const r = validateOp(parsed, {
@@ -1308,15 +1308,15 @@ describe("Phase 3b ops", () => {
 
 describe("setCompositionMetadata data-* channel", () => {
   const ATTR_HTML = `
-<div data-hf-id="hf-stage" data-hf-root data-width="1280" data-height="720" style="width: 1280px; height: 720px">
-  <h1 data-hf-id="hf-title">Hi</h1>
+<div data-sc-id="sc-stage" data-sc-root data-width="1280" data-height="720" style="width: 1280px; height: 720px">
+  <h1 data-sc-id="sc-title">Hi</h1>
 </div>
 `.trim();
 
   it("updates data-width/data-height when the composition carries them", () => {
     const parsed = parseMutable(ATTR_HTML);
     applyOp(parsed, { type: "setCompositionMetadata", width: 1920, height: 1080 });
-    const root = parsed.document.querySelector("[data-hf-root]");
+    const root = parsed.document.querySelector("[data-sc-root]");
     expect(root?.getAttribute("data-width")).toBe("1920");
     expect(root?.getAttribute("data-height")).toBe("1080");
     expect(root?.getAttribute("style")).toContain("width: 1920px");
@@ -1333,7 +1333,7 @@ describe("setCompositionMetadata data-* channel", () => {
   it("does not mint data-* attributes on compositions without them", () => {
     const parsed = fresh();
     applyOp(parsed, { type: "setCompositionMetadata", width: 1920 });
-    const root = parsed.document.querySelector("[data-hf-root]");
+    const root = parsed.document.querySelector("[data-sc-root]");
     expect(root?.hasAttribute("data-width")).toBe(false);
     expect(root?.getAttribute("style")).toContain("width: 1920px");
   });
@@ -1347,12 +1347,12 @@ describe("reorderElements", () => {
     applyOp(parsed, {
       type: "reorderElements",
       entries: [
-        { target: "hf-title", zIndex: 2 },
-        { target: "hf-logo", zIndex: 1 },
+        { target: "sc-title", zIndex: 2 },
+        { target: "sc-logo", zIndex: 1 },
       ],
     });
-    const title = parsed.document.querySelector("[data-hf-id='hf-title']") as HTMLElement | null;
-    const logo = parsed.document.querySelector("[data-hf-id='hf-logo']") as HTMLElement | null;
+    const title = parsed.document.querySelector("[data-sc-id='sc-title']") as HTMLElement | null;
+    const logo = parsed.document.querySelector("[data-sc-id='sc-logo']") as HTMLElement | null;
     expect(title?.style.zIndex).toBe("2");
     expect(logo?.style.zIndex).toBe("1");
   });
@@ -1362,7 +1362,7 @@ describe("reorderElements", () => {
     const before = serializeDocument(parsed);
     const { inverse } = applyOp(parsed, {
       type: "reorderElements",
-      entries: [{ target: "hf-title", zIndex: 5 }],
+      entries: [{ target: "sc-title", zIndex: 5 }],
     });
     applyPatchesToDocument(parsed, inverse);
     expect(serializeDocument(parsed)).toBe(before);
@@ -1371,7 +1371,7 @@ describe("reorderElements", () => {
   it("validateOp returns ok:true for existing targets", () => {
     const r = validateOp(fresh(), {
       type: "reorderElements",
-      entries: [{ target: "hf-title", zIndex: 1 }],
+      entries: [{ target: "sc-title", zIndex: 1 }],
     });
     expect(r.ok).toBe(true);
   });
@@ -1379,7 +1379,7 @@ describe("reorderElements", () => {
   it("validateOp returns E_TARGET_NOT_FOUND for unknown target", () => {
     const r = validateOp(fresh(), {
       type: "reorderElements",
-      entries: [{ target: "hf-unknown", zIndex: 1 }],
+      entries: [{ target: "sc-unknown", zIndex: 1 }],
     });
     expect(r.ok).toBe(false);
     if (!r.ok) expect(r.code).toBe("E_TARGET_NOT_FOUND");
@@ -1391,11 +1391,11 @@ describe("reorderElements", () => {
     const { forward, inverse } = applyOp(parsed, {
       type: "reorderElements",
       entries: [
-        { target: "hf-title", zIndex: 2 },
-        { target: "hf-title", zIndex: 9 },
+        { target: "sc-title", zIndex: 2 },
+        { target: "sc-title", zIndex: 9 },
       ],
     });
-    const title = parsed.document.querySelector("[data-hf-id='hf-title']") as HTMLElement | null;
+    const title = parsed.document.querySelector("[data-sc-id='sc-title']") as HTMLElement | null;
     expect(title?.style.zIndex).toBe("9"); // last write wins
     expect(forward.length).toBe(1); // one patch, not two on the same path
     // Inverse must be applied in reverse order (session reverses single-dispatch

@@ -303,7 +303,7 @@ describe("font rules", () => {
 
     it("does not flag installed registry blocks that declare fonts via Google Fonts", async () => {
       const html =
-        `<!-- hyperframes-registry-item: my-block -->\n` +
+        `<!-- smashcut-registry-item: my-block -->\n` +
         `<div data-composition-id="test" data-width="1920" data-height="1080">
         <style>body { font-family: 'Poppins', sans-serif; }</style>
       </div>`;

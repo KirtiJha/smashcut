@@ -2,7 +2,7 @@
 
 ## Intent
 
-This POC should feel like a real VS Code tutorial capture, not a generic code window. The purpose is to prove that HyperFrames can render code-writing scenes with faithful product context and theme-aware polish.
+This POC should feel like a real VS Code tutorial capture, not a generic code window. The purpose is to prove that SmashCut can render code-writing scenes with faithful product context and theme-aware polish.
 
 ## Visual Identity
 

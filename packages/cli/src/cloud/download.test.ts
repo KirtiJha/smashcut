@@ -22,7 +22,7 @@ function makeErrorFetch(status: number, statusText = "Not Found"): typeof fetch 
 describe("cloud/download", () => {
   let dir: string;
   beforeEach(() => {
-    dir = mkdtempSync(join(tmpdir(), "hf-cloud-download-"));
+    dir = mkdtempSync(join(tmpdir(), "sc-cloud-download-"));
   });
   afterEach(() => {
     rmSync(dir, { recursive: true, force: true });

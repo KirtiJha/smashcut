@@ -4,7 +4,7 @@ import { readdirSync } from "node:fs";
 // `isSafePath` lives at the package root so non-studio-api layers (compiler,
 // CLI, engine) can share it without a backwards dependency on studio-api.
 // Re-exported here for back-compat with existing `../helpers/safePath.js` imports.
-export { isSafePath, resolveWithinProject } from "@hyperframes/core";
+export { isSafePath, resolveWithinProject } from "@smashcut/core";
 
 const IGNORE_DIRS = new Set([
   ".thumbnails",
@@ -15,13 +15,13 @@ const IGNORE_DIRS = new Set([
 ]);
 
 function shouldIgnoreDir(rel: string): boolean {
-  return rel === ".hyperframes/backup";
+  return rel === ".smashcut/backup";
 }
 
 /**
  * True when any directory segment of a relative path is a dot-directory or
  * node_modules. Projects that vendor tooling assets under dot-directories
- * (.hyperframes/, .cache/, …) ship example/preset HTML that must not surface
+ * (.smashcut/, .cache/, …) ship example/preset HTML that must not surface
  * as project compositions or studio lint targets (#1384). The file tree is
  * deliberately not filtered — this only gates discovery.
  */

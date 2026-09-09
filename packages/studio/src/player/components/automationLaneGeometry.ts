@@ -17,8 +17,8 @@ import {
   type AutomationRange,
   type HfAutomation,
   type HfAutomationLane,
-} from "@hyperframes/core/audio-automation";
-import { getAudioFxDef, type HfAudioFxChain } from "@hyperframes/core/audio-fx";
+} from "@smashcut/core/audio-automation";
+import { getAudioFxDef, type HfAudioFxChain } from "@smashcut/core/audio-fx";
 
 /** Points nearer than this in clip seconds are the same point, not two. */
 export const POINT_MERGE_SEC = 0.02;

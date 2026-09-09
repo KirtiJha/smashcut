@@ -16,7 +16,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 ```html type-match-cut.html
 <!doctype html>
 <!--
-  type-match-cut: HyperFrames video primitive
+  type-match-cut: SmashCut video primitive
 
   A headline splits into upper and lower word groups. An incoming editor
   panel appears in the negative space between them, holds there as a visible
@@ -277,8 +277,8 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
             var topWords = root.querySelector(".tmc-top");
             var bottomWords = root.querySelector(".tmc-bottom");
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             var text = vars.text == null ? "Meet the new editor" : String(vars.text);
@@ -427,7 +427,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 
 ## Install
 
-<InstallCommand command="npx hyperframes add type-match-cut" item="type-match-cut" />
+<InstallCommand command="npx smashcut add type-match-cut" item="type-match-cut" />
 
 That writes one file: `compositions/components/type-match-cut.html`.
 
@@ -466,7 +466,7 @@ defaults, so this behaves exactly like the preview above until you change one:
 ```html
 <!doctype html>
 <!--
-  type-match-cut: HyperFrames video primitive
+  type-match-cut: SmashCut video primitive
 
   A headline splits into upper and lower word groups. An incoming editor
   panel appears in the negative space between them, holds there as a visible
@@ -727,8 +727,8 @@ defaults, so this behaves exactly like the preview above until you change one:
             var topWords = root.querySelector(".tmc-top");
             var bottomWords = root.querySelector(".tmc-bottom");
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             var text = vars.text == null ? "Meet the new editor" : String(vars.text);

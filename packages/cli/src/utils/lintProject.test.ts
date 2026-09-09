@@ -2,11 +2,11 @@ import { describe, it, expect, afterEach } from "vitest";
 import { mkdirSync, mkdtempSync, writeFileSync, rmSync } from "node:fs";
 import { join } from "node:path";
 import { tmpdir } from "node:os";
-import type { HyperframeLintFinding } from "@hyperframes/core/lint";
+import type { HyperframeLintFinding } from "@smashcut/core/lint";
 import { hasDefinitiveEntryMismatch, lintProject, shouldBlockRender } from "./lintProject.js";
 
 function tmpProject(name: string): string {
-  return mkdtempSync(join(tmpdir(), `hf-test-${name}-`));
+  return mkdtempSync(join(tmpdir(), `sc-test-${name}-`));
 }
 
 function validHtml(compId = "main"): string {
@@ -315,10 +315,10 @@ function validHtmlWithAudioSrc(src: string): string {
 function validHtmlWithMaskImageUrl(url: string): string {
   return `<html><body>
   <div data-composition-id="main" data-width="1920" data-height="1080">
-    <div class="hf-texture-text hf-texture-lava">TEXT</div>
+    <div class="sc-texture-text sc-texture-lava">TEXT</div>
   </div>
   <style>
-    .hf-texture-lava {
+    .sc-texture-lava {
       mask-image: url("${url}");
     }
   </style>
@@ -788,10 +788,10 @@ describe("texture_mask_asset_not_found", () => {
   it("errors when CSS mask-image references a missing local texture", async () => {
     const html = `<html><body>
   <div data-composition-id="main" data-width="1920" data-height="1080">
-    <div class="hf-texture-text hf-texture-lava">TEXT</div>
+    <div class="sc-texture-text sc-texture-lava">TEXT</div>
   </div>
   <style>
-    .hf-texture-lava {
+    .sc-texture-lava {
       -webkit-mask-image: url("masks/lava.png");
       mask-image: url("masks/lava.png");
     }
@@ -814,10 +814,10 @@ describe("texture_mask_asset_not_found", () => {
   it("does not error when the referenced texture mask exists", async () => {
     const html = `<html><body>
   <div data-composition-id="main" data-width="1920" data-height="1080">
-    <div class="hf-texture-text hf-texture-lava">TEXT</div>
+    <div class="sc-texture-text sc-texture-lava">TEXT</div>
   </div>
   <style>
-    .hf-texture-lava {
+    .sc-texture-lava {
       -webkit-mask-image: url("masks/lava.png");
       mask-image: url("masks/lava.png");
     }
@@ -840,14 +840,14 @@ describe("texture_mask_asset_not_found", () => {
     const project = makeProject(validHtml(), {
       "scene.html": `<html><head><link rel="stylesheet" href="scene.css"></head><body>
   <div data-composition-id="scene" data-width="1920" data-height="1080">
-    <div class="hf-texture-text hf-texture-lava">TEXT</div>
+    <div class="sc-texture-text sc-texture-lava">TEXT</div>
   </div>
   <script>window.__timelines = window.__timelines || {}; window.__timelines["scene"] = gsap.timeline({ paused: true });</script>
 </body></html>`,
     });
     writeFileSync(
       join(project, "compositions", "scene.css"),
-      '.hf-texture-lava { mask-image: url("masks/lava.png"); }',
+      '.sc-texture-lava { mask-image: url("masks/lava.png"); }',
     );
     mkdirSync(join(project, "compositions", "masks"), { recursive: true });
     writeFileSync(join(project, "compositions", "masks", "lava.png"), "fake");
@@ -865,14 +865,14 @@ describe("texture_mask_asset_not_found", () => {
     const project = makeProject(validHtml(), {
       "scene.html": `<html><head><link rel="stylesheet" href="${encodedFilename}"></head><body>
   <div data-composition-id="scene" data-width="1920" data-height="1080">
-    <div class="hf-texture-text hf-texture-lava">TEXT</div>
+    <div class="sc-texture-text sc-texture-lava">TEXT</div>
   </div>
   <script>window.__timelines = window.__timelines || {}; window.__timelines["scene"] = gsap.timeline({ paused: true });</script>
 </body></html>`,
     });
     writeFileSync(
       join(project, "compositions", decodeURIComponent(encodedFilename)),
-      '.hf-texture-lava { mask-image: url("masks/missing.png"); }',
+      '.sc-texture-lava { mask-image: url("masks/missing.png"); }',
     );
 
     const { results } = await lintProject(project);
@@ -887,10 +887,10 @@ describe("texture_mask_asset_not_found", () => {
   it("resolves root-absolute mask-image URLs from the project root", async () => {
     const html = `<html><body>
   <div data-composition-id="main" data-width="1920" data-height="1080">
-    <div class="hf-texture-text hf-texture-lava">TEXT</div>
+    <div class="sc-texture-text sc-texture-lava">TEXT</div>
   </div>
   <style>
-    .hf-texture-lava {
+    .sc-texture-lava {
       -webkit-mask-image: url("/assets/texture-mask-text/masks/lava.png");
       mask-image: url("/assets/texture-mask-text/masks/lava.png");
     }

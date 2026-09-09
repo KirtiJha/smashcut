@@ -9,12 +9,12 @@ import { InstallCommand } from "/snippets/install-command.jsx";
   className="w-full aspect-video rounded-xl border-0 bg-zinc-100 dark:bg-zinc-800"
   title="keyframe-scrub-stack preview"
   loading="lazy"
-  srcDoc={`<!doctype html><html><head><meta charset="utf-8"><style>html,body{margin:0;height:100%;overflow:hidden;background:transparent}hyperframes-player{display:block;width:100%;height:100%}</style><script src="https://cdn.jsdelivr.net/npm/@hyperframes/player@latest/dist/hyperframes-player.global.js"><\/script></head><body><script>fetch("/public/catalog/components/keyframe-scrub-stack.json").then(function(r){return r.json()}).then(function(d){var p=document.createElement("hyperframes-player");p.setAttribute("srcdoc",d.html);p.setAttribute("controls","");p.setAttribute("autoplay","");p.setAttribute("loop","");p.setAttribute("muted","");p.setAttribute("poster","https://static.heygen.ai/hyperframes-oss/docs/images/catalog/components/keyframe-scrub-stack.png");document.body.appendChild(p)});<\/script></body></html>`}
+  srcDoc={`<!doctype html><html><head><meta charset="utf-8"><style>html,body{margin:0;height:100%;overflow:hidden;background:transparent}smashcut-player{display:block;width:100%;height:100%}</style><script src="https://cdn.jsdelivr.net/npm/@smashcut/player@latest/dist/smashcut-player.global.js"><\/script></head><body><script>fetch("/public/catalog/components/keyframe-scrub-stack.json").then(function(r){return r.json()}).then(function(d){var p=document.createElement("smashcut-player");p.setAttribute("srcdoc",d.html);p.setAttribute("controls","");p.setAttribute("autoplay","");p.setAttribute("loop","");p.setAttribute("muted","");p.setAttribute("poster","https://static.heygen.ai/smashcut-oss/docs/images/catalog/components/keyframe-scrub-stack.png");document.body.appendChild(p)});<\/script></body></html>`}
 />
 
 ## Install
 
-<InstallCommand command="npx hyperframes add keyframe-scrub-stack" item="keyframe-scrub-stack" />
+<InstallCommand command="npx smashcut add keyframe-scrub-stack" item="keyframe-scrub-stack" />
 
 That writes one file: `compositions/components/keyframe-scrub-stack.html`.
 
@@ -24,14 +24,14 @@ That writes one file: `compositions/components/keyframe-scrub-stack.html`.
 
 ```html
 <!--
-  Keyframe Scrub Stack - advanced HyperFrames primitive.
+  Keyframe Scrub Stack - advanced SmashCut primitive.
 
   This is intentionally seekable: drive it from a paused GSAP timeline.
   MotionPath examples require GSAP MotionPathPlugin. Three.js examples expose
   a render(progress) adapter instead of a free-running requestAnimationFrame loop.
 -->
 
-<div class="hf-advanced-keyframe-scrub-stack">
+<div class="sc-advanced-keyframe-scrub-stack">
   <div class="stack">
     <div class="card" style="--i: 0"></div>
     <div class="card" style="--i: 1"></div>
@@ -40,16 +40,16 @@ That writes one file: `compositions/components/keyframe-scrub-stack.html`.
 </div>
 
 <style>
-  .hf-advanced-keyframe-scrub-stack {
-    --hf-accent: var(--accent, rgba(17, 24, 39, 0.72));
-    --hf-l1: rgba(17, 24, 39, 0.72);
-    --hf-l3: rgba(17, 24, 39, 0.18);
-    --hf-l4: rgba(17, 24, 39, 0.08);
-    --hf-hair: rgba(17, 24, 39, 0.14);
-    color: var(--hf-l1);
+  .sc-advanced-keyframe-scrub-stack {
+    --sc-accent: var(--accent, rgba(17, 24, 39, 0.72));
+    --sc-l1: rgba(17, 24, 39, 0.72);
+    --sc-l3: rgba(17, 24, 39, 0.18);
+    --sc-l4: rgba(17, 24, 39, 0.08);
+    --sc-hair: rgba(17, 24, 39, 0.14);
+    color: var(--sc-l1);
     font-family: Inter, system-ui, sans-serif;
   }
-  .hf-advanced-keyframe-scrub-stack {
+  .sc-advanced-keyframe-scrub-stack {
     width: 720px;
     min-height: 420px;
     border-radius: 30px;
@@ -59,53 +59,53 @@ That writes one file: `compositions/components/keyframe-scrub-stack.html`.
     display: grid;
     place-items: center;
   }
-  .hf-advanced-keyframe-scrub-stack .grid {
+  .sc-advanced-keyframe-scrub-stack .grid {
     display: grid;
     grid-template-columns: repeat(8, 46px);
     gap: 10px;
   }
-  .hf-advanced-keyframe-scrub-stack .cell {
+  .sc-advanced-keyframe-scrub-stack .cell {
     width: 46px;
     height: 46px;
     border-radius: 14px;
-    background: var(--hf-l1);
-    transform: translateY(var(--hf-cell-y, 0px)) scale(var(--hf-cell-scale, 1));
-    opacity: var(--hf-cell-opacity, 1);
+    background: var(--sc-l1);
+    transform: translateY(var(--sc-cell-y, 0px)) scale(var(--sc-cell-scale, 1));
+    opacity: var(--sc-cell-opacity, 1);
   }
-  .hf-advanced-keyframe-scrub-stack svg {
+  .sc-advanced-keyframe-scrub-stack svg {
     width: 520px;
     height: 220px;
     overflow: visible;
   }
-  .hf-advanced-keyframe-scrub-stack path {
+  .sc-advanced-keyframe-scrub-stack path {
     fill: none;
-    stroke: var(--hf-accent);
+    stroke: var(--sc-accent);
     stroke-width: 14;
     stroke-linecap: round;
     stroke-dasharray: 900;
-    stroke-dashoffset: var(--hf-dash, 0);
+    stroke-dashoffset: var(--sc-dash, 0);
   }
-  .hf-advanced-keyframe-scrub-stack .stack {
+  .sc-advanced-keyframe-scrub-stack .stack {
     position: relative;
     width: 520px;
     height: 260px;
   }
-  .hf-advanced-keyframe-scrub-stack .card {
+  .sc-advanced-keyframe-scrub-stack .card {
     position: absolute;
     inset: 0;
     border-radius: 26px;
-    background: linear-gradient(var(--hf-l4), var(--hf-l4)), #ffffff;
-    border: 1px solid var(--hf-hair);
+    background: linear-gradient(var(--sc-l4), var(--sc-l4)), #ffffff;
+    border: 1px solid var(--sc-hair);
     box-shadow: 0 20px 54px rgba(15, 23, 42, 0.14);
-    transform: translateY(var(--hf-card-y, 0px)) scale(var(--hf-card-scale, 1));
-    opacity: var(--hf-card-opacity, 1);
+    transform: translateY(var(--sc-card-y, 0px)) scale(var(--sc-card-scale, 1));
+    opacity: var(--sc-card-opacity, 1);
   }
 </style>
 
 <!--
   Timeline integration:
   const startTime = 0;
-  tl.fromTo('.hf-advanced-keyframe-scrub-stack .card', { '--hf-card-y': '42px', '--hf-card-scale': 0.88, '--hf-card-opacity': 0 }, { '--hf-card-y': (i) => (i * 26) + 'px', '--hf-card-scale': (i) => 1 - i * 0.04, '--hf-card-opacity': 1, duration: 0.48, stagger: 0.12, ease: 'back.out(1.6)' }, startTime);
+  tl.fromTo('.sc-advanced-keyframe-scrub-stack .card', { '--sc-card-y': '42px', '--sc-card-scale': 0.88, '--sc-card-opacity': 0 }, { '--sc-card-y': (i) => (i * 26) + 'px', '--sc-card-scale': (i) => 1 - i * 0.04, '--sc-card-opacity': 1, duration: 0.48, stagger: 0.12, ease: 'back.out(1.6)' }, startTime);
 -->
 ```
 
@@ -117,7 +117,7 @@ Open `compositions/components/keyframe-scrub-stack.html` and paste its contents 
 
 {/* hf:generated-footer */}
 
-Tagged `advanced-motion` `anime-inspired` `hyperframes-native`.
+Tagged `advanced-motion` `anime-inspired` `smashcut-native`.
 
 ## Related topics
 

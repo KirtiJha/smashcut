@@ -11,14 +11,14 @@ import {
   applyAudioFxProfile,
   audioFxProfileStrength,
   getAudioFxProfile,
-} from "@hyperframes/core/audio-fx-profiles";
+} from "@smashcut/core/audio-fx-profiles";
 import type {
   HfAudioFxDef,
   HfAudioFxNode,
   HfAudioFxParam,
   HfAudioFxParamValues,
-} from "@hyperframes/core/audio-fx";
-import type { EFFECT_COPY } from "@hyperframes/core/audio-fx-copy";
+} from "@smashcut/core/audio-fx";
+import type { EFFECT_COPY } from "@smashcut/core/audio-fx-copy";
 import { trackProfileCommitted } from "./audioFxTelemetry.js";
 import { FxParamRow } from "./propertyPanelFxControls.js";
 import { FxBandRuler } from "./propertyPanelFxBandRuler.js";
@@ -57,7 +57,7 @@ function FxNodeDerivedKnob({
   if (!derived) return null;
   return (
     <>
-      <div className="hf-fx-params space-y-0.5 border-t border-panel-border-input px-1.5 py-1.5">
+      <div className="sc-fx-params space-y-0.5 border-t border-panel-border-input px-1.5 py-1.5">
         <FxParamRow
           param={derived}
           value={audioFxProfileStrength(node.type, params)}
@@ -70,7 +70,7 @@ function FxNodeDerivedKnob({
         />
       </div>
       {profile ? (
-        <p className="hf-fx-node-ends flex justify-between gap-2 px-1.5 pb-1 text-[9px] text-panel-text-2">
+        <p className="sc-fx-node-ends flex justify-between gap-2 px-1.5 pb-1 text-[9px] text-panel-text-2">
           <span className="truncate">{profile.ends.low}</span>
           <span className="truncate text-right">{profile.ends.high}</span>
         </p>
@@ -129,7 +129,7 @@ function FxNodePrimaryKnob({
           where the control is; this tells them which way to move it, which is
           the question they actually have. */}
       {copy?.primaryEnds ? (
-        <p className="hf-fx-node-ends flex justify-between gap-2 px-1.5 pb-1 text-[9px] text-panel-text-2">
+        <p className="sc-fx-node-ends flex justify-between gap-2 px-1.5 pb-1 text-[9px] text-panel-text-2">
           <span className="truncate">{copy.primaryEnds.low}</span>
           <span className="truncate text-right">{copy.primaryEnds.high}</span>
         </p>
@@ -195,7 +195,7 @@ export function FxNodeOpenBody({
     <>
       {/* What it is for, before what it is made of. */}
       {copy?.does ? (
-        <p className="hf-fx-node-does border-t border-panel-border-input px-1.5 py-1 text-[10px] text-panel-text-2">
+        <p className="sc-fx-node-does border-t border-panel-border-input px-1.5 py-1 text-[10px] text-panel-text-2">
           {copy.does}
         </p>
       ) : null}
@@ -237,7 +237,7 @@ export function FxNodeOpenBody({
       {oneKnob ? (
         <button
           type="button"
-          className="hf-fx-node-details flex w-full items-center gap-1 border-t border-panel-border-input px-1.5 py-1 text-left font-mono text-[9px] uppercase tracking-wide text-panel-text-2 hover:text-panel-text-0"
+          className="sc-fx-node-details flex w-full items-center gap-1 border-t border-panel-border-input px-1.5 py-1 text-left font-mono text-[9px] uppercase tracking-wide text-panel-text-2 hover:text-panel-text-0"
           aria-expanded={details}
           onClick={onToggleDetails}
         >
@@ -245,7 +245,7 @@ export function FxNodeOpenBody({
           Details — {registryDef.label}
         </button>
       ) : (
-        <p className="hf-fx-node-mechanism border-t border-panel-border-input px-1.5 pt-1 font-mono text-[9px] uppercase tracking-wide text-panel-text-2">
+        <p className="sc-fx-node-mechanism border-t border-panel-border-input px-1.5 pt-1 font-mono text-[9px] uppercase tracking-wide text-panel-text-2">
           Details — {registryDef.label}
         </p>
       )}

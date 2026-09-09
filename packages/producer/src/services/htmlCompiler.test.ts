@@ -5,10 +5,10 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { runInThisContext } from "node:vm";
 import { parseHTML } from "linkedom";
-import { interpolateVolumeGain } from "@hyperframes/core/media-volume-envelope";
-import { redactTelemetryString } from "@hyperframes/core";
+import { interpolateVolumeGain } from "@smashcut/core/media-volume-envelope";
+import { redactTelemetryString } from "@smashcut/core";
 import { defaultLogger } from "../logger.js";
-import { NotMediaPayloadError } from "@hyperframes/engine";
+import { NotMediaPayloadError } from "@smashcut/engine";
 import {
   collectExternalAssets,
   compileForRender,
@@ -84,12 +84,12 @@ describe("discoverMediaFromBrowser", () => {
     );
 
     expect(media).toHaveLength(1);
-    expect(media[0]).toMatchObject({ id: "hf-img-1", tagName: "image" });
+    expect(media[0]).toMatchObject({ id: "sc-img-1", tagName: "image" });
   });
 
   it("uses intrinsic duration only for variable media with an inferred duration", async () => {
     const media = await discover(
-      `<audio id="inferred" src="fallback.wav" data-start="0" data-duration="3" data-end="3" data-var-src="track" data-hf-inferred-duration></audio>
+      `<audio id="inferred" src="fallback.wav" data-start="0" data-duration="3" data-end="3" data-var-src="track" data-sc-inferred-duration></audio>
        <audio id="authored" src="fallback.wav" data-start="0" data-duration="3" data-end="3" data-var-src="track"></audio>`,
       { inferred: "selected.wav", authored: "selected.wav" },
       false,
@@ -130,11 +130,11 @@ describe("discoverMediaFromBrowser", () => {
 
   it("reports colliding empty-src videos by render id, not author id", async () => {
     const media = await discover(
-      `<video id="clip" data-hf-render-id="clip" src="" data-start="0" data-end="4" data-media-start="10"></video>` +
-        `<video id="clip" data-hf-render-id="clip__hf2" src="" data-start="4" data-end="8" data-media-start="40"></video>`,
+      `<video id="clip" data-sc-render-id="clip" src="" data-start="0" data-end="4" data-media-start="10"></video>` +
+        `<video id="clip" data-sc-render-id="clip__sc2" src="" data-start="4" data-end="8" data-media-start="40"></video>`,
       {},
     );
-    expect(media.map((entry) => entry.id)).toEqual(["clip", "clip__hf2"]);
+    expect(media.map((entry) => entry.id)).toEqual(["clip", "clip__sc2"]);
     expect(media.map((entry) => entry.mediaStart)).toEqual([10, 40]);
   });
 });
@@ -158,16 +158,16 @@ function validTestImageResponse(): Response {
 describe("injectSdkPositionEditsRenderScript", () => {
   it("injects before </body> when SDK position-edit markers are present", () => {
     const html =
-      '<html><body><h1 data-x="-231" data-y="-139" data-hf-edit-base-x="0" data-hf-edit-base-y="0">Hi</h1></body></html>';
+      '<html><body><h1 data-x="-231" data-y="-139" data-sc-edit-base-x="0" data-sc-edit-base-y="0">Hi</h1></body></html>';
     const out = injectSdkPositionEditsRenderScript(html);
     expect(out).toContain("<script>");
     expect(out.indexOf("<script>")).toBeLessThan(out.indexOf("</body>"));
-    expect(out).toContain("data-hf-edit-base-x");
+    expect(out).toContain("data-sc-edit-base-x");
   });
 
   it("appends the script when there is no </body> tag", () => {
-    const out = injectSdkPositionEditsRenderScript('<div data-hf-edit-base-y="0"></div>');
-    expect(out.startsWith('<div data-hf-edit-base-y="0"></div>')).toBe(true);
+    const out = injectSdkPositionEditsRenderScript('<div data-sc-edit-base-y="0"></div>');
+    expect(out.startsWith('<div data-sc-edit-base-y="0"></div>')).toBe(true);
     expect(out).toContain("<script>");
   });
 
@@ -185,7 +185,7 @@ describe("collectExternalAssets", () => {
 
   beforeAll(() => {
     // Create a project dir and an external dir with assets
-    const base = mkdtempSync(join(tmpdir(), "hf-compiler-test-"));
+    const base = mkdtempSync(join(tmpdir(), "sc-compiler-test-"));
     projectDir = join(base, "project");
     externalDir = join(base, "external");
     mkdirSync(projectDir, { recursive: true });
@@ -212,7 +212,7 @@ describe("collectExternalAssets", () => {
     expect(result.externalAssets.size).toBe(1);
 
     const [safeKey, absPath] = [...result.externalAssets.entries()][0]!;
-    expect(safeKey).toContain("hf-ext/");
+    expect(safeKey).toContain("sc-ext/");
     expect(safeKey).toContain("external/hero.png");
     expect(absPath).toBe(join(externalDir, "hero.png"));
     expect(result.html).toContain(safeKey);
@@ -223,7 +223,7 @@ describe("collectExternalAssets", () => {
     const html = `<html><head><style>.bg { background: url(../external/hero.png); }</style></head><body></body></html>`;
     const result = collectExternalAssets(html, projectDir);
     expect(result.externalAssets.size).toBe(1);
-    expect(result.html).toContain("hf-ext/");
+    expect(result.html).toContain("sc-ext/");
     expect(result.html).not.toContain("../external/hero.png");
   });
 
@@ -231,7 +231,7 @@ describe("collectExternalAssets", () => {
     const html = `<html><body><div style="background-image: url('../external/hero.png')"></div></body></html>`;
     const result = collectExternalAssets(html, projectDir);
     expect(result.externalAssets.size).toBe(1);
-    expect(result.html).toContain("hf-ext/");
+    expect(result.html).toContain("sc-ext/");
   });
 
   it("skips http/https URLs", () => {
@@ -608,7 +608,7 @@ describe("detectRenderModeHints", () => {
   });
 
   it("does not recommend screenshot mode for nested compositions that hoist GSAP from a CDN script", async () => {
-    const projectDir = mkdtempSync(join(tmpdir(), "hf-render-mode-"));
+    const projectDir = mkdtempSync(join(tmpdir(), "sc-render-mode-"));
     const compositionsDir = join(projectDir, "compositions");
     mkdirSync(compositionsDir, { recursive: true });
 
@@ -654,7 +654,7 @@ describe("detectRenderModeHints", () => {
   });
 
   it("rebases a direct nested entry's sibling assets without changing project-root assets", async () => {
-    const projectDir = mkdtempSync(join(tmpdir(), "hf-direct-entry-base-"));
+    const projectDir = mkdtempSync(join(tmpdir(), "sc-direct-entry-base-"));
     const compositionsDir = join(projectDir, "compositions");
     mkdirSync(compositionsDir, { recursive: true });
     writeFileSync(join(compositionsDir, "sibling.png"), "sibling");
@@ -742,11 +742,11 @@ describe("detectRenderModeHints", () => {
     // broken video with no visible error — worse than refusing to render.
     // compileForRender (render-only) runs a pre-flight check
     // (assertSubCompositionsUsable, using the same checkSubCompositionUsability
-    // helper the inliner and hyperframes lint use) before any compilation
+    // helper the inliner and smashcut lint use) before any compilation
     // work starts, and aborts immediately instead of silently producing a
     // broken render 45+ seconds later.
     const projectDir = makeSubCompProject(
-      "hf-empty-subcomp-",
+      "sc-empty-subcomp-",
       [{ id: "intro", src: "compositions/intro.html" }],
       { "intro.html": "" },
     );
@@ -758,7 +758,7 @@ describe("detectRenderModeHints", () => {
 
   it("compileForRender aborts naming every unusable sub-composition at once", async () => {
     const projectDir = makeSubCompProject(
-      "hf-empty-subcomp-multi-",
+      "sc-empty-subcomp-multi-",
       [
         { id: "intro", src: "compositions/intro.html" },
         { id: "outro", src: "compositions/outro.html" },
@@ -773,7 +773,7 @@ describe("detectRenderModeHints", () => {
 
   it("compileForRender aborts when a data-composition-src reference points at a missing file", async () => {
     const projectDir = makeSubCompProject(
-      "hf-missing-subcomp-",
+      "sc-missing-subcomp-",
       [{ id: "intro", src: "compositions/does-not-exist.html" }],
       {},
     );
@@ -785,7 +785,7 @@ describe("detectRenderModeHints", () => {
 
   it("compileForRender succeeds when the sub-composition file is valid (happy path)", async () => {
     const projectDir = makeSubCompProject(
-      "hf-valid-subcomp-",
+      "sc-valid-subcomp-",
       [{ id: "intro", src: "compositions/intro.html" }],
       { "intro.html": validSubCompHtml("intro", "Hello") },
     );
@@ -805,7 +805,7 @@ describe("detectRenderModeHints", () => {
     // parent.html lives in compositions/ and references child.html using the
     // same root-relative "compositions/..." form — not "./child.html".
     const projectDir = makeSubCompProject(
-      "hf-nested-subcomp-valid-",
+      "sc-nested-subcomp-valid-",
       [{ id: "parent", src: "compositions/parent.html" }],
       {
         "parent.html": validSubCompHtml("parent", "child", "compositions/child.html"),
@@ -821,7 +821,7 @@ describe("detectRenderModeHints", () => {
     // child.html is empty — the grandchild scene, referenced root-relative
     // from parent.html which itself lives in compositions/.
     const projectDir = makeSubCompProject(
-      "hf-nested-subcomp-broken-",
+      "sc-nested-subcomp-broken-",
       [{ id: "parent", src: "compositions/parent.html" }],
       {
         "parent.html": validSubCompHtml("parent", "child", "compositions/child.html"),
@@ -942,7 +942,7 @@ describe("detectShaderTransitionUsage", () => {
   it("detects authored HyperShader initialization", () => {
     const html = `<!doctype html>
 <html><body>
-  <script src="https://cdn.jsdelivr.net/npm/@hyperframes/shader-transitions/dist/index.global.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@smashcut/shader-transitions/dist/index.global.js"></script>
   <script>
     window.HyperShader.init({
       scenes: ["s1", "s2"],
@@ -957,7 +957,7 @@ describe("detectShaderTransitionUsage", () => {
   it("ignores comments and external scripts by themselves", () => {
     const html = `<!doctype html>
 <html><body>
-  <script src="https://cdn.jsdelivr.net/npm/@hyperframes/shader-transitions/dist/index.global.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@smashcut/shader-transitions/dist/index.global.js"></script>
   <script>
     // window.HyperShader.init({ scenes: ["s1", "s2"], transitions: [] });
     const label = "safe";
@@ -970,7 +970,7 @@ describe("detectShaderTransitionUsage", () => {
 
 describe("system-primary font normalization", () => {
   it("promotes Inter before system/generic primary stacks before distributed plan validation", async () => {
-    const projectDir = mkdtempSync(join(tmpdir(), "hf-system-primary-font-"));
+    const projectDir = mkdtempSync(join(tmpdir(), "sc-system-primary-font-"));
     writeFileSync(
       join(projectDir, "index.html"),
       `<!doctype html>
@@ -1009,7 +1009,7 @@ describe("system-primary font normalization", () => {
     expect(compact).toContain("font-family:var(--system-font),sans-serif");
     expect(compact).toContain('font-family:"Montserrat",system-ui,sans-serif');
     expect(compact).toContain('data-font-family="Inter,ui-monospace,monospace"');
-    expect(compact).toContain('data-hyperframes-deterministic-fonts="true"');
+    expect(compact).toContain('data-smashcut-deterministic-fonts="true"');
 
     const { document } = parseHTML(compiled.html);
     const rootStyle = document.querySelector('[data-composition-id="root"]')?.getAttribute("style");
@@ -1020,7 +1020,7 @@ describe("system-primary font normalization", () => {
 
 describe("local font embedding", () => {
   it("embeds one font file once when sub-compositions use equivalent relative paths", async () => {
-    const projectDir = mkdtempSync(join(tmpdir(), "hf-local-font-dedupe-"));
+    const projectDir = mkdtempSync(join(tmpdir(), "sc-local-font-dedupe-"));
     const assetsDir = join(projectDir, "assets");
     mkdirSync(assetsDir, { recursive: true });
     writeFileSync(join(assetsDir, "shared.woff2"), "fake-woff2");
@@ -1052,7 +1052,7 @@ describe("local font embedding", () => {
   });
 
   it("keeps large local font collections file-backed instead of expanding them into HTML", async () => {
-    const projectDir = mkdtempSync(join(tmpdir(), "hf-large-local-font-"));
+    const projectDir = mkdtempSync(join(tmpdir(), "sc-large-local-font-"));
     const assetsDir = join(projectDir, "assets");
     mkdirSync(assetsDir, { recursive: true });
     writeFileSync(join(assetsDir, "large.ttc"), Buffer.alloc(6 * 1024 * 1024, 0x41));
@@ -1112,7 +1112,7 @@ describe("template-wrapped sub-composition media offsets", () => {
     projectDir: string;
     indexPath: string;
   } {
-    const projectDir = mkdtempSync(join(tmpdir(), "hf-template-offset-"));
+    const projectDir = mkdtempSync(join(tmpdir(), "sc-template-offset-"));
     const compositionsDir = join(projectDir, "compositions");
     mkdirSync(compositionsDir, { recursive: true });
     writeFileSync(
@@ -1195,7 +1195,7 @@ describe("template-wrapped sub-composition media offsets", () => {
   });
 
   it("offsets nested media by a host data-start id-ref to a sibling slot", async () => {
-    const projectDir = mkdtempSync(join(tmpdir(), "hf-chained-slots-"));
+    const projectDir = mkdtempSync(join(tmpdir(), "sc-chained-slots-"));
     const compositionsDir = join(projectDir, "compositions");
     mkdirSync(compositionsDir, { recursive: true });
     const scene = (id: string) => `<template>
@@ -1320,7 +1320,7 @@ describe("template-wrapped sub-composition media offsets", () => {
     ).toBe(false);
     expect(compiled.html).toContain('[data-composition-id="scene"] .title');
     expect(compiled.html).toContain("new Proxy(window.document");
-    expect(compiled.html).toContain("__hfNormalizeSelector");
+    expect(compiled.html).toContain("__scNormalizeSelector");
   });
 
   it("resolves a class selector on the authored root wrapper itself (issue #1847 repro)", async () => {
@@ -1329,8 +1329,8 @@ describe("template-wrapped sub-composition media offsets", () => {
     // `.scene-wrapper .title { color: red }`. Class-based descendant
     // selectors anchored on the authored root's own class only resolve if
     // the root survives as a real element in the render DOM, not just via
-    // id-selector rewriting to [data-hf-authored-id].
-    const projectDir = mkdtempSync(join(tmpdir(), "hf-class-wrapper-"));
+    // id-selector rewriting to [data-sc-authored-id].
+    const projectDir = mkdtempSync(join(tmpdir(), "sc-class-wrapper-"));
     const compositionsDir = join(projectDir, "compositions");
     mkdirSync(compositionsDir, { recursive: true });
     writeFileSync(
@@ -1378,7 +1378,7 @@ describe("template-wrapped sub-composition media offsets", () => {
 
     const wrapper = host?.querySelector(".scene-wrapper");
     expect(wrapper).not.toBeNull();
-    expect(wrapper?.getAttribute("data-hf-authored-id")).toBe("scene-root");
+    expect(wrapper?.getAttribute("data-sc-authored-id")).toBe("scene-root");
     expect(wrapper?.querySelector(".title")?.textContent).toBe("ISSUE 1847 REPRO");
     // The authored class selector round-trips unmodified: no id rewriting
     // is needed for a class selector, only the wrapper element surviving.
@@ -1386,7 +1386,7 @@ describe("template-wrapped sub-composition media offsets", () => {
   });
 
   it("preserves the inferred composition boundary when the host has no composition id", async () => {
-    const projectDir = mkdtempSync(join(tmpdir(), "hf-anonymous-host-"));
+    const projectDir = mkdtempSync(join(tmpdir(), "sc-anonymous-host-"));
     const compositionsDir = join(projectDir, "compositions");
     mkdirSync(compositionsDir, { recursive: true });
     writeFileSync(
@@ -1422,10 +1422,10 @@ describe("template-wrapped sub-composition media offsets", () => {
     // The host has no data-composition-id of its own, but the composition's
     // own id is restored onto the flattened wrapper, so root-scoped
     // selectors and self-referencing scripts still resolve.
-    const wrapper = host?.querySelector("[data-hf-inner-root]");
+    const wrapper = host?.querySelector("[data-sc-inner-root]");
     expect(wrapper?.getAttribute("data-composition-id")).toBe("scene");
     expect(wrapper?.querySelector(".title")?.textContent).toBe("Scene");
-    expect(compiled.html).toContain('var __hfCompId = "scene";');
+    expect(compiled.html).toContain('var __scCompId = "scene";');
   });
 });
 
@@ -1437,7 +1437,7 @@ describe("template-wrapped sub-composition media offsets", () => {
 
 describe("text-rendering rule injection", () => {
   it("injects a single geometricPrecision rule into <head> for a full-document composition", async () => {
-    const projectDir = mkdtempSync(join(tmpdir(), "hf-text-rendering-"));
+    const projectDir = mkdtempSync(join(tmpdir(), "sc-text-rendering-"));
     writeFileSync(
       join(projectDir, "index.html"),
       `<!DOCTYPE html>
@@ -1454,7 +1454,7 @@ describe("text-rendering rule injection", () => {
     const compiled = await compileForRender(projectDir, join(projectDir, "index.html"), projectDir);
 
     const { document } = parseHTML(compiled.html);
-    const styleEls = document.querySelectorAll("style[data-hyperframes-text-rendering]");
+    const styleEls = document.querySelectorAll("style[data-smashcut-text-rendering]");
     expect(styleEls.length).toBe(1);
     expect((styleEls[0]?.textContent || "").replace(/\s+/g, "")).toContain(
       "html,body,*{text-rendering:geometricPrecision}",
@@ -1463,7 +1463,7 @@ describe("text-rendering rule injection", () => {
   });
 
   it("includes geometricPrecision in the fragment-wrap fallback stylesheet", async () => {
-    const projectDir = mkdtempSync(join(tmpdir(), "hf-text-rendering-frag-"));
+    const projectDir = mkdtempSync(join(tmpdir(), "sc-text-rendering-frag-"));
     // Fragment (no <html>/<head>/<body>) — exercises ensureFullDocument.
     writeFileSync(
       join(projectDir, "index.html"),
@@ -1486,7 +1486,7 @@ describe("text-rendering rule injection", () => {
 
 describe("crossorigin attribute stripping", () => {
   it("strips crossorigin from <img> elements", async () => {
-    const projectDir = mkdtempSync(join(tmpdir(), "hf-crossorigin-img-"));
+    const projectDir = mkdtempSync(join(tmpdir(), "sc-crossorigin-img-"));
     writeFileSync(
       join(projectDir, "index.html"),
       `<!DOCTYPE html><html><body>
@@ -1505,7 +1505,7 @@ describe("crossorigin attribute stripping", () => {
   });
 
   it("strips crossorigin from <video> elements", async () => {
-    const projectDir = mkdtempSync(join(tmpdir(), "hf-crossorigin-video-"));
+    const projectDir = mkdtempSync(join(tmpdir(), "sc-crossorigin-video-"));
     writeFileSync(
       join(projectDir, "index.html"),
       `<!DOCTYPE html><html><body>
@@ -1522,7 +1522,7 @@ describe("crossorigin attribute stripping", () => {
   });
 
   it("strips crossorigin from <audio> elements", async () => {
-    const projectDir = mkdtempSync(join(tmpdir(), "hf-crossorigin-audio-"));
+    const projectDir = mkdtempSync(join(tmpdir(), "sc-crossorigin-audio-"));
     writeFileSync(
       join(projectDir, "index.html"),
       `<!DOCTYPE html><html><body>
@@ -1551,7 +1551,7 @@ describe("localizeRemoteMediaSources", () => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (globalThis as any).fetch = async () => validTestMediaResponse();
     try {
-      const dl = mkdtempSync(join(tmpdir(), "hf-dl-ok-"));
+      const dl = mkdtempSync(join(tmpdir(), "sc-dl-ok-"));
       const html = `<video id="v1" src="https://media-ok.example.com/a/clip.mp4" data-start="0" data-end="10" muted></video>`;
       const { html: result, remoteMediaAssets } = await localizeRemoteMediaSources(html, dl);
       expect(result).not.toContain("https://media-ok.example.com/");
@@ -1564,7 +1564,7 @@ describe("localizeRemoteMediaSources", () => {
   });
 
   it("preserves original URL on download failure without throwing", async () => {
-    const dl = mkdtempSync(join(tmpdir(), "hf-dl-fail-"));
+    const dl = mkdtempSync(join(tmpdir(), "sc-dl-fail-"));
     const url = "https://example.com/will-404-localize-test.mp4";
     const html = `<video id="v1" src="${url}" data-start="0" data-end="10" muted></video>`;
     const { html: result, remoteMediaAssets } = await localizeRemoteMediaSources(html, dl);
@@ -1581,7 +1581,7 @@ describe("localizeRemoteMediaSources", () => {
       new Response("<!doctype html><html><body>expired</body></html>", { status: 200 });
     defaultLogger.warn = (message, meta) => warnings.push({ message, meta });
     try {
-      const dl = mkdtempSync(join(tmpdir(), "hf-dl-safe-log-"));
+      const dl = mkdtempSync(join(tmpdir(), "sc-dl-safe-log-"));
       const url = "https://cdn.example/private/customer.mp4?X-Amz-Signature=super-secret-signature";
       const html = `<video id="v1" src="${url}" data-start="0" data-end="10"></video>`;
       const { html: result, remoteMediaAssets } = await localizeRemoteMediaSources(html, dl);
@@ -1610,7 +1610,7 @@ describe("localizeRemoteMediaSources", () => {
       return validTestMediaResponse();
     };
     try {
-      const dl = mkdtempSync(join(tmpdir(), "hf-dl-dedup-"));
+      const dl = mkdtempSync(join(tmpdir(), "sc-dl-dedup-"));
       const html = `<video id="v1" src="https://dedup.example.com/b/shared.mp4" data-start="0" data-end="10" muted></video>
 <video id="v2" src="https://dedup.example.com/b/shared.mp4" data-start="10" data-end="20" muted></video>`;
       await localizeRemoteMediaSources(html, dl);
@@ -1622,7 +1622,7 @@ describe("localizeRemoteMediaSources", () => {
   });
 
   it("does not rewrite local (non-HTTP) src paths", async () => {
-    const dl = mkdtempSync(join(tmpdir(), "hf-dl-local-"));
+    const dl = mkdtempSync(join(tmpdir(), "sc-dl-local-"));
     const html = `<video id="v1" src="assets/local.mp4" data-start="0" data-end="10" muted></video>`;
     const { html: result, remoteMediaAssets } = await localizeRemoteMediaSources(html, dl);
     expect(result).toContain("assets/local.mp4");
@@ -1635,7 +1635,7 @@ describe("localizeRemoteMediaSources", () => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (globalThis as any).fetch = async () => validTestMediaResponse();
     try {
-      const dl = mkdtempSync(join(tmpdir(), "hf-dl-src-"));
+      const dl = mkdtempSync(join(tmpdir(), "sc-dl-src-"));
       const html = `<video id="rec" data-start="0" data-end="5" muted>
 <source src="https://src-ok.example.com/rec.mp4" type="video/mp4">
 <source src="https://src-ok.example.com/rec.webm" type="video/webm">
@@ -1654,7 +1654,7 @@ describe("localizeRemoteMediaSources", () => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (globalThis as any).fetch = async () => validTestMediaResponse();
     try {
-      const dl = mkdtempSync(join(tmpdir(), "hf-dl-quotes-"));
+      const dl = mkdtempSync(join(tmpdir(), "sc-dl-quotes-"));
       const html = `<video id="v1" src="https://q.example.com/c/dq.mp4" data-start="0" data-end="10" muted></video>
 <audio id="a1" src='https://q.example.com/c/sq.mp3' data-start="0" data-end="10"></audio>`;
       const { html: result } = await localizeRemoteMediaSources(html, dl);
@@ -1695,7 +1695,7 @@ describe("localizeRemoteImageSources", () => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (globalThis as any).fetch = async () => validTestImageResponse();
     try {
-      const dl = mkdtempSync(join(tmpdir(), "hf-img-ok-"));
+      const dl = mkdtempSync(join(tmpdir(), "sc-img-ok-"));
       const html = `<img class="hero" src="https://img-ok.example.com/photo.png" />`;
       const { html: result, remoteMediaAssets } = await localizeRemoteImageSources(html, dl);
       expect(result).not.toContain("https://img-ok.example.com/");
@@ -1708,7 +1708,7 @@ describe("localizeRemoteImageSources", () => {
   });
 
   it("preserves original URL on download failure without throwing", async () => {
-    const dl = mkdtempSync(join(tmpdir(), "hf-img-fail-"));
+    const dl = mkdtempSync(join(tmpdir(), "sc-img-fail-"));
     const url = "https://example.com/will-404-image-localize-test.png";
     const html = `<img src="${url}" />`;
     const { html: result, remoteMediaAssets } = await localizeRemoteImageSources(html, dl);
@@ -1725,7 +1725,7 @@ describe("localizeRemoteImageSources", () => {
       return validTestImageResponse();
     };
     try {
-      const dl = mkdtempSync(join(tmpdir(), "hf-img-dedup-"));
+      const dl = mkdtempSync(join(tmpdir(), "sc-img-dedup-"));
       const html = `<img src="https://dedup-img.example.com/hero.jpg" />
 <img src="https://dedup-img.example.com/hero.jpg" />`;
       await localizeRemoteImageSources(html, dl);
@@ -1737,7 +1737,7 @@ describe("localizeRemoteImageSources", () => {
   });
 
   it("does not rewrite local (non-HTTP) src paths", async () => {
-    const dl = mkdtempSync(join(tmpdir(), "hf-img-local-"));
+    const dl = mkdtempSync(join(tmpdir(), "sc-img-local-"));
     const html = `<img src="assets/hero.png" />`;
     const { html: result, remoteMediaAssets } = await localizeRemoteImageSources(html, dl);
     expect(result).toContain("assets/hero.png");
@@ -1746,7 +1746,7 @@ describe("localizeRemoteImageSources", () => {
   });
 
   it("does not rewrite data: URI src", async () => {
-    const dl = mkdtempSync(join(tmpdir(), "hf-img-data-"));
+    const dl = mkdtempSync(join(tmpdir(), "sc-img-data-"));
     const html = `<img src="data:image/svg+xml,%3Csvg/%3E" />`;
     const { html: result, remoteMediaAssets } = await localizeRemoteImageSources(html, dl);
     expect(result).toContain("data:image/svg+xml");
@@ -1758,7 +1758,7 @@ describe("localizeRemoteImageSources", () => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (globalThis as any).fetch = async () => validTestImageResponse();
     try {
-      const dl = mkdtempSync(join(tmpdir(), "hf-img-quotes-"));
+      const dl = mkdtempSync(join(tmpdir(), "sc-img-quotes-"));
       const html = `<img src="https://q-img.example.com/dq.png" />
 <img src='https://q-img.example.com/sq.jpg' />`;
       const { html: result } = await localizeRemoteImageSources(html, dl);
@@ -1783,7 +1783,7 @@ describe("localizeRemoteImageSources", () => {
       return validTestImageResponse();
     };
     try {
-      const dl = mkdtempSync(join(tmpdir(), "hf-img-datasrc-"));
+      const dl = mkdtempSync(join(tmpdir(), "sc-img-datasrc-"));
       const html = `<img data-src="https://lazy.example.com/real.png" src="https://cdn.example.com/placeholder.png" />`;
       const { html: result } = await localizeRemoteImageSources(html, dl);
       // The real src is localised; the data-src URL is left untouched.
@@ -1803,7 +1803,7 @@ describe("localizeRemoteImageSources", () => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (globalThis as any).fetch = async () => validTestImageResponse();
     try {
-      const dl = mkdtempSync(join(tmpdir(), "hf-img-attr-order-"));
+      const dl = mkdtempSync(join(tmpdir(), "sc-img-attr-order-"));
       const html = `<img class="kobe-cutout" alt="kobe" src="https://astral.example.com/d828bca.png" />`;
       const { html: result, remoteMediaAssets } = await localizeRemoteImageSources(html, dl);
       expect(result).not.toContain("https://astral.example.com/");
@@ -1826,7 +1826,7 @@ describe("localizeRemoteFontFaces", () => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (globalThis as any).fetch = async () => new Response(new Uint8Array(16), { status: 200 });
     try {
-      const dl = mkdtempSync(join(tmpdir(), "hf-ff-"));
+      const dl = mkdtempSync(join(tmpdir(), "sc-ff-"));
       const html = `<style>
 @font-face {
   font-family: "Komika Axis";
@@ -1847,7 +1847,7 @@ describe("localizeRemoteFontFaces", () => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (globalThis as any).fetch = async () => new Response(new Uint8Array(16), { status: 200 });
     try {
-      const dl = mkdtempSync(join(tmpdir(), "hf-ff-bg-"));
+      const dl = mkdtempSync(join(tmpdir(), "sc-ff-bg-"));
       const BG_URL = "https://cdn.example.com/bg.png";
       const html = `<style>
 body { background-image: url("${BG_URL}"); }
@@ -1867,7 +1867,7 @@ body { background-image: url("${BG_URL}"); }
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (globalThis as any).fetch = async () => new Response(null, { status: 403 });
     try {
-      const dl = mkdtempSync(join(tmpdir(), "hf-ff-fail-"));
+      const dl = mkdtempSync(join(tmpdir(), "sc-ff-fail-"));
       const FAIL_URL = "https://fail-font.example.com/f.ttf";
       const html = `<style>@font-face { font-family: "F"; src: url("${FAIL_URL}") format("truetype"); }</style>`;
       const { html: result, remoteMediaAssets } = await localizeRemoteFontFaces(html, dl);
@@ -1887,7 +1887,7 @@ body { background-image: url("${BG_URL}"); }
       return new Response(new Uint8Array(16), { status: 200 });
     };
     try {
-      const dl = mkdtempSync(join(tmpdir(), "hf-ff-dedup-"));
+      const dl = mkdtempSync(join(tmpdir(), "sc-ff-dedup-"));
       const DEDUP_URL = "https://dedup-font.example.com/d.ttf";
       const html = `<style>
 @font-face { font-family: "F1"; src: url("${DEDUP_URL}") format("truetype"); font-weight: 400; }
@@ -1902,7 +1902,7 @@ body { background-image: url("${BG_URL}"); }
   });
 
   it("no-ops when no @font-face blocks are present", async () => {
-    const dl = mkdtempSync(join(tmpdir(), "hf-ff-noop-"));
+    const dl = mkdtempSync(join(tmpdir(), "sc-ff-noop-"));
     const html = `<style>body { color: red; }</style>`;
     const { html: result, remoteMediaAssets } = await localizeRemoteFontFaces(html, dl);
     expect(result).toBe(html);
@@ -1910,7 +1910,7 @@ body { background-image: url("${BG_URL}"); }
   });
 
   it("ignores local (non-HTTP) @font-face src URLs", async () => {
-    const dl = mkdtempSync(join(tmpdir(), "hf-ff-local-"));
+    const dl = mkdtempSync(join(tmpdir(), "sc-ff-local-"));
     const html = `<style>@font-face { font-family: "F"; src: url("assets/fonts/f.ttf") format("truetype"); }</style>`;
     const { html: result, remoteMediaAssets } = await localizeRemoteFontFaces(html, dl);
     expect(result).toBe(html);
@@ -1920,7 +1920,7 @@ body { background-image: url("${BG_URL}"); }
   // ── External <link rel="stylesheet"> inlining ──
 
   it("leaves Google Fonts <link> tags untouched", async () => {
-    const dl = mkdtempSync(join(tmpdir(), "hf-ff-gf-"));
+    const dl = mkdtempSync(join(tmpdir(), "sc-ff-gf-"));
     const html = `<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700">
 <link rel="stylesheet" href="https://fonts.gstatic.com/s/inter/inter.css">
 <style>body { color: red; }</style>`;
@@ -1933,7 +1933,7 @@ body { background-image: url("${BG_URL}"); }
   });
 
   it("does not process non-stylesheet <link> tags (rel=icon, rel=preconnect)", async () => {
-    const dl = mkdtempSync(join(tmpdir(), "hf-ff-nonss-"));
+    const dl = mkdtempSync(join(tmpdir(), "sc-ff-nonss-"));
     const html = `<link rel="icon" href="https://cdn.example.com/favicon.ico">
 <link rel="preconnect" href="https://cdn.example.com">
 <link rel="dns-prefetch" href="https://cdn.example.com">`;
@@ -1965,7 +1965,7 @@ h1 { font-size: 2rem; }`;
       return new Response(new Uint8Array(16), { status: 200 });
     };
     try {
-      const dl = mkdtempSync(join(tmpdir(), "hf-ff-ext-"));
+      const dl = mkdtempSync(join(tmpdir(), "sc-ff-ext-"));
       const html = `<link rel="stylesheet" href="${STYLESHEET_URL}">
 <style>body { color: red; }</style>`;
       const { html: result, remoteMediaAssets } = await localizeRemoteFontFaces(html, dl);
@@ -1990,7 +1990,7 @@ h1 { font-size: 2rem; }`;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (globalThis as any).fetch = async () => new Response(null, { status: 503 });
     try {
-      const dl = mkdtempSync(join(tmpdir(), "hf-ff-extfail-"));
+      const dl = mkdtempSync(join(tmpdir(), "sc-ff-extfail-"));
       const html = `<link rel="stylesheet" href="${STYLESHEET_URL}">`;
       const { html: result, remoteMediaAssets } = await localizeRemoteFontFaces(html, dl);
       // Original link tag preserved on failure
@@ -2015,7 +2015,7 @@ h1 { font-size: 2rem; }`;
       });
     };
     try {
-      const dl = mkdtempSync(join(tmpdir(), "hf-ff-private-redirect-"));
+      const dl = mkdtempSync(join(tmpdir(), "sc-ff-private-redirect-"));
       const html = `<link rel="stylesheet" href="${STYLESHEET_URL}">`;
       const { html: result, remoteMediaAssets } = await localizeRemoteFontFaces(html, dl);
 
@@ -2038,7 +2038,7 @@ h1 { font-size: 2rem; }`;
       new Response(null, { status: 503, statusText: STYLESHEET_URL });
     defaultLogger.warn = (message, meta) => warnings.push({ message, meta });
     try {
-      const dl = mkdtempSync(join(tmpdir(), "hf-ff-safe-style-log-"));
+      const dl = mkdtempSync(join(tmpdir(), "sc-ff-safe-style-log-"));
       const html = `<link rel="stylesheet" href="${STYLESHEET_URL}">`;
       await localizeRemoteFontFaces(html, dl);
 
@@ -2060,7 +2060,7 @@ h1 { font-size: 2rem; }`;
     (globalThis as any).fetch = async () =>
       new Response("body { margin: 0; } h1 { color: blue; }", { status: 200 });
     try {
-      const dl = mkdtempSync(join(tmpdir(), "hf-ff-noff-"));
+      const dl = mkdtempSync(join(tmpdir(), "sc-ff-noff-"));
       const html = `<link rel="stylesheet" href="${STYLESHEET_URL}">`;
       const { html: result, remoteMediaAssets } = await localizeRemoteFontFaces(html, dl);
       // No @font-face → keep the original link tag (non-font CSS may be needed)
@@ -2084,7 +2084,7 @@ h1 { font-size: 2rem; }`;
       return new Response(new Uint8Array(16), { status: 200 });
     };
     try {
-      const dl = mkdtempSync(join(tmpdir(), "hf-ff-multi-"));
+      const dl = mkdtempSync(join(tmpdir(), "sc-ff-multi-"));
       const html = `<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto">
 <link rel="stylesheet" href="${FONT_CDN_URL}">`;
       const { html: result, remoteMediaAssets } = await localizeRemoteFontFaces(html, dl);
@@ -2346,7 +2346,7 @@ describe("discoverVideoVisibilityFromTimeline", () => {
     } as typeof globalThis.window;
     globalThis.document = {
       querySelectorAll: (selector: string) =>
-        selector === "video[data-hf-auto-start]" ? videos : [],
+        selector === "video[data-sc-auto-start]" ? videos : [],
       querySelector: (selector: string) =>
         selector === "[data-composition-id]"
           ? { getAttribute: (name: string) => (name === "data-composition-id" ? "root" : null) }
@@ -2377,7 +2377,7 @@ describe("discoverVideoVisibilityFromTimeline", () => {
 });
 describe("sub-composition variable injection (render path, #2064)", () => {
   function writeSubCompVarProject(hostVars: string): string {
-    const projectDir = mkdtempSync(join(tmpdir(), "hf-subvar-"));
+    const projectDir = mkdtempSync(join(tmpdir(), "sc-subvar-"));
     mkdirSync(join(projectDir, "compositions"), { recursive: true });
     writeFileSync(
       join(projectDir, "compositions", "card.html"),
@@ -2387,7 +2387,7 @@ describe("sub-composition variable injection (render path, #2064)", () => {
     <div data-composition-id="card" data-width="320" data-height="240">
       <div class="card-bg"></div>
       <script>
-        var color = __hyperframes.getVariables().color || "#000000";
+        var color = __smashcut.getVariables().color || "#000000";
         document.querySelector('[data-composition-id="card"] .card-bg').style.background = color;
       </script>
     </div>
@@ -2408,32 +2408,32 @@ describe("sub-composition variable injection (render path, #2064)", () => {
     return projectDir;
   }
 
-  it("injects the __hfVariablesByComp writer so JS getVariables() sees per-instance values", async () => {
+  it("injects the __scVariablesByComp writer so JS getVariables() sees per-instance values", async () => {
     // Regression for #2064: render inlined the sub-comp reader scripts but never
-    // emitted the writer, so window.__hyperframes.getVariables() returned {} and
+    // emitted the writer, so window.__smashcut.getVariables() returned {} and
     // parametrized sub-comps shipped blank/default text in the final MP4 while
     // snapshot QA passed.
     const projectDir = writeSubCompVarProject(`data-variable-values='{"color":"#00ff00"}'`);
     const compiled = await compileForRender(projectDir, join(projectDir, "index.html"), projectDir);
-    expect(compiled.html).toMatch(/window\.__hfVariablesByComp\s*=\s*Object\.assign/);
+    expect(compiled.html).toMatch(/window\.__scVariablesByComp\s*=\s*Object\.assign/);
     expect(compiled.html).toContain("#00ff00");
   });
 
   it("still injects the declared default even with no per-instance override", async () => {
     const projectDir = writeSubCompVarProject("");
     const compiled = await compileForRender(projectDir, join(projectDir, "index.html"), projectDir);
-    expect(compiled.html).toMatch(/window\.__hfVariablesByComp\s*=\s*Object\.assign/);
+    expect(compiled.html).toMatch(/window\.__scVariablesByComp\s*=\s*Object\.assign/);
     expect(compiled.html).toContain('"card-1":{"color":"#000000"}');
   });
 
   it("scopes per-instance values when one sub-comp is mounted multiple times (template reuse)", async () => {
     // #2066 fixed the single-instance case but left a preview/render divergence:
     // two mounts of the SAME sub-comp (same authored data-composition-id) with
-    // different data-variable-values collapsed to one __hfVariablesByComp key
+    // different data-variable-values collapsed to one __scVariablesByComp key
     // and one scope selector, so the last mount clobbered the earlier one and
     // all-but-one instance rendered blank. The producer now assigns per-instance
-    // runtime ids (card__hf1, card__hf2), mirroring the preview bundler.
-    const projectDir = mkdtempSync(join(tmpdir(), "hf-subvar-multi-"));
+    // runtime ids (card__sc1, card__sc2), mirroring the preview bundler.
+    const projectDir = mkdtempSync(join(tmpdir(), "sc-subvar-multi-"));
     mkdirSync(join(projectDir, "compositions"), { recursive: true });
     writeFileSync(
       join(projectDir, "compositions", "card.html"),
@@ -2443,7 +2443,7 @@ describe("sub-composition variable injection (render path, #2064)", () => {
     <div data-composition-id="card" data-width="320" data-height="240">
       <div class="lbl"></div>
       <script>
-        document.querySelector('.lbl').textContent = __hyperframes.getVariables().label || "DEFAULT";
+        document.querySelector('.lbl').textContent = __smashcut.getVariables().label || "DEFAULT";
       </script>
     </div>
   </body>
@@ -2467,18 +2467,18 @@ describe("sub-composition variable injection (render path, #2064)", () => {
       document.querySelectorAll('[data-composition-file="compositions/card.html"]'),
     ).map((h) => h.getAttribute("data-composition-id"));
     // Each instance gets a unique runtime id, in document order.
-    expect(ids).toContain("card__hf1");
-    expect(ids).toContain("card__hf2");
+    expect(ids).toContain("card__sc1");
+    expect(ids).toContain("card__sc2");
     // And each carries its own per-instance values — no cross-instance clobber.
-    expect(compiled.html).toContain('"card__hf1":{"label":"CARD_A"}');
-    expect(compiled.html).toContain('"card__hf2":{"label":"CARD_B"}');
+    expect(compiled.html).toContain('"card__sc1":{"label":"CARD_A"}');
+    expect(compiled.html).toContain('"card__sc2":{"label":"CARD_B"}');
   });
 
   it("assigns a distinct runtime id to every mount when the same sub-comp appears 3+ times", async () => {
     // Pins the uniqueCompositionId(baseId, index) progression beyond two: the
-    // third and fourth mounts must land as card__hf3 / card__hf4, each with its
+    // third and fourth mounts must land as card__sc3 / card__sc4, each with its
     // own values.
-    const projectDir = mkdtempSync(join(tmpdir(), "hf-subvar-multi3-"));
+    const projectDir = mkdtempSync(join(tmpdir(), "sc-subvar-multi3-"));
     mkdirSync(join(projectDir, "compositions"), { recursive: true });
     writeFileSync(
       join(projectDir, "compositions", "card.html"),
@@ -2488,7 +2488,7 @@ describe("sub-composition variable injection (render path, #2064)", () => {
     <div data-composition-id="card" data-width="320" data-height="240">
       <div class="lbl"></div>
       <script>
-        document.querySelector('.lbl').textContent = __hyperframes.getVariables().label || "DEFAULT";
+        document.querySelector('.lbl').textContent = __smashcut.getVariables().label || "DEFAULT";
       </script>
     </div>
   </body>
@@ -2517,15 +2517,15 @@ describe("sub-composition variable injection (render path, #2064)", () => {
         '[data-composition-file="compositions/card.html"]',
       ),
     ).map((h) => h.getAttribute("data-composition-id"));
-    expect(ids).toEqual(["card__hf1", "card__hf2", "card__hf3", "card__hf4"]);
-    expect(compiled.html).toContain('"card__hf1":{"label":"CARD_A"}');
-    expect(compiled.html).toContain('"card__hf2":{"label":"CARD_B"}');
-    expect(compiled.html).toContain('"card__hf3":{"label":"CARD_C"}');
-    expect(compiled.html).toContain('"card__hf4":{"label":"CARD_D"}');
+    expect(ids).toEqual(["card__sc1", "card__sc2", "card__sc3", "card__sc4"]);
+    expect(compiled.html).toContain('"card__sc1":{"label":"CARD_A"}');
+    expect(compiled.html).toContain('"card__sc2":{"label":"CARD_B"}');
+    expect(compiled.html).toContain('"card__sc3":{"label":"CARD_C"}');
+    expect(compiled.html).toContain('"card__sc4":{"label":"CARD_D"}');
   });
 
   it("assigns unique runtime ids to repeated sub-compositions discovered during inlining", async () => {
-    const projectDir = mkdtempSync(join(tmpdir(), "hf-subvar-nested-multi-"));
+    const projectDir = mkdtempSync(join(tmpdir(), "sc-subvar-nested-multi-"));
     mkdirSync(join(projectDir, "compositions"), { recursive: true });
     writeFileSync(
       join(projectDir, "compositions", "c.html"),
@@ -2581,18 +2581,18 @@ describe("sub-composition variable injection (render path, #2064)", () => {
         host.getAttribute("data-composition-id"),
       );
 
-    expect(idsByFile("compositions/b.html")).toEqual(["b__hf1", "b__hf2"]);
-    expect(idsByFile("compositions/c.html")).toEqual(["c__hf1", "c__hf2"]);
-    expect(compiled.html).toContain('"b__hf1":{"label":"B_LEFT"}');
-    expect(compiled.html).toContain('"b__hf2":{"label":"B_RIGHT"}');
-    expect(compiled.html).toContain('"c__hf1":{"label":"C_CHILD"}');
-    expect(compiled.html).toContain('"c__hf2":{"label":"C_CHILD"}');
+    expect(idsByFile("compositions/b.html")).toEqual(["b__sc1", "b__sc2"]);
+    expect(idsByFile("compositions/c.html")).toEqual(["c__sc1", "c__sc2"]);
+    expect(compiled.html).toContain('"b__sc1":{"label":"B_LEFT"}');
+    expect(compiled.html).toContain('"b__sc2":{"label":"B_RIGHT"}');
+    expect(compiled.html).toContain('"c__sc1":{"label":"C_CHILD"}');
+    expect(compiled.html).toContain('"c__sc2":{"label":"C_CHILD"}');
   });
 
   it("leaves a single-mount sub-comp's authored id untouched while renaming a duplicated one", async () => {
     // Pins the "single instances are untouched" claim: a solo mount keeps its
     // authored data-composition-id; only the duplicated sub-comp is renamed.
-    const projectDir = mkdtempSync(join(tmpdir(), "hf-subvar-mixed-"));
+    const projectDir = mkdtempSync(join(tmpdir(), "sc-subvar-mixed-"));
     mkdirSync(join(projectDir, "compositions"), { recursive: true });
     const declare = (id: string) =>
       `<!DOCTYPE html>
@@ -2601,7 +2601,7 @@ describe("sub-composition variable injection (render path, #2064)", () => {
     <div data-composition-id="${id}" data-width="320" data-height="240">
       <div class="lbl"></div>
       <script>
-        document.querySelector('.lbl').textContent = __hyperframes.getVariables().label || "DEFAULT";
+        document.querySelector('.lbl').textContent = __smashcut.getVariables().label || "DEFAULT";
       </script>
     </div>
   </body>
@@ -2622,16 +2622,16 @@ describe("sub-composition variable injection (render path, #2064)", () => {
 </html>`,
     );
     const compiled = await compileForRender(projectDir, join(projectDir, "index.html"), projectDir);
-    // Solo mount keeps its authored id (not renamed to solo__hf1).
+    // Solo mount keeps its authored id (not renamed to solo__sc1).
     expect(compiled.html).toContain('"solo":{"label":"SOLO"}');
-    expect(compiled.html).not.toContain("solo__hf");
+    expect(compiled.html).not.toContain("solo__sc");
     // Duplicated card mounts are renamed per-instance.
-    expect(compiled.html).toContain('"card__hf1":{"label":"CARD_A"}');
-    expect(compiled.html).toContain('"card__hf2":{"label":"CARD_B"}');
+    expect(compiled.html).toContain('"card__sc1":{"label":"CARD_A"}');
+    expect(compiled.html).toContain('"card__sc2":{"label":"CARD_B"}');
   });
 
   it("omits the writer when the sub-comp declares no variables at all", async () => {
-    const projectDir = mkdtempSync(join(tmpdir(), "hf-subvar-none-"));
+    const projectDir = mkdtempSync(join(tmpdir(), "sc-subvar-none-"));
     mkdirSync(join(projectDir, "compositions"), { recursive: true });
     writeFileSync(
       join(projectDir, "compositions", "plain.html"),
@@ -2642,7 +2642,7 @@ describe("sub-composition variable injection (render path, #2064)", () => {
       `<!DOCTYPE html><html><body><div id="root" class="composition" data-composition-id="host" data-start="0" data-duration="3" data-width="320" data-height="240"><div data-composition-id="p-1" data-composition-src="compositions/plain.html" data-start="0" data-duration="3" data-track-index="1"></div></div></body></html>`,
     );
     const compiled = await compileForRender(projectDir, join(projectDir, "index.html"), projectDir);
-    expect(compiled.html).not.toMatch(/window\.__hfVariablesByComp\s*=\s*Object\.assign/);
+    expect(compiled.html).not.toMatch(/window\.__scVariablesByComp\s*=\s*Object\.assign/);
   });
 });
 
@@ -2660,7 +2660,7 @@ describe("sub-composition variable injection (render path, #2064)", () => {
 
 describe("compileForRender non-media payload sniff (STUDIO-5433)", () => {
   function writeProject(mediaTag: string): string {
-    const projectDir = mkdtempSync(join(tmpdir(), "hf-payload-sniff-e2e-"));
+    const projectDir = mkdtempSync(join(tmpdir(), "sc-payload-sniff-e2e-"));
     mkdirSync(join(projectDir, "assets"));
     writeFileSync(
       join(projectDir, "assets", "nested.html"),
@@ -2756,7 +2756,7 @@ describe("duplicate media ids across nested compositions", () => {
     sceneBFile: string = sceneAFile,
     sceneBody: (label: string, mediaStart: number) => string = sceneWithVideoId,
   ): { projectDir: string; indexPath: string } {
-    const projectDir = mkdtempSync(join(tmpdir(), "hf-dup-media-"));
+    const projectDir = mkdtempSync(join(tmpdir(), "sc-dup-media-"));
     const compositionsDir = join(projectDir, "compositions");
     mkdirSync(compositionsDir, { recursive: true });
 
@@ -2805,7 +2805,7 @@ describe("duplicate media ids across nested compositions", () => {
     // One element per id is exactly what the frame injector relies on.
     const { document } = parseHTML(compiled.html);
     for (const id of ids) {
-      expect(document.querySelectorAll(`[data-hf-render-id="${id}"]`)).toHaveLength(1);
+      expect(document.querySelectorAll(`[data-sc-render-id="${id}"]`)).toHaveLength(1);
     }
   });
 
@@ -2831,7 +2831,7 @@ describe("duplicate media ids across nested compositions", () => {
 
   it("keeps both clips when neither scene names its video", async () => {
     // No authored id at all: the timing compiler numbers auto-ids per file, so
-    // both scenes arrive as `hf-video-0`.
+    // both scenes arrive as `sc-video-0`.
     const { projectDir, indexPath } = writeTwoSceneProject(
       "scene-a.html",
       "scene-b.html",
@@ -2888,15 +2888,15 @@ describe("duplicate media ids across nested compositions", () => {
     const { document } = parseHTML(compiled.html);
     expect(
       Array.from(document.querySelectorAll("video")).map((el) =>
-        el.getAttribute("data-hf-render-id"),
+        el.getAttribute("data-sc-render-id"),
       ),
-    ).toEqual(["clip", "clip__hf2"]);
+    ).toEqual(["clip", "clip__sc2"]);
   });
 });
 
 describe("STUDIO-5433 — ffprobe failure includes src URL for attribution", () => {
   function writeCorruptVideoProject(videoSrc: string, assetBytes: Buffer): string {
-    const projectDir = mkdtempSync(join(tmpdir(), "hf-studio-5433-"));
+    const projectDir = mkdtempSync(join(tmpdir(), "sc-studio-5433-"));
     mkdirSync(join(projectDir, "assets"), { recursive: true });
     writeFileSync(join(projectDir, "assets", "clip.mp4"), assetBytes);
     writeFileSync(
@@ -2945,7 +2945,7 @@ describe("STUDIO-5433 — ffprobe failure includes src URL for attribution", () 
     // no host to attribute and the redactor is right to drop it.
     expect(message).toContain("[src=[path]]");
     // Original ffprobe diagnostic must still be present so failure classifiers
-    // downstream (e.g. hyperframes_render_metrics.py) continue to match.
+    // downstream (e.g. smashcut_render_metrics.py) continue to match.
     expect(message).toMatch(/ffprobe|Invalid data|No video stream/i);
   });
 

@@ -41,9 +41,9 @@ import {
   initializeSession,
   isTransientBrowserError,
   probeBeginFrameLiveness,
-} from "@hyperframes/engine";
-import { fpsToNumber } from "@hyperframes/core";
-import { extractMediaSrcMutations } from "@hyperframes/parsers";
+} from "@smashcut/engine";
+import { fpsToNumber } from "@smashcut/core";
+import { extractMediaSrcMutations } from "@smashcut/parsers";
 import type { CompiledComposition } from "../../htmlCompiler.js";
 import {
   discoverMediaFromBrowser,
@@ -147,13 +147,13 @@ export function hasScriptedAudioVolumeAutomation(html: string, audioCount: numbe
 
 /**
  * True when the compiled HTML has at least one `<video>` carrying the
- * auto-injected `data-hf-auto-start` sentinel. Uses a DOM query, not a
- * substring scan — `html.includes("data-hf-auto-start")` false-fires on any
+ * auto-injected `data-sc-auto-start` sentinel. Uses a DOM query, not a
+ * substring scan — `html.includes("data-sc-auto-start")` false-fires on any
  * comment or prose that merely mentions the attribute (issue #1938).
  */
 export function hasAutoStartVideos(html: string): boolean {
   const { document } = parseHTML(html);
-  return document.querySelector("video[data-hf-auto-start]") !== null;
+  return document.querySelector("video[data-sc-auto-start]") !== null;
 }
 
 /**
@@ -681,7 +681,7 @@ export async function runProbeStage(input: ProbeStageInput): Promise<ProbeStageR
       }
     }
 
-    // Runtime video discovery: for videos with auto-injected timing (data-hf-auto-start),
+    // Runtime video discovery: for videos with auto-injected timing (data-sc-auto-start),
     // seek the GSAP timeline to find actual scene visibility windows and override start/end.
     if (composition.videos.length > 0) {
       log.info("Discovering video visibility windows...", {
@@ -752,7 +752,7 @@ export async function runProbeStage(input: ProbeStageInput): Promise<ProbeStageR
       if (probeSession) {
         const timelinesInfo = await probeSession.page.evaluate(() => {
           const tl = (window as any).__timelines;
-          const hf = (window as any).__hf;
+          const hf = (window as any).__sc;
           return {
             timelineKeys: tl ? Object.keys(tl) : [],
             hfDuration: hf?.duration ?? null,

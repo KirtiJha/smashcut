@@ -16,9 +16,9 @@ const CSS = `.box { opacity: 0; transform: translateX(-50px); }
 
 function makeHtml(style = CSS) {
   return `<!DOCTYPE html><html><head><style>${style}</style></head><body>
-<div data-hf-id="hf-stage" data-hf-root style="width: 1280px; height: 720px">
-  <div data-hf-id="hf-box" class="box"></div>
-  <h1 data-hf-id="hf-title" class="title">Hello</h1>
+<div data-sc-id="sc-stage" data-sc-root style="width: 1280px; height: 720px">
+  <div data-sc-id="sc-box" class="box"></div>
+  <h1 data-sc-id="sc-title" class="title">Hello</h1>
 </div></body></html>`.trim();
 }
 
@@ -43,7 +43,7 @@ describe("validateOp setClassStyle", () => {
 
   it("returns ok:true even when no <style> element present", () => {
     const noStyle = parseMutable(
-      `<div data-hf-id="hf-stage" data-hf-root><div data-hf-id="hf-box"></div></div>`,
+      `<div data-sc-id="sc-stage" data-sc-root><div data-sc-id="sc-box"></div></div>`,
     );
     expect(
       validateOp(noStyle, { type: "setClassStyle", selector: ".box", styles: { opacity: "1" } }).ok,
@@ -122,7 +122,7 @@ describe("setClassStyle — insert new rule", () => {
 
   it("creates <style> element when none exists", () => {
     const noStyle = parseMutable(
-      `<div data-hf-id="hf-stage" data-hf-root><div data-hf-id="hf-box"></div></div>`,
+      `<div data-sc-id="sc-stage" data-sc-root><div data-sc-id="sc-box"></div></div>`,
     );
     const result = applyOp(noStyle, {
       type: "setClassStyle",
@@ -167,7 +167,7 @@ describe("setClassStyle — inverse patches", () => {
 
   it("undo on style-less composition does not create spurious <style> element", () => {
     const noStyle = parseMutable(
-      `<div data-hf-id="hf-stage" data-hf-root><div data-hf-id="hf-box"></div></div>`,
+      `<div data-sc-id="sc-stage" data-sc-root><div data-sc-id="sc-box"></div></div>`,
     );
     const result = applyOp(noStyle, {
       type: "setClassStyle",

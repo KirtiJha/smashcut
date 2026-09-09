@@ -10,7 +10,7 @@ import { sanitizeCssValue } from "../runtime/applyVariableBindings";
 import { getHyperframeRuntimeScript } from "../generated/runtime-inline";
 
 function makeTempProject(files: Record<string, string>): string {
-  const dir = mkdtempSync(join(tmpdir(), "hf-bundler-test-"));
+  const dir = mkdtempSync(join(tmpdir(), "sc-bundler-test-"));
   for (const [rel, content] of Object.entries(files)) {
     const full = join(dir, rel);
     mkdirSync(join(full, ".."), { recursive: true });
@@ -57,7 +57,7 @@ function makeSymlinkProject(
   projectFiles: Record<string, string>,
   secretCss: string,
 ): { dir: string; outsideDir: string } {
-  const outsideDir = mkdtempSync(join(tmpdir(), "hf-outside-"));
+  const outsideDir = mkdtempSync(join(tmpdir(), "sc-outside-"));
   writeFileSync(join(outsideDir, "secret.css"), secretCss);
   const dir = makeTempProject(projectFiles);
   symlinkSync(join(outsideDir, "secret.css"), join(dir, "evil.css"));
@@ -153,14 +153,14 @@ describe("bundleToSingleHtml", () => {
 
     const bundled = await bundleToSingleHtml(dir);
     const runtimeBlock = bundled.match(
-      /<script\b[^>]*data-hyperframes-preview-runtime[^>]*>[\s\S]*?<\/script>/i,
+      /<script\b[^>]*data-smashcut-preview-runtime[^>]*>[\s\S]*?<\/script>/i,
     )?.[0];
 
     expect(runtimeBlock).toBeDefined();
     // The runtime block must contain the inlined HF runtime IIFE — bundled
     // output is self-contained, so the bundle's runtime body is loaded inline,
     // not referenced via src.
-    expect(runtimeBlock).toMatch(/data-hyperframes-preview-runtime="1">/);
+    expect(runtimeBlock).toMatch(/data-smashcut-preview-runtime="1">/);
     expect(runtimeBlock).not.toMatch(/src=""/);
     // The author's specific composition script must NOT be merged INTO the
     // runtime tag — it stays as its own <script> elsewhere in the document.
@@ -197,7 +197,7 @@ describe("bundleToSingleHtml", () => {
 </template>`,
       "assets/local.js": `window.__HF_LOCAL__ = "LOCAL_MARKER_INLINED";`,
     });
-    const external = mkdtempSync(join(tmpdir(), "hf-bundler-external-"));
+    const external = mkdtempSync(join(tmpdir(), "sc-bundler-external-"));
     writeFileSync(join(external, "secret.js"), `window.__HF_SECRET__ = "SECRET_MARKER_LEAKED";`);
     if (!tryCreateSymlink(external, join(dir, "ext"), "dir")) return;
 
@@ -232,7 +232,7 @@ describe("bundleToSingleHtml", () => {
     }
 
     const runtimeBlock = bundled.match(
-      /<script\b[^>]*data-hyperframes-preview-runtime[^>]*>[\s\S]*?<\/script>/i,
+      /<script\b[^>]*data-smashcut-preview-runtime[^>]*>[\s\S]*?<\/script>/i,
     )?.[0];
     expect(runtimeBlock).toBeDefined();
     // Must NOT have an empty src attribute (would self-fetch).
@@ -277,7 +277,7 @@ describe("bundleToSingleHtml", () => {
     expect(original).toContain("$&");
 
     const runtimeBlock = bundled.match(
-      /<script\b[^>]*data-hyperframes-preview-runtime[^>]*>([\s\S]*?)<\/script>/i,
+      /<script\b[^>]*data-smashcut-preview-runtime[^>]*>([\s\S]*?)<\/script>/i,
     );
     expect(runtimeBlock).not.toBeNull();
     const runtimeBody = runtimeBlock?.[1] ?? "";
@@ -676,7 +676,7 @@ describe("bundleToSingleHtml", () => {
       ),
     ).toBe(false);
     expect(bundled).toContain('[data-composition-id="scene"] .title');
-    expect(bundled).toContain("__hfNormalizeSelector");
+    expect(bundled).toContain("__scNormalizeSelector");
   });
 
   it("keeps an authored inner root wrapper for root id and class selectors", async () => {
@@ -707,16 +707,16 @@ describe("bundleToSingleHtml", () => {
     const bundled = await bundleToSingleHtml(dir);
     const { document } = parseHTML(bundled);
     const host = document.querySelector("#scene-host");
-    const authoredRoot = host?.querySelector('[data-hf-authored-id="scene-root"]');
+    const authoredRoot = host?.querySelector('[data-sc-authored-id="scene-root"]');
 
     expect(host).toBeTruthy();
     expect(authoredRoot).toBeTruthy();
     expect(authoredRoot?.id).toBe("");
     expect(authoredRoot?.getAttribute("data-composition-id")).toBeNull();
-    expect(authoredRoot?.getAttribute("data-hf-inner-root")).toBe("true");
-    expect(authoredRoot?.getAttribute("data-hf-authored-id")).toBe("scene-root");
+    expect(authoredRoot?.getAttribute("data-sc-inner-root")).toBe("true");
+    expect(authoredRoot?.getAttribute("data-sc-authored-id")).toBe("scene-root");
     expect(bundled).toContain('[data-composition-id="scene"] .scene-root .title');
-    expect(bundled).toContain('[data-composition-id="scene"] [data-hf-authored-id="scene-root"]');
+    expect(bundled).toContain('[data-composition-id="scene"] [data-sc-authored-id="scene-root"]');
   });
 
   it("does not keep duplicate authored root ids when the same external composition mounts twice", async () => {
@@ -748,7 +748,7 @@ describe("bundleToSingleHtml", () => {
 
     const bundled = await bundleToSingleHtml(dir);
     const { document } = parseHTML(bundled);
-    const authoredRoots = document.querySelectorAll('[data-hf-authored-id="scene-root"]');
+    const authoredRoots = document.querySelectorAll('[data-sc-authored-id="scene-root"]');
 
     expect(authoredRoots).toHaveLength(2);
     expect(document.querySelectorAll("#scene-root")).toHaveLength(0);
@@ -779,10 +779,10 @@ describe("bundleToSingleHtml", () => {
 
     expect(hostA?.querySelector(".title")?.textContent).toBe("Scene");
     expect(hostB?.querySelector(".title")?.textContent).toBe("Scene");
-    expect(hostA?.getAttribute("data-composition-id")).toBe("scene__hf1");
-    expect(hostB?.getAttribute("data-composition-id")).toBe("scene__hf2");
-    expect(hostA?.getAttribute("data-hf-original-composition-id")).toBe("scene");
-    expect(hostB?.getAttribute("data-hf-original-composition-id")).toBe("scene");
+    expect(hostA?.getAttribute("data-composition-id")).toBe("scene__sc1");
+    expect(hostB?.getAttribute("data-composition-id")).toBe("scene__sc2");
+    expect(hostA?.getAttribute("data-sc-original-composition-id")).toBe("scene");
+    expect(hostB?.getAttribute("data-sc-original-composition-id")).toBe("scene");
   });
 
   it("emits scoped style and script chunks for each duplicate inline-template host", async () => {
@@ -809,10 +809,10 @@ describe("bundleToSingleHtml", () => {
 
     const bundled = await bundleToSingleHtml(dir);
 
-    expect(bundled).toContain('[data-composition-id="scene__hf1"] .title');
-    expect(bundled).toContain('[data-composition-id="scene__hf2"] .title');
-    expect(bundled).toContain('var __hfTimelineCompId = "scene__hf1"');
-    expect(bundled).toContain('var __hfTimelineCompId = "scene__hf2"');
+    expect(bundled).toContain('[data-composition-id="scene__sc1"] .title');
+    expect(bundled).toContain('[data-composition-id="scene__sc2"] .title');
+    expect(bundled).toContain('var __scTimelineCompId = "scene__sc1"');
+    expect(bundled).toContain('var __scTimelineCompId = "scene__sc2"');
   });
 
   it("uniquifies duplicate sub-compositions across inline-template and external hosts", async () => {
@@ -845,10 +845,10 @@ describe("bundleToSingleHtml", () => {
     const inlineHost = document.querySelector("#scene-host-inline");
     const externalHost = document.querySelector("#scene-host-external");
 
-    expect(inlineHost?.getAttribute("data-composition-id")).toBe("scene__hf1");
-    expect(externalHost?.getAttribute("data-composition-id")).toBe("scene__hf2");
-    expect(inlineHost?.getAttribute("data-hf-original-composition-id")).toBe("scene");
-    expect(externalHost?.getAttribute("data-hf-original-composition-id")).toBe("scene");
+    expect(inlineHost?.getAttribute("data-composition-id")).toBe("scene__sc1");
+    expect(externalHost?.getAttribute("data-composition-id")).toBe("scene__sc2");
+    expect(inlineHost?.getAttribute("data-sc-original-composition-id")).toBe("scene");
+    expect(externalHost?.getAttribute("data-sc-original-composition-id")).toBe("scene");
     expect(inlineHost?.querySelector("p")?.textContent).toBe("Inline scene");
     expect(externalHost?.querySelector("p")?.textContent).toBe("External scene");
   });
@@ -880,7 +880,7 @@ describe("bundleToSingleHtml", () => {
     <div id="card-root" data-composition-id="card" data-width="1920" data-height="1080">
       <script>
         window.__timelines = window.__timelines || {};
-        window.__timelines[document.currentScript?.dataset.slot || "missing"] = __hyperframes.getVariables();
+        window.__timelines[document.currentScript?.dataset.slot || "missing"] = __smashcut.getVariables();
       </script>
     </div>
   </body>
@@ -889,9 +889,9 @@ describe("bundleToSingleHtml", () => {
 
     const bundled = await bundleToSingleHtml(dir);
 
-    expect(bundled).toContain("window.__hfVariablesByComp");
-    expect(bundled).toMatch(/card__hf1[\s\S]*Pro[\s\S]*light/);
-    expect(bundled).toMatch(/card__hf2[\s\S]*Enterprise[\s\S]*light/);
+    expect(bundled).toContain("window.__scVariablesByComp");
+    expect(bundled).toMatch(/card__sc1[\s\S]*Pro[\s\S]*light/);
+    expect(bundled).toMatch(/card__sc2[\s\S]*Enterprise[\s\S]*light/);
   });
 
   it("does not redefine an authored CSS variable for a bundled sub-composition", async () => {
@@ -970,8 +970,8 @@ describe("bundleToSingleHtml", () => {
     expect(bundled).toContain('[data-composition-id="scene"] .title');
     expect(bundled).toContain('[data-composition-id="scene"] .title { color: red; }');
     expect(bundled).toContain("new Proxy(window.document");
-    expect(bundled).toContain("new Proxy(__hfBaseGsap");
-    expect(bundled).toContain("(function(document, gsap, window, __hyperframes)");
+    expect(bundled).toContain("new Proxy(__scBaseGsap");
+    expect(bundled).toContain("(function(document, gsap, window, __smashcut)");
     expect(bundled).toContain('tl.to(".title"');
   });
 
@@ -1022,12 +1022,12 @@ describe("bundleToSingleHtml", () => {
     expect(sceneAId).not.toBe("scene");
     expect(sceneBId).not.toBe("scene");
     expect(sceneAId).not.toBe(sceneBId);
-    expect(sceneA?.getAttribute("data-hf-original-composition-id")).toBe("scene");
-    expect(sceneB?.getAttribute("data-hf-original-composition-id")).toBe("scene");
+    expect(sceneA?.getAttribute("data-sc-original-composition-id")).toBe("scene");
+    expect(sceneB?.getAttribute("data-sc-original-composition-id")).toBe("scene");
     expect(bundled).toContain(`[data-composition-id="${sceneAId}"] .title`);
     expect(bundled).toContain(`[data-composition-id="${sceneBId}"] .title`);
-    expect(bundled).toContain('var __hfTimelineCompId = "scene__hf1"');
-    expect(bundled).toContain('var __hfTimelineCompId = "scene__hf2"');
+    expect(bundled).toContain('var __scTimelineCompId = "scene__sc1"');
+    expect(bundled).toContain('var __scTimelineCompId = "scene__sc2"');
     expect(bundled).not.toContain('[data-composition-id="scene"] .title { opacity: 0; }');
   });
 
@@ -1350,7 +1350,7 @@ describe("bundleToSingleHtml", () => {
 
     const bundled = await bundleToSingleHtml(dir);
     const { document } = parseHTML(bundled);
-    const styleEls = document.querySelectorAll("style[data-hyperframes-text-rendering]");
+    const styleEls = document.querySelectorAll("style[data-smashcut-text-rendering]");
 
     expect(styleEls.length).toBe(1);
     expect((styleEls[0]?.textContent || "").replace(/\s+/g, "")).toContain(
@@ -1440,7 +1440,7 @@ describe("bundleToSingleHtml", () => {
 /**
  * A sub-composition given a value outside a declared enum's `options` falls
  * back silently. The runtime guard in getVariables.ts cannot see it: the
- * bundler bakes the per-instance values into `window.__hfVariablesByComp` at
+ * bundler bakes the per-instance values into `window.__scVariablesByComp` at
  * compile time and the sub-comp's scoped `getVariables` shim only reads that
  * table. Compile time is therefore the only place the defect is observable on
  * this path, so the same warning is emitted here.
@@ -1491,7 +1491,7 @@ describe("bundleToSingleHtml unknown enum values", () => {
     await bundleToSingleHtml(makeSubCompProject('{"accent":"orange"}'));
 
     expect(enumWarnings()).toEqual([
-      '[hyperframes] runtime_unknown_enum_value: card variable "accent" got "orange", ' +
+      '[smashcut] runtime_unknown_enum_value: card variable "accent" got "orange", ' +
         "which is not a declared option (green, blue, violet). " +
         'Rendering "green" instead.',
     ]);
@@ -1519,7 +1519,7 @@ describe("bundleToSingleHtml unknown enum values", () => {
   it("passes the unknown value through to the bundle unrewritten", async () => {
     const bundled = await bundleToSingleHtml(makeSubCompProject('{"accent":"orange"}'));
 
-    expect(bundled).toContain("window.__hfVariablesByComp = Object.assign({}, ");
+    expect(bundled).toContain("window.__scVariablesByComp = Object.assign({}, ");
     expect(bundled).toContain('{ "card": { "accent": "orange" } }');
     expect(bundled).toMatch(/\[data-composition-id="card"\]\s*\{[^}]*--accent:\s*orange/);
     expect(bundled).not.toContain("--accent: green");
@@ -1551,7 +1551,7 @@ describe("bundleToSingleHtml unknown enum values", () => {
     await bundleToSingleHtml(dir);
 
     expect(enumWarnings()).toEqual([
-      '[hyperframes] runtime_unknown_enum_value: card variable "accent" got "orange", ' +
+      '[smashcut] runtime_unknown_enum_value: card variable "accent" got "orange", ' +
         "which is not a declared option (green, blue, violet). " +
         'Rendering "green" instead.',
     ]);

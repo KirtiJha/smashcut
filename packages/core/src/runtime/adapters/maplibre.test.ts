@@ -6,7 +6,7 @@ type MaplibreMapLike = {
   on: (event: string, cb: () => void) => void;
 };
 
-const mapWindow = window as Window & { __hfMaplibre?: MaplibreMapLike[] };
+const mapWindow = window as Window & { __scMaplibre?: MaplibreMapLike[] };
 
 function createMockMap(opts?: {
   loaded?: boolean;
@@ -25,11 +25,11 @@ function createMockMap(opts?: {
 
 describe("maplibre adapter", () => {
   beforeEach(() => {
-    delete mapWindow.__hfMaplibre;
+    delete mapWindow.__scMaplibre;
   });
 
   afterEach(() => {
-    delete mapWindow.__hfMaplibre;
+    delete mapWindow.__scMaplibre;
   });
 
   it("has correct name", () => {
@@ -42,15 +42,15 @@ describe("maplibre adapter", () => {
       expect(adapter.getReadyPromise!()).toBeNull();
     });
 
-    it("returns null when __hfMaplibre is empty", () => {
-      mapWindow.__hfMaplibre = [];
+    it("returns null when __scMaplibre is empty", () => {
+      mapWindow.__scMaplibre = [];
       const adapter = createMaplibreAdapter();
       expect(adapter.getReadyPromise!()).toBeNull();
     });
 
     it("resolves when map fires load event", async () => {
       const map = createMockMap();
-      mapWindow.__hfMaplibre = [map];
+      mapWindow.__scMaplibre = [map];
       const adapter = createMaplibreAdapter();
       const promise = adapter.getReadyPromise!();
       expect(promise).not.toBeNull();
@@ -60,7 +60,7 @@ describe("maplibre adapter", () => {
 
     it("resolves immediately for already-loaded map", async () => {
       const map = createMockMap({ loaded: true });
-      mapWindow.__hfMaplibre = [map];
+      mapWindow.__scMaplibre = [map];
       const adapter = createMaplibreAdapter();
       const promise = adapter.getReadyPromise!();
       expect(promise).not.toBeNull();
@@ -69,7 +69,7 @@ describe("maplibre adapter", () => {
 
     it("returns same promise on repeated calls (stable identity)", () => {
       const map = createMockMap();
-      mapWindow.__hfMaplibre = [map];
+      mapWindow.__scMaplibre = [map];
       const adapter = createMaplibreAdapter();
       const p1 = adapter.getReadyPromise!();
       const p2 = adapter.getReadyPromise!();
@@ -78,7 +78,7 @@ describe("maplibre adapter", () => {
 
     it("returns null after all maps have settled", async () => {
       const map = createMockMap({ loaded: true });
-      mapWindow.__hfMaplibre = [map];
+      mapWindow.__scMaplibre = [map];
       const adapter = createMaplibreAdapter();
       await adapter.getReadyPromise!();
       expect(adapter.getReadyPromise!()).toBeNull();
@@ -87,7 +87,7 @@ describe("maplibre adapter", () => {
     it("handles mix of loaded and unloaded maps", async () => {
       const loaded = createMockMap({ loaded: true });
       const unloaded = createMockMap();
-      mapWindow.__hfMaplibre = [loaded, unloaded];
+      mapWindow.__scMaplibre = [loaded, unloaded];
       const adapter = createMaplibreAdapter();
       const promise = adapter.getReadyPromise!();
       expect(promise).not.toBeNull();
@@ -101,7 +101,7 @@ describe("maplibre adapter", () => {
         loaded: vi.fn(() => true),
         on: vi.fn(),
       };
-      mapWindow.__hfMaplibre = [racyMap];
+      mapWindow.__scMaplibre = [racyMap];
       const adapter = createMaplibreAdapter();
       const promise = adapter.getReadyPromise!();
       expect(promise).not.toBeNull();

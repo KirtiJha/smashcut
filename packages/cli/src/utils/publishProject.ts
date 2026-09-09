@@ -3,14 +3,14 @@ import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import { parseHTML } from "linkedom";
 import AdmZip from "adm-zip";
 import ignore, { type Ignore } from "ignore";
-import { CSS_URL_RE, isNonRelativeUrl, isPathInside } from "@hyperframes/core";
+import { CSS_URL_RE, isNonRelativeUrl, isPathInside } from "@smashcut/core";
 import { buildAuthHeaders } from "../auth/client.js";
 import { tryResolveCredential } from "../auth/index.js";
 import { writeProjectLink } from "./projectLink.js";
 
 const IGNORED_DIRS = new Set([".git", "node_modules", "dist", ".next", "coverage"]);
 const IGNORED_FILES = new Set([".DS_Store", "Thumbs.db"]);
-const HYPERFRAMES_IGNORE_FILE = ".hyperframesignore";
+const SMASHCUT_IGNORE_FILE = ".smashcutignore";
 const DEFAULT_PROJECT_IGNORE = ["/renders/", "/snapshots/"];
 const PUBLISH_CONTENT_TYPE = "application/zip";
 const PUBLISH_METADATA_TIMEOUT_MS = 30_000;
@@ -161,7 +161,7 @@ async function readErrorMessage(response: Response, fallback: string): Promise<s
   }
 
   if (response.status === 403 && response.headers.get("cf-mitigated") === "challenge") {
-    return "Publish upload was blocked before reaching HyperFrames. Please retry after staged uploads are available.";
+    return "Publish upload was blocked before reaching SmashCut. Please retry after staged uploads are available.";
   }
 
   const text = await response.text().catch(() => "");
@@ -258,7 +258,7 @@ function shouldIgnoreSegment(segment: string): boolean {
 
 function createProjectIgnore(rootDir: string): Ignore {
   const matcher = ignore().add(DEFAULT_PROJECT_IGNORE);
-  const ignorePath = join(rootDir, HYPERFRAMES_IGNORE_FILE);
+  const ignorePath = join(rootDir, SMASHCUT_IGNORE_FILE);
   if (existsSync(ignorePath)) {
     matcher.add(readFileSync(ignorePath, "utf-8"));
   }
@@ -489,7 +489,7 @@ export function buildPublishFileMap(projectDir: string): Map<string, Buffer> {
   collectProjectFiles(absProjectDir, absProjectDir, filePaths, createProjectIgnore(absProjectDir));
   if (!filePaths.includes("index.html")) {
     throw new Error(
-      "Project archive must include index.html at the root. Check that .hyperframesignore does not exclude it.",
+      "Project archive must include index.html at the root. Check that .smashcutignore does not exclude it.",
     );
   }
 
@@ -550,7 +550,7 @@ export function createPublishArchive(projectDir: string): PublishArchiveResult {
 
 export function getPublishApiBaseUrl(): string {
   return (
-    process.env["HYPERFRAMES_PUBLISHED_PROJECTS_API_URL"] ||
+    process.env["SMASHCUT_PUBLISHED_PROJECTS_API_URL"] ||
     process.env["HEYGEN_API_URL"] ||
     "https://api2.heygen.com"
   ).replace(/\/$/, "");
@@ -581,7 +581,7 @@ async function publishProjectArchiveDirect(
   const headers: Record<string, string> = { ...authHeaders };
 
   const response = await fetchForPublish(
-    `${apiBaseUrl}/v1/hyperframes/projects/publish`,
+    `${apiBaseUrl}/v1/smashcut/projects/publish`,
     () => ({
       method: "POST",
       body,
@@ -633,7 +633,7 @@ async function publishProjectArchiveStaged(
 ): Promise<PublishedProjectResponse | null> {
   const fileName = `${title}.zip`;
   const uploadResponse = await fetchForPublish(
-    `${apiBaseUrl}/v1/hyperframes/projects/publish/upload`,
+    `${apiBaseUrl}/v1/smashcut/projects/publish/upload`,
     () => ({
       method: "POST",
       body: JSON.stringify({
@@ -664,7 +664,7 @@ async function publishProjectArchiveStaged(
   await uploadArchiveToPresignedUrl(stagedUpload, archive);
 
   const completeResponse = await fetchForPublish(
-    `${apiBaseUrl}/v1/hyperframes/projects/publish/complete`,
+    `${apiBaseUrl}/v1/smashcut/projects/publish/complete`,
     () => ({
       method: "POST",
       body: JSON.stringify({

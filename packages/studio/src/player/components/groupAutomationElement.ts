@@ -23,7 +23,7 @@ export function groupAutomationElement(
 ): TimelineElement {
   return {
     id: group.id,
-    // The DOM id, so a write lands on the `<hf-audio-group>` and not on a clip.
+    // The DOM id, so a write lands on the `<sc-audio-group>` and not on a clip.
     domId: group.id,
     label: group.label,
     // Audio, so `isAudioTimelineElement` admits it and the lanes render at all.

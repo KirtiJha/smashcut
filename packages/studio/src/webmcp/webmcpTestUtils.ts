@@ -42,7 +42,7 @@ export function selectionFor(
 ): DomEditSelection {
   return {
     id: element.id || undefined,
-    hfId: element.getAttribute("data-hf-id") ?? undefined,
+    hfId: element.getAttribute("data-sc-id") ?? undefined,
     element,
     label: "Headline",
     tagName: element.tagName.toLowerCase(),

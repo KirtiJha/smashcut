@@ -55,11 +55,11 @@ function makeMockPage(
 
 afterEach(() => {
   const root = globalThis as {
-    __hf_css_background_decoded?: Set<string>;
-    __hfDecodeDynamicCssBackgroundImages?: () => Promise<void>;
+    __sc_css_background_decoded?: Set<string>;
+    __scDecodeDynamicCssBackgroundImages?: () => Promise<void>;
   };
-  delete root.__hf_css_background_decoded;
-  delete root.__hfDecodeDynamicCssBackgroundImages;
+  delete root.__sc_css_background_decoded;
+  delete root.__scDecodeDynamicCssBackgroundImages;
 });
 
 describe("decodeDynamicCssBackgroundImages", () => {
@@ -129,8 +129,8 @@ describe("decodeDynamicCssBackgroundImages", () => {
 
     await page.evaluate(async () => {
       const decodeAfterSeek = (
-        globalThis as { __hfDecodeDynamicCssBackgroundImages?: () => Promise<void> }
-      ).__hfDecodeDynamicCssBackgroundImages;
+        globalThis as { __scDecodeDynamicCssBackgroundImages?: () => Promise<void> }
+      ).__scDecodeDynamicCssBackgroundImages;
       expect(decodeAfterSeek).toBeTypeOf("function");
       await decodeAfterSeek?.();
     });
@@ -148,7 +148,7 @@ describe("decodeDynamicCssBackgroundImages", () => {
     );
 
     expect(batchSource).toMatch(
-      /aw\.__hf\.seek\(t\);\s*await aw\.__hfDecodeDynamicCssBackgroundImages\?\.\(\);/,
+      /aw\.__sc\.seek\(t\);\s*await aw\.__scDecodeDynamicCssBackgroundImages\?\.\(\);/,
     );
   });
 });

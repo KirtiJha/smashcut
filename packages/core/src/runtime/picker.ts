@@ -7,15 +7,15 @@ type PickerModuleDeps = {
 };
 
 const PICKER_IGNORE_SELECTOR = [
-  "[data-hyperframes-ignore]",
-  "[data-hyperframes-picker-ignore]",
-  "[data-hf-ignore]",
+  "[data-smashcut-ignore]",
+  "[data-smashcut-picker-ignore]",
+  "[data-sc-ignore]",
   "[data-no-inspect]",
   "[data-no-pick]",
   "[data-hyper-shader-loading]",
 ].join(",");
 const PICKER_BLOCK_SELECTOR = [
-  "[data-hyperframes-picker-block]",
+  "[data-smashcut-picker-block]",
   "[data-hyper-shader-loading]",
 ].join(",");
 
@@ -43,7 +43,7 @@ export function createPickerModule(deps: PickerModuleDeps): PickerModule {
 
   function setLastHoveredInfo(info: RuntimePickerElementInfo | null): void {
     pickLastHoveredInfo = info;
-    emitPickerRuntimeEvent("hyperframe:picker:hovered", {
+    emitPickerRuntimeEvent("smashcut:picker:hovered", {
       elementInfo: pickLastHoveredInfo,
       isPickMode: pickModeActive,
       timestamp: Date.now(),
@@ -52,7 +52,7 @@ export function createPickerModule(deps: PickerModuleDeps): PickerModule {
 
   function setLastSelectedInfo(info: RuntimePickerElementInfo | null): void {
     pickLastSelectedInfo = info;
-    emitPickerRuntimeEvent("hyperframe:picker:selected", {
+    emitPickerRuntimeEvent("smashcut:picker:selected", {
       elementInfo: pickLastSelectedInfo,
       isPickMode: pickModeActive,
       timestamp: Date.now(),
@@ -83,7 +83,7 @@ export function createPickerModule(deps: PickerModuleDeps): PickerModule {
     if (!el || el === document.body || el === document.documentElement) return false;
     const tag = el.tagName.toLowerCase();
     if (tag === "script" || tag === "style" || tag === "link" || tag === "meta") return false;
-    if (el.classList.contains("__hf-pick-highlight")) return false;
+    if (el.classList.contains("__sc-pick-highlight")) return false;
     if (el.closest(PICKER_IGNORE_SELECTOR)) return false;
     if (isEffectivelyHidden(el as HTMLElement)) return false;
     return true;
@@ -192,13 +192,13 @@ export function createPickerModule(deps: PickerModuleDeps): PickerModule {
     if (!isPickableElement(target)) return;
     if (pickModeHighlightEl === target) return;
     if (pickModeHighlightEl) {
-      pickModeHighlightEl.classList.remove("__hf-pick-highlight");
+      pickModeHighlightEl.classList.remove("__sc-pick-highlight");
     }
     pickModeHighlightEl = target;
-    target.classList.add("__hf-pick-highlight");
+    target.classList.add("__sc-pick-highlight");
     const info = extractElementInfo(target);
     setLastHoveredInfo(info);
-    deps.postMessage({ source: "hf-preview", type: "element-hovered", elementInfo: info });
+    deps.postMessage({ source: "sc-preview", type: "element-hovered", elementInfo: info });
   }
 
   function onPickClick(event: MouseEvent): void {
@@ -210,7 +210,7 @@ export function createPickerModule(deps: PickerModuleDeps): PickerModule {
     if (infos.length === 0) return;
     setLastHoveredInfo(infos[0] ?? null);
     deps.postMessage({
-      source: "hf-preview",
+      source: "sc-preview",
       type: "element-pick-candidates",
       candidates: infos,
       selectedIndex: 0,
@@ -221,7 +221,7 @@ export function createPickerModule(deps: PickerModuleDeps): PickerModule {
   function onPickKeyDown(event: KeyboardEvent): void {
     if (event.key !== "Escape") return;
     disablePickMode();
-    deps.postMessage({ source: "hf-preview", type: "pick-mode-cancelled" });
+    deps.postMessage({ source: "sc-preview", type: "pick-mode-cancelled" });
   }
 
   function enablePickMode(): void {
@@ -229,33 +229,33 @@ export function createPickerModule(deps: PickerModuleDeps): PickerModule {
     pickModeActive = true;
     pickModeStyleEl = document.createElement("style");
     pickModeStyleEl.textContent = [
-      ".__hf-pick-highlight { outline: 2px solid #4f8cf7 !important; outline-offset: 2px; cursor: crosshair !important; }",
-      ".__hf-pick-active * { cursor: crosshair !important; }",
+      ".__sc-pick-highlight { outline: 2px solid #4f8cf7 !important; outline-offset: 2px; cursor: crosshair !important; }",
+      ".__sc-pick-active * { cursor: crosshair !important; }",
     ].join("\n");
     document.head.appendChild(pickModeStyleEl);
-    document.body.classList.add("__hf-pick-active");
+    document.body.classList.add("__sc-pick-active");
     document.addEventListener("mousemove", onPickMouseMove, true);
     document.addEventListener("click", onPickClick, true);
     document.addEventListener("keydown", onPickKeyDown, true);
-    emitPickerRuntimeEvent("hyperframe:picker:mode", { isPickMode: true, timestamp: Date.now() });
+    emitPickerRuntimeEvent("smashcut:picker:mode", { isPickMode: true, timestamp: Date.now() });
   }
 
   function disablePickMode(): void {
     if (!pickModeActive) return;
     pickModeActive = false;
     if (pickModeHighlightEl) {
-      pickModeHighlightEl.classList.remove("__hf-pick-highlight");
+      pickModeHighlightEl.classList.remove("__sc-pick-highlight");
       pickModeHighlightEl = null;
     }
     if (pickModeStyleEl) {
       pickModeStyleEl.remove();
       pickModeStyleEl = null;
     }
-    document.body.classList.remove("__hf-pick-active");
+    document.body.classList.remove("__sc-pick-active");
     document.removeEventListener("mousemove", onPickMouseMove, true);
     document.removeEventListener("click", onPickClick, true);
     document.removeEventListener("keydown", onPickKeyDown, true);
-    emitPickerRuntimeEvent("hyperframe:picker:mode", { isPickMode: false, timestamp: Date.now() });
+    emitPickerRuntimeEvent("smashcut:picker:mode", { isPickMode: false, timestamp: Date.now() });
   }
 
   function installPickerApi(): void {
@@ -277,7 +277,7 @@ export function createPickerModule(deps: PickerModuleDeps): PickerModule {
         const selected = infos[safeIndex] ?? null;
         if (!selected) return null;
         setLastSelectedInfo(selected);
-        deps.postMessage({ source: "hf-preview", type: "element-picked", elementInfo: selected });
+        deps.postMessage({ source: "sc-preview", type: "element-picked", elementInfo: selected });
         disablePickMode();
         return selected;
       },
@@ -299,7 +299,7 @@ export function createPickerModule(deps: PickerModuleDeps): PickerModule {
         if (!selected.length) return [];
         setLastSelectedInfo(selected[0] ?? null);
         deps.postMessage({
-          source: "hf-preview",
+          source: "sc-preview",
           type: "element-picked-many",
           elementInfos: selected,
         });
@@ -307,7 +307,7 @@ export function createPickerModule(deps: PickerModuleDeps): PickerModule {
         return selected;
       },
     };
-    emitPickerRuntimeEvent("hyperframe:picker:api-ready", { hasApi: true, timestamp: Date.now() });
+    emitPickerRuntimeEvent("smashcut:picker:api-ready", { hasApi: true, timestamp: Date.now() });
   }
 
   return { enablePickMode, disablePickMode, installPickerApi };

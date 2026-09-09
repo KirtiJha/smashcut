@@ -29,7 +29,7 @@ import {
   type AutomationRange,
   type HfAutomation,
   type HfAutomationLane,
-} from "@hyperframes/core/audio-automation";
+} from "@smashcut/core/audio-automation";
 import { clampNumber } from "../utils/studioHelpers";
 import type { AutomationSelection } from "../player/store/automationSelectionSlice";
 import type {

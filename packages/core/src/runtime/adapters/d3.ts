@@ -9,7 +9,7 @@ export function createD3Adapter() {
     name: "d3",
     getInstances: () => {
       if (typeof window === "undefined") return [];
-      const arr = (window as { __hfD3?: D3TransitionLike[] }).__hfD3;
+      const arr = (window as { __scD3?: D3TransitionLike[] }).__scD3;
       return Array.isArray(arr) ? arr : [];
     },
     waitFor: (t) => t.end(),

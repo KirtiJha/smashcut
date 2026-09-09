@@ -54,7 +54,7 @@ let planDir: string;
 let hasChrome = false;
 
 beforeAll(async () => {
-  runRoot = mkdtempSync(join(tmpdir(), "hf-renderchunk-test-"));
+  runRoot = mkdtempSync(join(tmpdir(), "sc-renderchunk-test-"));
   projectDir = join(runRoot, "project");
   mkdirSync(projectDir, { recursive: true });
   writeFileSync(join(projectDir, "index.html"), FIXTURE_HTML, "utf-8");
@@ -68,7 +68,7 @@ beforeAll(async () => {
   // contract is exercised.
   try {
     const { createCaptureSession, initializeSession, closeCaptureSession } =
-      await import("@hyperframes/engine");
+      await import("@smashcut/engine");
     const { createFileServer } = await import("../fileServer.js");
     const smokeDir = join(runRoot, "smoke");
     mkdirSync(join(smokeDir, "compiled"), { recursive: true });
@@ -326,7 +326,7 @@ describe("renderChunk() — variables threading", () => {
   // on slower CI workers.
   const TIMEOUT_MS = 60_000;
 
-  // Fixture whose pixels depend on `window.__hfVariables.color`. Read the
+  // Fixture whose pixels depend on `window.__scVariables.color`. Read the
   // variables on `DOMContentLoaded` and write the color onto a fullscreen
   // element. Two plans with different `variables.color` MUST produce
   // different chunk fingerprints — proves the controller's snapshotted
@@ -340,7 +340,7 @@ describe("renderChunk() — variables threading", () => {
   </div>
   <script>
     (function () {
-      var v = (window.__hfVariables && window.__hfVariables.color) || "#000";
+      var v = (window.__scVariables && window.__scVariables.color) || "#000";
       var el = document.getElementById("paint");
       if (el) el.style.background = v;
     })();

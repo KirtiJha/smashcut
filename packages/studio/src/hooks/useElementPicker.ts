@@ -44,7 +44,7 @@ interface PickerOptions {
 }
 
 /**
- * Hook for element picking via the HyperFrame runtime's picker API.
+ * Hook for element picking via the SmashCut runtime's picker API.
  * Communicates with the iframe via postMessage.
  */
 export function useElementPicker(
@@ -93,7 +93,7 @@ export function useElementPicker(
   useMountEffect(() => {
     const handleMessage = (e: MessageEvent) => {
       const data = e.data;
-      if (data?.source !== "hf-preview") return;
+      if (data?.source !== "sc-preview") return;
       if (!acceptStudioRuntimeMessage(data)) return;
       // Accept events from either the primary iframe or the active override
       const activeIframe = getActiveIframe();

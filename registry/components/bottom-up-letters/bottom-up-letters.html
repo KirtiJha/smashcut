@@ -1,7 +1,7 @@
 <!--
   Bottom Up Letters - deterministic text splitter.
 
-  Add class="hf-bottom-up-letters" to a plain text element. This script wraps
+  Add class="sc-bottom-up-letters" to a plain text element. This script wraps
   each character in a span so your paused GSAP timeline can stagger the reveal.
 
   Variables. This fragment has no markup of its own, so the declaration rides
@@ -32,15 +32,15 @@
   { "id": "travel", "type": "enum", "role": "motion", "label": "Travel", "description": "How far each span starts from its resting position, from 0.45em to 1.5em.", "default": "standard", "options": [{ "value": "close", "label": "Close" }, { "value": "standard", "label": "Standard" }, { "value": "far", "label": "Far" }] }
 ]'
 >
-  .hf-bottom-up-letters {
+  .sc-bottom-up-letters {
     display: inline-block;
   }
-  .hf-bottom-up-letters-char {
+  .sc-bottom-up-letters-char {
     display: inline-block;
     opacity: 0;
     transform: translate3d(
       0,
-      calc(var(--hf-letters-travel, 0.85em) * var(--hf-letters-direction, 1)),
+      calc(var(--sc-letters-travel, 0.85em) * var(--sc-letters-direction, 1)),
       0
     );
     will-change: transform, opacity;
@@ -52,8 +52,8 @@
     "use strict";
 
     var vars =
-      window.__hyperframes && window.__hyperframes.getVariables
-        ? window.__hyperframes.getVariables()
+      window.__smashcut && window.__smashcut.getVariables
+        ? window.__smashcut.getVariables()
         : {};
 
     // Unrecognised overrides return to their declared defaults.
@@ -69,9 +69,9 @@
     var direction = directions[pick(directions, vars.direction, "up")];
     var unit = pick(units, vars.unit, "letter");
 
-    document.querySelectorAll(".hf-bottom-up-letters").forEach((el) => {
-      el.style.setProperty("--hf-letters-travel", travel);
-      el.style.setProperty("--hf-letters-direction", direction);
+    document.querySelectorAll(".sc-bottom-up-letters").forEach((el) => {
+      el.style.setProperty("--sc-letters-travel", travel);
+      el.style.setProperty("--sc-letters-direction", direction);
       if (el.dataset.hfLettersReady === "1") return;
       const text = el.textContent || "";
       el.textContent = "";
@@ -83,7 +83,7 @@
           continue;
         }
         const span = document.createElement("span");
-        span.className = "hf-bottom-up-letters-char";
+        span.className = "sc-bottom-up-letters-char";
         span.textContent = part === " " ? "\u00a0" : part;
         el.appendChild(span);
       }
@@ -95,7 +95,7 @@
 <!--
   Timeline integration:
 
-  tl.to(".hf-bottom-up-letters-char", {
+  tl.to(".sc-bottom-up-letters-char", {
     opacity: 1,
     y: 0,
     duration: 0.48,

@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { deriveElementTiming } from "./propertyPanelFlatTimingDerivation";
 import type { DomEditSelection } from "./domEditingTypes";
-import type { GsapAnimation } from "@hyperframes/core/gsap-parser";
+import type { GsapAnimation } from "@smashcut/core/gsap-parser";
 
 function withDataAttributes(
   dataAttributes: Record<string, string>,
@@ -42,9 +42,9 @@ describe("deriveElementTiming", () => {
     expect(result).toEqual({ start: 0, duration: 10, inferred: false });
   });
 
-  it("falls back to hf-authored-duration when data-duration is absent", () => {
+  it("falls back to sc-authored-duration when data-duration is absent", () => {
     const result = deriveElementTiming(
-      withDataAttributes({ start: "1", "hf-authored-duration": "6" }),
+      withDataAttributes({ start: "1", "sc-authored-duration": "6" }),
     );
     expect(result).toEqual({ start: 1, duration: 6, inferred: false });
   });

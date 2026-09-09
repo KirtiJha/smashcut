@@ -222,7 +222,7 @@ export function ColorGradingSliderControl({
           onMouseUp={() => commitDraft(draft)}
           onTouchEnd={() => commitDraft(draft)}
           onBlur={() => commitDraft(draft)}
-          className="hf-color-grading-range absolute left-0 right-0 top-1/2 z-30 min-w-0 w-full -translate-y-1/2"
+          className="sc-color-grading-range absolute left-0 right-0 top-1/2 z-30 min-w-0 w-full -translate-y-1/2"
           title={displayValue}
         />
       </div>
@@ -256,7 +256,7 @@ export function ColorGradingSliderControl({
                 nudge(-1);
               }
             }}
-            className="hf-color-grading-number h-4 w-[36px] bg-transparent text-right text-[10px] font-medium tabular-nums text-panel-text-1 outline-none disabled:cursor-not-allowed"
+            className="sc-color-grading-number h-4 w-[36px] bg-transparent text-right text-[10px] font-medium tabular-nums text-panel-text-1 outline-none disabled:cursor-not-allowed"
             title={displayValue}
           />
           {suffix && <span className="ml-0.5 text-[10px] text-panel-text-5">{suffix}</span>}

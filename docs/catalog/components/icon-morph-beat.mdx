@@ -16,7 +16,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 ```html icon-morph-beat.html
 <!doctype html>
 <!--
-  icon-morph-beat: HyperFrames video primitive (product-demo / state-change)
+  icon-morph-beat: SmashCut video primitive (product-demo / state-change)
 
   Concept: one icon holds as a readable before state, morphs into its after
   state while shifting to the selected accent, then marks completion with a
@@ -165,8 +165,8 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
             var icon = root.querySelector(".imb-icon");
             var shape = root.querySelector(".imb-shape");
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             // Each from/to pair has the same SVG command sequence and point
@@ -278,7 +278,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 
 ## Install
 
-<InstallCommand command="npx hyperframes add icon-morph-beat" item="icon-morph-beat" />
+<InstallCommand command="npx smashcut add icon-morph-beat" item="icon-morph-beat" />
 
 That writes one file: `compositions/components/icon-morph-beat.html`.
 
@@ -317,7 +317,7 @@ defaults, so this behaves exactly like the preview above until you change one:
 ```html
 <!doctype html>
 <!--
-  icon-morph-beat: HyperFrames video primitive (product-demo / state-change)
+  icon-morph-beat: SmashCut video primitive (product-demo / state-change)
 
   Concept: one icon holds as a readable before state, morphs into its after
   state while shifting to the selected accent, then marks completion with a
@@ -466,8 +466,8 @@ defaults, so this behaves exactly like the preview above until you change one:
             var icon = root.querySelector(".imb-icon");
             var shape = root.querySelector(".imb-shape");
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             // Each from/to pair has the same SVG command sequence and point

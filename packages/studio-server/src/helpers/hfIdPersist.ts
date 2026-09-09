@@ -1,4 +1,4 @@
-import { ensureHfIds } from "@hyperframes/parsers/hf-ids";
+import { ensureHfIds } from "@smashcut/parsers/sc-ids";
 import {
   closeSync,
   constants,
@@ -11,7 +11,7 @@ import {
 } from "node:fs";
 
 /**
- * Ensure `html` has `data-hf-id` attributes minted, and write the result back
+ * Ensure `html` has `data-sc-id` attributes minted, and write the result back
  * to `filePath` if new ids were added.
  *
  * **Invariant:** `html` must be the raw file content read from `filePath` just
@@ -24,8 +24,8 @@ export function persistHfIdsIfNeeded(filePath: string, html: string): string {
   // Use attribute count instead of string equality: linkedom serialization may
   // normalize quote style and whitespace even when no ids were actually minted,
   // which would cause spurious writes on every request.
-  const idsBefore = (html.match(/\bdata-hf-id=/g) ?? []).length;
-  const idsAfter = (normalized.match(/\bdata-hf-id=/g) ?? []).length;
+  const idsBefore = (html.match(/\bdata-sc-id=/g) ?? []).length;
+  const idsAfter = (normalized.match(/\bdata-sc-id=/g) ?? []).length;
   if (idsAfter > idsBefore) {
     try {
       // Re-read before writing to guard against concurrent user saves. If the
@@ -40,7 +40,7 @@ export function persistHfIdsIfNeeded(filePath: string, html: string): string {
     } catch (err) {
       // Non-fatal — serve with ids even if the disk write fails (e.g. read-only
       // filesystem, sandboxed environment). Log so the failure is diagnosable.
-      console.warn("[hyperframes] persistHfIdsIfNeeded: failed to write ids to disk:", err);
+      console.warn("[smashcut] persistHfIdsIfNeeded: failed to write ids to disk:", err);
     }
   }
   return normalized;
@@ -57,7 +57,7 @@ function openNoFollow(filePath: string, flags: number): number | null {
 }
 
 /**
- * Read `filePath`, mint any missing `data-hf-id`s, write the stamped content
+ * Read `filePath`, mint any missing `data-sc-id`s, write the stamped content
  * back if new ids were added, and return the stamped content — all through ONE
  * file descriptor. Unlike the check-path / read-path / write-path sequence a
  * route handler would otherwise do, the validation (fstat), read, and write
@@ -88,15 +88,15 @@ export function stampFileHfIds(filePath: string): string | null {
     const normalized = ensureHfIds(html);
     // Attribute count, not string equality — linkedom serialization normalizes
     // quote style/whitespace even when no ids were minted (see persistHfIdsIfNeeded).
-    const idsBefore = (html.match(/\bdata-hf-id=/g) ?? []).length;
-    const idsAfter = (normalized.match(/\bdata-hf-id=/g) ?? []).length;
+    const idsBefore = (html.match(/\bdata-sc-id=/g) ?? []).length;
+    const idsAfter = (normalized.match(/\bdata-sc-id=/g) ?? []).length;
     if (writable && idsAfter > idsBefore) {
       ftruncateSync(fd, 0);
       writeSync(fd, normalized, 0, "utf-8");
     }
     return normalized;
   } catch (err) {
-    console.warn("[hyperframes] stampFileHfIds: failed to stamp ids:", err);
+    console.warn("[smashcut] stampFileHfIds: failed to stamp ids:", err);
     return null;
   } finally {
     closeSync(fd);

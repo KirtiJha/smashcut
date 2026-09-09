@@ -5,13 +5,13 @@ export function previewConfigPayload(
   pid = process.pid,
   version = "dev",
 ): Record<string, unknown> | null {
-  const projectDir = env.HYPERFRAMES_PREVIEW_PROJECT_DIR;
-  const projectName = env.HYPERFRAMES_PREVIEW_PROJECT_NAME;
+  const projectDir = env.SMASHCUT_PREVIEW_PROJECT_DIR;
+  const projectName = env.SMASHCUT_PREVIEW_PROJECT_NAME;
   if (!projectDir || !projectName) return null;
 
-  const browserGpuMode = env.HYPERFRAMES_PREVIEW_BROWSER_GPU_MODE;
+  const browserGpuMode = env.SMASHCUT_PREVIEW_BROWSER_GPU_MODE;
   return {
-    isHyperframes: true,
+    isSmashcut: true,
     pid,
     projectName,
     projectDir,

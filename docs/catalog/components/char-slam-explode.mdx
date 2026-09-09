@@ -16,7 +16,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 ```html char-slam-explode.html
 <!doctype html>
 <!--
-  char-slam-explode: HyperFrames video primitive
+  char-slam-explode: SmashCut video primitive
 
   A headline begins as individually scattered glyphs, holds the explosion,
   then reassembles with an overshooting slam and a deterministic three-frame
@@ -145,8 +145,8 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
             var stage = root.querySelector(".cse-stage");
             var headline = root.querySelector(".cse-headline");
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             var text = vars.text == null ? "Impact" : String(vars.text);
@@ -358,7 +358,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 
 ## Install
 
-<InstallCommand command="npx hyperframes add char-slam-explode" item="char-slam-explode" />
+<InstallCommand command="npx smashcut add char-slam-explode" item="char-slam-explode" />
 
 That writes one file: `compositions/components/char-slam-explode.html`.
 
@@ -398,7 +398,7 @@ defaults, so this behaves exactly like the preview above until you change one:
 ```html
 <!doctype html>
 <!--
-  char-slam-explode: HyperFrames video primitive
+  char-slam-explode: SmashCut video primitive
 
   A headline begins as individually scattered glyphs, holds the explosion,
   then reassembles with an overshooting slam and a deterministic three-frame
@@ -527,8 +527,8 @@ defaults, so this behaves exactly like the preview above until you change one:
             var stage = root.querySelector(".cse-stage");
             var headline = root.querySelector(".cse-headline");
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             var text = vars.text == null ? "Impact" : String(vars.text);

@@ -51,7 +51,7 @@ function setupMocks(opts: {
     // scheduleBackgroundInstall now also derives the argv form; mirror the real
     // helper (null for skip, a {bin,args} pair otherwise).
     installInvocation: (kind: string, version: string) =>
-      kind === "skip" ? null : { bin: kind, args: ["add", "-g", `hyperframes@${version}`] },
+      kind === "skip" ? null : { bin: kind, args: ["add", "-g", `smashcut@${version}`] },
   }));
 
   const spawnSpy = vi.fn(() => ({
@@ -74,8 +74,8 @@ function setupMocks(opts: {
   // CI=true and would cause every scheduling assertion to fail false-negative.
   // Tests that specifically want one of these set pass it via opts.env.
   delete process.env["CI"];
-  delete process.env["HYPERFRAMES_NO_AUTO_INSTALL"];
-  delete process.env["HYPERFRAMES_NO_UPDATE_CHECK"];
+  delete process.env["SMASHCUT_NO_AUTO_INSTALL"];
+  delete process.env["SMASHCUT_NO_UPDATE_CHECK"];
 
   // Apply env overrides, remembering originals for afterEach cleanup.
   if (opts.env) {
@@ -103,7 +103,7 @@ describe("scheduleBackgroundInstall", () => {
 
   it("schedules an install when a newer minor/patch is available", async () => {
     const { spawnSpy, writeSpy, config } = setupMocks({
-      installer: { kind: "npm", command: "npm install -g hyperframes@0.4.4" },
+      installer: { kind: "npm", command: "npm install -g smashcut@0.4.4" },
     });
     const { scheduleBackgroundInstall } = await import("./autoUpdate.js");
 
@@ -113,12 +113,12 @@ describe("scheduleBackgroundInstall", () => {
     expect(spawnSpy).toHaveBeenCalledOnce();
     expect(writeSpy).toHaveBeenCalled();
     expect(config.pendingUpdate?.version).toBe("0.4.4");
-    expect(config.pendingUpdate?.command).toBe("npm install -g hyperframes@0.4.4");
+    expect(config.pendingUpdate?.command).toBe("npm install -g smashcut@0.4.4");
   });
 
   it("does NOT schedule across a major-version jump", async () => {
     const { spawnSpy } = setupMocks({
-      installer: { kind: "npm", command: "npm install -g hyperframes@1.0.0" },
+      installer: { kind: "npm", command: "npm install -g smashcut@1.0.0" },
     });
     const { scheduleBackgroundInstall } = await import("./autoUpdate.js");
 
@@ -128,7 +128,7 @@ describe("scheduleBackgroundInstall", () => {
 
   it("skips in dev mode", async () => {
     const { spawnSpy } = setupMocks({
-      installer: { kind: "npm", command: "npm install -g hyperframes@0.4.4" },
+      installer: { kind: "npm", command: "npm install -g smashcut@0.4.4" },
       devMode: true,
     });
     const { scheduleBackgroundInstall } = await import("./autoUpdate.js");
@@ -139,7 +139,7 @@ describe("scheduleBackgroundInstall", () => {
 
   it("skips when CI=1", async () => {
     const { spawnSpy } = setupMocks({
-      installer: { kind: "npm", command: "npm install -g hyperframes@0.4.4" },
+      installer: { kind: "npm", command: "npm install -g smashcut@0.4.4" },
       env: { CI: "1" },
     });
     const { scheduleBackgroundInstall } = await import("./autoUpdate.js");
@@ -148,10 +148,10 @@ describe("scheduleBackgroundInstall", () => {
     expect(spawnSpy).not.toHaveBeenCalled();
   });
 
-  it("skips when HYPERFRAMES_NO_AUTO_INSTALL=1", async () => {
+  it("skips when SMASHCUT_NO_AUTO_INSTALL=1", async () => {
     const { spawnSpy } = setupMocks({
-      installer: { kind: "npm", command: "npm install -g hyperframes@0.4.4" },
-      env: { HYPERFRAMES_NO_AUTO_INSTALL: "1" },
+      installer: { kind: "npm", command: "npm install -g smashcut@0.4.4" },
+      env: { SMASHCUT_NO_AUTO_INSTALL: "1" },
     });
     const { scheduleBackgroundInstall } = await import("./autoUpdate.js");
 
@@ -171,7 +171,7 @@ describe("scheduleBackgroundInstall", () => {
 
   it("skips when already up to date", async () => {
     const { spawnSpy } = setupMocks({
-      installer: { kind: "npm", command: "npm install -g hyperframes@0.4.3" },
+      installer: { kind: "npm", command: "npm install -g smashcut@0.4.3" },
     });
     const { scheduleBackgroundInstall } = await import("./autoUpdate.js");
 
@@ -181,11 +181,11 @@ describe("scheduleBackgroundInstall", () => {
 
   it("does not re-launch while a fresh pending install exists for the same version", async () => {
     const { spawnSpy } = setupMocks({
-      installer: { kind: "npm", command: "npm install -g hyperframes@0.4.4" },
+      installer: { kind: "npm", command: "npm install -g smashcut@0.4.4" },
       config: {
         pendingUpdate: {
           version: "0.4.4",
-          command: "npm install -g hyperframes@0.4.4",
+          command: "npm install -g smashcut@0.4.4",
           startedAt: new Date().toISOString(),
         },
       },
@@ -199,11 +199,11 @@ describe("scheduleBackgroundInstall", () => {
   it("re-launches when a stale pending install is older than the timeout", async () => {
     const longAgo = new Date(Date.now() - 60 * 60 * 1000).toISOString(); // 1h ago
     const { spawnSpy } = setupMocks({
-      installer: { kind: "npm", command: "npm install -g hyperframes@0.4.4" },
+      installer: { kind: "npm", command: "npm install -g smashcut@0.4.4" },
       config: {
         pendingUpdate: {
           version: "0.4.4",
-          command: "npm install -g hyperframes@0.4.4",
+          command: "npm install -g smashcut@0.4.4",
           startedAt: longAgo,
         },
       },
@@ -216,7 +216,7 @@ describe("scheduleBackgroundInstall", () => {
 
   it("skips when the previous run already completed this version successfully", async () => {
     const { spawnSpy } = setupMocks({
-      installer: { kind: "npm", command: "npm install -g hyperframes@0.4.4" },
+      installer: { kind: "npm", command: "npm install -g smashcut@0.4.4" },
       config: {
         completedUpdate: {
           version: "0.4.4",
@@ -233,7 +233,7 @@ describe("scheduleBackgroundInstall", () => {
 
   it("skips when the previous run already failed this version", async () => {
     const { spawnSpy } = setupMocks({
-      installer: { kind: "npm", command: "npm install -g hyperframes@0.4.4" },
+      installer: { kind: "npm", command: "npm install -g smashcut@0.4.4" },
       config: {
         completedUpdate: {
           version: "0.4.4",
@@ -250,7 +250,7 @@ describe("scheduleBackgroundInstall", () => {
 
   it("writes completed updates atomically in the detached child script", async () => {
     const { spawnSpy } = setupMocks({
-      installer: { kind: "npm", command: "npm install -g hyperframes@0.4.4" },
+      installer: { kind: "npm", command: "npm install -g smashcut@0.4.4" },
     });
     const { scheduleBackgroundInstall } = await import("./autoUpdate.js");
 
@@ -266,7 +266,7 @@ describe("scheduleBackgroundInstall", () => {
 
   it("surfaces failed installs once but still blocks retries for the same version", async () => {
     const { spawnSpy, config } = setupMocks({
-      installer: { kind: "npm", command: "npm install -g hyperframes@0.4.4" },
+      installer: { kind: "npm", command: "npm install -g smashcut@0.4.4" },
       config: {
         completedUpdate: {
           version: "0.4.4",
@@ -284,7 +284,7 @@ describe("scheduleBackgroundInstall", () => {
       reportCompletedUpdate();
 
       expect(stderrWrite).toHaveBeenCalledWith(
-        expect.stringContaining("hyperframes auto-update to v0.4.4 failed"),
+        expect.stringContaining("smashcut auto-update to v0.4.4 failed"),
       );
       expect(config.completedUpdate).toMatchObject({
         version: "0.4.4",

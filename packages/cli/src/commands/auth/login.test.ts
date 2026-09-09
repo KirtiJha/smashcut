@@ -106,7 +106,7 @@ describe("auth login", () => {
       configurable: true,
       value: true,
     });
-    envFixture = await setupTempAuthEnv("hf-login-");
+    envFixture = await setupTempAuthEnv("sc-login-");
     dir = envFixture.dir;
     verifyState.reject = false;
     verifyState.user = { email: "alice@example.com" };
@@ -261,7 +261,7 @@ describe("auth login", () => {
 
   it("preserves an unknown/foreign top-level key across a successful re-login", async () => {
     // Cross-CLI invariant end-to-end: a key heygen-cli (or a future
-    // version) wrote must survive a hyperframes-cli login round-trip.
+    // version) wrote must survive a smashcut-cli login round-trip.
     await fs.writeFile(join(dir, "credentials"), JSON.stringify({ future_field: { x: 1 } }), {
       mode: 0o600,
     });
@@ -279,7 +279,7 @@ describe("auth login", () => {
     await expect(runCommand({})).rejects.toThrow(/Invalid command usage/);
     expect(deviceAuth.start).not.toHaveBeenCalled();
     expect(console.error).toHaveBeenCalledWith(
-      expect.stringContaining("hyperframes auth login --device"),
+      expect.stringContaining("smashcut auth login --device"),
     );
   });
 

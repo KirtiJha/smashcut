@@ -140,13 +140,13 @@ describe("createRuntimeStartTimeResolver", () => {
       slide1.id = "slide-1";
       slide1.setAttribute("data-composition-id", "slide-1");
       slide1.setAttribute("data-start", "0");
-      slide1.setAttribute("data-hf-authored-duration", "14");
+      slide1.setAttribute("data-sc-authored-duration", "14");
       document.body.appendChild(slide1);
 
       const slide2 = document.createElement("div");
       slide2.id = "slide-2";
       slide2.setAttribute("data-start", "slide-1");
-      slide2.setAttribute("data-hf-authored-duration", "12");
+      slide2.setAttribute("data-sc-authored-duration", "12");
       document.body.appendChild(slide2);
 
       const slide3 = document.createElement("div");
@@ -204,7 +204,7 @@ describe("createRuntimeStartTimeResolver", () => {
 
       const wrapper = document.createElement("div");
       wrapper.setAttribute("data-composition-id", "reveal1");
-      wrapper.setAttribute("data-hf-inner-root", "true");
+      wrapper.setAttribute("data-sc-inner-root", "true");
       host.appendChild(wrapper);
 
       const resolver = createRuntimeStartTimeResolver({});
@@ -247,21 +247,21 @@ describe("createRuntimeStartTimeResolver", () => {
       slide1.id = "slide-1";
       slide1.setAttribute("data-composition-id", "slide-core-conviction");
       slide1.setAttribute("data-start", "0");
-      slide1.setAttribute("data-hf-authored-duration", "14");
+      slide1.setAttribute("data-sc-authored-duration", "14");
       root.appendChild(slide1);
 
       const slide2 = document.createElement("div");
       slide2.id = "slide-2";
       slide2.setAttribute("data-composition-id", "slide-avatar-v");
       slide2.setAttribute("data-start", "slide-1");
-      slide2.setAttribute("data-hf-authored-duration", "12");
+      slide2.setAttribute("data-sc-authored-duration", "12");
       root.appendChild(slide2);
 
       const slide3 = document.createElement("div");
       slide3.id = "slide-3";
       slide3.setAttribute("data-composition-id", "slide-translation");
       slide3.setAttribute("data-start", "slide-2");
-      slide3.setAttribute("data-hf-authored-duration", "16");
+      slide3.setAttribute("data-sc-authored-duration", "16");
       root.appendChild(slide3);
 
       const video = document.createElement("video");
@@ -370,7 +370,7 @@ describe("createRuntimeStartTimeResolver", () => {
     it("resolves preserved authored duration when runtime stripped the public attr", () => {
       const el = document.createElement("div");
       el.setAttribute("data-composition-id", "comp-1");
-      el.setAttribute("data-hf-authored-duration", "9");
+      el.setAttribute("data-sc-authored-duration", "9");
       document.body.appendChild(el);
 
       const resolver = createRuntimeStartTimeResolver({ includeAuthoredTimingAttrs: true });
@@ -380,7 +380,7 @@ describe("createRuntimeStartTimeResolver", () => {
     it("ignores preserved authored duration by default", () => {
       const el = document.createElement("div");
       el.setAttribute("data-composition-id", "comp-1");
-      el.setAttribute("data-hf-authored-duration", "9");
+      el.setAttribute("data-sc-authored-duration", "9");
       document.body.appendChild(el);
 
       const resolver = createRuntimeStartTimeResolver({});

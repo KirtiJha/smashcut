@@ -16,9 +16,9 @@ import { existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "no
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { pathToFileURL } from "node:url";
-import { getAudioFxRuntimeScript } from "@hyperframes/core/audio-fx-runtime";
-import { enabledAudioFxNodes, type HfAudioFxChain } from "@hyperframes/core/audio-fx";
-import { serializeAutomation, type HfAutomation } from "@hyperframes/core/audio-automation";
+import { getAudioFxRuntimeScript } from "@smashcut/core/audio-fx-runtime";
+import { enabledAudioFxNodes, type HfAudioFxChain } from "@smashcut/core/audio-fx";
+import { serializeAutomation, type HfAutomation } from "@smashcut/core/audio-automation";
 import { acquireBrowser } from "./browserManager.js";
 import { createEnvelopeWalker } from "./audioVolumeEnvelope.js";
 import { riffChunks } from "./wavChunks.js";
@@ -163,7 +163,7 @@ export function writeWav(
   // lgtm[js/insecure-temporary-file] — `path` is always inside a directory the
   // caller made with `mkdtempSync`, never a name assembled directly under
   // `tmpdir()`. Both routes here are covered: the browser host page writes into
-  // `mkdtempSync(join(tmpdir(), "hf-fx-host-"))` below, and the render output
+  // `mkdtempSync(join(tmpdir(), "sc-fx-host-"))` below, and the render output
   // goes to the producer's work dir, itself created as
   // `mkdtempSync(join(tempRoot, "producer-project-"))`. mkdtemp picks the random
   // suffix and creates the directory 0700 in one syscall, so the predictable
@@ -303,7 +303,7 @@ export async function applyAudioFxChain(
   // to be acquired above it, with the mkdtemp between — so a failure there
   // (a full disk, a read-only tmpdir) leaked a pooled browser, and a pool with
   // no leases left hangs every later render rather than failing one.
-  const hostDir = mkdtempSync(join(tmpdir(), "hf-fx-host-"));
+  const hostDir = mkdtempSync(join(tmpdir(), "sc-fx-host-"));
   let lease: Awaited<ReturnType<typeof acquireBrowser>> | null = null;
   try {
     // Audio processing needs no GPU or special capture mode; a plain sandboxed

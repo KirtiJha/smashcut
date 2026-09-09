@@ -29,8 +29,8 @@ function htmlWithVariables(attr: string): string {
   return `<!DOCTYPE html>
 <html data-composition-variables='${attr}'>
 <body>
-<div data-hf-id="hf-stage" data-hf-root style="width: 1280px; height: 720px" data-duration="5">
-  <h1 data-hf-id="hf-title" data-start="0" data-end="3">Hello</h1>
+<div data-sc-id="sc-stage" data-sc-root style="width: 1280px; height: 720px" data-duration="5">
+  <h1 data-sc-id="sc-title" data-start="0" data-end="3">Hello</h1>
 </div>
 </body>
 </html>`;
@@ -51,7 +51,7 @@ describe("getVariableDeclarations", () => {
 
   it("returns [] when the attribute is absent", async () => {
     const comp = await openComposition(
-      `<div data-hf-id="hf-stage" data-hf-root data-duration="5"><p data-hf-id="hf-p">x</p></div>`,
+      `<div data-sc-id="sc-stage" data-sc-root data-duration="5"><p data-sc-id="sc-p">x</p></div>`,
     );
     expect(comp.getVariableDeclarations()).toEqual([]);
   });
@@ -106,7 +106,7 @@ describe("getVariableValues", () => {
 
   it("returns {} for a composition with no declarations", async () => {
     const comp = await openComposition(
-      `<div data-hf-id="hf-stage" data-hf-root data-duration="5"><p data-hf-id="hf-p">x</p></div>`,
+      `<div data-sc-id="sc-stage" data-sc-root data-duration="5"><p data-sc-id="sc-p">x</p></div>`,
     );
     expect(comp.getVariableValues()).toEqual({});
     expect(comp.getVariableValues({ a: 1 })).toEqual({ a: 1 });

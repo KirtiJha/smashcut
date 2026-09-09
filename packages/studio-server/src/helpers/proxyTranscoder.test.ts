@@ -62,7 +62,7 @@ async function flush(times = 6): Promise<void> {
 const tempDirs: string[] = [];
 
 function tmpProject(): string {
-  const dir = mkdtempSync(join(tmpdir(), "hf-proxy-transcoder-"));
+  const dir = mkdtempSync(join(tmpdir(), "sc-proxy-transcoder-"));
   tempDirs.push(dir);
   return dir;
 }
@@ -71,9 +71,9 @@ afterEach(() => {
   for (const dir of tempDirs.splice(0)) rmSync(dir, { recursive: true, force: true });
   vi.resetModules();
   vi.doUnmock("node:child_process");
-  vi.doUnmock("@hyperframes/parsers/ff-binaries");
-  delete process.env.HYPERFRAMES_PROXY_MAX_CONCURRENCY;
-  delete process.env.HYPERFRAMES_PROXY_MAX_QUEUE;
+  vi.doUnmock("@smashcut/parsers/ff-binaries");
+  delete process.env.SMASHCUT_PROXY_MAX_CONCURRENCY;
+  delete process.env.SMASHCUT_PROXY_MAX_QUEUE;
 });
 
 async function loadModule(
@@ -86,7 +86,7 @@ async function loadModule(
     const mocked = { spawn };
     return { ...mocked, default: mocked };
   });
-  vi.doMock("@hyperframes/parsers/ff-binaries", () => ({
+  vi.doMock("@smashcut/parsers/ff-binaries", () => ({
     findFfBinary: () => ffmpegPath,
   }));
   vi.doMock("./mediaMetadata.js", () => ({
@@ -350,8 +350,8 @@ describe("resolveProxy", () => {
   });
 
   it("honors bounded concurrency and queue environment overrides", async () => {
-    process.env.HYPERFRAMES_PROXY_MAX_CONCURRENCY = "1";
-    process.env.HYPERFRAMES_PROXY_MAX_QUEUE = "0";
+    process.env.SMASHCUT_PROXY_MAX_CONCURRENCY = "1";
+    process.env.SMASHCUT_PROXY_MAX_QUEUE = "0";
     const { spawn, calls } = createSpawnSpy();
     const { resolveProxy, ProxyCapacityError } = await loadModule(spawn, FFMPEG_PATH);
     const projectDir = tmpProject();

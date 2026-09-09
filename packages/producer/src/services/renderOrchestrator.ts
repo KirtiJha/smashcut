@@ -52,7 +52,7 @@ import {
   fpsToNumber,
   redactTelemetryString,
   toFps,
-} from "@hyperframes/core";
+} from "@smashcut/core";
 import {
   type EngineConfig,
   resolveConfig,
@@ -91,7 +91,7 @@ import {
   getDrawElementVerificationDetails,
   augmentProtocolTimeoutError,
   augmentPageNavigationTimeoutError,
-} from "@hyperframes/engine";
+} from "@smashcut/engine";
 import { join, dirname, resolve } from "path";
 import { totalmem } from "node:os";
 import { randomUUID } from "crypto";
@@ -265,7 +265,7 @@ export interface RenderConfig {
    * Frame rate as an exact rational. Integer fps is `{ num: 30, den: 1 }`;
    * NTSC is `{ num: 30000, den: 1001 }`. This shape lets the orchestrator
    * pass the exact rational through to FFmpeg's `-r` / `-framerate` flags
-   * without a decimal round-trip — see `fpsToFfmpegArg` in @hyperframes/core.
+   * without a decimal round-trip — see `fpsToFfmpegArg` in @smashcut/core.
    *
    * Use `fpsToNumber(config.fps)` at any site that needs a `number` for
    * arithmetic (frame-index → time, telemetry, frame-interval ms). Decimal
@@ -345,7 +345,7 @@ export interface RenderConfig {
   hdrMode?: "auto" | "force-hdr" | "force-sdr";
   /**
    * Render-time variable overrides for the composition. Injected as
-   * `window.__hfVariables` before any page script runs and consumed by the
+   * `window.__scVariables` before any page script runs and consumed by the
    * runtime helper `getVariables()`, which merges them over the declared
    * defaults from `<html data-composition-variables="...">`.
    *
@@ -388,7 +388,7 @@ export interface RenderPerfSummary {
    * htmlInCanvas / low-memory pins short-circuited sizing). `boundBy` names
    * the binding constraint; the heap fields are the advisory budget being
    * validated by fleet telemetry before enforcement — see
-   * `computeWorkerSizing` in @hyperframes/engine.
+   * `computeWorkerSizing` in @smashcut/engine.
    */
   workerSizing?: WorkerSizing;
   chunkedEncode: boolean;
@@ -928,7 +928,7 @@ export function resolveRenderWorkDirPrefix(
   platform: NodeJS.Platform = process.platform,
   systemTempDir: string = tmpdir(),
 ): string {
-  if (platform === "win32") return join(systemTempDir, "hf-render-");
+  if (platform === "win32") return join(systemTempDir, "sc-render-");
   return join(dirname(outputPath), `work-${jobId}-`);
 }
 
@@ -4166,10 +4166,10 @@ async function executeRenderPipeline(input: {
     // Retry burn on a render that STILL failed — the actionable signal for tuning
     // MAX_TRANSIENT_CAPTURE_RETRIES (mirrors the success-path record above).
     recordTransientRetryObservability();
-    // Surface HyperFrames' PRODUCER_PUPPETEER_PROTOCOL_TIMEOUT_MS env +
+    // Surface SmashCut' PRODUCER_PUPPETEER_PROTOCOL_TIMEOUT_MS env +
     // --protocol-timeout CLI in Puppeteer CDP protocol-timeout errors. Puppeteer's
     // stock "Runtime.callFunctionOn timed out. Increase the 'protocolTimeout'
-    // setting" text doesn't name the HyperFrames knob and doesn't state the
+    // setting" text doesn't name the SmashCut knob and doesn't state the
     // effective timeout that was already applied (300000 ms base + auto-scaling
     // via `scaleProtocolTimeoutForComposition`). Field signal ts=1784047847
     // reporter gave up on HF and switched to FFmpeg because the error didn't
@@ -4177,14 +4177,14 @@ async function executeRenderPipeline(input: {
     // unchanged when the message doesn't match, so non-timeout failures (memory
     // exhaustion, other CDP errors) flow through with no change.
     const protocolTimeoutError = augmentProtocolTimeoutError(error, cfg.protocolTimeout);
-    // Surface HyperFrames' PRODUCER_PAGE_NAVIGATION_TIMEOUT_MS env +
-    // --browser-timeout CLI + HYPERFRAMES_BROWSER_PATH escape hatch in
+    // Surface SmashCut' PRODUCER_PAGE_NAVIGATION_TIMEOUT_MS env +
+    // --browser-timeout CLI + SMASHCUT_BROWSER_PATH escape hatch in
     // Puppeteer `page.goto` navigation-timeout errors. Puppeteer's stock
     // "Navigation timeout of 60000 ms exceeded" text names none of these
     // levers. Field signal ts=1784146416 (darwin/arm64, CLI 0.7.58): host
     // page.goto hit Navigation timeout twice on a CSS 3D + audio composition;
     // Docker rendered the same composition successfully. Mirrors #2443's
-    // HYPERFRAMES_BROWSER_PATH surfacing at the runtime-navigation layer
+    // SMASHCUT_BROWSER_PATH surfacing at the runtime-navigation layer
     // (vs download-time). `augmentPageNavigationTimeoutError` returns the
     // input unchanged when the message doesn't match the Nav-timeout regex,
     // so protocol-timeout / memory / other CDP errors flow through unchanged.

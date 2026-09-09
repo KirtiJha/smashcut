@@ -47,7 +47,7 @@ describe("BeginFrame capability probe", () => {
     const result = await _probeBeginFrameSupportForTests(browser);
 
     expect(result.supported).toBe(true);
-    expect(goto).toHaveBeenCalledWith(expect.stringContaining("hf-beginframe-probe"), {
+    expect(goto).toHaveBeenCalledWith(expect.stringContaining("sc-beginframe-probe"), {
       waitUntil: "domcontentloaded",
       timeout: 2000,
     });
@@ -192,7 +192,7 @@ describe("buildChromeArgs browser GPU mode", () => {
 
 describe("browser launch capture-mode contract", () => {
   it("derives BeginFrame from the actual launch flags, not forceScreenshot alone", () => {
-    const dir = mkdtempSync(join(tmpdir(), "hf-browser-fingerprint-"));
+    const dir = mkdtempSync(join(tmpdir(), "sc-browser-fingerprint-"));
     const chromePath = join(dir, "chrome-headless-shell");
     writeFileSync(chromePath, "");
     try {
@@ -300,7 +300,7 @@ describe("resolveBrowserGpuMode", () => {
     expect(await resolveBrowserGpuMode("hardware", { platform: "linux" })).toBe("hardware");
     const warning = String(warn.mock.calls[0]?.[0]);
     expect(warning).toContain("GPU probe could not run");
-    expect(warning).toContain("hyperframes doctor");
+    expect(warning).toContain("smashcut doctor");
     expect(warning).not.toContain("--gpus all");
   });
 
@@ -442,13 +442,13 @@ describe("resolveBrowserGpuMode", () => {
 
 describe("resolveHeadlessShellPath", () => {
   const originalHeadlessShellPath = process.env.PRODUCER_HEADLESS_SHELL_PATH;
-  const originalHyperframesBrowserPath = process.env.HYPERFRAMES_BROWSER_PATH;
+  const originalSmashcutBrowserPath = process.env.SMASHCUT_BROWSER_PATH;
 
   afterEach(() => {
     if (originalHeadlessShellPath === undefined) delete process.env.PRODUCER_HEADLESS_SHELL_PATH;
     else process.env.PRODUCER_HEADLESS_SHELL_PATH = originalHeadlessShellPath;
-    if (originalHyperframesBrowserPath === undefined) delete process.env.HYPERFRAMES_BROWSER_PATH;
-    else process.env.HYPERFRAMES_BROWSER_PATH = originalHyperframesBrowserPath;
+    if (originalSmashcutBrowserPath === undefined) delete process.env.SMASHCUT_BROWSER_PATH;
+    else process.env.SMASHCUT_BROWSER_PATH = originalSmashcutBrowserPath;
   });
 
   it("throws a clear error when PRODUCER_HEADLESS_SHELL_PATH points at a missing binary", () => {
@@ -459,13 +459,13 @@ describe("resolveHeadlessShellPath", () => {
     );
   });
 
-  it("uses HYPERFRAMES_BROWSER_PATH when the CLI resolved a browser explicitly", () => {
-    const dir = mkdtempSync(join(tmpdir(), "hyperframes-engine-browser-env-"));
+  it("uses SMASHCUT_BROWSER_PATH when the CLI resolved a browser explicitly", () => {
+    const dir = mkdtempSync(join(tmpdir(), "smashcut-engine-browser-env-"));
     try {
       const binary = join(dir, "chrome-headless-shell");
       writeFileSync(binary, "");
       delete process.env.PRODUCER_HEADLESS_SHELL_PATH;
-      process.env.HYPERFRAMES_BROWSER_PATH = binary;
+      process.env.SMASHCUT_BROWSER_PATH = binary;
 
       expect(resolveHeadlessShellPath({})).toBe(binary);
     } finally {
@@ -507,7 +507,7 @@ describe("resolveHeadlessShellPath", () => {
   ])(
     "selects only the host-compatible cached shell on $hostPlatform/$hostArch when every platform is present",
     ({ hostPlatform, hostArch, expectedDirectory, expectedExecutable }) => {
-      const home = mkdtempSync(join(tmpdir(), "hyperframes-engine-browser-platform-"));
+      const home = mkdtempSync(join(tmpdir(), "smashcut-engine-browser-platform-"));
       try {
         const cacheVersion = join(
           home,
@@ -532,7 +532,7 @@ describe("resolveHeadlessShellPath", () => {
 
         const env = { ...process.env, HOME: home, USERPROFILE: home };
         delete env.PRODUCER_HEADLESS_SHELL_PATH;
-        delete env.HYPERFRAMES_BROWSER_PATH;
+        delete env.SMASHCUT_BROWSER_PATH;
         const moduleUrl = new URL("./browserManager.ts", import.meta.url).href;
         const stdout = execFileSync(
           "bun",
@@ -556,7 +556,7 @@ describe("resolveHeadlessShellPath", () => {
   ])(
     "does not select a foreign cached shell on unsupported $hostPlatform/$hostArch",
     ({ hostPlatform, hostArch }) => {
-      const home = mkdtempSync(join(tmpdir(), "hyperframes-engine-browser-unsupported-"));
+      const home = mkdtempSync(join(tmpdir(), "smashcut-engine-browser-unsupported-"));
       try {
         const cacheVersion = join(
           home,
@@ -576,7 +576,7 @@ describe("resolveHeadlessShellPath", () => {
 
         const env = { ...process.env, HOME: home, USERPROFILE: home };
         delete env.PRODUCER_HEADLESS_SHELL_PATH;
-        delete env.HYPERFRAMES_BROWSER_PATH;
+        delete env.SMASHCUT_BROWSER_PATH;
         const moduleUrl = new URL("./browserManager.ts", import.meta.url).href;
         const stdout = execFileSync(
           "bun",
@@ -594,13 +594,13 @@ describe("resolveHeadlessShellPath", () => {
     },
   );
 
-  it("reuses chrome-headless-shell from the HyperFrames-managed cache", () => {
-    const home = mkdtempSync(join(tmpdir(), "hyperframes-engine-browser-cache-"));
+  it("reuses chrome-headless-shell from the SmashCut-managed cache", () => {
+    const home = mkdtempSync(join(tmpdir(), "smashcut-engine-browser-cache-"));
     try {
       const binary = join(
         home,
         ".cache",
-        "hyperframes",
+        "smashcut",
         "chrome",
         "chrome-headless-shell",
         "linux-152.0.7928.2",
@@ -616,7 +616,7 @@ describe("resolveHeadlessShellPath", () => {
       // os.homedir() reads HOME on POSIX and USERPROFILE on Windows.
       const env = { ...process.env, HOME: home, USERPROFILE: home };
       delete env.PRODUCER_HEADLESS_SHELL_PATH;
-      delete env.HYPERFRAMES_BROWSER_PATH;
+      delete env.SMASHCUT_BROWSER_PATH;
       const moduleUrl = new URL("./browserManager.ts", import.meta.url).href;
       const stdout = execFileSync(
         "bun",

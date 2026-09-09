@@ -25,7 +25,7 @@ function runInit(args: string[]): { status: number; stdout: string; stderr: stri
     timeout: 30_000,
     // The `--skip-skills` flag is neutered (see init.ts); the GitHub skills check
     // is opted out only via this env var, so tests stay offline and fast.
-    env: { ...process.env, HYPERFRAMES_SKIP_SKILLS: "1" },
+    env: { ...process.env, SMASHCUT_SKIP_SKILLS: "1" },
   });
   return {
     status: res.status ?? -1,
@@ -39,15 +39,15 @@ function expectScaffoldedScripts(target: string): void {
     scripts?: Record<string, string>;
   };
   expect(pkg.scripts).toMatchObject({
-    dev: "npx --yes hyperframes preview",
-    check: "npx --yes hyperframes check",
-    render: "npx --yes hyperframes render",
-    publish: "npx --yes hyperframes publish",
+    dev: "npx --yes smashcut preview",
+    check: "npx --yes smashcut check",
+    render: "npx --yes smashcut render",
+    publish: "npx --yes smashcut publish",
   });
   expect(Object.keys(pkg.scripts ?? {}).sort()).toEqual(["check", "dev", "publish", "render"]);
 }
 
-describe("hyperframes init flag rename", () => {
+describe("smashcut init flag rename", () => {
   it("selects the language-compatible model before both eager init downloads", () => {
     expect(initSource).toMatch(
       /const initialTranscriptionModel = initialModelForLanguage\(\s*modelFlag \?\? DEFAULT_MODEL,\s*languageFlag,?\s*\);/,
@@ -57,7 +57,7 @@ describe("hyperframes init flag rename", () => {
   });
 
   it("requires an explicit source in non-interactive mode", () => {
-    const dir = mkdtempSync(join(tmpdir(), "hf-init-test-"));
+    const dir = mkdtempSync(join(tmpdir(), "sc-init-test-"));
     const target = join(dir, "proj");
     try {
       const res = runInit([target, "--non-interactive"]);
@@ -70,7 +70,7 @@ describe("hyperframes init flag rename", () => {
   });
 
   it("rejects a following flag when --example has no value", () => {
-    const dir = mkdtempSync(join(tmpdir(), "hf-init-test-"));
+    const dir = mkdtempSync(join(tmpdir(), "sc-init-test-"));
     const target = join(dir, "proj");
     try {
       const res = runInit([target, "--example", "--non-interactive"]);
@@ -83,7 +83,7 @@ describe("hyperframes init flag rename", () => {
   });
 
   it("--example blank scaffolds a bundled project with npm scripts", () => {
-    const dir = mkdtempSync(join(tmpdir(), "hf-init-test-"));
+    const dir = mkdtempSync(join(tmpdir(), "sc-init-test-"));
     const target = join(dir, "proj");
     try {
       const res = runInit([target, "--example", "blank", "--non-interactive", "--skip-skills"]);
@@ -106,7 +106,7 @@ describe("hyperframes init flag rename", () => {
   });
 
   it("--tailwind enables Tailwind utilities in scaffolded HTML", () => {
-    const dir = mkdtempSync(join(tmpdir(), "hf-init-test-"));
+    const dir = mkdtempSync(join(tmpdir(), "sc-init-test-"));
     const target = join(dir, "proj");
     try {
       const res = runInit([
@@ -170,7 +170,7 @@ describe("hyperframes init flag rename", () => {
   });
 
   it("-v works as the short alias for --video", () => {
-    const dir = mkdtempSync(join(tmpdir(), "hf-init-test-"));
+    const dir = mkdtempSync(join(tmpdir(), "sc-init-test-"));
     const target = join(dir, "proj");
     try {
       const res = runInit([
@@ -211,7 +211,7 @@ describe("hyperframes init flag rename", () => {
   });
 
   it("--audio with a missing file fails without creating the project directory", () => {
-    const dir = mkdtempSync(join(tmpdir(), "hf-init-test-"));
+    const dir = mkdtempSync(join(tmpdir(), "sc-init-test-"));
     const target = join(dir, "proj");
     try {
       const res = runInit([
@@ -232,7 +232,7 @@ describe("hyperframes init flag rename", () => {
   });
 
   it("--video and --audio together fail without creating the project directory", () => {
-    const dir = mkdtempSync(join(tmpdir(), "hf-init-test-"));
+    const dir = mkdtempSync(join(tmpdir(), "sc-init-test-"));
     const target = join(dir, "proj");
     try {
       const res = runInit([
@@ -255,7 +255,7 @@ describe("hyperframes init flag rename", () => {
   });
 
   it("-V prints a migration error instead of version fast-path", () => {
-    const dir = mkdtempSync(join(tmpdir(), "hf-init-test-"));
+    const dir = mkdtempSync(join(tmpdir(), "sc-init-test-"));
     const target = join(dir, "proj");
     try {
       const res = runInit([
@@ -275,7 +275,7 @@ describe("hyperframes init flag rename", () => {
   });
 
   it("--template prints a rename hint and exits non-zero", () => {
-    const dir = mkdtempSync(join(tmpdir(), "hf-init-test-"));
+    const dir = mkdtempSync(join(tmpdir(), "sc-init-test-"));
     const target = join(dir, "proj");
     try {
       const res = runInit([target, "--template", "blank", "--non-interactive", "--skip-skills"]);
@@ -291,7 +291,7 @@ describe("hyperframes init flag rename", () => {
 
 describe("applyResolutionPreset", () => {
   function withFixture(fn: (dir: string) => void): void {
-    const dir = mkdtempSync(join(tmpdir(), "hf-resolution-test-"));
+    const dir = mkdtempSync(join(tmpdir(), "sc-resolution-test-"));
     try {
       mkdirSync(dir, { recursive: true });
       fn(dir);
@@ -382,7 +382,7 @@ describe("applyResolutionPreset", () => {
   });
 
   it("scaffolds a 4k project end-to-end via --resolution 4k", () => {
-    const dir = mkdtempSync(join(tmpdir(), "hf-init-test-"));
+    const dir = mkdtempSync(join(tmpdir(), "sc-init-test-"));
     const target = join(dir, "proj");
     try {
       const res = runInit([
@@ -408,7 +408,7 @@ describe("applyResolutionPreset", () => {
   });
 
   it("rejects an unknown --resolution value", () => {
-    const dir = mkdtempSync(join(tmpdir(), "hf-init-test-"));
+    const dir = mkdtempSync(join(tmpdir(), "sc-init-test-"));
     const target = join(dir, "proj");
     try {
       const res = runInit([
@@ -465,7 +465,7 @@ describe("applyResolutionPreset", () => {
   });
 
   it("accepts uppercase --resolution value (4K)", () => {
-    const dir = mkdtempSync(join(tmpdir(), "hf-init-test-"));
+    const dir = mkdtempSync(join(tmpdir(), "sc-init-test-"));
     const target = join(dir, "proj");
     try {
       const res = runInit([

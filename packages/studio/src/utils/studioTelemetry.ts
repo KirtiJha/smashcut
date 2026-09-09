@@ -31,8 +31,8 @@ function getDistinctId(): string {
 
 /**
  * This path predates telemetry/config.ts and enforced only its own
- * localStorage key, so `navigator.doNotTrack`, VITE_HYPERFRAMES_NO_TELEMETRY,
- * Vite dev mode and the documented `hyperframes-studio:telemetryDisabled` all
+ * localStorage key, so `navigator.doNotTrack`, VITE_SMASHCUT_NO_TELEMETRY,
+ * Vite dev mode and the documented `smashcut-studio:telemetryDisabled` all
  * failed to silence `studio:*` events. Now one shared policy governs every
  * transport — including the legacy key, which it still honours.
  */

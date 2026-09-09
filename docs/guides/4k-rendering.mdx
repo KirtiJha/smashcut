@@ -6,10 +6,10 @@ description: Author at 4K or supersample an existing composition at render time.
 ## Render an existing project in 4K
 
 ```bash
-npx hyperframes render --resolution 4k --output final-4k.mp4
+npx smashcut render --resolution 4k --output final-4k.mp4
 ```
 
-HyperFrames keeps the composition's layout unchanged and captures it at a higher device-pixel ratio. A 1920×1080 composition becomes a 3840×2160 file.
+SmashCut keeps the composition's layout unchanged and captures it at a higher device-pixel ratio. A 1920×1080 composition becomes a 3840×2160 file.
 
 Use the matching preset for portrait or square work:
 
@@ -24,7 +24,7 @@ Use the matching preset for portrait or square work:
 If the project should use a 4K canvas from the start:
 
 ```bash
-npx hyperframes init my-video --resolution 4k
+npx smashcut init my-video --resolution 4k
 ```
 
 Choose this when canvas or WebGL code, fixed-resolution media, or layout decisions need to know the final pixel dimensions while you author.
@@ -50,7 +50,7 @@ For a fully sharp 4K result, use 4K source media and size canvas/WebGL buffers f
 - the output is MP4 rather than an alpha format;
 - HDR is not forced for the same render.
 
-HyperFrames checks these conditions before opening the browser. Render at the composition's native size and resize separately when a combination is unsupported.
+SmashCut checks these conditions before opening the browser. Render at the composition's native size and resize separately when a combination is unsupported.
 
 ## Verify the file
 

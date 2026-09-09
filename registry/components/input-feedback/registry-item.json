@@ -1,7 +1,7 @@
 {
   "$schema": "https://hyperframes.heygen.com/schema/registry-item.json",
   "name": "input-feedback",
-  "type": "hyperframes:component",
+  "type": "smashcut:component",
   "title": "Input Feedback",
   "description": "A transitions.dev-inspired input feedback primitive with shake, clear affordance, and success state",
   "tags": ["transition-primitive", "transitions-dev-port", "input", "feedback"],
@@ -9,7 +9,7 @@
     {
       "path": "input-feedback.html",
       "target": "compositions/components/input-feedback.html",
-      "type": "hyperframes:snippet"
+      "type": "smashcut:snippet"
     }
   ],
   "variables": [
@@ -49,6 +49,6 @@
     }
   ],
   "preview": {
-    "poster": "https://static.heygen.ai/hyperframes-oss/docs/images/catalog/components/input-feedback.png"
+    "poster": "https://static.heygen.ai/smashcut-oss/docs/images/catalog/components/input-feedback.png"
   }
 }

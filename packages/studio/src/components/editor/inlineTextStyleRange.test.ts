@@ -470,19 +470,19 @@ describe("applyInlineStyle edge cases", () => {
 describe("applyInlineStyle keeps what the design panel tracks", () => {
   it("keeps a layer's key when the styling changes", () => {
     const host = mount(
-      '<span data-hf-text-key="child:0" style="color: red">Hello</span>' +
-        '<span data-hf-text-key="child:1" style="color: blue">world</span>',
+      '<span data-sc-text-key="child:0" style="color: red">Hello</span>' +
+        '<span data-sc-text-key="child:1" style="color: blue">world</span>',
     );
     applyInlineStyle(rangeOver(host, 0, 5), { color: "green" });
 
-    expect(host.innerHTML).toContain('data-hf-text-key="child:0"');
-    expect(host.innerHTML).toContain('data-hf-text-key="child:1"');
+    expect(host.innerHTML).toContain('data-sc-text-key="child:0"');
+    expect(host.innerHTML).toContain('data-sc-text-key="child:1"');
     expect(host.innerHTML).toContain("color: green");
   });
 
   it("keeps a layer's typography, which the edit never mentioned", () => {
     const host = mount(
-      '<span data-hf-text-key="child:0" style="font-size: 48px; color: red">Hello</span>',
+      '<span data-sc-text-key="child:0" style="font-size: 48px; color: red">Hello</span>',
     );
     applyInlineStyle(rangeOver(host, 0, 5), { color: "green" });
 
@@ -490,10 +490,10 @@ describe("applyInlineStyle keeps what the design panel tracks", () => {
   });
 
   it("does not put one layer's key on two spans when its text is split", () => {
-    const host = mount('<span data-hf-text-key="child:0">Hello</span>');
+    const host = mount('<span data-sc-text-key="child:0">Hello</span>');
     applyInlineStyle(rangeOver(host, 0, 2), { color: "green" });
 
-    expect(host.innerHTML.match(/data-hf-text-key="child:0"/g) ?? []).toHaveLength(1);
+    expect(host.innerHTML.match(/data-sc-text-key="child:0"/g) ?? []).toHaveLength(1);
   });
 
   it("still merges neighbours that carry no identity to lose", () => {
@@ -509,13 +509,13 @@ describe("applyInlineStyle keeps what the design panel tracks", () => {
   it("keeps a layer's identity through a second edit inside a flex container", () => {
     document.body.innerHTML =
       '<div style="display: flex" contenteditable="true">' +
-      '<span data-hf-text-key="child:0">one<br>two</span></div>';
+      '<span data-sc-text-key="child:0">one<br>two</span></div>';
     const host = document.body.firstElementChild as HTMLElement;
     applyInlineStyle(rangeOver(host, 4, 6), { color: "red" });
     const live = document.getSelection()?.getRangeAt(0);
     if (live) applyInlineStyle(live, { color: "blue" });
 
-    expect(host.innerHTML).toContain('data-hf-text-key="child:0"');
+    expect(host.innerHTML).toContain('data-sc-text-key="child:0"');
     expect(host.innerHTML).toContain("color: blue");
     expect(host.innerHTML).not.toContain("color: red");
   });
@@ -526,22 +526,22 @@ describe("applyInlineStyle keeps what the design panel tracks", () => {
   it("does not treat the writer's own id as a layer identity", () => {
     document.body.innerHTML =
       '<div style="display: flex" contenteditable="true">' +
-      '<span data-hf-id="hf-wrap"><span data-hf-text-key="child:0">one<br>two</span></span></div>';
+      '<span data-sc-id="sc-wrap"><span data-sc-text-key="child:0">one<br>two</span></span></div>';
     const host = document.body.firstElementChild as HTMLElement;
     applyInlineStyle(rangeOver(host, 4, 6), { color: "red" });
 
-    expect(host.innerHTML).toContain('data-hf-text-key="child:0"');
-    expect(host.innerHTML).not.toContain("hf-wrap");
+    expect(host.innerHTML).toContain('data-sc-text-key="child:0"');
+    expect(host.innerHTML).not.toContain("sc-wrap");
   });
 
   it("does not carry attributes that the persistence sanitizer will remove", () => {
     const host = mount(
-      '<span data-hf-text-key="child:0" aria-label="stale" onclick="alert(1)">abc</span>',
+      '<span data-sc-text-key="child:0" aria-label="stale" onclick="alert(1)">abc</span>',
     );
 
     applyInlineStyle(rangeOver(host, 0, 3), { color: "red" });
 
-    expect(host.innerHTML).toContain('data-hf-text-key="child:0"');
+    expect(host.innerHTML).toContain('data-sc-text-key="child:0"');
     expect(host.innerHTML).not.toContain("aria-label");
     expect(host.innerHTML).not.toContain("onclick");
   });
@@ -566,25 +566,25 @@ describe("applyInlineStyle keeps what the design panel tracks", () => {
 
   it("does not merge two tracked layers that end up looking alike", () => {
     const host = mount(
-      '<span data-hf-text-key="child:0" style="color: red">ab</span>' +
-        '<span data-hf-text-key="child:1" style="color: blue">cd</span>',
+      '<span data-sc-text-key="child:0" style="color: red">ab</span>' +
+        '<span data-sc-text-key="child:1" style="color: blue">cd</span>',
     );
     applyInlineStyle(rangeOver(host, 2, 4), { color: "red" });
 
-    expect(host.innerHTML).toContain('data-hf-text-key="child:0"');
-    expect(host.innerHTML).toContain('data-hf-text-key="child:1"');
+    expect(host.innerHTML).toContain('data-sc-text-key="child:0"');
+    expect(host.innerHTML).toContain('data-sc-text-key="child:1"');
   });
 
   it("cannot merge identities through delimiter-bearing attribute values", () => {
     const host = mount(
-      '<span data-hf-text-key="a&amp;data-hf-text-key=b">ab</span>' +
-        '<span data-hf-text-key="b">cd</span>',
+      '<span data-sc-text-key="a&amp;data-sc-text-key=b">ab</span>' +
+        '<span data-sc-text-key="b">cd</span>',
     );
 
     applyInlineStyle(rangeOver(host, 0, 4), { color: "red" });
 
     expect(host.querySelectorAll("span")).toHaveLength(2);
-    expect(host.querySelectorAll('[data-hf-text-key="b"]')).toHaveLength(1);
+    expect(host.querySelectorAll('[data-sc-text-key="b"]')).toHaveLength(1);
     expect(host.innerHTML).not.toContain("a&amp;");
   });
 });
@@ -670,8 +670,8 @@ describe("applyInlineStyle when something else is painting the glyphs", () => {
 
   it("mirrors only the run whose own ancestor path is overpainting", () => {
     const host = mount(
-      '<span data-hf-text-key="child:0" style="color: blue">left</span>' +
-        '<span data-hf-text-key="child:1" style="color: green">right</span>',
+      '<span data-sc-text-key="child:0" style="color: blue">left</span>' +
+        '<span data-sc-text-key="child:1" style="color: green">right</span>',
     );
     stubFill((element) =>
       element.textContent === "left" ? "rgb(255, 255, 255)" : element.style.color,

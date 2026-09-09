@@ -8,7 +8,7 @@ import { configFromTokenizerJson, encode, normalize, preTokenize, wordPiece } fr
 const REFERENCE_PATH = join(import.meta.dirname, "__fixtures__", "wordpiece-reference.json");
 const TOKENIZER_PATH = join(
   homedir(),
-  ".hyperframes",
+  ".smashcut",
   "models",
   "bge-small-en-v1.5.tokenizer.json",
 );

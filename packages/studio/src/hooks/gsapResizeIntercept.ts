@@ -5,7 +5,7 @@
  * frame can't jump. Split from gsapRuntimeBridge, which owns the shared
  * group-tween resolution used by the drag/resize/rotate intercepts.
  */
-import type { GsapAnimation, PropertyGroupName } from "@hyperframes/core/gsap-parser";
+import type { GsapAnimation, PropertyGroupName } from "@smashcut/core/gsap-parser";
 import type { DomEditSelection } from "../components/editor/domEditingTypes";
 import { clearStudioBoxSize } from "../components/editor/manualEdits";
 import {
@@ -70,7 +70,7 @@ function originalBoxSize(
   const measured = Number.parseFloat(el?.getAttribute(measuredAttr) ?? "");
   if (Number.isFinite(measured) && measured > 0) return measured;
   const inline = Number.parseFloat(
-    el?.getAttribute(`data-hf-studio-original-${inlineProperty}`) ?? "",
+    el?.getAttribute(`data-sc-studio-original-${inlineProperty}`) ?? "",
   );
   return Number.isFinite(inline) && inline > 0 ? inline : null;
 }

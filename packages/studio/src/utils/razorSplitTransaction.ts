@@ -123,7 +123,7 @@ async function requestAtomicCut(
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "X-Hyperframes-Write-Token": transactionToken,
+      "X-Smashcut-Write-Token": transactionToken,
     },
     body: JSON.stringify({ files, transactionToken }),
   });

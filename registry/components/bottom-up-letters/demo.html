@@ -25,14 +25,14 @@
         color: #f7ead6;
         font-family: Inter, system-ui, sans-serif;
       }
-      .hf-bottom-up-letters {
+      .sc-bottom-up-letters {
         display: inline-block;
         font-size: 180px; /* ponytail: scaled up from 126px — fills ~65% of 1920px frame width */
         line-height: 1;
         font-weight: 900;
         letter-spacing: -0.02em;
       }
-      .hf-bottom-up-letters-char {
+      .sc-bottom-up-letters-char {
         display: inline-block;
         opacity: 0;
         transform: translate3d(0, 0.85em, 0);
@@ -53,14 +53,14 @@
   { "id": "travel", "type": "enum", "role": "motion", "label": "Travel", "description": "How far each span starts from its resting position, from 0.45em to 1.5em.", "default": "standard", "options": [{ "value": "close", "label": "Close" }, { "value": "standard", "label": "Standard" }, { "value": "far", "label": "Far" }] }
 ]'
     >
-      <div class="hf-bottom-up-letters">Build with motion</div>
+      <div class="sc-bottom-up-letters">Build with motion</div>
       <script>
         (function () {
           "use strict";
 
           var vars =
-            window.__hyperframes && window.__hyperframes.getVariables
-              ? window.__hyperframes.getVariables()
+            window.__smashcut && window.__smashcut.getVariables
+              ? window.__smashcut.getVariables()
               : {};
 
           // Unrecognised overrides return to their declared defaults.
@@ -76,9 +76,9 @@
           var direction = directions[pick(directions, vars.direction, "up")];
           var unit = pick(units, vars.unit, "letter");
 
-          document.querySelectorAll(".hf-bottom-up-letters").forEach((el) => {
-            el.style.setProperty("--hf-letters-travel", travel);
-            el.style.setProperty("--hf-letters-direction", direction);
+          document.querySelectorAll(".sc-bottom-up-letters").forEach((el) => {
+            el.style.setProperty("--sc-letters-travel", travel);
+            el.style.setProperty("--sc-letters-direction", direction);
             if (el.dataset.hfLettersReady === "1") return;
             const text = el.textContent || "";
             el.textContent = "";
@@ -90,7 +90,7 @@
                 continue;
               }
               const span = document.createElement("span");
-              span.className = "hf-bottom-up-letters-char";
+              span.className = "sc-bottom-up-letters-char";
               span.textContent = part === " " ? "\u00a0" : part;
               el.appendChild(span);
             }
@@ -99,19 +99,19 @@
         })();
       </script>
       <script>
-        document.querySelectorAll(".hf-bottom-up-letters").forEach((el) => {
+        document.querySelectorAll(".sc-bottom-up-letters").forEach((el) => {
           const text = el.textContent || "";
           el.textContent = "";
           for (const char of text) {
             const span = document.createElement("span");
-            span.className = "hf-bottom-up-letters-char";
+            span.className = "sc-bottom-up-letters-char";
             span.textContent = char === " " ? "\u00a0" : char;
             el.appendChild(span);
           }
         });
         const tl = gsap.timeline({ paused: true });
         tl.to(
-          ".hf-bottom-up-letters-char",
+          ".sc-bottom-up-letters-char",
           { opacity: 1, y: 0, duration: 0.48, ease: "back.out(1.7)", stagger: 0.025 },
           0.45,
         );
@@ -147,15 +147,15 @@
         { "id": "travel", "type": "enum", "role": "motion", "label": "Travel", "description": "How far each span starts from its resting position, from 0.45em to 1.5em.", "default": "standard", "options": [{ "value": "close", "label": "Close" }, { "value": "standard", "label": "Standard" }, { "value": "far", "label": "Far" }] }
       ]'
       >
-        .hf-bottom-up-letters {
+        .sc-bottom-up-letters {
           display: inline-block;
         }
-        .hf-bottom-up-letters-char {
+        .sc-bottom-up-letters-char {
           display: inline-block;
           opacity: 0;
           transform: translate3d(
             0,
-            calc(var(--hf-letters-travel, 0.85em) * var(--hf-letters-direction, 1)),
+            calc(var(--sc-letters-travel, 0.85em) * var(--sc-letters-direction, 1)),
             0
           );
           will-change: transform, opacity;

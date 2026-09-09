@@ -15,7 +15,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 
 ```html tabs-slide-indicator.html
 <!--
-  Tabs Slide Indicator - transitions.dev-inspired primitive for HyperFrames.
+  Tabs Slide Indicator - transitions.dev-inspired primitive for SmashCut.
 
   Paste the markup, CSS and script into a composition. Use the timeline
   integration note at the bottom as the starting point for deterministic GSAP
@@ -47,7 +47,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 -->
 
 <div
-  class="hf-transition-tabs-slide-indicator"
+  class="sc-transition-tabs-slide-indicator"
   data-composition-variables='[
     { "id": "accent", "type": "enum", "role": "style", "label": "Accent", "description": "Fill of the sliding pill. ink is literal; the rest ride the composition theme tokens.", "default": "ink", "options": [{ "value": "ink", "label": "Ink" }, { "value": "green", "label": "Green" }, { "value": "blue", "label": "Blue" }, { "value": "violet", "label": "Violet" }] },
     { "id": "width", "type": "enum", "role": "layout", "label": "Tab width", "description": "Width of one tab. The slide the timeline drives is scaled to match, so the pill still lands on the next tab.", "default": "standard", "options": [{ "value": "compact", "label": "Compact" }, { "value": "standard", "label": "Standard" }, { "value": "wide", "label": "Wide" }] },
@@ -55,47 +55,47 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
     { "id": "labels", "type": "string", "role": "content", "label": "Labels", "description": "The tab names, separated by commas. Two or more names rebuild the row.", "default": "Plan,Debug,Ask" }
   ]'
 >
-  <span class="indicator"></span><button style="--hf-tab-index: 0">Plan</button
-  ><button style="--hf-tab-index: 1">Debug</button><button style="--hf-tab-index: 2">Ask</button>
+  <span class="indicator"></span><button style="--sc-tab-index: 0">Plan</button
+  ><button style="--sc-tab-index: 1">Debug</button><button style="--sc-tab-index: 2">Ask</button>
 </div>
 
 <style>
-  .hf-transition-tabs-slide-indicator {
-    --hf-tab-x: 0px;
-    --hf-tab-offset: calc(var(--hf-tab-x) * var(--hf-tab-step, 1));
+  .sc-transition-tabs-slide-indicator {
+    --sc-tab-x: 0px;
+    --sc-tab-offset: calc(var(--sc-tab-x) * var(--sc-tab-step, 1));
     position: relative;
     display: inline-grid;
-    grid-template-columns: repeat(var(--hf-tab-count, 3), var(--hf-tab-width, 86px));
+    grid-template-columns: repeat(var(--sc-tab-count, 3), var(--sc-tab-width, 86px));
     padding: 4px;
     border: 1px solid #e4e4e7;
-    border-radius: var(--hf-tab-radius, 999px);
+    border-radius: var(--sc-tab-radius, 999px);
     background: #f4f4f5;
     font-family: Inter, system-ui, sans-serif;
   }
-  .hf-transition-tabs-slide-indicator .indicator {
+  .sc-transition-tabs-slide-indicator .indicator {
     position: absolute;
     top: 4px;
     left: 4px;
-    width: var(--hf-tab-width, 86px);
+    width: var(--sc-tab-width, 86px);
     height: 36px;
-    border-radius: var(--hf-tab-radius, 999px);
-    background: var(--hf-tab-fill, #18181b);
-    transform: translateX(var(--hf-tab-offset));
+    border-radius: var(--sc-tab-radius, 999px);
+    background: var(--sc-tab-fill, #18181b);
+    transform: translateX(var(--sc-tab-offset));
     box-shadow: 0 12px 26px rgba(0, 0, 0, 0.18);
   }
-  .hf-transition-tabs-slide-indicator button {
-    --hf-tab-highlight-start: clamp(
+  .sc-transition-tabs-slide-indicator button {
+    --sc-tab-highlight-start: clamp(
       0px,
-      calc(var(--hf-tab-offset) - var(--hf-tab-index) * var(--hf-tab-width, 86px)),
-      var(--hf-tab-width, 86px)
+      calc(var(--sc-tab-offset) - var(--sc-tab-index) * var(--sc-tab-width, 86px)),
+      var(--sc-tab-width, 86px)
     );
-    --hf-tab-highlight-end: clamp(
+    --sc-tab-highlight-end: clamp(
       0px,
       calc(
-        var(--hf-tab-offset) + var(--hf-tab-width, 86px) - var(--hf-tab-index) *
-          var(--hf-tab-width, 86px)
+        var(--sc-tab-offset) + var(--sc-tab-width, 86px) - var(--sc-tab-index) *
+          var(--sc-tab-width, 86px)
       ),
-      var(--hf-tab-width, 86px)
+      var(--sc-tab-width, 86px)
     );
     position: relative;
     z-index: 1;
@@ -104,9 +104,9 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
     background-color: transparent;
     background-image: linear-gradient(
       to right,
-      #6f6f78 0 var(--hf-tab-highlight-start),
-      #fff var(--hf-tab-highlight-start) var(--hf-tab-highlight-end),
-      #6f6f78 var(--hf-tab-highlight-end) 100%
+      #6f6f78 0 var(--sc-tab-highlight-start),
+      #fff var(--sc-tab-highlight-start) var(--sc-tab-highlight-end),
+      #6f6f78 var(--sc-tab-highlight-end) 100%
     );
     background-clip: text;
     -webkit-background-clip: text;
@@ -120,8 +120,8 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
     "use strict";
 
     var vars =
-      window.__hyperframes && window.__hyperframes.getVariables
-        ? window.__hyperframes.getVariables()
+      window.__smashcut && window.__smashcut.getVariables
+        ? window.__smashcut.getVariables()
         : {};
 
     // Unrecognised overrides return to their declared defaults.
@@ -153,14 +153,14 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
       return part.length > 0;
     });
 
-    var roots = document.querySelectorAll(".hf-transition-tabs-slide-indicator");
+    var roots = document.querySelectorAll(".sc-transition-tabs-slide-indicator");
     for (var i = 0; i < roots.length; i += 1) {
-      roots[i].style.setProperty("--hf-tab-fill", accent);
-      roots[i].style.setProperty("--hf-tab-width", width + "px");
+      roots[i].style.setProperty("--sc-tab-fill", accent);
+      roots[i].style.setProperty("--sc-tab-width", width + "px");
       // The timeline slides the pill by one standard tab, so scale that slide
       // to whatever a tab is actually worth here.
-      roots[i].style.setProperty("--hf-tab-step", String(width / 86));
-      roots[i].style.setProperty("--hf-tab-radius", radius);
+      roots[i].style.setProperty("--sc-tab-step", String(width / 86));
+      roots[i].style.setProperty("--sc-tab-radius", radius);
       // A single tab has nowhere to slide to, so it is left as authored.
       if (labels.length > 1) {
         var old = roots[i].querySelectorAll("button");
@@ -170,10 +170,10 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
         for (var k = 0; k < labels.length; k += 1) {
           var button = document.createElement("button");
           button.textContent = labels[k];
-          button.style.setProperty("--hf-tab-index", String(k));
+          button.style.setProperty("--sc-tab-index", String(k));
           roots[i].appendChild(button);
         }
-        roots[i].style.setProperty("--hf-tab-count", String(labels.length));
+        roots[i].style.setProperty("--sc-tab-count", String(labels.length));
       }
     }
   })();
@@ -181,7 +181,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 
 <!--
   Timeline integration:
-  tl.fromTo('.hf-transition-tabs-slide-indicator', { '--hf-tab-x': '0px' }, { '--hf-tab-x': '86px', duration: 0.42, ease: 'power3.inOut' }, startTime);
+  tl.fromTo('.sc-transition-tabs-slide-indicator', { '--sc-tab-x': '0px' }, { '--sc-tab-x': '86px', duration: 0.42, ease: 'power3.inOut' }, startTime);
 -->
 ```
 
@@ -189,7 +189,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 
 ## Install
 
-<InstallCommand command="npx hyperframes add tabs-slide-indicator" item="tabs-slide-indicator" />
+<InstallCommand command="npx smashcut add tabs-slide-indicator" item="tabs-slide-indicator" />
 
 That writes one file: `compositions/components/tabs-slide-indicator.html`.
 
@@ -222,7 +222,7 @@ defaults, so this behaves exactly like the preview above until you change one:
 
 ```html
 <!--
-  Tabs Slide Indicator - transitions.dev-inspired primitive for HyperFrames.
+  Tabs Slide Indicator - transitions.dev-inspired primitive for SmashCut.
 
   Paste the markup, CSS and script into a composition. Use the timeline
   integration note at the bottom as the starting point for deterministic GSAP
@@ -254,7 +254,7 @@ defaults, so this behaves exactly like the preview above until you change one:
 -->
 
 <div
-  class="hf-transition-tabs-slide-indicator"
+  class="sc-transition-tabs-slide-indicator"
   data-composition-variables='[
     { "id": "accent", "type": "enum", "role": "style", "label": "Accent", "description": "Fill of the sliding pill. ink is literal; the rest ride the composition theme tokens.", "default": "ink", "options": [{ "value": "ink", "label": "Ink" }, { "value": "green", "label": "Green" }, { "value": "blue", "label": "Blue" }, { "value": "violet", "label": "Violet" }] },
     { "id": "width", "type": "enum", "role": "layout", "label": "Tab width", "description": "Width of one tab. The slide the timeline drives is scaled to match, so the pill still lands on the next tab.", "default": "standard", "options": [{ "value": "compact", "label": "Compact" }, { "value": "standard", "label": "Standard" }, { "value": "wide", "label": "Wide" }] },
@@ -262,47 +262,47 @@ defaults, so this behaves exactly like the preview above until you change one:
     { "id": "labels", "type": "string", "role": "content", "label": "Labels", "description": "The tab names, separated by commas. Two or more names rebuild the row.", "default": "Plan,Debug,Ask" }
   ]'
 >
-  <span class="indicator"></span><button style="--hf-tab-index: 0">Plan</button
-  ><button style="--hf-tab-index: 1">Debug</button><button style="--hf-tab-index: 2">Ask</button>
+  <span class="indicator"></span><button style="--sc-tab-index: 0">Plan</button
+  ><button style="--sc-tab-index: 1">Debug</button><button style="--sc-tab-index: 2">Ask</button>
 </div>
 
 <style>
-  .hf-transition-tabs-slide-indicator {
-    --hf-tab-x: 0px;
-    --hf-tab-offset: calc(var(--hf-tab-x) * var(--hf-tab-step, 1));
+  .sc-transition-tabs-slide-indicator {
+    --sc-tab-x: 0px;
+    --sc-tab-offset: calc(var(--sc-tab-x) * var(--sc-tab-step, 1));
     position: relative;
     display: inline-grid;
-    grid-template-columns: repeat(var(--hf-tab-count, 3), var(--hf-tab-width, 86px));
+    grid-template-columns: repeat(var(--sc-tab-count, 3), var(--sc-tab-width, 86px));
     padding: 4px;
     border: 1px solid #e4e4e7;
-    border-radius: var(--hf-tab-radius, 999px);
+    border-radius: var(--sc-tab-radius, 999px);
     background: #f4f4f5;
     font-family: Inter, system-ui, sans-serif;
   }
-  .hf-transition-tabs-slide-indicator .indicator {
+  .sc-transition-tabs-slide-indicator .indicator {
     position: absolute;
     top: 4px;
     left: 4px;
-    width: var(--hf-tab-width, 86px);
+    width: var(--sc-tab-width, 86px);
     height: 36px;
-    border-radius: var(--hf-tab-radius, 999px);
-    background: var(--hf-tab-fill, #18181b);
-    transform: translateX(var(--hf-tab-offset));
+    border-radius: var(--sc-tab-radius, 999px);
+    background: var(--sc-tab-fill, #18181b);
+    transform: translateX(var(--sc-tab-offset));
     box-shadow: 0 12px 26px rgba(0, 0, 0, 0.18);
   }
-  .hf-transition-tabs-slide-indicator button {
-    --hf-tab-highlight-start: clamp(
+  .sc-transition-tabs-slide-indicator button {
+    --sc-tab-highlight-start: clamp(
       0px,
-      calc(var(--hf-tab-offset) - var(--hf-tab-index) * var(--hf-tab-width, 86px)),
-      var(--hf-tab-width, 86px)
+      calc(var(--sc-tab-offset) - var(--sc-tab-index) * var(--sc-tab-width, 86px)),
+      var(--sc-tab-width, 86px)
     );
-    --hf-tab-highlight-end: clamp(
+    --sc-tab-highlight-end: clamp(
       0px,
       calc(
-        var(--hf-tab-offset) + var(--hf-tab-width, 86px) - var(--hf-tab-index) *
-          var(--hf-tab-width, 86px)
+        var(--sc-tab-offset) + var(--sc-tab-width, 86px) - var(--sc-tab-index) *
+          var(--sc-tab-width, 86px)
       ),
-      var(--hf-tab-width, 86px)
+      var(--sc-tab-width, 86px)
     );
     position: relative;
     z-index: 1;
@@ -311,9 +311,9 @@ defaults, so this behaves exactly like the preview above until you change one:
     background-color: transparent;
     background-image: linear-gradient(
       to right,
-      #6f6f78 0 var(--hf-tab-highlight-start),
-      #fff var(--hf-tab-highlight-start) var(--hf-tab-highlight-end),
-      #6f6f78 var(--hf-tab-highlight-end) 100%
+      #6f6f78 0 var(--sc-tab-highlight-start),
+      #fff var(--sc-tab-highlight-start) var(--sc-tab-highlight-end),
+      #6f6f78 var(--sc-tab-highlight-end) 100%
     );
     background-clip: text;
     -webkit-background-clip: text;
@@ -327,8 +327,8 @@ defaults, so this behaves exactly like the preview above until you change one:
     "use strict";
 
     var vars =
-      window.__hyperframes && window.__hyperframes.getVariables
-        ? window.__hyperframes.getVariables()
+      window.__smashcut && window.__smashcut.getVariables
+        ? window.__smashcut.getVariables()
         : {};
 
     // Unrecognised overrides return to their declared defaults.
@@ -360,14 +360,14 @@ defaults, so this behaves exactly like the preview above until you change one:
       return part.length > 0;
     });
 
-    var roots = document.querySelectorAll(".hf-transition-tabs-slide-indicator");
+    var roots = document.querySelectorAll(".sc-transition-tabs-slide-indicator");
     for (var i = 0; i < roots.length; i += 1) {
-      roots[i].style.setProperty("--hf-tab-fill", accent);
-      roots[i].style.setProperty("--hf-tab-width", width + "px");
+      roots[i].style.setProperty("--sc-tab-fill", accent);
+      roots[i].style.setProperty("--sc-tab-width", width + "px");
       // The timeline slides the pill by one standard tab, so scale that slide
       // to whatever a tab is actually worth here.
-      roots[i].style.setProperty("--hf-tab-step", String(width / 86));
-      roots[i].style.setProperty("--hf-tab-radius", radius);
+      roots[i].style.setProperty("--sc-tab-step", String(width / 86));
+      roots[i].style.setProperty("--sc-tab-radius", radius);
       // A single tab has nowhere to slide to, so it is left as authored.
       if (labels.length > 1) {
         var old = roots[i].querySelectorAll("button");
@@ -377,10 +377,10 @@ defaults, so this behaves exactly like the preview above until you change one:
         for (var k = 0; k < labels.length; k += 1) {
           var button = document.createElement("button");
           button.textContent = labels[k];
-          button.style.setProperty("--hf-tab-index", String(k));
+          button.style.setProperty("--sc-tab-index", String(k));
           roots[i].appendChild(button);
         }
-        roots[i].style.setProperty("--hf-tab-count", String(labels.length));
+        roots[i].style.setProperty("--sc-tab-count", String(labels.length));
       }
     }
   })();
@@ -388,7 +388,7 @@ defaults, so this behaves exactly like the preview above until you change one:
 
 <!--
   Timeline integration:
-  tl.fromTo('.hf-transition-tabs-slide-indicator', { '--hf-tab-x': '0px' }, { '--hf-tab-x': '86px', duration: 0.42, ease: 'power3.inOut' }, startTime);
+  tl.fromTo('.sc-transition-tabs-slide-indicator', { '--sc-tab-x': '0px' }, { '--sc-tab-x': '86px', duration: 0.42, ease: 'power3.inOut' }, startTime);
 -->
 ```
 

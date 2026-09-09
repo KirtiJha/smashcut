@@ -16,7 +16,7 @@ import {
 } from "./projectConfig.js";
 
 function tmp(): string {
-  return mkdtempSync(join(tmpdir(), "hf-cfg-test-"));
+  return mkdtempSync(join(tmpdir(), "sc-cfg-test-"));
 }
 
 describe("projectConfig", () => {
@@ -149,7 +149,7 @@ describe("projectConfig", () => {
   });
 
   describe("writeProjectConfig", () => {
-    it("writes to hyperframes.json at the project root", () => {
+    it("writes to smashcut.json at the project root", () => {
       const dir = tmp();
       try {
         writeProjectConfig(dir);
@@ -291,7 +291,7 @@ describe("projectConfig", () => {
       }
     });
 
-    // The seed is the only writer that touches an existing hyperframes.json,
+    // The seed is the only writer that touches an existing smashcut.json,
     // which is normally committed — a render must not diff it beyond the one
     // key being added. Guards against round-tripping through normalizeConfig.
     it("preserves config keys outside the known schema", () => {
@@ -368,7 +368,7 @@ describe("projectConfig", () => {
   describe("recordProjectRegistryItems", () => {
     const BLOCK = {
       name: "data-chart",
-      type: "hyperframes:block",
+      type: "smashcut:block",
       target: "compositions/data-chart.html",
     };
 
@@ -404,7 +404,7 @@ describe("projectConfig", () => {
     it("does not rewrite the file when every item is already recorded", () => {
       const dir = tmp();
       try {
-        const text = `{\n\t"registry": "https://example.com/r",\n\t"registryItems": [\n\t\t{ "name": "data-chart", "type": "hyperframes:block", "target": "compositions/data-chart.html" }\n\t]\n}\n`;
+        const text = `{\n\t"registry": "https://example.com/r",\n\t"registryItems": [\n\t\t{ "name": "data-chart", "type": "smashcut:block", "target": "compositions/data-chart.html" }\n\t]\n}\n`;
         writeFileSync(projectConfigPath(dir), text, "utf-8");
         recordProjectRegistryItems(dir, [{ ...BLOCK }]);
         expect(readFileSync(projectConfigPath(dir), "utf-8")).toBe(text);

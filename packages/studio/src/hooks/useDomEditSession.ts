@@ -6,7 +6,7 @@ import type { ImportedFontAsset } from "../components/editor/fontAssets";
 import type { RightPanelTab } from "../utils/studioHelpers";
 import type { PatchTarget } from "../utils/sourcePatcher";
 import type { SidebarTab } from "../components/sidebar/LeftSidebar";
-import type { Composition } from "@hyperframes/sdk";
+import type { Composition } from "@smashcut/sdk";
 import { sdkCutoverPersist, sdkDeletePersist, type PublishSdkSession } from "../utils/sdkCutover";
 import { runResolverShadow, recordResolverParity } from "../utils/sdkResolverShadow";
 import { useAskAgentModal } from "./useAskAgentModal";
@@ -265,7 +265,7 @@ export function useDomEditSession({
     onTrySdkPersist: sdkSession
       ? (selection, operations, originalContent, targetPath, options) => {
           // Resolver shadow runs regardless of the cutover flag — decoupled tripwire.
-          // Pass originalContent so the runtime-node filter can suppress hf-ids
+          // Pass originalContent so the runtime-node filter can suppress sc-ids
           // absent from source (script-created nodes the SDK can't model), and
           // the paths so cross-file edits (session models only the active comp)
           // skip instead of emitting structural element_not_found noise.
@@ -321,7 +321,7 @@ export function useDomEditSession({
       : undefined,
   });
 
-  // ── Element groups (wrap selected elements in a data-hf-group div) ──
+  // ── Element groups (wrap selected elements in a data-sc-group div) ──
 
   const { groupSelection, ungroupSelection } = useGroupCommits({
     activeCompPath,
@@ -364,7 +364,7 @@ export function useDomEditSession({
     // grouping audio produced a 0x0 div with inline left/top written onto
     // elements that have never been laid out, and the timeline gained a
     // wrapper standing for nothing audible. The audio answer to "these clips
-    // belong together" is an <hf-audio-group> bus, which the timeline's own FX
+    // belong together" is an <sc-audio-group> bus, which the timeline's own FX
     // pointer creates, so the refusal names it rather than just declining.
     if (members.some((m) => isAudioDomElement(m.element))) {
       showToast(
@@ -381,7 +381,7 @@ export function useDomEditSession({
 
   const handleUngroupSelection = useCallback(() => {
     const sel = domEditSelectionRef.current;
-    if (!sel?.element.hasAttribute("data-hf-group")) {
+    if (!sel?.element.hasAttribute("data-sc-group")) {
       showToast("Select a group to ungroup", "info");
       return;
     }

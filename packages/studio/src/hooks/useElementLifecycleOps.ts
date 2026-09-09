@@ -25,7 +25,7 @@ import { cutoverCommittedOrThrow, type CutoverResult } from "../utils/sdkCutover
 import { studioWriteHeaders } from "../utils/studioFileVersion";
 
 interface UseElementLifecycleOpsParams extends DomEditCommitBaseParams {
-  /** Route delete through SDK when session resolves the hf-id. */
+  /** Route delete through SDK when session resolves the sc-id. */
   onTrySdkDelete?: (
     hfId: string,
     originalContent: string,
@@ -65,7 +65,7 @@ export function zReorderCoalesceKey(
   actionKind?: string,
 ): string {
   const ids = entries
-    .map((e) => e.id ?? e.selector ?? e.element.getAttribute("data-hf-id") ?? "el")
+    .map((e) => e.id ?? e.selector ?? e.element.getAttribute("data-sc-id") ?? "el")
     .join(":");
   return `z-reorder:${actionKind ?? "reorder"}:${ids}:g${zReorderGestureSeq++}`;
 }

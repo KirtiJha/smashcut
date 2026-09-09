@@ -14,8 +14,8 @@ export const FLATTENED_INNER_ROOT_STRIP_ATTRS = [
   "data-track-index",
   "data-track",
   "data-composition-src",
-  "data-hf-authored-duration",
-  "data-hf-authored-end",
+  "data-sc-authored-duration",
+  "data-sc-authored-end",
 ];
 
 /** Strip timing attrs, demote the authored id, and mark the flattened root. */
@@ -26,7 +26,7 @@ export function markFlattenedInnerRoot(prepared: Element): void {
   }
   if (authoredRootId) {
     prepared.removeAttribute("id");
-    prepared.setAttribute("data-hf-authored-id", authoredRootId);
+    prepared.setAttribute("data-sc-authored-id", authoredRootId);
   }
-  prepared.setAttribute("data-hf-inner-root", "true");
+  prepared.setAttribute("data-sc-inner-root", "true");
 }

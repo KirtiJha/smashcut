@@ -60,7 +60,7 @@ class HfCompressor extends AudioWorkletProcessor {
     this.p = o.processorOptions || {};
     this.env = new EnvBank(this.p.attack ?? 20, this.p.release ?? 250);
     this.port.onmessage = (e) => {
-      if (e.data && e.data.__hfDispose) { this.dead = true; return; }
+      if (e.data && e.data.__scDispose) { this.dead = true; return; }
       this.p = { ...this.p, ...e.data };
       this.env.set(this.p.attack ?? 20, this.p.release ?? 250);
     };
@@ -99,7 +99,7 @@ class HfCompressor extends AudioWorkletProcessor {
     return true;
   }
 }
-registerProcessor("hf-compressor", HfCompressor);
+registerProcessor("sc-compressor", HfCompressor);
 
 class HfLimiter extends AudioWorkletProcessor {
   constructor(o) {
@@ -107,7 +107,7 @@ class HfLimiter extends AudioWorkletProcessor {
     this.p = o.processorOptions || {};
     this.env = new EnvBank(this.p.attack ?? 5, this.p.release ?? 50);
     this.port.onmessage = (e) => {
-      if (e.data && e.data.__hfDispose) { this.dead = true; return; }
+      if (e.data && e.data.__scDispose) { this.dead = true; return; }
       this.p = { ...this.p, ...e.data };
       this.env.set(this.p.attack ?? 5, this.p.release ?? 50);
     };
@@ -131,7 +131,7 @@ class HfLimiter extends AudioWorkletProcessor {
     return true;
   }
 }
-registerProcessor("hf-limiter", HfLimiter);
+registerProcessor("sc-limiter", HfLimiter);
 
 class HfGate extends AudioWorkletProcessor {
   constructor(o) {
@@ -140,7 +140,7 @@ class HfGate extends AudioWorkletProcessor {
     this.env = new EnvBank(this.p.attack ?? 1, this.p.release ?? 100);
     this.gains = [];
     this.port.onmessage = (e) => {
-      if (e.data && e.data.__hfDispose) { this.dead = true; return; }
+      if (e.data && e.data.__scDispose) { this.dead = true; return; }
       this.p = { ...this.p, ...e.data };
       this.env.set(this.p.attack ?? 1, this.p.release ?? 100);
     };
@@ -181,7 +181,7 @@ class HfGate extends AudioWorkletProcessor {
     return true;
   }
 }
-registerProcessor("hf-gate", HfGate);
+registerProcessor("sc-gate", HfGate);
 
 class HfBitcrush extends AudioWorkletProcessor {
   constructor(o) {
@@ -190,7 +190,7 @@ class HfBitcrush extends AudioWorkletProcessor {
     this.holds = [];
     this.held = [];
     this.port.onmessage = (e) => {
-      if (e.data && e.data.__hfDispose) { this.dead = true; return; }
+      if (e.data && e.data.__scDispose) { this.dead = true; return; }
       this.p = { ...this.p, ...e.data };
     };
   }
@@ -218,7 +218,7 @@ class HfBitcrush extends AudioWorkletProcessor {
     return true;
   }
 }
-registerProcessor("hf-bitcrush", HfBitcrush);
+registerProcessor("sc-bitcrush", HfBitcrush);
 
 /** Linear-interpolated read, \`delaySamples\` behind the write head. */
 function readTap(ring, write, delaySamples) {
@@ -269,7 +269,7 @@ class HfPitchshift extends AudioWorkletProcessor {
     // enough that the splice is inaudible.
     this.wetCoef = Math.exp(-1 / (sampleRate * 0.015));
     this.port.onmessage = (e) => {
-      if (e.data && e.data.__hfDispose) { this.dead = true; return; }
+      if (e.data && e.data.__scDispose) { this.dead = true; return; }
       this.p = { ...this.p, ...e.data };
     };
   }
@@ -344,7 +344,7 @@ class HfPitchshift extends AudioWorkletProcessor {
     return true;
   }
 }
-registerProcessor("hf-pitchshift", HfPitchshift);
+registerProcessor("sc-pitchshift", HfPitchshift);
 `;
 
 // Registration is per context, not per module: a processor registered on one

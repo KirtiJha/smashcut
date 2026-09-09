@@ -30,7 +30,7 @@ export function useConsoleErrorCapture(previewIframe: HTMLIFrameElement | null) 
         // origConsoleError and errorHandler are always set alongside patchedWin
         win.console.error = origConsoleError!;
         win.removeEventListener("error", errorHandler!);
-        delete (win as unknown as Record<string, unknown>).__hfErrorCapture;
+        delete (win as unknown as Record<string, unknown>).__scErrorCapture;
       } catch {
         /* cross-origin or destroyed window */
       }
@@ -43,8 +43,8 @@ export function useConsoleErrorCapture(previewIframe: HTMLIFrameElement | null) 
       try {
         const win = previewIframe.contentWindow as (Window & typeof globalThis) | null;
         if (!win) return;
-        if ((win as unknown as Record<string, unknown>).__hfErrorCapture) return;
-        (win as unknown as Record<string, unknown>).__hfErrorCapture = true;
+        if ((win as unknown as Record<string, unknown>).__scErrorCapture) return;
+        (win as unknown as Record<string, unknown>).__scErrorCapture = true;
         patchedWin = win;
         origConsoleError = win.console.error.bind(win.console);
         win.console.error = function (...args: unknown[]) {

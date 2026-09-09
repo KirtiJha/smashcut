@@ -8,7 +8,7 @@ import type { FigmaManifestRecord } from "./types";
 
 const dirs: string[] = [];
 function project(): string {
-  const d = mkdtempSync(join(tmpdir(), "hf-manifest-"));
+  const d = mkdtempSync(join(tmpdir(), "sc-manifest-"));
   dirs.push(d);
   return d;
 }

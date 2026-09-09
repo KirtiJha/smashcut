@@ -3,7 +3,7 @@ import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import puppeteer, { type Browser, type Page } from "puppeteer";
 
-const RUNTIME_PATH = resolve(import.meta.dirname, "../../../core/dist/hyperframe.runtime.iife.js");
+const RUNTIME_PATH = resolve(import.meta.dirname, "../../../core/dist/smashcut.runtime.iife.js");
 
 describe("core runtime browser contract", () => {
   let browser: Browser;
@@ -151,20 +151,20 @@ describe("core runtime browser contract", () => {
   it("removes the control bridge during teardown", async () => {
     const result = await page.evaluate(async () => {
       const runtimeWindow = window as unknown as {
-        __hfRuntimeTeardown?: (() => void) | null;
+        __scRuntimeTeardown?: (() => void) | null;
         __player?: { isPlaying?: () => boolean };
       };
-      const hadTeardown = typeof runtimeWindow.__hfRuntimeTeardown === "function";
-      runtimeWindow.__hfRuntimeTeardown?.();
+      const hadTeardown = typeof runtimeWindow.__scRuntimeTeardown === "function";
+      runtimeWindow.__scRuntimeTeardown?.();
       window.dispatchEvent(
         new MessageEvent("message", {
-          data: { source: "hf-parent", type: "control", action: "play" },
+          data: { source: "sc-parent", type: "control", action: "play" },
         }),
       );
       await new Promise((resolveFrame) => requestAnimationFrame(() => resolveFrame(undefined)));
       return {
         hadTeardown,
-        teardownCleared: runtimeWindow.__hfRuntimeTeardown === null,
+        teardownCleared: runtimeWindow.__scRuntimeTeardown === null,
         isPlaying: runtimeWindow.__player?.isPlaying?.(),
       };
     });

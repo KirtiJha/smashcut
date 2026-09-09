@@ -63,7 +63,7 @@ function gif(frames: number[], loopCount?: number): Uint8Array {
 }
 
 function makeProject(): string {
-  return mkdtempSync(join(tmpdir(), "hf-gif-prep-"));
+  return mkdtempSync(join(tmpdir(), "sc-gif-prep-"));
 }
 
 describe("buildAnimatedGifTranscodeArgs", () => {

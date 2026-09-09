@@ -176,7 +176,7 @@ describe("useFileManager project ownership", () => {
 
     const writeTokens = fetchMock.mock.calls
       .filter(([, init]) => init?.method === "PUT")
-      .map(([, init]) => new Headers(init?.headers).get("X-Hyperframes-Write-Token"));
+      .map(([, init]) => new Headers(init?.headers).get("X-Smashcut-Write-Token"));
     expect(writeTokens).toHaveLength(2);
     expect(writeTokens[0]).toBeTruthy();
     expect(writeTokens[1]).not.toBe(writeTokens[0]);

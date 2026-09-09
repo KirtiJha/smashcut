@@ -170,14 +170,14 @@ describe("parseGsapScript", () => {
   it("extracts all GSAP properties including non-standard ones", () => {
     const script = `
       const tl = gsap.timeline({ paused: true });
-      tl.to("#el1", { opacity: 1, backgroundColor: "red", x: 50, "--hf-color-grading-intensity": 0.5, duration: 0.5 }, 0);
+      tl.to("#el1", { opacity: 1, backgroundColor: "red", x: 50, "--sc-color-grading-intensity": 0.5, duration: 0.5 }, 0);
     `;
     const result = parseGsapScript(script);
 
     expect(result.animations[0].properties.opacity).toBe(1);
     expect(result.animations[0].properties.x).toBe(50);
     expect(result.animations[0].properties.backgroundColor).toBe("red");
-    expect(result.animations[0].properties["--hf-color-grading-intensity"]).toBe(0.5);
+    expect(result.animations[0].properties["--sc-color-grading-intensity"]).toBe(0.5);
   });
 
   it("extracts ease from properties", () => {
@@ -1153,7 +1153,7 @@ describe("SUPPORTED_EASES", () => {
 
 // ── Variable-target resolution + in-place mutation ──────────────────────────
 //
-// Real compositions (and everything the hyperframes skill generates) target
+// Real compositions (and everything the smashcut skill generates) target
 // tweens via element variables resolved from querySelector, wrapped in an IIFE,
 // with gsap.set() calls interleaved between tl.to() calls. The parser must
 // resolve those variable targets to selectors (read) and edits must preserve
@@ -1769,7 +1769,7 @@ describe("keyframe mutations", () => {
     it("is idempotent (re-running does not stack holds)", () => {
       const once = syncPositionHoldsBeforeKeyframes(posTweenAt(1.2));
       expect(syncPositionHoldsBeforeKeyframes(once)).toBe(once);
-      expect((once.match(/hf-hold/g) ?? []).length).toBe(1);
+      expect((once.match(/sc-hold/g) ?? []).length).toBe(1);
     });
 
     it("re-syncs the hold value when the first keyframe changes", () => {
@@ -1783,25 +1783,25 @@ describe("keyframe mutations", () => {
       const out2 = syncPositionHoldsBeforeKeyframes(moved);
       const hold = parseGsapScript(out2).animations.find((a) => a.method === "set");
       expect(hold!.properties).toMatchObject({ x: 99, y: 88 });
-      expect((out2.match(/hf-hold/g) ?? []).length).toBe(1); // still just one
+      expect((out2.match(/sc-hold/g) ?? []).length).toBe(1); // still just one
     });
 
     it("adds no hold for a tween that already starts at t=0", () => {
-      expect(syncPositionHoldsBeforeKeyframes(posTweenAt(0))).not.toContain("hf-hold");
+      expect(syncPositionHoldsBeforeKeyframes(posTweenAt(0))).not.toContain("sc-hold");
     });
 
     it("adds no hold for an opacity-only keyframed tween (position-scoped)", () => {
       const opacity =
         `const tl = gsap.timeline({ paused: true });\n` +
         `tl.to("#b", { keyframes: { "0%": { opacity: 0 }, "100%": { opacity: 1 } }, duration: 1 }, 2);`;
-      expect(syncPositionHoldsBeforeKeyframes(opacity)).not.toContain("hf-hold");
+      expect(syncPositionHoldsBeforeKeyframes(opacity)).not.toContain("sc-hold");
     });
 
     it("removes an orphaned hold when its tween is gone", () => {
       const withHold = syncPositionHoldsBeforeKeyframes(posTweenAt(1.2));
       const tweenId = parseGsapScript(withHold).animations.find((a) => a.keyframes)!.id;
       const deleted = removeAnimationFromScript(withHold, tweenId);
-      expect(syncPositionHoldsBeforeKeyframes(deleted)).not.toContain("hf-hold");
+      expect(syncPositionHoldsBeforeKeyframes(deleted)).not.toContain("sc-hold");
     });
   });
 
@@ -2180,7 +2180,7 @@ describe("keyframe mutations", () => {
       x: 300,
       y: -100,
     });
-    expect(syncPositionHoldsBeforeKeyframes(withPath)).not.toContain("hf-hold");
+    expect(syncPositionHoldsBeforeKeyframes(withPath)).not.toContain("sc-hold");
   });
 
   // ── convertToKeyframesInScript ──────────────────────────────────────────

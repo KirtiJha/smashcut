@@ -12,20 +12,20 @@ vi.mock("node:child_process", async (importOriginal) => ({
 }));
 
 describe("runEnvironmentChecks", () => {
-  const originalFfmpegPath = process.env.HYPERFRAMES_FFMPEG_PATH;
-  const originalFfprobePath = process.env.HYPERFRAMES_FFPROBE_PATH;
+  const originalFfmpegPath = process.env.SMASHCUT_FFMPEG_PATH;
+  const originalFfprobePath = process.env.SMASHCUT_FFPROBE_PATH;
 
   beforeEach(() => {
-    process.env.HYPERFRAMES_FFMPEG_PATH = process.execPath;
-    process.env.HYPERFRAMES_FFPROBE_PATH = process.execPath;
+    process.env.SMASHCUT_FFMPEG_PATH = process.execPath;
+    process.env.SMASHCUT_FFPROBE_PATH = process.execPath;
     execFileSync.mockReturnValue("ffmpeg version 7.1.1\n");
   });
 
   afterEach(() => {
-    if (originalFfmpegPath === undefined) delete process.env.HYPERFRAMES_FFMPEG_PATH;
-    else process.env.HYPERFRAMES_FFMPEG_PATH = originalFfmpegPath;
-    if (originalFfprobePath === undefined) delete process.env.HYPERFRAMES_FFPROBE_PATH;
-    else process.env.HYPERFRAMES_FFPROBE_PATH = originalFfprobePath;
+    if (originalFfmpegPath === undefined) delete process.env.SMASHCUT_FFMPEG_PATH;
+    else process.env.SMASHCUT_FFMPEG_PATH = originalFfmpegPath;
+    if (originalFfprobePath === undefined) delete process.env.SMASHCUT_FFPROBE_PATH;
+    else process.env.SMASHCUT_FFPROBE_PATH = originalFfprobePath;
   });
 
   it("returns configured FFmpeg and FFprobe paths when checks pass", async () => {
@@ -42,7 +42,7 @@ describe("runEnvironmentChecks", () => {
   });
 
   it("reports ffprobe as a render-blocking error when the explicit path is missing", async () => {
-    process.env.HYPERFRAMES_FFPROBE_PATH = "/missing/ffprobe.exe";
+    process.env.SMASHCUT_FFPROBE_PATH = "/missing/ffprobe.exe";
 
     const result = await runEnvironmentChecks();
 
@@ -58,20 +58,20 @@ describe("runEnvironmentChecks", () => {
   });
 
   it("fails early when an explicit FFmpeg env override points at a missing file", async () => {
-    process.env.HYPERFRAMES_FFMPEG_PATH = "/missing/ffmpeg.exe";
+    process.env.SMASHCUT_FFMPEG_PATH = "/missing/ffmpeg.exe";
 
     const result = await runEnvironmentChecks();
     const ffmpeg = result.outcomes.find((outcome) => outcome.name === "FFmpeg");
 
     expect(ffmpeg).toMatchObject({
       ok: false,
-      detail: 'Configured path does not exist: HYPERFRAMES_FFMPEG_PATH="/missing/ffmpeg.exe"',
+      detail: 'Configured path does not exist: SMASHCUT_FFMPEG_PATH="/missing/ffmpeg.exe"',
     });
   });
 
   it("blocks rendering when the selected FFmpeg binary cannot launch", async () => {
     execFileSync.mockImplementation((binaryPath: string) => {
-      if (binaryPath !== process.env.HYPERFRAMES_FFMPEG_PATH) return "ffprobe version 7.1.1\n";
+      if (binaryPath !== process.env.SMASHCUT_FFMPEG_PATH) return "ffprobe version 7.1.1\n";
       throw Object.assign(new Error("Command failed with exit code 3221225781"), {
         status: 3221225781,
       });
@@ -117,7 +117,7 @@ describe("runEnvironmentChecks", () => {
       expect(result.outcomes.find((outcome) => outcome.name === "Chrome")).toMatchObject({
         ok: false,
         title: "Chrome not found",
-        hint: "Run: npx hyperframes browser ensure",
+        hint: "Run: npx smashcut browser ensure",
       });
       expect(result.browser).toBeUndefined();
     } finally {
@@ -187,7 +187,7 @@ describe("runEnvironmentChecks — Chrome shared libraries (Linux/WSL)", () => {
 
   it("downgrades a found Chrome to a render-blocking error when libs are missing", async () => {
     vi.spyOn(manager, "findBrowser").mockResolvedValue({
-      executablePath: "/root/.cache/hyperframes/chrome-headless-shell",
+      executablePath: "/root/.cache/smashcut/chrome-headless-shell",
       source: "cache",
     });
     vi.spyOn(linuxDeps, "probeChromeSharedLibs").mockReturnValue({

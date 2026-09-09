@@ -79,7 +79,7 @@ function preparedGifCachePath(
 
 describe("compileForRender animated GIF inputs", () => {
   it("rewrites animated GIF images to prepared synced videos", async () => {
-    const projectDir = mkdtempSync(join(tmpdir(), "hf-compiler-gif-"));
+    const projectDir = mkdtempSync(join(tmpdir(), "sc-compiler-gif-"));
     const cacheDir = join(projectDir, "gif-cache");
     mkdirSync(cacheDir, { recursive: true });
 
@@ -116,7 +116,7 @@ describe("compileForRender animated GIF inputs", () => {
     expect(document.querySelector("img#reaction")).toBeNull();
     expect(video?.getAttribute("class")).toBe("clip sticker");
     expect(video?.hasAttribute("loop")).toBe(true);
-    expect(video?.getAttribute("data-hf-prepared-gif")).toBe("true");
+    expect(video?.getAttribute("data-sc-prepared-gif")).toBe("true");
     expect(video?.getAttribute("data-end")).toBe("3");
     expect(src).toMatch(/^_animated_gif\/hfgif-v1-/);
     expect(compiled.videos.some((entry) => entry.id === "reaction")).toBe(true);

@@ -68,7 +68,7 @@ describe("measureManualOffsetDragScreenToOffsetMatrix", () => {
   it("measures the element center response and restores probe styles", () => {
     const window = new Window();
     const element = window.document.createElement("div");
-    element.setAttribute("data-hf-studio-path-offset", "true");
+    element.setAttribute("data-sc-studio-path-offset", "true");
     window.document.body.append(element);
 
     element.getBoundingClientRect = () => {
@@ -147,7 +147,7 @@ describe("measureManualOffsetDragScreenToOffsetMatrix", () => {
     iframe.getBoundingClientRect = () => new window.DOMRect(50, 40, 100, 50);
 
     const element = iframeDocument.createElement("div");
-    element.setAttribute("data-hf-studio-path-offset", "true");
+    element.setAttribute("data-sc-studio-path-offset", "true");
     iframeDocument.body.append(element);
     element.getBoundingClientRect = () => {
       const offsetX = Number.parseFloat(element.style.getPropertyValue(STUDIO_OFFSET_X_PROP)) || 0;
@@ -188,7 +188,7 @@ describe("measureManualOffsetDragScreenToOffsetMatrix", () => {
   it("rejects path-offset elements whose movement response cannot be measured", () => {
     const window = new Window();
     const element = window.document.createElement("div");
-    element.setAttribute("data-hf-studio-path-offset", "true");
+    element.setAttribute("data-sc-studio-path-offset", "true");
     window.document.body.append(element);
     element.getBoundingClientRect = () => new window.DOMRect(10, 20, 12, 8);
 
@@ -352,17 +352,17 @@ describe("createManualOffsetDragMember uses raw CSS var offset", () => {
 });
 
 // ── GSAP-element drag: the dot-a "flies" regressions ────────────────────────
-// A static element positioned via the legacy `--hf-studio-offset` CSS var, dragged
+// A static element positioned via the legacy `--sc-studio-offset` CSS var, dragged
 // in a GSAP composition. Three independent failure modes, each fixed:
 //   1. live drag integrated off-screen (base read from the live transform)
 //   2. commit re-added the delta (stamped base wiped by a mid-drag re-render)
-//   3. drop left the element offset (stale --hf-studio-offset var composing with
+//   3. drop left the element offset (stale --sc-studio-offset var composing with
 //      the committed GSAP transform until a full reload)
 function makeGsapDot(offsetX = 94, offsetY = 2) {
   const window = new Window();
   const element = window.document.createElement("div");
   element.id = "dot-a";
-  element.setAttribute("data-hf-studio-path-offset", "true");
+  element.setAttribute("data-sc-studio-path-offset", "true");
   element.style.setProperty(STUDIO_OFFSET_X_PROP, `${offsetX}px`);
   element.style.setProperty(STUDIO_OFFSET_Y_PROP, `${offsetY}px`);
   element.style.translate = `var(${STUDIO_OFFSET_X_PROP}, 0px) var(${STUDIO_OFFSET_Y_PROP}, 0px)`;
@@ -411,8 +411,8 @@ describe("GSAP-element drag — dot-a flies regressions", () => {
     const m = member();
     // Simulate a mid-drag re-render wiping the stamped base attr → the draft must
     // fall back to the in-memory member.baseGsap, NOT the live (mutating) transform.
-    element.removeAttribute("data-hf-drag-gsap-base-x");
-    element.removeAttribute("data-hf-drag-gsap-base-y");
+    element.removeAttribute("data-sc-drag-gsap-base-x");
+    element.removeAttribute("data-sc-drag-gsap-base-y");
     applyManualOffsetDragDraft(m, -50, 0);
     const first = element.style.getPropertyValue("transform");
     applyManualOffsetDragDraft(m, -50, 0);
@@ -425,25 +425,25 @@ describe("GSAP-element drag — dot-a flies regressions", () => {
   it("commit re-stamps the stable base/initial attrs even after they're wiped", () => {
     const { element, member } = makeGsapDot();
     const m = member();
-    element.removeAttribute("data-hf-drag-gsap-base-x");
-    element.removeAttribute("data-hf-drag-initial-offset-x");
+    element.removeAttribute("data-sc-drag-gsap-base-x");
+    element.removeAttribute("data-sc-drag-initial-offset-x");
     applyManualOffsetDragCommit(m, -50, 0);
-    expect(element.getAttribute("data-hf-drag-gsap-base-x")).toBe(String(m.baseGsap.x));
-    expect(element.getAttribute("data-hf-drag-initial-offset-x")).toBe(String(m.initialOffset.x));
+    expect(element.getAttribute("data-sc-drag-gsap-base-x")).toBe(String(m.baseGsap.x));
+    expect(element.getAttribute("data-sc-drag-initial-offset-x")).toBe(String(m.initialOffset.x));
   });
 
-  it("a GSAP-committed drag migrates the element off --hf-studio-offset", () => {
+  it("a GSAP-committed drag migrates the element off --sc-studio-offset", () => {
     const { element, member } = makeGsapDot();
     expect(element.style.getPropertyValue(STUDIO_OFFSET_X_PROP)).toBe("94px");
     const m = member();
     applyManualOffsetDragCommit(m, -160, 0);
     endManualOffsetDragMembers([m]);
     // The legacy CSS-offset channel is fully cleared (single-sourced in GSAP): the
-    // var is removed, so any lingering `translate: var(--hf-studio-offset-x, 0px)`
+    // var is removed, so any lingering `translate: var(--sc-studio-offset-x, 0px)`
     // resolves to its 0px fallback and can no longer compose with the GSAP transform.
     expect(element.style.getPropertyValue(STUDIO_OFFSET_X_PROP)).toBe("");
     expect(element.style.getPropertyValue(STUDIO_OFFSET_Y_PROP)).toBe("");
-    expect(element.hasAttribute("data-hf-studio-path-offset")).toBe(false);
+    expect(element.hasAttribute("data-sc-studio-path-offset")).toBe(false);
     // ...and the position survives in the GSAP transform (no stale var to compose).
     expect(element.style.getPropertyValue("transform")).toMatch(/translate\(/);
   });
@@ -453,7 +453,7 @@ describe("resumeGsapTimelines", () => {
   it("unpauses exactly the timelines the drag start paused, then re-seeks the player", () => {
     const window = new Window();
     const element = window.document.createElement("div");
-    element.setAttribute("data-hf-drag-paused-timelines", "figma-demo-unlock,figma-demo-stagger");
+    element.setAttribute("data-sc-drag-paused-timelines", "figma-demo-unlock,figma-demo-stagger");
     window.document.body.append(element);
 
     const pausedState: Record<string, boolean> = {
@@ -486,7 +486,7 @@ describe("resumeGsapTimelines", () => {
     // main was NOT paused by the drag — leave its state alone
     expect(pausedState["main"]).toBe(true);
     expect(seeks).toEqual([3.5]);
-    expect(element.hasAttribute("data-hf-drag-paused-timelines")).toBe(false);
+    expect(element.hasAttribute("data-sc-drag-paused-timelines")).toBe(false);
   });
 
   it("is a no-op without the paused-timelines attribute", () => {

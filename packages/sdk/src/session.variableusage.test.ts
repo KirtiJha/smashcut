@@ -18,8 +18,8 @@ function doc(script: string, decls: string | null = DECLS): string {
   return `<!DOCTYPE html>
 <html${attr}>
 <body>
-<div data-hf-id="hf-stage" data-hf-root data-duration="5">
-  <h1 data-hf-id="hf-title">Hello</h1>
+<div data-sc-id="sc-stage" data-sc-root data-duration="5">
+  <h1 data-sc-id="sc-title">Hello</h1>
 </div>
 <script>${script}</script>
 </body>
@@ -30,9 +30,9 @@ describe("getVariableUsage", () => {
   it("cross-references used, unused, and undeclared ids", async () => {
     const comp = await openComposition(
       doc(`
-        const { title, ghost } = __hyperframes.getVariables();
+        const { title, ghost } = __smashcut.getVariables();
         document.querySelector("h1").textContent = title;
-        const vars = __hyperframes.getVariables();
+        const vars = __smashcut.getVariables();
         el.style.color = vars.accent;
       `),
     );
@@ -86,9 +86,9 @@ describe("getVariableUsage", () => {
     const comp = await openComposition(`<!DOCTYPE html>
 <html data-composition-variables='${DECLS}'>
 <body>
-<div data-hf-id="hf-stage" data-hf-root data-duration="5">
-  <img data-hf-id="hf-img" data-var-src="accent" src="x.jpg" />
-  <h1 data-hf-id="hf-h" data-var-text="title">t</h1>
+<div data-sc-id="sc-stage" data-sc-root data-duration="5">
+  <img data-sc-id="sc-img" data-var-src="accent" src="x.jpg" />
+  <h1 data-sc-id="sc-h" data-var-text="title">t</h1>
 </div>
 </body>
 </html>`);
@@ -100,7 +100,7 @@ describe("getVariableUsage", () => {
 
   it("handles compositions with no declarations and no scripts", async () => {
     const comp = await openComposition(
-      `<!DOCTYPE html><html><body><div data-hf-id="hf-stage" data-hf-root data-duration="5"><p data-hf-id="hf-p">x</p></div></body></html>`,
+      `<!DOCTYPE html><html><body><div data-sc-id="sc-stage" data-sc-root data-duration="5"><p data-sc-id="sc-p">x</p></div></body></html>`,
     );
     expect(comp.getVariableUsage()).toEqual({
       usedIds: [],

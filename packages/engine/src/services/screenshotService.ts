@@ -8,7 +8,7 @@
 // fallow-ignore-file code-duplication
 import { type Page } from "puppeteer-core";
 import { type CaptureOptions } from "../types.js";
-import { COLOR_GRADING_SOURCE_HIDDEN_ATTR } from "@hyperframes/core/color-grading";
+import { COLOR_GRADING_SOURCE_HIDDEN_ATTR } from "@smashcut/core/color-grading";
 import {
   HF_COLOR_GRADING_CANVAS_ID_PREFIX,
   MEDIA_RENDER_ID_ATTR,
@@ -16,7 +16,7 @@ import {
   RENDER_FRAME_ID_PREFIX,
   RENDER_FRAME_ID_SUFFIX,
   renderFrameIdForRenderId,
-} from "@hyperframes/core";
+} from "@smashcut/core";
 
 export const cdpSessionCache = new WeakMap<Page, import("puppeteer-core").CDPSession>();
 
@@ -197,7 +197,7 @@ export async function beginFrameCapture(
  * every video render through a CDP capture path prone to producing phantom
  * duplicate content on SwiftShader (#2550).
  *
- * Callers measure once after page settle. Hyperframes compositions have a
+ * Callers measure once after page settle. Smashcut compositions have a
  * fixed-height, overflow-clipped render surface; timeline animation may move
  * pixels within that surface but must not grow document flow during capture.
  */
@@ -301,7 +301,7 @@ export async function captureScreenshotWithAlpha(
  * video itself is the backdrop, so DOM layers must only contribute their
  * foreground UI pixels — never a page-spanning solid backdrop.
  */
-const TRANSPARENT_BG_STYLE_ID = "__hf_transparent_bg__";
+const TRANSPARENT_BG_STYLE_ID = "__sc_transparent_bg__";
 
 export async function initTransparentBackground(page: Page): Promise<void> {
   const client = await getCdpSession(page);
@@ -343,10 +343,10 @@ export async function captureAlphaPng(page: Page, width: number, height: number)
  * Stylesheet ID used by applyDomLayerMask / removeDomLayerMask. Exposed so
  * tests can assert presence/absence of the mask between captures.
  */
-export const DOM_LAYER_MASK_STYLE_ID = "__hf_dom_layer_mask__";
-const DOM_LAYER_MASK_HIDDEN_ATTR = "data-hf-dom-layer-mask-hidden";
-const DOM_LAYER_MASK_PREV_VISIBILITY_ATTR = "data-hf-dom-layer-mask-prev-visibility";
-const DOM_LAYER_MASK_PREV_PRIORITY_ATTR = "data-hf-dom-layer-mask-prev-priority";
+export const DOM_LAYER_MASK_STYLE_ID = "__sc_dom_layer_mask__";
+const DOM_LAYER_MASK_HIDDEN_ATTR = "data-sc-dom-layer-mask-hidden";
+const DOM_LAYER_MASK_PREV_VISIBILITY_ATTR = "data-sc-dom-layer-mask-prev-visibility";
+const DOM_LAYER_MASK_PREV_PRIORITY_ATTR = "data-sc-dom-layer-mask-prev-priority";
 
 /**
  * Mask the DOM so a single layer screenshot captures ONLY the layer's pixels.
@@ -477,7 +477,7 @@ export async function applyDomLayerMask(
 
       const showSelectors: string[] = [];
       for (const id of args.show) {
-        const el = window.__hfMediaEl?.(id) ?? document.getElementById(id);
+        const el = window.__scMediaEl?.(id) ?? document.getElementById(id);
         if (el) rememberHiddenTimedDescendants(el);
         // Address the element by its render id when it has one. `#id` must not
         // be used as an extra fallback here: an id is duplicated exactly when
@@ -513,7 +513,7 @@ export async function applyDomLayerMask(
       }
 
       for (const id of args.hide) {
-        const el = window.__hfMediaEl?.(id) ?? document.getElementById(id);
+        const el = window.__scMediaEl?.(id) ?? document.getElementById(id);
         if (el instanceof HTMLElement) {
           rememberAndHideElement(el);
         }
@@ -625,9 +625,9 @@ export async function ensureRenderFrameSiblings(page: Page): Promise<void> {
         img.classList.add("__render_frame__");
         // Derive from the render id, not `video.id` — two scenes can share an
         // element id, and two siblings sharing an id would collide in turn.
-        // `||`, not `??`: `__hfMediaId` returns "" for an element with neither
+        // `||`, not `??`: `__scMediaId` returns "" for an element with neither
         // id, and core's reader treats that as "no id" rather than a key.
-        img.id = `${prefix}${window.__hfMediaId?.(video) || video.id}${suffix}`;
+        img.id = `${prefix}${window.__scMediaId?.(video) || video.id}${suffix}`;
         img.style.pointerEvents = "none";
         img.style.position = "absolute";
         img.style.visibility = "hidden";
@@ -710,7 +710,7 @@ export async function injectVideoFramesBatch(
         return false;
       };
       for (const item of items) {
-        const video = (window.__hfMediaEl?.(item.videoId) ??
+        const video = (window.__scMediaEl?.(item.videoId) ??
           document.getElementById(item.videoId)) as HTMLVideoElement | null;
         if (!video) continue;
 
@@ -824,8 +824,8 @@ export async function injectVideoFramesBatch(
         await Promise.all(pendingDecodes);
       }
       if (injectedIds.length > 0) {
-        const redraw = (window as Window & { __hf?: { colorGrading?: { redraw?: () => void } } })
-          .__hf?.colorGrading?.redraw;
+        const redraw = (window as Window & { __sc?: { colorGrading?: { redraw?: () => void } } })
+          .__sc?.colorGrading?.redraw;
         redraw?.();
       }
       return injectedIds;
@@ -868,11 +868,11 @@ export async function syncVideoFrameVisibility(
       const active = new Set(ids);
       const setColorGradingVisibility = (
         window as Window & {
-          __hf?: {
+          __sc?: {
             colorGrading?: { setSourceVisibility?: (target: Element, visible: boolean) => boolean };
           };
         }
-      ).__hf?.colorGrading?.setSourceVisibility;
+      ).__sc?.colorGrading?.setSourceVisibility;
       const videos = Array.from(
         document.querySelectorAll("video[data-start]"),
       ) as HTMLVideoElement[];

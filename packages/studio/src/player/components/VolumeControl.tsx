@@ -76,7 +76,7 @@ export const VolumeControl = memo(function VolumeControl({
               setAudioVolume(volume);
               if (audioMuted && volume > 0) setAudioMuted(false);
             }}
-            className="hf-preview-volume-range absolute inset-0 w-full disabled:pointer-events-none"
+            className="sc-preview-volume-range absolute inset-0 w-full disabled:pointer-events-none"
           />
         </div>
       </div>

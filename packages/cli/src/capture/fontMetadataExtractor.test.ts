@@ -145,7 +145,7 @@ describe("extractFontMetadata", () => {
   // exercise the happy paths for the surrounding pipeline.
 
   it("returns an empty manifest when the fonts directory doesn't exist", () => {
-    const tmp = mkdtempSync(join(tmpdir(), "hf-font-test-"));
+    const tmp = mkdtempSync(join(tmpdir(), "sc-font-test-"));
     try {
       const outputPath = join(tmp, "manifest.json");
       const manifest = extractFontMetadata(join(tmp, "does-not-exist"), outputPath);
@@ -163,7 +163,7 @@ describe("extractFontMetadata", () => {
   });
 
   it("writes a manifest with the documented meta shape", () => {
-    const tmp = mkdtempSync(join(tmpdir(), "hf-font-test-"));
+    const tmp = mkdtempSync(join(tmpdir(), "sc-font-test-"));
     try {
       const outputPath = join(tmp, "manifest.json");
       const manifest = extractFontMetadata(tmp, outputPath);

@@ -10,7 +10,7 @@ describe("catalog preview temporary directory", () => {
     const second = createCatalogPreviewTempDir("thread-message-stack");
     try {
       assert.notEqual(first, second);
-      assert.match(basename(first), /^hf-catalog-thread-message-stack-/);
+      assert.match(basename(first), /^sc-catalog-thread-message-stack-/);
       assert.equal(statSync(first).mode & 0o777, 0o700);
       assert.equal(statSync(second).mode & 0o777, 0o700);
     } finally {

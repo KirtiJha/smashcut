@@ -16,7 +16,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 ```html beat-pulse-background.html
 <!doctype html>
 <!--
-  beat-pulse-background: HyperFrames video primitive (backgrounds / rhythmic)
+  beat-pulse-background: SmashCut video primitive (backgrounds / rhythmic)
 
   Concept: a deep accent-derived backdrop pulses its glow intensity and
   saturation on a supplied beat grid. Each retained beat owns one fast attack
@@ -146,8 +146,8 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
             var root = document.getElementById("root");
             var pulse = root.querySelector(".bpb-pulse");
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             var accentTokens = {
@@ -228,7 +228,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 
 ## Install
 
-<InstallCommand command="npx hyperframes add beat-pulse-background" item="beat-pulse-background" />
+<InstallCommand command="npx smashcut add beat-pulse-background" item="beat-pulse-background" />
 
 That writes one file: `compositions/components/beat-pulse-background.html`.
 
@@ -268,7 +268,7 @@ defaults, so this behaves exactly like the preview above until you change one:
 ```html
 <!doctype html>
 <!--
-  beat-pulse-background: HyperFrames video primitive (backgrounds / rhythmic)
+  beat-pulse-background: SmashCut video primitive (backgrounds / rhythmic)
 
   Concept: a deep accent-derived backdrop pulses its glow intensity and
   saturation on a supplied beat grid. Each retained beat owns one fast attack
@@ -398,8 +398,8 @@ defaults, so this behaves exactly like the preview above until you change one:
             var root = document.getElementById("root");
             var pulse = root.querySelector(".bpb-pulse");
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             var accentTokens = {

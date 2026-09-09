@@ -1,10 +1,10 @@
 ---
-title: "How HyperFrames fits into an application"
+title: "How SmashCut fits into an application"
 sidebarTitle: "Developer overview"
 description: "Understand the composition contract, editing surfaces, Player, CLI, and rendering layers before choosing an integration."
 ---
 
-Building on HyperFrames means using an editable HTML composition as the shared source for automation, playback, editing, and rendering.
+Building on SmashCut means using an editable HTML composition as the shared source for automation, playback, editing, and rendering.
 
 ## Start with the composition contract
 
@@ -38,7 +38,7 @@ media, and zero or more seekable animation runtimes.
 ```
 
 The runtime reads the timing attributes and controls clip visibility and media
-playback. When the composition uses an animation runtime, HyperFrames seeks its
+playback. When the composition uses an animation runtime, SmashCut seeks its
 registered timeline as well. The HTML remains inspectable and editable by
 normal web tooling.
 
@@ -63,24 +63,24 @@ Do not start with the rendering engine when the CLI already performs the complet
 The CLI is the highest-level technical surface. It creates projects, opens Studio, validates compositions, captures review frames, renders files, publishes projects, and drives cloud render backends.
 
 ```bash
-npx hyperframes check
-npx hyperframes render --output video.mp4
+npx smashcut check
+npx smashcut render --output video.mp4
 ```
 
 Use the [CLI guide](/developers/cli) for the everyday commands and the [complete CLI reference](/packages/cli) for flags and automation.
 
 ## SDK: inspect and edit
 
-`@hyperframes/sdk` opens composition HTML, gives elements stable `data-hf-id` identifiers, applies typed edit operations, emits JSON patches, supports undo and redo, and persists through adapters.
+`@smashcut/sdk` opens composition HTML, gives elements stable `data-sc-id` identifiers, applies typed edit operations, emits JSON patches, supports undo and redo, and persists through adapters.
 
 ```ts
-import { openComposition } from "@hyperframes/sdk";
+import { openComposition } from "@smashcut/sdk";
 
 const html = `<div class="clip" data-start="0" data-duration="5"
-  data-hf-id="hf-title">Old title</div>`;
+  data-sc-id="sc-title">Old title</div>`;
 
 const comp = await openComposition(html);
-comp.setText("hf-title", "A new title");
+comp.setText("sc-title", "A new title");
 const updatedHtml = comp.serialize();
 ```
 
@@ -90,18 +90,18 @@ Start with the [SDK quickstart](/sdk/quickstart).
 
 ## Player: embed and seek
 
-`@hyperframes/player` is a web component that loads a composition in an isolated iframe and exposes video-like playback controls.
+`@smashcut/player` is a web component that loads a composition in an isolated iframe and exposes video-like playback controls.
 
 ```html title="index.html"
 <script
   type="module"
-  src="https://cdn.jsdelivr.net/npm/@hyperframes/player"
+  src="https://cdn.jsdelivr.net/npm/@smashcut/player"
 ></script>
 
-<hyperframes-player
+<smashcut-player
   src="/compositions/intro.html"
   controls
-></hyperframes-player>
+></smashcut-player>
 ```
 
 Use its JavaScript API to play, pause, seek, change playback rate, and listen for timeline events. It does not edit or render the composition.

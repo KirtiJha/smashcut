@@ -15,7 +15,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 
 ```html skeleton-reveal.html
 <!--
-  Skeleton Reveal - transitions.dev-inspired primitive for HyperFrames.
+  Skeleton Reveal - transitions.dev-inspired primitive for SmashCut.
 
   Paste the markup and CSS into a composition. Use the timeline integration
   note at the bottom as the starting point for deterministic GSAP animation.
@@ -40,7 +40,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 -->
 
 <div
-  class="hf-transition-skeleton-reveal"
+  class="sc-transition-skeleton-reveal"
   data-composition-variables='[
     { "id": "name", "type": "string", "role": "content", "label": "Name", "description": "Primary line revealed once the skeleton fades out.", "default": "Jane Cooper" },
     { "id": "detail", "type": "string", "role": "content", "label": "Detail", "description": "Secondary line under the name, such as an email or a role.", "default": "jane@example.com" },
@@ -52,40 +52,40 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 </div>
 
 <style>
-  .hf-transition-skeleton-reveal {
+  .sc-transition-skeleton-reveal {
     position: relative;
     width: 340px;
     height: 76px;
     font-family: Inter, system-ui, sans-serif;
   }
-  .hf-transition-skeleton-reveal .skeleton,
-  .hf-transition-skeleton-reveal .content {
+  .sc-transition-skeleton-reveal .skeleton,
+  .sc-transition-skeleton-reveal .content {
     position: absolute;
     inset: 0;
-    border: 1px solid var(--hf-sr-border, #e4e4e7);
+    border: 1px solid var(--sc-sr-border, #e4e4e7);
     border-radius: 14px;
-    background: var(--hf-sr-surface, #fff);
+    background: var(--sc-sr-surface, #fff);
   }
-  .hf-transition-skeleton-reveal .skeleton {
+  .sc-transition-skeleton-reveal .skeleton {
     background: linear-gradient(
       90deg,
-      var(--hf-sr-bar, #f4f4f5),
-      var(--hf-sr-bar-strong, #e4e4e7),
-      var(--hf-sr-bar, #f4f4f5)
+      var(--sc-sr-bar, #f4f4f5),
+      var(--sc-sr-bar-strong, #e4e4e7),
+      var(--sc-sr-bar, #f4f4f5)
     );
     background-size: 240% 100%;
     opacity: 1;
   }
-  .hf-transition-skeleton-reveal .content {
+  .sc-transition-skeleton-reveal .content {
     display: grid;
     align-content: center;
     gap: 5px;
     padding: 15px;
     opacity: 0;
-    color: var(--hf-sr-ink, #18181b);
+    color: var(--sc-sr-ink, #18181b);
   }
-  .hf-transition-skeleton-reveal span {
-    color: var(--hf-sr-muted, #71717a);
+  .sc-transition-skeleton-reveal span {
+    color: var(--sc-sr-muted, #71717a);
     font-size: 14px;
   }
 </style>
@@ -95,20 +95,20 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
     "use strict";
 
     var vars =
-      window.__hyperframes && window.__hyperframes.getVariables
-        ? window.__hyperframes.getVariables()
+      window.__smashcut && window.__smashcut.getVariables
+        ? window.__smashcut.getVariables()
         : {};
 
     // Unrecognised overrides return to their declared defaults.
     var tones = {
       light: null,
       dark: {
-        "--hf-sr-surface": "#18181b",
-        "--hf-sr-border": "#27272a",
-        "--hf-sr-bar": "#27272a",
-        "--hf-sr-bar-strong": "#3f3f46",
-        "--hf-sr-ink": "#fafafa",
-        "--hf-sr-muted": "#a1a1aa",
+        "--sc-sr-surface": "#18181b",
+        "--sc-sr-border": "#27272a",
+        "--sc-sr-bar": "#27272a",
+        "--sc-sr-bar-strong": "#3f3f46",
+        "--sc-sr-ink": "#fafafa",
+        "--sc-sr-muted": "#a1a1aa",
       },
     };
     var defaultName = "Jane Cooper";
@@ -126,7 +126,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
     var name = text(vars.name, defaultName);
     var detail = text(vars.detail, defaultDetail);
 
-    var roots = document.querySelectorAll(".hf-transition-skeleton-reveal");
+    var roots = document.querySelectorAll(".sc-transition-skeleton-reveal");
     for (var i = 0; i < roots.length; i += 1) {
       var root = roots[i];
       if (tone) {
@@ -142,7 +142,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 
 <!--
   Timeline integration:
-  tl.to('.hf-transition-skeleton-reveal .skeleton', { backgroundPosition: '100% 0', duration: 0.7, ease: 'none' }, startTime); tl.to('.hf-transition-skeleton-reveal .skeleton', { opacity: 0, duration: 0.22 }, startTime + 0.72); tl.to('.hf-transition-skeleton-reveal .content', { opacity: 1, duration: 0.24 }, startTime + 0.78);
+  tl.to('.sc-transition-skeleton-reveal .skeleton', { backgroundPosition: '100% 0', duration: 0.7, ease: 'none' }, startTime); tl.to('.sc-transition-skeleton-reveal .skeleton', { opacity: 0, duration: 0.22 }, startTime + 0.72); tl.to('.sc-transition-skeleton-reveal .content', { opacity: 1, duration: 0.24 }, startTime + 0.78);
 -->
 ```
 
@@ -150,7 +150,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 
 ## Install
 
-<InstallCommand command="npx hyperframes add skeleton-reveal" item="skeleton-reveal" />
+<InstallCommand command="npx smashcut add skeleton-reveal" item="skeleton-reveal" />
 
 That writes one file: `compositions/components/skeleton-reveal.html`.
 
@@ -182,7 +182,7 @@ defaults, so this behaves exactly like the preview above until you change one:
 
 ```html
 <!--
-  Skeleton Reveal - transitions.dev-inspired primitive for HyperFrames.
+  Skeleton Reveal - transitions.dev-inspired primitive for SmashCut.
 
   Paste the markup and CSS into a composition. Use the timeline integration
   note at the bottom as the starting point for deterministic GSAP animation.
@@ -207,7 +207,7 @@ defaults, so this behaves exactly like the preview above until you change one:
 -->
 
 <div
-  class="hf-transition-skeleton-reveal"
+  class="sc-transition-skeleton-reveal"
   data-composition-variables='[
     { "id": "name", "type": "string", "role": "content", "label": "Name", "description": "Primary line revealed once the skeleton fades out.", "default": "Jane Cooper" },
     { "id": "detail", "type": "string", "role": "content", "label": "Detail", "description": "Secondary line under the name, such as an email or a role.", "default": "jane@example.com" },
@@ -219,40 +219,40 @@ defaults, so this behaves exactly like the preview above until you change one:
 </div>
 
 <style>
-  .hf-transition-skeleton-reveal {
+  .sc-transition-skeleton-reveal {
     position: relative;
     width: 340px;
     height: 76px;
     font-family: Inter, system-ui, sans-serif;
   }
-  .hf-transition-skeleton-reveal .skeleton,
-  .hf-transition-skeleton-reveal .content {
+  .sc-transition-skeleton-reveal .skeleton,
+  .sc-transition-skeleton-reveal .content {
     position: absolute;
     inset: 0;
-    border: 1px solid var(--hf-sr-border, #e4e4e7);
+    border: 1px solid var(--sc-sr-border, #e4e4e7);
     border-radius: 14px;
-    background: var(--hf-sr-surface, #fff);
+    background: var(--sc-sr-surface, #fff);
   }
-  .hf-transition-skeleton-reveal .skeleton {
+  .sc-transition-skeleton-reveal .skeleton {
     background: linear-gradient(
       90deg,
-      var(--hf-sr-bar, #f4f4f5),
-      var(--hf-sr-bar-strong, #e4e4e7),
-      var(--hf-sr-bar, #f4f4f5)
+      var(--sc-sr-bar, #f4f4f5),
+      var(--sc-sr-bar-strong, #e4e4e7),
+      var(--sc-sr-bar, #f4f4f5)
     );
     background-size: 240% 100%;
     opacity: 1;
   }
-  .hf-transition-skeleton-reveal .content {
+  .sc-transition-skeleton-reveal .content {
     display: grid;
     align-content: center;
     gap: 5px;
     padding: 15px;
     opacity: 0;
-    color: var(--hf-sr-ink, #18181b);
+    color: var(--sc-sr-ink, #18181b);
   }
-  .hf-transition-skeleton-reveal span {
-    color: var(--hf-sr-muted, #71717a);
+  .sc-transition-skeleton-reveal span {
+    color: var(--sc-sr-muted, #71717a);
     font-size: 14px;
   }
 </style>
@@ -262,20 +262,20 @@ defaults, so this behaves exactly like the preview above until you change one:
     "use strict";
 
     var vars =
-      window.__hyperframes && window.__hyperframes.getVariables
-        ? window.__hyperframes.getVariables()
+      window.__smashcut && window.__smashcut.getVariables
+        ? window.__smashcut.getVariables()
         : {};
 
     // Unrecognised overrides return to their declared defaults.
     var tones = {
       light: null,
       dark: {
-        "--hf-sr-surface": "#18181b",
-        "--hf-sr-border": "#27272a",
-        "--hf-sr-bar": "#27272a",
-        "--hf-sr-bar-strong": "#3f3f46",
-        "--hf-sr-ink": "#fafafa",
-        "--hf-sr-muted": "#a1a1aa",
+        "--sc-sr-surface": "#18181b",
+        "--sc-sr-border": "#27272a",
+        "--sc-sr-bar": "#27272a",
+        "--sc-sr-bar-strong": "#3f3f46",
+        "--sc-sr-ink": "#fafafa",
+        "--sc-sr-muted": "#a1a1aa",
       },
     };
     var defaultName = "Jane Cooper";
@@ -293,7 +293,7 @@ defaults, so this behaves exactly like the preview above until you change one:
     var name = text(vars.name, defaultName);
     var detail = text(vars.detail, defaultDetail);
 
-    var roots = document.querySelectorAll(".hf-transition-skeleton-reveal");
+    var roots = document.querySelectorAll(".sc-transition-skeleton-reveal");
     for (var i = 0; i < roots.length; i += 1) {
       var root = roots[i];
       if (tone) {
@@ -309,7 +309,7 @@ defaults, so this behaves exactly like the preview above until you change one:
 
 <!--
   Timeline integration:
-  tl.to('.hf-transition-skeleton-reveal .skeleton', { backgroundPosition: '100% 0', duration: 0.7, ease: 'none' }, startTime); tl.to('.hf-transition-skeleton-reveal .skeleton', { opacity: 0, duration: 0.22 }, startTime + 0.72); tl.to('.hf-transition-skeleton-reveal .content', { opacity: 1, duration: 0.24 }, startTime + 0.78);
+  tl.to('.sc-transition-skeleton-reveal .skeleton', { backgroundPosition: '100% 0', duration: 0.7, ease: 'none' }, startTime); tl.to('.sc-transition-skeleton-reveal .skeleton', { opacity: 0, duration: 0.22 }, startTime + 0.72); tl.to('.sc-transition-skeleton-reveal .content', { opacity: 1, duration: 0.24 }, startTime + 0.78);
 -->
 ```
 

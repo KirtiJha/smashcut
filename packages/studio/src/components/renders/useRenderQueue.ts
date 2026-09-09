@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useRef, useMemo } from "react";
-import type { CanvasResolution } from "@hyperframes/parsers";
+import type { CanvasResolution } from "@smashcut/parsers";
 import { trackStudioRenderStart } from "../../telemetry/events";
 import { getAnonymousId } from "../../telemetry/config";
 import { browserTelemetryAllowed } from "../../telemetry/policy";
@@ -19,7 +19,7 @@ export interface RenderJob {
   durationMs?: number;
 }
 
-// The CLI consumes this same source through @hyperframes/core's re-export.
+// The CLI consumes this same source through @smashcut/core's re-export.
 // Importing from the browser-safe parsers package avoids the core barrel's
 // Node-only transitive modules without duplicating the preset union in Studio.
 export type ResolutionPreset = CanvasResolution;
@@ -38,8 +38,8 @@ export interface StartRenderOptions {
   composition?: string;
   /**
    * Composition-variable overrides ({variableId: value}), forwarded to the
-   * render route and injected as window.__hfVariables — the same channel
-   * `hyperframes render --variables` uses.
+   * render route and injected as window.__scVariables — the same channel
+   * `smashcut render --variables` uses.
    */
   variables?: Record<string, unknown>;
 }
@@ -48,7 +48,7 @@ export interface StartRenderOptions {
 // remembered here so hidden renders don't resurrect from the on-disk history
 // on the next load. Per-project key so projects don't hide each other's rows.
 function hiddenIdsKey(projectId: string): string {
-  return `hf-studio-hidden-renders:${projectId}`;
+  return `sc-studio-hidden-renders:${projectId}`;
 }
 
 function readHiddenIds(projectId: string): Set<string> {
@@ -278,7 +278,7 @@ export function useRenderQueue(
           id: generateId(),
           status: "failed",
           progress: 0,
-          error: `Could not reach render server: ${cause}. Use \`hyperframes render\` from the CLI instead.`,
+          error: `Could not reach render server: ${cause}. Use \`smashcut render\` from the CLI instead.`,
           filename: "Export failed",
           createdAt: startTime,
         };

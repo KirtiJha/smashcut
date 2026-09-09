@@ -59,8 +59,8 @@ export function elementHome(el: HTMLElement): { x: number; y: number } {
   let x = left + el.offsetWidth / 2;
   let y = top + el.offsetHeight / 2;
   if ((el.style.translate ?? "").includes("var(")) {
-    x += Number.parseFloat(el.style.getPropertyValue("--hf-studio-offset-x")) || 0;
-    y += Number.parseFloat(el.style.getPropertyValue("--hf-studio-offset-y")) || 0;
+    x += Number.parseFloat(el.style.getPropertyValue("--sc-studio-offset-x")) || 0;
+    y += Number.parseFloat(el.style.getPropertyValue("--sc-studio-offset-y")) || 0;
   }
   return { x, y };
 }

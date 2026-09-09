@@ -82,12 +82,12 @@ describe("parsePlanParityArgs()", () => {
       "node",
       "plan-parity",
       "--v1-target",
-      "aws:hf-plan-v1-test",
+      "aws:sc-plan-v1-test",
       "--v2-target",
-      "aws:hf-plan-v2-test",
+      "aws:sc-plan-v2-test",
     ]);
-    expect(options.v1Target).toBe("aws:hf-plan-v1-test");
-    expect(options.v2Target).toBe("aws:hf-plan-v2-test");
+    expect(options.v1Target).toBe("aws:sc-plan-v1-test");
+    expect(options.v2Target).toBe("aws:sc-plan-v2-test");
   });
 
   it("rejects bad targets and numeric flags", () => {
@@ -108,8 +108,8 @@ describe("parsePlanParityArgs()", () => {
 
 describe("runPlanV2SizePressure()", () => {
   it("records typed v1 PLAN_TOO_LARGE and still completes explicit v2", async () => {
-    const fixtureDir = mkdtempSync(join(tmpdir(), "hf-plan-pressure-fixture-"));
-    const artifactsDir = mkdtempSync(join(tmpdir(), "hf-plan-pressure-report-"));
+    const fixtureDir = mkdtempSync(join(tmpdir(), "sc-plan-pressure-fixture-"));
+    const artifactsDir = mkdtempSync(join(tmpdir(), "sc-plan-pressure-report-"));
     cleanup.push(fixtureDir, artifactsDir);
     writeFileSync(join(fixtureDir, "index.html"), "<html></html>", "utf-8");
     const calls: string[] = [];

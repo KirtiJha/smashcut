@@ -16,7 +16,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 ```html ink-bleed-reveal.html
 <!doctype html>
 <!--
-  ink-bleed-reveal: HyperFrames video primitive (texture / reveals). Wave M7.
+  ink-bleed-reveal: SmashCut video primitive (texture / reveals). Wave M7.
 
   Liquid ink blooms through paper to reveal a mark. Several ink blobs bleed
   outward from the center and merge like liquid under the gooey chain
@@ -225,8 +225,8 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
             var canvas = root.querySelector(".ibr-canvas");
             var mark = root.querySelector(".ibr-mark");
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             var blobCount = Math.round(Number(vars.blobs));
@@ -467,7 +467,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 
 ## Install
 
-<InstallCommand command="npx hyperframes add ink-bleed-reveal" item="ink-bleed-reveal" />
+<InstallCommand command="npx smashcut add ink-bleed-reveal" item="ink-bleed-reveal" />
 
 That writes one file: `compositions/components/ink-bleed-reveal.html`.
 
@@ -507,7 +507,7 @@ defaults, so this behaves exactly like the preview above until you change one:
 ```html
 <!doctype html>
 <!--
-  ink-bleed-reveal: HyperFrames video primitive (texture / reveals). Wave M7.
+  ink-bleed-reveal: SmashCut video primitive (texture / reveals). Wave M7.
 
   Liquid ink blooms through paper to reveal a mark. Several ink blobs bleed
   outward from the center and merge like liquid under the gooey chain
@@ -716,8 +716,8 @@ defaults, so this behaves exactly like the preview above until you change one:
             var canvas = root.querySelector(".ibr-canvas");
             var mark = root.querySelector(".ibr-mark");
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             var blobCount = Math.round(Number(vars.blobs));

@@ -423,7 +423,7 @@ export const coreRules: Array<(ctx: LintContext) => HyperframeLintFinding[]> = [
           findings.push({
             code: "runtime_hidden_style_opacity",
             severity: "error",
-            message: `Selector "${selector}" observes HyperFrames' runtime-owned hidden style and forces opacity to zero. The renderer hides each native video before copying its computed opacity to the visible replacement frame, so this rule makes both transparent.`,
+            message: `Selector "${selector}" observes SmashCut' runtime-owned hidden style and forces opacity to zero. The renderer hides each native video before copying its computed opacity to the visible replacement frame, so this rule makes both transparent.`,
             selector,
             fixHint:
               'Restrict the guard to sub-composition hosts, for example `[data-composition-src][style*="visibility: hidden"]` and `[data-composition-file][style*="visibility: hidden"]`. Do not derive arbitrary element or media opacity from runtime-owned inline visibility.',
@@ -455,7 +455,7 @@ export const coreRules: Array<(ctx: LintContext) => HyperframeLintFinding[]> = [
       const attrs = script.attrs || "";
       if (
         /\bsrc\s*=/.test(attrs) ||
-        /\btype\s*=\s*["'](?:application\/json|application\/hyperframes-slideshow\+json|importmap|module)["']/.test(
+        /\btype\s*=\s*["'](?:application\/json|application\/smashcut-slideshow\+json|importmap|module)["']/.test(
           attrs,
         )
       )

@@ -143,7 +143,7 @@ describe("patchRuntimeTweenInPlace — authored-opacity capture guard", () => {
           setProperty: (k: string, v: string) => void style.set(k, v),
           removeProperty: (k: string) => void style.delete(k),
         },
-        getAttribute: (name: string) => (name === "data-hf-authored-opacity" ? stamped : null),
+        getAttribute: (name: string) => (name === "data-sc-authored-opacity" ? stamped : null),
       },
       style,
     };

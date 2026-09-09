@@ -1,9 +1,9 @@
 import { forwardRef, useEffect, useRef, useState } from "react";
-import { isLottieAnimationLoaded } from "@hyperframes/core/runtime/lottie-readiness";
+import { isLottieAnimationLoaded } from "@smashcut/core/runtime/lottie-readiness";
 import { useMountEffect } from "../../hooks/useMountEffect";
 import { applyPreviewVariablesToUrl } from "../../hooks/previewVariablesStore";
-import { HyperframesLoader } from "../../components/ui";
-// NOTE: importing "@hyperframes/player" registers a class extending HTMLElement
+import { SmashcutLoader } from "../../components/ui";
+// NOTE: importing "@smashcut/player" registers a class extending HTMLElement
 // at module load, which throws under SSR. Defer the import to the mount effect
 // so it only runs in the browser.
 
@@ -17,7 +17,7 @@ interface PlayerProps {
   suppressLoadingOverlay?: boolean;
 }
 
-interface HyperframesPlayerElement extends HTMLElement {
+interface SmashcutPlayerElement extends HTMLElement {
   iframeElement: HTMLIFrameElement;
 }
 
@@ -51,7 +51,7 @@ export function readPreviewErrorMessage(event: Event): string {
     : DEFAULT_PREVIEW_ERROR;
 }
 
-function enableInteractiveIframe(player: HyperframesPlayerElement): void {
+function enableInteractiveIframe(player: SmashcutPlayerElement): void {
   const root = player.shadowRoot;
   if (!root) return;
 
@@ -77,7 +77,7 @@ function isPreviewMediaElement(el: Element): el is HTMLMediaElement {
 // recently true.
 export function hasUnloadedAssets(iframe: HTMLIFrameElement, lastResult: boolean): boolean {
   try {
-    const win = iframe.contentWindow as unknown as (Window & { __hfLottie?: unknown[] }) | null;
+    const win = iframe.contentWindow as unknown as (Window & { __scLottie?: unknown[] }) | null;
     const doc = iframe.contentDocument;
     if (!win || !doc) return lastResult;
 
@@ -92,7 +92,7 @@ export function hasUnloadedAssets(iframe: HTMLIFrameElement, lastResult: boolean
       }
     }
 
-    const lotties = win.__hfLottie;
+    const lotties = win.__scLottie;
     if (lotties?.length) {
       for (const anim of lotties) {
         if (!isLottieAnimationLoaded(anim)) return true;
@@ -106,7 +106,7 @@ export function hasUnloadedAssets(iframe: HTMLIFrameElement, lastResult: boolean
 }
 
 /**
- * Renders a composition preview using the <hyperframes-player> web component.
+ * Renders a composition preview using the <smashcut-player> web component.
  *
  * The web component handles iframe scaling, dimension detection, and
  * ResizeObserver internally. This wrapper bridges its inner iframe to the
@@ -162,11 +162,11 @@ export const Player = forwardRef<HTMLIFrameElement, PlayerProps>(
       let cleanup: (() => void) | undefined;
 
       // Dynamic import registers the custom element in the browser only.
-      import("@hyperframes/player").then(() => {
+      import("@smashcut/player").then(() => {
         if (canceled) return;
 
         // Create the web component imperatively to avoid JSX custom-element typing.
-        const player = document.createElement("hyperframes-player") as HyperframesPlayerElement;
+        const player = document.createElement("smashcut-player") as SmashcutPlayerElement;
         const srcUrl = new URL(
           directUrl || `/api/projects/${projectId}/preview`,
           window.location.origin,
@@ -399,14 +399,14 @@ export const Player = forwardRef<HTMLIFrameElement, PlayerProps>(
         {showCompositionOverlay && (
           <div
             className="absolute inset-0 bg-black flex items-center justify-center z-30 select-none"
-            data-hyperframes-ignore=""
+            data-smashcut-ignore=""
             data-testid="composition-loading-overlay"
             draggable={false}
             onDragStart={(event) => event.preventDefault()}
             onMouseDown={(event) => event.preventDefault()}
             onPointerDown={(event) => event.preventDefault()}
           >
-            <HyperframesLoader
+            <SmashcutLoader
               title="Loading composition"
               detail="Preparing the Studio preview."
               size={56}
@@ -416,7 +416,7 @@ export const Player = forwardRef<HTMLIFrameElement, PlayerProps>(
         {showAssetOverlay && (
           <div
             className="absolute inset-0 bg-black flex items-center justify-center z-20 select-none"
-            data-hyperframes-ignore=""
+            data-smashcut-ignore=""
             draggable={false}
             style={{
               opacity: assetOverlayFading ? 0 : 1,
@@ -427,7 +427,7 @@ export const Player = forwardRef<HTMLIFrameElement, PlayerProps>(
             onMouseDown={(event) => event.preventDefault()}
           >
             <div className="flex flex-col items-center gap-3">
-              <HyperframesLoader
+              <SmashcutLoader
                 title="Preparing preview assets"
                 detail="Waiting for media and motion assets before playback starts."
                 size={56}
@@ -447,7 +447,7 @@ export const Player = forwardRef<HTMLIFrameElement, PlayerProps>(
         {previewError && (
           <div
             className="absolute inset-0 z-40 flex items-center justify-center bg-black/90 px-6 text-center"
-            data-hyperframes-ignore=""
+            data-smashcut-ignore=""
             data-testid="composition-preview-error"
           >
             <div className="max-w-sm">

@@ -68,14 +68,14 @@ export function ensureImportedFontFace(
   const css = importedFontFaceCss(asset, toRelativeProjectAssetPath(sourceFile, asset.path));
   if (html.includes(css)) return html;
 
-  const styleRe = /<style\b[^>]*data-hf-studio-fonts=(["'])true\1[^>]*>([\s\S]*?)<\/style>/i;
+  const styleRe = /<style\b[^>]*data-sc-studio-fonts=(["'])true\1[^>]*>([\s\S]*?)<\/style>/i;
   const styleMatch = styleRe.exec(html);
   if (styleMatch) {
     const nextCss = `${styleMatch[2].trim()}\n${css}`.trim();
-    return html.replace(styleMatch[0], `<style data-hf-studio-fonts="true">\n${nextCss}\n</style>`);
+    return html.replace(styleMatch[0], `<style data-sc-studio-fonts="true">\n${nextCss}\n</style>`);
   }
 
-  const styleTag = `<style data-hf-studio-fonts="true">\n${css}\n</style>`;
+  const styleTag = `<style data-sc-studio-fonts="true">\n${css}\n</style>`;
   if (/<\/head>/i.test(html)) {
     return html.replace(/<\/head>/i, `  ${styleTag}\n  </head>`);
   }

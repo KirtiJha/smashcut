@@ -75,23 +75,23 @@ const mediaMocks = vi.hoisted(() => ({
   },
 }));
 
-vi.mock("@hyperframes/studio-server/proxy-transcoder", () => ({
+vi.mock("@smashcut/studio-server/proxy-transcoder", () => ({
   resolveProxy: mocks.resolveProxy,
   ProxyTranscodeError: mocks.ProxyTranscodeError,
   ProxyCapacityError: mocks.ProxyCapacityError,
 }));
-vi.mock("@hyperframes/studio-server/media-codec-map", () => mediaMocks);
+vi.mock("@smashcut/studio-server/media-codec-map", () => mediaMocks);
 
 // The shared injection helper ships as a self-contained dist bundle (its copy
 // of scanProjectMediaCodecMap is inlined), so it must be mocked wholesale —
 // mocking the media-codec-map subpath can't reach inside it. The fake mirrors
 // the real contract (scan → inject tag) via this file's scan mock so the
 // existing injection assertions stay meaningful.
-vi.mock("@hyperframes/studio-server/media-proxy-preview", () => ({
+vi.mock("@smashcut/studio-server/media-proxy-preview", () => ({
   injectMediaCodecMapIntoHtml: vi.fn(
     async (html: string, projectDir: string, htmlSources: unknown[]) => {
       const map = await mocks.scanProjectMediaCodecMap(projectDir, htmlSources);
-      const tag = `<script data-hf-media-codec-map>window.__HF_MEDIA_CODEC_MAP__=${JSON.stringify(map)};</script>`;
+      const tag = `<script data-sc-media-codec-map>window.__HF_MEDIA_CODEC_MAP__=${JSON.stringify(map)};</script>`;
       return html.includes("</head>")
         ? html.replace("</head>", `${tag}\n</head>`)
         : `${tag}\n${html}`;
@@ -104,7 +104,7 @@ const { registerCompositionRoute } = await import("./play.js");
 let dir: string | undefined;
 
 function tmpProject(): ProjectDir {
-  dir = mkdtempSync(join(tmpdir(), "hf-play-test-"));
+  dir = mkdtempSync(join(tmpdir(), "sc-play-test-"));
   return { dir, name: "test-project", indexPath: join(dir, "index.html") };
 }
 
@@ -133,7 +133,7 @@ it("serves direct VP8 proxy requests for alpha sources", async () => {
   mocks.resolveProxy.mockResolvedValueOnce(proxyPath);
   const app = await buildApp(project, true);
 
-  const res = await app.request("/composition/clip.mov?hf-proxy=auto");
+  const res = await app.request("/composition/clip.mov?sc-proxy=auto");
 
   expect(res.status).toBe(200);
   expect(res.headers.get("content-type")).toBe("video/webm");
@@ -164,7 +164,7 @@ describe("registerCompositionRoute", () => {
     expect(await res.text()).toBe("2345");
   });
 
-  it("serves the resolved proxy's bytes for ?hf-proxy=h264 on a hostile asset", async () => {
+  it("serves the resolved proxy's bytes for ?sc-proxy=h264 on a hostile asset", async () => {
     const project = tmpProject();
     writeFileSync(join(project.dir, "clip.mp4"), "original-hevc-bytes");
     const proxyPath = join(project.dir, "proxy.mp4");
@@ -172,7 +172,7 @@ describe("registerCompositionRoute", () => {
     mocks.resolveProxy.mockResolvedValue(proxyPath);
     const app = await buildApp(project, true);
 
-    const res = await app.request("/composition/clip.mp4?hf-proxy=h264");
+    const res = await app.request("/composition/clip.mp4?sc-proxy=h264");
 
     expect(res.status).toBe(200);
     expect(await res.text()).toBe("transcoded-h264-bytes");
@@ -183,7 +183,7 @@ describe("registerCompositionRoute", () => {
     );
   });
 
-  it("serves ?hf-proxy=h264 for a .mov hostile asset as Content-Type video/mp4 (the proxy IS mp4)", async () => {
+  it("serves ?sc-proxy=h264 for a .mov hostile asset as Content-Type video/mp4 (the proxy IS mp4)", async () => {
     const project = tmpProject();
     writeFileSync(join(project.dir, "clip.mov"), "original-prores-bytes");
     const proxyPath = join(project.dir, "proxy.mp4");
@@ -191,7 +191,7 @@ describe("registerCompositionRoute", () => {
     mocks.resolveProxy.mockResolvedValue(proxyPath);
     const app = await buildApp(project, true);
 
-    const res = await app.request("/composition/clip.mov?hf-proxy=h264");
+    const res = await app.request("/composition/clip.mov?sc-proxy=h264");
 
     expect(res.status).toBe(200);
     expect(res.headers.get("content-type")).toBe("video/mp4");
@@ -208,7 +208,7 @@ describe("registerCompositionRoute", () => {
       mocks.resolveProxy.mockResolvedValue(proxyPath);
       const app = await buildApp(project, true);
 
-      const res = await app.request(`/composition/clip.${extension}?hf-proxy=h264`);
+      const res = await app.request(`/composition/clip.${extension}?sc-proxy=h264`);
 
       expect(res.status).toBe(200);
       expect(await res.text()).toBe("transcoded-h264-bytes");
@@ -223,7 +223,7 @@ describe("registerCompositionRoute", () => {
     );
     const app = await buildApp(project, true);
 
-    const res = await app.request("/composition/clip.mp4?hf-proxy=h264");
+    const res = await app.request("/composition/clip.mp4?sc-proxy=h264");
 
     expect(res.status).toBe(502);
   });
@@ -234,25 +234,25 @@ describe("registerCompositionRoute", () => {
     mocks.resolveProxy.mockRejectedValue(new mocks.ProxyCapacityError());
     const app = await buildApp(project, true);
 
-    const res = await app.request("/composition/clip.mp4?hf-proxy=h264");
+    const res = await app.request("/composition/clip.mp4?sc-proxy=h264");
 
     expect(res.status).toBe(503);
     expect(res.headers.get("retry-after")).toBe("1");
   });
 
-  it("404s ?hf-proxy=h264 for a non-video asset without attempting a transcode", async () => {
+  it("404s ?sc-proxy=h264 for a non-video asset without attempting a transcode", async () => {
     const project = tmpProject();
     writeFileSync(join(project.dir, "image.png"), "not-a-video");
     const app = await buildApp(project, true);
 
-    const res = await app.request("/composition/image.png?hf-proxy=h264");
+    const res = await app.request("/composition/image.png?sc-proxy=h264");
 
     expect(res.status).toBe(404);
     expect(mocks.resolveProxy).not.toHaveBeenCalled();
   });
 
   it("serves the runtime script ahead of every author script", async () => {
-    // Compositions read `window.__hyperframes.getVariables()` from an inline
+    // Compositions read `window.__smashcut.getVariables()` from an inline
     // script at init. A runtime injected before </body> loads after that script,
     // so the documented API is undefined exactly where authors are told to call
     // it. Pin the ordering at the served-document boundary.
@@ -262,7 +262,7 @@ describe("registerCompositionRoute", () => {
       [
         '<html><head><script src="https://cdn.example/gsap.js"></script></head>',
         '<body><div id="root"></div>',
-        "<script>window.__probe = typeof window.__hyperframes;</script>",
+        "<script>window.__probe = typeof window.__smashcut;</script>",
         "</body></html>",
       ].join(""),
     );
@@ -308,7 +308,7 @@ describe("registerCompositionRoute", () => {
     expect(await htmlRes.text()).not.toContain("__HF_MEDIA_CODEC_MAP__");
     expect(mocks.scanProjectMediaCodecMap).not.toHaveBeenCalled();
 
-    const proxyRes = await app.request("/composition/clip.mp4?hf-proxy=h264");
+    const proxyRes = await app.request("/composition/clip.mp4?sc-proxy=h264");
     expect(proxyRes.status).toBe(404);
     expect(mocks.resolveProxy).not.toHaveBeenCalled();
   });

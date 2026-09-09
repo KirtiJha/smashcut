@@ -5,20 +5,20 @@ import type { Example } from "./_examples.js";
 import { existsSync, readFileSync } from "node:fs";
 
 export const examples: Example[] = [
-  ["Generate speech from text", 'hyperframes tts "Welcome to HyperFrames"'],
-  ["Choose a voice", 'hyperframes tts "Hello world" --voice am_adam'],
-  ["Save to a specific file", 'hyperframes tts "Intro" --voice bf_emma --output narration.wav'],
-  ["Adjust speech speed", 'hyperframes tts "Slow and clear" --speed 0.8'],
+  ["Generate speech from text", 'smashcut tts "Welcome to SmashCut"'],
+  ["Choose a voice", 'smashcut tts "Hello world" --voice am_adam'],
+  ["Save to a specific file", 'smashcut tts "Intro" --voice bf_emma --output narration.wav'],
+  ["Adjust speech speed", 'smashcut tts "Slow and clear" --speed 0.8'],
   [
     "Generate Spanish speech",
-    'hyperframes tts "La reunión empieza a las nueve" --voice ef_dora --output es.wav',
+    'smashcut tts "La reunión empieza a las nueve" --voice ef_dora --output es.wav',
   ],
   [
     "Override phonemizer language",
-    'hyperframes tts "Ciao a tutti" --voice af_heart --lang it --output accented.wav',
+    'smashcut tts "Ciao a tutti" --voice af_heart --lang it --output accented.wav',
   ],
-  ["Read text from a file", "hyperframes tts script.txt"],
-  ["List available voices", "hyperframes tts --list"],
+  ["Read text from a file", "smashcut tts script.txt"],
+  ["List available voices", "smashcut tts --list"],
 ];
 import { resolve, extname } from "node:path";
 import * as clack from "@clack/prompts";

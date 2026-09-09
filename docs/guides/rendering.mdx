@@ -9,8 +9,8 @@ Studio is the simplest place to export a project. Use the command line when an a
 
 <DocsVideo
   title="One command turns the project into an MP4"
-  src="https://static.heygen.ai/hyperframes-oss/docs/images/showcase/render-loop-demo-v2.mp4"
-  poster="https://static.heygen.ai/hyperframes-oss/docs/images/showcase/render-loop-demo-v2.jpg"
+  src="https://static.heygen.ai/smashcut-oss/docs/images/showcase/render-loop-demo-v2.mp4"
+  poster="https://static.heygen.ai/smashcut-oss/docs/images/showcase/render-loop-demo-v2.jpg"
 />
 
 The whole loop: the project, the render command, progress, and the finished file
@@ -22,17 +22,17 @@ resolution, frame rate, quality.
 From the project folder:
 
 ```bash
-npx hyperframes render --output final.mp4
+npx smashcut render --output final.mp4
 ```
 
-If you omit `--output`, HyperFrames writes the result under `renders/`.
+If you omit `--output`, SmashCut writes the result under `renders/`.
 
 The normal workflow is:
 
 ```bash
-npx hyperframes lint
-npx hyperframes check
-npx hyperframes render --output final.mp4
+npx smashcut lint
+npx smashcut check
+npx smashcut render --output final.mp4
 ```
 
 `lint` checks the project structure. `check` opens the project in a browser and looks for runtime, layout, motion, media, and contrast problems.
@@ -51,16 +51,16 @@ Examples:
 
 ```bash
 # Transparent web overlay
-npx hyperframes render --format webm --output overlay.webm
+npx smashcut render --format webm --output overlay.webm
 
 # ProRes editing file
-npx hyperframes render --format mov --output master.mov
+npx smashcut render --format mov --output master.mov
 
 # Short looping preview
-npx hyperframes render --format gif --fps 15 --output preview.gif
+npx smashcut render --format gif --fps 15 --output preview.gif
 
 # RGBA frames in a directory
-npx hyperframes render --format png-sequence --output frames
+npx smashcut render --format png-sequence --output frames
 ```
 
 GIF has no audio and limited transparency. Prefer MP4 or WebM for normal playback.
@@ -73,8 +73,8 @@ must remain transparent; an opaque `html`, `body`, or full-frame background
 will be encoded as visible pixels.
 
 ```bash
-npx hyperframes render --format webm --output overlay.webm
-npx hyperframes render --format mov --output overlay.mov
+npx smashcut render --format webm --output overlay.webm
+npx smashcut render --format mov --output overlay.mov
 ```
 
 MP4 is the normal opaque delivery format. After rendering transparency, inspect
@@ -102,7 +102,7 @@ HEVC and ProRes inputs. The original file stays in the project and remains the
 render source.
 
 If a clip is black only in preview, keep automatic proxying enabled, confirm the
-source is local, and run `npx hyperframes check`. Disable proxying only when the
+source is local, and run `npx smashcut check`. Disable proxying only when the
 browser already supports the source or you are diagnosing the proxy itself.
 
 ## Choose quality and frame rate
@@ -114,13 +114,13 @@ and are rejected for MOV; choose MP4 or WebM when you need those controls.
 
 ```bash
 # Faster review version
-npx hyperframes render --quality draft --output review.mp4
+npx smashcut render --quality draft --output review.mp4
 
 # Larger final master
-npx hyperframes render --quality high --output master.mp4
+npx smashcut render --quality high --output master.mp4
 
 # Explicit frame rate
-npx hyperframes render --fps 60 --output final-60fps.mp4
+npx smashcut render --fps 60 --output final-60fps.mp4
 ```
 
 Use a higher frame rate only when the source or destination needs it. It creates more frames, so rendering takes longer.
@@ -132,7 +132,7 @@ The CLI uses the composition’s `data-fps` when present and otherwise defaults 
 Local rendering is the normal choice:
 
 ```bash
-npx hyperframes render --output final.mp4
+npx smashcut render --output final.mp4
 ```
 
 It starts quickly and can use the computer’s browser GPU.
@@ -140,7 +140,7 @@ It starts quickly and can use the computer’s browser GPU.
 Use Docker when a controlled Chrome, FFmpeg, and font environment matters:
 
 ```bash
-npx hyperframes render --docker --output final.mp4
+npx smashcut render --docker --output final.mp4
 ```
 
 Docker adds startup and infrastructure overhead. It is useful for CI and repeatable production environments, not a requirement for every final render.
@@ -150,7 +150,7 @@ Docker adds startup and infrastructure overhead. It is useful for CI and repeata
 The root `index.html` is rendered by default. To target another standalone composition:
 
 ```bash
-npx hyperframes render \
+npx smashcut render \
   --composition compositions/intro.html \
   --output intro.mp4
 ```
@@ -159,7 +159,7 @@ Nested compositions that use `<template>` wrappers should be rendered through th
 
 ## Batch and cloud work
 
-For several variable-driven versions, use batch rendering. For remote infrastructure, use HyperFrames cloud, AWS Lambda, or Google Cloud Run.
+For several variable-driven versions, use batch rendering. For remote infrastructure, use SmashCut cloud, AWS Lambda, or Google Cloud Run.
 
 Those workflows involve output naming, credentials, concurrency, and infrastructure choices. Start in the [CLI guide](/developers/cli) and use the complete [CLI reference](/packages/cli) when you need every flag.
 
@@ -172,13 +172,13 @@ ffprobe -v error -show_entries format_tags -of json out.mp4
 ```
 
 ```json
-{ "hyperframes_renderer": "hyperframes", "hyperframes_version": "0.7.107" }
+{ "smashcut_renderer": "smashcut", "smashcut_version": "0.7.107" }
 ```
 
 That is the whole of it. The tags name the renderer and its version, and nothing else: no file
 paths, usernames, machine names, project names, or anything about the composition. They are
 container metadata, not a visible watermark, so no pixel of your video changes. Matroska
-uppercases tag names on read, so a `.webm` reports `HYPERFRAMES_RENDERER`.
+uppercases tag names on read, so a `.webm` reports `SMASHCUT_RENDERER`.
 
 Strip them whenever you like:
 
@@ -189,8 +189,8 @@ ffmpeg -i out.mp4 -map_metadata -1 -c copy clean.mp4
 <Note>
   These tags are an unauthenticated diagnostic hint, not proof of origin. They are ordinary unsigned
   container keys, so anything can write the same two values with a single `ffmpeg -metadata`
-  command: a tag that is present means the file *claims* to be HyperFrames output, not that
-  HyperFrames wrote it. A tag that is absent means just as little, because re-encoding, remuxing, or
+  command: a tag that is present means the file *claims* to be SmashCut output, not that
+  SmashCut wrote it. A tag that is absent means just as little, because re-encoding, remuxing, or
   any tool that drops unknown keys strips it, and files rendered by older versions never carried it.
   Treat it as a "what probably produced this file?" hint for support and debugging, never as an
   authenticity, attribution, or licensing check. Verifiable provenance needs signed claims such as
@@ -202,9 +202,9 @@ ffmpeg -i out.mp4 -map_metadata -1 -c copy clean.mp4
 Run:
 
 ```bash
-npx hyperframes doctor
-npx hyperframes lint
-npx hyperframes check
+npx smashcut doctor
+npx smashcut lint
+npx smashcut check
 ```
 
 Keep the first exact error rather than only the final “render failed” message. See [Troubleshooting](/guides/troubleshooting) for the next checks.

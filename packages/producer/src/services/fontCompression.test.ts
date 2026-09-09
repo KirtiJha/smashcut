@@ -52,7 +52,7 @@ describe("compressToWoff2", () => {
 
 describe("fontToDataUri", () => {
   it("preserves a pre-existing temporary file and still populates the cache", async () => {
-    const cacheDir = mkdtempSync(join(tmpdir(), "hf-local-font-cache-"));
+    const cacheDir = mkdtempSync(join(tmpdir(), "sc-local-font-cache-"));
     const raw = Buffer.from("stable-font-content");
     const compressed = Buffer.from("compressed-font-content");
     const compressImpl = async () => compressed;
@@ -76,7 +76,7 @@ describe("fontToDataUri", () => {
   });
 
   it("cleans up its temporary files when publishing the cache fails", async () => {
-    const cacheDir = mkdtempSync(join(tmpdir(), "hf-local-font-cache-"));
+    const cacheDir = mkdtempSync(join(tmpdir(), "sc-local-font-cache-"));
     const raw = Buffer.from("stable-font-content");
     const compressImpl = async () => Buffer.from("compressed-font-content");
     try {
@@ -94,7 +94,7 @@ describe("fontToDataUri", () => {
   });
 
   it("returns compressed data when the cache directory cannot be created", async () => {
-    const root = mkdtempSync(join(tmpdir(), "hf-local-font-cache-"));
+    const root = mkdtempSync(join(tmpdir(), "sc-local-font-cache-"));
     const cacheDir = join(root, "not-a-directory");
     writeFileSync(cacheDir, "keep");
     try {
@@ -112,7 +112,7 @@ describe("fontToDataUri", () => {
   });
 
   it("reuses cached compression across calls", async () => {
-    const cacheDir = mkdtempSync(join(tmpdir(), "hf-local-font-cache-"));
+    const cacheDir = mkdtempSync(join(tmpdir(), "sc-local-font-cache-"));
     const raw = Buffer.from("stable-font-content");
     let compressionCalls = 0;
     const compressImpl = async () => {

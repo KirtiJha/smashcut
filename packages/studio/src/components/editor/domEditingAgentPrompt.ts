@@ -1,5 +1,5 @@
 /**
- * Agent prompt builder for HyperFrames element edit requests.
+ * Agent prompt builder for SmashCut element edit requests.
  */
 import { formatTime } from "../../player/lib/time";
 import type { DomEditSelection, DomEditTextField } from "./domEditingTypes";
@@ -41,10 +41,10 @@ export function buildElementAgentPrompt({
 }): string {
   const displayedSourceFile = sourceFilePath?.trim() || selection.sourceFile;
   const lines = [
-    "## HyperFrames element edit request v1",
+    "## SmashCut element edit request v1",
     "Schema version: 1",
     "",
-    userInstruction?.trim() || "Edit this selected HyperFrames element.",
+    userInstruction?.trim() || "Edit this selected SmashCut element.",
     "",
     `Composition: ${selection.compositionPath}`,
     `Playback time: ${formatTime(currentTime)}`,

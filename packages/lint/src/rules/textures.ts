@@ -2,8 +2,8 @@ import postcss from "postcss";
 import type { LintContext, HyperframeLintFinding, OpenTag } from "../context";
 import { readAttr, truncateSnippet } from "../utils";
 
-const TEXTURE_BASE_CLASS = "hf-texture-text";
-const TEXTURE_CLASS_PREFIX = "hf-texture-";
+const TEXTURE_BASE_CLASS = "sc-texture-text";
+const TEXTURE_CLASS_PREFIX = "sc-texture-";
 
 type DropShadowRule = {
   selector: string;
@@ -112,7 +112,7 @@ function collectTextureCss(styles: LintContext["styles"]): {
 
       if (hasDropShadow) {
         for (const selector of selectors) {
-          const targetsBaseClass = /\.hf-texture-text\b/.test(selector);
+          const targetsBaseClass = /\.sc-texture-text\b/.test(selector);
           const targetsDefinedTextureClass = textureClassesInSelector(selector).some((className) =>
             definedTextureClasses.has(className),
           );
@@ -142,7 +142,7 @@ export const textureRules: Array<(ctx: LintContext) => HyperframeLintFinding[]> 
         message: "Drop shadow is applied directly to textured text.",
         selector,
         fixHint:
-          "Wrap the textured text and apply `filter: drop-shadow(...)` to the wrapper, not the `hf-texture-text` element.",
+          "Wrap the textured text and apply `filter: drop-shadow(...)` to the wrapper, not the `sc-texture-text` element.",
       });
     }
 
@@ -173,7 +173,7 @@ export const textureRules: Array<(ctx: LintContext) => HyperframeLintFinding[]> 
           message: `\`${TEXTURE_BASE_CLASS}\` is used without a texture material class or custom mask image.`,
           elementId: readAttr(tag.raw, "id") || undefined,
           fixHint:
-            "Add a material class such as `hf-texture-lava`, or set `mask-image` and `-webkit-mask-image` on the element.",
+            "Add a material class such as `sc-texture-lava`, or set `mask-image` and `-webkit-mask-image` on the element.",
           snippet: truncateSnippet(tag.raw),
         });
       }
@@ -202,7 +202,7 @@ export const textureRules: Array<(ctx: LintContext) => HyperframeLintFinding[]> 
             selector: rule.selector,
             elementId: readAttr(tag.raw, "id") || undefined,
             fixHint:
-              "Wrap the textured text and apply `filter: drop-shadow(...)` to the wrapper, not the `hf-texture-text` element.",
+              "Wrap the textured text and apply `filter: drop-shadow(...)` to the wrapper, not the `sc-texture-text` element.",
             snippet: truncateSnippet(tag.raw),
           });
         }
@@ -215,7 +215,7 @@ export const textureRules: Array<(ctx: LintContext) => HyperframeLintFinding[]> 
           message: "Drop shadow is applied directly to textured text.",
           elementId: readAttr(tag.raw, "id") || undefined,
           fixHint:
-            "Wrap the textured text and apply `filter: drop-shadow(...)` to the wrapper, not the `hf-texture-text` element.",
+            "Wrap the textured text and apply `filter: drop-shadow(...)` to the wrapper, not the `sc-texture-text` element.",
           snippet: truncateSnippet(tag.raw),
         });
       }

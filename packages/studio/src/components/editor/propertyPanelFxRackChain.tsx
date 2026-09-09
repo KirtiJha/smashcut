@@ -9,9 +9,9 @@
  * were still one thing to read.
  */
 
-import type { HfAudioFxChain, HfAudioFxNode } from "@hyperframes/core/audio-fx";
-import { readAudioEqBands } from "@hyperframes/core/audio-fx-eq";
-import { DEFAULT_CARVE, type HfCarveSettings } from "@hyperframes/core/audio-carve";
+import type { HfAudioFxChain, HfAudioFxNode } from "@smashcut/core/audio-fx";
+import { readAudioEqBands } from "@smashcut/core/audio-fx-eq";
+import { DEFAULT_CARVE, type HfCarveSettings } from "@smashcut/core/audio-carve";
 import { trackEqChanged, trackPresetAmount } from "./audioFxTelemetry.js";
 import { FxCarveModule, type AudioTrackOption } from "./propertyPanelFxCarveModule.js";
 import { FxEqModule } from "./propertyPanelFxEqModule.js";
@@ -50,7 +50,7 @@ export interface FxRackChainProps {
   onRemoveNode(index: number): void;
   onPreviewNode(
     index: number,
-    params: import("@hyperframes/core/audio-fx").HfAudioFxParamValues,
+    params: import("@smashcut/core/audio-fx").HfAudioFxParamValues,
   ): void;
   trackKind?: string;
   collapsedRuns: ReadonlySet<string>;
@@ -110,12 +110,12 @@ export function FxRackChain({
   signalPath,
 }: FxRackChainProps) {
   return (
-    <div className="hf-fx-chain space-y-1">
+    <div className="sc-fx-chain space-y-1">
       {/* The rack IS the signal path, and saying so costs two lines. Without
           them the order reads as a list, which is the one reading that makes
           "move up" look cosmetic — it is the most consequential control here. */}
-      <p className="hf-fx-term flex items-baseline gap-1.5 px-1.5 font-mono text-[9px] uppercase tracking-wide text-panel-text-2">
-        <span className="hf-fx-term-cap text-panel-text-1">In</span>
+      <p className="sc-fx-term flex items-baseline gap-1.5 px-1.5 font-mono text-[9px] uppercase tracking-wide text-panel-text-2">
+        <span className="sc-fx-term-cap text-panel-text-1">In</span>
         <span>{signalPath.inLabel}</span>
       </p>
       {/* Carve leads the rack, which is also where its effects sit in the signal
@@ -155,7 +155,7 @@ export function FxRackChain({
         />
       ))}
       {handBuiltCount === 0 && eqIds.length === 0 ? (
-        <p className="hf-fx-empty py-1 text-[11px] text-panel-text-2">
+        <p className="sc-fx-empty py-1 text-[11px] text-panel-text-2">
           {showCarve
             ? `No other effects on this ${signalPath.subject}.`
             : `No effects on this ${signalPath.subject}.`}
@@ -200,8 +200,8 @@ export function FxRackChain({
           );
         })
       )}
-      <p className="hf-fx-term hf-fx-term-out flex items-baseline gap-1.5 px-1.5 font-mono text-[9px] uppercase tracking-wide text-panel-text-2">
-        <span className="hf-fx-term-cap text-panel-text-1">Out</span>
+      <p className="sc-fx-term sc-fx-term-out flex items-baseline gap-1.5 px-1.5 font-mono text-[9px] uppercase tracking-wide text-panel-text-2">
+        <span className="sc-fx-term-cap text-panel-text-1">Out</span>
         <span>{signalPath.outLabel}</span>
       </p>
     </div>

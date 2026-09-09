@@ -8,7 +8,7 @@
     {"id":"colorHigh",  "type":"color",  "label":"Flow — highlight tone",  "default":"#e8f0ff"},
     {"id":"accentColor","type":"color",  "label":"Core / glow accent",     "default":"#aee4ff"},
     {"id":"markText",   "type":"string", "label":"Monogram",               "default":"HF"},
-    {"id":"titleText",  "type":"string", "label":"Title",                  "default":"HYPERFRAMES"},
+    {"id":"titleText",  "type":"string", "label":"Title",                  "default":"SMASHCUT"},
     {"id":"tagText",    "type":"string", "label":"Tagline",                "default":"HTML · SHADERS · MP4"},
     {"id":"flowSpeed",  "type":"number", "label":"Flow speed", "default":1, "min":0.1, "max":3, "step":0.1}
   ]'
@@ -130,7 +130,7 @@
   </head>
   <body>
     <div
-      data-hf-id="hf-a0d4"
+      data-sc-id="sc-a0d4"
       id="root"
       data-composition-id="webgl-textures-playground"
       data-width="1920"
@@ -139,15 +139,15 @@
       data-duration="12"
       data-root="true"
     >
-      <div data-hf-id="hf-clsq" class="sf-stage">
-        <canvas data-hf-id="hf-yk51" class="sf-canvas" width="1920" height="1080"></canvas>
-        <div data-hf-id="hf-7z0g" class="sf-overlay">
-          <div data-hf-id="hf-yo0z" class="sf-mark"><!-- letters injected from markText --></div>
-          <div data-hf-id="hf-nig2" class="sf-rule"></div>
-          <div data-hf-id="hf-gjx6" class="sf-title"></div>
-          <div data-hf-id="hf-e7y8" class="sf-tag"></div>
+      <div data-sc-id="sc-clsq" class="sf-stage">
+        <canvas data-sc-id="sc-yk51" class="sf-canvas" width="1920" height="1080"></canvas>
+        <div data-sc-id="sc-7z0g" class="sf-overlay">
+          <div data-sc-id="sc-yo0z" class="sf-mark"><!-- letters injected from markText --></div>
+          <div data-sc-id="sc-nig2" class="sf-rule"></div>
+          <div data-sc-id="sc-gjx6" class="sf-title"></div>
+          <div data-sc-id="sc-e7y8" class="sf-tag"></div>
         </div>
-        <div data-hf-id="hf-ku55" class="sf-grain"></div>
+        <div data-sc-id="sc-ku55" class="sf-grain"></div>
       </div>
     </div>
 
@@ -161,15 +161,15 @@
           colorHigh: "#e8f0ff",
           accentColor: "#aee4ff",
           markText: "HF",
-          titleText: "HYPERFRAMES",
+          titleText: "SMASHCUT",
           tagText: "HTML · SHADERS · MP4",
           flowSpeed: 1,
         };
         var vars = Object.assign(
           {},
           defaults,
-          window.__hyperframes && window.__hyperframes.getVariables
-            ? window.__hyperframes.getVariables()
+          window.__smashcut && window.__smashcut.getVariables
+            ? window.__smashcut.getVariables()
             : {},
         );
 

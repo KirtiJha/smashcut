@@ -12,8 +12,8 @@
 
 import { describe, it, expect } from "vitest";
 import { parseHTML } from "linkedom";
-import { ensureHfIds } from "@hyperframes/core/hf-ids";
-import { RUNTIME_BOOTSTRAP_ATTR } from "@hyperframes/core";
+import { ensureHfIds } from "@smashcut/core/sc-ids";
+import { RUNTIME_BOOTSTRAP_ATTR } from "@smashcut/core";
 import { resolveScoped, findById, isNewHostBoundary, bareId } from "./engine/model.js";
 import { parseMutable } from "./engine/model.js";
 import { buildRoots, flatElements } from "./document.js";
@@ -26,7 +26,7 @@ function inlinedHtml(inner: string): string {
   return `<!DOCTYPE html><html><body>${inner}</body></html>`;
 }
 
-/** Stamp hf-ids and return a linkedom document (same as parseMutable's path). */
+/** Stamp sc-ids and return a linkedom document (same as parseMutable's path). */
 function makeDoc(html: string) {
   const { document } = parseHTML(ensureHfIds(html));
   return document;
@@ -37,43 +37,43 @@ function makeDoc(html: string) {
 describe("resolveScoped — flat id", () => {
   it("resolves a bare id at top level (same as findById)", () => {
     const doc = makeDoc(
-      `<!DOCTYPE html><html><body><div data-hf-id="hf-aaaa">hi</div></body></html>`,
+      `<!DOCTYPE html><html><body><div data-sc-id="sc-aaaa">hi</div></body></html>`,
     );
-    const el = resolveScoped(doc as unknown as Document, "hf-aaaa");
+    const el = resolveScoped(doc as unknown as Document, "sc-aaaa");
     expect(el).not.toBeNull();
-    expect(el?.getAttribute("data-hf-id")).toBe("hf-aaaa");
+    expect(el?.getAttribute("data-sc-id")).toBe("sc-aaaa");
   });
 
   it("returns null for a missing bare id", () => {
     const doc = makeDoc(
-      `<!DOCTYPE html><html><body><div data-hf-id="hf-aaaa"></div></body></html>`,
+      `<!DOCTYPE html><html><body><div data-sc-id="sc-aaaa"></div></body></html>`,
     );
-    expect(resolveScoped(doc as unknown as Document, "hf-xxxx")).toBeNull();
+    expect(resolveScoped(doc as unknown as Document, "sc-xxxx")).toBeNull();
   });
 
   // A sub-composition ROOT is addressed by its composition id. When no element
-  // carries that as a data-hf-id, fall back to [data-composition-id]: comp-ids
+  // carries that as a data-sc-id, fall back to [data-composition-id]: comp-ids
   // become first-class resolvable addresses (fixes validate / getElement).
   it("resolves a bare id to a sub-comp root via data-composition-id fallback", () => {
     const doc = makeDoc(
-      `<!DOCTYPE html><html><body><div data-hf-id="hf-host" data-composition-id="sub-1"></div></body></html>`,
+      `<!DOCTYPE html><html><body><div data-sc-id="sc-host" data-composition-id="sub-1"></div></body></html>`,
     ) as unknown as Document;
     const viaComp = resolveScoped(doc, "sub-1");
-    const viaHf = resolveScoped(doc, "hf-host");
+    const viaHf = resolveScoped(doc, "sc-host");
     expect(viaComp).not.toBeNull();
-    expect(viaComp?.getAttribute("data-hf-id")).toBe("hf-host");
+    expect(viaComp?.getAttribute("data-sc-id")).toBe("sc-host");
     // Both addresses resolve to the SAME host element.
     expect(viaComp).toBe(viaHf);
   });
 
-  // data-hf-id MUST take precedence: a bare id that matches a real data-hf-id
+  // data-sc-id MUST take precedence: a bare id that matches a real data-sc-id
   // never falls back to data-composition-id, even if some other element carries
   // that string as its composition id.
-  it("data-hf-id takes precedence over data-composition-id for a bare id", () => {
+  it("data-sc-id takes precedence over data-composition-id for a bare id", () => {
     const doc = makeDoc(
       `<!DOCTYPE html><html><body>
-        <div data-hf-id="dup" class="byHfId"></div>
-        <div data-hf-id="hf-host" data-composition-id="dup" class="byCompId"></div>
+        <div data-sc-id="dup" class="byHfId"></div>
+        <div data-sc-id="sc-host" data-composition-id="dup" class="byCompId"></div>
       </body></html>`,
     ) as unknown as Document;
     const el = resolveScoped(doc, "dup");
@@ -86,14 +86,14 @@ describe("resolveScoped — flat id", () => {
   it("findById resolves an ambiguous bare id to the canonical instance (== resolveScoped)", () => {
     const doc = makeDoc(
       inlinedHtml(`
-      <div data-hf-id="hf-host" data-composition-file="sub.html">
-        <p data-hf-id="hf-dup" class="inside">inside</p>
+      <div data-sc-id="sc-host" data-composition-file="sub.html">
+        <p data-sc-id="sc-dup" class="inside">inside</p>
       </div>
-      <p data-hf-id="hf-dup" class="outside">outside</p>
+      <p data-sc-id="sc-dup" class="outside">outside</p>
     `),
     ) as unknown as Document;
-    const viaFind = findById(doc, "hf-dup");
-    const viaResolve = resolveScoped(doc, "hf-dup");
+    const viaFind = findById(doc, "sc-dup");
+    const viaResolve = resolveScoped(doc, "sc-dup");
     expect(viaFind).toBe(viaResolve);
     expect(viaFind?.getAttribute("class")).toBe("outside");
   });
@@ -104,62 +104,62 @@ describe("resolveScoped — scoped id", () => {
     // Simulated post-inline structure: host has data-composition-file
     const doc = makeDoc(
       inlinedHtml(`
-      <div data-hf-id="hf-host" data-composition-file="sub.html">
-        <p data-hf-id="hf-leaf">text</p>
+      <div data-sc-id="sc-host" data-composition-file="sub.html">
+        <p data-sc-id="sc-leaf">text</p>
       </div>
     `),
     );
-    const el = resolveScoped(doc as unknown as Document, "hf-host/hf-leaf");
-    expect(el?.getAttribute("data-hf-id")).toBe("hf-leaf");
+    const el = resolveScoped(doc as unknown as Document, "sc-host/sc-leaf");
+    expect(el?.getAttribute("data-sc-id")).toBe("sc-leaf");
     expect(el?.textContent?.trim()).toBe("text");
   });
 
   it("does NOT match a leaf outside the host when ids collide", () => {
-    // Two elements with the same hf-id — one inside host, one outside.
+    // Two elements with the same sc-id — one inside host, one outside.
     // resolveScoped must return the one INSIDE the host.
     const doc = makeDoc(
       inlinedHtml(`
-      <div data-hf-id="hf-host" data-composition-file="sub.html">
-        <p data-hf-id="hf-dup" class="inside">inside</p>
+      <div data-sc-id="sc-host" data-composition-file="sub.html">
+        <p data-sc-id="sc-dup" class="inside">inside</p>
       </div>
-      <p data-hf-id="hf-dup" class="outside">outside</p>
+      <p data-sc-id="sc-dup" class="outside">outside</p>
     `),
     );
-    const el = resolveScoped(doc as unknown as Document, "hf-host/hf-dup");
+    const el = resolveScoped(doc as unknown as Document, "sc-host/sc-dup");
     expect(el?.getAttribute("class")).toBe("inside");
   });
 
-  it("resolves 3-level nesting hf-H1/hf-H2/hf-leaf", () => {
+  it("resolves 3-level nesting hf-H1/hf-H2/sc-leaf", () => {
     const doc = makeDoc(
       inlinedHtml(`
-      <div data-hf-id="hf-h1" data-composition-file="sub1.html">
-        <div data-hf-id="hf-h2" data-composition-file="sub2.html">
-          <span data-hf-id="hf-leaf">deep</span>
+      <div data-sc-id="sc-h1" data-composition-file="sub1.html">
+        <div data-sc-id="sc-h2" data-composition-file="sub2.html">
+          <span data-sc-id="sc-leaf">deep</span>
         </div>
       </div>
     `),
     );
-    const el = resolveScoped(doc as unknown as Document, "hf-h1/hf-h2/hf-leaf");
-    expect(el?.getAttribute("data-hf-id")).toBe("hf-leaf");
+    const el = resolveScoped(doc as unknown as Document, "sc-h1/sc-h2/sc-leaf");
+    expect(el?.getAttribute("data-sc-id")).toBe("sc-leaf");
     expect(el?.textContent?.trim()).toBe("deep");
   });
 
   it("returns null when the first segment is not found", () => {
     const doc = makeDoc(
-      inlinedHtml(`<div data-hf-id="hf-other"><p data-hf-id="hf-leaf"></p></div>`),
+      inlinedHtml(`<div data-sc-id="sc-other"><p data-sc-id="sc-leaf"></p></div>`),
     );
-    expect(resolveScoped(doc as unknown as Document, "hf-host/hf-leaf")).toBeNull();
+    expect(resolveScoped(doc as unknown as Document, "sc-host/sc-leaf")).toBeNull();
   });
 
   it("returns null when the leaf is not found inside the host", () => {
     const doc = makeDoc(
       inlinedHtml(`
-      <div data-hf-id="hf-host" data-composition-file="sub.html">
-        <p data-hf-id="hf-other">text</p>
+      <div data-sc-id="sc-host" data-composition-file="sub.html">
+        <p data-sc-id="sc-other">text</p>
       </div>
     `),
     );
-    expect(resolveScoped(doc as unknown as Document, "hf-host/hf-leaf")).toBeNull();
+    expect(resolveScoped(doc as unknown as Document, "sc-host/sc-leaf")).toBeNull();
   });
 });
 
@@ -168,79 +168,79 @@ describe("resolveScoped — scoped id", () => {
 describe("ElementSnapshot.scopedId", () => {
   it("top-level element has scopedId equal to its bare id", () => {
     const parsed = parseMutable(
-      `<div data-hf-id="hf-root" data-hf-root><p data-hf-id="hf-p">hi</p></div>`,
+      `<div data-sc-id="sc-root" data-sc-root><p data-sc-id="sc-p">hi</p></div>`,
     );
     const elements = flatElements(buildRoots(parsed.document));
-    const p = elements.find((e) => e.id === "hf-p");
-    expect(p?.scopedId).toBe("hf-p");
+    const p = elements.find((e) => e.id === "sc-p");
+    expect(p?.scopedId).toBe("sc-p");
   });
 
   it("element inside sub-comp gets hf-HOST/hf-LEAF scopedId", () => {
     const parsed = parseMutable(
       inlinedHtml(`
-      <div data-hf-id="hf-root" data-hf-root>
-        <div data-hf-id="hf-host" data-composition-file="sub.html">
-          <p data-hf-id="hf-leaf">text</p>
+      <div data-sc-id="sc-root" data-sc-root>
+        <div data-sc-id="sc-host" data-composition-file="sub.html">
+          <p data-sc-id="sc-leaf">text</p>
         </div>
       </div>
     `),
     );
     const elements = flatElements(buildRoots(parsed.document));
-    const leaf = elements.find((e) => e.id === "hf-leaf");
-    expect(leaf?.scopedId).toBe("hf-host/hf-leaf");
+    const leaf = elements.find((e) => e.id === "sc-leaf");
+    expect(leaf?.scopedId).toBe("sc-host/sc-leaf");
   });
 
   it("host element itself has bare scopedId (it lives in parent scope)", () => {
     const parsed = parseMutable(
       inlinedHtml(`
-      <div data-hf-id="hf-root" data-hf-root>
-        <div data-hf-id="hf-host" data-composition-file="sub.html">
-          <p data-hf-id="hf-leaf">text</p>
+      <div data-sc-id="sc-root" data-sc-root>
+        <div data-sc-id="sc-host" data-composition-file="sub.html">
+          <p data-sc-id="sc-leaf">text</p>
         </div>
       </div>
     `),
     );
     const elements = flatElements(buildRoots(parsed.document));
-    const host = elements.find((e) => e.id === "hf-host");
-    expect(host?.scopedId).toBe("hf-host");
+    const host = elements.find((e) => e.id === "sc-host");
+    expect(host?.scopedId).toBe("sc-host");
   });
 
   it("3-level nesting produces hf-H1/hf-H2/hf-LEAF", () => {
     const parsed = parseMutable(
       inlinedHtml(`
-      <div data-hf-id="hf-root" data-hf-root>
-        <div data-hf-id="hf-h1" data-composition-file="sub1.html">
-          <div data-hf-id="hf-h2" data-composition-file="sub2.html">
-            <span data-hf-id="hf-leaf">deep</span>
+      <div data-sc-id="sc-root" data-sc-root>
+        <div data-sc-id="sc-h1" data-composition-file="sub1.html">
+          <div data-sc-id="sc-h2" data-composition-file="sub2.html">
+            <span data-sc-id="sc-leaf">deep</span>
           </div>
         </div>
       </div>
     `),
     );
     const elements = flatElements(buildRoots(parsed.document));
-    const leaf = elements.find((e) => e.id === "hf-leaf");
-    expect(leaf?.scopedId).toBe("hf-h1/hf-h2/hf-leaf");
+    const leaf = elements.find((e) => e.id === "sc-leaf");
+    expect(leaf?.scopedId).toBe("sc-h1/sc-h2/sc-leaf");
   });
 
   it("same sub-comp mounted twice gets different scopedIds", () => {
-    // hf-x exists in both mounts — different host ids disambiguate
+    // sc-x exists in both mounts — different host ids disambiguate
     const parsed = parseMutable(
       inlinedHtml(`
-      <div data-hf-id="hf-root" data-hf-root>
-        <div data-hf-id="hf-mount-a" data-composition-file="sub.html">
-          <p data-hf-id="hf-x" class="in-a">A</p>
+      <div data-sc-id="sc-root" data-sc-root>
+        <div data-sc-id="sc-mount-a" data-composition-file="sub.html">
+          <p data-sc-id="sc-x" class="in-a">A</p>
         </div>
-        <div data-hf-id="hf-mount-b" data-composition-file="sub.html">
-          <p data-hf-id="hf-x" class="in-b">B</p>
+        <div data-sc-id="sc-mount-b" data-composition-file="sub.html">
+          <p data-sc-id="sc-x" class="in-b">B</p>
         </div>
       </div>
     `),
     );
     const elements = flatElements(buildRoots(parsed.document));
-    const xs = elements.filter((e) => e.id === "hf-x");
+    const xs = elements.filter((e) => e.id === "sc-x");
     const scopedIds = xs.map((e) => e.scopedId);
-    expect(scopedIds).toContain("hf-mount-a/hf-x");
-    expect(scopedIds).toContain("hf-mount-b/hf-x");
+    expect(scopedIds).toContain("sc-mount-a/sc-x");
+    expect(scopedIds).toContain("sc-mount-b/sc-x");
     expect(new Set(scopedIds).size).toBe(2);
   });
 
@@ -248,19 +248,19 @@ describe("ElementSnapshot.scopedId", () => {
     // outerHTML case: host and innerRoot both get data-composition-file="sub.html"
     const parsed = parseMutable(
       inlinedHtml(`
-      <div data-hf-id="hf-root" data-hf-root>
-        <div data-hf-id="hf-host" data-composition-file="sub.html">
-          <div data-hf-id="hf-inner" data-composition-id="my-sub" data-composition-file="sub.html">
-            <p data-hf-id="hf-leaf">text</p>
+      <div data-sc-id="sc-root" data-sc-root>
+        <div data-sc-id="sc-host" data-composition-file="sub.html">
+          <div data-sc-id="sc-inner" data-composition-id="my-sub" data-composition-file="sub.html">
+            <p data-sc-id="sc-leaf">text</p>
           </div>
         </div>
       </div>
     `),
     );
     const elements = flatElements(buildRoots(parsed.document));
-    const leaf = elements.find((e) => e.id === "hf-leaf");
-    // Leaf should be scoped under hf-host, not hf-host/hf-inner
-    expect(leaf?.scopedId).toBe("hf-host/hf-leaf");
+    const leaf = elements.find((e) => e.id === "sc-leaf");
+    // Leaf should be scoped under sc-host, not sc-host/sc-inner
+    expect(leaf?.scopedId).toBe("sc-host/sc-leaf");
   });
 });
 
@@ -268,20 +268,20 @@ describe("ElementSnapshot.scopedId", () => {
 
 describe("dispatch — scoped target", () => {
   it("setStyle with scoped id mutates the correct element when id collides", async () => {
-    // Both host subtree and sibling have an element hf-x — scoped target must hit the right one
+    // Both host subtree and sibling have an element sc-x — scoped target must hit the right one
     const html = inlinedHtml(`
-      <div data-hf-id="hf-root" data-hf-root>
-        <div data-hf-id="hf-host" data-composition-file="sub.html">
-          <p data-hf-id="hf-x">inside</p>
+      <div data-sc-id="sc-root" data-sc-root>
+        <div data-sc-id="sc-host" data-composition-file="sub.html">
+          <p data-sc-id="sc-x">inside</p>
         </div>
-        <p data-hf-id="hf-x">outside</p>
+        <p data-sc-id="sc-x">outside</p>
       </div>
     `);
     const comp = await openComposition(html);
-    comp.setStyle("hf-host/hf-x", { color: "red" });
+    comp.setStyle("sc-host/sc-x", { color: "red" });
 
-    const inside = comp.getElement("hf-host/hf-x");
-    const outside = comp.getElement("hf-x");
+    const inside = comp.getElement("sc-host/sc-x");
+    const outside = comp.getElement("sc-x");
     expect(inside?.inlineStyles.color).toBe("red");
     // Outside element should be unchanged
     expect(outside?.inlineStyles.color).toBeUndefined();
@@ -289,9 +289,9 @@ describe("dispatch — scoped target", () => {
 
   it("dispatch emits scoped id in patch path", async () => {
     const html = inlinedHtml(`
-      <div data-hf-id="hf-root" data-hf-root>
-        <div data-hf-id="hf-host" data-composition-file="sub.html">
-          <p data-hf-id="hf-leaf">text</p>
+      <div data-sc-id="sc-root" data-sc-root>
+        <div data-sc-id="sc-host" data-composition-file="sub.html">
+          <p data-sc-id="sc-leaf">text</p>
         </div>
       </div>
     `);
@@ -300,49 +300,49 @@ describe("dispatch — scoped target", () => {
     comp.on("patch", (e) => {
       patches.push(...e.patches.map((p) => p.path));
     });
-    comp.setStyle("hf-host/hf-leaf", { color: "blue" });
+    comp.setStyle("sc-host/sc-leaf", { color: "blue" });
     // Patch path should encode the scoped id with RFC 6902 escaping (/ → ~1)
-    expect(patches.some((p) => p.includes("hf-host~1hf-leaf"))).toBe(true);
+    expect(patches.some((p) => p.includes("sc-host~1hf-leaf"))).toBe(true);
   });
 
   it("getElement by scopedId returns the correct snapshot", async () => {
     const html = inlinedHtml(`
-      <div data-hf-id="hf-root" data-hf-root>
-        <div data-hf-id="hf-host" data-composition-file="sub.html">
-          <p data-hf-id="hf-leaf">inside text</p>
+      <div data-sc-id="sc-root" data-sc-root>
+        <div data-sc-id="sc-host" data-composition-file="sub.html">
+          <p data-sc-id="sc-leaf">inside text</p>
         </div>
       </div>
     `);
     const comp = await openComposition(html);
-    const el = comp.getElement("hf-host/hf-leaf");
+    const el = comp.getElement("sc-host/sc-leaf");
     expect(el).not.toBeNull();
     expect(el?.text).toBe("inside text");
   });
 
   it("find() returns scopedIds for sub-comp elements", async () => {
     const html = inlinedHtml(`
-      <div data-hf-id="hf-root" data-hf-root>
-        <div data-hf-id="hf-host" data-composition-file="sub.html">
-          <p data-hf-id="hf-leaf" class="target">inside</p>
+      <div data-sc-id="sc-root" data-sc-root>
+        <div data-sc-id="sc-host" data-composition-file="sub.html">
+          <p data-sc-id="sc-leaf" class="target">inside</p>
         </div>
-        <p data-hf-id="hf-outer" class="target">outside</p>
+        <p data-sc-id="sc-outer" class="target">outside</p>
       </div>
     `);
     const comp = await openComposition(html);
     const ids = comp.find({ tag: "p" });
-    expect(ids).toContain("hf-host/hf-leaf");
-    expect(ids).toContain("hf-outer");
+    expect(ids).toContain("sc-host/sc-leaf");
+    expect(ids).toContain("sc-outer");
   });
 });
 
 // ─── 3b. Comp-root GSAP tween attribution ─────────────────────────────────────
 
-describe("sub-comp root GSAP tween — canonical hf-id attribution", () => {
+describe("sub-comp root GSAP tween — canonical sc-id attribution", () => {
   it("getElement(host).animationIds includes a tween added by comp-id target", async () => {
     const html = inlinedHtml(`
-      <div data-hf-id="hf-root" data-hf-root>
-        <div data-hf-id="hf-host" data-composition-id="sub-1" data-composition-file="sub.html">
-          <p data-hf-id="hf-leaf">text</p>
+      <div data-sc-id="sc-root" data-sc-root>
+        <div data-sc-id="sc-host" data-composition-id="sub-1" data-composition-file="sub.html">
+          <p data-sc-id="sc-leaf">text</p>
         </div>
         <script>var tl = gsap.timeline({ paused: true });
 window.__timelines = { t: tl };</script>
@@ -355,9 +355,9 @@ window.__timelines = { t: tl };</script>
       duration: 0.3,
       properties: { x: 200 },
     });
-    // The tween is filed under the host's own data-hf-id (canonical form), so
+    // The tween is filed under the host's own data-sc-id (canonical form), so
     // it surfaces on the host element snapshot.
-    const host = comp.getElement("hf-host");
+    const host = comp.getElement("sc-host");
     expect(host?.animationIds).toContain(animId);
   });
 });
@@ -367,34 +367,34 @@ window.__timelines = { t: tl };</script>
 describe("override-set — scoped id keys", () => {
   it("setStyle on scoped id produces scoped key in getOverrides()", async () => {
     const html = inlinedHtml(`
-      <div data-hf-id="hf-root" data-hf-root>
-        <div data-hf-id="hf-host" data-composition-file="sub.html">
-          <p data-hf-id="hf-leaf">text</p>
+      <div data-sc-id="sc-root" data-sc-root>
+        <div data-sc-id="sc-host" data-composition-file="sub.html">
+          <p data-sc-id="sc-leaf">text</p>
         </div>
       </div>
     `);
     const comp = await openComposition(html);
-    comp.setStyle("hf-host/hf-leaf", { color: "green" });
+    comp.setStyle("sc-host/sc-leaf", { color: "green" });
     const overrides = comp.getOverrides();
-    expect(overrides["hf-host/hf-leaf.style.color"]).toBe("green");
+    expect(overrides["sc-host/sc-leaf.style.color"]).toBe("green");
   });
 
   it("removeElement on host purges all sub-comp keys from override-set", async () => {
     const html = inlinedHtml(`
-      <div data-hf-id="hf-root" data-hf-root>
-        <div data-hf-id="hf-host" data-composition-file="sub.html">
-          <p data-hf-id="hf-leaf">text</p>
+      <div data-sc-id="sc-root" data-sc-root>
+        <div data-sc-id="sc-host" data-composition-file="sub.html">
+          <p data-sc-id="sc-leaf">text</p>
         </div>
       </div>
     `);
     const comp = await openComposition(html);
-    comp.setStyle("hf-host/hf-leaf", { color: "green" });
-    comp.removeElement("hf-host");
+    comp.setStyle("sc-host/sc-leaf", { color: "green" });
+    comp.removeElement("sc-host");
     const overrides = comp.getOverrides();
     // Removal marker for host is preserved (null); scoped property sub-keys are purged
-    expect(overrides["hf-host"]).toBeNull();
+    expect(overrides["sc-host"]).toBeNull();
     expect(
-      Object.keys(overrides).some((k) => k.startsWith("hf-host/") || k.startsWith("hf-host.")),
+      Object.keys(overrides).some((k) => k.startsWith("sc-host/") || k.startsWith("sc-host.")),
     ).toBe(false);
   });
 });
@@ -404,40 +404,40 @@ describe("override-set — scoped id keys", () => {
 describe("find({ composition })", () => {
   it("returns elements inside the named host sub-composition", async () => {
     const html = inlinedHtml(`
-      <div data-hf-id="hf-root" data-hf-root>
-        <div data-hf-id="hf-host" data-composition-file="sub.html">
-          <p data-hf-id="hf-leaf">inside</p>
+      <div data-sc-id="sc-root" data-sc-root>
+        <div data-sc-id="sc-host" data-composition-file="sub.html">
+          <p data-sc-id="sc-leaf">inside</p>
         </div>
-        <p data-hf-id="hf-outer">outside</p>
+        <p data-sc-id="sc-outer">outside</p>
       </div>
     `);
     const comp = await openComposition(html);
-    const ids = comp.find({ composition: "hf-host" });
-    expect(ids).toContain("hf-host/hf-leaf");
-    expect(ids).not.toContain("hf-outer");
-    expect(ids).not.toContain("hf-host"); // host itself is in parent scope
+    const ids = comp.find({ composition: "sc-host" });
+    expect(ids).toContain("sc-host/sc-leaf");
+    expect(ids).not.toContain("sc-outer");
+    expect(ids).not.toContain("sc-host"); // host itself is in parent scope
   });
 
   it("returns empty array for unknown host id", async () => {
     const html = inlinedHtml(
-      `<div data-hf-id="hf-root" data-hf-root><p data-hf-id="hf-p">x</p></div>`,
+      `<div data-sc-id="sc-root" data-sc-root><p data-sc-id="sc-p">x</p></div>`,
     );
     const comp = await openComposition(html);
-    expect(comp.find({ composition: "hf-no-such" })).toEqual([]);
+    expect(comp.find({ composition: "sc-no-such" })).toEqual([]);
   });
 
   it("can combine composition filter with other query fields", async () => {
     const html = inlinedHtml(`
-      <div data-hf-id="hf-root" data-hf-root>
-        <div data-hf-id="hf-host" data-composition-file="sub.html">
-          <p data-hf-id="hf-a">match</p>
-          <span data-hf-id="hf-b">no</span>
+      <div data-sc-id="sc-root" data-sc-root>
+        <div data-sc-id="sc-host" data-composition-file="sub.html">
+          <p data-sc-id="sc-a">match</p>
+          <span data-sc-id="sc-b">no</span>
         </div>
       </div>
     `);
     const comp = await openComposition(html);
-    const ids = comp.find({ composition: "hf-host", tag: "p" });
-    expect(ids).toEqual(["hf-host/hf-a"]);
+    const ids = comp.find({ composition: "sc-host", tag: "p" });
+    expect(ids).toEqual(["sc-host/sc-a"]);
   });
 });
 
@@ -449,11 +449,11 @@ describe("ambiguous bare id — removeElement and getElement agree", () => {
   // but getElement prefers the canonical (top-level) match. The two APIs must agree.
   const ambiguousHtml = () =>
     inlinedHtml(`
-      <div data-hf-id="hf-root" data-hf-root>
-        <div data-hf-id="hf-host" data-composition-file="sub.html">
-          <p data-hf-id="hf-dup" class="inner">inner</p>
+      <div data-sc-id="sc-root" data-sc-root>
+        <div data-sc-id="sc-host" data-composition-file="sub.html">
+          <p data-sc-id="sc-dup" class="inner">inner</p>
         </div>
-        <p data-hf-id="hf-dup" class="outer">outer</p>
+        <p data-sc-id="sc-dup" class="outer">outer</p>
       </div>
     `);
 
@@ -461,47 +461,47 @@ describe("ambiguous bare id — removeElement and getElement agree", () => {
     const comp = await openComposition(ambiguousHtml());
 
     // getElement prefers the canonical match (scopedId === id) → top-level "outer".
-    const got = comp.getElement("hf-dup");
-    expect(got?.scopedId).toBe("hf-dup");
+    const got = comp.getElement("sc-dup");
+    expect(got?.scopedId).toBe("sc-dup");
     expect(got?.classNames).toContain("outer");
 
     // removeElement(bareId) must remove the SAME instance getElement returned.
-    comp.removeElement("hf-dup");
+    comp.removeElement("sc-dup");
 
     // The canonical top-level instance is gone — getElement(bareId) no longer
     // finds it (and does NOT silently fall through to the inner sub-comp dup).
-    expect(comp.getElement("hf-dup")).toBeNull();
+    expect(comp.getElement("sc-dup")).toBeNull();
 
     // The inner instance survives, addressable only via its fully-scoped path.
-    const inner = comp.getElement("hf-host/hf-dup");
+    const inner = comp.getElement("sc-host/sc-dup");
     expect(inner?.classNames).toContain("inner");
   });
 
   it("fully-scoped path still targets the inner instance exactly", async () => {
     const comp = await openComposition(ambiguousHtml());
-    comp.removeElement("hf-host/hf-dup");
+    comp.removeElement("sc-host/sc-dup");
 
     // Inner gone; canonical top-level survives.
-    const inner = comp.getElement("hf-host/hf-dup");
+    const inner = comp.getElement("sc-host/sc-dup");
     expect(inner).toBeNull();
-    const top = comp.getElement("hf-dup");
-    expect(top?.scopedId).toBe("hf-dup");
+    const top = comp.getElement("sc-dup");
+    expect(top?.scopedId).toBe("sc-dup");
     expect(top?.classNames).toContain("outer");
   });
 
   it("non-duplicated bare id still resolves and removes normally", async () => {
     const html = inlinedHtml(`
-      <div data-hf-id="hf-root" data-hf-root>
-        <div data-hf-id="hf-host" data-composition-file="sub.html">
-          <p data-hf-id="hf-leaf">inside</p>
+      <div data-sc-id="sc-root" data-sc-root>
+        <div data-sc-id="sc-host" data-composition-file="sub.html">
+          <p data-sc-id="sc-leaf">inside</p>
         </div>
-        <p data-hf-id="hf-solo">solo</p>
+        <p data-sc-id="sc-solo">solo</p>
       </div>
     `);
     const comp = await openComposition(html);
-    expect(comp.getElement("hf-solo")?.scopedId).toBe("hf-solo");
-    comp.removeElement("hf-solo");
-    expect(comp.getElement("hf-solo")).toBeNull();
+    expect(comp.getElement("sc-solo")?.scopedId).toBe("sc-solo");
+    comp.removeElement("sc-solo");
+    expect(comp.getElement("sc-solo")).toBeNull();
   });
 });
 
@@ -510,11 +510,11 @@ describe("ambiguous bare id — removeElement and getElement agree", () => {
 describe("scopedId stability across serialize/re-parse", () => {
   it("scopedId values are identical after serialize + re-open", async () => {
     const html = inlinedHtml(`
-      <div data-hf-id="hf-root" data-hf-root>
-        <div data-hf-id="hf-host" data-composition-file="sub.html">
-          <p data-hf-id="hf-leaf">text</p>
+      <div data-sc-id="sc-root" data-sc-root>
+        <div data-sc-id="sc-host" data-composition-file="sub.html">
+          <p data-sc-id="sc-leaf">text</p>
         </div>
-        <p data-hf-id="hf-outer">outer</p>
+        <p data-sc-id="sc-outer">outer</p>
       </div>
     `);
     const comp1 = await openComposition(html);
@@ -538,39 +538,39 @@ describe("scopedId stability across serialize/re-parse", () => {
 describe("isNewHostBoundary", () => {
   it("is true for a host with no ancestor dcf (top-level sub-comp host)", () => {
     const doc = makeDoc(
-      inlinedHtml(`<div data-hf-id="hf-host" data-composition-file="sub.html"></div>`),
+      inlinedHtml(`<div data-sc-id="sc-host" data-composition-file="sub.html"></div>`),
     ) as unknown as Document;
-    const host = doc.querySelector('[data-hf-id="hf-host"]') as unknown as Element;
+    const host = doc.querySelector('[data-sc-id="sc-host"]') as unknown as Element;
     expect(isNewHostBoundary(host)).toBe(true);
   });
 
   it("is false for an element with no data-composition-file at all", () => {
-    const doc = makeDoc(inlinedHtml(`<div data-hf-id="hf-plain"></div>`)) as unknown as Document;
-    const el = doc.querySelector('[data-hf-id="hf-plain"]') as unknown as Element;
+    const doc = makeDoc(inlinedHtml(`<div data-sc-id="sc-plain"></div>`)) as unknown as Document;
+    const el = doc.querySelector('[data-sc-id="sc-plain"]') as unknown as Element;
     expect(isNewHostBoundary(el)).toBe(false);
   });
 
   it("is false for the outerHTML innerRoot (same dcf value as its host parent)", () => {
     const doc = makeDoc(
       inlinedHtml(`
-        <div data-hf-id="hf-host" data-composition-file="sub.html">
-          <div data-hf-id="hf-inner" data-composition-file="sub.html"></div>
+        <div data-sc-id="sc-host" data-composition-file="sub.html">
+          <div data-sc-id="sc-inner" data-composition-file="sub.html"></div>
         </div>
       `),
     ) as unknown as Document;
-    const inner = doc.querySelector('[data-hf-id="hf-inner"]') as unknown as Element;
+    const inner = doc.querySelector('[data-sc-id="sc-inner"]') as unknown as Element;
     expect(isNewHostBoundary(inner)).toBe(false);
   });
 
   it("is true for a nested host with a DIFFERENT dcf from its parent", () => {
     const doc = makeDoc(
       inlinedHtml(`
-        <div data-hf-id="hf-outer" data-composition-file="outer.html">
-          <div data-hf-id="hf-inner-host" data-composition-file="inner.html"></div>
+        <div data-sc-id="sc-outer" data-composition-file="outer.html">
+          <div data-sc-id="sc-inner-host" data-composition-file="inner.html"></div>
         </div>
       `),
     ) as unknown as Document;
-    const innerHost = doc.querySelector('[data-hf-id="hf-inner-host"]') as unknown as Element;
+    const innerHost = doc.querySelector('[data-sc-id="sc-inner-host"]') as unknown as Element;
     expect(isNewHostBoundary(innerHost)).toBe(true);
   });
 });
@@ -579,15 +579,15 @@ describe("isNewHostBoundary", () => {
 
 describe("bareId", () => {
   it("returns the leaf segment of a scoped id", () => {
-    expect(bareId("hf-host/hf-leaf")).toBe("hf-leaf");
+    expect(bareId("sc-host/sc-leaf")).toBe("sc-leaf");
   });
 
   it("returns a deeply nested id's leaf segment", () => {
-    expect(bareId("hf-a/hf-b/hf-c")).toBe("hf-c");
+    expect(bareId("sc-a/sc-b/sc-c")).toBe("sc-c");
   });
 
   it("passes a bare id through unchanged", () => {
-    expect(bareId("hf-solo")).toBe("hf-solo");
+    expect(bareId("sc-solo")).toBe("sc-solo");
   });
 });
 
@@ -596,36 +596,36 @@ describe("bareId", () => {
 describe("getRootElements", () => {
   it("excludes descendants that getElements() also lists as top-level entries", async () => {
     const html = inlinedHtml(`
-      <div data-hf-id="hf-panel">
-        <h1 data-hf-id="hf-title">Title</h1>
+      <div data-sc-id="sc-panel">
+        <h1 data-sc-id="sc-title">Title</h1>
       </div>
-      <p data-hf-id="hf-solo">solo</p>
+      <p data-sc-id="sc-solo">solo</p>
     `);
     const comp = await openComposition(html);
 
-    // getElements() is flat: hf-title appears once nested under hf-panel AND
+    // getElements() is flat: sc-title appears once nested under sc-panel AND
     // once again as its own top-level entry.
     const flatIds = comp.getElements().map((e) => e.id);
-    expect(flatIds).toContain("hf-title");
-    expect(flatIds).toContain("hf-panel");
+    expect(flatIds).toContain("sc-title");
+    expect(flatIds).toContain("sc-panel");
 
-    // getRootElements() only returns true roots — hf-title is not one, since
-    // it's hf-panel's descendant.
+    // getRootElements() only returns true roots — sc-title is not one, since
+    // it's sc-panel's descendant.
     const rootIds = comp.getRootElements().map((e) => e.id);
-    expect(rootIds).toEqual(["hf-panel", "hf-solo"]);
-    expect(comp.getRootElements().find((e) => e.id === "hf-panel")?.children[0]?.id).toBe(
-      "hf-title",
+    expect(rootIds).toEqual(["sc-panel", "sc-solo"]);
+    expect(comp.getRootElements().find((e) => e.id === "sc-panel")?.children[0]?.id).toBe(
+      "sc-title",
     );
   });
 
   it("treats a sub-composition host as a root even though it has descendants", async () => {
     const html = inlinedHtml(`
-      <div data-hf-id="hf-host" data-composition-file="sub.html">
-        <p data-hf-id="hf-leaf">inside</p>
+      <div data-sc-id="sc-host" data-composition-file="sub.html">
+        <p data-sc-id="sc-leaf">inside</p>
       </div>
     `);
     const comp = await openComposition(html);
-    expect(comp.getRootElements().map((e) => e.id)).toEqual(["hf-host"]);
+    expect(comp.getRootElements().map((e) => e.id)).toEqual(["sc-host"]);
   });
 });
 
@@ -633,24 +633,24 @@ describe("getRootElements", () => {
 
 describe("serialize({ stripRuntime })", () => {
   const RUNTIME_SCRIPT =
-    '<script data-hyperframes-preview-runtime="1" src="https://cdn.jsdelivr.net/npm/@hyperframes/core/dist/hyperframe.runtime.iife.js"></script>';
+    '<script data-smashcut-preview-runtime="1" src="https://cdn.jsdelivr.net/npm/@smashcut/core/dist/smashcut.runtime.iife.js"></script>';
 
   it("keeps the embedded runtime script by default", async () => {
-    const html = `<!DOCTYPE html><html><head>${RUNTIME_SCRIPT}</head><body><div data-hf-id="hf-a"></div></body></html>`;
+    const html = `<!DOCTYPE html><html><head>${RUNTIME_SCRIPT}</head><body><div data-sc-id="sc-a"></div></body></html>`;
     const comp = await openComposition(html);
-    expect(comp.serialize()).toContain("hyperframe.runtime");
+    expect(comp.serialize()).toContain("smashcut.runtime");
   });
 
   it("strips the embedded runtime script when stripRuntime is true", async () => {
-    const html = `<!DOCTYPE html><html><head>${RUNTIME_SCRIPT}</head><body><div data-hf-id="hf-a"></div></body></html>`;
+    const html = `<!DOCTYPE html><html><head>${RUNTIME_SCRIPT}</head><body><div data-sc-id="sc-a"></div></body></html>`;
     const comp = await openComposition(html);
     const out = comp.serialize({ stripRuntime: true });
-    expect(out).not.toContain("hyperframe.runtime");
-    expect(out).toContain('data-hf-id="hf-a"');
+    expect(out).not.toContain("smashcut.runtime");
+    expect(out).toContain('data-sc-id="sc-a"');
   });
 
-  it("re-exports RUNTIME_BOOTSTRAP_ATTR from @hyperframes/core, matching the marker generators stamp", async () => {
-    expect(RUNTIME_BOOTSTRAP_ATTR).toBe("data-hyperframes-preview-runtime");
+  it("re-exports RUNTIME_BOOTSTRAP_ATTR from @smashcut/core, matching the marker generators stamp", async () => {
+    expect(RUNTIME_BOOTSTRAP_ATTR).toBe("data-smashcut-preview-runtime");
     // The fixture's marker attribute above is authored by hand — confirm it's not
     // drifted from the real constant a generator would actually stamp.
     expect(RUNTIME_SCRIPT).toContain(RUNTIME_BOOTSTRAP_ATTR);

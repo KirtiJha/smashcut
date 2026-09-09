@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import type { HfAutomation } from "@hyperframes/core/audio-automation";
+import type { HfAutomation } from "@smashcut/core/audio-automation";
 import { automationAttrValue, withLane, withoutLane } from "./propertyPanelAutomation.js";
 
 const carved = (): HfAutomation => ({

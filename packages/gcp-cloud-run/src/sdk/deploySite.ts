@@ -17,7 +17,7 @@ import { mkdtempSync, rmSync, statSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { Storage } from "@google-cloud/storage";
-import { hashProjectDir } from "@hyperframes/producer/distributed";
+import { hashProjectDir } from "@smashcut/producer/distributed";
 import { formatGcsUri, tarDirectory, uploadFileToGcs } from "../gcsTransport.js";
 
 /** Options for {@link deploySite}. */
@@ -86,7 +86,7 @@ export async function deploySite(opts: DeploySiteOptions): Promise<SiteHandle> {
     };
   }
 
-  const workdir = mkdtempSync(join(tmpdir(), "hf-deploy-site-"));
+  const workdir = mkdtempSync(join(tmpdir(), "sc-deploy-site-"));
   try {
     const tarball = join(workdir, "project.tar.gz");
     await tarDirectory(opts.projectDir, tarball);

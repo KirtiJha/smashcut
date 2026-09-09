@@ -265,7 +265,7 @@ function workletBuilder(processor: string): Builder {
         // the rest of the session, and a few edits to a carved bed accumulated
         // a stack of them. The processors treat this message as their cue to
         // stop.
-        node.port.postMessage({ __hfDispose: true });
+        node.port.postMessage({ __scDispose: true });
         node.disconnect();
       },
     };
@@ -501,11 +501,11 @@ const BUILDERS: Record<string, Builder> = {
   "biquad-highshelf": biquad("highshelf", true),
   "biquad-highpass": biquad("highpass", false),
   "biquad-lowpass": biquad("lowpass", false),
-  "worklet-compressor": workletBuilder("hf-compressor"),
-  "worklet-limiter": workletBuilder("hf-limiter"),
-  "worklet-gate": workletBuilder("hf-gate"),
-  "worklet-bitcrush": workletBuilder("hf-bitcrush"),
-  "worklet-pitchshift": workletBuilder("hf-pitchshift"),
+  "worklet-compressor": workletBuilder("sc-compressor"),
+  "worklet-limiter": workletBuilder("sc-limiter"),
+  "worklet-gate": workletBuilder("sc-gate"),
+  "worklet-bitcrush": workletBuilder("sc-bitcrush"),
+  "worklet-pitchshift": workletBuilder("sc-pitchshift"),
   waveshaper,
   "delay-feedback": delayFeedback,
   "chorus-lfo": chorusLfo,

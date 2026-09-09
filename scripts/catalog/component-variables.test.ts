@@ -5,21 +5,21 @@ import { layerVariablesOntoDemo, snippetOwnsItsMotion } from "./component-variab
 const DECLARATION = `[{ "id": "size", "type": "number", "label": "Size", "default": 52 }]`;
 
 const snippet = `
-<div data-hf-ui-root class="hf-ui-demo" data-composition-variables='${DECLARATION}'>
+<div data-sc-ui-root class="sc-ui-demo" data-composition-variables='${DECLARATION}'>
   <span>word</span>
 </div>
-<style>.hf-ui-demo { font-size: var(--hf-demo-size, 52px); }</style>
+<style>.sc-ui-demo { font-size: var(--sc-demo-size, 52px); }</style>
 <script>
-  var vars = window.__hyperframes ? window.__hyperframes.getVariables() : {};
-  document.querySelector("[data-hf-ui-root]").style.setProperty("--hf-demo-size", (vars.size || 52) + "px");
+  var vars = window.__smashcut ? window.__smashcut.getVariables() : {};
+  document.querySelector("[data-sc-ui-root]").style.setProperty("--sc-demo-size", (vars.size || 52) + "px");
 </script>
 `;
 
 const demo = `<!doctype html>
-<html><head><style>.hf-ui-demo { font-size: 52px; }</style></head>
+<html><head><style>.sc-ui-demo { font-size: 52px; }</style></head>
 <body>
   <main data-composition-id="demo">
-    <div data-hf-ui-root class="hf-ui-demo"><span>word</span></div>
+    <div data-sc-ui-root class="sc-ui-demo"><span>word</span></div>
   </main>
   <script>window.__timelines = { demo: gsap.timeline({ paused: true }) };</script>
 </body></html>`;
@@ -30,7 +30,7 @@ describe("layerVariablesOntoDemo", () => {
     expect(result.applied).toBe(true);
     expect(result.html).toContain("data-composition-variables=");
     expect(result.html).toContain("getVariables");
-    expect(result.html).toContain("var(--hf-demo-size");
+    expect(result.html).toContain("var(--sc-demo-size");
   });
 
   it("keeps the demo's own markup and timeline, which is what animates it", () => {
@@ -44,11 +44,11 @@ describe("layerVariablesOntoDemo", () => {
     const { html } = layerVariablesOntoDemo(demo, snippet);
     // The demo hardcodes the same property the snippet parameterises. Whichever
     // rule comes last is the one that renders, so the appended one has to.
-    expect(html.indexOf("var(--hf-demo-size")).toBeGreaterThan(html.indexOf("font-size: 52px"));
+    expect(html.indexOf("var(--sc-demo-size")).toBeGreaterThan(html.indexOf("font-size: 52px"));
   });
 
   it("declines when the snippet declares nothing, rather than half-applying", () => {
-    const result = layerVariablesOntoDemo(demo, "<div data-hf-ui-root></div>");
+    const result = layerVariablesOntoDemo(demo, "<div data-sc-ui-root></div>");
     expect(result.applied).toBe(false);
     expect(result).toHaveProperty("reason", "snippet declares no variables");
     expect(result.html).toBe(demo);
@@ -62,8 +62,8 @@ describe("layerVariablesOntoDemo", () => {
 
   it("leaves a demo that already declares its variables alone", () => {
     const already = demo.replace(
-      '<div data-hf-ui-root class="hf-ui-demo">',
-      `<div data-hf-ui-root class="hf-ui-demo" data-composition-variables='${DECLARATION}'>`,
+      '<div data-sc-ui-root class="sc-ui-demo">',
+      `<div data-sc-ui-root class="sc-ui-demo" data-composition-variables='${DECLARATION}'>`,
     );
     const result = layerVariablesOntoDemo(already, snippet);
     expect(result.applied).toBe(false);
@@ -81,8 +81,8 @@ describe("layerVariablesOntoDemo", () => {
 
   it("handles a self-closing root without eating its bracket", () => {
     const selfClosing = demo.replace(
-      '<div data-hf-ui-root class="hf-ui-demo"><span>word</span></div>',
-      '<img data-hf-ui-root class="hf-ui-demo" src="a.png" />',
+      '<div data-sc-ui-root class="sc-ui-demo"><span>word</span></div>',
+      '<img data-sc-ui-root class="sc-ui-demo" src="a.png" />',
     );
     const { html } = layerVariablesOntoDemo(selfClosing, snippet);
     expect(html).toContain("data-composition-variables=");
@@ -113,7 +113,7 @@ describe("snippetOwnsItsMotion", () => {
           window.__timelines["x"] = gsap.timeline({ paused: true });
       -->
       <div class="x" data-composition-variables='[]'></div>
-      <script>var vars = window.__hyperframes.getVariables();</script>`;
+      <script>var vars = window.__smashcut.getVariables();</script>`;
     expect(snippetOwnsItsMotion(recipeOnly)).toBe(false);
   });
 
@@ -121,7 +121,7 @@ describe("snippetOwnsItsMotion", () => {
     const recipeOnly = `
       <script>
         /* window.__timelines["x"] = gsap.timeline({ paused: true }); */
-        var vars = window.__hyperframes.getVariables();
+        var vars = window.__smashcut.getVariables();
       </script>`;
     expect(snippetOwnsItsMotion(recipeOnly)).toBe(false);
   });

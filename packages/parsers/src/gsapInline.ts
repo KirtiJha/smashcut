@@ -20,7 +20,7 @@ import type { GsapProvenance } from "./gsapSerialize.js";
 type Node = any;
 
 /** Node keys that are metadata, not child AST to traverse/substitute. */
-const SKIP_KEYS = new Set(["type", "start", "end", "loc", "range", "__hfProvenance", "__hfOrder"]);
+const SKIP_KEYS = new Set(["type", "start", "end", "loc", "range", "__scProvenance", "__scOrder"]);
 
 const FUNCTION_TYPES = new Set([
   "ArrowFunctionExpression",
@@ -133,13 +133,13 @@ function replace(node: Node, bindings: ReadonlyMap<string, Node>): Node {
 
 /** Tag a node (typically a `tl.*` CallExpression) with its construction provenance. */
 export function tagProvenance(node: Node, provenance: GsapProvenance): Node {
-  if (node && typeof node === "object") node.__hfProvenance = provenance;
+  if (node && typeof node === "object") node.__scProvenance = provenance;
   return node;
 }
 
 /** Read a provenance tag previously set by `tagProvenance`, if any. */
 export function readProvenance(node: Node): GsapProvenance | undefined {
-  return node?.__hfProvenance;
+  return node?.__scProvenance;
 }
 
 /** Synthesize a numeric `Literal` node (for loop indices, which have no source node). */
@@ -466,7 +466,7 @@ function tagTimelineCalls(stmts: Node[], prov: GsapProvenance, ctx: ExpandCtx): 
     walkNodes(stmt, (n) => {
       if (n.type === "CallExpression" && isTimelineRooted(n, ctx.timelineVar)) {
         tagProvenance(n, { ...prov });
-        n.__hfOrder = ctx.order.n++;
+        n.__scOrder = ctx.order.n++;
       }
     });
   }

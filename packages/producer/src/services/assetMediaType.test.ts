@@ -2,7 +2,7 @@ import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { copyFileSync, existsSync, mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { NOT_MEDIA_PAYLOAD, NotMediaPayloadError } from "@hyperframes/engine";
+import { NOT_MEDIA_PAYLOAD, NotMediaPayloadError } from "@smashcut/engine";
 import {
   ASSET_MEDIA_TYPE_MISMATCH,
   AssetMediaTypeMismatchError,
@@ -11,7 +11,7 @@ import {
 import { synthesizeMediaFixture } from "./mediaTypeTestFixtures.js";
 
 describe("preflightCompositionAssetMediaTypes", () => {
-  const fixtureDir = mkdtempSync(join(tmpdir(), "hf-media-type-preflight-"));
+  const fixtureDir = mkdtempSync(join(tmpdir(), "sc-media-type-preflight-"));
   const projectDir = join(fixtureDir, "project");
   const compiledDir = join(fixtureDir, "compiled");
   const stillPath = join(projectDir, "extensionless-still");

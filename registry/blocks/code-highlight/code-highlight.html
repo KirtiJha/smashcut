@@ -541,10 +541,10 @@
       };
     </script>
     <script>
-      // hf-code-anim.js — self-contained code-animation engine for HyperFrames registry blocks.
+      // sc-code-anim.js — self-contained code-animation engine for SmashCut registry blocks.
       //
       // Reuses Shiki Magic Move's baked output (window.__TOKENS, baked at author time) and
-      // drives the animation as a PAUSED GSAP timeline the HyperFrames engine seeks per frame —
+      // drives the animation as a PAUSED GSAP timeline the SmashCut engine seeks per frame —
       // NOT CSS transitions (those break under non-sequential frame seeking). FLIP measurement
       // runs once inside document.fonts.ready (glyph metrics must be final). Each block sets
       // window.__BLOCK = { id, effect, seq, line?, duration } and includes this engine; the
@@ -731,8 +731,8 @@
             var dur = parseFloat(root.dataset.duration) || tl.duration();
             tl.to({}, { duration: dur }, 0); // pad to full composition length
             window.__timelines["code-highlight"] = tl; // register AFTER setup completes
-            if (typeof window.__hfForceTimelineRebind === "function") {
-              window.__hfForceTimelineRebind(); // re-nest now that we are populated
+            if (typeof window.__scForceTimelineRebind === "function") {
+              window.__scForceTimelineRebind(); // re-nest now that we are populated
             }
           });
         }

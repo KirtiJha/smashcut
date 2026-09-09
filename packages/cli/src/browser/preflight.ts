@@ -220,7 +220,7 @@ function chromeLaunchOutcome(
       detail: `Failed to run "${executablePath}" --version${details ? ` (${details})` : ""}.`,
       hint:
         "Select a working Chrome/Chromium binary for this OS and architecture with " +
-        "HYPERFRAMES_BROWSER_PATH, or reinstall with: npx hyperframes browser ensure --force",
+        "SMASHCUT_BROWSER_PATH, or reinstall with: npx smashcut browser ensure --force",
       path: executablePath,
     };
   }
@@ -243,7 +243,7 @@ async function checkChrome(browserPath?: string): Promise<EnvironmentCheckOutcom
       level: "error",
       title: "Chrome not found",
       detail: `Chrome binary not found at "${browserPath}".`,
-      hint: "Run: npx hyperframes browser ensure",
+      hint: "Run: npx smashcut browser ensure",
     };
   }
 
@@ -274,7 +274,7 @@ async function checkChrome(browserPath?: string): Promise<EnvironmentCheckOutcom
     level: "error",
     title: "Chrome not found",
     detail: "Chrome Headless Shell is required for local rendering.",
-    hint: "Run: npx hyperframes browser ensure",
+    hint: "Run: npx smashcut browser ensure",
   };
 }
 

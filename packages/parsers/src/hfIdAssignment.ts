@@ -63,10 +63,10 @@ function contentKey(el: Element): string {
  * unique ids for byte-identical elements require a positional signal.
  *
  * Why this is safe in practice: once `ensureHfIds` write-back persists
- * `data-hf-id` to source the attribute is physically bound to its element.
+ * `data-sc-id` to source the attribute is physically bound to its element.
  * Reordering identical siblings carries the attribute along → zero
  * order-dependence post-persist. `ensureHfIds` skips pinned elements
- * (`if (getContractAttribute(el, "data-hf-id")) continue`), so normal operation
+ * (`if (getContractAttribute(el, "data-sc-id")) continue`), so normal operation
  * never re-exposes the ordering after first persist.
  */
 // WIRE CONTRACT: id minting is content-keyed (FNV1a of innerHTML + tag). R7's
@@ -101,8 +101,8 @@ export function mintHfId(el: Element, assigned: Set<string>): string {
  * unwraps into the served body. Two accepted forms:
  *   A) `<template data-composition-id="X">…` — the id on the template itself.
  *   B) `<template id="X-template"><div data-composition-id="X">…` — the id on the
- *      wrapped root div (the form `hyperframes add` scaffolds and registry blocks use).
- * Only these are treated as transparent containers for hf-id purposes. A plain
+ *      wrapped root div (the form `smashcut add` scaffolds and registry blocks use).
+ * Only these are treated as transparent containers for sc-id purposes. A plain
  * `<template>` (runtime clone-source: list item, particle, etc.) must NOT get
  * inner ids — its content is cloned N times into the live DOM, so a persisted
  * inner id would be duplicated across every clone. Form B is distinguished from
@@ -155,12 +155,12 @@ export function walkCompositionDescendants(
 export function assignHfIds(body: Element): void {
   const assigned = new Set<string>();
   walkCompositionDescendants(body, (el) => {
-    const existing = getContractAttribute(el, "data-hf-id");
+    const existing = getContractAttribute(el, "data-sc-id");
     if (existing) assigned.add(existing);
   });
   walkCompositionDescendants(body, (el) => {
     if (EXCLUDED_TAGS.has(el.tagName.toLowerCase())) return;
-    if (getContractAttribute(el, "data-hf-id")) return;
-    el.setAttribute("data-hf-id", mintHfId(el, assigned));
+    if (getContractAttribute(el, "data-sc-id")) return;
+    el.setAttribute("data-sc-id", mintHfId(el, assigned));
   });
 }

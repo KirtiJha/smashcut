@@ -1,6 +1,6 @@
 <!doctype html>
 <!--
-  touch-indicator -- HyperFrames video primitive (pointers / interaction / demonstrate)
+  touch-indicator -- SmashCut video primitive (pointers / interaction / demonstrate)
 
   CONCEPT: a translucent contact-circle that represents a fingertip touching
   glass. It never hovers: every appearance resolves into a touch-down, every
@@ -11,7 +11,7 @@
 
   MOUNTABLE SUB-COMPOSITION: this file is loaded by a host via
   data-composition-src, not pasted inline. The runtime only clones
-  <template> contents (see skills/hyperframes-core/references/sub-compositions.md),
+  <template> contents (see skills/smashcut-core/references/sub-compositions.md),
   so every style, the markup, and the script that builds and registers the
   timeline all live inside <template> below. The file is self-driving: it
   builds its own paused GSAP timeline and registers it under
@@ -19,7 +19,7 @@
   data-composition-id. A host mounts it with a matching
   data-composition-id="touch-indicator" data-composition-src="./touch-indicator.html".
 
-  COMPILED FROM: hyperframes-corpus-data/mobile/gesture-actor-spec.md (the
+  COMPILED FROM: smashcut-corpus-data/mobile/gesture-actor-spec.md (the
   contact-never-hover law, contact-circle sizing, tap anatomy, swipe law,
   lift/exit law, same-frame target-reaction contract) with supporting
   constants cross-checked against gesture-physics-recipes.md. Evidence
@@ -57,9 +57,9 @@
 
   BUILT-IN RESPONSE: the primitive has to read standalone in a slot with no
   host UI to react to it, so touch-down also drives its own contact-blur
-  ripple (EDIT ZONE: .hf-touch-indicator__contact, unchanged from the
+  ripple (EDIT ZONE: .sc-touch-indicator__contact, unchanged from the
   original spec) plus a quiet radial pulse centered on the root
-  (.hf-touch-indicator__pulse, new). Both are token-painted and low-opacity
+  (.sc-touch-indicator__pulse, new). Both are token-painted and low-opacity
   so they read as a same-frame acknowledgement, not a second effect
   competing with a host's own reaction wiring.
 -->
@@ -103,7 +103,7 @@
           pointer-events: none;
         }
 
-        .hf-touch-indicator__pulse {
+        .sc-touch-indicator__pulse {
           /* Root-level built-in response: a quiet radial flash centered on
              the touch point, so the gesture reads even with no host UI to
              react to it. Token-painted, low peak opacity -- see BUILT-IN
@@ -124,26 +124,26 @@
           will-change: transform, opacity;
         }
 
-        .hf-touch-indicator__actor {
+        .sc-touch-indicator__actor {
           /* EDIT ZONE: sizing law from the spec, full-frame law (contact
              circle target 5cqw of the host box). RETIME RANGE: floor
              clamped to 46px (the spec's absolute floor, never smaller at
              delivery scale) since cqw now resolves against whatever box a
              host slot gives this mountable primitive, which can be much
              narrower than a full 1920-wide frame. */
-          --hf-gesture-size: clamp(46px, 5cqw, 111px);
+          --sc-gesture-size: clamp(46px, 5cqw, 111px);
           position: absolute;
           left: 0;
           top: 0;
-          width: var(--hf-gesture-size);
-          height: var(--hf-gesture-size);
+          width: var(--sc-gesture-size);
+          height: var(--sc-gesture-size);
           opacity: 0;
           visibility: hidden;
           pointer-events: none;
           will-change: transform, opacity;
         }
 
-        .hf-touch-indicator__core {
+        .sc-touch-indicator__core {
           position: absolute;
           inset: 0;
           box-sizing: border-box;
@@ -158,12 +158,12 @@
           will-change: transform;
         }
 
-        .hf-touch-indicator__actor--dark .hf-touch-indicator__core {
+        .sc-touch-indicator__actor--dark .sc-touch-indicator__core {
           background: color-mix(in srgb, var(--fg, #14181f) 64%, transparent);
           border-color: color-mix(in srgb, var(--bg, #ffffff) 86%, transparent);
         }
 
-        .hf-touch-indicator__contact {
+        .sc-touch-indicator__contact {
           position: absolute;
           left: 50%;
           top: 54%;
@@ -193,10 +193,10 @@
           {"id":"targetY","type":"number","label":"Target Y","default":55,"min":0,"max":100,"unit":"%"}
         ]'
       >
-        <div class="hf-touch-indicator__pulse"></div>
-        <div class="hf-touch-indicator__actor">
-          <div class="hf-touch-indicator__contact"></div>
-          <div class="hf-touch-indicator__core"></div>
+        <div class="sc-touch-indicator__pulse"></div>
+        <div class="sc-touch-indicator__actor">
+          <div class="sc-touch-indicator__contact"></div>
+          <div class="sc-touch-indicator__core"></div>
         </div>
       </div>
 
@@ -214,21 +214,21 @@
           function buildTouchIndicator(tl, root, { at = 0, elasticity = 1 } = {}) {
             const defaults = { gesture: "tap", polarity: "light", targetX: 50, targetY: 55 };
             // Per-instance overrides (a host's data-variable-values) land in
-            // window.__hfVariablesByComp, scoped by composition id. Reading
-            // window.__hfVariables directly here would silently ignore every
-            // host override -- window.__hyperframes.getVariables() is the
+            // window.__scVariablesByComp, scoped by composition id. Reading
+            // window.__scVariables directly here would silently ignore every
+            // host override -- window.__smashcut.getVariables() is the
             // scoped accessor, per the registry convention (see
             // lower-third-bild.html, caption-texture.html).
             const resolved =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
-                : window.__hfVariables || {};
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
+                : window.__scVariables || {};
             const vars = Object.assign({}, defaults, resolved);
-            const pulse = root.querySelector(".hf-touch-indicator__pulse");
-            const actor = root.querySelector(".hf-touch-indicator__actor");
-            const core = root.querySelector(".hf-touch-indicator__core");
-            const contact = root.querySelector(".hf-touch-indicator__contact");
-            if (vars.polarity === "dark") actor.classList.add("hf-touch-indicator__actor--dark");
+            const pulse = root.querySelector(".sc-touch-indicator__pulse");
+            const actor = root.querySelector(".sc-touch-indicator__actor");
+            const core = root.querySelector(".sc-touch-indicator__core");
+            const contact = root.querySelector(".sc-touch-indicator__contact");
+            if (vars.polarity === "dark") actor.classList.add("sc-touch-indicator__actor--dark");
 
             // Compute layout geometry once at setup, never inside an ease/callback.
             const hostW = root.clientWidth || 1;

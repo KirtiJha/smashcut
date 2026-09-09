@@ -54,7 +54,7 @@ export interface RenderToLambdaOptions {
    */
   outputKey?: string;
   /**
-   * Step Functions execution name. Defaults to `hf-render-<uuid>`.
+   * Step Functions execution name. Defaults to `sc-render-<uuid>`.
    * Used as `renderId` everywhere downstream (history queries, cost
    * accounting, predictable S3 key prefix).
    */
@@ -92,7 +92,7 @@ export async function renderToLambda(opts: RenderToLambdaOptions): Promise<Rende
     throw new Error("[renderToLambda] either siteHandle or projectDir must be supplied");
   }
 
-  const executionName = opts.executionName ?? `hf-render-${randomUUID()}`;
+  const executionName = opts.executionName ?? `sc-render-${randomUUID()}`;
   const ext = formatExtension(opts.config.format);
   const outputKey = opts.outputKey ?? `renders/${executionName}/output${ext}`;
   const planOutputS3Prefix = formatS3Uri({

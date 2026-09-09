@@ -155,7 +155,7 @@
           data-track-index="0"
         ></div>
 
-        <div hidden data-hf-primitive-data>
+        <div hidden data-sc-primitive-data>
           { "messages": [ { "side": "incoming", "text": "wait, that is actually wild", "sender":
           "Northbeam support" }, { "side": "outgoing", "text": "can you fix it?" }, { "side":
           "incoming", "text": "way ahead of you" }, { "side": "outgoing", "text": "you are unreal"
@@ -172,7 +172,7 @@
             var roll = document.getElementById("tms-roll");
             var data = JSON.parse(
               root
-                .querySelector("[data-hf-primitive-data]")
+                .querySelector("[data-sc-primitive-data]")
                 .textContent.replace(/\s*[\r\n]+\s*/g, " "),
             );
             var messages = data.messages;

@@ -4,7 +4,7 @@
  * Contract: after a representative op batch (setStyle + setText + setTiming +
  * addGsapTween + moveElement), session.serialize() emits fully override-baked,
  * render-ready HTML containing ALL edits. This is the guarantee that
- * HyperframesRenderActivityInput{ source_s3_key(baked HTML) + variables } can
+ * SmashcutRenderActivityInput{ source_s3_key(baked HTML) + variables } can
  * be satisfied without a separate override-set field.
  *
  * Also asserts:
@@ -28,7 +28,7 @@ const VARIABLES = JSON.stringify([
 ]);
 
 const GSAP_SCRIPT = `var tl = gsap.timeline({ paused: true });
-tl.to("[data-hf-id=\\"hf-box\\"]", { opacity: 1, duration: 0.5, ease: "power2.out" }, 0.2);
+tl.to("[data-sc-id=\\"sc-box\\"]", { opacity: 1, duration: 0.5, ease: "power2.out" }, 0.2);
 window.__timelines = { t: tl };`;
 
 /**
@@ -40,14 +40,14 @@ const BASE_HTML = `<!DOCTYPE html>
 <html data-composition-variables='${VARIABLES}'>
 <head></head>
 <body>
-<div data-hf-id="hf-stage" data-hf-root data-width="1920" data-height="1080" data-duration="8">
-  <h1 data-hf-id="hf-title" data-start="0" data-end="5" data-track-index="0"
+<div data-sc-id="sc-stage" data-sc-root data-width="1920" data-height="1080" data-duration="8">
+  <h1 data-sc-id="sc-title" data-start="0" data-end="5" data-track-index="0"
       style="color: #fff; font-size: 64px; position: absolute">Hello World</h1>
-  <img data-hf-id="hf-logo" src="/logo.png" alt="Logo"
+  <img data-sc-id="sc-logo" src="/logo.png" alt="Logo"
        data-x="100" data-y="200" data-start="0" data-end="8" />
-  <p data-hf-id="hf-body" data-start="1" data-end="6"
+  <p data-sc-id="sc-body" data-start="1" data-end="6"
      style="font-size: 24px">Body copy here</p>
-  <div data-hf-id="hf-box" style="opacity: 0; position: absolute"
+  <div data-sc-id="sc-box" style="opacity: 0; position: absolute"
        data-x="50" data-y="50" data-start="0" data-end="8"></div>
   <script>${GSAP_SCRIPT}</script>
 </div>
@@ -66,7 +66,7 @@ function extractScript(html: string): string {
 describe("serialize() render-faithfulness (WS-F)", () => {
   it("setStyle edit is present in serialized output", async () => {
     const comp = await openComposition(BASE_HTML);
-    comp.setStyle("hf-title", { color: "#ff6600", fontSize: "80px" });
+    comp.setStyle("sc-title", { color: "#ff6600", fontSize: "80px" });
     const html = comp.serialize();
     expect(html).toContain("color: #ff6600");
     expect(html).toContain("font-size: 80px");
@@ -74,7 +74,7 @@ describe("serialize() render-faithfulness (WS-F)", () => {
 
   it("setText edit is present in serialized output", async () => {
     const comp = await openComposition(BASE_HTML);
-    comp.setText("hf-title", "Baked Headline");
+    comp.setText("sc-title", "Baked Headline");
     const html = comp.serialize();
     expect(html).toContain("Baked Headline");
     expect(html).not.toContain("Hello World");
@@ -82,21 +82,21 @@ describe("serialize() render-faithfulness (WS-F)", () => {
 
   it("setTiming edit is present in serialized output", async () => {
     const comp = await openComposition(BASE_HTML);
-    comp.setTiming("hf-body", { start: 2, duration: 3 });
+    comp.setTiming("sc-body", { start: 2, duration: 3 });
     const html = comp.serialize();
     // `writeClipTiming` canonicalizes timing onto data-start + data-duration and
     // drops the legacy data-end, so that pair IS the serialized form.
     expect(html).toContain('data-start="2"');
     expect(html).toContain('data-duration="3"');
-    // hf-body's own pre-mutation end has to be gone. Asserting the presence of
-    // `data-end="5"` instead would pass on a no-op write — hf-title carries
+    // sc-body's own pre-mutation end has to be gone. Asserting the presence of
+    // `data-end="5"` instead would pass on a no-op write — sc-title carries
     // that exact value in the fixture.
     expect(html).not.toContain('data-end="6"');
   });
 
   it("moveElement edit is present in serialized output", async () => {
     const comp = await openComposition(BASE_HTML);
-    comp.dispatch({ type: "moveElement", target: "hf-logo", x: 500, y: 300 });
+    comp.dispatch({ type: "moveElement", target: "sc-logo", x: 500, y: 300 });
     const html = comp.serialize();
     expect(html).toContain('data-x="500"');
     expect(html).toContain('data-y="300"');
@@ -104,7 +104,7 @@ describe("serialize() render-faithfulness (WS-F)", () => {
 
   it("addGsapTween edit is present in the serialized <script>", async () => {
     const comp = await openComposition(BASE_HTML);
-    const tweenId = comp.addGsapTween("hf-box", {
+    const tweenId = comp.addGsapTween("sc-box", {
       method: "to",
       duration: 0.8,
       position: 1,
@@ -121,11 +121,11 @@ describe("serialize() render-faithfulness (WS-F)", () => {
     const comp = await openComposition(BASE_HTML);
 
     // Apply all five op types in a single session
-    comp.setStyle("hf-title", { color: "#cc00ff", letterSpacing: "2px" });
-    comp.setText("hf-title", "Render Ready");
-    comp.setTiming("hf-title", { start: 0.5, duration: 4 });
-    comp.dispatch({ type: "moveElement", target: "hf-logo", x: 900, y: 50 });
-    const tweenId = comp.addGsapTween("hf-box", {
+    comp.setStyle("sc-title", { color: "#cc00ff", letterSpacing: "2px" });
+    comp.setText("sc-title", "Render Ready");
+    comp.setTiming("sc-title", { start: 0.5, duration: 4 });
+    comp.dispatch({ type: "moveElement", target: "sc-logo", x: 900, y: 50 });
+    const tweenId = comp.addGsapTween("sc-box", {
       method: "from",
       duration: 0.6,
       position: 0.5,
@@ -141,14 +141,14 @@ describe("serialize() render-faithfulness (WS-F)", () => {
     // setText
     expect(html).toContain("Render Ready");
 
-    // setTiming → data-start / data-duration, with hf-title's legacy data-end
+    // setTiming → data-start / data-duration, with sc-title's legacy data-end
     // dropped by the canonicalization.
     expect(html).toContain('data-start="0.5"');
     expect(html).toContain('data-duration="4"');
     expect(html).not.toContain('data-end="5"');
 
     // moveElement. data-x="900" is unique to this edit; data-y="50" is not —
-    // hf-box carries it in the fixture — so pin the disappearance of hf-logo's
+    // sc-box carries it in the fixture — so pin the disappearance of sc-logo's
     // own pre-move y as well.
     expect(html).toContain('data-x="900"');
     expect(html).toContain('data-y="50"');
@@ -164,7 +164,7 @@ describe("serialize() render-faithfulness (WS-F)", () => {
   it("data-composition-variables attribute is preserved in serialized output", async () => {
     const comp = await openComposition(BASE_HTML);
     // Apply an edit to force a real mutation
-    comp.setStyle("hf-title", { color: "#0000ff" });
+    comp.setStyle("sc-title", { color: "#0000ff" });
     const html = comp.serialize();
     // The attribute must survive serialize(). linkedom entity-encodes JSON inside
     // attribute values (& → &amp; etc.), so check for the encoded form of the key names.
@@ -175,13 +175,13 @@ describe("serialize() render-faithfulness (WS-F)", () => {
 
   it("serialize → reopen preserves baked state (round-trip)", async () => {
     const comp = await openComposition(BASE_HTML);
-    comp.setStyle("hf-title", { color: "#abcdef" });
-    comp.setText("hf-body", "Round-tripped body");
+    comp.setStyle("sc-title", { color: "#abcdef" });
+    comp.setText("sc-body", "Round-tripped body");
 
     const baked = comp.serialize();
     const comp2 = await openComposition(baked);
 
-    expect(comp2.getElement("hf-title")?.inlineStyles.color).toBe("#abcdef");
-    expect(comp2.getElement("hf-body")?.text).toContain("Round-tripped body");
+    expect(comp2.getElement("sc-title")?.inlineStyles.color).toBe("#abcdef");
+    expect(comp2.getElement("sc-body")?.text).toContain("Round-tripped body");
   });
 });

@@ -14,17 +14,17 @@ describe("resolveProjectOrThrow", () => {
       const error = err as InvalidProjectError;
       expect(error.title).toBe("Invalid project directory: #");
       expect(error.hint).toContain("URL fragment");
-      expect(error.suggestion).toContain("hyperframes preview .");
+      expect(error.suggestion).toContain("smashcut preview .");
     }
   });
 
   it("rejects a missing directory", () => {
-    const missing = join(tmpdir(), `hf-missing-${Date.now()}`);
+    const missing = join(tmpdir(), `sc-missing-${Date.now()}`);
     expect(() => resolveProjectOrThrow(missing)).toThrowError(/Not a directory/);
   });
 
   it("rejects a directory without index.html", () => {
-    const dir = mkdtempSync(join(tmpdir(), "hf-empty-project-"));
+    const dir = mkdtempSync(join(tmpdir(), "sc-empty-project-"));
     try {
       expect(() => resolveProjectOrThrow(dir)).toThrowError(/No composition found/);
     } finally {
@@ -33,7 +33,7 @@ describe("resolveProjectOrThrow", () => {
   });
 
   it("accepts a directory without index.html when an explicit entry will be resolved", () => {
-    const dir = mkdtempSync(join(tmpdir(), "hf-explicit-entry-project-"));
+    const dir = mkdtempSync(join(tmpdir(), "sc-explicit-entry-project-"));
     try {
       const project = resolveProjectOrThrow(dir, { requireIndex: false });
       expect(project.dir).toBe(dir);
@@ -45,7 +45,7 @@ describe("resolveProjectOrThrow", () => {
   });
 
   it("accepts a directory with index.html", () => {
-    const dir = mkdtempSync(join(tmpdir(), "hf-valid-project-"));
+    const dir = mkdtempSync(join(tmpdir(), "sc-valid-project-"));
     try {
       writeFileSync(join(dir, "index.html"), '<html data-composition-id="test"></html>');
       const project = resolveProjectOrThrow(dir);

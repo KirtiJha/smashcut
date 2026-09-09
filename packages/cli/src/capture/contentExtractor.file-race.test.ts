@@ -42,7 +42,7 @@ describe("caption image file reads", () => {
   });
 
   beforeEach(() => {
-    dir = fs.mkdtempSync(join(tmpdir(), "hf-caption-read-"));
+    dir = fs.mkdtempSync(join(tmpdir(), "sc-caption-read-"));
     fs.mkdirSync(join(dir, "assets"));
     file = join(dir, "assets", "hero.png");
     fs.writeFileSync(file, "original image");

@@ -259,7 +259,7 @@ describe("buildStudioHeadScriptsForHost — Host split", () => {
   });
 
   // ...but the decisions map is NOT identifying, and withholding it would send
-  // a supported LAN preview (HYPERFRAMES_PREVIEW_HOST=0.0.0.0) back to
+  // a supported LAN preview (SMASHCUT_PREVIEW_HOST=0.0.0.0) back to
   // re-deriving locally and disagreeing with the CLI.
   it.each(["evil.example.com", "192.168.1.10:5173", "my-dev-box.local:5173", undefined])(
     "still publishes canary decisions for non-loopback Host %s",
@@ -294,16 +294,16 @@ function localHostCandidates(): string[] {
 }
 
 describe("identityAllowed — loopback-bound vs explicitly LAN-bound", () => {
-  const original = process.env["HYPERFRAMES_PREVIEW_HOST"];
+  const original = process.env["SMASHCUT_PREVIEW_HOST"];
 
   afterEach(() => {
-    if (original === undefined) delete process.env["HYPERFRAMES_PREVIEW_HOST"];
-    else process.env["HYPERFRAMES_PREVIEW_HOST"] = original;
+    if (original === undefined) delete process.env["SMASHCUT_PREVIEW_HOST"];
+    else process.env["SMASHCUT_PREVIEW_HOST"] = original;
   });
 
   describe("loopback-bound (the default)", () => {
     beforeEach(() => {
-      delete process.env["HYPERFRAMES_PREVIEW_HOST"];
+      delete process.env["SMASHCUT_PREVIEW_HOST"];
     });
 
     it.each(["localhost:5173", "127.0.0.1", "[::1]:3000"])("allows %s", (host) => {
@@ -321,7 +321,7 @@ describe("identityAllowed — loopback-bound vs explicitly LAN-bound", () => {
 
   describe("explicitly LAN-bound", () => {
     beforeEach(() => {
-      process.env["HYPERFRAMES_PREVIEW_HOST"] = "0.0.0.0";
+      process.env["SMASHCUT_PREVIEW_HOST"] = "0.0.0.0";
     });
 
     // The mode this regressed: browsing your own LAN-exposed Studio lost the
@@ -354,7 +354,7 @@ describe("identityAllowed — loopback-bound vs explicitly LAN-bound", () => {
   // mitigation — previously ANY non-empty value disabled it wholesale.
   describe("bound to loopback explicitly", () => {
     beforeEach(() => {
-      process.env["HYPERFRAMES_PREVIEW_HOST"] = "127.0.0.1";
+      process.env["SMASHCUT_PREVIEW_HOST"] = "127.0.0.1";
     });
 
     it.each(["localhost:5173", "127.0.0.1"])("still allows %s", (host) => {
@@ -398,7 +398,7 @@ describe("cross-process opt-out refresh", () => {
     shouldTrack.mockReturnValue(true);
     expect(buildStudioHeadScriptsForHost("", "localhost:3000")).toContain("__HF_CLI_DISTINCT_ID");
 
-    // `hyperframes telemetry disable` in another terminal.
+    // `smashcut telemetry disable` in another terminal.
     shouldTrack.mockReturnValue(false);
     const after = buildStudioHeadScriptsForHost("", "localhost:3000");
     expect(after).not.toContain("__HF_CLI_DISTINCT_ID");

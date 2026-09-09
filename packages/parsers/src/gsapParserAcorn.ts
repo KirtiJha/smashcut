@@ -1770,11 +1770,11 @@ function compareByLoc(a: TweenCallInfo, b: TweenCallInfo): number {
   return aLoc.line - bLoc.line || aLoc.column - bLoc.column;
 }
 
-// Inlined tweens carry a monotonic __hfOrder (clones share source loc, so loc
+// Inlined tweens carry a monotonic __scOrder (clones share source loc, so loc
 // can't order them); they sort by that, after all literal (loc-ordered) tweens.
 function compareCallOrder(a: TweenCallInfo, b: TweenCallInfo): number {
-  const ao = a.node.__hfOrder;
-  const bo = b.node.__hfOrder;
+  const ao = a.node.__scOrder;
+  const bo = b.node.__scOrder;
   if (ao === undefined && bo === undefined) return compareByLoc(a, b);
   if (ao === undefined) return -1;
   if (bo === undefined) return 1;

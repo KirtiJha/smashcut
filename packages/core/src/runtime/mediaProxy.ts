@@ -27,7 +27,7 @@ declare global {
   }
 }
 
-const PROXY_QUERY_PARAM = "hf-proxy";
+const PROXY_QUERY_PARAM = "sc-proxy";
 
 /** Fired whenever an element is swapped to its authoring proxy (any trigger). */
 const DIAGNOSTIC_FALLBACK_CODE = "runtime_media_proxy_fallback";
@@ -194,14 +194,14 @@ function emitUnavailableDiagnostic(
     note,
   };
   postRuntimeMessage({
-    source: "hf-preview",
+    source: "sc-preview",
     type: "diagnostic",
     code: DIAGNOSTIC_UNAVAILABLE_CODE,
     details,
   });
   // Mirrors swapToProxy's fallback line: the stable diagnostic code is in the
   // text so checkBrowser.ts's console scraper can match a token, not prose.
-  console.info(`[hyperframes] ${DIAGNOSTIC_UNAVAILABLE_CODE}: "${asset}" (${reason}): ${note}`);
+  console.info(`[smashcut] ${DIAGNOSTIC_UNAVAILABLE_CODE}: "${asset}" (${reason}): ${note}`);
 }
 
 /**
@@ -241,7 +241,7 @@ export function swapToProxy(
     note: "render output is unaffected; only this preview element was swapped to an authoring proxy",
   };
   postRuntimeMessage({
-    source: "hf-preview",
+    source: "sc-preview",
     type: "diagnostic",
     code: DIAGNOSTIC_FALLBACK_CODE,
     details,
@@ -249,7 +249,7 @@ export function swapToProxy(
   // The diagnostic code doubles as the stable token check's console scraper
   // matches on (packages/cli/src/utils/checkBrowser.ts); keep it in the text.
   console.info(
-    `[hyperframes] ${DIAGNOSTIC_FALLBACK_CODE}: "${originalSrc}" uses a codec (${codecName ?? "unknown"}) this browser can't decode; ` +
+    `[smashcut] ${DIAGNOSTIC_FALLBACK_CODE}: "${originalSrc}" uses a codec (${codecName ?? "unknown"}) this browser can't decode; ` +
       "auto-swapped to an authoring proxy for this preview only. Render output is unaffected.",
   );
 }
@@ -285,7 +285,7 @@ export function maybeProxyProactively(el: HTMLMediaElement): void {
  * itself is the one failing, so this only emits the failure diagnostic.
  *
  * No map, no swaps: the codec map global is only injected on surfaces where
- * auto-proxying is enabled and served, so its absence means a `?hf-proxy=`
+ * auto-proxying is enabled and served, so its absence means a `?sc-proxy=`
  * request would 404 — never swap there. When the map is present but has no
  * entry for this key, swapping stays allowed (unlisted-asset rescue). A
  * mapped alpha entries select the VP8/WebM proxy variant.

@@ -18,7 +18,7 @@ describe("buildStudioSelectionSnapshot", () => {
       isInsideLockedComposition: false,
       boundingBox: { x: 10, y: 20, width: 300, height: 64 },
       textContent: "Launch faster",
-      dataAttributes: { "data-hf-id": "hero-title" },
+      dataAttributes: { "data-sc-id": "hero-title" },
       inlineStyles: { color: "white" },
       computedStyles: { "font-size": "48px" },
       textFields: [],

@@ -79,8 +79,8 @@
     <script>
       // Render-time values: declared defaults from data-composition-variables
       // merged with overrides from meta.json's renderConfig.variables (which
-      // arrive via window.__hfVariables, injected by the engine).
-      const vars = window.__hyperframes.getVariables();
+      // arrive via window.__scVariables, injected by the engine).
+      const vars = window.__smashcut.getVariables();
       document.body.style.background = vars.bgColor;
       document.getElementById("title-el").textContent = vars.title;
       document.getElementById("subtitle-el").textContent = vars.subtitle;

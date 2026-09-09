@@ -1,12 +1,12 @@
 // ── Types and Constants for Studio Motion ──
 
-export const STUDIO_MOTION_PATH = ".hyperframes/studio-motion.json";
+export const STUDIO_MOTION_PATH = ".smashcut/studio-motion.json";
 export const STUDIO_MOTION_TIMELINE_ID = "studio-motion";
 
-export const STUDIO_MOTION_ATTR = "data-hf-studio-motion";
-export const STUDIO_MOTION_ORIGINAL_TRANSFORM_ATTR = "data-hf-studio-motion-original-transform";
-export const STUDIO_MOTION_ORIGINAL_OPACITY_ATTR = "data-hf-studio-motion-original-opacity";
-export const STUDIO_MOTION_ORIGINAL_VISIBILITY_ATTR = "data-hf-studio-motion-original-visibility";
+export const STUDIO_MOTION_ATTR = "data-sc-studio-motion";
+export const STUDIO_MOTION_ORIGINAL_TRANSFORM_ATTR = "data-sc-studio-motion-original-transform";
+export const STUDIO_MOTION_ORIGINAL_OPACITY_ATTR = "data-sc-studio-motion-original-opacity";
+export const STUDIO_MOTION_ORIGINAL_VISIBILITY_ATTR = "data-sc-studio-motion-original-visibility";
 
 export interface StudioMotionTarget {
   sourceFile: string;
@@ -163,6 +163,6 @@ export type StudioMotionWindow = Window & {
   };
   __timeline?: { time?: () => number };
   __timelines?: Record<string, StudioGsapTimeline | undefined>;
-  __hfStudioMotionApply?: () => number;
-  __hfStudioMotionWrapped?: boolean;
+  __scStudioMotionApply?: () => number;
+  __scStudioMotionWrapped?: boolean;
 };

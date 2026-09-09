@@ -11,7 +11,7 @@ describe("executeParallelCapture peer abort", () => {
   });
 
   it("aborts peer workers on the first fatal classified failure", async () => {
-    const root = mkdtempSync(join(tmpdir(), "hf-peer-abort-"));
+    const root = mkdtempSync(join(tmpdir(), "sc-peer-abort-"));
     const captureFrame = vi.fn().mockResolvedValue(undefined);
     const closeCaptureSession = vi.fn().mockResolvedValue(undefined);
     // Keep this regression isolated from frameCapture's very large module graph.
@@ -74,7 +74,7 @@ describe("executeParallelCapture peer abort", () => {
   // (which only runs after `executeRenderJob` settles) never got a chance to
   // trip.
   it("rejects promptly when the signal aborts while a worker is wedged inside a capture call that never settles", async () => {
-    const root = mkdtempSync(join(tmpdir(), "hf-stall-abort-"));
+    const root = mkdtempSync(join(tmpdir(), "sc-stall-abort-"));
     // Simulates the native capture call hanging indefinitely (never resolves,
     // never rejects) — exactly the WSL2 shape from the field report.
     const captureFrame = vi.fn(() => new Promise<void>(() => {}));

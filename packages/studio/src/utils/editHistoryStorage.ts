@@ -6,7 +6,7 @@ export interface EditHistoryStorageAdapter {
   delete(projectId: string): Promise<void>;
 }
 
-const DB_NAME = "hyperframes-studio-edit-history";
+const DB_NAME = "smashcut-studio-edit-history";
 const DB_VERSION = 1;
 const STORE_NAME = "project-history";
 

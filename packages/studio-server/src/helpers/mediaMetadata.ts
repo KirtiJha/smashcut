@@ -1,6 +1,6 @@
 import { execFile } from "node:child_process";
 import { extname } from "node:path";
-import { findFfBinary } from "@hyperframes/parsers/ff-binaries";
+import { findFfBinary } from "@smashcut/parsers/ff-binaries";
 
 export interface FfprobeRunResult {
   status: number | null;

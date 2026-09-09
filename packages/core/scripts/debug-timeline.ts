@@ -24,7 +24,7 @@ type TimelineClip = {
 };
 
 type TimelinePayload = {
-  source: "hf-preview";
+  source: "sc-preview";
   type: "timeline";
   durationInFrames: number;
   clips: TimelineClip[];
@@ -288,7 +288,7 @@ function main() {
   const compositionWidth = parseNum(root?.attrs["data-width"]) ?? 1920;
   const compositionHeight = parseNum(root?.attrs["data-height"]) ?? 1080;
   const payload: TimelinePayload = {
-    source: "hf-preview",
+    source: "sc-preview",
     type: "timeline",
     durationInFrames: Math.max(1, Math.round(effectiveDuration * canonicalFps)),
     clips,

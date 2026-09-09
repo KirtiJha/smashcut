@@ -6,7 +6,7 @@
  * authored as a single canonical markdown file (`STORYBOARD.md`) and parsed
  * into this normalized shape for the Studio's storyboard view and for agents.
  *
- * See PRD: "Storyboarding in HyperFrames". The markdown stays canonical; this
+ * See PRD: "Storyboarding in SmashCut". The markdown stays canonical; this
  * is the derived structure the parser produces.
  */
 

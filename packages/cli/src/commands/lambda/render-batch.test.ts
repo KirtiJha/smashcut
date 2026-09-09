@@ -13,7 +13,7 @@ import {
 let tmpDir: string;
 
 beforeEach(() => {
-  tmpDir = mkdtempSync(join(tmpdir(), "hf-render-batch-"));
+  tmpDir = mkdtempSync(join(tmpdir(), "sc-render-batch-"));
 });
 
 afterEach(() => {
@@ -93,7 +93,7 @@ describe("parseBatchFile", () => {
     const path = writeBatch(
       [
         '{"outputKey":"renders/alice.mp4","variables":{"name":"Alice"}}',
-        '{"outputKey":"renders/bob.mp4","variables":{"name":"Bob"},"executionName":"hf-bob-001"}',
+        '{"outputKey":"renders/bob.mp4","variables":{"name":"Bob"},"executionName":"sc-bob-001"}',
       ].join("\n") + "\n",
     );
     const out = parseBatchFile(path);
@@ -101,7 +101,7 @@ describe("parseBatchFile", () => {
     expect(out[0]?.entry.outputKey).toBe("renders/alice.mp4");
     expect(out[0]?.entry.variables).toEqual({ name: "Alice" });
     expect(out[0]?.lineNumber).toBe(1);
-    expect(out[1]?.entry.executionName).toBe("hf-bob-001");
+    expect(out[1]?.entry.executionName).toBe("sc-bob-001");
     expect(out[1]?.lineNumber).toBe(2);
   });
 
@@ -139,8 +139,8 @@ describe("parseBatchFile", () => {
 // drift is exactly what shipped PR #2529 R2 CHANGES_REQUESTED.
 describe("buildLambdaBatchRenderConfig — aspect-agnostic wire threading", () => {
   const baseArgs: RenderBatchArgs = {
-    projectDir: "/tmp/hf-batch",
-    stackName: "hf-test",
+    projectDir: "/tmp/sc-batch",
+    stackName: "sc-test",
     batch: "/tmp/batch.jsonl",
     fps: 30,
     width: 1080,

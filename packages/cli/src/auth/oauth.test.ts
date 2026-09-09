@@ -72,7 +72,7 @@ describe("auth/oauth", () => {
   let fixture: Awaited<ReturnType<typeof setupTempAuthEnv>>;
 
   beforeEach(async () => {
-    fixture = await setupTempAuthEnv("hf-oauth-");
+    fixture = await setupTempAuthEnv("sc-oauth-");
   });
 
   afterEach(async () => {
@@ -81,7 +81,7 @@ describe("auth/oauth", () => {
 
   describe("resolveClientId", () => {
     it("returns the env override when set", () => {
-      process.env["HYPERFRAMES_OAUTH_CLIENT_ID"] = "test_client_id";
+      process.env["SMASHCUT_OAUTH_CLIENT_ID"] = "test_client_id";
       expect(resolveClientId()).toBe("test_client_id");
     });
 
@@ -307,7 +307,7 @@ describe("auth/oauth", () => {
     });
 
     it("returns silently when client_id is unconfigured (no throw)", async () => {
-      process.env["HYPERFRAMES_OAUTH_CLIENT_ID"] = "";
+      process.env["SMASHCUT_OAUTH_CLIENT_ID"] = "";
       // With the baked-in default cleared from env, revokeTokens still has
       // the build-time default. Force it to fail by setting the override to
       // a value AND nulling the default isn't possible from a test — instead

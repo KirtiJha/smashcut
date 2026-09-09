@@ -1,8 +1,8 @@
 /**
- * @hyperframes/core/gsap-parser subpath entry.
+ * @smashcut/core/gsap-parser subpath entry.
  *
  * Re-exports all public types and helpers that external packages (studio, sdk,
- * registry) import via the `@hyperframes/core/gsap-parser` subpath.
+ * registry) import via the `@smashcut/core/gsap-parser` subpath.
  *
  * The recast-based AST parser (gsapParser.ts) was retired in WS-3.F. The read
  * path now uses `parseGsapScriptAcorn` from gsapParserAcorn; the write path
@@ -32,7 +32,7 @@ export {
   SUPPORTED_PROPS,
   SUPPORTED_EASES,
 } from "./gsapSerialize.js";
-// Studio position-hold predicate (`tl.set(...,{data:"hf-hold"})`). A pure
+// Studio position-hold predicate (`tl.set(...,{data:"sc-hold"})`). A pure
 // GsapAnimation helper — re-exported here so studio can filter holds via the
 // public entry even though gsapParser.ts is otherwise an internal module.
 export { isStudioHoldSet } from "./gsapParser.js";

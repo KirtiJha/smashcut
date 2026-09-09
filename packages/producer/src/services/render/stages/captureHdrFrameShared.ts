@@ -19,7 +19,7 @@ import {
   decodePng,
   queryElementStacking,
   removeDomLayerMask,
-} from "@hyperframes/engine";
+} from "@smashcut/engine";
 import type { ProducerLogger } from "../../../logger.js";
 import {
   type HdrCompositeContext,
@@ -126,7 +126,7 @@ async function seekAndInject(
 ): Promise<void> {
   await timeHdrPhaseAsync(hdrPerf, seekKey, () =>
     page.evaluate((t: number) => {
-      if (window.__hf && typeof window.__hf.seek === "function") window.__hf.seek(t);
+      if (window.__sc && typeof window.__sc.seek === "function") window.__sc.seek(t);
     }, time),
   );
   if (beforeCaptureHook) {

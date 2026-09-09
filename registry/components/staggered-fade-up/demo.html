@@ -40,13 +40,13 @@
         text-transform: uppercase;
         color: var(--muted, #71717a);
       }
-      .hf-catalog-staggered-fade-up {
+      .sc-catalog-staggered-fade-up {
         color: var(--fg, #18181b);
         font-family: var(--font-display, Inter, system-ui, sans-serif);
         font-weight: 900;
         letter-spacing: -0.04em;
       }
-      .hf-catalog-staggered-fade-up {
+      .sc-catalog-staggered-fade-up {
         display: flex;
         flex-wrap: wrap;
         gap: 14px 18px;
@@ -55,11 +55,11 @@
         max-width: 680px;
         justify-content: center;
       }
-      .hf-catalog-staggered-fade-up span {
+      .sc-catalog-staggered-fade-up span {
         display: inline-block;
-        transform: translate(var(--hf-word-x, 0px), var(--hf-word-y, 0px))
-          scale(var(--hf-word-scale, 1));
-        filter: blur(var(--hf-word-blur, 0px));
+        transform: translate(var(--sc-word-x, 0px), var(--sc-word-y, 0px))
+          scale(var(--sc-word-scale, 1));
+        filter: blur(var(--sc-word-blur, 0px));
         will-change: transform, filter, opacity;
       }
     </style>
@@ -76,7 +76,7 @@
       <div class="demo-frame">
         <div class="demo-label">staggered fade up</div>
         <div
-          class="hf-catalog-staggered-fade-up"
+          class="sc-catalog-staggered-fade-up"
           data-composition-variables='[
     { "id": "direction", "type": "enum", "role": "motion", "label": "Direction", "description": "Where the offset the timeline drives points.", "default": "up", "options": [{ "value": "up", "label": "Up" }, { "value": "down", "label": "Down" }, { "value": "left", "label": "Left" }, { "value": "right", "label": "Right" }] },
     { "id": "distance", "type": "enum", "role": "motion", "label": "Distance", "description": "Scales the travel offset, so the words cover a shorter or longer run in the same time.", "default": "standard", "options": [{ "value": "close", "label": "Close" }, { "value": "standard", "label": "Standard" }, { "value": "far", "label": "Far" }] },
@@ -93,8 +93,8 @@
           "use strict";
 
           var vars =
-            window.__hyperframes && window.__hyperframes.getVariables
-              ? window.__hyperframes.getVariables()
+            window.__smashcut && window.__smashcut.getVariables
+              ? window.__smashcut.getVariables()
               : {};
 
           // Unrecognised overrides return to their declared defaults.
@@ -123,11 +123,11 @@
               ? vars.words.trim().split(/\s+/)
               : null;
 
-          var roots = document.querySelectorAll(".hf-catalog-staggered-fade-up");
+          var roots = document.querySelectorAll(".sc-catalog-staggered-fade-up");
           for (var i = 0; i < roots.length; i += 1) {
-            roots[i].style.setProperty("--hf-word-axis-x", String(axis.x * reach));
-            roots[i].style.setProperty("--hf-word-axis-y", String(axis.y * reach));
-            roots[i].style.setProperty("--hf-fade-word-color", tone);
+            roots[i].style.setProperty("--sc-word-axis-x", String(axis.x * reach));
+            roots[i].style.setProperty("--sc-word-axis-y", String(axis.y * reach));
+            roots[i].style.setProperty("--sc-fade-word-color", tone);
             if (words) {
               roots[i].textContent = "";
               for (var j = 0; j < words.length; j += 1) {
@@ -143,13 +143,13 @@
         const tl = gsap.timeline({ paused: true });
         const startTime = 0.4;
         tl.fromTo(
-          ".hf-catalog-staggered-fade-up span",
-          { opacity: 0, "--hf-word-y": "28px", "--hf-word-scale": 0.92, "--hf-word-blur": "6px" },
+          ".sc-catalog-staggered-fade-up span",
+          { opacity: 0, "--sc-word-y": "28px", "--sc-word-scale": 0.92, "--sc-word-blur": "6px" },
           {
             opacity: 1,
-            "--hf-word-y": "0px",
-            "--hf-word-scale": 1,
-            "--hf-word-blur": "0px",
+            "--sc-word-y": "0px",
+            "--sc-word-scale": 1,
+            "--sc-word-blur": "0px",
             duration: 0.4,
             stagger: 0.18,
             ease: "power3.out",
@@ -162,26 +162,26 @@
       </script>
     </div>
     <style>
-      .hf-catalog-staggered-fade-up {
-        color: var(--hf-fade-word-color, var(--fg, #18181b));
+      .sc-catalog-staggered-fade-up {
+        color: var(--sc-fade-word-color, var(--fg, #18181b));
         font-family: var(--font-display, Inter, system-ui, sans-serif);
         font-weight: 900;
         letter-spacing: -0.04em;
       }
-      .hf-catalog-staggered-fade-up {
+      .sc-catalog-staggered-fade-up {
         display: inline-flex;
         gap: var(--space-1, 12px);
         font-size: 56px;
         line-height: 1;
       }
-      .hf-catalog-staggered-fade-up span {
+      .sc-catalog-staggered-fade-up span {
         display: inline-block;
         transform: translate(
-            calc(var(--hf-word-x, 0px) + var(--hf-word-y, 0px) * var(--hf-word-axis-x, 0)),
-            calc(var(--hf-word-y, 0px) * var(--hf-word-axis-y, 1))
+            calc(var(--sc-word-x, 0px) + var(--sc-word-y, 0px) * var(--sc-word-axis-x, 0)),
+            calc(var(--sc-word-y, 0px) * var(--sc-word-axis-y, 1))
           )
-          scale(var(--hf-word-scale, 1));
-        filter: blur(var(--hf-word-blur, 0px));
+          scale(var(--sc-word-scale, 1));
+        filter: blur(var(--sc-word-blur, 0px));
         will-change: transform, filter, opacity;
       }
     </style>

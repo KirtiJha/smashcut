@@ -1,6 +1,6 @@
 import { COMPOSITION_ROOT_OPEN_TAG_RE } from "./compositionPatterns";
 
-const CLIPBOARD_MARKER = "hyperframes-clipboard:v1";
+const CLIPBOARD_MARKER = "smashcut-clipboard:v1";
 
 export interface ClipboardPayload {
   kind: "timeline-clip" | "dom-element";

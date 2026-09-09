@@ -16,8 +16,8 @@
 
 import type { FeedbackContext } from "./feedbackTrigger";
 
-/** Written by `hyperframes init`; absent in a hand-made or copied project. */
-const CONFIG_FILE = "hyperframes.json";
+/** Written by `smashcut init`; absent in a hand-made or copied project. */
+const CONFIG_FILE = "smashcut.json";
 
 /** Matches the CLI's own slug gate, so a hand-edited value cannot leak text. */
 const SKILL_SLUG = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
@@ -32,7 +32,7 @@ function countMedia(files: string[]): number {
 
 /**
  * Record what we can see from the project listing, then fill in the authoring
- * skill from `hyperframes.json` if the project has one. Failure is silent and
+ * skill from `smashcut.json` if the project has one. Failure is silent and
  * partial: a report with the counts but no skill still beats no report.
  */
 export async function captureProjectProvenance(

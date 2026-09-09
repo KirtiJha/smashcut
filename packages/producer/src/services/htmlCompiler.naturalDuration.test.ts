@@ -7,12 +7,12 @@ import { parseHTML } from "linkedom";
 import { compileForRender } from "./htmlCompiler.js";
 
 describe("compileForRender natural media duration parity", () => {
-  const projectDir = mkdtempSync(join(tmpdir(), "hf-compiler-natural-duration-"));
+  const projectDir = mkdtempSync(join(tmpdir(), "sc-compiler-natural-duration-"));
   const sourcePath = join(projectDir, "ten-seconds.mp4");
   const audioPath = join(projectDir, "ten-seconds.wav");
 
   beforeAll(() => {
-    const ffmpeg = process.env.HYPERFRAMES_FFMPEG_PATH || "ffmpeg";
+    const ffmpeg = process.env.SMASHCUT_FFMPEG_PATH || "ffmpeg";
     const generate = (args: string[]) => {
       const generated = spawnSync(ffmpeg, ["-hide_banner", "-loglevel", "error", ...args], {
         encoding: "utf8",
@@ -85,13 +85,13 @@ describe("compileForRender natural media duration parity", () => {
       <audio id="authored" src="ten-seconds.wav" data-var-src="track" data-duration="4"></audio>
       <audio id="plain" src="ten-seconds.wav"></audio>`);
 
-    expect(document.getElementById("inferred")?.hasAttribute("data-hf-inferred-duration")).toBe(
+    expect(document.getElementById("inferred")?.hasAttribute("data-sc-inferred-duration")).toBe(
       true,
     );
-    expect(document.getElementById("authored")?.hasAttribute("data-hf-inferred-duration")).toBe(
+    expect(document.getElementById("authored")?.hasAttribute("data-sc-inferred-duration")).toBe(
       false,
     );
-    expect(document.getElementById("plain")?.hasAttribute("data-hf-inferred-duration")).toBe(false);
+    expect(document.getElementById("plain")?.hasAttribute("data-sc-inferred-duration")).toBe(false);
   });
 
   it("uses shared playback-start precedence and fallback semantics", async () => {

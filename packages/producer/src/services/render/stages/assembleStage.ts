@@ -16,7 +16,7 @@
  *     verbatim on the respective `success: false` results.
  */
 
-import { applyFaststart, muxVideoWithAudio } from "@hyperframes/engine";
+import { applyFaststart, muxVideoWithAudio } from "@smashcut/engine";
 import { extname } from "node:path";
 import type { ProgressCallback, RenderJob } from "../../renderOrchestrator.js";
 import { padOrTrimAudioToVideoFrameCount } from "../audioPadTrim.js";

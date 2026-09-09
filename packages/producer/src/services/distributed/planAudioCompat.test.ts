@@ -26,7 +26,7 @@ describe("plan audio artifact compatibility", () => {
   });
 
   const planDir = (files: string[]): string => {
-    const dir = mkdtempSync(join(tmpdir(), "hf-plan-audio-"));
+    const dir = mkdtempSync(join(tmpdir(), "sc-plan-audio-"));
     dirs.push(dir);
     for (const name of files) writeFileSync(join(dir, name), "audio");
     return dir;

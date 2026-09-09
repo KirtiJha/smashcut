@@ -21,7 +21,7 @@ import { resolveProxy, PROXY_PARAMS_VERSION } from "./proxyTranscoder.js";
  * fields are optional so any existing `StudioApiAdapter` value remains
  * structurally assignable without editing the shared interface:
  * `autoProxy` defaults to true (on) when omitted — a later unit wires the
- * CLI `--no-proxy` flag / `hyperframes.json` setting through it;
+ * CLI `--no-proxy` flag / `smashcut.json` setting through it;
  * `mediaCodecProbeCache` lets a host share one probe cache across
  * preview/play/static-server surfaces instead of each constructing its own.
  */
@@ -46,7 +46,7 @@ export function resolvePreviewMediaCodecProbeCache(
 }
 
 /**
- * ETag salt for `?hf-proxy=` asset requests, mirroring `variablesEtagSalt` in
+ * ETag salt for `?sc-proxy=` asset requests, mirroring `variablesEtagSalt` in
  * preview.ts: salted by the raw param value plus the transcoder's params
  * version, so a future proxy-recipe change (which bumps `PROXY_PARAMS_VERSION`)
  * or a different proxy variant invalidates cached 304s without needing to
@@ -72,7 +72,7 @@ function injectScriptTagIntoHead(html: string, scriptTag: string): string {
  * warm cache (KTD: protects the per-origin connection budget under held
  * responses). No second concurrency limiter here — the transcoder's own
  * global bound throttles both pre-warm and element-triggered calls.
- * Pre-warm failures are swallowed; an actual `?hf-proxy=` request surfaces
+ * Pre-warm failures are swallowed; an actual `?sc-proxy=` request surfaces
  * them as a 502. Alpha-bearing entries pre-warm their VP8/WebM variant.
  *
  * The single shared implementation for every auto-proxy surface — the studio
@@ -106,7 +106,7 @@ export async function injectMediaCodecMapIntoHtml(
       resolve(projectDir, rootRelativePathname.replace(/^\/+/, "")),
       proxyVariantFor(facts),
     ).catch(() => {
-      // Swallowed: the pre-warm is best-effort. A real `?hf-proxy=` request
+      // Swallowed: the pre-warm is best-effort. A real `?sc-proxy=` request
       // for this asset re-attempts the transcode and reports failure (502).
     });
   }
@@ -116,7 +116,7 @@ export async function injectMediaCodecMapIntoHtml(
     .replace(/</g, "\\u003c")
     .replace(/\u2028/g, "\\u2028")
     .replace(/\u2029/g, "\\u2029");
-  const tag = `<script data-hf-media-codec-map>window.__HF_MEDIA_CODEC_MAP__=${json};</script>`;
+  const tag = `<script data-sc-media-codec-map>window.__HF_MEDIA_CODEC_MAP__=${json};</script>`;
   return injectScriptTagIntoHead(html, tag);
 }
 

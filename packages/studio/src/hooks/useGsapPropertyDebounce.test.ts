@@ -1,14 +1,14 @@
 // @vitest-environment happy-dom
 import { describe, it, expect } from "vitest";
-import { openComposition } from "@hyperframes/sdk";
-import { createMemoryAdapter } from "@hyperframes/sdk/adapters/memory";
-import { parseGsapScriptAcorn } from "@hyperframes/core/gsap-parser-acorn";
+import { openComposition } from "@smashcut/sdk";
+import { createMemoryAdapter } from "@smashcut/sdk/adapters/memory";
+import { parseGsapScriptAcorn } from "@smashcut/core/gsap-parser-acorn";
 import { mergeTweenProperties } from "./useGsapPropertyDebounce";
 import { extractGsapScriptText } from "../utils/gsapSoftReload";
 
 const HTML = `<!DOCTYPE html><html><head></head><body>
-<div id="box" data-hf-id="hf-box" style="opacity:1"></div>
-<script data-hf-gsap>
+<div id="box" data-sc-id="sc-box" style="opacity:1"></div>
+<script data-sc-gsap>
 const tl = gsap.timeline({ paused: true });
 window.__timelines = { main: tl };
 tl.to('#box', { duration: 1, x: 100, y: 50, opacity: 1 });
@@ -16,8 +16,8 @@ tl.to('#box', { duration: 1, x: 100, y: 50, opacity: 1 });
 </body></html>`;
 
 const FROMTO_HTML = `<!DOCTYPE html><html><head></head><body>
-<div id="box" data-hf-id="hf-box" style="opacity:1"></div>
-<script data-hf-gsap>
+<div id="box" data-sc-id="sc-box" style="opacity:1"></div>
+<script data-sc-gsap>
 const tl = gsap.timeline({ paused: true });
 window.__timelines = { main: tl };
 tl.fromTo('#box', { x: 0, y: 0 }, { duration: 1, x: 100, y: 50 });

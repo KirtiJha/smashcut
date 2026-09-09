@@ -145,7 +145,7 @@ describe("useDomSelection — canvas-only targets replace timeline clips", () =>
     store.setSelectedElementId("voice-1");
     store.setSelectedElementIds(new Set(["voice-1", "voice-2"]));
 
-    const bus = document.createElement("hf-audio-group");
+    const bus = document.createElement("sc-audio-group");
     bus.id = "voiceover";
     const harness = renderHarness({
       rightPanelTab: "design",
@@ -173,7 +173,7 @@ describe("useDomSelection — canvas-only targets replace timeline clips", () =>
     const doc = iframe.contentDocument!;
     const clipNode = doc.createElement("audio");
     clipNode.id = "voice-1";
-    const busNode = doc.createElement("hf-audio-group");
+    const busNode = doc.createElement("sc-audio-group");
     busNode.id = "voiceover";
     doc.body.append(clipNode, busNode);
 

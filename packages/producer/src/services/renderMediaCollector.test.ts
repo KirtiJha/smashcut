@@ -1,5 +1,5 @@
 import { describe, expect, it } from "bun:test";
-import { MEDIA_RENDER_ID_ATTR } from "@hyperframes/core";
+import { MEDIA_RENDER_ID_ATTR } from "@smashcut/core";
 import { collectRenderMedia } from "./renderMediaCollector.js";
 
 describe("collectRenderMedia host windows", () => {
@@ -21,7 +21,7 @@ describe("collectRenderMedia host windows", () => {
     const html =
       `<div data-composition-file="scene.html" data-composition-id="scene" data-start="2" data-duration="6">` +
       `<video ${MEDIA_RENDER_ID_ATTR}="local" id="local" src="local.mp4" data-start="2" data-duration="2" data-has-audio="true"></video>` +
-      `<video ${MEDIA_RENDER_ID_ATTR}="global" id="global" src="global.mp4" data-start="2" data-duration="2" data-hf-media-start-basis="global" data-has-audio="true"></video>` +
+      `<video ${MEDIA_RENDER_ID_ATTR}="global" id="global" src="global.mp4" data-start="2" data-duration="2" data-sc-media-start-basis="global" data-has-audio="true"></video>` +
       `</div>`;
 
     const { videos, audios } = collectRenderMedia(html);

@@ -40,9 +40,9 @@ function withPreviewGsapSri(html, gsapSource) {
 }
 
 const HF_ROOTS = [
-  process.env.HYPERFRAMES_ROOT,
+  process.env.SMASHCUT_ROOT,
   path.resolve(__dirname, "../../.."),
-  path.join(os.homedir(), "Downloads", "hyperframes"),
+  path.join(os.homedir(), "Downloads", "smashcut"),
 ].filter(Boolean);
 function findInBun(root, pkg, sub) {
   const cands = [path.join(root, "node_modules", pkg)];
@@ -82,7 +82,7 @@ for (const r of HF_ROOTS) {
   }
 }
 if (require.main === module && (!puppeteer || !sharp)) {
-  console.error("[preview] need puppeteer+sharp — set HYPERFRAMES_ROOT");
+  console.error("[preview] need puppeteer+sharp — set SMASHCUT_ROOT");
   process.exit(0);
 }
 

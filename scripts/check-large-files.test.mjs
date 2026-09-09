@@ -15,7 +15,7 @@ function check(...paths) {
 }
 
 function withFiles(files, run) {
-  const dir = mkdtempSync(join(tmpdir(), "hf-largefiles-"));
+  const dir = mkdtempSync(join(tmpdir(), "sc-largefiles-"));
   try {
     const paths = {};
     for (const [name, contents] of Object.entries(files)) {

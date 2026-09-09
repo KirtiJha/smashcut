@@ -5,11 +5,11 @@ description: "Organic liquid simulation with vertex displacement on a subdivided
 
 import { InstallCommand } from "/snippets/install-command.jsx";
 
-<video className="w-full aspect-video rounded-xl object-cover bg-zinc-100 dark:bg-zinc-800" src="https://static.heygen.ai/hyperframes-oss/docs/images/catalog/blocks/vfx-liquid-background.mp4" poster="https://static.heygen.ai/hyperframes-oss/docs/images/catalog/blocks/vfx-liquid-background.png" autoPlay muted loop playsInline />
+<video className="w-full aspect-video rounded-xl object-cover bg-zinc-100 dark:bg-zinc-800" src="https://static.heygen.ai/smashcut-oss/docs/images/catalog/blocks/vfx-liquid-background.mp4" poster="https://static.heygen.ai/smashcut-oss/docs/images/catalog/blocks/vfx-liquid-background.png" autoPlay muted loop playsInline />
 
 ## Install
 
-<InstallCommand command="npx hyperframes add vfx-liquid-background" item="vfx-liquid-background" />
+<InstallCommand command="npx smashcut add vfx-liquid-background" item="vfx-liquid-background" />
 
 That writes one file: `compositions/vfx-liquid-background.html`.
 
@@ -1260,8 +1260,8 @@ Set these CSS variables on the block:
 
           window.__timelines["vfx-liquid-background"] = tl;
 
-          // ── hf-seek integration for Three.js adapter ──
-          window.addEventListener("hf-seek", function (e) {
+          // ── sc-seek integration for Three.js adapter ──
+          window.addEventListener("sc-seek", function (e) {
             var t = e.detail.time;
             tl.seek(t);
             uniforms.uTime.value = t;

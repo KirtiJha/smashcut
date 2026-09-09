@@ -33,7 +33,7 @@ describe("createPickerModule", () => {
   afterEach(() => {
     document.body.innerHTML = "";
     document.head.querySelectorAll("style").forEach((s) => s.remove());
-    document.body.classList.remove("__hf-pick-active");
+    document.body.classList.remove("__sc-pick-active");
   });
 
   it("returns enablePickMode, disablePickMode, installPickerApi", () => {
@@ -47,10 +47,10 @@ describe("createPickerModule", () => {
     it("adds and removes pick-active class on body", () => {
       const picker = createPickerModule({ postMessage: createMockPostMessage() });
       picker.enablePickMode();
-      expect(document.body.classList.contains("__hf-pick-active")).toBe(true);
+      expect(document.body.classList.contains("__sc-pick-active")).toBe(true);
 
       picker.disablePickMode();
-      expect(document.body.classList.contains("__hf-pick-active")).toBe(false);
+      expect(document.body.classList.contains("__sc-pick-active")).toBe(false);
     });
 
     it("injects and removes style element", () => {
@@ -58,14 +58,14 @@ describe("createPickerModule", () => {
       picker.enablePickMode();
       const styles = document.head.querySelectorAll("style");
       const hasPickStyle = Array.from(styles).some((s) =>
-        s.textContent?.includes("__hf-pick-highlight"),
+        s.textContent?.includes("__sc-pick-highlight"),
       );
       expect(hasPickStyle).toBe(true);
 
       picker.disablePickMode();
       const stylesAfter = document.head.querySelectorAll("style");
       const hasPickStyleAfter = Array.from(stylesAfter).some((s) =>
-        s.textContent?.includes("__hf-pick-highlight"),
+        s.textContent?.includes("__sc-pick-highlight"),
       );
       expect(hasPickStyleAfter).toBe(false);
     });
@@ -74,7 +74,7 @@ describe("createPickerModule", () => {
       const picker = createPickerModule({ postMessage: createMockPostMessage() });
       picker.enablePickMode();
       picker.enablePickMode();
-      expect(document.body.classList.contains("__hf-pick-active")).toBe(true);
+      expect(document.body.classList.contains("__sc-pick-active")).toBe(true);
     });
 
     it("disabling when not active is safe", () => {
@@ -187,10 +187,10 @@ describe("createPickerModule", () => {
 
       document.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape", bubbles: true }));
 
-      expect(document.body.classList.contains("__hf-pick-active")).toBe(false);
+      expect(document.body.classList.contains("__sc-pick-active")).toBe(false);
       expect(postMessage).toHaveBeenCalledWith(
         expect.objectContaining({
-          source: "hf-preview",
+          source: "sc-preview",
           type: "pick-mode-cancelled",
         }),
       );
@@ -202,7 +202,7 @@ describe("createPickerModule", () => {
       picker.enablePickMode();
 
       document.dispatchEvent(new KeyboardEvent("keydown", { key: "Enter", bubbles: true }));
-      expect(document.body.classList.contains("__hf-pick-active")).toBe(true);
+      expect(document.body.classList.contains("__sc-pick-active")).toBe(true);
     });
   });
 

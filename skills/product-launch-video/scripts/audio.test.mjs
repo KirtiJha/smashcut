@@ -23,7 +23,7 @@ writeFileSync(flag("--out"), JSON.stringify({ voices: [], bgm: null, sfx: [] }))
   );
   const result = spawnSync(
     process.execPath,
-    [script, "--hyperframes", dir, "--storyboard", join(dir, "STORYBOARD.md"), ...args],
+    [script, "--smashcut", dir, "--storyboard", join(dir, "STORYBOARD.md"), ...args],
     { encoding: "utf8", env: { ...process.env, HF_MEDIA_ENGINE: engine, ...env } },
   );
   assert.equal(result.status, 0, result.stderr);
@@ -69,7 +69,7 @@ writeFileSync(flag("--out"), JSON.stringify({ voices: [], bgm: null, sfx: [] }))
   );
   const result = spawnSync(
     process.execPath,
-    [script, "--hyperframes", dir, "--storyboard", join(dir, "STORYBOARD.md")],
+    [script, "--smashcut", dir, "--storyboard", join(dir, "STORYBOARD.md")],
     { encoding: "utf8", env: { ...process.env, HF_MEDIA_ENGINE: engine } },
   );
   return { dir, result };
@@ -153,7 +153,7 @@ writeFileSync(flag("--out"), ${JSON.stringify(JSON.stringify(neutralOut))});
   );
   const result = spawnSync(
     process.execPath,
-    [script, "fetch-sfx", "--hyperframes", dir, "--storyboard", join(dir, "STORYBOARD.md")],
+    [script, "fetch-sfx", "--smashcut", dir, "--storyboard", join(dir, "STORYBOARD.md")],
     { encoding: "utf8", env: { ...process.env, HF_MEDIA_ENGINE: engine } },
   );
   return { dir, result };

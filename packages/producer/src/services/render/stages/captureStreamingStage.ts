@@ -69,7 +69,7 @@ import {
   initializeSession,
   prepareCaptureSessionForReuse,
   spawnStreamingEncoder,
-} from "@hyperframes/engine";
+} from "@smashcut/engine";
 import type { FileServerHandle } from "../../fileServer.js";
 import type { ProducerLogger } from "../../../logger.js";
 import type { ProgressCallback, RenderJob } from "../../renderOrchestrator.js";
@@ -258,7 +258,7 @@ export type CaptureStreamingStageResult =
       success: false;
     };
 
-// psnrDb moved to @hyperframes/engine (utils/psnr.ts) so the parallel
+// psnrDb moved to @smashcut/engine (utils/psnr.ts) so the parallel
 // disk-path verify (parallelCoordinator) and this drain guard share one
 // comparison implementation.
 
@@ -386,7 +386,7 @@ function createDrainFrameGuard(args: {
       }
       if (db < verifyMinDb) {
         // Keep the mismatched pair for diagnosis (tmpdir; OS-reaped).
-        const dumpDir = await mkdtemp(join(tmpdir(), "hf-de-verify-fail-")).catch(() => null);
+        const dumpDir = await mkdtemp(join(tmpdir(), "sc-de-verify-fail-")).catch(() => null);
         if (dumpDir) {
           await Promise.all([
             writeFile(join(dumpDir, `frame-${idx}-de.jpg`), buf),

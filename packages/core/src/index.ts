@@ -94,7 +94,7 @@ export {
 
 // Parsers — GSAP helpers. The AST parser (parseGsapScriptAcorn and write ops)
 // is browser-safe; mutation helpers are in gsapWriterAcorn.
-export type { GsapAnimation, GsapMethod, ParsedGsap } from "@hyperframes/parsers";
+export type { GsapAnimation, GsapMethod, ParsedGsap } from "@smashcut/parsers";
 
 export {
   serializeGsapAnimations,
@@ -102,8 +102,8 @@ export {
   validateCompositionGsap,
   keyframesToGsapAnimations,
   gsapAnimationsToKeyframes,
-} from "@hyperframes/parsers";
-export type { ParsedHtml, CompositionMetadata } from "@hyperframes/parsers";
+} from "@smashcut/parsers";
+export type { ParsedHtml, CompositionMetadata } from "@smashcut/parsers";
 
 export {
   parseHtml,
@@ -112,16 +112,16 @@ export {
   removeElementFromHtml,
   validateCompositionHtml,
   extractCompositionMetadata,
-} from "@hyperframes/parsers";
+} from "@smashcut/parsers";
 
 // Generators
-export type { SerializeOptions } from "./generators/hyperframes";
+export type { SerializeOptions } from "./generators/smashcut";
 
 export {
-  generateHyperframesHtml,
+  generateSmashcutHtml,
   generateGsapTimelineScript,
-  generateHyperframesStyles,
-} from "./generators/hyperframes";
+  generateSmashcutStyles,
+} from "./generators/smashcut";
 
 // Compiler (timing only — browser-safe, no linkedom/esbuild)
 export type {
@@ -164,8 +164,8 @@ export {
   renderFrameIdForRenderId,
 } from "./runtime/renderFrameSibling";
 
-// Lint moved to @hyperframes/lint. Import lint APIs from @hyperframes/lint
-// directly, or via the back-compat stub at @hyperframes/core/lint. Not
+// Lint moved to @smashcut/lint. Import lint APIs from @smashcut/lint
+// directly, or via the back-compat stub at @smashcut/core/lint. Not
 // re-exported here — doing so would cycle core's main entry through the lint
 // package (which imports core utilities back).
 export {
@@ -254,7 +254,7 @@ export {
   HYPERFRAME_RUNTIME_CONTRACT,
   loadHyperframeRuntimeSource,
   type HyperframeRuntimeContract,
-} from "./inline-scripts/hyperframe";
+} from "./inline-scripts/smashcut";
 export {
   HYPERFRAME_RUNTIME_GLOBALS,
   HYPERFRAME_BRIDGE_SOURCES,
@@ -263,9 +263,9 @@ export {
 } from "./inline-scripts/runtimeContract";
 export { getHyperframeRuntimeScript } from "./generated/runtime-inline";
 export {
-  buildHyperframesRuntimeScript,
-  type HyperframesRuntimeBuildOptions,
-} from "./inline-scripts/hyperframesRuntime.engine";
+  buildSmashcutRuntimeScript,
+  type SmashcutRuntimeBuildOptions,
+} from "./inline-scripts/smashcutRuntime.engine";
 export {
   MEDIA_VISUAL_STYLE_PROPERTIES,
   copyMediaVisualStyles,

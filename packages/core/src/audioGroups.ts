@@ -13,7 +13,7 @@ import { HF_AUDIO_FX_ATTR } from "./audioFx.js";
 import { AUDIO_GROUP_RENDER_ID_ATTR, MEDIA_RENDER_ID_ATTR } from "./compiler/mediaRenderIds.js";
 import { HF_AUDIO_AUTOMATION_ATTR } from "./audioAutomation.js";
 
-export const HF_AUDIO_GROUP_TAG = "hf-audio-group";
+export const HF_AUDIO_GROUP_TAG = "sc-audio-group";
 export const HF_AUDIO_GROUP_ATTR = "data-audio-group";
 
 export interface HfAudioGroup {
@@ -65,12 +65,12 @@ function buildGroup(id: string, memberIds: string[], el: Element | undefined): H
 /**
  * Every group with at least one member, resolved from the live document.
  *
- * A group with members but no `<hf-audio-group>` element still resolves
+ * A group with members but no `<sc-audio-group>` element still resolves
  * (label = id) so a hand-authored composition degrades gracefully. Audio
  * only in v1 — a `data-audio-group` on a `<video>` is ignored.
  */
 /**
- * The `<hf-audio-group>` element for a group id, or null.
+ * The `<sc-audio-group>` element for a group id, or null.
  *
  * Tag-checked, which a bare `getElementById` is not. Every group attribute —
  * the fader, the mute, the FX chain, the automation lane — is read off whatever
@@ -210,7 +210,7 @@ export function audioGroupOf(el: Element): string | null {
 }
 
 /**
- * Make `<hf-audio-group>` inert, once per document.
+ * Make `<sc-audio-group>` inert, once per document.
  *
  * The element is metadata — an id, a label, a chain, an automation lane — and
  * carries no content, but "no content" is not "no box": it is still an unknown
@@ -225,7 +225,7 @@ export function audioGroupOf(el: Element): string | null {
  * runtime rather than the compiler so preview and render share one source.
  */
 export function ensureAudioGroupInertStyle(doc: Document): void {
-  const styleId = "__hf-audio-group-inert";
+  const styleId = "__sc-audio-group-inert";
   if (!doc?.head || doc.getElementById(styleId)) return;
   const style = doc.createElement("style");
   style.id = styleId;

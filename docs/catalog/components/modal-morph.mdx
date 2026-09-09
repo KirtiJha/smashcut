@@ -16,7 +16,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 ```html modal-morph.html
 <!doctype html>
 <!--
-  modal-morph: HyperFrames video primitive (structure, Wave M9 experiment)
+  modal-morph: SmashCut video primitive (structure, Wave M9 experiment)
 
   The shared-element grow: a small card expands into a full panel with its
   children re-flowing continuously. FLIP-style: BOTH layouts (card and
@@ -300,8 +300,8 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
             var card = root.querySelector(".mm-card");
             var panel = root.querySelector(".mm-panel");
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             var fromScaleRaw = parseFloat(vars.from_scale);
@@ -542,7 +542,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 
 ## Install
 
-<InstallCommand command="npx hyperframes add modal-morph" item="modal-morph" />
+<InstallCommand command="npx smashcut add modal-morph" item="modal-morph" />
 
 That writes one file: `compositions/components/modal-morph.html`.
 
@@ -584,7 +584,7 @@ defaults, so this behaves exactly like the preview above until you change one:
 ```html
 <!doctype html>
 <!--
-  modal-morph: HyperFrames video primitive (structure, Wave M9 experiment)
+  modal-morph: SmashCut video primitive (structure, Wave M9 experiment)
 
   The shared-element grow: a small card expands into a full panel with its
   children re-flowing continuously. FLIP-style: BOTH layouts (card and
@@ -868,8 +868,8 @@ defaults, so this behaves exactly like the preview above until you change one:
             var card = root.querySelector(".mm-card");
             var panel = root.querySelector(".mm-panel");
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             var fromScaleRaw = parseFloat(vars.from_scale);

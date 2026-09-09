@@ -33,23 +33,23 @@
         /* ponytail: scale wrapper (not a GSAP target) to fill ~65% of frame */
         transform: scale(2.8);
       }
-      .hf-catalog-focus-blur-resolve {
+      .sc-catalog-focus-blur-resolve {
         color: #18181b;
         font-family: Inter, system-ui, sans-serif;
         font-weight: 900;
         letter-spacing: -0.04em;
       }
-      .hf-catalog-focus-blur-resolve {
+      .sc-catalog-focus-blur-resolve {
         display: inline-flex;
         gap: 12px;
         font-size: 56px;
         line-height: 1;
       }
-      .hf-catalog-focus-blur-resolve span {
+      .sc-catalog-focus-blur-resolve span {
         display: inline-block;
-        transform: translate(var(--hf-word-x, 0px), var(--hf-word-y, 0px))
-          scale(var(--hf-word-scale, 1));
-        filter: blur(var(--hf-word-blur, 0px));
+        transform: translate(var(--sc-word-x, 0px), var(--sc-word-y, 0px))
+          scale(var(--sc-word-scale, 1));
+        filter: blur(var(--sc-word-blur, 0px));
         will-change: transform, filter, opacity;
       }
     </style>
@@ -65,7 +65,7 @@
     >
       <div class="demo-frame">
         <div
-          class="hf-catalog-focus-blur-resolve"
+          class="sc-catalog-focus-blur-resolve"
           data-composition-variables='[
     { "id": "tone", "type": "enum", "role": "style", "label": "Tone", "description": "Word colour: ink for light frames, paper for dark ones, accent rides --brand.", "default": "ink", "options": [{ "value": "ink", "label": "Ink" }, { "value": "paper", "label": "Paper" }, { "value": "accent", "label": "Accent" }] },
     { "id": "size", "type": "enum", "role": "style", "label": "Size", "description": "Type size of the words, from a caption-scale line to a full display card.", "default": "standard", "options": [{ "value": "compact", "label": "Compact" }, { "value": "standard", "label": "Standard" }, { "value": "display", "label": "Display" }] },
@@ -80,8 +80,8 @@
           "use strict";
 
           var vars =
-            window.__hyperframes && window.__hyperframes.getVariables
-              ? window.__hyperframes.getVariables()
+            window.__smashcut && window.__smashcut.getVariables
+              ? window.__smashcut.getVariables()
               : {};
 
           // Unrecognised overrides return to their declared defaults.
@@ -97,11 +97,11 @@
           var size = sizes[pick(sizes, vars.size, "standard")];
           var blurScale = blurScales[pick(blurScales, vars.blur, "standard")];
 
-          var roots = document.querySelectorAll(".hf-catalog-focus-blur-resolve");
+          var roots = document.querySelectorAll(".sc-catalog-focus-blur-resolve");
           for (var i = 0; i < roots.length; i += 1) {
-            roots[i].style.setProperty("--hf-word-color", tone);
-            roots[i].style.setProperty("--hf-word-size", size);
-            roots[i].style.setProperty("--hf-word-blur-scale", String(blurScale));
+            roots[i].style.setProperty("--sc-word-color", tone);
+            roots[i].style.setProperty("--sc-word-size", size);
+            roots[i].style.setProperty("--sc-word-blur-scale", String(blurScale));
           }
         })();
       </script>
@@ -109,12 +109,12 @@
         const tl = gsap.timeline({ paused: true });
         const startTime = 0.5;
         tl.fromTo(
-          ".hf-catalog-focus-blur-resolve span",
-          { opacity: 0, "--hf-word-scale": 1.08, "--hf-word-blur": "16px" },
+          ".sc-catalog-focus-blur-resolve span",
+          { opacity: 0, "--sc-word-scale": 1.08, "--sc-word-blur": "16px" },
           {
             opacity: 1,
-            "--hf-word-scale": 1,
-            "--hf-word-blur": "0px",
+            "--sc-word-scale": 1,
+            "--sc-word-blur": "0px",
             duration: 0.52,
             stagger: 0.05,
             ease: "power3.out",
@@ -127,23 +127,23 @@
       </script>
     </div>
     <style>
-      .hf-catalog-focus-blur-resolve {
-        color: var(--hf-word-color, #18181b);
+      .sc-catalog-focus-blur-resolve {
+        color: var(--sc-word-color, #18181b);
         font-family: Inter, system-ui, sans-serif;
         font-weight: 900;
         letter-spacing: -0.04em;
       }
-      .hf-catalog-focus-blur-resolve {
+      .sc-catalog-focus-blur-resolve {
         display: inline-flex;
         gap: 12px;
-        font-size: var(--hf-word-size, 56px);
+        font-size: var(--sc-word-size, 56px);
         line-height: 1;
       }
-      .hf-catalog-focus-blur-resolve span {
+      .sc-catalog-focus-blur-resolve span {
         display: inline-block;
-        transform: translate(var(--hf-word-x, 0px), var(--hf-word-y, 0px))
-          scale(var(--hf-word-scale, 1));
-        filter: blur(calc(var(--hf-word-blur, 0px) * var(--hf-word-blur-scale, 1)));
+        transform: translate(var(--sc-word-x, 0px), var(--sc-word-y, 0px))
+          scale(var(--sc-word-scale, 1));
+        filter: blur(calc(var(--sc-word-blur, 0px) * var(--sc-word-blur-scale, 1)));
         will-change: transform, filter, opacity;
       }
     </style>

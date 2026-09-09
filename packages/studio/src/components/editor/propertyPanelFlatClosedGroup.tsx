@@ -34,7 +34,7 @@ export function closedGroupHeader(
  * Is the selection hidden RIGHT NOW.
  *
  * `selectedElementHidden` is derived from `timelineElements`, and an
- * `<hf-audio-group>` is not one — it is a mixer bus, and the runtime no longer
+ * `<sc-audio-group>` is not one — it is a mixer bus, and the runtime no longer
  * stamps timing on it, so it has no timeline row to carry a `hidden` flag. Its
  * `data-hidden` lives only on the element, so the attribute is the fallback.
  */

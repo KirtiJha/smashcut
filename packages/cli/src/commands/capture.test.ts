@@ -10,7 +10,7 @@ const { captureWebsiteMock } = vi.hoisted(() => ({
       const onPhase = Reflect.get(options, "onPhase");
       if (typeof onPhase === "function") {
         onPhase({
-          schema: "hyperframes.capture.phase.v1",
+          schema: "smashcut.capture.phase.v1",
           phase: "vision",
           status: "degraded",
           remainingMs: 0,
@@ -72,7 +72,7 @@ describe("capture command — vision control", () => {
     await captureCommand.run!({
       args: {
         url: "https://example.com",
-        output: "/tmp/hf-skip-vision-test",
+        output: "/tmp/sc-skip-vision-test",
         "skip-assets": false,
         "skip-vision": true,
         json: true,
@@ -97,7 +97,7 @@ describe("capture command — vision control", () => {
       await captureCommand.run!({
         args: {
           url: "https://example.com",
-          output: "/tmp/hf-capture-budget-test",
+          output: "/tmp/sc-capture-budget-test",
           "skip-assets": false,
           "skip-vision": false,
           "capture-budget": captureBudget,
@@ -122,7 +122,7 @@ describe("capture command — vision control", () => {
         captureCommand.run!({
           args: {
             url: "https://example.com",
-            output: "/tmp/hf-invalid-capture-budget-test",
+            output: "/tmp/sc-invalid-capture-budget-test",
             "skip-assets": false,
             "skip-vision": false,
             "capture-budget": captureBudget,
@@ -142,7 +142,7 @@ describe("capture command — vision control", () => {
     await captureCommand.run!({
       args: {
         url: "https://user:secret@example.com/private",
-        output: "/tmp/hf-phase-progress-test",
+        output: "/tmp/sc-phase-progress-test",
         "skip-assets": false,
         "skip-vision": false,
         json: true,
@@ -150,13 +150,13 @@ describe("capture command — vision control", () => {
     } as never);
 
     const line = error.mock.calls.find(
-      ([value]) => typeof value === "string" && value.startsWith("HYPERFRAMES_CAPTURE_PHASE "),
+      ([value]) => typeof value === "string" && value.startsWith("SMASHCUT_CAPTURE_PHASE "),
     )?.[0];
     expect(typeof line).toBe("string");
     if (typeof line !== "string") throw new Error("Expected capture phase diagnostic");
-    const event = JSON.parse(line.slice("HYPERFRAMES_CAPTURE_PHASE ".length));
+    const event = JSON.parse(line.slice("SMASHCUT_CAPTURE_PHASE ".length));
     expect(event).toEqual({
-      schema: "hyperframes.capture.phase.v1",
+      schema: "smashcut.capture.phase.v1",
       phase: "vision",
       status: "degraded",
       remainingMs: 0,
@@ -167,7 +167,7 @@ describe("capture command — vision control", () => {
   });
 
   it("keeps required capture failures nonzero", async () => {
-    const dir = mkdtempSync(join(tmpdir(), "hf-capture-failure-"));
+    const dir = mkdtempSync(join(tmpdir(), "sc-capture-failure-"));
     const log = vi.spyOn(console, "log").mockImplementation(() => {});
     vi.spyOn(console, "error").mockImplementation(() => {});
     captureWebsiteMock.mockRejectedValueOnce(new Error("required extraction failed"));

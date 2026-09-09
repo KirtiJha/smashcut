@@ -28,14 +28,14 @@ describe("useTimelineStackingSync", () => {
     const iframe = document.createElement("iframe");
     document.body.appendChild(iframe);
     const node = iframe.contentDocument!.createElement("div");
-    node.setAttribute("data-hf-id", "hf-a");
+    node.setAttribute("data-sc-id", "sc-a");
     iframe.contentDocument!.body.appendChild(node);
     const commit = vi.fn().mockResolvedValue(undefined);
     mocks.actions = { previewIframeRef: { current: iframe }, handleDomZIndexReorderCommit: commit };
     const element: TimelineElement = {
       id: "a",
       key: "a",
-      hfId: "hf-a",
+      hfId: "sc-a",
       tag: "div",
       start: 0,
       duration: 2,

@@ -15,7 +15,7 @@
  * names the group it feeds, "so the routing is readable from either end".
  */
 
-import type { HfAudioGroup } from "@hyperframes/core/audio-groups";
+import type { HfAudioGroup } from "@smashcut/core/audio-groups";
 
 export interface AudioFxSignalPath {
   /** After the word "In". */
@@ -48,7 +48,7 @@ export function audioFxSignalPath(
   elementId: string | undefined,
   groups: readonly HfAudioGroup[],
 ): AudioFxSignalPath {
-  if (tag === "hf-audio-group") {
+  if (tag === "sc-audio-group") {
     const group = groups.find((g) => g.id === elementId);
     // A group with no members yet still reads as a group — "nothing yet" is the
     // honest answer, and it is also the state the author is in right after

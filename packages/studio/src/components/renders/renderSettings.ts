@@ -1,4 +1,4 @@
-const RENDER_SETTINGS_KEY = "hf-studio-render-settings";
+const RENDER_SETTINGS_KEY = "sc-studio-render-settings";
 
 export interface PersistedRenderSettings {
   format: "mp4" | "webm" | "mov";

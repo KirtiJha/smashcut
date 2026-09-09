@@ -3,7 +3,7 @@
 import { existsSync, readdirSync } from "node:fs";
 import { homedir } from "node:os";
 import { join, win32 as pathWin32 } from "node:path";
-import { thumbnailDeviceScaleFactor } from "@hyperframes/studio-server";
+import { thumbnailDeviceScaleFactor } from "@smashcut/studio-server";
 import { createStudioDevRenderBodyScripts } from "./vite.studioMotion";
 import { seekThumbnailPreview } from "./vite.thumbnail";
 
@@ -81,7 +81,7 @@ export function findSystemChrome(
   platform: NodeJS.Platform = process.platform,
 ): string | undefined {
   const override = [
-    env["HYPERFRAMES_BROWSER_PATH"],
+    env["SMASHCUT_BROWSER_PATH"],
     env["PRODUCER_HEADLESS_SHELL_PATH"],
     env["PUPPETEER_EXECUTABLE_PATH"],
     env["CHROME_PATH"],
@@ -145,11 +145,11 @@ async function reapplyStudioRenderBodyScriptsToThumbnailPage(
 ): Promise<void> {
   await page.evaluate(() => {
     const runtimeWindow = window as Window & {
-      __hfStudioManualEditsApply?: () => number;
-      __hfStudioMotionApply?: () => number;
+      __scStudioManualEditsApply?: () => number;
+      __scStudioMotionApply?: () => number;
     };
-    runtimeWindow.__hfStudioManualEditsApply?.();
-    runtimeWindow.__hfStudioMotionApply?.();
+    runtimeWindow.__scStudioManualEditsApply?.();
+    runtimeWindow.__scStudioMotionApply?.();
   });
 }
 

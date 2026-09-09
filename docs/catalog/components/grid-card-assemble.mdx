@@ -16,7 +16,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 ```html grid-card-assemble.html
 <!doctype html>
 <!--
-  grid-card-assemble: HyperFrames video primitive (layout / feature tour)
+  grid-card-assemble: SmashCut video primitive (layout / feature tour)
 
   N capability cards stagger-assemble into a grid or a vertical list. Every
   card is a real token card: surface fill with a subtle top light, hairline
@@ -221,8 +221,8 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
             var root = document.getElementById("root");
             var stage = root.querySelector(".gca-stage");
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             var itemsValue =
@@ -488,7 +488,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 
 ## Install
 
-<InstallCommand command="npx hyperframes add grid-card-assemble" item="grid-card-assemble" />
+<InstallCommand command="npx smashcut add grid-card-assemble" item="grid-card-assemble" />
 
 That writes one file: `compositions/components/grid-card-assemble.html`.
 
@@ -531,7 +531,7 @@ defaults, so this behaves exactly like the preview above until you change one:
 ```html
 <!doctype html>
 <!--
-  grid-card-assemble: HyperFrames video primitive (layout / feature tour)
+  grid-card-assemble: SmashCut video primitive (layout / feature tour)
 
   N capability cards stagger-assemble into a grid or a vertical list. Every
   card is a real token card: surface fill with a subtle top light, hairline
@@ -736,8 +736,8 @@ defaults, so this behaves exactly like the preview above until you change one:
             var root = document.getElementById("root");
             var stage = root.querySelector(".gca-stage");
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             var itemsValue =

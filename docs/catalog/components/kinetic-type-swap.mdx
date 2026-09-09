@@ -16,7 +16,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 ```html kinetic-type-swap.html
 <!doctype html>
 <!--
-  kinetic-type-swap: HyperFrames video primitive (text effects / swap)
+  kinetic-type-swap: SmashCut video primitive (text effects / swap)
 
   A held sentence keeps its prefix and suffix fixed while one masked word
   slot rolls through comma-separated options. Every option remains in the
@@ -181,8 +181,8 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
             var slotElement = root.querySelector(".kts-slot");
             var suffixElement = root.querySelector(".kts-suffix");
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             var defaultOptions = ["faster", "smarter", "together"];
@@ -393,7 +393,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 
 ## Install
 
-<InstallCommand command="npx hyperframes add kinetic-type-swap" item="kinetic-type-swap" />
+<InstallCommand command="npx smashcut add kinetic-type-swap" item="kinetic-type-swap" />
 
 That writes one file: `compositions/components/kinetic-type-swap.html`.
 
@@ -436,7 +436,7 @@ defaults, so this behaves exactly like the preview above until you change one:
 ```html
 <!doctype html>
 <!--
-  kinetic-type-swap: HyperFrames video primitive (text effects / swap)
+  kinetic-type-swap: SmashCut video primitive (text effects / swap)
 
   A held sentence keeps its prefix and suffix fixed while one masked word
   slot rolls through comma-separated options. Every option remains in the
@@ -601,8 +601,8 @@ defaults, so this behaves exactly like the preview above until you change one:
             var slotElement = root.querySelector(".kts-slot");
             var suffixElement = root.querySelector(".kts-suffix");
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             var defaultOptions = ["faster", "smarter", "together"];

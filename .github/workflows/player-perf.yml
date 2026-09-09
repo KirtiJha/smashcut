@@ -3,10 +3,10 @@ name: Player perf
 permissions:
   contents: read
 
-# Suppress hyperframes CLI telemetry from HeyGen's own CI runs.
+# Suppress smashcut CLI telemetry from HeyGen's own CI runs.
 # External users' CI continues to emit telemetry unless they set this themselves.
 env:
-  HYPERFRAMES_NO_TELEMETRY: "1"
+  SMASHCUT_NO_TELEMETRY: "1"
 
 on:
   pull_request:
@@ -88,8 +88,8 @@ jobs:
 
       - run: bun install --frozen-lockfile
 
-      # Player perf loads packages/player/dist/hyperframes-player.global.js
-      # and packages/core/dist/hyperframe.runtime.iife.js, so a full build is required.
+      # Player perf loads packages/player/dist/smashcut-player.global.js
+      # and packages/core/dist/smashcut.runtime.iife.js, so a full build is required.
       - run: bun run build
 
       - name: Set up Chrome (headless shell)

@@ -3,7 +3,7 @@
  * File Server for Render Mode
  *
  * Lightweight HTTP server that serves the project directory inside Docker.
- * Key responsibility: inject the verified Hyperframe runtime + render mode extension
+ * Key responsibility: inject the verified Smashcut runtime + render mode extension
  * into index.html on-the-fly, so Puppeteer can load the composition with
  * all relative URLs (compositions, CSS, JS, assets) resolving correctly.
  */
@@ -26,10 +26,10 @@ import { promisify } from "node:util";
 
 import { Readable } from "node:stream";
 import { join, extname, resolve, sep } from "node:path";
-import { injectScriptsAtHeadStart, injectScriptsIntoHtml } from "@hyperframes/core/compiler";
-import { fpsToNumber, type Fps } from "@hyperframes/core";
+import { injectScriptsAtHeadStart, injectScriptsIntoHtml } from "@smashcut/core/compiler";
+import { fpsToNumber, type Fps } from "@smashcut/core";
 import { getVerifiedHyperframeRuntimeSource } from "./hyperframeRuntimeLoader.js";
-import { getHfEarlyStub } from "../generated/hf-early-stub-inline.js";
+import { getHfEarlyStub } from "../generated/sc-early-stub-inline.js";
 import { defaultLogger, type ProducerLogger } from "../logger.js";
 
 const readFileAsync = promisify(readFile);
@@ -146,7 +146,7 @@ export type RangeRequest =
  *   - `bytes=-SUFFIX`: last SUFFIX bytes.
  *
  * Multi-range requests (`bytes=0-99,200-299`) are treated as `absent`. The
- * caller serves the full body with 200. The hyperframes producer's use case
+ * caller serves the full body with 200. The smashcut producer's use case
  * (Chrome `<video>` seeks, range-aware media stack) only ever issues single
  * ranges, so we don't take on the multipart-byteranges complexity here.
  *
@@ -543,13 +543,13 @@ function buildRenderModeScript(fps: Fps | undefined): string {
 }
 
 /**
- * Early stub: ensures `window.__hf` exists *before* any user `<script>` in
+ * Early stub: ensures `window.__sc` exists *before* any user `<script>` in
  * `<body>` executes, and batches GSAP timeline construction via
  * requestAnimationFrame to prevent the main-thread hang described in
  * https://github.com/heygen-com/hyperframes/issues/1231.
  *
- * Source: packages/producer/stubs/hf-early-stub.ts
- * Generated: packages/producer/src/generated/hf-early-stub-inline.ts
+ * Source: packages/producer/stubs/sc-early-stub.ts
+ * Generated: packages/producer/src/generated/sc-early-stub-inline.ts
  * Injected at the very start of `<head>` so it runs before all other scripts.
  */
 const HF_EARLY_STUB = getHfEarlyStub();
@@ -559,14 +559,14 @@ const HF_EARLY_STUB = getHfEarlyStub();
  *
  * When the engine is launched with `enablePageSideCompositing: true`, the
  * orchestrator injects this stub into the very top of every served HTML
- * page. The flag is read by `@hyperframes/shader-transitions`' engine-mode
+ * page. The flag is read by `@smashcut/shader-transitions`' engine-mode
  * `init()` to switch from the default opacity-flip mode (which leaves
  * shader blending to the Node side via the hf#677 layered pipeline) to a
  * page-side WebGL compositor that runs the shader inside Chrome and
  * exposes a single opaque RGB frame for the engine to capture.
  *
  * Sentinel ONLY — no logic here. The compositor itself ships inside
- * `@hyperframes/shader-transitions` and is loaded by the composition's
+ * `@smashcut/shader-transitions` and is loaded by the composition's
  * regular script bundle.
  *
  * Default OFF: when the flag is not set, behavior is byte-identical to
@@ -578,12 +578,12 @@ export const HF_PAGE_SIDE_COMPOSITING_STUB = `(function() {
 })();`;
 
 /**
- * Bridge script: maps window.__player (Hyperframe runtime) → window.__hf (engine protocol).
- * Injected after RENDER_MODE_SCRIPT so the engine's frameCapture can find window.__hf.
+ * Bridge script: maps window.__player (Smashcut runtime) → window.__sc (engine protocol).
+ * Injected after RENDER_MODE_SCRIPT so the engine's frameCapture can find window.__sc.
  *
- * This script *patches* the existing __hf object rather than replacing it, so
+ * This script *patches* the existing __sc object rather than replacing it, so
  * fields written during page-script execution (e.g. transitions metadata from
- * @hyperframes/shader-transitions) are preserved through to engine query time.
+ * @smashcut/shader-transitions) are preserved through to engine query time.
  */
 const HF_BRIDGE_SCRIPT = `(function() {
   var __realSetInterval =
@@ -639,7 +639,7 @@ const HF_BRIDGE_SCRIPT = `(function() {
     if (!p || typeof p.renderSeek !== "function" || typeof p.getDuration !== "function") {
       return false;
     }
-    var hf = window.__hf || {};
+    var hf = window.__sc || {};
     Object.defineProperty(hf, "duration", {
       configurable: true,
       enumerable: true,
@@ -647,9 +647,9 @@ const HF_BRIDGE_SCRIPT = `(function() {
         // While the GSAP tween-batching interceptor (HF_EARLY_STUB) is draining
         // queued tweens via rAF, the real timelines are still empty. Return 0
         // here so pollHfReady in the engine keeps waiting (its condition is
-        // __hf.duration > 0), preventing the capture pipeline from seeking
+        // __sc.duration > 0), preventing the capture pipeline from seeking
         // empty timelines and producing blank/incorrect frames.
-        if (window.__hfTimelinesBuilding) return 0;
+        if (window.__scTimelinesBuilding) return 0;
         if (!window.__renderReady) return 0;
         var d = p.getDuration();
         return d > 0 ? d : getDeclaredDuration();
@@ -663,7 +663,7 @@ const HF_BRIDGE_SCRIPT = `(function() {
       }
       seekSameOriginChildFrames(window, nextTimeMs);
     };
-    window.__hf = hf;
+    window.__sc = hf;
     return true;
   }
   if (bridge()) return;
@@ -678,7 +678,7 @@ export interface FileServerOptions {
   port?: number;
   /** Scripts injected into <head> of every served HTML file before authored scripts. */
   preHeadScripts?: string[];
-  /** Scripts injected into <head> of index.html. Default: verified Hyperframe runtime. */
+  /** Scripts injected into <head> of index.html. Default: verified Smashcut runtime. */
   headScripts?: string[];
   /** Scripts injected before </body> of index.html. Default: render mode extension. */
   bodyScripts?: string[];
@@ -696,7 +696,7 @@ export interface FileServerHandle {
 }
 
 /**
- * Set before the Hyperframes runtime executes so render/probe pages can avoid
+ * Set before the Smashcut runtime executes so render/probe pages can avoid
  * preview-only initialization work that mutates the live visual timeline.
  * Audio automation is discovered by the producer in an isolated pass and
  * baked before frame capture.
@@ -759,17 +759,17 @@ export function createFileServer(options: FileServerOptions): Promise<FileServer
   const { projectDir, compiledDir, port = 0, stripEmbeddedRuntime = true } = options;
 
   // HF_EARLY_STUB must run before *any* page script so libraries that write
-  // to window.__hf during page-script execution (e.g. shader-transitions
-  // populating __hf.transitions) find it already defined. The full bridge in
+  // to window.__sc during page-script execution (e.g. shader-transitions
+  // populating __sc.transitions) find it already defined. The full bridge in
   // bodyScripts later upgrades this stub with `seek` / `duration` once the
-  // Hyperframe runtime's __player is ready, while preserving any fields
+  // Smashcut runtime's __player is ready, while preserving any fields
   // already written.
   const preHeadScripts = [
     HF_EARLY_STUB,
     RENDER_CAPTURE_MODE_SHIM,
     ...(options.preHeadScripts ?? []),
   ];
-  // Default scripts: Hyperframe runtime in <head>, render mode in </body>
+  // Default scripts: Smashcut runtime in <head>, render mode in </body>
   const headScripts = options.headScripts ?? [getVerifiedHyperframeRuntimeSource()];
   const bodyScripts = options.bodyScripts ?? [buildRenderModeScript(options.fps), HF_BRIDGE_SCRIPT];
 

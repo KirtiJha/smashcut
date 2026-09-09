@@ -79,7 +79,7 @@
   <body>
     <!-- duration = 3.85s = the spell-out + shuffle scene (0 → just before the 3.855s drop) -->
     <div
-      data-hf-id="hf-g2rt"
+      data-sc-id="sc-g2rt"
       id="root"
       data-composition-id="group-two-recreate"
       data-width="1920"
@@ -88,8 +88,8 @@
       data-duration="3.85"
       data-root="true"
     >
-      <div data-hf-id="hf-g2ov" class="g2-overlay">
-        <div data-hf-id="hf-g2ln" class="g2-line" id="line"></div>
+      <div data-sc-id="sc-g2ov" class="g2-overlay">
+        <div data-sc-id="sc-g2ln" class="g2-line" id="line"></div>
       </div>
     </div>
 
@@ -115,8 +115,8 @@
         var vars = Object.assign(
           {},
           defaults,
-          window.__hyperframes && window.__hyperframes.getVariables
-            ? window.__hyperframes.getVariables()
+          window.__smashcut && window.__smashcut.getVariables
+            ? window.__smashcut.getVariables()
             : {},
         );
 

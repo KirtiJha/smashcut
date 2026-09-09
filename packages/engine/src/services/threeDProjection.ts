@@ -110,8 +110,8 @@ export async function initThreeDProjectionInPage(): Promise<ThreeDProjectionResu
   const claimed = (el: HTMLElement): boolean =>
     groupRoots.some((g) => g === el || g.contains(el) || el.contains(g));
   {
-    const w3d = window as Window & { __hf3dTweenTargets?: unknown[] };
-    for (const target of w3d.__hf3dTweenTargets ?? []) {
+    const w3d = window as Window & { __sc3dTweenTargets?: unknown[] };
+    for (const target of w3d.__sc3dTweenTargets ?? []) {
       let els: HTMLElement[] = [];
       if (typeof target === "string") {
         try {
@@ -159,8 +159,8 @@ export async function initThreeDProjectionInPage(): Promise<ThreeDProjectionResu
   // route.
   const animatedEls = new Set<HTMLElement>();
   {
-    const wAll = window as Window & { __hfAllTweenTargets?: unknown[] };
-    for (const target of wAll.__hfAllTweenTargets ?? []) {
+    const wAll = window as Window & { __scAllTweenTargets?: unknown[] };
+    for (const target of wAll.__scAllTweenTargets ?? []) {
       if (typeof target === "string") {
         try {
           for (const el of Array.from(document.querySelectorAll(target))) {
@@ -574,7 +574,7 @@ export async function initThreeDProjectionInPage(): Promise<ThreeDProjectionResu
     // of being inherited from the DOM — the group subtree is fully hidden.
     const anchor = (g.offsetParent as HTMLElement | null) ?? g.parentElement ?? root;
     const canvas = document.createElement("canvas");
-    canvas.setAttribute("data-hf-3d", "");
+    canvas.setAttribute("data-sc-3d", "");
     canvas.width = canvasW;
     canvas.height = canvasH;
     canvas.style.cssText =
@@ -872,7 +872,7 @@ export async function initThreeDProjectionInPage(): Promise<ThreeDProjectionResu
     }
   };
 
-  (window as Window & { __hf3d?: { update: () => void } }).__hf3d = { update };
+  (window as Window & { __sc3d?: { update: () => void } }).__sc3d = { update };
   update();
 
   return {
@@ -880,7 +880,7 @@ export async function initThreeDProjectionInPage(): Promise<ThreeDProjectionResu
     groups: groups.length,
     quads: groups.reduce((n, grp) => n + grp.quads.length, 0),
     selfQuads: selfQuadEls.size,
-    stubTargets: ((window as Window & { __hf3dTweenTargets?: unknown[] }).__hf3dTweenTargets ?? [])
+    stubTargets: ((window as Window & { __sc3dTweenTargets?: unknown[] }).__sc3dTweenTargets ?? [])
       .length,
   };
 }
@@ -922,7 +922,7 @@ export async function initThreeDProjection(page: Page): Promise<ThreeDProjection
  */
 export async function detectCssEffectRisk(page: Page): Promise<string | null> {
   try {
-    // MUST NOT seek the timeline here. Driving `window.__hf.seek` to sample
+    // MUST NOT seek the timeline here. Driving `window.__sc.seek` to sample
     // frames renders GSAP `.from()` / overlapping tweens out of forward order and
     // permanently corrupts their lazily-cached start values (GSAP records them on
     // first render). Because this runs BEFORE the gate decision, that corruption
@@ -1020,8 +1020,8 @@ export async function detectCssEffectRisk(page: Page): Promise<string | null> {
 
       // (4) WebGL context — seek-invariant, recorded at context creation.
       const scanWebgl = (): string | null => {
-        const aw = window as Window & { __hf_accel_canvases?: HTMLCanvasElement[] };
-        const accel = (aw.__hf_accel_canvases ?? []).filter((c) => root.contains(c));
+        const aw = window as Window & { __sc_accel_canvases?: HTMLCanvasElement[] };
+        const accel = (aw.__sc_accel_canvases ?? []).filter((c) => root.contains(c));
         return accel.length > 0 ? "webgl-context" : null;
       };
 

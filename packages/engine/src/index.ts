@@ -1,9 +1,9 @@
 /**
- * @hyperframes/engine
+ * @smashcut/engine
  *
  * Seekable web page to video rendering engine.
  * Framework-agnostic: works with GSAP, Lottie, Three.js, CSS animations,
- * or any web content that implements the window.__hf seek protocol.
+ * or any web content that implements the window.__sc seek protocol.
  *
  * ## Error Convention
  *
@@ -267,7 +267,7 @@ export {
 } from "./services/fileServer.js";
 
 // ── Utilities ──────────────────────────────────────────────────────────────────
-export { quantizeTimeToFrame, MEDIA_VISUAL_STYLE_PROPERTIES } from "@hyperframes/core";
+export { quantizeTimeToFrame, MEDIA_VISUAL_STYLE_PROPERTIES } from "@smashcut/core";
 
 export {
   assertSwiftShader,

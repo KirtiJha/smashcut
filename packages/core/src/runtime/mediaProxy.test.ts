@@ -50,7 +50,7 @@ function stubCanPlayType(el: HTMLVideoElement, result: string): void {
 }
 
 function proxyVariant(el: HTMLMediaElement): string | null {
-  return new URL(el.src, document.baseURI).searchParams.get("hf-proxy");
+  return new URL(el.src, document.baseURI).searchParams.get("sc-proxy");
 }
 
 function isProxied(el: HTMLMediaElement): boolean {
@@ -467,14 +467,14 @@ describe("swapToProxy", () => {
     expect(hasMediaSyncStateForTest(el)).toBe(false);
   });
 
-  it("preserves existing query strings when appending hf-proxy", () => {
+  it("preserves existing query strings when appending sc-proxy", () => {
     const el = createVideo("/video.mp4?v=2");
 
     swapToProxy(el, HEVC_ENTRY, "proactive");
 
     const url = new URL(el.src, document.baseURI);
     expect(url.searchParams.get("v")).toBe("2");
-    expect(url.searchParams.get("hf-proxy")).toBe("h264");
+    expect(url.searchParams.get("sc-proxy")).toBe("h264");
   });
 
   it("emits the diagnostic and a single console.info line exactly once per element", () => {

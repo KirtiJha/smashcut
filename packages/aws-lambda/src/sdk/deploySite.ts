@@ -16,7 +16,7 @@ import { mkdtempSync, rmSync, statSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { HeadObjectCommand, S3Client } from "@aws-sdk/client-s3";
-import { hashProjectDir } from "@hyperframes/producer/distributed";
+import { hashProjectDir } from "@smashcut/producer/distributed";
 import { formatS3Uri, tarDirectory, uploadFileToS3 } from "../s3Transport.js";
 
 /** Options for {@link deploySite}. */
@@ -85,7 +85,7 @@ export async function deploySite(opts: DeploySiteOptions): Promise<SiteHandle> {
     };
   }
 
-  const workdir = mkdtempSync(join(tmpdir(), "hf-deploy-site-"));
+  const workdir = mkdtempSync(join(tmpdir(), "sc-deploy-site-"));
   try {
     const tarball = join(workdir, "project.tar.gz");
     await tarDirectory(opts.projectDir, tarball);

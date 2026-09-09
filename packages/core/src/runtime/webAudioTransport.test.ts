@@ -852,7 +852,7 @@ describe("WebAudioTransport", () => {
     // it auditioned.
     it("previews an over-unity bus fader at the render's ceiling, not unity", async () => {
       const { transport, mock, gen } = setupGroupTransport();
-      document.body.innerHTML = `<hf-audio-group id="vo" data-volume="10"></hf-audio-group>`;
+      document.body.innerHTML = `<sc-audio-group id="vo" data-volume="10"></sc-audio-group>`;
       await scheduleGrouped(transport, gen, "a", "vo");
 
       // Creation order: a-gain(0), groupInput(1), groupOutput(2), muteGain(3), fader(4).
@@ -861,14 +861,14 @@ describe("WebAudioTransport", () => {
 
     it("still floors a negative bus fader at zero", async () => {
       const { transport, mock, gen } = setupGroupTransport();
-      document.body.innerHTML = `<hf-audio-group id="vo" data-volume="-1"></hf-audio-group>`;
+      document.body.innerHTML = `<sc-audio-group id="vo" data-volume="-1"></sc-audio-group>`;
       await scheduleGrouped(transport, gen, "a", "vo");
 
       expect(mock.gainNodes[4]!.gain.value).toBe(0);
     });
 
     // A bare getElementById read a member's own fader and chain as the bus's.
-    it("ignores a non-<hf-audio-group> element sharing the group id", async () => {
+    it("ignores a non-<sc-audio-group> element sharing the group id", async () => {
       const { transport, mock, gen } = setupGroupTransport();
       document.body.innerHTML = `<div id="vo" data-volume="0.25" data-hidden></div>`;
       await scheduleGrouped(transport, gen, "a", "vo");
@@ -925,7 +925,7 @@ describe("WebAudioTransport", () => {
 
       // The bus's input never reaches master directly. It runs through the
       // chain (dry here — neither member's group has a chain-bearing
-      // `<hf-audio-group>`) onto the FADER, then the mute gain (B5), then the
+      // `<sc-audio-group>`) onto the FADER, then the mute gain (B5), then the
       // output gain, then master. The fader sits POST-FX because that is where
       // the render bakes group volume in.
       expect(groupInput.connect).not.toHaveBeenCalledWith(mock.masterGain);
@@ -946,7 +946,7 @@ describe("WebAudioTransport", () => {
       expect(mock.gainNodes.length).toBe(gainCountAfterFirst + 1);
     });
 
-    it("a group id with no matching <hf-audio-group> element still gets a flat bus", async () => {
+    it("a group id with no matching <sc-audio-group> element still gets a flat bus", async () => {
       const { transport, mock, gen } = setupGroupTransport();
 
       await scheduleGrouped(transport, gen, "a", "orphan-group"); // no matching element
@@ -967,7 +967,7 @@ describe("WebAudioTransport", () => {
     // sitting at unity while the render applied data-volume went unseen. The
     // export was ~8 dB quieter than what had been auditioned.
     it("puts the group's own data-volume on the bus fader", async () => {
-      document.body.innerHTML = `<hf-audio-group id="vo" data-label="Voiceover" data-volume="0.4"></hf-audio-group>`;
+      document.body.innerHTML = `<sc-audio-group id="vo" data-label="Voiceover" data-volume="0.4"></sc-audio-group>`;
       const { transport, mock, gen } = setupGroupTransport();
 
       await expect(scheduleGrouped(transport, gen, "a", "vo")).resolves.not.toBeNull();
@@ -976,11 +976,11 @@ describe("WebAudioTransport", () => {
     });
 
     it("leaves the fader at unity when the group carries no data-volume", async () => {
-      document.body.innerHTML = `<hf-audio-group id="vo" data-label="Voiceover"></hf-audio-group>`;
+      document.body.innerHTML = `<sc-audio-group id="vo" data-label="Voiceover"></sc-audio-group>`;
       const { transport, mock, gen } = setupGroupTransport();
 
       // No throw wiring the group's automation reader against a real
-      // <hf-audio-group> element that carries no fx/automation attrs.
+      // <sc-audio-group> element that carries no fx/automation attrs.
       await expect(scheduleGrouped(transport, gen, "a", "vo")).resolves.not.toBeNull();
       expect(mock.gainNodes[4]!.gain.value).toBe(1);
     });
@@ -1014,7 +1014,7 @@ describe("WebAudioTransport", () => {
     // or a seek left the fader holding that pass's last value: 0 after a
     // fade-out, i.e. silent for the rest of the session.
     it("re-anchors the reused bus once per play generation, and only once", async () => {
-      document.body.innerHTML = `<hf-audio-group id="vo" data-volume="0.5"></hf-audio-group>`;
+      document.body.innerHTML = `<sc-audio-group id="vo" data-volume="0.5"></sc-audio-group>`;
       const { transport, mock, gen } = setupGroupTransport();
       await scheduleGrouped(transport, gen, "a", "vo");
       const fader = mock.gainNodes[4]!;
@@ -1038,7 +1038,7 @@ describe("WebAudioTransport", () => {
     // MEMBER out of the pass, and a generation stamped before the attempt would
     // stop every later member retrying.
     it("keeps the member playing when re-anchoring the bus throws", async () => {
-      document.body.innerHTML = `<hf-audio-group id="vo" data-volume="0.5"></hf-audio-group>`;
+      document.body.innerHTML = `<sc-audio-group id="vo" data-volume="0.5"></sc-audio-group>`;
       const { transport, mock, gen } = setupGroupTransport();
       await scheduleGrouped(transport, gen, "a", "vo");
       const fader = mock.gainNodes[4]!;
@@ -1058,7 +1058,7 @@ describe("WebAudioTransport", () => {
 
     describe("group mute (B5)", () => {
       it("a group created with data-hidden already set starts muted (mute gain at 0)", async () => {
-        document.body.innerHTML = `<hf-audio-group id="vo" data-hidden></hf-audio-group>`;
+        document.body.innerHTML = `<sc-audio-group id="vo" data-hidden></sc-audio-group>`;
         const { transport, mock, gen } = setupGroupTransport();
 
         await scheduleGrouped(transport, gen, "a", "vo");

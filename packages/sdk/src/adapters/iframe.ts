@@ -45,7 +45,7 @@ import {
   applyPositionEditToElement,
   composeTranslate,
   readCurrentTranslate,
-} from "@hyperframes/core/runtime/position-edits";
+} from "@smashcut/core/runtime/position-edits";
 import type {
   PreviewAdapter,
   ElementAtPointResult,
@@ -59,11 +59,11 @@ import { applyPatchesToDocument, applyOverrideSet } from "../engine/apply-patche
 
 /**
  * Walk from `el` upward through parentElement, looking for the nearest node
- * that carries `[data-hf-id]` and is NOT `[data-hf-root]`.
+ * that carries `[data-sc-id]` and is NOT `[data-sc-root]`.
  *
  * Returns null when:
- * - The walk exits the tree without finding `[data-hf-id]`
- * - The matching node is `[data-hf-root]` (transparent to hit-testing)
+ * - The walk exits the tree without finding `[data-sc-id]`
+ * - The matching node is `[data-sc-root]` (transparent to hit-testing)
  * - `isVisible(node)` returns false for the matching node
  *
  * Keeping this a pure function (no elementFromPoint, no window access) makes
@@ -75,9 +75,9 @@ export function resolveNearestHfElement(
 ): ElementAtPointResult | null {
   let node = el;
   while (node !== null) {
-    const id = node.getAttribute("data-hf-id");
+    const id = node.getAttribute("data-sc-id");
     if (id !== null) {
-      if (node.hasAttribute("data-hf-root")) return null;
+      if (node.hasAttribute("data-sc-root")) return null;
       if (!isVisible(node)) return null;
       return { id, tag: node.tagName.toLowerCase() };
     }
@@ -344,7 +344,7 @@ function warnTaintOnce(src: string): void {
   // taints the canvas, so alpha hit-test is unavailable and we fall back to
   // opaque. Without this, the fall-back is invisible ("hit-test feels wrong").
   console.warn(
-    `[hyperframes] image-alpha hit-test unavailable for cross-origin/tainted image; treating as opaque: ${src}`,
+    `[smashcut] image-alpha hit-test unavailable for cross-origin/tainted image; treating as opaque: ${src}`,
   );
 }
 
@@ -731,7 +731,7 @@ function paintCandidateAt(
  * Exported so a host whose hit-test policy differs can reuse the ink test without
  * taking the adapter with it. Two preconditions come with that:
  *
- * - `doc` must be hf-id-stamped (what `openComposition` produces). Against an unstamped
+ * - `doc` must be sc-id-stamped (what `openComposition` produces). Against an unstamped
  *   document the default walk matches nothing and every point answers a hard `false`,
  *   indistinguishable from genuinely empty — pass `addressableOnly: false` there.
  * - `x`/`y` are the DOCUMENT's own client coordinates, not the host page's. A host with a
@@ -748,7 +748,7 @@ export function compositionPaintsAt(
   y: number,
   opts?: PaintQueryOptions,
 ): boolean {
-  const selector = (opts?.addressableOnly ?? true) ? "[data-hf-id]" : "*";
+  const selector = (opts?.addressableOnly ?? true) ? "[data-sc-id]" : "*";
   const candidates: PaintCandidate[] = [];
   doc.querySelectorAll(selector).forEach((el) => {
     const candidate = paintCandidateAt(el, win, x, y);
@@ -834,7 +834,7 @@ class IframePreviewAdapter implements PreviewAdapter {
   }
 
   /**
-   * Synchronous hit-test. Returns the nearest `[data-hf-id]` element under
+   * Synchronous hit-test. Returns the nearest `[data-sc-id]` element under
    * (x, y) in the iframe's coordinate space, or null for a transparent hit
    * (root, opacity-0, nothing at all, or a transparent image pixel).
    *
@@ -897,7 +897,7 @@ class IframePreviewAdapter implements PreviewAdapter {
     }
     if (!doc || !win) return false;
     if (doc.readyState === "loading") return false;
-    if (!doc.querySelector("[data-hf-id]") && !doc.querySelector("[data-composition-id]")) {
+    if (!doc.querySelector("[data-sc-id]") && !doc.querySelector("[data-composition-id]")) {
       return false;
     }
 
@@ -909,7 +909,7 @@ class IframePreviewAdapter implements PreviewAdapter {
    * touching the model: sets the element's `translate` to its pre-drag value
    * composed with the accumulated delta. `translate` set after GSAP's first
    * parse is untouched by seeks, so this renders correctly on animated
-   * elements too. (The `--hf-studio-dx/dy` custom properties are no longer
+   * elements too. (The `--sc-studio-dx/dy` custom properties are no longer
    * written — compositions with the authored Studio drag-bridge CSS would
    * move by twice the delta if both channels applied.)
    *
@@ -946,7 +946,7 @@ class IframePreviewAdapter implements PreviewAdapter {
     const el =
       cached ??
       doc.querySelector<HTMLElement>(
-        `[data-hf-id="${id.replace(/\\/g, "\\\\").replace(/"/g, '\\"')}"]`,
+        `[data-sc-id="${id.replace(/\\/g, "\\\\").replace(/"/g, '\\"')}"]`,
       );
     if (!el) return null;
 
@@ -1101,7 +1101,7 @@ class IframePreviewAdapter implements PreviewAdapter {
         // Don't let a bad snapshot prevent the ongoing subscription below
         // from attaching — future patches should still mirror even if this
         // composition's current overrides couldn't be applied.
-        console.warn("[hyperframes] attachSync: override sync failed:", err);
+        console.warn("[smashcut] attachSync: override sync failed:", err);
       }
     };
 

@@ -91,14 +91,14 @@ async function runReorderCommit(el: HTMLElement, entries: Parameters<ReorderComm
 
 describe("useElementLifecycleOps — z-index reorder payload", () => {
   // Regression: an id-less canvas element (e.g. a caption `.sub` div, which
-  // carries only data-hf-id + class) once had its absent id coerced to `null`
+  // carries only data-sc-id + class) once had its absent id coerced to `null`
   // (`entry.id ?? null`). The DOM-patch guard rejects a null `body.target.id`,
   // so "move to back" toasted "unsafe values" and nothing persisted. The target
   // id must be `undefined` (dropped on the wire), letting hfId / selector match.
   it("never sends a null target id for an id-less element", async () => {
     const el = document.createElement("div");
     el.className = "sub clip";
-    el.setAttribute("data-hf-id", "hf-card");
+    el.setAttribute("data-sc-id", "sc-card");
 
     const { captured, root } = await runReorderCommit(el, [
       {
@@ -116,7 +116,7 @@ describe("useElementLifecycleOps — z-index reorder payload", () => {
     expect(target?.id).toBeUndefined();
     expect(target?.id).not.toBeNull();
     // The element stays addressable via hfId (and selector) instead.
-    expect(target?.hfId).toBe("hf-card");
+    expect(target?.hfId).toBe("sc-card");
 
     act(() => root.unmount());
   });
@@ -143,7 +143,7 @@ describe("useElementLifecycleOps — z-index reorder payload", () => {
   it("preserves a real id when the element has one", async () => {
     const el = document.createElement("video");
     el.id = "v-hero";
-    el.setAttribute("data-hf-id", "hf-ezl2");
+    el.setAttribute("data-sc-id", "sc-ezl2");
 
     const { captured, root } = await runReorderCommit(el, [
       { element: el, zIndex: 2, id: "v-hero", selector: "#v-hero", sourceFile: "index.html" },

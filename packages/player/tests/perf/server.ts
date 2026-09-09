@@ -13,10 +13,10 @@ import { fileURLToPath } from "node:url";
  *
  * URL routes:
  *   /                                  → host.html (default fixture: gsap-heavy)
- *   /host.html?fixture=<name>          → embed page hosting <hyperframes-player>
- *   /player/hyperframes-player.global.js
+ *   /host.html?fixture=<name>          → embed page hosting <smashcut-player>
+ *   /player/smashcut-player.global.js
  *   /vendor/gsap.min.js
- *   /vendor/hyperframe.runtime.iife.js
+ *   /vendor/smashcut.runtime.iife.js
  *   /fixtures/<name>/<file>            → fixture HTML + assets
  */
 
@@ -32,8 +32,8 @@ function firstExisting(candidates: string[]): string {
 }
 
 const PATHS = {
-  player: join(PLAYER_PKG, "dist/hyperframes-player.global.js"),
-  runtime: join(REPO_ROOT, "packages/core/dist/hyperframe.runtime.iife.js"),
+  player: join(PLAYER_PKG, "dist/smashcut-player.global.js"),
+  runtime: join(REPO_ROOT, "packages/core/dist/smashcut.runtime.iife.js"),
   // bun installs gsap into the package's node_modules in workspace mode, but
   // hoists it to the repo root if multiple packages share the same version.
   // Probe both locations so the server works regardless of layout.
@@ -78,7 +78,7 @@ function mimeFor(path: string): string {
 }
 
 function buildHostHtml(fixtureName: string, width: number, height: number): string {
-  const playerSrc = "/player/hyperframes-player.global.js";
+  const playerSrc = "/player/smashcut-player.global.js";
   const fixtureSrc = `/fixtures/${fixtureName}/index.html`;
   return `<!doctype html>
 <html lang="en">
@@ -87,24 +87,24 @@ function buildHostHtml(fixtureName: string, width: number, height: number): stri
     <title>player perf host: ${fixtureName}</title>
     <style>
       html, body { margin: 0; padding: 0; background: #000; }
-      hyperframes-player { display: block; }
+      smashcut-player { display: block; }
     </style>
   </head>
   <body>
-    <hyperframes-player
+    <smashcut-player
       id="player"
       src="${fixtureSrc}"
       width="${width}"
       height="${height}"
       muted
-    ></hyperframes-player>
+    ></smashcut-player>
     <script>
       window.__playerReady = false;
       window.__playerReadyAt = null;
       window.__playerNavStart = performance.timeOrigin + performance.now();
       window.__sandboxProbeResults = [];
       window.addEventListener("message", function (event) {
-        if (event.data && event.data.source === "hf-sandbox-probe") {
+        if (event.data && event.data.source === "sc-sandbox-probe") {
           window.__sandboxProbeResults.push(event.data.canAccessParent === true);
         }
       });
@@ -166,11 +166,11 @@ export function startServer(options: ServeOptions = {}): RunningServer {
         );
       }
 
-      if (path === "/player/hyperframes-player.global.js") {
+      if (path === "/player/smashcut-player.global.js") {
         return applyCacheHeaders(await readBunFile(PATHS.player), noCache);
       }
 
-      if (path === "/vendor/hyperframe.runtime.iife.js") {
+      if (path === "/vendor/smashcut.runtime.iife.js") {
         return applyCacheHeaders(await readBunFile(PATHS.runtime), noCache);
       }
 

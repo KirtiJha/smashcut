@@ -26,7 +26,7 @@ describe("parseProbeArgs", () => {
   });
 
   it("loads exact production launch arguments from JSON", () => {
-    const dir = mkdtempSync(join(tmpdir(), "hf-probe-args-"));
+    const dir = mkdtempSync(join(tmpdir(), "sc-probe-args-"));
     const argsPath = join(dir, "args.json");
     writeFileSync(argsPath, JSON.stringify(["--enable-begin-frame-control", "--no-sandbox"]));
     try {

@@ -11,7 +11,7 @@ export function createMapboxAdapter() {
     name: "mapbox",
     getInstances: () => {
       if (typeof window === "undefined") return [];
-      const arr = (window as { __hfMapbox?: MapboxMapLike[] }).__hfMapbox;
+      const arr = (window as { __scMapbox?: MapboxMapLike[] }).__scMapbox;
       return Array.isArray(arr) ? arr : [];
     },
     waitFor: (m) =>

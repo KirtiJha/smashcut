@@ -1,13 +1,13 @@
-# @hyperframes/engine
+# @smashcut/engine
 
 Seekable web-page-to-video rendering engine built on Puppeteer and FFmpeg.
 
-Framework-agnostic: works with GSAP, Lottie, Three.js, CSS animations, or any web content that implements the `window.__hf` seek protocol.
+Framework-agnostic: works with GSAP, Lottie, Three.js, CSS animations, or any web content that implements the `window.__sc` seek protocol.
 
 ## Install
 
 ```bash
-npm install @hyperframes/engine
+npm install @smashcut/engine
 ```
 
 **Requirements:** Node.js >= 22, Chrome/Chromium (auto-downloaded by Puppeteer), FFmpeg
@@ -39,7 +39,7 @@ import {
   initializeSession,
   captureFrame,
   closeCaptureSession,
-} from "@hyperframes/engine";
+} from "@smashcut/engine";
 
 // 1. Launch browser
 const browserLease = await acquireBrowser({ captureMode: "beginFrame" });
@@ -64,7 +64,7 @@ await closeCaptureSession(session);
 await browserLease.release();
 ```
 
-Most users should use `@hyperframes/producer` or the `hyperframes` CLI instead of calling the engine directly.
+Most users should use `@smashcut/producer` or the `smashcut` CLI instead of calling the engine directly.
 
 ## Documentation
 
@@ -72,6 +72,6 @@ Full documentation: [hyperframes.heygen.com/packages/engine](https://hyperframes
 
 ## Related packages
 
-- [`@hyperframes/core`](../core) — types, parsers, frame adapters
-- [`@hyperframes/producer`](../producer) — high-level render pipeline built on this engine
-- [`hyperframes`](../cli) — CLI
+- [`@smashcut/core`](../core) — types, parsers, frame adapters
+- [`@smashcut/producer`](../producer) — high-level render pipeline built on this engine
+- [`smashcut`](../cli) — CLI

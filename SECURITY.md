@@ -2,7 +2,7 @@
 
 ## Reporting a Vulnerability
 
-If you discover a security vulnerability in Hyperframes, please report it responsibly.
+If you discover a security vulnerability in Smashcut, please report it responsibly.
 
 **Do not open a public GitHub issue for security vulnerabilities.**
 
@@ -23,4 +23,4 @@ We will acknowledge receipt within 48 hours and aim to provide a fix or mitigati
 
 ## Scope
 
-This policy applies to all packages in the `@hyperframes/*` npm scope and the code in this repository.
+This policy applies to all packages in the `@smashcut/*` npm scope and the code in this repository.

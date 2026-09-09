@@ -48,16 +48,16 @@ describe("media rules", () => {
     expect(finding?.message).toContain("FROZEN");
   });
 
-  it("flags media that has data-hf-id but no real id", async () => {
+  it("flags media that has data-sc-id but no real id", async () => {
     // Regression: readAttr(tag, "id") used a \b boundary that matched the
-    // trailing `id="…"` inside `data-hf-id="…"`, so media carrying only a
-    // Studio-stamped data-hf-id passed the check and then rendered as a blank
-    // wash (video) / silent (audio). data-hf-id is NOT a render id.
+    // trailing `id="…"` inside `data-sc-id="…"`, so media carrying only a
+    // Studio-stamped data-sc-id passed the check and then rendered as a blank
+    // wash (video) / silent (audio). data-sc-id is NOT a render id.
     const html = `
 <html><body>
   <div id="root" data-composition-id="c1" data-width="1920" data-height="1080">
-    <video data-hf-id="hf-v1a2b3" data-start="0" data-duration="10" src="clip.mp4" muted playsinline></video>
-    <audio data-hf-id="hf-a4c5d6" data-start="0" data-duration="10" src="narration.wav"></audio>
+    <video data-sc-id="sc-v1a2b3" data-start="0" data-duration="10" src="clip.mp4" muted playsinline></video>
+    <audio data-sc-id="sc-a4c5d6" data-start="0" data-duration="10" src="narration.wav"></audio>
   </div>
   <script>window.__timelines = window.__timelines || {}; window.__timelines["c1"] = gsap.timeline({ paused: true });</script>
 </body></html>`;
@@ -479,13 +479,13 @@ describe("media rules", () => {
 
     expect(finding?.severity).toBe("warning");
     expect(finding?.message).toContain("local to its composition");
-    expect(finding?.fixHint).toContain('data-hf-media-start-basis="global"');
+    expect(finding?.fixHint).toContain('data-sc-media-start-basis="global"');
   });
 
   it.each([
     ['data-start="0"', "zero local start"],
-    ['data-start="2" data-hf-media-start-basis="local"', "explicit local start"],
-    ['data-start="2" data-hf-media-start-basis="global"', "explicit legacy-global start"],
+    ['data-start="2" data-sc-media-start-basis="local"', "explicit local start"],
+    ['data-start="2" data-sc-media-start-basis="global"', "explicit legacy-global start"],
   ])("does not warn for %s (%s)", async (attrs) => {
     const html = `<template>
   <div data-composition-id="scene" data-width="1920" data-height="1080">
@@ -683,8 +683,8 @@ describe("audio_group_no_members", () => {
     </div>
   </body></html>`;
 
-  const BUS = `<hf-audio-group id="voiceover" data-label="Voiceover" data-volume="0.4"
-    data-fx-chain='{"version":1,"nodes":[{"type":"peaking","id":"n1","params":{"frequency":250,"gain":-3,"q":1.2}}]}'></hf-audio-group>`;
+  const BUS = `<sc-audio-group id="voiceover" data-label="Voiceover" data-volume="0.4"
+    data-fx-chain='{"version":1,"nodes":[{"type":"peaking","id":"n1","params":{"frequency":250,"gain":-3,"q":1.2}}]}'></sc-audio-group>`;
 
   it("errors on a bus no clip in the file belongs to", async () => {
     const res = await lintHyperframeHtml(
@@ -712,7 +712,7 @@ describe("audio_group_no_members", () => {
 
   it("suggests only unmatched member ids, not a healthy sibling group", async () => {
     const res = await lintHyperframeHtml(
-      doc(`${BUS}<hf-audio-group id="music"></hf-audio-group>
+      doc(`${BUS}<sc-audio-group id="music"></sc-audio-group>
         <audio id="bgm" src="music.wav" data-start="0" data-duration="5" data-audio-group="music"></audio>
         <audio id="vo-1" src="vo.wav" data-start="0" data-duration="5" data-audio-group="voiceovr"></audio>`),
     );
@@ -756,7 +756,7 @@ describe("audio_group_no_members", () => {
 
   it("stays quiet for an unmatched bus when another group has local members", async () => {
     const res = await lintHyperframeHtml(
-      doc(`<hf-audio-group id="local"></hf-audio-group>
+      doc(`<sc-audio-group id="local"></sc-audio-group>
         <audio id="local-1" src="local.wav" data-start="0" data-duration="5" data-audio-group="local"></audio>
         ${BUS}
         <div id="host" data-composition-src="compositions/voices.html" data-start="0" data-duration="10"></div>`),
@@ -766,7 +766,7 @@ describe("audio_group_no_members", () => {
 
   it("stays quiet for a bus with no id", async () => {
     const res = await lintHyperframeHtml(
-      doc(`<hf-audio-group data-label="Nameless"></hf-audio-group>
+      doc(`<sc-audio-group data-label="Nameless"></sc-audio-group>
         <audio id="s-1" src="s.wav" data-start="0" data-duration="2" data-audio-group="sfx"></audio>`),
     );
     expect(res.findings.some((f) => f.code === "audio_group_no_members")).toBe(false);
@@ -776,7 +776,7 @@ describe("audio_group_no_members", () => {
 describe("audio_group_timing_attrs", () => {
   const doc = (busAttrs: string) => `<!DOCTYPE html><html><body>
     <div id="root" data-composition-id="main" data-start="0" data-width="1920" data-height="1080" data-duration="10">
-      <hf-audio-group id="voiceover" data-label="Voiceover" ${busAttrs}></hf-audio-group>
+      <sc-audio-group id="voiceover" data-label="Voiceover" ${busAttrs}></sc-audio-group>
       <audio id="vo-1" src="vo.wav" data-start="0" data-duration="5" data-audio-group="voiceover"></audio>
     </div>
   </body></html>`;
@@ -804,7 +804,7 @@ describe("audio_group_timing_attrs", () => {
 describe("audio_group_carve_attr", () => {
   const doc = (busAttrs: string) => `<!DOCTYPE html><html><body>
     <div id="root" data-composition-id="main" data-start="0" data-width="1920" data-height="1080" data-duration="10">
-      <hf-audio-group id="music" data-label="Music bed" ${busAttrs}></hf-audio-group>
+      <sc-audio-group id="music" data-label="Music bed" ${busAttrs}></sc-audio-group>
       <audio id="bgm" src="bgm.mp3" data-start="0" data-duration="10" data-audio-group="music"></audio>
     </div>
   </body></html>`;
@@ -829,7 +829,7 @@ describe("audio_group_carve_attr", () => {
   it("leaves a carve on the clip alone", async () => {
     const res = await lintHyperframeHtml(`<!DOCTYPE html><html><body>
       <div id="root" data-composition-id="main" data-start="0" data-width="1920" data-height="1080" data-duration="10">
-        <hf-audio-group id="music" data-label="Music bed"></hf-audio-group>
+        <sc-audio-group id="music" data-label="Music bed"></sc-audio-group>
         <audio id="bgm" src="bgm.mp3" data-start="0" data-duration="10" data-audio-group="music"
           data-fx-carve='{"enabled":true,"sources":["voiceover"],"strength":0.25}'></audio>
       </div>
@@ -859,7 +859,7 @@ describe("audio_carve_ungrouped_sources", () => {
     const res = await lintHyperframeHtml(
       withCarve(
         `{"enabled":true,"sources":["voiceover"],"strength":0.35}`,
-        `<hf-audio-group id="voiceover" data-label="Voiceover"></hf-audio-group>`,
+        `<sc-audio-group id="voiceover" data-label="Voiceover"></sc-audio-group>`,
       ),
     );
     expect(res.findings.some((f) => f.code === "audio_carve_ungrouped_sources")).toBe(false);
@@ -878,7 +878,7 @@ describe("audio_carve_ungrouped_sources", () => {
     const res = await lintHyperframeHtml(
       withCarve(
         `{"enabled":true,"sources":["voiceover","vo-3","vo-4"],"strength":0.35}`,
-        `<hf-audio-group id="voiceover" data-label="Voiceover"></hf-audio-group>`,
+        `<sc-audio-group id="voiceover" data-label="Voiceover"></sc-audio-group>`,
       ),
     );
     const finding = res.findings.find((f) => f.code === "audio_carve_ungrouped_sources");

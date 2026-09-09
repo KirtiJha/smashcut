@@ -2,8 +2,8 @@
 
 import { act } from "react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { ensureHfIds } from "@hyperframes/parsers/hf-ids";
-import { splitElementInHtml } from "@hyperframes/studio-server/source-mutation";
+import { ensureHfIds } from "@smashcut/parsers/sc-ids";
+import { splitElementInHtml } from "@smashcut/studio-server/source-mutation";
 import type { TimelineElement } from "../player";
 import { usePlayerStore } from "../player";
 import { useRazorSplit } from "./useRazorSplit";
@@ -18,7 +18,7 @@ import { createSplitFetchMock, mountProbe } from "./useRazorSplit.testHelpers";
 
 (globalThis as unknown as { IS_REACT_ACT_ENVIRONMENT: boolean }).IS_REACT_ACT_ENVIRONMENT = true;
 
-const ORIGINAL = `<div class="clip" id="clip1" data-start="0" data-duration="4" data-hf-id="hf-clip">hi</div>`;
+const ORIGINAL = `<div class="clip" id="clip1" data-start="0" data-duration="4" data-sc-id="sc-clip">hi</div>`;
 const SPLIT = splitElementInHtml(ORIGINAL, { id: "clip1" }, 2, "clip1-split").html;
 
 const element: TimelineElement = {
@@ -121,8 +121,8 @@ function mountRazorSplit(opts: { gsap?: boolean; previewStamp?: boolean } = {}):
       reloadPreview: () => {
         if (!opts.previewStamp) return;
         const stamped = ensureHfIds(disk["index.html"]);
-        const idsBefore = (disk["index.html"].match(/\bdata-hf-id=/g) ?? []).length;
-        const idsAfter = (stamped.match(/\bdata-hf-id=/g) ?? []).length;
+        const idsBefore = (disk["index.html"].match(/\bdata-sc-id=/g) ?? []).length;
+        const idsAfter = (stamped.match(/\bdata-sc-id=/g) ?? []).length;
         if (idsAfter > idsBefore) {
           disk["index.html"] = stamped;
           previewWrites.push(stamped);
@@ -154,7 +154,7 @@ afterEach(() => {
 });
 
 describe("useRazorSplit — split is undoable via edit history", () => {
-  it("keeps history aligned when preview reload checks hf-id persistence", async () => {
+  it("keeps history aligned when preview reload checks sc-id persistence", async () => {
     const harness = mountRazorSplit({ previewStamp: true });
 
     await act(async () => {

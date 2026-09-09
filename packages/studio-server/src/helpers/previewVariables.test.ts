@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { injectPreviewVariables } from "./previewVariables";
 
-const SCRIPT = '<script data-hf-preview-variables>window.__hfVariables={"a":1};</script>';
+const SCRIPT = '<script data-sc-preview-variables>window.__scVariables={"a":1};</script>';
 
 describe("injectPreviewVariables", () => {
   it.each([
@@ -37,7 +37,7 @@ describe("injectPreviewVariables", () => {
 
   it("escapes script-breaking input before inserting it", () => {
     expect(injectPreviewVariables("<head>", { a: "</script>" })).toBe(
-      '<head><script data-hf-preview-variables>window.__hfVariables={"a":"\\u003c/script>"};</script>',
+      '<head><script data-sc-preview-variables>window.__scVariables={"a":"\\u003c/script>"};</script>',
     );
   });
 });

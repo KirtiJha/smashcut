@@ -22,7 +22,7 @@ import { spawnSync } from "node:child_process";
 import { existsSync, mkdirSync, mkdtempSync, rmSync, statSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { buildEncoderArgs } from "@hyperframes/engine";
+import { buildEncoderArgs } from "@smashcut/engine";
 
 const FPS = 30;
 const TOTAL_FRAMES = 60;
@@ -63,7 +63,7 @@ function runFfprobeSync(args: string[]): FfmpegResult {
 }
 
 beforeAll(() => {
-  runRoot = mkdtempSync(join(tmpdir(), "hf-webm-concat-smoke-"));
+  runRoot = mkdtempSync(join(tmpdir(), "sc-webm-concat-smoke-"));
   framesDir = join(runRoot, "frames");
   chunkDir = join(runRoot, "chunks");
   mkdirSync(framesDir, { recursive: true });
@@ -298,7 +298,7 @@ describe("webm VP9 concat-copy smoke (yuva420p alpha)", () => {
   // The source frames carry a per-pixel alpha gradient so the encoder
   // cannot treat the alpha plane as uniform/redundant and drop it.
   it("encode + concat-copy + decode round-trip works for yuva420p", () => {
-    const alphaRoot = mkdtempSync(join(tmpdir(), "hf-webm-concat-smoke-alpha-"));
+    const alphaRoot = mkdtempSync(join(tmpdir(), "sc-webm-concat-smoke-alpha-"));
     try {
       const alphaFramesDir = join(alphaRoot, "frames");
       const alphaChunkDir = join(alphaRoot, "chunks");

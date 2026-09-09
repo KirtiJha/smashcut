@@ -1,14 +1,14 @@
 import { createServer, type ServerResponse } from "node:http";
 import { createReadStream, existsSync, statSync } from "node:fs";
 import { isAbsolute, relative, resolve } from "node:path";
-import { getMimeType } from "@hyperframes/core/studio-api";
+import { getMimeType } from "@smashcut/core/studio-api";
 import { resolveAutoProxy } from "./projectConfig.js";
 import { injectMediaCodecMap } from "./compositionServer.js";
 import {
   resolveProxy,
   ProxyCapacityError,
   ProxyTranscodeError,
-} from "@hyperframes/studio-server/proxy-transcoder";
+} from "@smashcut/studio-server/proxy-transcoder";
 import {
   decideMediaProxyEligibility,
   isProxyVariantRequest,
@@ -16,7 +16,7 @@ import {
   resolveProxyVariantRequest,
   PROXY_VARIANT_CONFIG,
   type ProxyVariantRequest,
-} from "@hyperframes/studio-server/media-codec-map";
+} from "@smashcut/studio-server/media-codec-map";
 
 export interface StaticProjectServer {
   url: string;
@@ -29,7 +29,7 @@ export interface StaticProjectServer {
  * to determine the duration of formats that carry it in a trailing/implicit
  * position (notably WAV, which otherwise reports `.duration` as `Infinity`
  * however long it buffers). A plain 200 with no `Accept-Ranges` makes the
- * media element non-seekable, so `hyperframes validate` would spuriously warn
+ * media element non-seekable, so `smashcut validate` would spuriously warn
  * that a perfectly valid local WAV's duration "could not be read".
  */
 function serveFileWithRange(
@@ -84,7 +84,7 @@ function serveFileWithRange(
 }
 
 /**
- * Serves an alpha-aware `?hf-proxy=` variant for a media request: 404s (no transcode attempted)
+ * Serves an alpha-aware `?sc-proxy=` variant for a media request: 404s (no transcode attempted)
  * when auto-proxying is off or the asset isn't a video, resolves+serves the
  * cached proxy with Range support on success, and answers 502 on a
  * transcode failure (never a silent black frame). Shared by every one of
@@ -158,7 +158,7 @@ export async function serveStaticProjectHtml(
   // temp dir of localized remote assets).
   assetRoots: readonly string[] = [],
   // Explicit CLI --proxy/--no-proxy value. Undefined preserves the project's
-  // committed hyperframes.json setting.
+  // committed smashcut.json setting.
   autoProxyOverride?: boolean,
 ): Promise<StaticProjectServer> {
   const roots = [projectDir, ...assetRoots];
@@ -180,7 +180,7 @@ export async function serveStaticProjectHtml(
     const queryIndex = url.indexOf("?");
     const pathOnly = queryIndex === -1 ? url : url.slice(0, queryIndex);
     const proxyParam =
-      queryIndex === -1 ? null : new URLSearchParams(url.slice(queryIndex + 1)).get("hf-proxy");
+      queryIndex === -1 ? null : new URLSearchParams(url.slice(queryIndex + 1)).get("sc-proxy");
     const proxyRequest =
       proxyParam !== null && isProxyVariantRequest(proxyParam) ? proxyParam : null;
 

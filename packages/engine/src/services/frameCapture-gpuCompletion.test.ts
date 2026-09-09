@@ -10,7 +10,7 @@ describe("WebGPU frame completion", () => {
       finish = resolve;
     });
     const previousWindow = Reflect.get(globalThis, "window");
-    Reflect.set(globalThis, "window", { __hfWaitForSeekCompletion: () => gpuWork });
+    Reflect.set(globalThis, "window", { __scWaitForSeekCompletion: () => gpuWork });
     const page = {
       evaluate: vi.fn(async (pageFunction: () => unknown) => pageFunction()),
     };

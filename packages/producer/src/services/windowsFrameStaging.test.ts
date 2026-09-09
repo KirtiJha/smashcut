@@ -16,8 +16,8 @@ import { createRenderJob, executeRenderJob } from "./renderOrchestrator.js";
 import { materializeExtractedFramesForCompiledDir } from "./render/shared.js";
 
 const staging = vi.hoisted((): { requestedCopy?: boolean } => ({}));
-vi.mock("@hyperframes/engine", async (importOriginal) => ({
-  ...(await importOriginal<typeof import("@hyperframes/engine")>()),
+vi.mock("@smashcut/engine", async (importOriginal) => ({
+  ...(await importOriginal<typeof import("@smashcut/engine")>()),
   assertConfiguredFfmpegBinariesExist: () => {},
 }));
 vi.mock("./render/stages/compileStage.js", () => ({
@@ -52,7 +52,7 @@ vi.mock("./render/stages/extractVideosStage.js", async (importOriginal) => ({
 
 const dirs: string[] = [];
 function fixture() {
-  const root = mkdtempSync(join(tmpdir(), "hf-windows-staging-"));
+  const root = mkdtempSync(join(tmpdir(), "sc-windows-staging-"));
   dirs.push(root);
   const source = join(root, "cache");
   mkdirSync(source);

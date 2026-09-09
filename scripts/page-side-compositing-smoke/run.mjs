@@ -4,7 +4,7 @@
  *
  * Validates that:
  *   1. The bundled CLI accepts the new flag.
- *   2. The local `@hyperframes/shader-transitions` IIFE bundle carries the
+ *   2. The local `@smashcut/shader-transitions` IIFE bundle carries the
  *      page-side compositor canary string (build is wired correctly).
  *   3. Rendering the fixture WITH and WITHOUT the flag both produce valid
  *      MP4s with the same duration. (Pixel-equality is NOT a correctness
@@ -45,7 +45,7 @@ import { fileURLToPath } from "node:url";
 const HERE = dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = resolve(HERE, "..", "..");
 const FIXTURE_SRC = join(HERE, "fixture");
-const WORK_DIR = mkdtempSync(join(tmpdir(), "hf-page-side-smoke-"));
+const WORK_DIR = mkdtempSync(join(tmpdir(), "sc-page-side-smoke-"));
 const FIXTURE_RUN_DIR = join(WORK_DIR, "fixture");
 const CLI_PATH = join(REPO_ROOT, "packages", "cli", "dist", "cli.js");
 const SHADER_BUNDLE = join(REPO_ROOT, "packages", "shader-transitions", "dist", "index.global.js");
@@ -53,7 +53,7 @@ const SHADER_BUNDLE = join(REPO_ROOT, "packages", "shader-transitions", "dist", 
 // `packages/shader-transitions/src/engineModePageComposite.ts` —
 // kept identical here on purpose. Test broken → engineModePageComposite.test
 // fails first.
-const PAGE_COMPOSITOR_CANARY = "__hf_page_compositor_v1__";
+const PAGE_COMPOSITOR_CANARY = "__sc_page_compositor_v1__";
 
 function note(line) {
   process.stdout.write("[smoke] " + line + "\n");
@@ -75,7 +75,7 @@ function assertCanary() {
   if (count < 1) {
     fail(
       "shader-transitions bundle is missing the page-side compositor canary " +
-        `("${PAGE_COMPOSITOR_CANARY}"). Rebuild @hyperframes/shader-transitions and re-run.`,
+        `("${PAGE_COMPOSITOR_CANARY}"). Rebuild @smashcut/shader-transitions and re-run.`,
     );
   }
   note(`canary present in ${SHADER_BUNDLE} (${count}× hit)`);
@@ -91,7 +91,7 @@ function assertCliCanary() {
     const buf = execFileSync("grep", ["-c", needle, CLI_PATH]);
     const count = Number(buf.toString().trim());
     if (count < 1) {
-      fail(`bundled CLI is missing canary "${needle}". Rebuild @hyperframes/cli and re-run.`);
+      fail(`bundled CLI is missing canary "${needle}". Rebuild @smashcut/cli and re-run.`);
     }
     note(`CLI bundle carries "${needle}" (${count}× hit)`);
   }

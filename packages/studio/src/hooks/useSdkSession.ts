@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from "react";
-import { openComposition } from "@hyperframes/sdk";
-import type { Composition } from "@hyperframes/sdk";
+import { openComposition } from "@smashcut/sdk";
+import type { Composition } from "@smashcut/sdk";
 import { readStudioFileChangePath } from "../components/editor/manualEdits";
 import { isSelfWriteEcho } from "./sdkSelfWriteRegistry";
 import { trackStudioEvent } from "../utils/studioTelemetry";

@@ -12,22 +12,22 @@ describe("htmlDocument helpers", () => {
     expect(doc.body.querySelector("template")?.innerHTML).toContain("<span>hello</span>");
   });
 
-  it("strips every known embedded HyperFrames runtime marker", () => {
+  it("strips every known embedded SmashCut runtime marker", () => {
     const html = `
-<script src="hyperframe.runtime.iife.js"></script>
-<script src="hyperframes-runtime.modular.inline.js"></script >
-<script src="hyperframe-runtime.modular-runtime.inline.js"></script>
-<script data-hyperframes-preview-runtime="1"></script>
+<script src="smashcut.runtime.iife.js"></script>
+<script src="smashcut-runtime.modular.inline.js"></script >
+<script src="smashcut-runtime.modular-runtime.inline.js"></script>
+<script data-smashcut-preview-runtime="1"></script>
 <script>window.__playerReady = true;</script >
 <script>window.__renderReady = false;</script>
 <script>window.authored = true;</script>`;
 
     const stripped = stripEmbeddedRuntimeScripts(html);
 
-    expect(stripped).not.toContain("hyperframe.runtime.iife.js");
-    expect(stripped).not.toContain("hyperframes-runtime.modular.inline.js");
-    expect(stripped).not.toContain("hyperframe-runtime.modular-runtime.inline.js");
-    expect(stripped).not.toContain("data-hyperframes-preview-runtime");
+    expect(stripped).not.toContain("smashcut.runtime.iife.js");
+    expect(stripped).not.toContain("smashcut-runtime.modular.inline.js");
+    expect(stripped).not.toContain("smashcut-runtime.modular-runtime.inline.js");
+    expect(stripped).not.toContain("data-smashcut-preview-runtime");
     expect(stripped).not.toContain("window.__playerReady");
     expect(stripped).not.toContain("window.__renderReady");
     expect(stripped).toContain("window.authored = true");

@@ -3,7 +3,7 @@ import { homedir } from "node:os";
 import { basename, dirname, join, resolve } from "node:path";
 
 /**
- * Remembered defaults — the lightweight tier of HyperFrames user memory.
+ * Remembered defaults — the lightweight tier of SmashCut user memory.
  *
  * Two files, same shape as the rest of media-use's storage split:
  * - project `.media/preferences.json` — committed with the repo, so the whole

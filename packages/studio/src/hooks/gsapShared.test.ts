@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import type { GsapAnimation } from "@hyperframes/core/gsap-parser";
+import type { GsapAnimation } from "@smashcut/core/gsap-parser";
 import type { DomEditSelection } from "../components/editor/domEditingTypes";
 import {
   idFromSelector,
@@ -322,7 +322,7 @@ describe("idFromSelector", () => {
 
   it("returns null for a selector that does not address an id", () => {
     expect(idFromSelector(".dot")).toBeNull();
-    expect(idFromSelector("[data-hf-id='x']")).toBeNull();
+    expect(idFromSelector("[data-sc-id='x']")).toBeNull();
     expect(idFromSelector(undefined)).toBeNull();
   });
 });

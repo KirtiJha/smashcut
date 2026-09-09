@@ -73,7 +73,7 @@ export function isPathInside(
  *   2. The backslashes and colon are invalid inside some OS sandboxes
  *      and HTTP URL encodings.
  *
- * We sanitise into `hf-ext/...` form using forward slashes, stripping
+ * We sanitise into `sc-ext/...` form using forward slashes, stripping
  * the colon after drive letters, the Windows extended-length prefix
  * (`\\?\`), and the UNC prefix (`\\server\share\`). The result is a
  * pure relative path that joins cleanly on every platform.
@@ -85,8 +85,8 @@ export function isPathInside(
  */
 export function toExternalAssetKey(absPath: string): string {
   // Short-circuit if already a sanitised key — prevents double-wrap
-  // producing `hf-ext/hf-ext/...`.
-  if (absPath.startsWith("hf-ext/")) return absPath;
+  // producing `sc-ext/sc-ext/...`.
+  if (absPath.startsWith("sc-ext/")) return absPath;
 
   // Normalise to forward slashes first so every subsequent pattern is
   // separator-agnostic.
@@ -109,7 +109,7 @@ export function toExternalAssetKey(absPath: string): string {
   // Strip a leading drive-letter colon (Windows: "D:/coder" → "D/coder").
   normalised = normalised.replace(/^([A-Za-z]):\/?/, "$1/");
 
-  return "hf-ext/" + normalised;
+  return "sc-ext/" + normalised;
 }
 
 export function formatCaptureFrameName(index: number, ext: string): string {

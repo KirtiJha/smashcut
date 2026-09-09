@@ -15,7 +15,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 
 ```html slot-machine-roll.html
 <!--
-  Slot Machine Roll - typography primitive for HyperFrames.
+  Slot Machine Roll - typography primitive for SmashCut.
 
   Paste the markup, CSS and script into a composition. Drive the timeline
   integration from a paused GSAP timeline so renders remain deterministic.
@@ -43,7 +43,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 -->
 
 <div
-  class="hf-catalog-slot-machine-roll"
+  class="sc-catalog-slot-machine-roll"
   data-composition-variables='[
     { "id": "result", "type": "string", "role": "content", "label": "Result", "description": "Characters the reels land on, one reel column per character. Whitespace is stripped and every reel starts on a zero.", "default": "A7K" },
     { "id": "direction", "type": "enum", "role": "motion", "label": "Direction", "description": "Which way the reels roll: up lifts the zero out through the top, down drops it out through the bottom.", "default": "up", "options": [{ "value": "up", "label": "Up" }, { "value": "down", "label": "Down" }] },
@@ -61,35 +61,35 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 </div>
 
 <style>
-  .hf-catalog-slot-machine-roll {
-    color: var(--hf-slot-color, #18181b);
+  .sc-catalog-slot-machine-roll {
+    color: var(--sc-slot-color, #18181b);
     font-family: Inter, system-ui, sans-serif;
     font-weight: 900;
     letter-spacing: -0.04em;
   }
-  .hf-catalog-slot-machine-roll {
+  .sc-catalog-slot-machine-roll {
     display: inline-flex;
     gap: 6px;
-    height: var(--hf-slot-row, 74px);
+    height: var(--sc-slot-row, 74px);
     overflow: hidden;
     font:
-      900 var(--hf-slot-row, 74px)/1 ui-monospace,
+      900 var(--sc-slot-row, 74px)/1 ui-monospace,
       SFMono-Regular,
       Menlo,
       monospace;
   }
-  .hf-catalog-slot-machine-roll span {
+  .sc-catalog-slot-machine-roll span {
     display: block;
-    height: var(--hf-slot-row, 74px);
+    height: var(--sc-slot-row, 74px);
     overflow: hidden;
   }
-  .hf-catalog-slot-machine-roll i {
+  .sc-catalog-slot-machine-roll i {
     display: block;
     font-style: normal;
     transform: translateY(
       calc(
-        var(--hf-slot-base, 0px) + var(--hf-slot-y, 0px) * var(--hf-slot-dir, 1) *
-          var(--hf-slot-gain, 1)
+        var(--sc-slot-base, 0px) + var(--sc-slot-y, 0px) * var(--sc-slot-dir, 1) *
+          var(--sc-slot-gain, 1)
       )
     );
   }
@@ -100,8 +100,8 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
     "use strict";
 
     var vars =
-      window.__hyperframes && window.__hyperframes.getVariables
-        ? window.__hyperframes.getVariables()
+      window.__smashcut && window.__smashcut.getVariables
+        ? window.__smashcut.getVariables()
         : {};
 
     // Unrecognised overrides return to their declared defaults.
@@ -123,15 +123,15 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
     var result = (typeof vars.result === "string" ? vars.result : "").replace(/\s+/g, "");
     if (result.length === 0) result = "A7K";
 
-    var roots = document.querySelectorAll(".hf-catalog-slot-machine-roll");
+    var roots = document.querySelectorAll(".sc-catalog-slot-machine-roll");
     for (var i = 0; i < roots.length; i += 1) {
       var root = roots[i];
-      root.style.setProperty("--hf-slot-row", row + "px");
-      root.style.setProperty("--hf-slot-gain", String(row / 74));
-      root.style.setProperty("--hf-slot-dir", String(dir));
+      root.style.setProperty("--sc-slot-row", row + "px");
+      root.style.setProperty("--sc-slot-gain", String(row / 74));
+      root.style.setProperty("--sc-slot-dir", String(dir));
       // Rolling down starts one row up, so the zero still sits in frame at rest.
-      root.style.setProperty("--hf-slot-base", (dir === 1 ? 0 : -row) + "px");
-      root.style.setProperty("--hf-slot-color", tone);
+      root.style.setProperty("--sc-slot-base", (dir === 1 ? 0 : -row) + "px");
+      root.style.setProperty("--sc-slot-color", tone);
       root.textContent = "";
       for (var j = 0; j < result.length; j += 1) {
         var reel = document.createElement("i");
@@ -148,7 +148,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 
 <!--
   Timeline integration:
-  tl.fromTo('.hf-catalog-slot-machine-roll i', { '--hf-slot-y': '0px' }, { '--hf-slot-y': '-74px', duration: 0.52, stagger: 0.06, ease: 'power3.inOut' }, startTime);
+  tl.fromTo('.sc-catalog-slot-machine-roll i', { '--sc-slot-y': '0px' }, { '--sc-slot-y': '-74px', duration: 0.52, stagger: 0.06, ease: 'power3.inOut' }, startTime);
 -->
 ```
 
@@ -156,7 +156,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 
 ## Install
 
-<InstallCommand command="npx hyperframes add slot-machine-roll" item="slot-machine-roll" />
+<InstallCommand command="npx smashcut add slot-machine-roll" item="slot-machine-roll" />
 
 That writes one file: `compositions/components/slot-machine-roll.html`.
 
@@ -189,7 +189,7 @@ defaults, so this behaves exactly like the preview above until you change one:
 
 ```html
 <!--
-  Slot Machine Roll - typography primitive for HyperFrames.
+  Slot Machine Roll - typography primitive for SmashCut.
 
   Paste the markup, CSS and script into a composition. Drive the timeline
   integration from a paused GSAP timeline so renders remain deterministic.
@@ -217,7 +217,7 @@ defaults, so this behaves exactly like the preview above until you change one:
 -->
 
 <div
-  class="hf-catalog-slot-machine-roll"
+  class="sc-catalog-slot-machine-roll"
   data-composition-variables='[
     { "id": "result", "type": "string", "role": "content", "label": "Result", "description": "Characters the reels land on, one reel column per character. Whitespace is stripped and every reel starts on a zero.", "default": "A7K" },
     { "id": "direction", "type": "enum", "role": "motion", "label": "Direction", "description": "Which way the reels roll: up lifts the zero out through the top, down drops it out through the bottom.", "default": "up", "options": [{ "value": "up", "label": "Up" }, { "value": "down", "label": "Down" }] },
@@ -235,35 +235,35 @@ defaults, so this behaves exactly like the preview above until you change one:
 </div>
 
 <style>
-  .hf-catalog-slot-machine-roll {
-    color: var(--hf-slot-color, #18181b);
+  .sc-catalog-slot-machine-roll {
+    color: var(--sc-slot-color, #18181b);
     font-family: Inter, system-ui, sans-serif;
     font-weight: 900;
     letter-spacing: -0.04em;
   }
-  .hf-catalog-slot-machine-roll {
+  .sc-catalog-slot-machine-roll {
     display: inline-flex;
     gap: 6px;
-    height: var(--hf-slot-row, 74px);
+    height: var(--sc-slot-row, 74px);
     overflow: hidden;
     font:
-      900 var(--hf-slot-row, 74px)/1 ui-monospace,
+      900 var(--sc-slot-row, 74px)/1 ui-monospace,
       SFMono-Regular,
       Menlo,
       monospace;
   }
-  .hf-catalog-slot-machine-roll span {
+  .sc-catalog-slot-machine-roll span {
     display: block;
-    height: var(--hf-slot-row, 74px);
+    height: var(--sc-slot-row, 74px);
     overflow: hidden;
   }
-  .hf-catalog-slot-machine-roll i {
+  .sc-catalog-slot-machine-roll i {
     display: block;
     font-style: normal;
     transform: translateY(
       calc(
-        var(--hf-slot-base, 0px) + var(--hf-slot-y, 0px) * var(--hf-slot-dir, 1) *
-          var(--hf-slot-gain, 1)
+        var(--sc-slot-base, 0px) + var(--sc-slot-y, 0px) * var(--sc-slot-dir, 1) *
+          var(--sc-slot-gain, 1)
       )
     );
   }
@@ -274,8 +274,8 @@ defaults, so this behaves exactly like the preview above until you change one:
     "use strict";
 
     var vars =
-      window.__hyperframes && window.__hyperframes.getVariables
-        ? window.__hyperframes.getVariables()
+      window.__smashcut && window.__smashcut.getVariables
+        ? window.__smashcut.getVariables()
         : {};
 
     // Unrecognised overrides return to their declared defaults.
@@ -297,15 +297,15 @@ defaults, so this behaves exactly like the preview above until you change one:
     var result = (typeof vars.result === "string" ? vars.result : "").replace(/\s+/g, "");
     if (result.length === 0) result = "A7K";
 
-    var roots = document.querySelectorAll(".hf-catalog-slot-machine-roll");
+    var roots = document.querySelectorAll(".sc-catalog-slot-machine-roll");
     for (var i = 0; i < roots.length; i += 1) {
       var root = roots[i];
-      root.style.setProperty("--hf-slot-row", row + "px");
-      root.style.setProperty("--hf-slot-gain", String(row / 74));
-      root.style.setProperty("--hf-slot-dir", String(dir));
+      root.style.setProperty("--sc-slot-row", row + "px");
+      root.style.setProperty("--sc-slot-gain", String(row / 74));
+      root.style.setProperty("--sc-slot-dir", String(dir));
       // Rolling down starts one row up, so the zero still sits in frame at rest.
-      root.style.setProperty("--hf-slot-base", (dir === 1 ? 0 : -row) + "px");
-      root.style.setProperty("--hf-slot-color", tone);
+      root.style.setProperty("--sc-slot-base", (dir === 1 ? 0 : -row) + "px");
+      root.style.setProperty("--sc-slot-color", tone);
       root.textContent = "";
       for (var j = 0; j < result.length; j += 1) {
         var reel = document.createElement("i");
@@ -322,7 +322,7 @@ defaults, so this behaves exactly like the preview above until you change one:
 
 <!--
   Timeline integration:
-  tl.fromTo('.hf-catalog-slot-machine-roll i', { '--hf-slot-y': '0px' }, { '--hf-slot-y': '-74px', duration: 0.52, stagger: 0.06, ease: 'power3.inOut' }, startTime);
+  tl.fromTo('.sc-catalog-slot-machine-roll i', { '--sc-slot-y': '0px' }, { '--sc-slot-y': '-74px', duration: 0.52, stagger: 0.06, ease: 'power3.inOut' }, startTime);
 -->
 ```
 

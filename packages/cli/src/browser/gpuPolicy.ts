@@ -15,7 +15,7 @@ export async function resolveCaptureBrowserGpuMode(
   requestedMode: BrowserGpuMode,
   chromePath?: string,
 ): Promise<ResolvedBrowserGpuMode> {
-  const { resolveBrowserGpuMode } = await import("@hyperframes/engine");
+  const { resolveBrowserGpuMode } = await import("@smashcut/engine");
   return resolveBrowserGpuMode(requestedMode, { chromePath });
 }
 

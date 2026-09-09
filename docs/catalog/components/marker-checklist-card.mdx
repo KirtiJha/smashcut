@@ -16,7 +16,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 ```html marker-checklist-card.html
 <!doctype html>
 <!--
-  marker-checklist-card: HyperFrames motion primitive (scene)
+  marker-checklist-card: SmashCut motion primitive (scene)
 
   A hand-lettered paper card, measured from reference ad footage: a marker
   headline with an underline and a drawn ellipse around one word, then three
@@ -237,8 +237,8 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
             "use strict";
             var compositionId = "marker-checklist-card";
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
             function text(v, fb, mx) {
               if (typeof v !== "string") return fb;
@@ -326,7 +326,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 
 ## Install
 
-<InstallCommand command="npx hyperframes add marker-checklist-card" item="marker-checklist-card" />
+<InstallCommand command="npx smashcut add marker-checklist-card" item="marker-checklist-card" />
 
 That writes `compositions/components/marker-checklist-card.html`, plus 2 supporting files under `assets/fonts/`.
 
@@ -373,7 +373,7 @@ defaults, so this behaves exactly like the preview above until you change one:
 ```html
 <!doctype html>
 <!--
-  marker-checklist-card: HyperFrames motion primitive (scene)
+  marker-checklist-card: SmashCut motion primitive (scene)
 
   A hand-lettered paper card, measured from reference ad footage: a marker
   headline with an underline and a drawn ellipse around one word, then three
@@ -594,8 +594,8 @@ defaults, so this behaves exactly like the preview above until you change one:
             "use strict";
             var compositionId = "marker-checklist-card";
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
             function text(v, fb, mx) {
               if (typeof v !== "string") return fb;

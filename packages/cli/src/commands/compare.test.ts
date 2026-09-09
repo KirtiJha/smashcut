@@ -10,7 +10,7 @@ import {
 } from "./compare.js";
 
 function tempDir(): string {
-  return mkdtempSync(join(tmpdir(), "hf-compare-test-"));
+  return mkdtempSync(join(tmpdir(), "sc-compare-test-"));
 }
 
 describe("parseCompareArgs", () => {

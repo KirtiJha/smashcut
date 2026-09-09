@@ -16,7 +16,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 ```html notification-pileup.html
 <!doctype html>
 <!--
-  notification-pileup, HyperFrames video primitive (ui-props / loop / agitate)
+  notification-pileup, SmashCut video primitive (ui-props / loop / agitate)
 
   Concept: mobile notification cards arrive faster than they can be read.
   Every new card lands at the top and pushes the existing stack downward,
@@ -53,7 +53,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
   Mount contract: this is a mountable sub-composition. The runtime clones
   only <template> contents. #root fills the host box, owns no width or height
   metadata, and establishes the container query basis. Variables come only
-  from window.__hyperframes.getVariables(). The hardcoded timeline key stays
+  from window.__smashcut.getVariables(). The hardcoded timeline key stays
   "notification-pileup" after mount flattening strips data-composition-id.
 -->
 <html
@@ -256,8 +256,8 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
             // EDIT ZONE: defaults mirror the outer variable declarations.
             // getVariables owns the declared-defaults-plus-host-overrides merge.
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             // INVARIANT: count is always an integer in the declared 4 to 10 range.
@@ -483,7 +483,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 
 ## Install
 
-<InstallCommand command="npx hyperframes add notification-pileup" item="notification-pileup" />
+<InstallCommand command="npx smashcut add notification-pileup" item="notification-pileup" />
 
 That writes one file: `compositions/components/notification-pileup.html`.
 
@@ -523,7 +523,7 @@ defaults, so this behaves exactly like the preview above until you change one:
 ```html
 <!doctype html>
 <!--
-  notification-pileup, HyperFrames video primitive (ui-props / loop / agitate)
+  notification-pileup, SmashCut video primitive (ui-props / loop / agitate)
 
   Concept: mobile notification cards arrive faster than they can be read.
   Every new card lands at the top and pushes the existing stack downward,
@@ -560,7 +560,7 @@ defaults, so this behaves exactly like the preview above until you change one:
   Mount contract: this is a mountable sub-composition. The runtime clones
   only <template> contents. #root fills the host box, owns no width or height
   metadata, and establishes the container query basis. Variables come only
-  from window.__hyperframes.getVariables(). The hardcoded timeline key stays
+  from window.__smashcut.getVariables(). The hardcoded timeline key stays
   "notification-pileup" after mount flattening strips data-composition-id.
 -->
 <html
@@ -763,8 +763,8 @@ defaults, so this behaves exactly like the preview above until you change one:
             // EDIT ZONE: defaults mirror the outer variable declarations.
             // getVariables owns the declared-defaults-plus-host-overrides merge.
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             // INVARIANT: count is always an integer in the declared 4 to 10 range.

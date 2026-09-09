@@ -16,7 +16,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 ```html match-cut.html
 <!doctype html>
 <!--
-  match-cut: HyperFrames video primitive (transitions / match-cut / connect)
+  match-cut: SmashCut video primitive (transitions / match-cut / connect)
 
   Concept: scene A drives a circle into a known center-frame geometry, then a
   hard single-frame swap reveals scene B with a different circle in the exact
@@ -222,8 +222,8 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
             var labelB = root.querySelector(".mc-label-b");
             var revealB = root.querySelectorAll(".mc-kicker, .mc-label-b");
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             var accentName =
@@ -329,7 +329,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 
 ## Install
 
-<InstallCommand command="npx hyperframes add match-cut" item="match-cut" />
+<InstallCommand command="npx smashcut add match-cut" item="match-cut" />
 
 That writes one file: `compositions/components/match-cut.html`.
 
@@ -369,7 +369,7 @@ defaults, so this behaves exactly like the preview above until you change one:
 ```html
 <!doctype html>
 <!--
-  match-cut: HyperFrames video primitive (transitions / match-cut / connect)
+  match-cut: SmashCut video primitive (transitions / match-cut / connect)
 
   Concept: scene A drives a circle into a known center-frame geometry, then a
   hard single-frame swap reveals scene B with a different circle in the exact
@@ -575,8 +575,8 @@ defaults, so this behaves exactly like the preview above until you change one:
             var labelB = root.querySelector(".mc-label-b");
             var revealB = root.querySelectorAll(".mc-kicker, .mc-label-b");
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             var accentName =

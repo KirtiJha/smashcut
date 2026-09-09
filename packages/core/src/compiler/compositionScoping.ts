@@ -1,7 +1,7 @@
 import postcss, { type AtRule, type Node, type Rule } from "postcss";
 
-const AUTHORED_ROOT_ID_ATTR = "data-hf-authored-id";
-const INNER_ROOT_ATTR = "data-hf-inner-root";
+const AUTHORED_ROOT_ID_ATTR = "data-sc-authored-id";
+const INNER_ROOT_ATTR = "data-sc-inner-root";
 
 function escapeRegExp(value: string): string {
   return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
@@ -279,7 +279,7 @@ function jsonScriptLiteral(value: unknown): string {
 export function wrapScopedCompositionScript(
   source: string,
   compositionId: string,
-  errorLabel = "[HyperFrames] composition script error:",
+  errorLabel = "[SmashCut] composition script error:",
   scopeSelectorOverride?: string,
   timelineCompositionId = compositionId,
   authoredRootId?: string | null,
@@ -300,29 +300,29 @@ export function wrapScopedCompositionScript(
     getAuthoredRootIdSelectorForms(authoredRootId?.trim() || ""),
   );
   return `(function(){
-  var __hfCompId = ${compositionIdLiteral};
-  var __hfTimelineCompId = ${timelineCompositionIdLiteral};
-  var __hfErrorLabel = ${errorLabelLiteral};
-  var __hfAuthoredRootId = ${authoredRootIdLiteral};
-  var __hfAuthoredRootAttr = ${jsonScriptLiteral(AUTHORED_ROOT_ID_ATTR)};
-  var __hfEscapeAttr = function(value) {
+  var __scCompId = ${compositionIdLiteral};
+  var __scTimelineCompId = ${timelineCompositionIdLiteral};
+  var __scErrorLabel = ${errorLabelLiteral};
+  var __scAuthoredRootId = ${authoredRootIdLiteral};
+  var __scAuthoredRootAttr = ${jsonScriptLiteral(AUTHORED_ROOT_ID_ATTR)};
+  var __scEscapeAttr = function(value) {
     return (value + "").replace(/\\\\/g, "\\\\\\\\").replace(/"/g, "\\\\\\"");
   };
-  var __hfRootSelector = ${scopeSelectorLiteral} || (__hfCompId
-    ? '[data-composition-id="' + __hfEscapeAttr(__hfCompId) + '"]'
+  var __scRootSelector = ${scopeSelectorLiteral} || (__scCompId
+    ? '[data-composition-id="' + __scEscapeAttr(__scCompId) + '"]'
     : "");
-  var __hfRoot = null;
-  var __hfRootSelectorPattern = ${rootSelectorPatternLiteral};
-  var __hfTimingSelectorPattern = ${timingSelectorPatternLiteral};
-  var __hfAuthoredRootIdForms = ${authoredRootIdFormsLiteral};
-  var __hfAuthoredRootSelector = __hfAuthoredRootId
-    ? "[" + __hfAuthoredRootAttr + '="' + __hfEscapeAttr(__hfAuthoredRootId) + '"]'
+  var __scRoot = null;
+  var __scRootSelectorPattern = ${rootSelectorPatternLiteral};
+  var __scTimingSelectorPattern = ${timingSelectorPatternLiteral};
+  var __scAuthoredRootIdForms = ${authoredRootIdFormsLiteral};
+  var __scAuthoredRootSelector = __scAuthoredRootId
+    ? "[" + __scAuthoredRootAttr + '="' + __scEscapeAttr(__scAuthoredRootId) + '"]'
     : "";
-  var __hfIsSelectorNameChar = function(char) {
+  var __scIsSelectorNameChar = function(char) {
     return !!char && /[\\w-]/.test(char);
   };
-  var __hfReplaceAuthoredRootIdSelectors = function(selector) {
-    if (!__hfAuthoredRootSelector || !__hfAuthoredRootIdForms.length || typeof selector !== "string") {
+  var __scReplaceAuthoredRootIdSelectors = function(selector) {
+    if (!__scAuthoredRootSelector || !__scAuthoredRootIdForms.length || typeof selector !== "string") {
       return selector;
     }
     var result = "";
@@ -355,8 +355,8 @@ export function wrapScopedCompositionScript(
       }
       if (char === "#" && bracketDepth === 0) {
         var matchedForm = null;
-        for (var formIndex = 0; formIndex < __hfAuthoredRootIdForms.length; formIndex += 1) {
-          var form = __hfAuthoredRootIdForms[formIndex];
+        for (var formIndex = 0; formIndex < __scAuthoredRootIdForms.length; formIndex += 1) {
+          var form = __scAuthoredRootIdForms[formIndex];
           if (selector.slice(index + 1, index + 1 + form.length) === form) {
             matchedForm = form;
             break;
@@ -364,8 +364,8 @@ export function wrapScopedCompositionScript(
         }
         if (matchedForm) {
           var nextChar = selector[index + 1 + matchedForm.length];
-          if (!__hfIsSelectorNameChar(nextChar)) {
-            result += __hfAuthoredRootSelector;
+          if (!__scIsSelectorNameChar(nextChar)) {
+            result += __scAuthoredRootSelector;
             index += matchedForm.length;
             continue;
           }
@@ -375,52 +375,52 @@ export function wrapScopedCompositionScript(
     }
     return result;
   };
-  var __hfNormalizeSelector = function(selector) {
-    if (!__hfCompId || typeof selector !== "string") return selector;
+  var __scNormalizeSelector = function(selector) {
+    if (!__scCompId || typeof selector !== "string") return selector;
     var normalized = selector
-      .replace(new RegExp(__hfRootSelectorPattern + '(?:' + __hfTimingSelectorPattern + ')+', 'g'), __hfRootSelector)
-      .replace(new RegExp('(?:' + __hfTimingSelectorPattern + ')+' + __hfRootSelectorPattern, 'g'), __hfRootSelector);
-    if (__hfAuthoredRootSelector) {
-      normalized = __hfReplaceAuthoredRootIdSelectors(normalized);
+      .replace(new RegExp(__scRootSelectorPattern + '(?:' + __scTimingSelectorPattern + ')+', 'g'), __scRootSelector)
+      .replace(new RegExp('(?:' + __scTimingSelectorPattern + ')+' + __scRootSelectorPattern, 'g'), __scRootSelector);
+    if (__scAuthoredRootSelector) {
+      normalized = __scReplaceAuthoredRootIdSelectors(normalized);
     }
     return normalized;
   };
-  var __hfFindRoot = function() {
-    if (!__hfRoot && __hfRootSelector) {
-      __hfRoot = window.document.querySelector(__hfRootSelector);
+  var __scFindRoot = function() {
+    if (!__scRoot && __scRootSelector) {
+      __scRoot = window.document.querySelector(__scRootSelector);
     }
-    return __hfRoot;
+    return __scRoot;
   };
-  var __hfContains = function(node) {
-    var root = __hfFindRoot();
+  var __scContains = function(node) {
+    var root = __scFindRoot();
     return !root || node === root || root.contains(node);
   };
-  var __hfQueryAll = function(selector) {
-    var root = __hfFindRoot();
+  var __scQueryAll = function(selector) {
+    var root = __scFindRoot();
     if (!root || typeof selector !== "string") {
       return window.document.querySelectorAll(selector);
     }
-    return Array.prototype.filter.call(window.document.querySelectorAll(__hfNormalizeSelector(selector)), function(node) {
-      return __hfContains(node);
+    return Array.prototype.filter.call(window.document.querySelectorAll(__scNormalizeSelector(selector)), function(node) {
+      return __scContains(node);
     });
   };
-  var __hfQueryOne = function(selector) {
-    var matches = __hfQueryAll(selector);
+  var __scQueryOne = function(selector) {
+    var matches = __scQueryAll(selector);
     return matches[0] || null;
   };
-  var __hfGetElementById = function(id) {
+  var __scGetElementById = function(id) {
     var found = window.document.getElementById(id);
-    if (found && __hfContains(found)) return found;
-    var root = __hfFindRoot();
+    if (found && __scContains(found)) return found;
+    var root = __scFindRoot();
     if (!root) return found || null;
     var idValue = id + "";
-    if (__hfAuthoredRootId && __hfAuthoredRootId === idValue && root.getAttribute && root.getAttribute(__hfAuthoredRootAttr) === idValue) {
+    if (__scAuthoredRootId && __scAuthoredRootId === idValue && root.getAttribute && root.getAttribute(__scAuthoredRootAttr) === idValue) {
       return root;
     }
     if (root.id === idValue) return root;
     if (typeof root.querySelector !== "function") return null;
     try {
-      var authoredRootMatch = root.querySelector('[' + __hfAuthoredRootAttr + '="' + __hfEscapeAttr(idValue) + '"]');
+      var authoredRootMatch = root.querySelector('[' + __scAuthoredRootAttr + '="' + __scEscapeAttr(idValue) + '"]');
       if (authoredRootMatch) return authoredRootMatch;
     } catch {}
     if (typeof CSS !== "undefined" && CSS && typeof CSS.escape === "function") {
@@ -429,73 +429,73 @@ export function wrapScopedCompositionScript(
       } catch {}
     }
     try {
-      return root.querySelector('[id="' + __hfEscapeAttr(idValue) + '"]') || null;
+      return root.querySelector('[id="' + __scEscapeAttr(idValue) + '"]') || null;
     } catch {}
     return null;
   };
-  var __hfScopedDocument = typeof Proxy === "function"
+  var __scScopedDocument = typeof Proxy === "function"
     ? new Proxy(window.document, {
         get: function(target, prop, receiver) {
-          if (prop === "querySelector") return __hfQueryOne;
-          if (prop === "querySelectorAll") return __hfQueryAll;
-          if (prop === "getElementById") return __hfGetElementById;
+          if (prop === "querySelector") return __scQueryOne;
+          if (prop === "querySelectorAll") return __scQueryAll;
+          if (prop === "getElementById") return __scGetElementById;
           var value = Reflect.get(target, prop, target);
           return typeof value === "function" ? value.bind(target) : value;
         },
       })
     : window.document;
-  var __hfTimelineRegistryProxy = null;
-  var __hfGetTimelineRegistry = function() {
+  var __scTimelineRegistryProxy = null;
+  var __scGetTimelineRegistry = function() {
     window.__timelines = window.__timelines || {};
-    if (!__hfCompId || __hfCompId === __hfTimelineCompId || typeof Proxy !== "function") {
+    if (!__scCompId || __scCompId === __scTimelineCompId || typeof Proxy !== "function") {
       return window.__timelines;
     }
-    if (!__hfTimelineRegistryProxy) {
-      __hfTimelineRegistryProxy = new Proxy(window.__timelines, {
+    if (!__scTimelineRegistryProxy) {
+      __scTimelineRegistryProxy = new Proxy(window.__timelines, {
         get: function(target, prop, receiver) {
-          if (prop !== __hfCompId) {
+          if (prop !== __scCompId) {
             return Reflect.get(target, prop, target);
           }
           var authoredValue = Reflect.get(target, prop, target);
           return authoredValue === undefined
-            ? Reflect.get(target, __hfTimelineCompId, target)
+            ? Reflect.get(target, __scTimelineCompId, target)
             : authoredValue;
         },
         set: function(target, prop, value, receiver) {
-          if (prop !== __hfCompId) {
+          if (prop !== __scCompId) {
             return Reflect.set(target, prop, value, target);
           }
           // The authored node remains in the compiled DOM when its local id
           // differs from the runtime mount id, so readiness legitimately sees
           // both compositions. Publish the same timeline under both identities
           // instead of replacing one with the other.
-          var authoredSet = Reflect.set(target, __hfCompId, value, target);
-          var runtimeSet = Reflect.set(target, __hfTimelineCompId, value, target);
+          var authoredSet = Reflect.set(target, __scCompId, value, target);
+          var runtimeSet = Reflect.set(target, __scTimelineCompId, value, target);
           return authoredSet && runtimeSet;
         },
       });
     }
-    return __hfTimelineRegistryProxy;
+    return __scTimelineRegistryProxy;
   };
-  var __hfScopedWindow = typeof Proxy === "function"
+  var __scScopedWindow = typeof Proxy === "function"
     ? new Proxy(window, {
         get: function(target, prop, receiver) {
-          if (prop === "__timelines") return __hfGetTimelineRegistry();
-          // Inside a sub-composition, __hyperframes is passed as a bare script
+          if (prop === "__timelines") return __scGetTimelineRegistry();
+          // Inside a sub-composition, __smashcut is passed as a bare script
           // param bound to the SCOPED variant (per-comp getVariables). But
-          // authors routinely write the documented window.__hyperframes.
+          // authors routinely write the documented window.__smashcut.
           // getVariables() form, which would otherwise fall through to the host
-          // page's base __hyperframes and return the WRONG (or empty) variables
+          // page's base __smashcut and return the WRONG (or empty) variables
           // for this instance. Route it to the scoped variant too so both
           // spellings resolve to this composition's own variables.
-          // (__hfScopedHyperframes is a hoisted var assigned below, before any
+          // (__scScopedSmashcut is a hoisted var assigned below, before any
           // sub-comp script -- the only code that reads this -- runs.)
-          if (prop === "__hyperframes") return __hfScopedHyperframes;
+          if (prop === "__smashcut") return __scScopedSmashcut;
           // Native window methods must stay bound to the real window. Handed
           // back unbound, "this" at call time is this Proxy and Chrome rejects
           // it with "Illegal invocation", which broke window.addEventListener,
           // setTimeout, matchMedia and getComputedStyle inside every
-          // sub-composition -- including the window.addEventListener("hf-seek",
+          // sub-composition -- including the window.addEventListener("sc-seek",
           // ...) form the Three.js and TypeGPU adapters document. The sibling
           // document and gsap proxies here already bind.
           //
@@ -514,33 +514,33 @@ export function wrapScopedCompositionScript(
             // itself (window.__timelines = window.__timelines || {}). The
             // getter above returns our proxy; do not replace the canonical
             // registry with that proxy or later wrappers will stack proxies.
-            if (value === __hfTimelineRegistryProxy) return true;
+            if (value === __scTimelineRegistryProxy) return true;
             target.__timelines = value || {};
-            __hfTimelineRegistryProxy = null;
+            __scTimelineRegistryProxy = null;
             return true;
           }
           return Reflect.set(target, prop, value, target);
         },
       })
     : window;
-  var __hfResolveGsapTarget = function(target) {
+  var __scResolveGsapTarget = function(target) {
     if (typeof target !== "string") return target;
-    return __hfQueryAll(target);
+    return __scQueryAll(target);
   };
-  var __hfScopeTimeline = function(timeline) {
-    if (!timeline || timeline.__hfScopedCompositionRoot === __hfFindRoot()) return timeline;
+  var __scScopeTimeline = function(timeline) {
+    if (!timeline || timeline.__scScopedCompositionRoot === __scFindRoot()) return timeline;
     ["to", "from", "fromTo", "set"].forEach(function(method) {
       var original = timeline[method];
       if (typeof original !== "function") return;
       timeline[method] = function(target) {
         var args = Array.prototype.slice.call(arguments);
-        args[0] = __hfResolveGsapTarget(target);
+        args[0] = __scResolveGsapTarget(target);
         return original.apply(timeline, args);
       };
     });
     try {
-      Object.defineProperty(timeline, "__hfScopedCompositionRoot", {
-        value: __hfFindRoot(),
+      Object.defineProperty(timeline, "__scScopedCompositionRoot", {
+        value: __scFindRoot(),
         configurable: true,
       });
     } catch {
@@ -550,20 +550,20 @@ export function wrapScopedCompositionScript(
     }
     return timeline;
   };
-  var __hfBaseGsap = typeof gsap === "undefined" ? window.gsap : gsap;
-  var __hfScopedGsap = !__hfBaseGsap || typeof Proxy !== "function"
-    ? __hfBaseGsap
-    : new Proxy(__hfBaseGsap, {
+  var __scBaseGsap = typeof gsap === "undefined" ? window.gsap : gsap;
+  var __scScopedGsap = !__scBaseGsap || typeof Proxy !== "function"
+    ? __scBaseGsap
+    : new Proxy(__scBaseGsap, {
         get: function(target, prop, receiver) {
           if (prop === "timeline") {
             return function() {
-              return __hfScopeTimeline(target.timeline.apply(target, arguments));
+              return __scScopeTimeline(target.timeline.apply(target, arguments));
             };
           }
           if (prop === "to" || prop === "from" || prop === "fromTo" || prop === "set") {
             return function(firstArg) {
               var args = Array.prototype.slice.call(arguments);
-              args[0] = __hfResolveGsapTarget(firstArg);
+              args[0] = __scResolveGsapTarget(firstArg);
               return target[prop].apply(target, args);
             };
           }
@@ -573,18 +573,18 @@ export function wrapScopedCompositionScript(
                 if (utilsProp === "toArray") {
                   return function(firstArg) {
                     var args = Array.prototype.slice.call(arguments);
-                    args[0] = __hfResolveGsapTarget(firstArg);
+                    args[0] = __scResolveGsapTarget(firstArg);
                     return utilsTarget.toArray.apply(utilsTarget, args);
                   };
                 }
                 if (utilsProp === "selector") {
                   return function(base) {
-                    var baseEl = typeof base === "string" ? __hfQueryOne(base) : base;
-                    var root = baseEl || __hfFindRoot();
+                    var baseEl = typeof base === "string" ? __scQueryOne(base) : base;
+                    var root = baseEl || __scFindRoot();
                     return function(selector) {
                       if (!root || typeof selector !== "string") return [];
                       return Array.prototype.filter.call(
-                        window.document.querySelectorAll(__hfNormalizeSelector(selector)),
+                        window.document.querySelectorAll(__scNormalizeSelector(selector)),
                         function(node) {
                           return node === root || (typeof root.contains === "function" && root.contains(node));
                         },
@@ -601,27 +601,27 @@ export function wrapScopedCompositionScript(
           return typeof value === "function" ? value.bind(target) : value;
         },
       });
-  var __hfBaseHyperframes = window.__hyperframes;
-  var __hfScopedHyperframes = !__hfBaseHyperframes
-    ? __hfBaseHyperframes
-    : Object.assign({}, __hfBaseHyperframes, {
+  var __scBaseSmashcut = window.__smashcut;
+  var __scScopedSmashcut = !__scBaseSmashcut
+    ? __scBaseSmashcut
+    : Object.assign({}, __scBaseSmashcut, {
         getVariables: function() {
-          var byComp = window.__hfVariablesByComp;
-          var scoped = byComp && __hfTimelineCompId ? byComp[__hfTimelineCompId] : null;
+          var byComp = window.__scVariablesByComp;
+          var scoped = byComp && __scTimelineCompId ? byComp[__scTimelineCompId] : null;
           return scoped ? Object.assign({}, scoped) : {};
         },
       });
-  var __hfRun = function() {
+  var __scRun = function() {
     try {
-      (function(document, gsap, window, __hyperframes) {
+      (function(document, gsap, window, __smashcut) {
 ${source.replace(/<\/(script)/gi, "<\\/$1")}
-      }).call(window, __hfScopedDocument, __hfScopedGsap, __hfScopedWindow, __hfScopedHyperframes);
+      }).call(window, __scScopedDocument, __scScopedGsap, __scScopedWindow, __scScopedSmashcut);
     } catch (_err) {
-      console.error(__hfErrorLabel, __hfCompId, _err);
+      console.error(__scErrorLabel, __scCompId, _err);
     }
   };
-  __hfFindRoot();
-  __hfRun();
+  __scFindRoot();
+  __scRun();
 })();`;
 }
 
@@ -630,7 +630,7 @@ export function wrapInlineScriptWithErrorBoundary(source: string, errorLabel: st
 }
 
 /**
- * Build the statement that populates `window.__hfVariablesByComp` — the table
+ * Build the statement that populates `window.__scVariablesByComp` — the table
  * the scoped `getVariables` above reads. Returns `null` when there are no
  * per-instance values.
  *
@@ -651,5 +651,5 @@ export function buildVariablesByCompScript(
 ): string | null {
   if (!variablesByComp || Object.keys(variablesByComp).length === 0) return null;
   const json = jsonScriptLiteral(variablesByComp);
-  return `window.__hfVariablesByComp = Object.assign({}, window.__hfVariablesByComp || {}, ${json});`;
+  return `window.__scVariablesByComp = Object.assign({}, window.__scVariablesByComp || {}, ${json});`;
 }

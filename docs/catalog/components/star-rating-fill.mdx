@@ -16,7 +16,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 ```html star-rating-fill.html
 <!doctype html>
 <!--
-  star-rating-fill: HyperFrames video primitive (data / holdable / prove)
+  star-rating-fill: SmashCut video primitive (data / holdable / prove)
 
   Concept: one token-colored star layer is clipped over a muted copy. A
   single left-to-right clip-path sweep resolves at the target rating, so a
@@ -199,8 +199,8 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
             var valueElement = root.querySelector(".srf-value");
             var starTemplate = root.querySelector("#star-rating-fill-star-template");
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             /* INVARIANT: zero is a valid rating. Missing values and zero are
@@ -318,7 +318,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 
 ## Install
 
-<InstallCommand command="npx hyperframes add star-rating-fill" item="star-rating-fill" />
+<InstallCommand command="npx smashcut add star-rating-fill" item="star-rating-fill" />
 
 That writes one file: `compositions/components/star-rating-fill.html`.
 
@@ -358,7 +358,7 @@ defaults, so this behaves exactly like the preview above until you change one:
 ```html
 <!doctype html>
 <!--
-  star-rating-fill: HyperFrames video primitive (data / holdable / prove)
+  star-rating-fill: SmashCut video primitive (data / holdable / prove)
 
   Concept: one token-colored star layer is clipped over a muted copy. A
   single left-to-right clip-path sweep resolves at the target rating, so a
@@ -541,8 +541,8 @@ defaults, so this behaves exactly like the preview above until you change one:
             var valueElement = root.querySelector(".srf-value");
             var starTemplate = root.querySelector("#star-rating-fill-star-template");
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             /* INVARIANT: zero is a valid rating. Missing values and zero are

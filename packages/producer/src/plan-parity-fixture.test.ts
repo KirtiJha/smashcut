@@ -39,7 +39,7 @@ describe("plan parity generated fixtures", () => {
   });
 
   it("materializes the checked-in visual/audio fixture", () => {
-    const target = mkdtempSync(join(tmpdir(), "hf-plan-parity-fixture-"));
+    const target = mkdtempSync(join(tmpdir(), "sc-plan-parity-fixture-"));
     cleanup.push(target);
     preparePlanParityFixture(
       join(import.meta.dir, "..", "fixtures", "plan-parity-visual-audio"),
@@ -51,7 +51,7 @@ describe("plan parity generated fixtures", () => {
   });
 
   it("materializes a small compression-resistant pressure payload", () => {
-    const target = mkdtempSync(join(tmpdir(), "hf-plan-parity-pressure-"));
+    const target = mkdtempSync(join(tmpdir(), "sc-plan-parity-pressure-"));
     cleanup.push(target);
     preparePlanParityFixture(
       join(import.meta.dir, "..", "fixtures", "plan-parity-size-pressure"),

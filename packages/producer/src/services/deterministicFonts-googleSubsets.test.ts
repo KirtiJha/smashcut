@@ -15,7 +15,7 @@
  * glyphs. Result: Latin letters absent from the embedded font fell back to a
  * different font (the visible "wrong A" glitch).
  *
- * These tests inject `fetchImpl` (no network) and a temp `HYPERFRAMES_FONT_CACHE_DIR`
+ * These tests inject `fetchImpl` (no network) and a temp `SMASHCUT_FONT_CACHE_DIR`
  * so they are hermetic.
  */
 
@@ -28,14 +28,14 @@ let cacheDir: string;
 let prevCacheEnv: string | undefined;
 
 beforeAll(() => {
-  prevCacheEnv = process.env.HYPERFRAMES_FONT_CACHE_DIR;
-  cacheDir = mkdtempSync(join(tmpdir(), "hf-font-cache-"));
-  process.env.HYPERFRAMES_FONT_CACHE_DIR = cacheDir;
+  prevCacheEnv = process.env.SMASHCUT_FONT_CACHE_DIR;
+  cacheDir = mkdtempSync(join(tmpdir(), "sc-font-cache-"));
+  process.env.SMASHCUT_FONT_CACHE_DIR = cacheDir;
 });
 
 afterAll(() => {
-  if (prevCacheEnv === undefined) delete process.env.HYPERFRAMES_FONT_CACHE_DIR;
-  else process.env.HYPERFRAMES_FONT_CACHE_DIR = prevCacheEnv;
+  if (prevCacheEnv === undefined) delete process.env.SMASHCUT_FONT_CACHE_DIR;
+  else process.env.SMASHCUT_FONT_CACHE_DIR = prevCacheEnv;
   rmSync(cacheDir, { recursive: true, force: true });
 });
 

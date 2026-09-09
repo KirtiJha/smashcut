@@ -11,18 +11,18 @@ import { openComposition } from "./session.js";
 import type { Composition, PatchEvent } from "./types.js";
 
 const BASE_HTML = `
-<div data-hf-id="hf-stage" data-hf-root style="width: 1280px; height: 720px; background: #000" data-duration="5">
-  <h1 data-hf-id="hf-title" data-start="0" data-end="3" data-track-index="0"
+<div data-sc-id="sc-stage" data-sc-root style="width: 1280px; height: 720px; background: #000" data-duration="5">
+  <h1 data-sc-id="sc-title" data-start="0" data-end="3" data-track-index="0"
       style="color: #fff; font-size: 64px">Hello World</h1>
-  <p data-hf-id="hf-sub" style="opacity: 0.5">subtitle</p>
+  <p data-sc-id="sc-sub" style="opacity: 0.5">subtitle</p>
 </div>
 `.trim();
 
 const GSAP_HTML = `
-<div data-hf-id="hf-stage" data-hf-root style="width: 1280px; height: 720px">
-  <div data-hf-id="hf-box" style="opacity: 0"></div>
+<div data-sc-id="sc-stage" data-sc-root style="width: 1280px; height: 720px">
+  <div data-sc-id="sc-box" style="opacity: 0"></div>
   <script>var tl = gsap.timeline({ paused: true });
-tl.to("[data-hf-id=\\"hf-box\\"]", { opacity: 1, duration: 0.5 }, 0);
+tl.to("[data-sc-id=\\"sc-box\\"]", { opacity: 1, duration: 0.5 }, 0);
 window.__timelines = { t: tl };</script>
 </div>
 `.trim();
@@ -46,17 +46,17 @@ function expectGsapScriptPatch(id: string, events: PatchEvent[]): void {
 describe("dispatch emits patch event", () => {
   it("setStyle emits forward replace + inverse replace", async () => {
     const { comp, events } = await withPatch(BASE_HTML);
-    comp.setStyle("hf-title", { color: "#e63946" });
+    comp.setStyle("sc-title", { color: "#e63946" });
 
     expect(events).toHaveLength(1);
     expect(events[0]!.patches[0]).toMatchObject({
       op: "replace",
-      path: "/elements/hf-title/inlineStyles/color",
+      path: "/elements/sc-title/inlineStyles/color",
       value: "#e63946",
     });
     expect(events[0]!.inversePatches[0]).toMatchObject({
       op: "replace",
-      path: "/elements/hf-title/inlineStyles/color",
+      path: "/elements/sc-title/inlineStyles/color",
       value: "#fff",
     });
   });
@@ -66,14 +66,14 @@ describe("dispatch emits patch event", () => {
     const changes: number[] = [];
     comp.on("change", () => changes.push(1));
 
-    comp.setStyle("hf-title", { color: "#fff" }); // same value already set
+    comp.setStyle("sc-title", { color: "#fff" }); // same value already set
 
     expect(changes).toHaveLength(1);
   });
 
   it("patch event opTypes reflects dispatched op type", async () => {
     const { comp, events } = await withPatch(BASE_HTML);
-    comp.setText("hf-sub", "new text");
+    comp.setText("sc-sub", "new text");
     expect(events[0]?.opTypes).toContain("setText");
   });
 });
@@ -83,28 +83,28 @@ describe("dispatch emits patch event", () => {
 describe("override-set accumulation", () => {
   it("setStyle dispatch adds key to override-set", async () => {
     const comp = await openComposition(BASE_HTML);
-    comp.setStyle("hf-title", { color: "#e63946" });
-    expect(comp.getOverrides()["hf-title.style.color"]).toBe("#e63946");
+    comp.setStyle("sc-title", { color: "#e63946" });
+    expect(comp.getOverrides()["sc-title.style.color"]).toBe("#e63946");
   });
 
   it("setText dispatch adds text key to override-set", async () => {
     const comp = await openComposition(BASE_HTML);
-    comp.setText("hf-sub", "changed");
-    expect(comp.getOverrides()["hf-sub.text"]).toBe("changed");
+    comp.setText("sc-sub", "changed");
+    expect(comp.getOverrides()["sc-sub.text"]).toBe("changed");
   });
 
   it("setAttribute dispatch adds attr key", async () => {
     const comp = await openComposition(BASE_HTML);
-    comp.dispatch({ type: "setAttribute", target: "hf-title", name: "data-name", value: "hero" });
-    expect(comp.getOverrides()["hf-title.attr.data-name"]).toBe("hero");
+    comp.dispatch({ type: "setAttribute", target: "sc-title", name: "data-name", value: "hero" });
+    expect(comp.getOverrides()["sc-title.attr.data-name"]).toBe("hero");
   });
 
   it("removeElement dispatch sets null removal marker in override-set", async () => {
     const comp = await openComposition(BASE_HTML);
-    comp.removeElement("hf-sub");
+    comp.removeElement("sc-sub");
     // element path key should map to null marker
     const overrides = comp.getOverrides();
-    const removedKey = Object.keys(overrides).find((k) => k.startsWith("hf-sub"));
+    const removedKey = Object.keys(overrides).find((k) => k.startsWith("sc-sub"));
     expect(removedKey).toBeDefined();
   });
 });
@@ -114,17 +114,17 @@ describe("override-set accumulation", () => {
 describe("can() CanResult", () => {
   it("ok:true for valid setStyle target", async () => {
     const comp = await openComposition(BASE_HTML);
-    const r = comp.can({ type: "setStyle", target: "hf-title", styles: {} });
+    const r = comp.can({ type: "setStyle", target: "sc-title", styles: {} });
     expect(r.ok).toBe(true);
   });
 
   it("ok:false / E_TARGET_NOT_FOUND for unknown id", async () => {
     const comp = await openComposition(BASE_HTML);
-    const r = comp.can({ type: "setStyle", target: "hf-missing", styles: {} });
+    const r = comp.can({ type: "setStyle", target: "sc-missing", styles: {} });
     expect(r.ok).toBe(false);
     if (!r.ok) {
       expect(r.code).toBe("E_TARGET_NOT_FOUND");
-      expect(r.message).toContain("hf-missing");
+      expect(r.message).toContain("sc-missing");
       expect(r.hint).toBeDefined();
     }
   });
@@ -140,7 +140,7 @@ describe("can() CanResult", () => {
     const comp = await openComposition(GSAP_HTML);
     const r = comp.can({
       type: "addGsapTween",
-      target: "hf-box",
+      target: "sc-box",
       tween: { method: "to", properties: { x: 100 } },
     });
     expect(r.ok).toBe(true);
@@ -148,8 +148,8 @@ describe("can() CanResult", () => {
 
   it("ok:false / E_NO_GSAP_TIMELINE when script has no timeline var (addLabel path)", async () => {
     const noTimelineHtml = `
-<div data-hf-id="hf-stage" data-hf-root style="width:1280px;height:720px">
-  <div data-hf-id="hf-box"></div>
+<div data-sc-id="sc-stage" data-sc-root style="width:1280px;height:720px">
+  <div data-sc-id="sc-box"></div>
   <script>gsap.defaults({ ease: "power1.out" });
 window.__timelines = {};</script>
 </div>`.trim();
@@ -171,8 +171,8 @@ describe("batch() patch event", () => {
   it("collapses N dispatches into one patch event with all op types", async () => {
     const { comp, events } = await withPatch(BASE_HTML);
     comp.batch(() => {
-      comp.setStyle("hf-title", { color: "#111" });
-      comp.setText("hf-sub", "batched");
+      comp.setStyle("sc-title", { color: "#111" });
+      comp.setText("sc-sub", "batched");
     });
 
     expect(events).toHaveLength(1);
@@ -187,7 +187,7 @@ describe("batch() patch event", () => {
 describe("addGsapTween via session", () => {
   it("returns animationId and emits GSAP script patch", async () => {
     const { comp, events } = await withPatch(GSAP_HTML);
-    const id = comp.addGsapTween("hf-box", { method: "to", duration: 0.3, properties: { x: 200 } });
+    const id = comp.addGsapTween("sc-box", { method: "to", duration: 0.3, properties: { x: 200 } });
 
     expectGsapScriptPatch(id, events);
   });
@@ -195,7 +195,7 @@ describe("addGsapTween via session", () => {
   it("undo removes the added tween", async () => {
     const comp = await openComposition(GSAP_HTML);
     const scriptBefore = comp.serialize();
-    comp.addGsapTween("hf-box", { method: "to", duration: 0.3, properties: { x: 200 } });
+    comp.addGsapTween("sc-box", { method: "to", duration: 0.3, properties: { x: 200 } });
     comp.undo();
     expect(comp.serialize()).toBe(scriptBefore);
   });
@@ -206,7 +206,7 @@ describe("addGsapTween via session", () => {
 describe("keyframe ops via session", () => {
   it("addWithKeyframes returns an animationId and emits a GSAP script patch", async () => {
     const { comp, events } = await withPatch(GSAP_HTML);
-    const id = comp.addWithKeyframes('[data-hf-id="hf-box"]', 0, 0.5, [
+    const id = comp.addWithKeyframes('[data-sc-id="sc-box"]', 0, 0.5, [
       { percentage: 0, properties: { opacity: 0 } },
       { percentage: 100, properties: { opacity: 1 } },
     ]);
@@ -217,11 +217,11 @@ describe("keyframe ops via session", () => {
   it("replaceWithKeyframes returns the replacement id; undo restores the prior script", async () => {
     const comp = await openComposition(GSAP_HTML);
     const before = comp.serialize();
-    const addId = comp.addWithKeyframes('[data-hf-id="hf-box"]', 0, 0.5, [
+    const addId = comp.addWithKeyframes('[data-sc-id="sc-box"]', 0, 0.5, [
       { percentage: 0, properties: { opacity: 0 } },
       { percentage: 100, properties: { opacity: 1 } },
     ]);
-    const newId = comp.replaceWithKeyframes(addId, '[data-hf-id="hf-box"]', 0, 0.8, [
+    const newId = comp.replaceWithKeyframes(addId, '[data-sc-id="sc-box"]', 0, 0.8, [
       { percentage: 0, properties: { x: 0 } },
       { percentage: 100, properties: { x: 100 } },
     ]);
@@ -244,7 +244,7 @@ describe("dispatch origin", () => {
     comp.on("patch", (e) => events.push(e));
 
     const MY_ORIGIN = Symbol("ai-agent");
-    comp.dispatch({ type: "setText", target: "hf-title", value: "AI edit" }, { origin: MY_ORIGIN });
+    comp.dispatch({ type: "setText", target: "sc-title", value: "AI edit" }, { origin: MY_ORIGIN });
 
     expect(events[0]?.origin).toBe(MY_ORIGIN);
   });

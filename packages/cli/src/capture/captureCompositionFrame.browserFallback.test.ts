@@ -15,7 +15,7 @@ vi.mock("../browser/manager.js", () => ({
 
 vi.mock("puppeteer-core", () => ({ default: { launch: mocks.launch } }));
 
-vi.mock("@hyperframes/engine", () => ({
+vi.mock("@smashcut/engine", () => ({
   buildChromeArgs: mocks.buildChromeArgs,
   resolveBrowserGpuMode: mocks.resolveBrowserGpuMode,
 }));
@@ -28,7 +28,7 @@ const OPTIONS = {
   renderReadyWarningSuffix: "test",
   browserGpuMode: "software" as const,
 };
-const BUNDLED = "C:\\hyperframes\\chrome-headless-shell.exe";
+const BUNDLED = "C:\\smashcut\\chrome-headless-shell.exe";
 const SYSTEM = "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe";
 
 function launchCrash(): Error {
@@ -91,7 +91,7 @@ describe("openSettledCompositionPage Windows bundled-browser recovery", () => {
 
     await expect(
       openSettledCompositionPage(HTML, "http://127.0.0.1:3000", OPTIONS),
-    ).rejects.toThrow(/STATUS_STACK_BUFFER_OVERRUN[\s\S]*HYPERFRAMES_BROWSER_PATH/);
+    ).rejects.toThrow(/STATUS_STACK_BUFFER_OVERRUN[\s\S]*SMASHCUT_BROWSER_PATH/);
     expect(mocks.launch).toHaveBeenCalledOnce();
   });
 

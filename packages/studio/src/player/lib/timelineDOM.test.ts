@@ -20,11 +20,11 @@ function makeDoc(html: string): Document {
   return d;
 }
 
-describe("parseTimelineFromDOM — hfId from data-hf-id", () => {
-  it("harvests hfId from a data-start element that has data-hf-id", () => {
+describe("parseTimelineFromDOM — hfId from data-sc-id", () => {
+  it("harvests hfId from a data-start element that has data-sc-id", () => {
     const doc = makeDoc(`
       <div data-composition-id="root">
-        <div id="hero" class="clip" data-start="0" data-duration="5" data-hf-id="hf-abc123"></div>
+        <div id="hero" class="clip" data-start="0" data-duration="5" data-sc-id="sc-abc123"></div>
       </div>
     `);
 
@@ -32,10 +32,10 @@ describe("parseTimelineFromDOM — hfId from data-hf-id", () => {
     const hero = elements.find((el) => el.domId === "hero");
 
     expect(hero).toBeDefined();
-    expect(hero?.hfId).toBe("hf-abc123");
+    expect(hero?.hfId).toBe("sc-abc123");
   });
 
-  it("leaves hfId undefined when element has no data-hf-id", () => {
+  it("leaves hfId undefined when element has no data-sc-id", () => {
     const doc = makeDoc(`
       <div data-composition-id="root">
         <div id="plain" class="clip" data-start="0" data-duration="5"></div>
@@ -54,9 +54,9 @@ describe("parseTimelineFromDOM — hfId from data-hf-id", () => {
       <div data-composition-id="root">
         <img id="photo" class="clip" data-start="0" data-duration="5" />
         <canvas
-          class="__hf_color_grading_canvas__"
-          data-hf-color-grading-canvas="true"
-          data-hyperframes-ignore
+          class="__sc_color_grading_canvas__"
+          data-sc-color-grading-canvas="true"
+          data-smashcut-ignore
           data-start="0"
           data-duration="5"
         ></canvas>
@@ -142,7 +142,7 @@ describe("group info cache", () => {
     const doc = makeDoc(`
       <div data-composition-id="root">
         <audio id="voice-1" data-start="0" data-duration="5" data-audio-group="voiceover"></audio>
-        <hf-audio-group id="voiceover" data-label="Voices"></hf-audio-group>
+        <sc-audio-group id="voiceover" data-label="Voices"></sc-audio-group>
       </div>
     `);
 
@@ -169,7 +169,7 @@ describe("group info cache", () => {
     const doc = makeDoc(`
       <div data-composition-id="root">
         <audio id="voice-1" data-start="0" data-duration="5" data-audio-group="voiceover"></audio>
-        <hf-audio-group id="voiceover" data-label="Voices"></hf-audio-group>
+        <sc-audio-group id="voiceover" data-label="Voices"></sc-audio-group>
       </div>
     `);
 
@@ -186,7 +186,7 @@ describe("group info cache", () => {
     const doc = makeDoc(`
       <div data-composition-id="root">
         <audio id="voice-1" data-start="0" data-duration="5" data-audio-group="voiceover"></audio>
-        <hf-audio-group id="voiceover" data-label="Voices"></hf-audio-group>
+        <sc-audio-group id="voiceover" data-label="Voices"></sc-audio-group>
       </div>
     `);
     expect(parseMember(doc).audioGroupLabel).toBe("Voices");
@@ -297,16 +297,16 @@ describe("createTimelineElementFromManifestClip — source-scoped selector ident
 
 // Caught by looking at the studio, not by reading: a grouped composition drew
 // "Voiceover • 0.0s – 12.0s" as a full-duration clip row directly above its own
-// group header. `<hf-audio-group>` is a mixer bus — no timing, drawn as a group
+// group header. `<sc-audio-group>` is a mixer bus — no timing, drawn as a group
 // row by the group derivation — but it is still a body child with an id, so the
 // implicit-layer fallback happily gave it a track. Draggable and trimmable, and
 // writing timing onto a bus means nothing.
-describe("<hf-audio-group> is not a timeline layer", () => {
+describe("<sc-audio-group> is not a timeline layer", () => {
   it("gets no implicit row of its own", () => {
     const doc = makeDoc(`
       <div data-composition-id="root">
         <audio id="voice-1" data-start="0" data-duration="6" data-audio-group="voiceover"></audio>
-        <hf-audio-group id="voiceover" data-label="Voiceover"></hf-audio-group>
+        <sc-audio-group id="voiceover" data-label="Voiceover"></sc-audio-group>
       </div>
     `);
 
@@ -316,13 +316,13 @@ describe("<hf-audio-group> is not a timeline layer", () => {
   });
 
   it("is excluded by the shared ignore predicate", () => {
-    const doc = makeDoc(`<hf-audio-group id="vo"></hf-audio-group><div id="panel"></div>`);
+    const doc = makeDoc(`<sc-audio-group id="vo"></sc-audio-group><div id="panel"></div>`);
     expect(isTimelineIgnoredElement(doc.getElementById("vo") as Element)).toBe(true);
     expect(isTimelineIgnoredElement(doc.getElementById("panel") as Element)).toBe(false);
   });
 });
 
-describe("createImplicitTimelineLayersFromDOM — hfId from data-hf-id", () => {
+describe("createImplicitTimelineLayersFromDOM — hfId from data-sc-id", () => {
   it("uses the runtime root paint scope for implicit siblings of manifest clips", () => {
     const doc = makeDoc(`
       <div data-composition-id="root">
@@ -356,10 +356,10 @@ describe("createImplicitTimelineLayersFromDOM — hfId from data-hf-id", () => {
     expect(implicit?.stackingContextId).toBe(timed.stackingContextId);
   });
 
-  it("harvests hfId from an implicit layer child that has data-hf-id", () => {
+  it("harvests hfId from an implicit layer child that has data-sc-id", () => {
     const doc = makeDoc(`
       <div data-composition-id="root">
-        <div id="layer" class="clip" data-hf-id="hf-xyz789"></div>
+        <div id="layer" class="clip" data-sc-id="sc-xyz789"></div>
       </div>
     `);
 
@@ -367,7 +367,7 @@ describe("createImplicitTimelineLayersFromDOM — hfId from data-hf-id", () => {
     const layer = layers.find((el) => el.domId === "layer");
 
     expect(layer).toBeDefined();
-    expect(layer?.hfId).toBe("hf-xyz789");
+    expect(layer?.hfId).toBe("sc-xyz789");
   });
 
   it("ignores runtime-owned color grading canvases as implicit layers", () => {
@@ -375,9 +375,9 @@ describe("createImplicitTimelineLayersFromDOM — hfId from data-hf-id", () => {
       <div data-composition-id="root" data-duration="5">
         <img id="photo" class="clip" data-start="0" data-duration="5" />
         <canvas
-          class="__hf_color_grading_canvas__"
-          data-hf-color-grading-canvas="true"
-          data-hyperframes-ignore
+          class="__sc_color_grading_canvas__"
+          data-sc-color-grading-canvas="true"
+          data-smashcut-ignore
         ></canvas>
       </div>
     `);

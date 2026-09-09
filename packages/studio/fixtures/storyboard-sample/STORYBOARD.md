@@ -64,8 +64,8 @@ while a caption credits the storyboard-first flow.
 - duration: 3s
 - transition_in: crossfade
 - status: outline
-- voiceover: "Try it: npx hyperframes."
+- voiceover: "Try it: npx smashcut."
 - src: compositions/frames/05-cta.html
 
-End card, still an outline. "Try it: npx hyperframes" with the wordmark. Not
+End card, still an outline. "Try it: npx smashcut" with the wordmark. Not
 built yet — this frame should render as an outline placeholder in the grid.

@@ -12,7 +12,7 @@ import {
   audioEqSummary,
   HF_AUDIO_EQ_RANGE_DB,
   type HfAudioEqBand,
-} from "@hyperframes/core/audio-fx-eq";
+} from "@smashcut/core/audio-fx-eq";
 import { FX_FAMILY_TYPE, fxFamilyTint } from "./propertyPanelFxFamily.js";
 
 export interface FxEqModuleProps {
@@ -83,7 +83,7 @@ function Fader({
   // the platform's own pointer handling, which a div with pointer events would
   // all have to reimplement badly.
   return (
-    <div className="hf-fx-eq-band flex min-w-0 flex-1 flex-col items-center gap-1">
+    <div className="sc-fx-eq-band flex min-w-0 flex-1 flex-col items-center gap-1">
       <div className="relative h-[74px] w-full">
         <span className="pointer-events-none absolute inset-x-0 top-1/2 h-px bg-panel-border-input" />
         <span
@@ -95,7 +95,7 @@ function Fader({
           }
         />
         <input
-          className="hf-fx-eq-fader absolute left-1/2 h-[19px] w-[74px] -translate-x-1/2 -translate-y-1/2 rotate-[-90deg] cursor-ns-resize appearance-none bg-transparent"
+          className="sc-fx-eq-fader absolute left-1/2 h-[19px] w-[74px] -translate-x-1/2 -translate-y-1/2 rotate-[-90deg] cursor-ns-resize appearance-none bg-transparent"
           style={{ top: "50%" }}
           type="range"
           min={-HF_AUDIO_EQ_RANGE_DB}
@@ -110,11 +110,11 @@ function Fader({
           onBlur={settle}
         />
       </div>
-      <span className="hf-fx-eq-name w-full truncate text-center font-mono text-[9px] uppercase tracking-wide text-panel-text-2">
+      <span className="sc-fx-eq-name w-full truncate text-center font-mono text-[9px] uppercase tracking-wide text-panel-text-2">
         {band.name}
       </span>
       <span
-        className={`hf-fx-eq-value font-mono text-[9px] tabular-nums ${
+        className={`sc-fx-eq-value font-mono text-[9px] tabular-nums ${
           moved ? "text-panel-accent" : "text-panel-text-2"
         }`}
       >
@@ -139,7 +139,7 @@ export function FxEqModule({
 
   return (
     <div
-      className="hf-fx-node hf-fx-eq-module rounded-[4px] border border-l-2 border-panel-border-input"
+      className="sc-fx-node sc-fx-eq-module rounded-[4px] border border-l-2 border-panel-border-input"
       data-fx-node="eq"
       data-fx-family="smart"
       // Scroll anchor for a revealed EQ-band automation lane.
@@ -148,10 +148,10 @@ export function FxEqModule({
       // ear on a control surface, not three filters they configured.
       style={{ borderLeftColor: fxFamilyTint({ type: "eq", fromEq: "eq" }) }}
     >
-      <div className="hf-fx-node-head flex items-center gap-1.5 px-1.5 py-1">
+      <div className="sc-fx-node-head flex items-center gap-1.5 px-1.5 py-1">
         <button
           type="button"
-          className={`hf-fx-node-name flex-1 text-left text-[11px] text-panel-text-0 ${FX_FAMILY_TYPE.smart}`}
+          className={`sc-fx-node-name flex-1 text-left text-[11px] text-panel-text-0 ${FX_FAMILY_TYPE.smart}`}
           aria-expanded={open}
           onClick={onToggleOpen}
         >
@@ -160,7 +160,7 @@ export function FxEqModule({
         <span className="font-mono text-[9px] text-panel-text-2">{bands.length}-band</span>
         <button
           type="button"
-          className="hf-fx-remove px-1 text-[11px] text-panel-text-2 hover:text-panel-danger"
+          className="sc-fx-remove px-1 text-[11px] text-panel-text-2 hover:text-panel-danger"
           aria-label="Remove Tone"
           disabled={disabled}
           onClick={onRemove}
@@ -170,7 +170,7 @@ export function FxEqModule({
       </div>
 
       {open ? (
-        <div className="hf-fx-eq-body px-2 pb-2">
+        <div className="sc-fx-eq-body px-2 pb-2">
           <div className="flex gap-1.5">
             {bands.map((band) => (
               <Fader
@@ -190,7 +190,7 @@ export function FxEqModule({
       ) : (
         // Closed, it reads like every other module: a sentence about the sound
         // rather than a list of values.
-        <p className="hf-fx-eq-summary px-2 pb-1.5 text-[11px] text-panel-text-2">
+        <p className="sc-fx-eq-summary px-2 pb-1.5 text-[11px] text-panel-text-2">
           {audioEqSummary(bands)}
         </p>
       )}

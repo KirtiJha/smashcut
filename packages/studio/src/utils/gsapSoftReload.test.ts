@@ -31,11 +31,11 @@ function buildMockIframe(overrides: Record<string, unknown> = {}) {
   const mockTimeline = { kill: vi.fn(), pause: vi.fn() };
   const contentWindow = {
     gsap: { timeline: vi.fn() },
-    __hfForceTimelineRebind: vi.fn(),
+    __scForceTimelineRebind: vi.fn(),
     __timelines: { root: mockTimeline } as Record<string, typeof mockTimeline>,
     __player: { getTime: () => 2.0, seek: vi.fn() },
-    __hfStudioManualEditsApply: vi.fn(),
-    __hfSuppressSceneMutations: undefined as undefined | (<T>(fn: () => T) => T),
+    __scStudioManualEditsApply: vi.fn(),
+    __scSuppressSceneMutations: undefined as undefined | (<T>(fn: () => T) => T),
     ...overrides,
   };
 
@@ -84,8 +84,8 @@ describe("applySoftReload", () => {
     expect(applySoftReload(iframe, SCRIPT_TEXT)).toBe("cannot-soft-reload");
   });
 
-  it('returns "cannot-soft-reload" when __hfForceTimelineRebind is missing', () => {
-    const { iframe } = buildMockIframe({ __hfForceTimelineRebind: undefined });
+  it('returns "cannot-soft-reload" when __scForceTimelineRebind is missing', () => {
+    const { iframe } = buildMockIframe({ __scForceTimelineRebind: undefined });
     expect(applySoftReload(iframe, SCRIPT_TEXT)).toBe("cannot-soft-reload");
   });
 
@@ -100,9 +100,9 @@ describe("applySoftReload", () => {
     const result = applySoftReload(iframe, SCRIPT_TEXT);
     expect(result).toBe("applied");
     expect(mockTimeline.kill).toHaveBeenCalled();
-    expect(contentWindow.__hfForceTimelineRebind).toHaveBeenCalled();
+    expect(contentWindow.__scForceTimelineRebind).toHaveBeenCalled();
     expect(contentWindow.__player.seek).toHaveBeenCalledWith(2.0);
-    expect(contentWindow.__hfStudioManualEditsApply).toHaveBeenCalled();
+    expect(contentWindow.__scStudioManualEditsApply).toHaveBeenCalled();
   });
 
   it("seeks to the caller-supplied currentTime override instead of the iframe's own __player.getTime()", () => {
@@ -146,10 +146,10 @@ describe("applySoftReload", () => {
     expect(orphan.style.left).toBe("1240px"); // authored CSS base preserved
   });
 
-  it("wraps execution in __hfSuppressSceneMutations when available", () => {
+  it("wraps execution in __scSuppressSceneMutations when available", () => {
     let suppressionCalled = false;
     const { iframe } = buildMockIframe({
-      __hfSuppressSceneMutations: <T>(fn: () => T): T => {
+      __scSuppressSceneMutations: <T>(fn: () => T): T => {
         suppressionCalled = true;
         return fn();
       },
@@ -228,7 +228,7 @@ describe("applySoftReload", () => {
     expect(result).toBe("applied");
     // No CDN plugin <script> was appended to <head> — ran inline.
     expect(headAppends.filter((n) => n instanceof HTMLScriptElement)).toHaveLength(0);
-    expect(contentWindow.__hfForceTimelineRebind).toHaveBeenCalled();
+    expect(contentWindow.__scForceTimelineRebind).toHaveBeenCalled();
     expect(contentWindow.__player.seek).toHaveBeenCalledWith(2.0);
     expect(contentWindow.__timelines.root).toBeDefined();
   });
@@ -256,15 +256,15 @@ describe("applySoftReload", () => {
     expect(result).toBe("applied");
     expect(appendedScripts).toHaveLength(1);
     expect(appendedScripts[0]!.src).toContain("MotionPathPlugin");
-    expect(contentWindow.__hfForceTimelineRebind).not.toHaveBeenCalled();
+    expect(contentWindow.__scForceTimelineRebind).not.toHaveBeenCalled();
 
     // onerror must NOT run the script (that would reference a missing plugin) —
     // it escalates via onAsyncFailure so the caller can full-reload to recover,
     // and clears the in-flight loading flag.
     appendedScripts[0]!.onerror?.(new Event("error"));
     expect(onAsyncFailure).toHaveBeenCalledTimes(1);
-    expect(contentWindow.__hfForceTimelineRebind).not.toHaveBeenCalled();
-    expect(contentWindow.__hfMotionPathPluginLoading).toBe(false);
+    expect(contentWindow.__scForceTimelineRebind).not.toHaveBeenCalled();
+    expect(contentWindow.__scMotionPathPluginLoading).toBe(false);
   });
 
   it('returns "cannot-soft-reload" when multiple GSAP scripts exist (ambiguous)', () => {
@@ -298,41 +298,41 @@ describe("applySoftReloadFinalization", () => {
     expect(applySoftReloadFinalization(iframe, 2.0)).toBe(true);
 
     expect(contentWindow.__player.seek).toHaveBeenCalledWith(2.0);
-    expect(contentWindow.__hfForceTimelineRebind).toHaveBeenCalledTimes(1);
-    expect(contentWindow.__hfStudioManualEditsApply).toHaveBeenCalledTimes(1);
+    expect(contentWindow.__scForceTimelineRebind).toHaveBeenCalledTimes(1);
+    expect(contentWindow.__scStudioManualEditsApply).toHaveBeenCalledTimes(1);
     // No script executed or removed; the live timeline was never killed.
     expect(container.querySelectorAll("script").length).toBe(scriptsBefore);
     expect(mockTimeline.kill).not.toHaveBeenCalled();
     expect(contentWindow.__timelines.root).toBe(mockTimeline);
   });
 
-  it("runs inside __hfSuppressSceneMutations when the runtime provides it", () => {
+  it("runs inside __scSuppressSceneMutations when the runtime provides it", () => {
     const suppress = vi.fn(<T>(fn: () => T): T => fn());
     const { iframe, contentWindow } = buildMockIframe({
-      __hfSuppressSceneMutations: suppress,
+      __scSuppressSceneMutations: suppress,
     });
 
     expect(applySoftReloadFinalization(iframe, 1.5)).toBe(true);
 
     expect(suppress).toHaveBeenCalledTimes(1);
-    expect(contentWindow.__hfForceTimelineRebind).toHaveBeenCalledTimes(1);
+    expect(contentWindow.__scForceTimelineRebind).toHaveBeenCalledTimes(1);
   });
 
   it("does NOT require gsap — a script-less runtime with the rebind hook works", () => {
     const { iframe, contentWindow } = buildMockIframe({ gsap: undefined });
     expect(applySoftReloadFinalization(iframe, 0)).toBe(true);
-    expect(contentWindow.__hfForceTimelineRebind).toHaveBeenCalledTimes(1);
+    expect(contentWindow.__scForceTimelineRebind).toHaveBeenCalledTimes(1);
   });
 
   it("returns false when the iframe or the rebind hook is unavailable", () => {
     expect(applySoftReloadFinalization(null, 0)).toBe(false);
-    const { iframe } = buildMockIframe({ __hfForceTimelineRebind: undefined });
+    const { iframe } = buildMockIframe({ __scForceTimelineRebind: undefined });
     expect(applySoftReloadFinalization(iframe, 0)).toBe(false);
   });
 
   it("returns false when the rebind throws (caller full-reloads)", () => {
     const { iframe } = buildMockIframe({
-      __hfForceTimelineRebind: vi.fn(() => {
+      __scForceTimelineRebind: vi.fn(() => {
         throw new Error("runtime mid-teardown");
       }),
     });
@@ -353,7 +353,7 @@ function buildBootstrapIframe(overrides: Record<string, unknown> = {}) {
   const contentWindow = {
     gsap: { registerPlugin } as Record<string, unknown> | undefined,
     MotionPathPlugin: undefined as unknown,
-    __hfMotionPathPluginLoading: undefined as boolean | undefined,
+    __scMotionPathPluginLoading: undefined as boolean | undefined,
     ...overrides,
   };
   const contentDocument = {
@@ -384,13 +384,13 @@ describe("ensureMotionPathPluginLoaded", () => {
     ensureMotionPathPluginLoaded(iframe);
     expect(appendedScripts).toHaveLength(1);
     expect(appendedScripts[0]!.src).toContain("MotionPathPlugin");
-    expect(contentWindow.__hfMotionPathPluginLoading).toBe(true);
+    expect(contentWindow.__scMotionPathPluginLoading).toBe(true);
 
     // Simulate the CDN load completing; the plugin is now present.
     contentWindow.MotionPathPlugin = {};
     appendedScripts[0]!.onload?.(new Event("load"));
     expect(registerPlugin).toHaveBeenCalledWith(contentWindow.MotionPathPlugin);
-    expect(contentWindow.__hfMotionPathPluginLoading).toBe(false);
+    expect(contentWindow.__scMotionPathPluginLoading).toBe(false);
   });
 
   it("is idempotent: a second call while loading does not append a second script", () => {
@@ -414,7 +414,7 @@ describe("ensureMotionPathPluginLoaded", () => {
     const { iframe, contentWindow, appendedScripts } = buildBootstrapIframe();
     ensureMotionPathPluginLoaded(iframe);
     appendedScripts[0]!.onerror?.(new Event("error"));
-    expect(contentWindow.__hfMotionPathPluginLoading).toBe(false);
+    expect(contentWindow.__scMotionPathPluginLoading).toBe(false);
     // A subsequent call can retry (plugin still absent, flag cleared).
     ensureMotionPathPluginLoaded(iframe);
     expect(appendedScripts).toHaveLength(2);
@@ -438,10 +438,10 @@ describe("applySoftReload authored-opacity restore", () => {
     };
     const contentWindow = {
       gsap: { timeline: vi.fn(), set: vi.fn() },
-      __hfForceTimelineRebind: vi.fn(),
+      __scForceTimelineRebind: vi.fn(),
       __timelines: { root: tl } as Record<string, unknown>,
       __player: { getTime: () => 2.0, seek: vi.fn() },
-      __hfStudioManualEditsApply: vi.fn(),
+      __scStudioManualEditsApply: vi.fn(),
       ...overrides,
     };
     const container = document.createElement("div");
@@ -474,14 +474,14 @@ describe("applySoftReload authored-opacity restore", () => {
     return el.style.getPropertyValue("opacity");
   }
 
-  it("restores opacity from the after-write HTML (matched by data-hf-id)", () => {
+  it("restores opacity from the after-write HTML (matched by data-sc-id)", () => {
     const el = document.createElement("img");
-    el.setAttribute("data-hf-id", "hf-1");
+    el.setAttribute("data-sc-id", "sc-1");
     el.style.setProperty("opacity", "0", "important"); // the grading hide
 
     const opacity = restoreOpacity(
       el,
-      '<html><body><img data-hf-id="hf-1" style="opacity: 0.98"></body></html>',
+      '<html><body><img data-sc-id="sc-1" style="opacity: 0.98"></body></html>',
     );
 
     expect(opacity).toBe("0.98");
@@ -490,7 +490,7 @@ describe("applySoftReload authored-opacity restore", () => {
 
   it("falls back to the parse-time stamp when no after-write HTML is given", () => {
     const el = document.createElement("img");
-    el.setAttribute("data-hf-authored-opacity", "0.75");
+    el.setAttribute("data-sc-authored-opacity", "0.75");
     el.style.opacity = "0.123"; // mid-flight tween transient
 
     expect(restoreOpacity(el)).toBe("0.75");
@@ -498,7 +498,7 @@ describe("applySoftReload authored-opacity restore", () => {
 
   it("an empty stamp (authored none) removes the inline opacity", () => {
     const el = document.createElement("img");
-    el.setAttribute("data-hf-authored-opacity", "");
+    el.setAttribute("data-sc-authored-opacity", "");
     el.style.opacity = "0";
 
     expect(restoreOpacity(el)).toBe("");

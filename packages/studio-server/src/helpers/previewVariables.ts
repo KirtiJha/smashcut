@@ -1,6 +1,6 @@
 /**
  * Inject preview variable overrides: `?variables=<json>` becomes
- * `window.__hfVariables` set before any composition script runs — the exact
+ * `window.__scVariables` set before any composition script runs — the exact
  * global the engine sets via evaluateOnNewDocument at render time
  * (engine/src/services/frameCapture.ts), so preview-with-values cannot
  * diverge from render behavior. The runtime's getVariables() merges these
@@ -10,7 +10,7 @@ export function injectPreviewVariables(html: string, values: Record<string, unkn
   // <-escape prevents a string value containing "</script>" from
   // breaking out of the injected tag.
   const json = JSON.stringify(values).replace(/</g, "\\u003c");
-  const tag = `<script data-hf-preview-variables>window.__hfVariables=${json};</script>`;
+  const tag = `<script data-sc-preview-variables>window.__scVariables=${json};</script>`;
   // Insert as early as possible without ever landing before the doctype —
   // content before <!doctype> flips the document into quirks mode, so the
   // fallback chain is <head…> → <html…> → after the doctype → prepend.

@@ -1,5 +1,5 @@
 /**
- * Boundary tests for the wire config emitted by `hyperframes lambda render`.
+ * Boundary tests for the wire config emitted by `smashcut lambda render`.
  * Pins that the aspect-agnostic resolution flag survives all the way into
  * `SerializableDistributedRenderConfig`, which is what the Lambda worker's
  * compile stage reads before remapping `landscape` → `portrait` for an
@@ -13,8 +13,8 @@ import { describe, expect, it } from "vitest";
 import { buildLambdaRenderConfig, type RenderArgs } from "./render.js";
 
 const BASE_ARGS: RenderArgs = {
-  projectDir: "/tmp/hf-project",
-  stackName: "hf-test",
+  projectDir: "/tmp/sc-project",
+  stackName: "sc-test",
   fps: 30,
   width: 1080,
   height: 1920,

@@ -1227,8 +1227,8 @@
 
           window.__timelines["vfx-liquid-background"] = tl;
 
-          // ── hf-seek integration for Three.js adapter ──
-          window.addEventListener("hf-seek", function (e) {
+          // ── sc-seek integration for Three.js adapter ──
+          window.addEventListener("sc-seek", function (e) {
             var t = e.detail.time;
             tl.seek(t);
             uniforms.uTime.value = t;

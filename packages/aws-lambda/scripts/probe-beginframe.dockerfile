@@ -45,7 +45,7 @@ WORKDIR /var/task
 # can't resolve).
 COPY packages/aws-lambda/scripts/ scripts/
 
-RUN printf '{"name":"hf-lambda-probe","version":"1.0.0","type":"module"}\n' > package.json \
+RUN printf '{"name":"sc-lambda-probe","version":"1.0.0","type":"module"}\n' > package.json \
     && npm install --no-audit --no-fund --omit=optional \
         @sparticuz/chromium@148.0.0 \
         puppeteer-core@^24.39.1 \

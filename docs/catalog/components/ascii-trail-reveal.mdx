@@ -16,7 +16,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 ```html ascii-trail-reveal.html
 <!doctype html>
 <!--
-  ascii-trail-reveal: HyperFrames video primitive (intros and reveals)
+  ascii-trail-reveal: SmashCut video primitive (intros and reveals)
 
   Concept: a luminous actor follows an authored S-curve across an ASCII
   signal grid. Cells flip away behind the actor to reveal the real panel,
@@ -225,8 +225,8 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
             var guide = root.querySelector(".atr-path-guide");
             var actor = root.querySelector("#ascii-trail-reveal-actor");
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             var labelText = vars.label == null ? "The reveal" : String(vars.label);
@@ -400,7 +400,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 
 ## Install
 
-<InstallCommand command="npx hyperframes add ascii-trail-reveal" item="ascii-trail-reveal" />
+<InstallCommand command="npx smashcut add ascii-trail-reveal" item="ascii-trail-reveal" />
 
 That writes one file: `compositions/components/ascii-trail-reveal.html`.
 
@@ -440,7 +440,7 @@ defaults, so this behaves exactly like the preview above until you change one:
 ```html
 <!doctype html>
 <!--
-  ascii-trail-reveal: HyperFrames video primitive (intros and reveals)
+  ascii-trail-reveal: SmashCut video primitive (intros and reveals)
 
   Concept: a luminous actor follows an authored S-curve across an ASCII
   signal grid. Cells flip away behind the actor to reveal the real panel,
@@ -649,8 +649,8 @@ defaults, so this behaves exactly like the preview above until you change one:
             var guide = root.querySelector(".atr-path-guide");
             var actor = root.querySelector("#ascii-trail-reveal-actor");
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             var labelText = vars.label == null ? "The reveal" : String(vars.label);

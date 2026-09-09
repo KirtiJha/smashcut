@@ -2,14 +2,14 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import { mkdtempSync, rmSync } from "node:fs";
 import { join } from "node:path";
 import { tmpdir } from "node:os";
-import type { AudioElement } from "@hyperframes/engine";
+import type { AudioElement } from "@smashcut/engine";
 
 const { processCompositionAudioMock } = vi.hoisted(() => ({
   processCompositionAudioMock: vi.fn(),
 }));
 
-vi.mock("@hyperframes/engine", async (importOriginal) => {
-  const actual = await importOriginal<typeof import("@hyperframes/engine")>();
+vi.mock("@smashcut/engine", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("@smashcut/engine")>();
   return { ...actual, processCompositionAudio: processCompositionAudioMock };
 });
 
@@ -33,7 +33,7 @@ describe("runAudioStage", () => {
   });
 
   function makeInput(overrides: Partial<Parameters<typeof runAudioStage>[0]> = {}) {
-    const workDir = mkdtempSync(join(tmpdir(), "hf-audiostage-"));
+    const workDir = mkdtempSync(join(tmpdir(), "sc-audiostage-"));
     tempDirs.push(workDir);
     return {
       projectDir: workDir,

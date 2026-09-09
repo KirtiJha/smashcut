@@ -52,7 +52,7 @@
 
       <script>
         // WebGL2 textured fullscreen triangle sampling the source video element.
-        // The handler uploads that video as a texture on every hf-seek — the
+        // The handler uploads that video as a texture on every sc-seek — the
         // natural author pattern. In headless render, Chrome can't supply decoded
         // video frames to WebGL, so the core video-texture patch substitutes the
         // engine's injected, decoded render-frame image, and the post-injection
@@ -113,7 +113,7 @@
             gl.drawArrays(gl.TRIANGLES, 0, 3);
           }
 
-          window.addEventListener("hf-seek", function () {
+          window.addEventListener("sc-seek", function () {
             render();
           });
           render();

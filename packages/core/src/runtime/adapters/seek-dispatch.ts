@@ -1,9 +1,9 @@
 import { swallow } from "../diagnostics";
 
 /**
- * Shared, deduplicated `"hf-seek"` CustomEvent dispatcher for GPU adapters.
+ * Shared, deduplicated `"sc-seek"` CustomEvent dispatcher for GPU adapters.
  *
- * Both the Three.js and TypeGPU adapters dispatch the same `"hf-seek"` event
+ * Both the Three.js and TypeGPU adapters dispatch the same `"sc-seek"` event
  * so that compositions need not know which GPU library they're paired with.
  * Without deduplication, a seek to time T would fire two events (one from each
  * adapter), doubling per-scrub work in any composition that has both present.
@@ -36,13 +36,13 @@ function dispatch(time: number): void {
     time,
     waitUntil: (promise) => {
       if (!accepting) {
-        throw new Error("hf-seek waitUntil() must be called synchronously from the event listener");
+        throw new Error("sc-seek waitUntil() must be called synchronously from the event listener");
       }
       pending.push(promise);
     },
   };
   try {
-    window.dispatchEvent(new CustomEvent<HfSeekEventDetail>("hf-seek", { detail }));
+    window.dispatchEvent(new CustomEvent<HfSeekEventDetail>("sc-seek", { detail }));
   } catch (err) {
     swallow("runtime.adapters.seek-dispatch.site1", err);
   } finally {
@@ -68,7 +68,7 @@ export function dispatchSeekEvent(time: number): void {
 }
 
 /**
- * Force-dispatch a `"hf-seek"` event even if `time` equals the last dispatched
+ * Force-dispatch a `"sc-seek"` event even if `time` equals the last dispatched
  * time, bypassing the dedup guard.
  *
  * Needed for the post-video-injection GPU re-render: the engine seeks to time

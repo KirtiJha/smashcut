@@ -12,7 +12,7 @@
  */
 
 import { useCallback, useRef, useState, type PointerEvent as ReactPointerEvent } from "react";
-import type { AutomationRange, HfAutomationLane } from "@hyperframes/core/audio-automation";
+import type { AutomationRange, HfAutomationLane } from "@smashcut/core/audio-automation";
 import { curveForDrag, formatValue, GRAB_PX, POINT_MERGE_SEC } from "./automationLaneGeometry";
 import { pointInSelection } from "./automationLaneSelection";
 import { capturePointer } from "./automationLanePointer";

@@ -21,7 +21,7 @@ afterEach(() => {
 });
 
 function createProjectDir(): string {
-  const projectDir = mkdtempSync(join(tmpdir(), "hf-backup-journal-"));
+  const projectDir = mkdtempSync(join(tmpdir(), "sc-backup-journal-"));
   tempDirs.push(projectDir);
   return projectDir;
 }
@@ -39,7 +39,7 @@ describe("snapshotBeforeWrite", () => {
     expect(result.backupPath && existsSync(result.backupPath)).toBe(true);
     expect(readFileSync(result.backupPath!, "utf-8")).toBe("before");
     expect(backupPathForResponse(projectDir, result.backupPath)).toMatch(
-      /^\.hyperframes\/backup\//,
+      /^\.smashcut\/backup\//,
     );
   });
 
@@ -64,7 +64,7 @@ describe("snapshotBeforeWrite", () => {
       snapshotBeforeWrite(projectDir, file, { keepPerFile: 3 });
     }
 
-    expect(readdirSync(join(projectDir, ".hyperframes", "backup"))).toHaveLength(3);
+    expect(readdirSync(join(projectDir, ".smashcut", "backup"))).toHaveLength(3);
   });
 
   it("does not prune backups for paths with colliding sanitized names", () => {
@@ -77,11 +77,11 @@ describe("snapshotBeforeWrite", () => {
     snapshotBeforeWrite(projectDir, first, { keepPerFile: 1 });
     snapshotBeforeWrite(projectDir, second, { keepPerFile: 1 });
 
-    const backups = readdirSync(join(projectDir, ".hyperframes", "backup"));
+    const backups = readdirSync(join(projectDir, ".smashcut", "backup"));
     expect(backups).toHaveLength(2);
     expect(
       backups
-        .map((name) => readFileSync(join(projectDir, ".hyperframes", "backup", name), "utf-8"))
+        .map((name) => readFileSync(join(projectDir, ".smashcut", "backup", name), "utf-8"))
         .sort(),
     ).toEqual(["space", "underscore"]);
   });

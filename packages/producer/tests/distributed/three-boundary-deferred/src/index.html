@@ -68,16 +68,16 @@
         light.position.set(2, 2, 3);
         scene.add(light);
 
-        window.__hfThreeTime = 0;
+        window.__scThreeTime = 0;
         function renderFrame() {
-          var t = window.__hfThreeTime || 0;
+          var t = window.__scThreeTime || 0;
           cube.rotation.x = t * Math.PI;
           cube.rotation.y = t * Math.PI * 0.5;
           renderer.render(scene, camera);
         }
-        window.addEventListener("hf-seek", function (e) {
+        window.addEventListener("sc-seek", function (e) {
           if (e && e.detail && typeof e.detail.time === "number") {
-            window.__hfThreeTime = e.detail.time;
+            window.__scThreeTime = e.detail.time;
           }
           renderFrame();
         });

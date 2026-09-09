@@ -131,7 +131,7 @@ function runBootstrap(search: string): {
   const raw = host.getAttribute("data-variable-values");
   // Re-parsed in this realm: the object the script built carries the vm realm's
   // Object.prototype, which deepEqual counts as a difference all by itself.
-  const parsed = win.__hfVariables;
+  const parsed = win.__scVariables;
   return {
     fromWindow: parsed === undefined ? undefined : JSON.parse(JSON.stringify(parsed)),
     fromAttribute: raw === null ? null : JSON.parse(raw),
@@ -139,7 +139,7 @@ function runBootstrap(search: string): {
 }
 
 /** A player build that form-encodes the whole query, which is what every
- *  already-published @hyperframes/player on the CDN does. The reader has to
+ *  already-published @smashcut/player on the CDN does. The reader has to
  *  survive it, because the docs load the player from a CDN and cannot wait for
  *  a release. */
 function formEncodingPlayer(src: string): string {

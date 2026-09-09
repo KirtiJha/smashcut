@@ -5,7 +5,7 @@
  * from label, index, selector and source file when the clip has no authored id
  * (`timelineElementHelpers.buildTimelineElementIdentity`), so
  * `getElementById(element.id)` misses most elements. The real addressing fields
- * are separate: `hfId` (the `data-hf-id` the codebase calls the stable primary
+ * are separate: `hfId` (the `data-sc-id` the codebase calls the stable primary
  * patch target), `domId`, and a `selector` plus occurrence index.
  *
  * Handles are strings so they survive a JSON round trip through the agent
@@ -36,7 +36,7 @@ export interface ElementAddress {
 
 /**
  * Address an element the same way Studio's own patcher does, most stable first.
- * `data-hf-id` survives edits that renumber or reorder; a bare selector does not.
+ * `data-sc-id` survives edits that renumber or reorder; a bare selector does not.
  */
 export function mintElementHandle(address: ElementAddress): string | null {
   const scoped = (value: string) => {

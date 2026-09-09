@@ -165,7 +165,7 @@ describe("useTimelinePlayer seek hydration", () => {
         new MessageEvent("message", {
           source: iframeWindow,
           data: {
-            source: "hf-preview",
+            source: "sc-preview",
             type: "timeline",
             clips,
             durationInFrames: 30,
@@ -241,7 +241,7 @@ describe("useTimelinePlayer seek hydration", () => {
       window.dispatchEvent(
         new MessageEvent("message", {
           source: iframeWindow as unknown as Window,
-          data: { source: "hf-preview", type: "state", protocolVersion: 999 },
+          data: { source: "sc-preview", type: "state", protocolVersion: 999 },
         }),
       );
     });
@@ -251,7 +251,7 @@ describe("useTimelinePlayer seek hydration", () => {
       window.dispatchEvent(
         new MessageEvent("message", {
           source: iframeWindow as unknown as Window,
-          data: { source: "hf-preview", type: "state" },
+          data: { source: "sc-preview", type: "state" },
         }),
       );
     });
@@ -283,7 +283,7 @@ describe("useTimelinePlayer audio controls (#835)", () => {
 
     expect(postMessage).toHaveBeenCalledWith(
       expect.objectContaining({
-        source: "hf-parent",
+        source: "sc-parent",
         type: "control",
         action: "set-playback-rate",
         playbackRate: 2,
@@ -292,7 +292,7 @@ describe("useTimelinePlayer audio controls (#835)", () => {
     );
     expect(postMessage).toHaveBeenCalledWith(
       expect.objectContaining({
-        source: "hf-parent",
+        source: "sc-parent",
         type: "control",
         action: "set-muted",
         muted: false,

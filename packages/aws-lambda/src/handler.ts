@@ -1,10 +1,10 @@
 /**
- * AWS Lambda handler for HyperFrames distributed rendering.
+ * AWS Lambda handler for SmashCut distributed rendering.
  *
  * One Lambda function, three roles. Step Functions dispatches by setting
  * `event.Action`; the handler unwraps Map-state envelopes, primes the
  * Lambda environment (Chrome path, ffmpeg path, tmpdir), and forwards to
- * the matching OSS primitive from `@hyperframes/producer/distributed`.
+ * the matching OSS primitive from `@smashcut/producer/distributed`.
  *
  * Everything heavy — capture, encode, audio mix — happens inside the OSS
  * primitives. The handler is thin glue: parse event → S3 download → call
@@ -34,7 +34,7 @@ import {
   type PlanV2MaterializationTarget,
   readPlanV2Manifest,
   renderChunk,
-} from "@hyperframes/producer/distributed";
+} from "@smashcut/producer/distributed";
 import { resolveChromeExecutablePath } from "./chromium.js";
 import { type DistributedFormat, formatExtension } from "./formatExtension.js";
 import type {
@@ -336,7 +336,7 @@ async function handlePlan(event: PlanEvent, deps?: HandlerDeps): Promise<PlanLam
     process.env.PRODUCER_HEADLESS_SHELL_PATH = chromePath;
   }
 
-  const work = mkdtempSync(join(deps?.tmpRoot ?? tmpdir(), "hf-lambda-plan-"));
+  const work = mkdtempSync(join(deps?.tmpRoot ?? tmpdir(), "sc-lambda-plan-"));
   // We use `.tar.gz` (not `.zip`) as the project archive's on-the-wire
   // format because Lambda's Amazon Linux base image ships GNU `tar` but
   // not `unzip` in `/usr/bin`. The smoke script + future CLI both
@@ -409,7 +409,7 @@ async function handlePlanV2(
     process.env.PRODUCER_HEADLESS_SHELL_PATH = await resolveChromeExecutablePath();
   }
 
-  const work = mkdtempSync(join(deps?.tmpRoot ?? tmpdir(), "hf-lambda-plan-v2-"));
+  const work = mkdtempSync(join(deps?.tmpRoot ?? tmpdir(), "sc-lambda-plan-v2-"));
   const projectArchive = join(work, "project.tar.gz");
   const projectDir = join(work, "project");
   try {
@@ -472,7 +472,7 @@ async function handleRenderChunk(
     process.env.PRODUCER_HEADLESS_SHELL_PATH = chromePath;
   }
 
-  const work = mkdtempSync(join(deps?.tmpRoot ?? tmpdir(), "hf-lambda-chunk-"));
+  const work = mkdtempSync(join(deps?.tmpRoot ?? tmpdir(), "sc-lambda-chunk-"));
   const planTar = join(work, "plan.tar.gz");
   const planDir = join(work, "plan");
 
@@ -531,7 +531,7 @@ async function handleRenderChunkV2(
   if (!deps?.skipChromeResolution && !process.env.PRODUCER_HEADLESS_SHELL_PATH) {
     process.env.PRODUCER_HEADLESS_SHELL_PATH = await resolveChromeExecutablePath();
   }
-  const work = mkdtempSync(join(deps?.tmpRoot ?? tmpdir(), "hf-lambda-chunk-v2-"));
+  const work = mkdtempSync(join(deps?.tmpRoot ?? tmpdir(), "sc-lambda-chunk-v2-"));
   try {
     const planDir = await downloadAndMaterializePlanV2(
       s3,
@@ -602,7 +602,7 @@ async function handleAssemble(
   const s3 = deps?.s3 ?? getS3Client();
   const primitive = deps?.primitives?.assemble ?? assemble;
 
-  const work = mkdtempSync(join(deps?.tmpRoot ?? tmpdir(), "hf-lambda-assemble-"));
+  const work = mkdtempSync(join(deps?.tmpRoot ?? tmpdir(), "sc-lambda-assemble-"));
   const planTar = join(work, "plan.tar.gz");
   const planDir = join(work, "plan");
 
@@ -657,7 +657,7 @@ async function handleAssembleV2(
   const started = Date.now();
   const s3 = deps?.s3 ?? getS3Client();
   const primitive = deps?.primitives?.assemble ?? assemble;
-  const work = mkdtempSync(join(deps?.tmpRoot ?? tmpdir(), "hf-lambda-assemble-v2-"));
+  const work = mkdtempSync(join(deps?.tmpRoot ?? tmpdir(), "sc-lambda-assemble-v2-"));
   try {
     const planDir = await downloadAndMaterializePlanV2(s3, event, { role: "assembler" }, work);
     // `downloadAndMaterializePlanV2` materializes atomically. Audio is
@@ -837,11 +837,11 @@ function getEventS3Uris(event: PlanEvent | RenderChunkEvent | AssembleEvent): st
  * Throws `S3_URI_NOT_ALLOWED` (non-retryable) when a URI targets a different
  * bucket, preventing event injection from reading or writing arbitrary S3 data.
  *
- * Skipped when `HYPERFRAMES_RENDER_BUCKET` is unset so existing deployments
+ * Skipped when `SMASHCUT_RENDER_BUCKET` is unset so existing deployments
  * without the env var continue to work.
  */
 function validateEventS3Uris(event: PlanEvent | RenderChunkEvent | AssembleEvent): void {
-  const allowedBucket = process.env.HYPERFRAMES_RENDER_BUCKET?.trim();
+  const allowedBucket = process.env.SMASHCUT_RENDER_BUCKET?.trim();
   if (!allowedBucket) return;
 
   for (const uri of getEventS3Uris(event)) {

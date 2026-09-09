@@ -1,6 +1,6 @@
 /**
  * Probes an iframe document to discover the composition's playback adapter
- * and detect whether the HyperFrames runtime needs to be injected.
+ * and detect whether the SmashCut runtime needs to be injected.
  *
  * The probe interval polls every 200 ms until one of:
  *   - A `PlaybackDurationAdapter` resolves with a positive duration, or
@@ -40,7 +40,7 @@ export interface ProbeCallbacks {
 /**
  * Parse a composition dimension, rejecting anything that isn't a positive
  * finite number. Exported because the `width`/`height` attribute handlers in
- * hyperframes-player.ts need the same guard: dimensions feed
+ * smashcut-player.ts need the same guard: dimensions feed
  * scaleIframeToFit's `w / compositionWidth` division, where NaN produces an
  * invalid `scale(NaN)` transform and zero a division by zero — both render
  * the player blank with no signal.
@@ -90,11 +90,11 @@ export class CompositionProbe {
         const win = this._iframe.contentWindow as Window & {
           __player?: { getDuration: () => number };
           __timelines?: Record<string, { duration: () => number }>;
-          __hf?: unknown;
+          __sc?: unknown;
         };
         if (!win) return;
 
-        const hasRuntime = !!(win.__hf || win.__player);
+        const hasRuntime = !!(win.__sc || win.__player);
         const hasTimelines = !!(win.__timelines && Object.keys(win.__timelines).length > 0);
         const hasNestedCompositions =
           !!this._iframe.contentDocument?.querySelector("[data-composition-src]");
@@ -163,7 +163,7 @@ export class CompositionProbe {
   }
 
   hasRuntimeBridge(win: Window): boolean {
-    return Reflect.get(win, "__hf") !== undefined || isObjectRecord(Reflect.get(win, "__player"));
+    return Reflect.get(win, "__sc") !== undefined || isObjectRecord(Reflect.get(win, "__player"));
   }
 
   // ── Private ──────────────────────────────────────────────────────────────

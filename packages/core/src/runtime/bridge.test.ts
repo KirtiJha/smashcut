@@ -27,7 +27,7 @@ function createMockDeps() {
 
 function makeControlMessage(action: string, extra?: Record<string, unknown>) {
   return new MessageEvent("message", {
-    data: { source: "hf-parent", type: "control", action, ...extra },
+    data: { source: "sc-parent", type: "control", action, ...extra },
   });
 }
 
@@ -248,7 +248,7 @@ describe("installRuntimeControlBridge", () => {
     const handler = installRuntimeControlBridge(deps);
     handler(
       new MessageEvent("message", {
-        data: { source: "hf-parent", type: "state", action: "play" },
+        data: { source: "sc-parent", type: "state", action: "play" },
       }),
     );
     expect(deps.onPlay).not.toHaveBeenCalled();
@@ -277,7 +277,7 @@ describe("installRuntimeControlBridge", () => {
     installRuntimeControlBridge(deps);
     expect(postSpy).toHaveBeenCalledWith(
       expect.objectContaining({
-        source: "hf-preview",
+        source: "sc-preview",
         type: "ready",
         protocolVersion: 1,
         fps: { numerator: 30, denominator: 1 },

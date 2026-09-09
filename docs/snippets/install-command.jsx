@@ -59,10 +59,10 @@ export const InstallCommand = ({ command, item }) => {
     read();
     // `replaceState` fires nothing, so the panel says so itself; `popstate`
     // covers the back button.
-    window.addEventListener("hf-vars-changed", read);
+    window.addEventListener("sc-vars-changed", read);
     window.addEventListener("popstate", read);
     return () => {
-      window.removeEventListener("hf-vars-changed", read);
+      window.removeEventListener("sc-vars-changed", read);
       window.removeEventListener("popstate", read);
     };
   }, [item]);
@@ -98,7 +98,7 @@ export const InstallCommand = ({ command, item }) => {
   };
 
   return (
-    <div className="hf-install-command not-prose my-4 flex items-stretch overflow-hidden rounded-xl border border-zinc-200 bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900">
+    <div className="sc-install-command not-prose my-4 flex items-stretch overflow-hidden rounded-xl border border-zinc-200 bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900">
       <code className="flex-1 overflow-x-auto whitespace-nowrap border-r border-zinc-200 px-4 py-3 font-mono text-sm text-zinc-800 dark:border-zinc-800 dark:text-zinc-100">
         {fullCommand}
       </code>
@@ -107,10 +107,10 @@ export const InstallCommand = ({ command, item }) => {
         onClick={copy}
         data-copied={copied ? "true" : "false"}
         aria-label={`Copy ${command} to the clipboard`}
-        className="hf-install-copy"
+        className="sc-install-copy"
       >
         <svg
-          className="hf-install-copy-clipboard"
+          className="sc-install-copy-clipboard"
           xmlns="http://www.w3.org/2000/svg"
           width="16"
           height="16"
@@ -126,7 +126,7 @@ export const InstallCommand = ({ command, item }) => {
           <path d="M2.80103 11.998L1.77203 5.07397C1.61003 3.98097 2.36403 2.96397 3.45603 2.80197L10.38 1.77297C11.313 1.63397 12.19 2.16297 12.528 3.00097" />
         </svg>
         <svg
-          className="hf-install-copy-check"
+          className="sc-install-copy-check"
           xmlns="http://www.w3.org/2000/svg"
           width="16"
           height="16"
@@ -141,7 +141,7 @@ export const InstallCommand = ({ command, item }) => {
           <path d="M2.75 9.5L6.5 13.25L15.25 4.5" />
         </svg>
       </button>
-      <span className="hf-install-copy-status" role="status" aria-live="polite">
+      <span className="sc-install-copy-status" role="status" aria-live="polite">
         {copied ? "Copied" : ""}
       </span>
     </div>

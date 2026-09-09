@@ -82,7 +82,7 @@ export function resolveDrawElementCaptureMode(
  * invalidates and drawElementImage serves the FIRST frame's snapshot for the
  * whole render (confirmed: typegpu comp frozen at t=0, 21 dB; 2d canvas is
  * unaffected at 56 dB). The fix is to composite those canvases manually:
- * this wrapper records them in `window.__hf_accel_canvases` so
+ * this wrapper records them in `window.__sc_accel_canvases` so
  * captureDrawElementFrame can hide them from paint records and drawImage
  * their live content underneath the drawElementImage output.
  *
@@ -94,12 +94,12 @@ export function resolveDrawElementCaptureMode(
  */
 export function instrumentAcceleratedCanvases(): void {
   type AccelWindow = Window & {
-    __hf_accel_canvases?: HTMLCanvasElement[];
-    __hf_canvas_2d?: HTMLCanvasElement[];
+    __sc_accel_canvases?: HTMLCanvasElement[];
+    __sc_canvas_2d?: HTMLCanvasElement[];
   };
   const w = window as AccelWindow;
-  w.__hf_accel_canvases = [];
-  w.__hf_canvas_2d = [];
+  w.__sc_accel_canvases = [];
+  w.__sc_canvas_2d = [];
   const orig = HTMLCanvasElement.prototype.getContext;
   // oxlint-disable-next-line no-explicit-any
   (HTMLCanvasElement.prototype as any).getContext = function (
@@ -113,9 +113,9 @@ export function instrumentAcceleratedCanvases(): void {
     // oxlint-disable-next-line no-explicit-any
     const ctx = (orig as any).call(this, type, finalAttrs);
     if (ctx && isAccel) {
-      const list = w.__hf_accel_canvases ?? [];
+      const list = w.__sc_accel_canvases ?? [];
       if (!list.includes(this)) list.push(this);
-      w.__hf_accel_canvases = list;
+      w.__sc_accel_canvases = list;
     }
     // 2d canvases are tracked separately: their paint records DO refresh on
     // macOS (the sentinel forces a paint each frame), but under BeginFrame
@@ -123,9 +123,9 @@ export function instrumentAcceleratedCanvases(): void {
     // record and the capture freezes at the first frame — so the BeginFrame
     // path composites these too (see captureDrawElementFrame).
     if (ctx && type === "2d") {
-      const list2d = w.__hf_canvas_2d ?? [];
+      const list2d = w.__sc_canvas_2d ?? [];
       if (!list2d.includes(this)) list2d.push(this);
-      w.__hf_canvas_2d = list2d;
+      w.__sc_canvas_2d = list2d;
     }
     return ctx;
   };
@@ -193,7 +193,7 @@ export function classifyGpuRenderer(renderer: string | null | undefined): string
  * renderer string for telemetry.
  *
  * `isSwiftShader` is true inside Docker headless-shell with
- * --use-angle=swiftshader. Call once after window.__hf is ready; cache the
+ * --use-angle=swiftshader. Call once after window.__sc is ready; cache the
  * result on the session.
  */
 export async function detectGpuBackend(page: Page): Promise<GpuBackendInfo> {
@@ -222,8 +222,8 @@ export async function detectSwiftShader(page: Page): Promise<boolean> {
  * Inject a `<canvas layoutsubtree>` around the composition root.
  *
  * The canvas must wrap `[data-composition-id]` for drawElementImage to read
- * its paint records. Idempotent — skips injection if `__hf_de_canvas` exists.
- * Must be called after window.__hf is ready (so the composition root is in the DOM).
+ * its paint records. Idempotent — skips injection if `__sc_de_canvas` exists.
+ * Must be called after window.__sc is ready (so the composition root is in the DOM).
  */
 export async function injectDrawElementCanvas(
   page: Page,
@@ -233,12 +233,12 @@ export async function injectDrawElementCanvas(
   await page.evaluate(
     ({ w, h }: { w: number; h: number }) => {
       const root = document.querySelector("[data-composition-id]") as HTMLElement | null;
-      if (!root || document.getElementById("__hf_de_canvas")) return;
+      if (!root || document.getElementById("__sc_de_canvas")) return;
       // Record the root's base opacity (timeline at 0, before any entrance/
       // outro tween) for the LEGACY root-opacity ratio correction. The
       // correction only runs on paths whose paint does not bake the root's
       // current opacity into the snapshot — BeginFrame (sync=false) captures
-      // and builds without canvas.requestPaint(); see __hfDeInvalidate below.
+      // and builds without canvas.requestPaint(); see __scDeInvalidate below.
       try {
         (window as unknown as { __HF_ROOT_BASE_OPACITY__?: number }).__HF_ROOT_BASE_OPACITY__ =
           parseFloat(getComputedStyle(root).opacity) || 1;
@@ -250,7 +250,7 @@ export async function injectDrawElementCanvas(
       const canvas = document.createElement("canvas") as HTMLCanvasElement & {
         layoutsubtree: boolean;
       };
-      canvas.id = "__hf_de_canvas";
+      canvas.id = "__sc_de_canvas";
       canvas.setAttribute("layoutsubtree", "");
       canvas.width = w;
       canvas.height = h;
@@ -263,7 +263,7 @@ export async function injectDrawElementCanvas(
       // paint — and a fresh snapshot — is guaranteed even for static frames,
       // without the sentinel ever appearing in drawElementImage(root) output.
       const tick = document.createElement("div");
-      tick.id = "__hf_de_tick";
+      tick.id = "__sc_de_tick";
       tick.style.cssText =
         "position:absolute;left:0px;top:0;width:1px;height:1px;background:#000;opacity:0.01;pointer-events:none";
       canvas.appendChild(tick);
@@ -284,7 +284,7 @@ export async function injectDrawElementCanvas(
       interface RequestPaintCanvas extends HTMLCanvasElement {
         requestPaint?: () => void;
       }
-      (window as Window & { __hfDeInvalidate?: () => boolean }).__hfDeInvalidate = () => {
+      (window as Window & { __scDeInvalidate?: () => boolean }).__scDeInvalidate = () => {
         tick.style.backgroundColor =
           tick.style.backgroundColor === "rgb(0, 0, 0)" ? "rgb(1, 1, 1)" : "rgb(0, 0, 0)";
         const cvp: RequestPaintCanvas = canvas;
@@ -355,7 +355,7 @@ export async function captureDrawElementFrame(
       q: number;
       sync: boolean;
     }) => {
-      const canvas = document.getElementById("__hf_de_canvas") as HTMLCanvasElement | null;
+      const canvas = document.getElementById("__sc_de_canvas") as HTMLCanvasElement | null;
       const root = document.querySelector("[data-composition-id]") as HTMLElement | null;
       if (!root) {
         throw new Error("HF_DE_COMPOSITION_ROOT_MISSING: drawElement composition root not found");
@@ -372,10 +372,10 @@ export async function captureDrawElementFrame(
       // underneath the drawElementImage output instead. Hiding must happen
       // before the paint wait (sync mode) so the awaited paint reflects it.
       type AccelWindow = Window & {
-        __hf_accel_canvases?: HTMLCanvasElement[];
-        __hf_canvas_2d?: HTMLCanvasElement[];
-        __hf3d?: { update: () => void };
-        __hfDeInvalidate?: () => boolean;
+        __sc_accel_canvases?: HTMLCanvasElement[];
+        __sc_canvas_2d?: HTMLCanvasElement[];
+        __sc3d?: { update: () => void };
+        __scDeInvalidate?: () => boolean;
         __HF_ROOT_PROPS__?: boolean;
         __HF_ROOT_BASE_OPACITY__?: number;
       };
@@ -388,13 +388,13 @@ export async function captureDrawElementFrame(
       // their WebGL canvases are fresh before being drawImage-composited
       // below. Must run before the paint wait for the same reason as the
       // canvas hiding: the awaited paint should reflect the final state.
-      aw.__hf3d?.update();
-      const accel = (aw.__hf_accel_canvases ?? []).filter((c) => root.contains(c));
+      aw.__sc3d?.update();
+      const accel = (aw.__sc_accel_canvases ?? []).filter((c) => root.contains(c));
       // Under BeginFrame pacing (sync=false) 2d canvas bitmaps also freeze in
       // the paint records — composite them the same way. On paint-synced hosts
       // (sync=true) the per-frame sentinel paint refreshes them natively.
       if (!sync) {
-        for (const c of (aw.__hf_canvas_2d ?? []).filter((c2) => root.contains(c2))) {
+        for (const c of (aw.__sc_canvas_2d ?? []).filter((c2) => root.contains(c2))) {
           if (!accel.includes(c)) accel.push(c);
         }
         // Stable z among composited canvases: document order.
@@ -448,7 +448,7 @@ export async function captureDrawElementFrame(
             const rootRect = root.getBoundingClientRect();
             // fallow-ignore-next-line code-duplication
             for (const c of accel) {
-              if (c.hasAttribute("data-hf-3d")) continue;
+              if (c.hasAttribute("data-sc-3d")) continue;
               const r = c.getBoundingClientRect();
               try {
                 ctx.drawImage(c, r.left - rootRect.left, r.top - rootRect.top, r.width, r.height);
@@ -514,7 +514,7 @@ export async function captureDrawElementFrame(
             // composition root's own background.
             // fallow-ignore-next-line code-duplication
             for (const c of accel) {
-              if (!c.hasAttribute("data-hf-3d")) continue;
+              if (!c.hasAttribute("data-sc-3d")) continue;
               const r = c.getBoundingClientRect();
               try {
                 ctx.drawImage(c, r.left - rootRect.left, r.top - rootRect.top, r.width, r.height);
@@ -555,8 +555,8 @@ export async function captureDrawElementFrame(
         // seek produced no paint-level change (static scene, or transform-only
         // GSAP updates that are compositor-side and never repaint). Sentinel
         // dirty + requestPaint(), installed by injectDrawElementCanvas — see
-        // __hfDeInvalidate there for the full mechanism/rationale.
-        usedRequestPaint = aw.__hfDeInvalidate?.() === true;
+        // __scDeInvalidate there for the full mechanism/rationale.
+        usedRequestPaint = aw.__scDeInvalidate?.() === true;
         // Safety net: if the paint event doesn't arrive (feature drift /
         // throttled page), fall back to an unsynchronized draw after 250 ms —
         // worst case one-frame-stale content (the root's alpha may lag its
@@ -582,7 +582,7 @@ export async function captureDrawElementFrame(
 // The worker encodes it concurrently while the main thread processes the next
 // frame — hiding ~7.4ms of encode cost behind ~8.4ms of produce work.
 //
-// The worker posts the encoded bytes back by calling window.__hfFrameReady
+// The worker posts the encoded bytes back by calling window.__scFrameReady
 // (a Puppeteer exposeFunction binding that calls a node-side callback).
 // Node resolves the per-frame Promise from that callback.
 
@@ -597,7 +597,7 @@ interface WorkerEncodeState {
 }
 
 const workerEncodeStates = new WeakMap<Page, WorkerEncodeState>();
-// Pages that already have the `__hfFrameReady` binding installed. The binding
+// Pages that already have the `__scFrameReady` binding installed. The binding
 // survives navigation and cannot be cleanly removed, so its lifetime is
 // tracked separately from WorkerEncodeState (which is recreated per session).
 // Without this, a re-init after cleanup would call exposeFunction twice and
@@ -637,7 +637,7 @@ export async function initDrawElementWorkerEncode(page: Page): Promise<void> {
   // re-inits where the state object is replaced.
   if (!workerEncodeBoundPages.has(page)) {
     workerEncodeBoundPages.add(page);
-    await page.exposeFunction("__hfFrameReady", (id: number, b64: string, error?: string) => {
+    await page.exposeFunction("__scFrameReady", (id: number, b64: string, error?: string) => {
       const s = workerEncodeStates.get(page);
       if (!s) return;
       // id < 0 is a fatal worker signal (e.g. worker onerror): the worker is
@@ -668,13 +668,13 @@ export async function initDrawElementWorkerEncode(page: Page): Promise<void> {
   // Inject (or re-create) the in-page Worker after each navigation.
   await page.evaluate(() => {
     type EncWin = Window & {
-      __hfEncWorker?: Worker;
-      __hfFrameReady?: (id: number, b64: string, error?: string) => void;
+      __scEncWorker?: Worker;
+      __scFrameReady?: (id: number, b64: string, error?: string) => void;
     };
     const ew = window as EncWin;
-    if (ew.__hfEncWorker) {
-      ew.__hfEncWorker.terminate();
-      ew.__hfEncWorker = undefined;
+    if (ew.__scEncWorker) {
+      ew.__scEncWorker.terminate();
+      ew.__scEncWorker = undefined;
     }
     // Base64 is done INSIDE the worker (off the main thread) so it never
     // competes with the produce phase; the worker posts a string the page
@@ -711,15 +711,15 @@ export async function initDrawElementWorkerEncode(page: Page): Promise<void> {
     const url = URL.createObjectURL(new Blob([workerSrc], { type: "text/javascript" }));
     const worker = new Worker(url);
     URL.revokeObjectURL(url); // only needed for Worker construction
-    ew.__hfEncWorker = worker;
+    ew.__scEncWorker = worker;
     worker.onmessage = (ev: MessageEvent) => {
       const d = ev.data as { id: number; b64?: string; error?: string };
-      ew.__hfFrameReady?.(d.id, d.b64 ?? "", d.error);
+      ew.__scFrameReady?.(d.id, d.b64 ?? "", d.error);
     };
     worker.onerror = (err: ErrorEvent) => {
       // Fatal, not tied to a frame id — signal node (id = -1) to reject all
       // in-flight frames so the pipeline fails fast instead of hanging.
-      ew.__hfFrameReady?.(-1, "", err.message || "worker fatal error");
+      ew.__scFrameReady?.(-1, "", err.message || "worker fatal error");
     };
   });
 }
@@ -801,7 +801,7 @@ export async function produceDrawElementFrame(
   // Resolves as soon as the bitmap is transferred (not when encode is done).
   await page.evaluate(
     ({ w, h, q, sync, fid }: { w: number; h: number; q: number; sync: boolean; fid: number }) => {
-      const canvas = document.getElementById("__hf_de_canvas") as HTMLCanvasElement | null;
+      const canvas = document.getElementById("__sc_de_canvas") as HTMLCanvasElement | null;
       const root = document.querySelector("[data-composition-id]") as HTMLElement | null;
       if (!root) {
         throw new Error("HF_DE_COMPOSITION_ROOT_MISSING: drawElement composition root not found");
@@ -813,18 +813,18 @@ export async function produceDrawElementFrame(
       if (!ctx) throw new Error("drawElement: 2d context unavailable");
 
       type AccelWindow = Window & {
-        __hf_accel_canvases?: HTMLCanvasElement[];
-        __hf_canvas_2d?: HTMLCanvasElement[];
-        __hf3d?: { update: () => void };
-        __hfDeInvalidate?: () => boolean;
+        __sc_accel_canvases?: HTMLCanvasElement[];
+        __sc_canvas_2d?: HTMLCanvasElement[];
+        __sc3d?: { update: () => void };
+        __scDeInvalidate?: () => boolean;
         __HF_ROOT_PROPS__?: boolean;
         __HF_ROOT_BASE_OPACITY__?: number;
       };
       const aw = window as AccelWindow;
-      aw.__hf3d?.update();
-      const accel = (aw.__hf_accel_canvases ?? []).filter((c) => root.contains(c));
+      aw.__sc3d?.update();
+      const accel = (aw.__sc_accel_canvases ?? []).filter((c) => root.contains(c));
       if (!sync) {
-        for (const c of (aw.__hf_canvas_2d ?? []).filter((c2) => root.contains(c2))) {
+        for (const c of (aw.__sc_canvas_2d ?? []).filter((c2) => root.contains(c2))) {
           if (!accel.includes(c)) accel.push(c);
         }
         accel.sort((a, b) =>
@@ -859,7 +859,7 @@ export async function produceDrawElementFrame(
             // fallow-ignore-next-line code-duplication
             const rootRect = root.getBoundingClientRect();
             for (const c of accel) {
-              if (c.hasAttribute("data-hf-3d")) continue;
+              if (c.hasAttribute("data-sc-3d")) continue;
               const r = c.getBoundingClientRect();
               try {
                 ctx.drawImage(c, r.left - rootRect.left, r.top - rootRect.top, r.width, r.height);
@@ -908,7 +908,7 @@ export async function produceDrawElementFrame(
             if (__appliedTransform) ctx.setTransform(1, 0, 0, 1, 0, 0);
             // fallow-ignore-next-line code-duplication
             for (const c of accel) {
-              if (!c.hasAttribute("data-hf-3d")) continue;
+              if (!c.hasAttribute("data-sc-3d")) continue;
               const r = c.getBoundingClientRect();
               try {
                 ctx.drawImage(c, r.left - rootRect.left, r.top - rootRect.top, r.width, r.height);
@@ -926,14 +926,14 @@ export async function produceDrawElementFrame(
           // promise resolves.
           createImageBitmap(canvas)
             .then((bmp) => {
-              type EncWin = Window & { __hfEncWorker?: Worker };
+              type EncWin = Window & { __scEncWorker?: Worker };
               const ew = window as EncWin;
-              if (!ew.__hfEncWorker) {
+              if (!ew.__scEncWorker) {
                 bmp.close(); // don't leak the GPU-backed ImageBitmap on this reject path
                 rejectCapture(new Error("drawElement: encode worker not initialized"));
                 return;
               }
-              ew.__hfEncWorker.postMessage({ bmp, id: fid, w, h, q: q / 100 }, [bmp]);
+              ew.__scEncWorker.postMessage({ bmp, id: fid, w, h, q: q / 100 }, [bmp]);
               resolveCapture();
             })
             .catch((e: unknown) => {
@@ -950,9 +950,9 @@ export async function produceDrawElementFrame(
           drawAndKick();
         };
         canvas.addEventListener("paint", onPaint);
-        // Sentinel dirty + requestPaint() — see __hfDeInvalidate in
+        // Sentinel dirty + requestPaint() — see __scDeInvalidate in
         // injectDrawElementCanvas.
-        usedRequestPaint = aw.__hfDeInvalidate?.() === true;
+        usedRequestPaint = aw.__scDeInvalidate?.() === true;
         setTimeout(() => {
           canvas.removeEventListener("paint", onPaint);
           drawAndKick();
@@ -967,8 +967,8 @@ export async function produceDrawElementFrame(
 
 /**
  * P6 prototype (HF_DE_BATCH): batch-produce N consecutive frames in ONE CDP
- * round-trip. In-page loop per frame: `__hf.seek(t)` → paint-wait
- * (__hfDeInvalidate: sentinel dirty + requestPaint, then the canvas `paint`
+ * round-trip. In-page loop per frame: `__sc.seek(t)` → paint-wait
+ * (__scDeInvalidate: sentinel dirty + requestPaint, then the canvas `paint`
  * event) → drawElementImage composite → createImageBitmap →
  * postMessage to the encode worker. Bitmaps are posted per-frame (encode starts
  * immediately); only the CDP protocol round-trips are amortized N-fold.
@@ -1033,7 +1033,7 @@ export async function produceDrawElementFrameBatch(
       h: number;
       q: number;
     }): Promise<{ failedAt: number | null; error?: string }> => {
-      const canvas = document.getElementById("__hf_de_canvas") as HTMLCanvasElement | null;
+      const canvas = document.getElementById("__sc_de_canvas") as HTMLCanvasElement | null;
       const root = document.querySelector("[data-composition-id]") as HTMLElement | null;
       if (!root) {
         return {
@@ -1051,14 +1051,14 @@ export async function produceDrawElementFrameBatch(
       if (!ctx) return { failedAt: 0, error: "drawElement: 2d context unavailable" };
 
       type AccelWindow = Window & {
-        __hf_accel_canvases?: HTMLCanvasElement[];
-        __hf3d?: { update: () => void };
-        __hf?: { seek?: (t: number) => void };
-        __hfDecodeDynamicCssBackgroundImages?: () => Promise<void>;
-        __hfDeInvalidate?: () => boolean;
+        __sc_accel_canvases?: HTMLCanvasElement[];
+        __sc3d?: { update: () => void };
+        __sc?: { seek?: (t: number) => void };
+        __scDecodeDynamicCssBackgroundImages?: () => Promise<void>;
+        __scDeInvalidate?: () => boolean;
         __HF_ROOT_PROPS__?: boolean;
         __HF_ROOT_BASE_OPACITY__?: number;
-        __hfEncWorker?: Worker;
+        __scEncWorker?: Worker;
       };
       const aw = window as AccelWindow;
       let usedRequestPaint = false;
@@ -1073,9 +1073,9 @@ export async function produceDrawElementFrameBatch(
             res();
           };
           canvas.addEventListener("paint", settle);
-          // Sentinel dirty + requestPaint() — see __hfDeInvalidate in
+          // Sentinel dirty + requestPaint() — see __scDeInvalidate in
           // injectDrawElementCanvas.
-          usedRequestPaint = aw.__hfDeInvalidate?.() === true;
+          usedRequestPaint = aw.__scDeInvalidate?.() === true;
           setTimeout(settle, 250);
         });
 
@@ -1088,10 +1088,10 @@ export async function produceDrawElementFrameBatch(
         if (!frame) return { failedAt: i, error: "batch frame missing" };
         const { t, fid } = frame;
         try {
-          if (aw.__hf && typeof aw.__hf.seek === "function") aw.__hf.seek(t);
-          await aw.__hfDecodeDynamicCssBackgroundImages?.();
-          aw.__hf3d?.update();
-          const accel = (aw.__hf_accel_canvases ?? []).filter((c) => root.contains(c));
+          if (aw.__sc && typeof aw.__sc.seek === "function") aw.__sc.seek(t);
+          await aw.__scDecodeDynamicCssBackgroundImages?.();
+          aw.__sc3d?.update();
+          const accel = (aw.__sc_accel_canvases ?? []).filter((c) => root.contains(c));
           for (const c of accel) {
             if (c.style.visibility !== "hidden") c.style.visibility = "hidden";
           }
@@ -1116,7 +1116,7 @@ export async function produceDrawElementFrameBatch(
           ctx.fillRect(0, 0, w, h);
           const rootRect = root.getBoundingClientRect();
           for (const c of accel) {
-            if (c.hasAttribute("data-hf-3d")) continue;
+            if (c.hasAttribute("data-sc-3d")) continue;
             const r = c.getBoundingClientRect();
             try {
               ctx.drawImage(c, r.left - rootRect.left, r.top - rootRect.top, r.width, r.height);
@@ -1164,7 +1164,7 @@ export async function produceDrawElementFrameBatch(
           if (appliedAlpha) ctx.globalAlpha = 1;
           if (appliedTransform) ctx.setTransform(1, 0, 0, 1, 0, 0);
           for (const c of accel) {
-            if (!c.hasAttribute("data-hf-3d")) continue;
+            if (!c.hasAttribute("data-sc-3d")) continue;
             const r = c.getBoundingClientRect();
             try {
               ctx.drawImage(c, r.left - rootRect.left, r.top - rootRect.top, r.width, r.height);
@@ -1175,11 +1175,11 @@ export async function produceDrawElementFrameBatch(
 
           prevBitmapIdx = i;
           prevBitmap = createImageBitmap(canvas).then((bmp) => {
-            if (!aw.__hfEncWorker) {
+            if (!aw.__scEncWorker) {
               bmp.close();
               throw new Error("drawElement: encode worker not initialized");
             }
-            aw.__hfEncWorker.postMessage({ bmp, id: fid, w, h, q: q / 100 }, [bmp]);
+            aw.__scEncWorker.postMessage({ bmp, id: fid, w, h, q: q / 100 }, [bmp]);
           });
         } catch (e) {
           try {

@@ -97,8 +97,8 @@ describe("buildPadTrimAudioArgs", () => {
     // Bundled Windows FFmpeg builds reject `apad=whole_dur`. Match the
     // portable finite-padding shape used by the main audio mixer.
     const winPlan = buildPadTrimAudioPlan(
-      "C:\\Users\\alice\\AppData\\Local\\Temp\\hf-render-abc\\audio.m4a",
-      "C:\\Users\\alice\\AppData\\Local\\Temp\\hf-render-abc\\audio-padded.m4a",
+      "C:\\Users\\alice\\AppData\\Local\\Temp\\sc-render-abc\\audio.m4a",
+      "C:\\Users\\alice\\AppData\\Local\\Temp\\sc-render-abc\\audio-padded.m4a",
       4.0,
       5.0,
     );

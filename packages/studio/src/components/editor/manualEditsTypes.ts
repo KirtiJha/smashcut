@@ -5,17 +5,17 @@ export {
   STUDIO_WIDTH_PROP,
   STUDIO_HEIGHT_PROP,
   STUDIO_MANUAL_EDIT_GESTURE_ATTR,
-} from "@hyperframes/core/editing/draft-markers";
-export const STUDIO_ROTATION_PROP = "--hf-studio-rotation";
+} from "@smashcut/core/editing/draft-markers";
+export const STUDIO_ROTATION_PROP = "--sc-studio-rotation";
 
 /* ── Internal DOM attribute names ─────────────────────────────────── */
-export const STUDIO_PATH_OFFSET_ATTR = "data-hf-studio-path-offset";
-export const STUDIO_BOX_SIZE_ATTR = "data-hf-studio-box-size";
-export const STUDIO_ROTATION_ATTR = "data-hf-studio-rotation";
-export const STUDIO_ORIGINAL_TRANSLATE_ATTR = "data-hf-studio-original-translate";
-export const STUDIO_ORIGINAL_INLINE_TRANSLATE_ATTR = "data-hf-studio-original-inline-translate";
-export const STUDIO_ORIGINAL_WIDTH_ATTR = "data-hf-studio-original-width";
-export const STUDIO_ORIGINAL_HEIGHT_ATTR = "data-hf-studio-original-height";
+export const STUDIO_PATH_OFFSET_ATTR = "data-sc-studio-path-offset";
+export const STUDIO_BOX_SIZE_ATTR = "data-sc-studio-box-size";
+export const STUDIO_ROTATION_ATTR = "data-sc-studio-rotation";
+export const STUDIO_ORIGINAL_TRANSLATE_ATTR = "data-sc-studio-original-translate";
+export const STUDIO_ORIGINAL_INLINE_TRANSLATE_ATTR = "data-sc-studio-original-inline-translate";
+export const STUDIO_ORIGINAL_WIDTH_ATTR = "data-sc-studio-original-width";
+export const STUDIO_ORIGINAL_HEIGHT_ATTR = "data-sc-studio-original-height";
 /**
  * The element's laid-out box before a resize draft touched it, in CSS pixels.
  *
@@ -26,40 +26,40 @@ export const STUDIO_ORIGINAL_HEIGHT_ATTR = "data-hf-studio-original-height";
  * hardcoded guess and produced a wildly wrong one. These record the measurement
  * instead, and restore nothing.
  */
-export const STUDIO_ORIGINAL_BOX_WIDTH_ATTR = "data-hf-studio-original-box-width";
-export const STUDIO_ORIGINAL_BOX_HEIGHT_ATTR = "data-hf-studio-original-box-height";
-export const STUDIO_ORIGINAL_MIN_WIDTH_ATTR = "data-hf-studio-original-min-width";
-export const STUDIO_ORIGINAL_MIN_HEIGHT_ATTR = "data-hf-studio-original-min-height";
-export const STUDIO_ORIGINAL_MAX_WIDTH_ATTR = "data-hf-studio-original-max-width";
-export const STUDIO_ORIGINAL_MAX_HEIGHT_ATTR = "data-hf-studio-original-max-height";
-export const STUDIO_ORIGINAL_FLEX_BASIS_ATTR = "data-hf-studio-original-flex-basis";
-export const STUDIO_ORIGINAL_FLEX_GROW_ATTR = "data-hf-studio-original-flex-grow";
-export const STUDIO_ORIGINAL_FLEX_SHRINK_ATTR = "data-hf-studio-original-flex-shrink";
-export const STUDIO_ORIGINAL_BOX_SIZING_ATTR = "data-hf-studio-original-box-sizing";
-export const STUDIO_ORIGINAL_SCALE_ATTR = "data-hf-studio-original-scale";
-export const STUDIO_ORIGINAL_TRANSFORM_ORIGIN_ATTR = "data-hf-studio-original-transform-origin";
-export const STUDIO_ORIGINAL_DISPLAY_ATTR = "data-hf-studio-original-display";
-export const STUDIO_ORIGINAL_ROTATE_ATTR = "data-hf-studio-original-rotate";
-export const STUDIO_ORIGINAL_INLINE_ROTATE_ATTR = "data-hf-studio-original-inline-rotate";
+export const STUDIO_ORIGINAL_BOX_WIDTH_ATTR = "data-sc-studio-original-box-width";
+export const STUDIO_ORIGINAL_BOX_HEIGHT_ATTR = "data-sc-studio-original-box-height";
+export const STUDIO_ORIGINAL_MIN_WIDTH_ATTR = "data-sc-studio-original-min-width";
+export const STUDIO_ORIGINAL_MIN_HEIGHT_ATTR = "data-sc-studio-original-min-height";
+export const STUDIO_ORIGINAL_MAX_WIDTH_ATTR = "data-sc-studio-original-max-width";
+export const STUDIO_ORIGINAL_MAX_HEIGHT_ATTR = "data-sc-studio-original-max-height";
+export const STUDIO_ORIGINAL_FLEX_BASIS_ATTR = "data-sc-studio-original-flex-basis";
+export const STUDIO_ORIGINAL_FLEX_GROW_ATTR = "data-sc-studio-original-flex-grow";
+export const STUDIO_ORIGINAL_FLEX_SHRINK_ATTR = "data-sc-studio-original-flex-shrink";
+export const STUDIO_ORIGINAL_BOX_SIZING_ATTR = "data-sc-studio-original-box-sizing";
+export const STUDIO_ORIGINAL_SCALE_ATTR = "data-sc-studio-original-scale";
+export const STUDIO_ORIGINAL_TRANSFORM_ORIGIN_ATTR = "data-sc-studio-original-transform-origin";
+export const STUDIO_ORIGINAL_DISPLAY_ATTR = "data-sc-studio-original-display";
+export const STUDIO_ORIGINAL_ROTATE_ATTR = "data-sc-studio-original-rotate";
+export const STUDIO_ORIGINAL_INLINE_ROTATE_ATTR = "data-sc-studio-original-inline-rotate";
 export const STUDIO_ORIGINAL_ROTATION_TRANSFORM_ORIGIN_ATTR =
-  "data-hf-studio-original-rotation-transform-origin";
-export const STUDIO_ROTATION_DRAFT_ATTR = "data-hf-studio-rotation-draft";
-export const STUDIO_ORIGINAL_TRANSFORM_DISPLAY_ATTR = "data-hf-studio-original-transform-display";
+  "data-sc-studio-original-rotation-transform-origin";
+export const STUDIO_ROTATION_DRAFT_ATTR = "data-sc-studio-rotation-draft";
+export const STUDIO_ORIGINAL_TRANSFORM_DISPLAY_ATTR = "data-sc-studio-original-transform-display";
 
 /* ── Internal window property names ──────────────────────────────── */
-export const STUDIO_MANUAL_EDITS_APPLY_PROP = "__hfStudioManualEditsApply";
-export const STUDIO_MANUAL_EDITS_WRAPPED_PROP = "__hfStudioManualEditsWrapped";
-export const STUDIO_MANUAL_EDITS_PLAYBACK_FRAME_PROP = "__hfStudioManualEditsPlaybackFrame";
+export const STUDIO_MANUAL_EDITS_APPLY_PROP = "__scStudioManualEditsApply";
+export const STUDIO_MANUAL_EDITS_WRAPPED_PROP = "__scStudioManualEditsWrapped";
+export const STUDIO_MANUAL_EDITS_PLAYBACK_FRAME_PROP = "__scStudioManualEditsPlaybackFrame";
 
 export const STUDIO_ROTATION_TRANSFORM_ORIGIN = "center center";
 
 export type StudioManualEditSeekWindow = Window & {
-  __hf?: Record<string, unknown>;
+  __sc?: Record<string, unknown>;
   __player?: Record<string, unknown>;
   __timeline?: Record<string, unknown>;
   __timelines?: Record<string, Record<string, unknown>>;
-  __hfStudioManualEditsApply?: () => void;
-  __hfStudioManualEditsPlaybackFrame?: number | null;
+  __scStudioManualEditsApply?: () => void;
+  __scStudioManualEditsPlaybackFrame?: number | null;
 };
 
 /* ── Snapshot types (used by drag/drop restore) ───────────────────── */

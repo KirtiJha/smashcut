@@ -19,17 +19,17 @@ import { failCommand } from "../utils/commandResult.js";
  *   - **Revoke** — POST https://api2.heygen.com/v1/oauth/revoke
  *     Same host/prefix as token.
  *
- * The `heygen-oauth-urls.ts` default in `hyperframes-internal/demo-next`
+ * The `heygen-oauth-urls.ts` default in `smashcut-internal/demo-next`
  * lists `app.heygen.com/oauth/token` as the default — that's either
  * proxied via a Next.js rewrite or set via `HEYGEN_OAUTH_TOKEN_URL` in
  * their prod env. A direct fetch to it returns the SPA shell, so we
  * use the api2 endpoint here.
  *
  * Overrides:
- *   - `HYPERFRAMES_OAUTH_AUTHORIZE_URL`
- *   - `HYPERFRAMES_OAUTH_TOKEN_URL`
- *   - `HYPERFRAMES_OAUTH_REVOKE_URL`
- *   - `HYPERFRAMES_OAUTH_CLIENT_ID`
+ *   - `SMASHCUT_OAUTH_AUTHORIZE_URL`
+ *   - `SMASHCUT_OAUTH_TOKEN_URL`
+ *   - `SMASHCUT_OAUTH_REVOKE_URL`
+ *   - `SMASHCUT_OAUTH_CLIENT_ID`
  *
  * Public client — no `client_secret`.
  */
@@ -60,7 +60,7 @@ const MIN_EXPIRES_IN_SECONDS = 30;
 
 /**
  * Default OAuth client_id baked at build time. Override with the
- * `HYPERFRAMES_OAUTH_CLIENT_ID` env var. Empty string means "not
+ * `SMASHCUT_OAUTH_CLIENT_ID` env var. Empty string means "not
  * configured" — `resolveClientId()` errors cleanly with a pointer
  * at `--api-key`.
  */
@@ -81,16 +81,16 @@ const MAX_DEVICE_RESPONSE_BYTES = 64 * 1024;
 const DEVICE_REQUEST_TIMEOUT_MS = 15_000;
 
 function authorizeEndpoint(): string {
-  return process.env["HYPERFRAMES_OAUTH_AUTHORIZE_URL"] || DEFAULT_AUTHORIZE_URL;
+  return process.env["SMASHCUT_OAUTH_AUTHORIZE_URL"] || DEFAULT_AUTHORIZE_URL;
 }
 function tokenEndpoint(): string {
-  return process.env["HYPERFRAMES_OAUTH_TOKEN_URL"] || DEFAULT_TOKEN_URL;
+  return process.env["SMASHCUT_OAUTH_TOKEN_URL"] || DEFAULT_TOKEN_URL;
 }
 function revokeEndpoint(): string {
-  return process.env["HYPERFRAMES_OAUTH_REVOKE_URL"] || DEFAULT_REVOKE_URL;
+  return process.env["SMASHCUT_OAUTH_REVOKE_URL"] || DEFAULT_REVOKE_URL;
 }
 function deviceAuthorizationEndpoint(): string {
-  return process.env["HYPERFRAMES_OAUTH_DEVICE_URL"] || DEFAULT_DEVICE_AUTHORIZATION_URL;
+  return process.env["SMASHCUT_OAUTH_DEVICE_URL"] || DEFAULT_DEVICE_AUTHORIZATION_URL;
 }
 
 export interface AuthorizeFlowOptions {
@@ -135,7 +135,7 @@ export interface DeviceAuthorizationFlowOptions {
 
 /** Read the client_id, throwing `ErrOAuthNotConfigured` when unset. */
 export function resolveClientId(): string {
-  const override = process.env["HYPERFRAMES_OAUTH_CLIENT_ID"];
+  const override = process.env["SMASHCUT_OAUTH_CLIENT_ID"];
   const id = override && override.length > 0 ? override : DEFAULT_CLIENT_ID;
   if (!id || id.length === 0) throw ErrOAuthNotConfigured();
   return id;

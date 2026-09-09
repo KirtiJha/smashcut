@@ -73,47 +73,47 @@ describe("resolveNearestHfElement", () => {
     expect(resolveNearestHfElement(null, visible)).toBeNull();
   });
 
-  it("returns the element itself when it carries data-hf-id", () => {
-    const el = fakeEl({ "data-hf-id": "hf-abc" }, "div");
+  it("returns the element itself when it carries data-sc-id", () => {
+    const el = fakeEl({ "data-sc-id": "sc-abc" }, "div");
     const result = resolveNearestHfElement(el as unknown as Element, visible);
-    expect(result).toEqual<ElementAtPointResult>({ id: "hf-abc", tag: "div" });
+    expect(result).toEqual<ElementAtPointResult>({ id: "sc-abc", tag: "div" });
   });
 
-  it("walks up to a parent that carries data-hf-id", () => {
-    const parent = fakeEl({ "data-hf-id": "hf-parent" }, "section");
+  it("walks up to a parent that carries data-sc-id", () => {
+    const parent = fakeEl({ "data-sc-id": "sc-parent" }, "section");
     const child = fakeEl({}, "span", parent);
     const result = resolveNearestHfElement(child as unknown as Element, visible);
-    expect(result).toEqual<ElementAtPointResult>({ id: "hf-parent", tag: "section" });
+    expect(result).toEqual<ElementAtPointResult>({ id: "sc-parent", tag: "section" });
   });
 
-  it("returns null when the nearest data-hf-id node is data-hf-root", () => {
-    const root = fakeEl({ "data-hf-id": "hf-stage", "data-hf-root": "" }, "div");
+  it("returns null when the nearest data-sc-id node is data-sc-root", () => {
+    const root = fakeEl({ "data-sc-id": "sc-stage", "data-sc-root": "" }, "div");
     const child = fakeEl({}, "p", root);
     expect(resolveNearestHfElement(child as unknown as Element, visible)).toBeNull();
   });
 
-  it("returns null when the element itself is data-hf-root", () => {
-    const root = fakeEl({ "data-hf-id": "hf-stage", "data-hf-root": "" }, "div");
+  it("returns null when the element itself is data-sc-root", () => {
+    const root = fakeEl({ "data-sc-id": "sc-stage", "data-sc-root": "" }, "div");
     expect(resolveNearestHfElement(root as unknown as Element, visible)).toBeNull();
   });
 
   it("returns null when isVisible returns false for the matching element", () => {
-    const el = fakeEl({ "data-hf-id": "hf-abc" }, "div");
+    const el = fakeEl({ "data-sc-id": "sc-abc" }, "div");
     expect(resolveNearestHfElement(el as unknown as Element, invisible)).toBeNull();
   });
 
   it("skips an opacity-0 element and returns null (isVisible called on the resolved node)", () => {
-    const parent = fakeEl({ "data-hf-id": "hf-parent" }, "div");
+    const parent = fakeEl({ "data-sc-id": "sc-parent" }, "div");
     const child = fakeEl({}, "span", parent);
     const isVisible = vi.fn((el: Element) => {
       const fe = el as unknown as FakeEl;
-      return fe.attrs["data-hf-id"] !== "hf-parent";
+      return fe.attrs["data-sc-id"] !== "sc-parent";
     });
     expect(resolveNearestHfElement(child as unknown as Element, isVisible)).toBeNull();
     expect(isVisible).toHaveBeenCalledTimes(1);
   });
 
-  it("returns null when no data-hf-id found in any ancestor", () => {
+  it("returns null when no data-sc-id found in any ancestor", () => {
     const grandparent = fakeEl({}, "body");
     const parent = fakeEl({}, "div", grandparent);
     const child = fakeEl({}, "span", parent);
@@ -121,17 +121,17 @@ describe("resolveNearestHfElement", () => {
   });
 
   it("tag is lowercased", () => {
-    const el = fakeEl({ "data-hf-id": "hf-xyz" }, "DIV");
+    const el = fakeEl({ "data-sc-id": "sc-xyz" }, "DIV");
     const result = resolveNearestHfElement(el as unknown as Element, visible);
     expect(result?.tag).toBe("div");
   });
 
-  it("stops at the nearest ancestor — does not continue past first data-hf-id", () => {
-    const outer = fakeEl({ "data-hf-id": "hf-outer" }, "section");
-    const inner = fakeEl({ "data-hf-id": "hf-inner" }, "div", outer);
+  it("stops at the nearest ancestor — does not continue past first data-sc-id", () => {
+    const outer = fakeEl({ "data-sc-id": "sc-outer" }, "section");
+    const inner = fakeEl({ "data-sc-id": "sc-inner" }, "div", outer);
     const child = fakeEl({}, "span", inner);
     const result = resolveNearestHfElement(child as unknown as Element, visible);
-    expect(result?.id).toBe("hf-inner");
+    expect(result?.id).toBe("sc-inner");
   });
 });
 
@@ -170,8 +170,8 @@ describe("IframePreviewAdapter selection", () => {
     const adapter = createIframePreviewAdapter(stubIframe());
     const cb = vi.fn();
     adapter.on("selection", cb);
-    adapter.select(["hf-abc"]);
-    expect(cb).toHaveBeenCalledWith(["hf-abc"]);
+    adapter.select(["sc-abc"]);
+    expect(cb).toHaveBeenCalledWith(["sc-abc"]);
   });
 
   it("off unsubscribes the handler", () => {
@@ -179,7 +179,7 @@ describe("IframePreviewAdapter selection", () => {
     const cb = vi.fn();
     const off = adapter.on("selection", cb);
     off();
-    adapter.select(["hf-abc"]);
+    adapter.select(["sc-abc"]);
     expect(cb).not.toHaveBeenCalled();
   });
 
@@ -187,18 +187,18 @@ describe("IframePreviewAdapter selection", () => {
     const adapter = createIframePreviewAdapter(stubIframe());
     const cb = vi.fn();
     adapter.on("selection", cb);
-    adapter.select(["hf-a"]);
-    adapter.select(["hf-b"], { additive: true });
-    expect(cb).toHaveBeenLastCalledWith(expect.arrayContaining(["hf-a", "hf-b"]));
+    adapter.select(["sc-a"]);
+    adapter.select(["sc-b"], { additive: true });
+    expect(cb).toHaveBeenLastCalledWith(expect.arrayContaining(["sc-a", "sc-b"]));
   });
 
   it("non-additive select replaces prior selection", () => {
     const adapter = createIframePreviewAdapter(stubIframe());
     const cb = vi.fn();
     adapter.on("selection", cb);
-    adapter.select(["hf-a"]);
-    adapter.select(["hf-b"]);
-    expect(cb).toHaveBeenLastCalledWith(["hf-b"]);
+    adapter.select(["sc-a"]);
+    adapter.select(["sc-b"]);
+    expect(cb).toHaveBeenLastCalledWith(["sc-b"]);
   });
 
   it("multiple handlers all fire", () => {
@@ -207,7 +207,7 @@ describe("IframePreviewAdapter selection", () => {
     const cb2 = vi.fn();
     adapter.on("selection", cb1);
     adapter.on("selection", cb2);
-    adapter.select(["hf-abc"]);
+    adapter.select(["sc-abc"]);
     expect(cb1).toHaveBeenCalledOnce();
     expect(cb2).toHaveBeenCalledOnce();
   });
@@ -246,7 +246,7 @@ function fakeDomEl(id: string, dataX: string | null, dataY: string | null): Fake
       delete this._props[name];
     },
   };
-  const attrs: Record<string, string> = { "data-hf-id": id };
+  const attrs: Record<string, string> = { "data-sc-id": id };
   if (dataX !== null) attrs["data-x"] = dataX;
   if (dataY !== null) attrs["data-y"] = dataY;
   const el: FakeDomEl = {
@@ -296,15 +296,15 @@ describe("IframePreviewAdapter draft / commit / cancel", () => {
 
   it("commitPreview dispatches moveElement with correct absolute position", () => {
     const dispatch = vi.fn();
-    const el = fakeDomEl("hf-abc", "100", "200");
+    const el = fakeDomEl("sc-abc", "100", "200");
     const adapter = createIframePreviewAdapter(fakeIframe(el), dispatch);
 
-    adapter.applyDraft("hf-abc", { dx: 30, dy: -20 });
+    adapter.applyDraft("sc-abc", { dx: 30, dy: -20 });
     adapter.commitPreview();
 
     expect(dispatch).toHaveBeenCalledWith<[EditOp]>({
       type: "moveElement",
-      target: "hf-abc",
+      target: "sc-abc",
       x: 130,
       y: 180,
     });
@@ -312,63 +312,63 @@ describe("IframePreviewAdapter draft / commit / cancel", () => {
 
   it("commitPreview with missing data-x/data-y defaults base to 0", () => {
     const dispatch = vi.fn();
-    const el = fakeDomEl("hf-abc", null, null);
+    const el = fakeDomEl("sc-abc", null, null);
     const adapter = createIframePreviewAdapter(fakeIframe(el), dispatch);
 
-    adapter.applyDraft("hf-abc", { dx: 50, dy: 25 });
+    adapter.applyDraft("sc-abc", { dx: 50, dy: 25 });
     adapter.commitPreview();
 
     expect(dispatch).toHaveBeenCalledWith<[EditOp]>({
       type: "moveElement",
-      target: "hf-abc",
+      target: "sc-abc",
       x: 50,
       y: 25,
     });
   });
 
   it("commitPreview mirrors the move onto the live element and applies the translate", () => {
-    const el = fakeDomEl("hf-abc", "100", "200");
+    const el = fakeDomEl("sc-abc", "100", "200");
     const adapter = createIframePreviewAdapter(fakeIframe(el), vi.fn());
 
-    adapter.applyDraft("hf-abc", { dx: 30, dy: -20 });
+    adapter.applyDraft("sc-abc", { dx: 30, dy: -20 });
     adapter.commitPreview();
 
     expect(el.getAttribute("data-x")).toBe("130");
     expect(el.getAttribute("data-y")).toBe("180");
     // Baseline captured from the pre-drag values.
-    expect(el.getAttribute("data-hf-edit-base-x")).toBe("100");
-    expect(el.getAttribute("data-hf-edit-base-y")).toBe("200");
+    expect(el.getAttribute("data-sc-edit-base-x")).toBe("100");
+    expect(el.getAttribute("data-sc-edit-base-y")).toBe("200");
     // Final translate = delta from the baseline, held without a reload.
-    expect(el.getAttribute("data-hf-edit-original-translate")).toBe("");
+    expect(el.getAttribute("data-sc-edit-original-translate")).toBe("");
     expect(el.style.getPropertyValue("translate")).toBe("30px -20px");
 
     // A second drag composes from the committed state and keeps the baseline.
-    adapter.applyDraft("hf-abc", { dx: 10, dy: 10 });
+    adapter.applyDraft("sc-abc", { dx: 10, dy: 10 });
     expect(el.style.getPropertyValue("translate")).toBe("40px -10px");
     adapter.commitPreview();
     expect(el.getAttribute("data-x")).toBe("140");
-    expect(el.getAttribute("data-hf-edit-base-x")).toBe("100");
+    expect(el.getAttribute("data-sc-edit-base-x")).toBe("100");
     expect(el.style.getPropertyValue("translate")).toBe("40px -10px");
   });
 
   it("applyDraft translates the element live and cancelPreview restores it", () => {
-    const el = fakeDomEl("hf-abc", "0", "0");
+    const el = fakeDomEl("sc-abc", "0", "0");
     el.style.setProperty("translate", "5px 6px");
     const adapter = createIframePreviewAdapter(fakeIframe(el), vi.fn());
 
-    adapter.applyDraft("hf-abc", { dx: 30, dy: -20 });
+    adapter.applyDraft("sc-abc", { dx: 30, dy: -20 });
     expect(el.style.getPropertyValue("translate")).toBe("35px -14px");
 
     adapter.cancelPreview();
     expect(el.style.getPropertyValue("translate")).toBe("5px 6px");
-    expect(el.getAttribute("data-hf-edit-base-x")).toBeNull();
+    expect(el.getAttribute("data-sc-edit-base-x")).toBeNull();
   });
 
   it("cancelPreview removes a draft translate when there was none before", () => {
-    const el = fakeDomEl("hf-abc", "0", "0");
+    const el = fakeDomEl("sc-abc", "0", "0");
     const adapter = createIframePreviewAdapter(fakeIframe(el), vi.fn());
 
-    adapter.applyDraft("hf-abc", { dx: 30 });
+    adapter.applyDraft("sc-abc", { dx: 30 });
     expect(el.style.getPropertyValue("translate")).toBe("30px 0px");
 
     adapter.cancelPreview();
@@ -376,7 +376,7 @@ describe("IframePreviewAdapter draft / commit / cancel", () => {
   });
 
   it("applyDraft reuses the cached element across repeated calls (no re-query)", () => {
-    const el = fakeDomEl("hf-abc", "0", "0");
+    const el = fakeDomEl("sc-abc", "0", "0");
     let queryCount = 0;
     const iframe = {
       contentDocument: {
@@ -387,28 +387,28 @@ describe("IframePreviewAdapter draft / commit / cancel", () => {
       },
     } as unknown as HTMLIFrameElement;
     const adapter = createIframePreviewAdapter(iframe);
-    adapter.applyDraft("hf-abc", { dx: 1, dy: 1 });
-    adapter.applyDraft("hf-abc", { dx: 2, dy: 2 });
-    adapter.applyDraft("hf-abc", { dx: 3, dy: 3 });
+    adapter.applyDraft("sc-abc", { dx: 1, dy: 1 });
+    adapter.applyDraft("sc-abc", { dx: 2, dy: 2 });
+    adapter.applyDraft("sc-abc", { dx: 3, dy: 3 });
     // Queried once on the first call; the next two reuse the connected cache.
     expect(queryCount).toBe(1);
   });
 
   it("commitPreview without a dispatch callback is a no-op", () => {
-    const el = fakeDomEl("hf-abc", "0", "0");
+    const el = fakeDomEl("sc-abc", "0", "0");
     const adapter = createIframePreviewAdapter(fakeIframe(el));
 
-    adapter.applyDraft("hf-abc", { dx: 10, dy: 10 });
+    adapter.applyDraft("sc-abc", { dx: 10, dy: 10 });
     // should not throw
     adapter.commitPreview();
   });
 
   it("cancelPreview reverts the draft translate without dispatching", () => {
     const dispatch = vi.fn();
-    const el = fakeDomEl("hf-abc", "100", "200");
+    const el = fakeDomEl("sc-abc", "100", "200");
     const adapter = createIframePreviewAdapter(fakeIframe(el), dispatch);
 
-    adapter.applyDraft("hf-abc", { dx: 30, dy: 20 });
+    adapter.applyDraft("sc-abc", { dx: 30, dy: 20 });
     expect(el.style.getPropertyValue("translate")).toBe("30px 20px");
     adapter.cancelPreview();
 
@@ -418,10 +418,10 @@ describe("IframePreviewAdapter draft / commit / cancel", () => {
 
   it("second commitPreview after first is a no-op (draft cleared)", () => {
     const dispatch = vi.fn();
-    const el = fakeDomEl("hf-abc", "0", "0");
+    const el = fakeDomEl("sc-abc", "0", "0");
     const adapter = createIframePreviewAdapter(fakeIframe(el), dispatch);
 
-    adapter.applyDraft("hf-abc", { dx: 10, dy: 5 });
+    adapter.applyDraft("sc-abc", { dx: 10, dy: 5 });
     adapter.commitPreview();
     adapter.commitPreview();
 
@@ -429,42 +429,42 @@ describe("IframePreviewAdapter draft / commit / cancel", () => {
   });
 
   it("switching applyDraft to a new id reverts the abandoned element", () => {
-    const elA = fakeDomEl("hf-a", "0", "0");
-    const elB = fakeDomEl("hf-b", "0", "0");
+    const elA = fakeDomEl("sc-a", "0", "0");
+    const elB = fakeDomEl("sc-b", "0", "0");
     const iframe = {
       contentDocument: {
         querySelector(sel: string) {
-          return sel.includes("hf-a") ? elA : elB;
+          return sel.includes("sc-a") ? elA : elB;
         },
       },
     } as unknown as HTMLIFrameElement;
     const adapter = createIframePreviewAdapter(iframe, vi.fn());
 
-    adapter.applyDraft("hf-a", { dx: 80, dy: 0 });
+    adapter.applyDraft("sc-a", { dx: 80, dy: 0 });
     expect(elA.style.getPropertyValue("translate")).toBe("80px 0px");
 
-    adapter.applyDraft("hf-b", { dx: 10, dy: 10 });
+    adapter.applyDraft("sc-b", { dx: 10, dy: 10 });
     // The abandoned element is restored; the delta does not carry over.
     expect(elA.style.getPropertyValue("translate")).toBe("");
     expect(elB.style.getPropertyValue("translate")).toBe("10px 10px");
   });
 
   it("commitPreview reverts the draft translate when dispatch throws", () => {
-    const el = fakeDomEl("hf-abc", "0", "0");
+    const el = fakeDomEl("sc-abc", "0", "0");
     el.style.setProperty("translate", "5px 6px");
     const dispatch = vi.fn(() => {
       throw new Error("element_not_found");
     });
     const adapter = createIframePreviewAdapter(fakeIframe(el), dispatch);
 
-    adapter.applyDraft("hf-abc", { dx: 30, dy: 20 });
+    adapter.applyDraft("sc-abc", { dx: 30, dy: 20 });
     expect(() => adapter.commitPreview()).toThrow("element_not_found");
     expect(el.style.getPropertyValue("translate")).toBe("5px 6px");
-    expect(el.getAttribute("data-hf-edit-base-x")).toBeNull();
+    expect(el.getAttribute("data-sc-edit-base-x")).toBeNull();
   });
 
   it("cancelPreview does not promote a computed (stylesheet) translate to inline", () => {
-    const el = fakeDomEl("hf-abc", "0", "0");
+    const el = fakeDomEl("sc-abc", "0", "0");
     // Simulate a stylesheet-authored translate visible only via computed style.
     (el as unknown as { ownerDocument: unknown }).ownerDocument = {
       defaultView: {
@@ -473,7 +473,7 @@ describe("IframePreviewAdapter draft / commit / cancel", () => {
     };
     const adapter = createIframePreviewAdapter(fakeIframe(el), vi.fn());
 
-    adapter.applyDraft("hf-abc", { dx: 30, dy: 20 });
+    adapter.applyDraft("sc-abc", { dx: 30, dy: 20 });
     // Draft composes onto the computed baseline (calc for non-px units).
     expect(el.style.getPropertyValue("translate")).toBe("calc(-50% + 30px) calc(-50% + 20px)");
 
@@ -721,7 +721,7 @@ class FakeHTMLImageElement {
   src: string;
 
   constructor(id: string, parent: FakeHTMLImageElement | null = null) {
-    this.attrs = { "data-hf-id": id };
+    this.attrs = { "data-sc-id": id };
     this.tagName = "IMG";
     this.parentElement = parent;
     this.naturalWidth = 100;
@@ -831,35 +831,35 @@ describe("WS-G: z-stack fallthrough via mock elementsFromPoint", () => {
 
   it("non-image hit resolves normally (WS-A1 regression)", () => {
     // No images in the stack — should behave exactly like WS-A1.
-    const div = fakeEl({ "data-hf-id": "hf-div" }, "DIV");
+    const div = fakeEl({ "data-sc-id": "sc-div" }, "DIV");
     const iframe = buildFakeIframeWithStack([div]);
     const adapter = createIframePreviewAdapter(iframe);
     const result = adapter.elementAtPoint(50, 50);
-    expect(result).toEqual({ id: "hf-div", tag: "div" });
+    expect(result).toEqual({ id: "sc-div", tag: "div" });
   });
 
   it("opaque image hit resolves to the image element", () => {
     withCanvasStub("opaque", (makeImgStack) => {
-      const iframe = makeImgStack("hf-img", [fakeEl({ "data-hf-id": "hf-behind" }, "DIV")]);
+      const iframe = makeImgStack("sc-img", [fakeEl({ "data-sc-id": "sc-behind" }, "DIV")]);
       const result = createIframePreviewAdapter(iframe).elementAtPoint(50, 50);
-      expect(result).toEqual({ id: "hf-img", tag: "img" });
+      expect(result).toEqual({ id: "sc-img", tag: "img" });
     });
   });
 
   it("transparent image pixel falls through to the element behind", () => {
     withCanvasStub("transparent", (makeImgStack) => {
-      const iframe = makeImgStack("hf-img", [fakeEl({ "data-hf-id": "hf-behind" }, "DIV")]);
+      const iframe = makeImgStack("sc-img", [fakeEl({ "data-sc-id": "sc-behind" }, "DIV")]);
       const result = createIframePreviewAdapter(iframe).elementAtPoint(50, 50);
-      expect(result).toEqual({ id: "hf-behind", tag: "div" });
+      expect(result).toEqual({ id: "sc-behind", tag: "div" });
     });
   });
 
   it("tainted canvas (SecurityError) falls back to treating pixel as opaque", () => {
     // Taint fallback → opaque → hit the image, not the behind-layer element
     withCanvasStub("tainted", (makeImgStack) => {
-      const iframe = makeImgStack("hf-tainted", [fakeEl({ "data-hf-id": "hf-behind" }, "DIV")]);
+      const iframe = makeImgStack("sc-tainted", [fakeEl({ "data-sc-id": "sc-behind" }, "DIV")]);
       const result = createIframePreviewAdapter(iframe).elementAtPoint(50, 50);
-      expect(result).toEqual({ id: "hf-tainted", tag: "img" });
+      expect(result).toEqual({ id: "sc-tainted", tag: "img" });
     });
   });
 
@@ -867,27 +867,27 @@ describe("WS-G: z-stack fallthrough via mock elementsFromPoint", () => {
     // Two consecutive transparent fallthroughs — exercises the loop iterating
     // past more than one transparent image before hitting an opaque layer.
     withCanvasStub("transparent", (makeImgStack) => {
-      const img2 = new FakeHTMLImageElement("hf-img2");
-      const iframe = makeImgStack("hf-img1", [img2, fakeEl({ "data-hf-id": "hf-behind" }, "DIV")]);
+      const img2 = new FakeHTMLImageElement("sc-img2");
+      const iframe = makeImgStack("sc-img1", [img2, fakeEl({ "data-sc-id": "sc-behind" }, "DIV")]);
       const result = createIframePreviewAdapter(iframe).elementAtPoint(50, 50);
-      expect(result).toEqual({ id: "hf-behind", tag: "div" });
+      expect(result).toEqual({ id: "sc-behind", tag: "div" });
     });
   });
 
   it("transparent image with no element behind returns null", () => {
     // No behind element in stack — transparent hit returns null.
     withCanvasStub("transparent", (makeImgStack) => {
-      const iframe = makeImgStack("hf-img");
+      const iframe = makeImgStack("sc-img");
       const result = createIframePreviewAdapter(iframe).elementAtPoint(50, 50);
       expect(result).toBeNull();
     });
   });
 
   it("survives a window without HTMLImageElement and a doc without elementsFromPoint", () => {
-    const div = fakeEl({ "data-hf-id": "hf-div" }, "DIV");
+    const div = fakeEl({ "data-sc-id": "sc-div" }, "DIV");
     const fakeIframe = (doc: unknown, win: unknown) =>
       ({ contentDocument: doc, contentWindow: win }) as unknown as HTMLIFrameElement;
-    const expected = { id: "hf-div", tag: "div" };
+    const expected = { id: "sc-div", tag: "div" };
 
     // No HTMLImageElement on the window — `instanceof` must not throw.
     const noCtor = fakeIframe(
@@ -965,7 +965,7 @@ function pnode(init: {
   const rect = init.rect ?? { left: 0, top: 0, width: 100, height: 100 };
   const node: PaintNode = {
     tagName: (init.tag ?? "div").toUpperCase(),
-    attrs: { "data-hf-id": `hf-${init.tag ?? "div"}`, ...init.attrs },
+    attrs: { "data-sc-id": `hf-${init.tag ?? "div"}`, ...init.attrs },
     parentElement: init.parent ?? null,
     childNodes: init.text === undefined ? [] : [{ nodeType: 3, textContent: init.text }],
     children: [],
@@ -1159,7 +1159,7 @@ describe("elementPaintsInk: <img> routes through the alpha sampler", () => {
   /** Ink at the centre of a 100×100 image, under a controlled canvas behaviour. */
   function inkAtCentre(
     behavior: CanvasAlphaBehavior,
-    build: () => Element = () => pimg("hf-img", rect) as unknown as Element,
+    build: () => Element = () => pimg("sc-img", rect) as unknown as Element,
   ): boolean {
     const restore = stubOffscreenCanvas(behavior);
     try {
@@ -1185,20 +1185,20 @@ describe("elementPaintsInk: <img> routes through the alpha sampler", () => {
     expect(
       inkAtCentre(
         "transparent",
-        () => pimg("hf-img", rect, { naturalWidth: 0 }) as unknown as Element,
+        () => pimg("sc-img", rect, { naturalWidth: 0 }) as unknown as Element,
       ),
     ).toBe(true);
   });
 
   it("falls back to the tag rule when no point is supplied", () => {
     // Point-free callers are asking "could this paint at all", which for an image is yes.
-    expect(elementPaintsInk(pimg("hf-img", rect) as unknown as Element, paintWin())).toBe(true);
+    expect(elementPaintsInk(pimg("sc-img", rect) as unknown as Element, paintWin())).toBe(true);
   });
 
   it("<picture> defers to the <img> it wraps rather than painting unconditionally", () => {
     const withInnerImg = () => {
       const picture = pnode({ tag: "picture" });
-      picture.children.push(pimg("hf-inner", rect) as unknown as PaintNode);
+      picture.children.push(pimg("sc-inner", rect) as unknown as PaintNode);
       return el(picture);
     };
     expect(inkAtCentre("transparent", withInnerImg)).toBe(false);
@@ -1208,7 +1208,7 @@ describe("elementPaintsInk: <img> routes through the alpha sampler", () => {
     // object-fit letterbox over a white plate: the bitmap misses, the chip is still visible.
     const restore = stubOffscreenCanvas("transparent");
     try {
-      const img = pimg("hf-chip", rect);
+      const img = pimg("sc-chip", rect);
       paintStyles.set(img, { backgroundColor: "#fff" });
       expect(elementPaintsInk(img as unknown as Element, paintWin(), { x: 50, y: 50 })).toBe(true);
     } finally {
@@ -1234,7 +1234,7 @@ describe("compositionPaintsAt", () => {
       root(),
       pnode({ rect: FRAME }),
       pnode({
-        attrs: { "data-hf-id": "hf-sun" },
+        attrs: { "data-sc-id": "sc-sun" },
         style: { backgroundColor: "#ff0" },
         rect: { left: 100, top: 100, width: 180, height: 180 },
       }),
@@ -1293,7 +1293,7 @@ describe("compositionPaintsAt", () => {
     const restore = stubOffscreenCanvas("opaque");
     try {
       const frame: PaintRect = { left: 0, top: 0, width: 1000, height: 1000 };
-      const nodes = [root(), pimg("hf-overlay", frame)];
+      const nodes = [root(), pimg("sc-overlay", frame)];
       expect(
         compositionPaintsAt(paintDoc(nodes), paintWin(), 500, 500, { fullBleedFraction: 0.9 }),
       ).toBe(true);
@@ -1308,7 +1308,7 @@ describe("compositionPaintsAt", () => {
     const restore = stubOffscreenCanvas("tainted");
     try {
       const frame: PaintRect = { left: 0, top: 0, width: 1000, height: 1000 };
-      const nodes = [root(), pimg("hf-overlay", frame)];
+      const nodes = [root(), pimg("sc-overlay", frame)];
       expect(
         compositionPaintsAt(paintDoc(nodes), paintWin(), 500, 500, { fullBleedFraction: 0.9 }),
       ).toBe(false);
@@ -1322,7 +1322,7 @@ describe("compositionPaintsAt", () => {
     // has to say so. A non-zero fraction still discounts it: a root's box IS the frame.
     const painted = () =>
       pnode({
-        attrs: { "data-composition-id": "main", "data-hf-id": "hf-root" },
+        attrs: { "data-composition-id": "main", "data-sc-id": "sc-root" },
         style: { backgroundColor: "#111" },
         rect: { left: 0, top: 0, width: 1000, height: 1000 },
       });
@@ -1392,7 +1392,7 @@ describe("compositionPaintsAt", () => {
       rect: { left: 0, top: 0, width: 200, height: 200 },
     });
     const child = pnode({
-      attrs: { "data-hf-id": "hf-child" },
+      attrs: { "data-sc-id": "sc-child" },
       style: { backgroundColor: "#f00" },
       rect: { left: 0, top: 0, width: 100, height: 100 },
       parent: wrapper,
@@ -1401,14 +1401,14 @@ describe("compositionPaintsAt", () => {
   });
 
   it("addressableOnly:false picks up a node the stamping pass never saw", () => {
-    // Runtime-generated nodes (split-text word spans, clones) carry no data-hf-id.
+    // Runtime-generated nodes (split-text word spans, clones) carry no data-sc-id.
     const generated = pnode({
       tag: "span",
       attrs: {},
       text: "word",
       rect: { left: 0, top: 0, width: 50, height: 20 },
     });
-    delete generated.attrs["data-hf-id"];
+    delete generated.attrs["data-sc-id"];
     const nodes = [root(), generated];
     expect(compositionPaintsAt(paintDoc(nodes), paintWin(), 10, 10)).toBe(false);
     expect(
@@ -1423,9 +1423,9 @@ describe("compositionPaintsAt", () => {
     try {
       const nodes = [
         root(),
-        pimg("hf-big", { left: 0, top: 0, width: 400, height: 400 }, { src: "http://x/big.png" }),
+        pimg("sc-big", { left: 0, top: 0, width: 400, height: 400 }, { src: "http://x/big.png" }),
         pimg(
-          "hf-small",
+          "sc-small",
           { left: 0, top: 0, width: 100, height: 100 },
           { src: "http://x/small.png" },
         ),
@@ -1469,7 +1469,7 @@ describe("IframePreviewAdapter.isProvablyEmptyAt", () => {
   it("is never provably empty while the document is still loading", () => {
     // A same-origin iframe mid-navigation is READABLE and empty, so the !doc guard never
     // fires — walking it would answer a confident "no ink" under an arriving composition.
-    const stamped = [pnode({ attrs: { "data-hf-id": "hf-a" } })];
+    const stamped = [pnode({ attrs: { "data-sc-id": "sc-a" } })];
     expect(
       createIframePreviewAdapter(
         iframeWith(paintDoc(stamped, "loading"), paintWin()),

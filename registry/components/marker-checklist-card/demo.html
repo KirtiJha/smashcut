@@ -21,7 +21,7 @@
           "Segoe UI",
           sans-serif;
       }
-      .hf-ui-demo-canvas {
+      .sc-ui-demo-canvas {
         position: relative;
         width: 1920px;
         height: 1080px;
@@ -256,7 +256,7 @@
   </head>
   <body>
     <div
-      class="hf-ui-demo-canvas"
+      class="sc-ui-demo-canvas"
       data-composition-id="marker-checklist-card-demo"
       data-start="0"
       data-width="1920"
@@ -353,8 +353,8 @@
         "use strict";
         var compositionId = "marker-checklist-card-demo";
         var vars =
-          window.__hyperframes && window.__hyperframes.getVariables
-            ? window.__hyperframes.getVariables()
+          window.__smashcut && window.__smashcut.getVariables
+            ? window.__smashcut.getVariables()
             : {};
         function text(v, fb, mx) {
           if (typeof v !== "string") return fb;

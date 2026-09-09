@@ -16,7 +16,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 ```html swipe-rail.html
 <!doctype html>
 <!--
-  swipe-rail: HyperFrames video primitive (interaction / gesture / demonstrate)
+  swipe-rail: SmashCut video primitive (interaction / gesture / demonstrate)
 
   Concept: a contact circle leads a horizontal card rail through one swipe.
   The rail follows the drag, carries momentum after release, then snaps the
@@ -190,8 +190,8 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
             var rail = root.querySelector(".sr-rail");
             var contact = root.querySelector(".sr-contact");
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             var countValue = Number(vars.card_count);
@@ -378,7 +378,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 
 ## Install
 
-<InstallCommand command="npx hyperframes add swipe-rail" item="swipe-rail" />
+<InstallCommand command="npx smashcut add swipe-rail" item="swipe-rail" />
 
 That writes one file: `compositions/components/swipe-rail.html`.
 
@@ -418,7 +418,7 @@ defaults, so this behaves exactly like the preview above until you change one:
 ```html
 <!doctype html>
 <!--
-  swipe-rail: HyperFrames video primitive (interaction / gesture / demonstrate)
+  swipe-rail: SmashCut video primitive (interaction / gesture / demonstrate)
 
   Concept: a contact circle leads a horizontal card rail through one swipe.
   The rail follows the drag, carries momentum after release, then snaps the
@@ -592,8 +592,8 @@ defaults, so this behaves exactly like the preview above until you change one:
             var rail = root.querySelector(".sr-rail");
             var contact = root.querySelector(".sr-contact");
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             var countValue = Number(vars.card_count);

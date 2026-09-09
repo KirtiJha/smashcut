@@ -1,7 +1,7 @@
 {
   "$schema": "https://hyperframes.heygen.com/schema/registry-item.json",
   "name": "liquid-glass-widgets",
-  "type": "hyperframes:block",
+  "type": "smashcut:block",
   "title": "Liquid Glass Widgets",
   "description": "Frosted glass stat cards, showcase panel and pill chips over an aurora shader background",
   "stability": "experimental",
@@ -15,11 +15,11 @@
     {
       "path": "liquid-glass-widgets.html",
       "target": "compositions/liquid-glass-widgets.html",
-      "type": "hyperframes:composition"
+      "type": "smashcut:composition"
     },
     {
-      "path": "assets/hyperframes-logo-dark.svg",
-      "target": "compositions/assets/hyperframes-logo-dark.svg",
+      "path": "assets/smashcut-logo-dark.svg",
+      "target": "compositions/assets/smashcut-logo-dark.svg",
       "type": "registry:asset"
     },
     {
@@ -29,7 +29,7 @@
     }
   ],
   "preview": {
-    "video": "https://static.heygen.ai/hyperframes-oss/docs/images/catalog/blocks/liquid-glass-widgets.mp4",
-    "poster": "https://static.heygen.ai/hyperframes-oss/docs/images/catalog/blocks/liquid-glass-widgets.png"
+    "video": "https://static.heygen.ai/smashcut-oss/docs/images/catalog/blocks/liquid-glass-widgets.mp4",
+    "poster": "https://static.heygen.ai/smashcut-oss/docs/images/catalog/blocks/liquid-glass-widgets.png"
   }
 }

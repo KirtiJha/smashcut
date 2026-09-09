@@ -9,14 +9,14 @@ import {
   type CanvasResolution,
   type Fps,
   type FpsParseResult,
-} from "@hyperframes/core";
+} from "@smashcut/core";
 import {
   EXTRACT_CACHE_DIR_DISABLED_ALIASES,
   MAX_VP9_CPU_USED,
   MIN_VP9_CPU_USED,
   isVideoFrameFormat,
   type VideoFrameFormat,
-} from "@hyperframes/engine";
+} from "@smashcut/engine";
 import { errorBox } from "../../ui/format.js";
 import { failUsage } from "../../utils/commandResult.js";
 import { resolveProject } from "../../utils/project.js";
@@ -197,7 +197,7 @@ export function createRenderPlan(args: RenderCommandArgs, now = new Date()): Ren
   const quality = qualityRaw as RenderQuality;
 
   // Attribution resolves the explicit --skill flag first, then falls back to
-  // the owning skill persisted in hyperframes.json — so re-renders, batch
+  // the owning skill persisted in smashcut.json — so re-renders, batch
   // renders, and `npm run render` (which never re-pass the flag) stay
   // attributed to the workflow that created the project.
   const flagSkill = normalizeSkillSlug(args.skill);
@@ -303,13 +303,13 @@ export function createRenderPlan(args: RenderCommandArgs, now = new Date()): Ren
       ? "true"
       : "false";
   }
-  // Sugar for HYPERFRAMES_EXTRACT_CACHE_DIR. Disabling aliases pass through
+  // Sugar for SMASHCUT_EXTRACT_CACHE_DIR. Disabling aliases pass through
   // verbatim for the engine helper; positive paths become CWD-stable here.
   if (typeof args["frames-cache-dir"] === "string" && args["frames-cache-dir"].trim() !== "") {
     const raw = args["frames-cache-dir"].trim();
     const normalized = raw.toLowerCase();
     const isDisableAlias = EXTRACT_CACHE_DIR_DISABLED_ALIASES.includes(normalized);
-    environment.HYPERFRAMES_EXTRACT_CACHE_DIR = isDisableAlias ? raw : resolve(raw);
+    environment.SMASHCUT_EXTRACT_CACHE_DIR = isDisableAlias ? raw : resolve(raw);
   }
   if (args["max-concurrent-renders"] != null) {
     const parsed = positiveInteger(

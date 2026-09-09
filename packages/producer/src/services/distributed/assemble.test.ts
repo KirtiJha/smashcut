@@ -33,7 +33,7 @@ import {
   PROVENANCE_VERSION,
   readRenderProvenance,
   renderProvenanceArgs,
-} from "@hyperframes/engine";
+} from "@smashcut/engine";
 import type { ChunkSliceJson } from "../render/stages/freezePlan.js";
 import { assemble } from "./assemble.js";
 import type { DistributedFormat } from "./shared.js";
@@ -42,7 +42,7 @@ let runRoot: string;
 let hasFfmpeg = false;
 
 beforeAll(() => {
-  runRoot = mkdtempSync(join(tmpdir(), "hf-assemble-test-"));
+  runRoot = mkdtempSync(join(tmpdir(), "sc-assemble-test-"));
   hasFfmpeg = spawnSync("ffmpeg", ["-version"]).status === 0;
 });
 

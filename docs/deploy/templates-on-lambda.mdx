@@ -1,9 +1,9 @@
 ---
 title: "Render templates on Lambda"
-description: "Render one HyperFrames composition with different variable values, individually or from a JSONL batch."
+description: "Render one SmashCut composition with different variable values, individually or from a JSONL batch."
 ---
 
-A HyperFrames template is a composition with declared variables. The same
+A SmashCut template is a composition with declared variables. The same
 project can produce many videos without rewriting its HTML.
 
 Use this guide after deploying the [AWS Lambda render stack](/deploy/aws-lambda).
@@ -45,7 +45,7 @@ See [Variables](/concepts/variables) for every type and binding method.
 Render one realistic payload before using cloud infrastructure:
 
 ```bash
-hyperframes render ./my-template \
+smashcut render ./my-template \
   --variables '{"title":"Hello Ada","accent":"#ff4d67"}' \
   --strict-variables \
   --output renders/ada-preview.mp4
@@ -56,7 +56,7 @@ hyperframes render ./my-template \
 ## Render one version on Lambda
 
 ```bash
-hyperframes lambda render ./my-template \
+smashcut lambda render ./my-template \
   --width 1920 \
   --height 1080 \
   --variables '{"title":"Hello Ada","accent":"#ff4d67"}' \
@@ -67,7 +67,7 @@ hyperframes lambda render ./my-template \
 Without `--wait`, the command returns a render ID. Check it later with:
 
 ```bash
-hyperframes lambda progress <render-id>
+smashcut lambda progress <render-id>
 ```
 
 ## Reuse the project upload
@@ -76,13 +76,13 @@ hyperframes lambda progress <render-id>
 create a content-addressed site once:
 
 ```bash
-hyperframes lambda sites create ./my-template
+smashcut lambda sites create ./my-template
 ```
 
 Pass the returned ID with later renders:
 
 ```bash
-hyperframes lambda render ./my-template \
+smashcut lambda render ./my-template \
   --site-id <site-id> \
   --width 1920 \
   --height 1080 \
@@ -104,7 +104,7 @@ Create one JSON object per line. `outputKey` is required; `variables` and
 Start the batch:
 
 ```bash
-hyperframes lambda render-batch ./my-template \
+smashcut lambda render-batch ./my-template \
   --batch ./recipients.jsonl \
   --width 1920 \
   --height 1080 \
@@ -117,7 +117,7 @@ line. A failure to start one row does not discard the other started renders.
 Validate the file without starting AWS executions:
 
 ```bash
-hyperframes lambda render-batch ./my-template \
+smashcut lambda render-batch ./my-template \
   --batch ./recipients.jsonl \
   --width 1920 \
   --height 1080 \
@@ -129,7 +129,7 @@ hyperframes lambda render-batch ./my-template \
 ## Keep variables small
 
 The complete Step Functions Standard execution input is limited to 256 KiB.
-HyperFrames checks this before starting the execution.
+SmashCut checks this before starting the execution.
 
 Use variables for JSON data. Store images, audio, and video separately and
 pass their URLs instead of base64 content.
@@ -143,10 +143,10 @@ pass their URLs instead of base64 content.
 
 ## Migrating from Remotion Lambda inputProps
 
-HyperFrames variables fill the role that `inputProps` serves in a Remotion
+SmashCut variables fill the role that `inputProps` serves in a Remotion
 Lambda render:
 
-| Remotion pattern        | HyperFrames equivalent                                             |
+| Remotion pattern        | SmashCut equivalent                                             |
 | ----------------------- | ------------------------------------------------------------------ |
 | `defaultProps`          | A `default` value in `data-composition-variables`                  |
 | `inputProps`            | `--variables` or the SDK render config's `variables`               |
@@ -171,7 +171,7 @@ Start conservatively and measure a real composition before increasing them.
 
 ## Use the SDK
 
-For a backend service, `@hyperframes/aws-lambda/sdk` exposes `deploySite`,
+For a backend service, `@smashcut/aws-lambda/sdk` exposes `deploySite`,
 `renderToLambda`, and `getRenderProgress`. See the
 [AWS package reference](/packages/aws-lambda) for the current types and a
 working example.

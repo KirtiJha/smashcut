@@ -19,7 +19,7 @@ import { join, resolve } from "node:path";
  * than on the four sources a reader would think to check.
  */
 const ROOT = resolve(import.meta.dirname, "..");
-const PLAYER_CDN = /cdn\.jsdelivr\.net\/npm\/@hyperframes\/player@([^/"'`\s]+)/g;
+const PLAYER_CDN = /cdn\.jsdelivr\.net\/npm\/@smashcut\/player@([^/"'`\s]+)/g;
 const TEXT_FILE = /\.(mdx?|[jt]sx?|html|json)$/;
 
 // The generator interpolates the range, so its source reads as a template

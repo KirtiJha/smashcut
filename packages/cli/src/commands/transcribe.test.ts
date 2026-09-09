@@ -19,7 +19,7 @@ vi.mock("../telemetry/events.js", () => ({
 import transcribeCmd from "./transcribe.js";
 
 function dummyAudio(): { dir: string; input: string } {
-  const dir = mkdtempSync(join(tmpdir(), "hf-transcribe-test-"));
+  const dir = mkdtempSync(join(tmpdir(), "sc-transcribe-test-"));
   const input = join(dir, "narration.wav");
   writeFileSync(input, "not-real-audio");
   return { dir, input };
@@ -80,7 +80,7 @@ describe("transcribe command", () => {
   });
 
   it("imports an SRT and exports an SRT sidecar from transcript.json", async () => {
-    const dir = mkdtempSync(join(tmpdir(), "hf-transcribe-test-"));
+    const dir = mkdtempSync(join(tmpdir(), "sc-transcribe-test-"));
     dirs.push(dir);
     const input = join(dir, "sample.srt");
     const sample = `1
@@ -133,7 +133,7 @@ Render video. Built for agents.
   });
 
   it("--preserve-cues keeps single-word cues separate when exporting from JSON", async () => {
-    const dir = mkdtempSync(join(tmpdir(), "hf-transcribe-test-"));
+    const dir = mkdtempSync(join(tmpdir(), "sc-transcribe-test-"));
     dirs.push(dir);
     // Single-word cues have no internal whitespace, so the whitespace heuristic
     // can't tell them from word-level whisper output. --preserve-cues forces 1:1.

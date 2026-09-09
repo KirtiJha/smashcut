@@ -17,7 +17,7 @@
  *   `ls` output and tracing logs stay short. Truncation to 16 hex chars
  *   leaves 64 bits of entropy — collision risk at cache scale is negligible.
  * - Frames are extracted into a unique `<entry>.partial-<pid>-<uuid>/` dir.
- *   Once all frames are written, the partial dir receives the `.hf-complete`
+ *   Once all frames are written, the partial dir receives the `.sc-complete`
  *   sentinel and is atomically renamed to the final key dir. Concurrent
  *   same-key writers may duplicate ffmpeg work, but readers only ever serve
  *   complete entries.
@@ -52,10 +52,10 @@ import { FRAME_FILENAME_PREFIX, framePathsFromDirectory } from "./extractedFrame
 export { FRAME_FILENAME_PREFIX } from "./extractedFrameIndex.js";
 
 /** Sentinel filename written after a cache entry is fully populated. */
-export const COMPLETE_SENTINEL = ".hf-complete";
+export const COMPLETE_SENTINEL = ".sc-complete";
 
 /** Marker file stamped after each GC sweep; drives the staleness fallback. */
-export const GC_MARKER = ".hf-last-gc";
+export const GC_MARKER = ".sc-last-gc";
 
 /**
  * Current schema version. Bump when the cache-contents invariant changes.

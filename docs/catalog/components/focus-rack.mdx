@@ -16,7 +16,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 ```html focus-rack.html
 <!doctype html>
 <!--
-  focus-rack: HyperFrames video primitive (camera / holdable / emphasize)
+  focus-rack: SmashCut video primitive (camera / holdable / emphasize)
 
   Concept: two cards sit at different apparent depths. Card A begins sharp
   and near while card B is blurred and dim. Focus moves to card B exactly
@@ -241,8 +241,8 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
             var labelA = root.querySelector(".fr-label-a");
             var labelB = root.querySelector(".fr-label-b");
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             var accent = vars.accent === "green" || vars.accent === "violet" ? vars.accent : "blue";
@@ -350,7 +350,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 
 ## Install
 
-<InstallCommand command="npx hyperframes add focus-rack" item="focus-rack" />
+<InstallCommand command="npx smashcut add focus-rack" item="focus-rack" />
 
 That writes one file: `compositions/components/focus-rack.html`.
 
@@ -390,7 +390,7 @@ defaults, so this behaves exactly like the preview above until you change one:
 ```html
 <!doctype html>
 <!--
-  focus-rack: HyperFrames video primitive (camera / holdable / emphasize)
+  focus-rack: SmashCut video primitive (camera / holdable / emphasize)
 
   Concept: two cards sit at different apparent depths. Card A begins sharp
   and near while card B is blurred and dim. Focus moves to card B exactly
@@ -615,8 +615,8 @@ defaults, so this behaves exactly like the preview above until you change one:
             var labelA = root.querySelector(".fr-label-a");
             var labelB = root.querySelector(".fr-label-b");
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             var accent = vars.accent === "green" || vars.accent === "violet" ? vars.accent : "blue";

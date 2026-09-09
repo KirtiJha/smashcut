@@ -77,17 +77,17 @@ describe.each(PARSERS)("sanitizeRichTextChildren (%s)", (_name, parse) => {
   // panel unable to match a layer to its source after any inline style edit.
   it("keeps the attributes a text layer is tracked by", () => {
     const out = clean(
-      '<span data-hf-text-key="child:1" data-hf-id="hf-abc" style="color: red">x</span>',
+      '<span data-sc-text-key="child:1" data-sc-id="sc-abc" style="color: red">x</span>',
       parse,
     );
-    expect(out).toContain('data-hf-text-key="child:1"');
-    expect(out).toContain('data-hf-id="hf-abc"');
+    expect(out).toContain('data-sc-text-key="child:1"');
+    expect(out).toContain('data-sc-id="sc-abc"');
   });
 
   it("drops an identity attribute whose value is not a bare token", () => {
-    const out = clean(`<span data-hf-text-key='a" onload="alert(1)'>x</span>`, parse);
+    const out = clean(`<span data-sc-text-key='a" onload="alert(1)'>x</span>`, parse);
     expect(out).not.toContain("onload");
-    expect(out).not.toContain("data-hf-text-key");
+    expect(out).not.toContain("data-sc-text-key");
   });
 
   // These are what the design panel writes onto those same spans. Sanitizing

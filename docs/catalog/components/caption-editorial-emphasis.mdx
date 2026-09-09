@@ -9,12 +9,12 @@ import { InstallCommand } from "/snippets/install-command.jsx";
   className="w-full aspect-video rounded-xl border-0 bg-zinc-100 dark:bg-zinc-800"
   title="caption-editorial-emphasis preview"
   loading="lazy"
-  srcDoc={`<!doctype html><html><head><meta charset="utf-8"><style>html,body{margin:0;height:100%;overflow:hidden;background:transparent}hyperframes-player{display:block;width:100%;height:100%}</style><script src="https://cdn.jsdelivr.net/npm/@hyperframes/player@latest/dist/hyperframes-player.global.js"><\/script></head><body><script>fetch("/public/catalog/components/caption-editorial-emphasis.json").then(function(r){return r.json()}).then(function(d){var p=document.createElement("hyperframes-player");p.setAttribute("srcdoc",d.html);p.setAttribute("controls","");p.setAttribute("autoplay","");p.setAttribute("loop","");p.setAttribute("muted","");p.setAttribute("poster","https://static.heygen.ai/hyperframes-oss/docs/images/catalog/components/caption-editorial-emphasis.png");document.body.appendChild(p)});<\/script></body></html>`}
+  srcDoc={`<!doctype html><html><head><meta charset="utf-8"><style>html,body{margin:0;height:100%;overflow:hidden;background:transparent}smashcut-player{display:block;width:100%;height:100%}</style><script src="https://cdn.jsdelivr.net/npm/@smashcut/player@latest/dist/smashcut-player.global.js"><\/script></head><body><script>fetch("/public/catalog/components/caption-editorial-emphasis.json").then(function(r){return r.json()}).then(function(d){var p=document.createElement("smashcut-player");p.setAttribute("srcdoc",d.html);p.setAttribute("controls","");p.setAttribute("autoplay","");p.setAttribute("loop","");p.setAttribute("muted","");p.setAttribute("poster","https://static.heygen.ai/smashcut-oss/docs/images/catalog/components/caption-editorial-emphasis.png");document.body.appendChild(p)});<\/script></body></html>`}
 />
 
 ## Install
 
-<InstallCommand command="npx hyperframes add caption-editorial-emphasis" item="caption-editorial-emphasis" />
+<InstallCommand command="npx smashcut add caption-editorial-emphasis" item="caption-editorial-emphasis" />
 
 That writes one file: `compositions/components/caption-editorial-emphasis.html`.
 
@@ -182,7 +182,7 @@ That writes one file: `compositions/components/caption-editorial-emphasis.html`.
         { text: "a", start: 1.25, end: 1.35 },
         { text: "single", start: 1.35, end: 1.65 },
         { text: "frame.", start: 1.65, end: 2.0 },
-        { text: "HyperFrames", start: 2.1, end: 2.65 },
+        { text: "SmashCut", start: 2.1, end: 2.65 },
         { text: "lets", start: 2.65, end: 2.85 },
         { text: "you", start: 2.85, end: 2.95 },
         { text: "write", start: 2.95, end: 3.15 },
@@ -205,7 +205,7 @@ That writes one file: `compositions/components/caption-editorial-emphasis.html`.
       ];
 
       // Block layout: [wordIndex, type] — n=normal, i=italic, e=emphasis(large)
-      // Emphasis words: HyperFrames(8), HTML(12), professional(15), code(24), cinema.(27)
+      // Emphasis words: SmashCut(8), HTML(12), professional(15), code(24), cinema.(27)
       var BLOCKS = [
         {
           line1: [

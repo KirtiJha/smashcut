@@ -11,7 +11,7 @@ export function StudioToast({ message, tone, leaving, onDismiss }: StudioToastPr
   return (
     <div
       role={isError ? "alert" : "status"}
-      className={`motion-reduce:animate-none ${leaving ? "hf-toast-exit" : "hf-toast-enter"}`}
+      className={`motion-reduce:animate-none ${leaving ? "sc-toast-exit" : "sc-toast-enter"}`}
     >
       <div
         className="relative flex max-w-[min(420px,calc(100vw-48px))] items-center gap-3 overflow-hidden rounded-2xl py-3 pl-4 pr-2 text-[12px]"

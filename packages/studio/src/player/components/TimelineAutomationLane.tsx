@@ -26,7 +26,7 @@ import {
   type HfAutomation,
   type HfAutomationLane,
   type HfAutomationPoint,
-} from "@hyperframes/core/audio-automation";
+} from "@smashcut/core/audio-automation";
 import { envelopePath, fromUnit, laneFor, PAD_X, toUnit, withLane } from "./automationLaneGeometry";
 import { useAutomationLaneGestures } from "./useAutomationLaneGestures";
 import { AutomationValueInput } from "./AutomationValueInput";
@@ -132,7 +132,7 @@ function ReadOnlyNote({
   return (
     <div
       data-automation-readonly-note=""
-      className="hf-automation-readonly-note pointer-events-none absolute rounded-[3px] bg-black/85 px-1.5 py-0.5 text-[9px] text-white/80"
+      className="sc-automation-readonly-note pointer-events-none absolute rounded-[3px] bg-black/85 px-1.5 py-0.5 text-[9px] text-white/80"
       style={{ left: leftPx + 6, top: 2, zIndex: 3, maxWidth: Math.max(120, widthPx - 12) }}
     >
       {note}
@@ -409,7 +409,7 @@ export function TimelineAutomationLane({
       // full width, so a band that accepted the pointer would let whichever
       // clip rendered last swallow every sibling's envelope — hover, drag and
       // all. Only the drawn parts opt back in.
-      className="hf-automation-lane pointer-events-none absolute"
+      className="sc-automation-lane pointer-events-none absolute"
       style={{ top: topPx, left: 0, right: 0, height: h }}
       data-automation-lane={target}
     >
@@ -420,7 +420,7 @@ export function TimelineAutomationLane({
           pixel off the geometry every hit test is computed from. */}
       <div
         data-automation-lane-border=""
-        className="hf-automation-lane-border pointer-events-none absolute"
+        className="sc-automation-lane-border pointer-events-none absolute"
         style={{ top: 0, left: 0, right: 0, height: 1, background: LANE_BORDER, zIndex: 1 }}
       />
       {/* No name drawn here: the label column carries it, on the same tree
@@ -428,7 +428,7 @@ export function TimelineAutomationLane({
           envelope it described and scrolled horizontally away from its own row. */}
       <svg
         ref={svgRef}
-        className="hf-automation-svg pointer-events-auto absolute"
+        className="sc-automation-svg pointer-events-auto absolute"
         style={{
           left: leftPx - PAD_X,
           top: 0,
@@ -561,7 +561,7 @@ export function TimelineAutomationLane({
 
       {hint ? (
         <div
-          className="hf-automation-hint pointer-events-none absolute rounded-[3px] bg-black/80 px-1 py-0.5 font-mono text-[9px] text-white"
+          className="sc-automation-hint pointer-events-none absolute rounded-[3px] bg-black/80 px-1 py-0.5 font-mono text-[9px] text-white"
           style={{ left: leftPx + 6, top: 2, zIndex: 3 }}
         >
           {hint}

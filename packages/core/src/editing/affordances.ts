@@ -204,7 +204,7 @@ function resolveCapabilities(facts: EditableElementFacts): DomEditCapabilities {
  * without re-running the capability geometry parse.
  */
 export function resolveEditingSections(facts: EditableElementFacts): EditingSectionApplicability {
-  // An `<hf-audio-group>` is a mixer bus: it has no visual frame AND no media
+  // An `<sc-audio-group>` is a mixer bus: it has no visual frame AND no media
   // of its own, but it does carry a `data-fx-chain`, which is the whole point
   // of selecting one. Without this the timeline's "Open rack" on a group led to
   // a panel offering Fill, Gradient, Stroke and Shadow for something that paints

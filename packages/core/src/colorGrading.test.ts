@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { COLOR_GRADING_ADVANCED_LIMITS } from "@hyperframes/parsers/color-grading-contract";
+import { COLOR_GRADING_ADVANCED_LIMITS } from "@smashcut/parsers/color-grading-contract";
 import { unitFloatToByte } from "./colorLuts";
 import {
   calculateHfColorGradingSecondaryMask,

@@ -17,7 +17,7 @@ import {
   type RunFfmpegResult,
   type VideoElement,
   type VideoMetadata,
-} from "@hyperframes/engine";
+} from "@smashcut/engine";
 import { afterAll, afterEach, beforeAll, describe, expect, it, vi } from "vitest";
 import { createRenderJob } from "../../renderOrchestrator.js";
 import { resolveHdrVideoFrameIndex } from "../../hdrCompositor.js";
@@ -131,7 +131,7 @@ function videoComposition(src: string): CompositionMetadata {
 
 describe("planHdrResources non-ASCII src resolution (PRINFRA-349)", () => {
   it("decodes a percent-encoded CJK <video src> back to the real on-disk path", () => {
-    const projectDir = mkdtempSync(join(tmpdir(), "hf-hdr-cjk-"));
+    const projectDir = mkdtempSync(join(tmpdir(), "sc-hdr-cjk-"));
     try {
       const realName = "视频1.mp4";
       writeFileSync(join(projectDir, realName), "x");
@@ -152,7 +152,7 @@ describe("planHdrResources non-ASCII src resolution (PRINFRA-349)", () => {
   });
 
   it("leaves an ASCII src untouched", () => {
-    const projectDir = mkdtempSync(join(tmpdir(), "hf-hdr-ascii-"));
+    const projectDir = mkdtempSync(join(tmpdir(), "sc-hdr-ascii-"));
     try {
       writeFileSync(join(projectDir, "clip.mp4"), "x");
       const prep = planHdrResources({
@@ -319,7 +319,7 @@ describe("resolveHdrExtractionWindow", () => {
 });
 
 describe.skipIf(!HAS_FFMPEG)("raw HDR held tails on sparse-timestamp sources", () => {
-  const fixtureDir = mkdtempSync(join(tmpdir(), "hf-hdr-sparse-held-tail-"));
+  const fixtureDir = mkdtempSync(join(tmpdir(), "sc-hdr-sparse-held-tail-"));
   const cfrFixture = join(fixtureDir, "sub-1fps-cfr.mp4");
   const vfrFixture = join(fixtureDir, "sparse-vfr.mp4");
   const nonZeroStartFixture = join(fixtureDir, "nonzero-start.mp4");
@@ -490,7 +490,7 @@ describe("reserveHdrExtractionBytes", () => {
 
 describe("extractHdrVideoFrames", () => {
   it("preserves an external FFmpeg interruption as the structured retry signal", async () => {
-    const framesDir = mkdtempSync(join(tmpdir(), "hf-hdr-interrupted-"));
+    const framesDir = mkdtempSync(join(tmpdir(), "sc-hdr-interrupted-"));
     const fixture = hdrExtractionFixture([hdrVideo("interrupted")], framesDir);
 
     try {
@@ -510,7 +510,7 @@ describe("extractHdrVideoFrames", () => {
   });
 
   it("pins FFmpeg seek/duration, raw frame count, and reservation lifetime", async () => {
-    const framesDir = mkdtempSync(join(tmpdir(), "hf-hdr-extract-"));
+    const framesDir = mkdtempSync(join(tmpdir(), "sc-hdr-extract-"));
     const video = hdrVideo("preroll", { start: -60, end: 120, mediaStart: 0 });
     const fixture = hdrExtractionFixture([video], framesDir);
     const calls: string[][] = [];
@@ -573,7 +573,7 @@ describe("extractHdrVideoFrames", () => {
       expectedSeek,
       expectedDuration,
     } = testCase;
-    const framesDir = mkdtempSync(join(tmpdir(), "hf-hdr-negative-source-"));
+    const framesDir = mkdtempSync(join(tmpdir(), "sc-hdr-negative-source-"));
     const video = hdrVideo(`negative-${String(loop)}`, { start: -5, end: 10, loop });
     const fixture = hdrExtractionFixture([video], framesDir);
     const calls: string[][] = [];
@@ -640,7 +640,7 @@ describe("extractHdrVideoFrames", () => {
   ])(
     "reserves one playable video-stream range for a finite 60-second $label slot with longer audio",
     async ({ loop, expectedFrameIndex }) => {
-      const framesDir = mkdtempSync(join(tmpdir(), "hf-hdr-finite-short-source-"));
+      const framesDir = mkdtempSync(join(tmpdir(), "sc-hdr-finite-short-source-"));
       const video = hdrVideo(`finite-${String(loop)}`, { end: 60, loop });
       const fixture = hdrExtractionFixture([video], framesDir);
       fixture.composition.duration = 60;
@@ -683,7 +683,7 @@ describe("extractHdrVideoFrames", () => {
   );
 
   it("closes/removes completed and partial sources and releases reservation on failure", async () => {
-    const framesDir = mkdtempSync(join(tmpdir(), "hf-hdr-partial-"));
+    const framesDir = mkdtempSync(join(tmpdir(), "sc-hdr-partial-"));
     const fixture = hdrExtractionFixture([hdrVideo("first"), hdrVideo("second")], framesDir);
     const createdRawPaths: string[] = [];
     let call = 0;
@@ -716,7 +716,7 @@ describe("extractHdrVideoFrames", () => {
 
 describe("cleanupHdrVideoFrameSource", () => {
   it("closes the raw descriptor and immediately removes its directory", () => {
-    const dir = mkdtempSync(join(tmpdir(), "hf-hdr-cleanup-"));
+    const dir = mkdtempSync(join(tmpdir(), "sc-hdr-cleanup-"));
     const rawPath = join(dir, "frames.rgb48le");
     writeFileSync(rawPath, Buffer.alloc(12));
     const fd = openSync(rawPath, constants.O_RDONLY);
@@ -738,7 +738,7 @@ describe("cleanupHdrVideoFrameSource", () => {
 
   it("closes the descriptor but retains raw files with KEEP_TEMP=1", () => {
     vi.stubEnv("KEEP_TEMP", "1");
-    const dir = mkdtempSync(join(tmpdir(), "hf-hdr-keep-temp-"));
+    const dir = mkdtempSync(join(tmpdir(), "sc-hdr-keep-temp-"));
     const rawPath = join(dir, "frames.rgb48le");
     writeFileSync(rawPath, Buffer.alloc(12));
     const fd = openSync(rawPath, constants.O_RDONLY);

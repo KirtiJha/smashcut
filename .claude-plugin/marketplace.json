@@ -1,33 +1,33 @@
 {
-  "name": "hyperframes",
+  "name": "smashcut",
   "owner": {
     "name": "HeyGen",
-    "email": "hyperframes@heygen.com",
+    "email": "smashcut@heygen.com",
     "url": "https://hyperframes.heygen.com"
   },
   "plugins": [
     {
       "name": "core-skills",
       "source": "./",
-      "description": "The HyperFrames core set \u2014 install this one: the /hyperframes router, the hyperframes-* domain skills, and media-use. The router installs each creation workflow on demand. The full bundle (all skills at once) is `hyperframes`.",
+      "description": "The SmashCut core set \u2014 install this one: the /smashcut router, the smashcut-* domain skills, and media-use. The router installs each creation workflow on demand. The full bundle (all skills at once) is `smashcut`.",
       "homepage": "https://hyperframes.heygen.com",
       "license": "Apache-2.0",
       "skills": [
-        "./skills/hyperframes",
-        "./skills/hyperframes-animation",
-        "./skills/hyperframes-audio",
-        "./skills/hyperframes-cli",
-        "./skills/hyperframes-core",
-        "./skills/hyperframes-creative",
-        "./skills/hyperframes-keyframes",
-        "./skills/hyperframes-registry",
+        "./skills/smashcut",
+        "./skills/smashcut-animation",
+        "./skills/smashcut-audio",
+        "./skills/smashcut-cli",
+        "./skills/smashcut-core",
+        "./skills/smashcut-creative",
+        "./skills/smashcut-keyframes",
+        "./skills/smashcut-registry",
         "./skills/media-use"
       ]
     },
     {
-      "name": "hyperframes",
+      "name": "smashcut",
       "source": "./",
-      "description": "All HyperFrames skills in one static bundle. Most setups want `core-skills` instead \u2014 the router installs creation workflows on demand. HyperFrames by HeyGen. Write HTML, render video. Compositions, GSAP and runtime adapter animations, captions, voiceovers, audio-reactive visuals, and website capture for HyperFrames.",
+      "description": "All SmashCut skills in one static bundle. Most setups want `core-skills` instead \u2014 the router installs creation workflows on demand. SmashCut by HeyGen. Write HTML, render video. Compositions, GSAP and runtime adapter animations, captions, voiceovers, audio-reactive visuals, and website capture for SmashCut.",
       "homepage": "https://hyperframes.heygen.com",
       "license": "Apache-2.0"
     }

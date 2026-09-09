@@ -13,7 +13,7 @@ const wrap = (script: string) =>
 
 describe("keyframes direct composition scope", () => {
   it("keeps the project root and passes the nested HTML entry to --shot", () => {
-    const projectDir = mkdtempSync(join(tmpdir(), "hf-keyframes-target-"));
+    const projectDir = mkdtempSync(join(tmpdir(), "sc-keyframes-target-"));
     const compositionsDir = join(projectDir, "compositions");
     mkdirSync(compositionsDir);
     writeFileSync(join(projectDir, "index.html"), wrap(""));
@@ -29,7 +29,7 @@ describe("keyframes direct composition scope", () => {
 
 describe("keyframes shot output", () => {
   it("rejects an output path that would overwrite the composition source", () => {
-    const projectDir = mkdtempSync(join(tmpdir(), "hf-keyframes-shot-source-"));
+    const projectDir = mkdtempSync(join(tmpdir(), "sc-keyframes-shot-source-"));
     const sourcePath = join(projectDir, "index.html");
     writeFileSync(sourcePath, wrap(""));
 
@@ -40,7 +40,7 @@ describe("keyframes shot output", () => {
   });
 
   it("rejects an existing output alias that refers to the composition source", () => {
-    const projectDir = mkdtempSync(join(tmpdir(), "hf-keyframes-shot-alias-"));
+    const projectDir = mkdtempSync(join(tmpdir(), "sc-keyframes-shot-alias-"));
     const sourcePath = join(projectDir, "index.html");
     const aliasPath = join(projectDir, "shot.png");
     writeFileSync(sourcePath, wrap(""));
@@ -52,7 +52,7 @@ describe("keyframes shot output", () => {
   });
 
   it("creates a missing parent directory before writing --shot", () => {
-    const projectDir = mkdtempSync(join(tmpdir(), "hf-keyframes-shot-dir-"));
+    const projectDir = mkdtempSync(join(tmpdir(), "sc-keyframes-shot-dir-"));
     const outputDir = join(projectDir, "nested", "proofs");
     ensureShotOutputDir(join(outputDir, "shot.png"));
     expect(existsSync(outputDir)).toBe(true);
@@ -155,12 +155,12 @@ describe("keyframes runtime surfacing", () => {
     expect(cssKeyframes[0]!.selectors).toEqual([".dot"]);
   });
 
-  it("surfaces Anime.js calls and explicit HyperFrames registration", () => {
+  it("surfaces Anime.js calls and explicit SmashCut registration", () => {
     const html = wrap(`
       const tl = anime.createTimeline({ autoplay: false });
       tl.add(".chip", { translateX: [0, 240], duration: 900 });
-      window.__hfAnime = window.__hfAnime || [];
-      window.__hfAnime.push(tl);
+      window.__scAnime = window.__scAnime || [];
+      window.__scAnime.push(tl);
     `);
     const { anime } = surfaceComposition(html, "index.html", "index.html");
     expect(anime).toHaveLength(1);
@@ -181,8 +181,8 @@ describe("keyframes runtime surfacing", () => {
     const animeHtml = wrap(`
       const tl = anime.createTimeline({ autoplay: false });
       tl.add(".chip", { translateX: [0, 240], duration: 900 });
-      window.__hfAnime = window.__hfAnime || [];
-      window.__hfAnime.push(tl);
+      window.__scAnime = window.__scAnime || [];
+      window.__scAnime.push(tl);
     `);
 
     const selectors = collectShotSelectors([

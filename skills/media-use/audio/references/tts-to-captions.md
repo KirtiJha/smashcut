@@ -5,7 +5,7 @@ When no recorded voiceover exists, generate one and obtain word-level caption ti
 ## Path A — HeyGen (single call, no Whisper)
 
 HeyGen returns word timestamps in the same response as the audio. Use the
-bundled REST helper (the `hyperframes tts` command is Kokoro-only):
+bundled REST helper (the `smashcut tts` command is Kokoro-only):
 
 ```bash
 node skills/media-use/audio/scripts/heygen-tts.mjs \
@@ -19,8 +19,8 @@ node skills/media-use/audio/scripts/heygen-tts.mjs \
 These providers don't return word data. Generate the audio, then transcribe:
 
 ```bash
-npx hyperframes tts script.txt --voice af_heart --output narration.wav
-npx hyperframes transcribe narration.wav --model small.en   # voice af_heart is American English
+npx smashcut tts script.txt --voice af_heart --output narration.wav
+npx smashcut transcribe narration.wav --model small.en   # voice af_heart is American English
 ```
 
 Whisper extracts precise word boundaries from the generated audio, so caption timing matches delivery without hand-tuning. Match `--model` to the voice's language (use `small.en` for `a`/`b` prefixes, `small --language <code>` otherwise). Then consume `transcript.json` via the caption references in `captions/`.

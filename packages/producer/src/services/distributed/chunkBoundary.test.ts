@@ -44,7 +44,7 @@ let runRoot: string;
 let testsDistributedDir: string;
 
 beforeAll(() => {
-  runRoot = mkdtempSync(join(tmpdir(), "hf-chunk-boundary-test-"));
+  runRoot = mkdtempSync(join(tmpdir(), "sc-chunk-boundary-test-"));
   // `__dirname`-equivalent in ESM.
   const moduleDir = dirname(fileURLToPath(import.meta.url));
   // packages/producer/src/services/distributed/ → packages/producer/tests/distributed/

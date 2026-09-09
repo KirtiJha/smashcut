@@ -40,14 +40,14 @@ const mocks = vi.hoisted(() => {
 });
 const FakeProxyTranscodeError = mocks.ProxyTranscodeError;
 
-vi.mock("@hyperframes/studio-server/proxy-transcoder", () => ({
+vi.mock("@smashcut/studio-server/proxy-transcoder", () => ({
   resolveProxy: mocks.resolveProxy,
   ProxyTranscodeError: mocks.ProxyTranscodeError,
   waitForProxy: mocks.waitForProxy,
   TRANSCODE_TIMEOUT_MS: 15 * 60 * 1000,
 }));
 
-vi.mock("@hyperframes/studio-server/media-codec-map", () => ({
+vi.mock("@smashcut/studio-server/media-codec-map", () => ({
   scanProjectMediaCodecMap: mocks.scanProjectMediaCodecMap,
   proxyVariantFor: (facts: { hasAlpha?: boolean }) => (facts.hasAlpha ? "vp8" : "h264"),
 }));
@@ -62,7 +62,7 @@ const PROJECT_DIR = resolve("/project");
 
 const tempDirs: string[] = [];
 function tmpProxyFile(content: string, extension = ".mp4"): string {
-  const dir = mkdtempSync(join(tmpdir(), "hf-publish-proxy-bake-"));
+  const dir = mkdtempSync(join(tmpdir(), "sc-publish-proxy-bake-"));
   tempDirs.push(dir);
   const path = join(dir, `proxy${extension}`);
   writeFileSync(path, content, "utf-8");

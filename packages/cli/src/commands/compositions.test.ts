@@ -11,7 +11,7 @@ describe("parseCompositions", () => {
   });
 
   it("resolves relative sub-composition starts when computing host duration", () => {
-    const baseDir = mkdtempSync(join(tmpdir(), "hyperframes-compositions-"));
+    const baseDir = mkdtempSync(join(tmpdir(), "smashcut-compositions-"));
 
     try {
       const compositionsDir = join(baseDir, "compositions");

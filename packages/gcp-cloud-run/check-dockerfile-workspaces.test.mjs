@@ -8,26 +8,26 @@ import {
 } from "./check-dockerfile-workspaces.mjs";
 
 const workspaces = [
-  workspace("core", "@hyperframes/core", {
-    "@hyperframes/lint": "workspace:*",
-    "@hyperframes/studio-server": "workspace:*",
+  workspace("core", "@smashcut/core", {
+    "@smashcut/lint": "workspace:*",
+    "@smashcut/studio-server": "workspace:*",
   }),
-  workspace("engine", "@hyperframes/engine", {
-    "@hyperframes/core": "workspace:*",
-    "@hyperframes/parsers": "workspace:*",
+  workspace("engine", "@smashcut/engine", {
+    "@smashcut/core": "workspace:*",
+    "@smashcut/parsers": "workspace:*",
   }),
-  workspace("gcp-cloud-run", "@hyperframes/gcp-cloud-run", {
-    "@hyperframes/producer": "workspace:*",
+  workspace("gcp-cloud-run", "@smashcut/gcp-cloud-run", {
+    "@smashcut/producer": "workspace:*",
   }),
-  workspace("lint", "@hyperframes/lint", { "@hyperframes/parsers": "workspace:*" }),
-  workspace("parsers", "@hyperframes/parsers"),
-  workspace("producer", "@hyperframes/producer", {
-    "@hyperframes/core": "workspace:*",
-    "@hyperframes/engine": "workspace:*",
+  workspace("lint", "@smashcut/lint", { "@smashcut/parsers": "workspace:*" }),
+  workspace("parsers", "@smashcut/parsers"),
+  workspace("producer", "@smashcut/producer", {
+    "@smashcut/core": "workspace:*",
+    "@smashcut/engine": "workspace:*",
   }),
-  workspace("sdk", "@hyperframes/sdk"),
-  workspace("studio-server", "@hyperframes/studio-server", {
-    "@hyperframes/core": "workspace:*",
+  workspace("sdk", "@smashcut/sdk"),
+  workspace("studio-server", "@smashcut/studio-server", {
+    "@smashcut/core": "workspace:*",
   }),
 ];
 const runtimeDirectories = [
@@ -126,7 +126,7 @@ describe("GCP Cloud Run Dockerfile workspace checker", () => {
     const input = dockerfile()
       .replace(
         "RUN bun run --cwd packages/core build",
-        "RUN bun run --cwd packages/core build:hyperframes-runtime:modular",
+        "RUN bun run --cwd packages/core build:smashcut-runtime:modular",
       )
       .concat("\n# bun run --cwd packages/core build");
     assert.deepEqual(listDockerfileWorkspaceIssues(input, workspaces), [

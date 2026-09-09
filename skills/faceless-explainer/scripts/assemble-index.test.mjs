@@ -31,7 +31,7 @@ function assembleWith({ audioMeta, extraArgs = [] }) {
       assembleScript,
       "--storyboard",
       join(dir, "STORYBOARD.md"),
-      "--hyperframes",
+      "--smashcut",
       dir,
       ...extraArgs,
     ],

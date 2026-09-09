@@ -75,7 +75,7 @@ describe("producer file server checked reads", () => {
   let server: FileServerHandle | undefined;
 
   beforeEach(() => {
-    root = fs.mkdtempSync(join(tmpdir(), "hf-server-read-"));
+    root = fs.mkdtempSync(join(tmpdir(), "sc-server-read-"));
     projectDir = join(root, "project");
     compiledDir = join(root, "compiled");
     fs.mkdirSync(projectDir);

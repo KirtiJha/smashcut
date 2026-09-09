@@ -16,7 +16,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 ```html code-terminal-run.html
 <!doctype html>
 <!--
-  code-terminal-run: HyperFrames video primitive (product demo / terminal)
+  code-terminal-run: SmashCut video primitive (product demo / terminal)
 
   A token-chrome terminal panel runs one command: the prompt line types itself
   deterministically (the typed-prompt law: one text-at-time row table built
@@ -260,8 +260,8 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
               : [];
             var tailElement = root.querySelector(".ctr-tail");
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             var promptGlyph = vars.prompt_glyph == null ? "$" : String(vars.prompt_glyph);
@@ -580,7 +580,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 
 ## Install
 
-<InstallCommand command="npx hyperframes add code-terminal-run" item="code-terminal-run" />
+<InstallCommand command="npx smashcut add code-terminal-run" item="code-terminal-run" />
 
 That writes one file: `compositions/components/code-terminal-run.html`.
 
@@ -622,7 +622,7 @@ defaults, so this behaves exactly like the preview above until you change one:
 ```html
 <!doctype html>
 <!--
-  code-terminal-run: HyperFrames video primitive (product demo / terminal)
+  code-terminal-run: SmashCut video primitive (product demo / terminal)
 
   A token-chrome terminal panel runs one command: the prompt line types itself
   deterministically (the typed-prompt law: one text-at-time row table built
@@ -866,8 +866,8 @@ defaults, so this behaves exactly like the preview above until you change one:
               : [];
             var tailElement = root.querySelector(".ctr-tail");
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             var promptGlyph = vars.prompt_glyph == null ? "$" : String(vars.prompt_glyph);

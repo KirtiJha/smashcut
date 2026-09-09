@@ -1,4 +1,4 @@
-# HyperFrames Design Review
+# SmashCut Design Review
 
 ## First Impression
 

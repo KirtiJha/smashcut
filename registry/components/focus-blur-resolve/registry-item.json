@@ -1,7 +1,7 @@
 {
   "$schema": "https://hyperframes.heygen.com/schema/registry-item.json",
   "name": "focus-blur-resolve",
-  "type": "hyperframes:component",
+  "type": "smashcut:component",
   "title": "Focus Blur Resolve",
   "description": "A premium focus pull from heavy blur to crisp text, then a soft blur-out exit.",
   "tags": ["motion-primitive", "typography"],
@@ -9,7 +9,7 @@
     {
       "path": "focus-blur-resolve.html",
       "target": "compositions/components/focus-blur-resolve.html",
-      "type": "hyperframes:snippet"
+      "type": "smashcut:snippet"
     }
   ],
   "variables": [
@@ -81,6 +81,6 @@
     }
   ],
   "preview": {
-    "poster": "https://static.heygen.ai/hyperframes-oss/docs/images/catalog/components/focus-blur-resolve.png"
+    "poster": "https://static.heygen.ai/smashcut-oss/docs/images/catalog/components/focus-blur-resolve.png"
   }
 }

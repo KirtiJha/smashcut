@@ -3,11 +3,11 @@ import type { Example } from "./_examples.js";
 import { readFileSync, readdirSync, statSync } from "node:fs";
 
 export const examples: Example[] = [
-  ["Show project metadata", "hyperframes info"],
-  ["Output as JSON", "hyperframes info --json"],
+  ["Show project metadata", "smashcut info"],
+  ["Output as JSON", "smashcut info --json"],
 ];
 import { join } from "node:path";
-import { parseHtml, CANVAS_DIMENSIONS } from "@hyperframes/core";
+import { parseHtml, CANVAS_DIMENSIONS } from "@smashcut/core";
 import { c } from "../ui/colors.js";
 import { formatBytes, label } from "../ui/format.js";
 import { ensureDOMParser } from "../utils/dom.js";

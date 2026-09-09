@@ -13,7 +13,7 @@ describe("writeResponseRecord", () => {
   let projectDir: string;
 
   beforeEach(() => {
-    projectDir = mkdtempSync(join(tmpdir(), "hf-response-record-"));
+    projectDir = mkdtempSync(join(tmpdir(), "sc-response-record-"));
     extractedDir = join(projectDir, "extracted");
     mkdirSync(extractedDir);
   });

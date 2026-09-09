@@ -519,7 +519,7 @@ describe("isElementVisibleForZOrder – default probe", () => {
 
   it("exempts a hidden color-grading source (its canvas paints in its place)", () => {
     const el = attachedEl({ opacity: "0" });
-    el.setAttribute("data-hf-color-grading-source-hidden", "");
+    el.setAttribute("data-sc-color-grading-source-hidden", "");
     expect(isElementVisibleForZOrder(el)).toBe(true);
   });
 

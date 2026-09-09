@@ -8,17 +8,17 @@ import {
 export const TYPEGPU_PRESENT_HEARTBEAT_MS = 250;
 
 /**
- * TypeGPU / WebGPU adapter for HyperFrames
+ * TypeGPU / WebGPU adapter for SmashCut
  *
  * Enables seekable GPU-rendered compositions built with TypeGPU or raw WebGPU.
  * Since WebGPU pipelines are not introspectable from outside (unlike GSAP
  * timelines or Lottie instances), this adapter uses the same push+poll pattern
  * as the Three.js adapter:
  *
- *   - `window.__hfTypegpuTime` — poll this from your rAF/render loop instead
+ *   - `window.__scTypegpuTime` — poll this from your rAF/render loop instead
  *     of `performance.now()` to get the current seek position in seconds.
  *
- *   - `"hf-seek"` CustomEvent on `window` — listen for this to imperatively
+ *   - `"sc-seek"` CustomEvent on `window` — listen for this to imperatively
  *     re-render a single frame at the new seek position.
  *
  * ## Usage in a composition
@@ -36,14 +36,14 @@ export const TYPEGPU_PRESENT_HEARTBEAT_MS = 250;
  *     // ... submit command encoder ...
  *   }
  *
- *   // Seek: fired by HyperFrames whenever the player scrubs or plays
- *   window.addEventListener("hf-seek", (e) => {
+ *   // Seek: fired by SmashCut whenever the player scrubs or plays
+ *   window.addEventListener("sc-seek", (e) => {
  *     render(e.detail.time);
  *     e.detail.waitUntil(device.queue.onSubmittedWorkDone());
  *   });
  *
  *   // Initial frame at t=0
- *   render(window.__hfTypegpuTime ?? 0);
+ *   render(window.__scTypegpuTime ?? 0);
  * </script>
  * ```
  *
@@ -55,7 +55,7 @@ export const TYPEGPU_PRESENT_HEARTBEAT_MS = 250;
  *
  * For frame-perfect video renders, register GPU completion synchronously with
  * `e.detail.waitUntil(device.queue.onSubmittedWorkDone())` after `render(time)`.
- * HyperFrames awaits the registered work before screenshots and frame capture.
+ * SmashCut awaits the registered work before screenshots and frame capture.
  *
  * ## Browser feature detection
  *
@@ -87,7 +87,7 @@ export function createTypegpuAdapter(): RuntimeDeterministicAdapter {
     presentHeartbeat = window.setInterval(() => {
       if (forcedTime === null) return;
       if (isSeekCompletionBarrierActive()) return;
-      window.__hfTypegpuTime = forcedTime;
+      window.__scTypegpuTime = forcedTime;
       forceDispatchSeekEvent(forcedTime);
     }, TYPEGPU_PRESENT_HEARTBEAT_MS);
   };
@@ -102,7 +102,7 @@ export function createTypegpuAdapter(): RuntimeDeterministicAdapter {
     seek: (ctx) => {
       forcedTime = Math.max(0, Number(ctx.time) || 0);
       lastForcedTime = forcedTime;
-      window.__hfTypegpuTime = forcedTime;
+      window.__scTypegpuTime = forcedTime;
       dispatchSeekEvent(forcedTime);
     },
 

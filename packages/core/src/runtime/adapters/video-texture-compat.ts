@@ -91,9 +91,9 @@ export function patchWebGLVideoTextureCompat(): void {
     if (!proto) continue;
     for (const method of methods) {
       const orig = proto[method] as ((...args: unknown[]) => unknown) & {
-        __hfVideoPatched?: boolean;
+        __scVideoPatched?: boolean;
       };
-      if (typeof orig !== "function" || orig.__hfVideoPatched) continue;
+      if (typeof orig !== "function" || orig.__scVideoPatched) continue;
 
       const patched = function (this: unknown, ...args: unknown[]) {
         const lastIndex = args.length - 1;
@@ -103,8 +103,8 @@ export function patchWebGLVideoTextureCompat(): void {
           if (img) args[lastIndex] = img;
         }
         return orig.apply(this, args);
-      } as ((...args: unknown[]) => unknown) & { __hfVideoPatched?: boolean };
-      patched.__hfVideoPatched = true;
+      } as ((...args: unknown[]) => unknown) & { __scVideoPatched?: boolean };
+      patched.__scVideoPatched = true;
       proto[method] = patched;
     }
   }

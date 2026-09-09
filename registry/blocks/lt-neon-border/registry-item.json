@@ -1,7 +1,7 @@
 {
   "$schema": "https://hyperframes.heygen.com/schema/registry-item.json",
   "name": "lt-neon-border",
-  "type": "hyperframes:block",
+  "type": "smashcut:block",
   "title": "Neon Border",
   "description": "Two arcs of light travel the edge of a rounded panel and snap corner to corner, trailing a soft three-layer bloom. A lower third for a name and role.",
   "stability": "experimental",
@@ -100,7 +100,7 @@
   "files": [
     {
       "path": "lt-neon-border.html",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     }
   ],
   "params": [

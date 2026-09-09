@@ -5,7 +5,7 @@ type GoogleMapLike = {
   addListener: (event: string, cb: () => void) => { remove: () => void };
 };
 
-const mapWindow = window as Window & { __hfGoogleMaps?: GoogleMapLike[] };
+const mapWindow = window as Window & { __scGoogleMaps?: GoogleMapLike[] };
 
 function createMockMap(): GoogleMapLike & { _fire: (e: string) => void } {
   const listeners: Record<string, { cb: () => void; handle: { remove: () => void } }[]> = {};
@@ -23,11 +23,11 @@ function createMockMap(): GoogleMapLike & { _fire: (e: string) => void } {
 
 describe("google-maps adapter", () => {
   beforeEach(() => {
-    delete mapWindow.__hfGoogleMaps;
+    delete mapWindow.__scGoogleMaps;
   });
 
   afterEach(() => {
-    delete mapWindow.__hfGoogleMaps;
+    delete mapWindow.__scGoogleMaps;
   });
 
   it("has correct name", () => {
@@ -40,15 +40,15 @@ describe("google-maps adapter", () => {
       expect(adapter.getReadyPromise!()).toBeNull();
     });
 
-    it("returns null when __hfGoogleMaps is empty", () => {
-      mapWindow.__hfGoogleMaps = [];
+    it("returns null when __scGoogleMaps is empty", () => {
+      mapWindow.__scGoogleMaps = [];
       const adapter = createGoogleMapsAdapter();
       expect(adapter.getReadyPromise!()).toBeNull();
     });
 
     it("resolves when map fires tilesloaded", async () => {
       const map = createMockMap();
-      mapWindow.__hfGoogleMaps = [map];
+      mapWindow.__scGoogleMaps = [map];
       const adapter = createGoogleMapsAdapter();
       const promise = adapter.getReadyPromise!();
       expect(promise).not.toBeNull();
@@ -58,7 +58,7 @@ describe("google-maps adapter", () => {
 
     it("returns same promise on repeated calls (stable identity)", () => {
       const map = createMockMap();
-      mapWindow.__hfGoogleMaps = [map];
+      mapWindow.__scGoogleMaps = [map];
       const adapter = createGoogleMapsAdapter();
       const p1 = adapter.getReadyPromise!();
       const p2 = adapter.getReadyPromise!();
@@ -67,7 +67,7 @@ describe("google-maps adapter", () => {
 
     it("returns null after all maps have settled", async () => {
       const map = createMockMap();
-      mapWindow.__hfGoogleMaps = [map];
+      mapWindow.__scGoogleMaps = [map];
       const adapter = createGoogleMapsAdapter();
       const promise = adapter.getReadyPromise!();
       map._fire("tilesloaded");
@@ -77,7 +77,7 @@ describe("google-maps adapter", () => {
 
     it("removes listener after first tilesloaded fire", async () => {
       const map = createMockMap();
-      mapWindow.__hfGoogleMaps = [map];
+      mapWindow.__scGoogleMaps = [map];
       const adapter = createGoogleMapsAdapter();
       const promise = adapter.getReadyPromise!();
       map._fire("tilesloaded");
@@ -89,7 +89,7 @@ describe("google-maps adapter", () => {
     it("handles multiple maps", async () => {
       const map1 = createMockMap();
       const map2 = createMockMap();
-      mapWindow.__hfGoogleMaps = [map1, map2];
+      mapWindow.__scGoogleMaps = [map1, map2];
       const adapter = createGoogleMapsAdapter();
       const promise = adapter.getReadyPromise!();
       map1._fire("tilesloaded");

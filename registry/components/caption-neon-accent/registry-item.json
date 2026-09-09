@@ -1,7 +1,7 @@
 {
   "$schema": "https://hyperframes.heygen.com/schema/registry-item.json",
   "name": "caption-neon-accent",
-  "type": "hyperframes:component",
+  "type": "smashcut:component",
   "title": "Neon Accent",
   "description": "Multi-color neon glow accents with wiggle drift animation",
   "tags": ["captions", "caption-style", "neon", "glow", "accent"],
@@ -9,11 +9,11 @@
     {
       "path": "caption-neon-accent.html",
       "target": "compositions/components/caption-neon-accent.html",
-      "type": "hyperframes:snippet"
+      "type": "smashcut:snippet"
     }
   ],
   "preview": {
-    "video": "https://static.heygen.ai/hyperframes-oss/registry/components/caption-neon-accent/preview.mp4?v=1779051416",
-    "poster": "https://static.heygen.ai/hyperframes-oss/docs/images/catalog/components/caption-neon-accent.png"
+    "video": "https://static.heygen.ai/smashcut-oss/registry/components/caption-neon-accent/preview.mp4?v=1779051416",
+    "poster": "https://static.heygen.ai/smashcut-oss/docs/images/catalog/components/caption-neon-accent.png"
   }
 }

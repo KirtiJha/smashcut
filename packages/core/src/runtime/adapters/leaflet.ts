@@ -9,7 +9,7 @@ export function createLeafletAdapter() {
     name: "leaflet",
     getInstances: () => {
       if (typeof window === "undefined") return [];
-      const arr = (window as { __hfLeaflet?: LeafletMapLike[] }).__hfLeaflet;
+      const arr = (window as { __scLeaflet?: LeafletMapLike[] }).__scLeaflet;
       return Array.isArray(arr) ? arr : [];
     },
     waitFor: (m) => new Promise<void>((resolve) => m.whenReady(resolve)),

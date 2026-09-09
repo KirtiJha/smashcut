@@ -3,7 +3,7 @@ import { act } from "react";
 import { createRoot, type Root } from "react-dom/client";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { FxParamRow } from "./propertyPanelFxControls";
-import type { HfAudioFxNumberParam } from "@hyperframes/core/audio-fx";
+import type { HfAudioFxNumberParam } from "@smashcut/core/audio-fx";
 
 (globalThis as unknown as { IS_REACT_ACT_ENVIRONMENT: boolean }).IS_REACT_ACT_ENVIRONMENT = true;
 
@@ -42,8 +42,8 @@ function mount(value: number) {
       <FxParamRow param={FREQUENCY} value={value} onChange={onChange} onCommit={onCommit} />,
     );
   });
-  const number = () => host.querySelector<HTMLInputElement>(".hf-fx-number")!;
-  const slider = () => host.querySelector<HTMLInputElement>(".hf-fx-slider")!;
+  const number = () => host.querySelector<HTMLInputElement>(".sc-fx-number")!;
+  const slider = () => host.querySelector<HTMLInputElement>(".sc-fx-slider")!;
   const type = (text: string) => {
     act(() => {
       number().focus();
@@ -137,7 +137,7 @@ describe("FxParamRow label tooltip", () => {
     act(() => {
       createRoot(host).render(<FxParamRow param={LONG} value={250} onChange={vi.fn()} />);
     });
-    const label = host.querySelector<HTMLElement>(".hf-fx-label");
+    const label = host.querySelector<HTMLElement>(".sc-fx-label");
     // The whole name is present and allowed to wrap. No `title`: a tooltip
     // answers one row on hover, wrapping answers the column at rest.
     expect(label?.textContent).toBe("Gap between repeats");
@@ -146,7 +146,7 @@ describe("FxParamRow label tooltip", () => {
     expect(label?.getAttribute("title")).toBeNull();
     // The hint stays where it was: the two are different questions, and the
     // name is not a substitute for the explanation either.
-    expect(host.querySelector<HTMLElement>(".hf-fx-row")?.getAttribute("title")).toBe(
+    expect(host.querySelector<HTMLElement>(".sc-fx-row")?.getAttribute("title")).toBe(
       "How long before the echo comes back.",
     );
   });
@@ -158,7 +158,7 @@ describe("FxParamRow label tooltip", () => {
     act(() => {
       createRoot(host).render(<FxParamRow param={noHint} value={250} onChange={vi.fn()} />);
     });
-    const label = host.querySelector<HTMLElement>(".hf-fx-label");
+    const label = host.querySelector<HTMLElement>(".sc-fx-label");
     expect(label?.textContent).toBe("Gap between repeats");
     expect(label?.getAttribute("title")).toBeNull();
   });

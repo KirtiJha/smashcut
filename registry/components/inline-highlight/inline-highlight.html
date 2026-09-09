@@ -1,8 +1,8 @@
 <!--
   Inline Highlight - animated marker underline/fill.
 
-  Wrap target text with class="hf-inline-highlight". Animate
-  --hf-highlight-scale from 0 to 1 on the element.
+  Wrap target text with class="sc-inline-highlight". Animate
+  --sc-highlight-scale from 0 to 1 on the element.
 
   Variables. The script reads each one, falls back to the declared default on anything
   missing or unrecognised, and writes the result onto the document root, so highlights
@@ -14,9 +14,9 @@
     - thickness (thin | standard | thick, default standard): height of the band behind the
       text, 0.22em, 0.38em or 0.62em.
     - origin (left | right | center, default left): edge the marker grows out of while
-      --hf-highlight-scale runs from 0 to 1.
+      --sc-highlight-scale runs from 0 to 1.
 
-  Setting --hf-highlight-color, --hf-highlight-height or --hf-highlight-origin on an
+  Setting --sc-highlight-color, --sc-highlight-height or --sc-highlight-origin on an
   individual highlight still wins over the variable, so one-off overrides keep working.
 -->
 
@@ -27,22 +27,22 @@
     { "id": "origin", "type": "enum", "role": "motion", "label": "Origin", "description": "Edge the marker grows out of as the scale variable runs from 0 to 1.", "default": "left", "options": [{ "value": "left", "label": "Left" }, { "value": "right", "label": "Right" }, { "value": "center", "label": "Center" }] }
   ]'
 >
-  .hf-inline-highlight {
-    --hf-highlight-scale: 0;
+  .sc-inline-highlight {
+    --sc-highlight-scale: 0;
     position: relative;
     display: inline;
     z-index: 0;
   }
-  .hf-inline-highlight::after {
+  .sc-inline-highlight::after {
     content: "";
     position: absolute;
     left: -0.08em;
     right: -0.08em;
     bottom: 0.05em;
-    height: var(--hf-highlight-height, 0.38em);
-    background: var(--hf-highlight-color, #fff06a);
-    transform: scaleX(var(--hf-highlight-scale));
-    transform-origin: var(--hf-highlight-origin, left center);
+    height: var(--sc-highlight-height, 0.38em);
+    background: var(--sc-highlight-color, #fff06a);
+    transform: scaleX(var(--sc-highlight-scale));
+    transform-origin: var(--sc-highlight-origin, left center);
     z-index: -1;
   }
 </style>
@@ -52,8 +52,8 @@
     "use strict";
 
     var vars =
-      window.__hyperframes && window.__hyperframes.getVariables
-        ? window.__hyperframes.getVariables()
+      window.__smashcut && window.__smashcut.getVariables
+        ? window.__smashcut.getVariables()
         : {};
 
     // Unrecognised overrides return to their declared defaults.
@@ -71,20 +71,20 @@
     var origins = { left: "left center", right: "right center", center: "center" };
 
     var root = document.documentElement;
-    root.style.setProperty("--hf-highlight-color", tints[pick(tints, vars.tint, "yellow")]);
+    root.style.setProperty("--sc-highlight-color", tints[pick(tints, vars.tint, "yellow")]);
     root.style.setProperty(
-      "--hf-highlight-height",
+      "--sc-highlight-height",
       heights[pick(heights, vars.thickness, "standard")],
     );
-    root.style.setProperty("--hf-highlight-origin", origins[pick(origins, vars.origin, "left")]);
+    root.style.setProperty("--sc-highlight-origin", origins[pick(origins, vars.origin, "left")]);
   })();
 </script>
 
 <!--
   Timeline integration:
 
-  tl.to(".hf-inline-highlight", {
-    "--hf-highlight-scale": 1,
+  tl.to(".sc-inline-highlight", {
+    "--sc-highlight-scale": 1,
     duration: 0.55,
     ease: "power2.out",
     stagger: 0.12,

@@ -44,7 +44,7 @@ export function emitAnalyticsEvent(
   if (!_postMessage) return;
   try {
     _postMessage({
-      source: "hf-preview",
+      source: "sc-preview",
       type: "analytics",
       event,
       properties: properties ?? {},

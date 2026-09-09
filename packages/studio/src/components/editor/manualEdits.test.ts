@@ -59,8 +59,8 @@ function mockComputedStyle(element: HTMLElement, values: Record<string, string>)
 
 describe("studio manual edits", () => {
   it("recognizes studio file-change payloads", () => {
-    expect(readStudioFileChangePath({ path: ".hyperframes/studio-manual-edits.json" })).toBe(
-      ".hyperframes/studio-manual-edits.json",
+    expect(readStudioFileChangePath({ path: ".smashcut/studio-manual-edits.json" })).toBe(
+      ".smashcut/studio-manual-edits.json",
     );
     expect(readStudioFileChangePath({ data: '{"path":"nested/file.html"}' })).toBe(
       "nested/file.html",
@@ -518,15 +518,15 @@ describe("studio manual edits", () => {
 });
 
 describe("applyStudioPathOffset sets correct attribute name", () => {
-  it("sets data-hf-studio-path-offset without double data- prefix", () => {
+  it("sets data-sc-studio-path-offset without double data- prefix", () => {
     const window = new Window();
     const el = window.document.createElement("div");
     window.document.body.append(el);
 
     applyStudioPathOffset(el, { x: 100, y: 50 });
 
-    expect(el.getAttribute("data-hf-studio-path-offset")).toBe("true");
-    expect(el.getAttribute("data-data-hf-studio-path-offset")).toBeNull();
+    expect(el.getAttribute("data-sc-studio-path-offset")).toBe("true");
+    expect(el.getAttribute("data-data-sc-studio-path-offset")).toBeNull();
   });
 
   it("stores offset in CSS vars alongside the attribute marker", () => {
@@ -536,7 +536,7 @@ describe("applyStudioPathOffset sets correct attribute name", () => {
 
     applyStudioPathOffset(el, { x: 50, y: 25 });
 
-    expect(el.getAttribute("data-hf-studio-path-offset")).toBe("true");
+    expect(el.getAttribute("data-sc-studio-path-offset")).toBe("true");
     expect(el.style.getPropertyValue(STUDIO_OFFSET_X_PROP)).toBe("50px");
     expect(el.style.getPropertyValue(STUDIO_OFFSET_Y_PROP)).toBe("25px");
     expect(el.style.getPropertyValue("translate")).toContain(STUDIO_OFFSET_X_PROP);
@@ -545,14 +545,14 @@ describe("applyStudioPathOffset sets correct attribute name", () => {
   it("corrects offset applied on top of legacy double-prefix element", () => {
     const window = new Window();
     const el = window.document.createElement("div");
-    el.setAttribute("data-data-hf-studio-path-offset", "true");
+    el.setAttribute("data-data-sc-studio-path-offset", "true");
     el.style.setProperty(STUDIO_OFFSET_X_PROP, "200px");
     el.style.setProperty(STUDIO_OFFSET_Y_PROP, "-30px");
     window.document.body.append(el);
 
     applyStudioPathOffset(el, { x: 200, y: -30 });
 
-    expect(el.getAttribute("data-hf-studio-path-offset")).toBe("true");
+    expect(el.getAttribute("data-sc-studio-path-offset")).toBe("true");
     expect(readStudioPathOffset(el)).toEqual({ x: 200, y: -30 });
     expect(el.style.getPropertyValue("translate")).toContain(STUDIO_OFFSET_X_PROP);
   });

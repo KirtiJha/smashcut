@@ -1,5 +1,5 @@
 {
-  "name": "@hyperframes/engine",
+  "name": "@smashcut/engine",
   "version": "0.8.33",
   "description": "Seekable web page to video rendering engine (Puppeteer + FFmpeg)",
   "repository": {
@@ -59,8 +59,8 @@
   },
   "dependencies": {
     "@hono/node-server": "^2.0.5",
-    "@hyperframes/core": "workspace:^",
-    "@hyperframes/parsers": "workspace:^",
+    "@smashcut/core": "workspace:^",
+    "@smashcut/parsers": "workspace:^",
     "hono": "^4.6.0",
     "linkedom": "^0.18.12",
     "puppeteer": "^25.8.0",

@@ -1,6 +1,6 @@
 /**
- * `@hyperframes/gcp-cloud-run` — Google Cloud Run + Workflows adapter for
- * the HyperFrames distributed render pipeline.
+ * `@smashcut/gcp-cloud-run` — Google Cloud Run + Workflows adapter for
+ * the SmashCut distributed render pipeline.
  *
  * Two surfaces, one package:
  *
@@ -14,7 +14,7 @@
  *
  * The Terraform module that provisions the bucket + service + workflow lives
  * under `terraform/` in the published package; see the README. The package
- * is NOT a dependency of `@hyperframes/producer`; consumers install it
+ * is NOT a dependency of `@smashcut/producer`; consumers install it
  * separately.
  */
 

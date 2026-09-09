@@ -7,7 +7,7 @@ import { cleanupProxyCache } from "./proxyCache.js";
 const tempDirs: string[] = [];
 
 function cacheDir(): string {
-  const root = mkdtempSync(join(tmpdir(), "hf-proxy-cache-"));
+  const root = mkdtempSync(join(tmpdir(), "sc-proxy-cache-"));
   tempDirs.push(root);
   const cache = join(root, ".transcode-cache");
   mkdirSync(cache);

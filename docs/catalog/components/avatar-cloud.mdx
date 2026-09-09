@@ -16,7 +16,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 ```html avatar-cloud.html
 <!doctype html>
 <!--
-  avatar-cloud: HyperFrames video primitive (effects / holdable / prove)
+  avatar-cloud: SmashCut video primitive (effects / holdable / prove)
 
   Concept: lettermark avatars populate a loose elliptical cloud around a
   central proof label. Fine SVG links draw from the hub to every avatar, plus
@@ -56,7 +56,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
   the host with inset:0 and container-type:size and has no data-width or
   data-height. The hardcoded id "avatar-cloud" matches the host id and timeline
   key after mount flattening. Variables come from
-  window.__hyperframes.getVariables(), which merges declarations with host
+  window.__smashcut.getVariables(), which merges declarations with host
   data-variable-values overrides.
 -->
 <html
@@ -286,8 +286,8 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
             // EDIT ZONE: getVariables is the only owner of declared defaults
             // plus host overrides. Values are normalized exactly once here.
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             var rawCount = Number(vars.avatarCount);
@@ -490,7 +490,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 
 ## Install
 
-<InstallCommand command="npx hyperframes add avatar-cloud" item="avatar-cloud" />
+<InstallCommand command="npx smashcut add avatar-cloud" item="avatar-cloud" />
 
 That writes one file: `compositions/components/avatar-cloud.html`.
 
@@ -530,7 +530,7 @@ defaults, so this behaves exactly like the preview above until you change one:
 ```html
 <!doctype html>
 <!--
-  avatar-cloud: HyperFrames video primitive (effects / holdable / prove)
+  avatar-cloud: SmashCut video primitive (effects / holdable / prove)
 
   Concept: lettermark avatars populate a loose elliptical cloud around a
   central proof label. Fine SVG links draw from the hub to every avatar, plus
@@ -570,7 +570,7 @@ defaults, so this behaves exactly like the preview above until you change one:
   the host with inset:0 and container-type:size and has no data-width or
   data-height. The hardcoded id "avatar-cloud" matches the host id and timeline
   key after mount flattening. Variables come from
-  window.__hyperframes.getVariables(), which merges declarations with host
+  window.__smashcut.getVariables(), which merges declarations with host
   data-variable-values overrides.
 -->
 <html
@@ -800,8 +800,8 @@ defaults, so this behaves exactly like the preview above until you change one:
             // EDIT ZONE: getVariables is the only owner of declared defaults
             // plus host overrides. Values are normalized exactly once here.
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             var rawCount = Number(vars.avatarCount);

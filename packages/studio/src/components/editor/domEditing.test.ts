@@ -435,7 +435,7 @@ describe("resolveDomEditSelection", () => {
 
   it("keeps the full-canvas stage layer transform disabled while allowing style edits", async () => {
     const document = createDocument(`
-      <div data-hf-id="hf-stage" id="stage">
+      <div data-sc-id="sc-stage" id="stage">
         <button id="cta">Add to basket</button>
       </div>
     `);
@@ -496,7 +496,7 @@ describe("resolveDomEditSelection", () => {
 
   it("lets full-canvas layers opt out of root-layer classification", async () => {
     const document = createDocument(`
-      <div data-hf-allow-root-edit id="editable-stage">
+      <div data-sc-allow-root-edit id="editable-stage">
         <button id="cta">Add to basket</button>
       </div>
     `);
@@ -654,9 +654,9 @@ describe("resolveDomEditSelection", () => {
       findElementForSelection(
         document,
         {
-          id: "index.html:Hyperframes Logo Light:0",
+          id: "index.html:Smashcut Logo Light:0",
           selector:
-            '[data-composition-id="index.html:Hyperframes Logo Light:0"],#index.html:Hyperframes Logo Light:0',
+            '[data-composition-id="index.html:Smashcut Logo Light:0"],#index.html:Smashcut Logo Light:0',
           sourceFile: "index.html",
         },
         null,
@@ -666,9 +666,9 @@ describe("resolveDomEditSelection", () => {
       findElementForSelection(
         document,
         {
-          id: "index.html:Hyperframes Logo Light:0",
+          id: "index.html:Smashcut Logo Light:0",
           selector:
-            '[data-composition-id="index.html:Hyperframes Logo Light:0"],#index.html:Hyperframes Logo Light:0',
+            '[data-composition-id="index.html:Smashcut Logo Light:0"],#index.html:Smashcut Logo Light:0',
           sourceFile: "index.html",
         },
         null,
@@ -920,7 +920,7 @@ describe("resolveDomEditSelection", () => {
     expect(
       findElementForTimelineElement(
         document,
-        { id: "index.html:Hyperframes Logo Light:0", sourceFile: "index.html" },
+        { id: "index.html:Smashcut Logo Light:0", sourceFile: "index.html" },
         {
           activeCompositionPath: null,
           isMasterView: true,
@@ -941,7 +941,7 @@ describe("resolveDomEditSelection", () => {
     expect(
       findElementForTimelineElement(
         document,
-        { id: "compositions/hook.html:Hyperframes Logo Light:0" },
+        { id: "compositions/hook.html:Smashcut Logo Light:0" },
         {
           activeCompositionPath: "compositions/hook.html",
           isMasterView: false,
@@ -1092,7 +1092,7 @@ describe("patch builders and prompt builder", () => {
       tagSnippet: `<div id="editable-card" style="position:absolute; left: 108px; top: 112px; width: 380px; height: 196px; color: rgb(248, 250, 252)"`,
     });
 
-    expect(prompt).toContain("## HyperFrames element edit request v1");
+    expect(prompt).toContain("## SmashCut element edit request v1");
     expect(prompt).toContain("Schema version: 1");
     expect(prompt).toContain("Source file: index.html");
     expect(prompt).toContain("Selector: #editable-card");
@@ -1138,10 +1138,10 @@ describe("patch builders and prompt builder", () => {
     const prompt = buildElementAgentPrompt({
       selection,
       currentTime: 1.25,
-      sourceFilePath: "/tmp/hf-studio-project/index.html",
+      sourceFilePath: "/tmp/sc-studio-project/index.html",
     });
 
-    expect(prompt).toContain("Source file: /tmp/hf-studio-project/index.html");
+    expect(prompt).toContain("Source file: /tmp/sc-studio-project/index.html");
     expect(prompt).not.toContain("Source file: index.html");
   });
 
@@ -1216,7 +1216,7 @@ describe("patch builders and prompt builder", () => {
         },
       ]),
     ).toBe(
-      '<strong data-hf-text-key="child:0:strong" style="font-size: 22px">Headline &lt;1&gt;</strong><span data-hf-text-key="child:1:span">Details &amp; more</span>',
+      '<strong data-sc-text-key="child:0:strong" style="font-size: 22px">Headline &lt;1&gt;</strong><span data-sc-text-key="child:1:span">Details &amp; more</span>',
     );
   });
 
@@ -1225,7 +1225,7 @@ describe("patch builders and prompt builder", () => {
       <div data-composition-id="hook" data-composition-file="compositions/hook.html">
         <section class="scene-shell">
           <div class="topline">
-            <span class="brand">HyperFrames</span>
+            <span class="brand">SmashCut</span>
             <span class="badge">Alpha</span>
           </div>
         </section>
@@ -1262,7 +1262,7 @@ describe("patch builders and prompt builder", () => {
           <svg class="brand-mark" viewBox="0 0 24 24">
             <path class="brand-path" d="M0 0h24v24H0z"></path>
           </svg>
-          <div class="title">HyperFrames</div>
+          <div class="title">SmashCut</div>
         </section>
       </div>
     `);
@@ -1280,28 +1280,28 @@ describe("patch builders and prompt builder", () => {
 describe("hfId — find, key, capabilities (R7 fixes)", () => {
   it("getDomEditTargetKey keeps two hfId-only elements distinct", () => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const a = getDomEditTargetKey({ sourceFile: "index.html", hfId: "hf-aaa" } as any);
+    const a = getDomEditTargetKey({ sourceFile: "index.html", hfId: "sc-aaa" } as any);
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const b = getDomEditTargetKey({ sourceFile: "index.html", hfId: "hf-bbb" } as any);
+    const b = getDomEditTargetKey({ sourceFile: "index.html", hfId: "sc-bbb" } as any);
     expect(a).not.toBe(b);
   });
 
-  it("findElementForSelection finds element by data-hf-id when no id or selector", () => {
+  it("findElementForSelection finds element by data-sc-id when no id or selector", () => {
     const doc = createDocument(`
       <div data-composition-id="root">
-        <div data-hf-id="hf-xyz789" class="clip" style="position:absolute;left:0;top:0;width:100px;height:100px;"></div>
+        <div data-sc-id="sc-xyz789" class="clip" style="position:absolute;left:0;top:0;width:100px;height:100px;"></div>
       </div>
     `);
-    const el = doc.querySelector('[data-hf-id="hf-xyz789"]') as HTMLElement;
+    const el = doc.querySelector('[data-sc-id="sc-xyz789"]') as HTMLElement;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const found = findElementForSelection(doc, { hfId: "hf-xyz789" } as any);
+    const found = findElementForSelection(doc, { hfId: "sc-xyz789" } as any);
     expect(found).toBe(el);
   });
 
   it("resolveDomEditCapabilities enables editing for hfId-only element (no CSS selector)", () => {
     const result = resolveDomEditCapabilities({
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      hfId: "hf-abc" as any,
+      hfId: "sc-abc" as any,
       selector: undefined,
       inlineStyles: { left: "10px", top: "20px", width: "100px", height: "50px" },
       computedStyles: {

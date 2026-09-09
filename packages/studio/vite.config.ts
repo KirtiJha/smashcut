@@ -13,7 +13,7 @@ async function loadRuntimeSourceForDev(
 ): Promise<string | null> {
   try {
     const mod = await server.ssrLoadModule(
-      resolve(__dirname, "../core/src/inline-scripts/hyperframe.ts"),
+      resolve(__dirname, "../core/src/inline-scripts/smashcut.ts"),
     );
     if (typeof mod.loadHyperframeRuntimeSource === "function") {
       return mod.loadHyperframeRuntimeSource();
@@ -60,7 +60,7 @@ async function bridgeHonoResponse(
 
 function devProjectApi(): Plugin {
   const dataDir = resolve(__dirname, "data/projects");
-  const runtimePath = resolve(__dirname, "../core/dist/hyperframe.runtime.iife.js");
+  const runtimePath = resolve(__dirname, "../core/dist/smashcut.runtime.iife.js");
 
   return {
     name: "studio-dev-api",
@@ -130,7 +130,7 @@ function devProjectApi(): Plugin {
       };
 
       server.middlewares.use((req, res, next) => {
-        if (req.url !== "/__hyperframes_config") return next();
+        if (req.url !== "/__smashcut_config") return next();
         const payload = previewConfigPayload(process.env, process.pid, studioPkg.version);
         if (!payload) return next();
         res.writeHead(200, { "Content-Type": "application/json", "Cache-Control": "no-store" });
@@ -238,8 +238,8 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      "@hyperframes/player": resolve(__dirname, "../player/src/hyperframes-player.ts"),
-      "@hyperframes/studio-server/source-mutation": resolve(
+      "@smashcut/player": resolve(__dirname, "../player/src/smashcut-player.ts"),
+      "@smashcut/studio-server/source-mutation": resolve(
         __dirname,
         "../studio-server/src/helpers/sourceMutation.ts",
       ),
@@ -266,7 +266,7 @@ export default defineConfig({
   },
   ssr: {
     // recast / @babel/parser are CommonJS and call `require("fs")`. They are
-    // reachable only server-side via the Node-only `@hyperframes/parsers/gsap-parser`
+    // reachable only server-side via the Node-only `@smashcut/parsers/gsap-parser`
     // subpath (studio-api GSAP mutations + the linter), which the dev server loads
     // through Vite SSR. Externalizing them makes SSR load the native Node modules
     // instead of esbuild-transforming the `require` into a shim that throws

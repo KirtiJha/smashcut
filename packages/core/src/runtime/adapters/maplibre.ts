@@ -11,7 +11,7 @@ export function createMaplibreAdapter() {
     name: "maplibre",
     getInstances: () => {
       if (typeof window === "undefined") return [];
-      const arr = (window as { __hfMaplibre?: MaplibreMapLike[] }).__hfMaplibre;
+      const arr = (window as { __scMaplibre?: MaplibreMapLike[] }).__scMaplibre;
       return Array.isArray(arr) ? arr : [];
     },
     waitFor: (m) =>

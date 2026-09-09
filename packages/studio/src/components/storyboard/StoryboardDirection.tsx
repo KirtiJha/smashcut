@@ -1,4 +1,4 @@
-import type { StoryboardGlobals } from "@hyperframes/core/storyboard";
+import type { StoryboardGlobals } from "@smashcut/core/storyboard";
 
 export interface StoryboardDirectionProps {
   globals: StoryboardGlobals;

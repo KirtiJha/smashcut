@@ -14,12 +14,12 @@ import {
   couldBeCarveBed,
   isNamedCarveBed,
   type HfCarveSettings,
-} from "@hyperframes/core/audio-carve";
+} from "@smashcut/core/audio-carve";
 import {
   HF_AUDIO_GROUP_TAG,
   resolveAudioGroups,
   resolveCarveSourceIds,
-} from "@hyperframes/core/audio-groups";
+} from "@smashcut/core/audio-groups";
 
 /**
  * An id for a new voiceover group, de-duped against every id already in the

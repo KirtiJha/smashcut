@@ -10,7 +10,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
   previewSrc="/public/catalog/blocks/notification-cascade.json"
   compositionId="notification-cascade"
   compositionSrc="compositions/notification-cascade.html"
-  variables={[{"id":"notifTitle","type":"string","role":"content","label":"Notification title","description":"Bold first line on every banner.","default":"New render"},{"id":"message1","type":"string","role":"content","label":"Message 1","description":"Subtitle of the first banner to land.","default":"Launch video is ready."},{"id":"message2","type":"string","role":"content","label":"Message 2","description":"Subtitle of the second banner.","default":"All checks passed."},{"id":"message3","type":"string","role":"content","label":"Message 3","description":"Subtitle of the third banner.","default":"4K render done in 92s."},{"id":"message4","type":"string","role":"content","label":"Message 4","description":"Subtitle of the fourth banner.","default":"Published to the catalog."},{"id":"appName","type":"string","role":"content","label":"App name","description":"Name of the brand this video promotes, credited in the corner of every banner. Use the real name of that brand.","portrays":["subject_name"],"default":"HyperFrames"},{"id":"headlineTop","type":"string","role":"content","label":"End-card line 1","description":"First line of the closing card.","default":"SHIP VIDEO"},{"id":"headlineAccent","type":"string","role":"content","label":"End-card line 2","description":"Accented second line of the closing card.","default":"FROM HTML"},{"id":"footerText","type":"string","role":"content","label":"End-card footer","description":"Domain of the brand this video promotes, under the end-card headline. Use the real domain, or a call to action when no domain fits.","portrays":["subject_domain"],"default":"hyperframes.heygen.com"},{"id":"brandLogo","type":"image","role":"content","label":"Brand logo","description":"Transparent mark of the brand this video promotes, centered on the closing card.","portrays":["subject_logo"],"default":"assets/hyperframes-logo-white.svg"}]}
+  variables={[{"id":"notifTitle","type":"string","role":"content","label":"Notification title","description":"Bold first line on every banner.","default":"New render"},{"id":"message1","type":"string","role":"content","label":"Message 1","description":"Subtitle of the first banner to land.","default":"Launch video is ready."},{"id":"message2","type":"string","role":"content","label":"Message 2","description":"Subtitle of the second banner.","default":"All checks passed."},{"id":"message3","type":"string","role":"content","label":"Message 3","description":"Subtitle of the third banner.","default":"4K render done in 92s."},{"id":"message4","type":"string","role":"content","label":"Message 4","description":"Subtitle of the fourth banner.","default":"Published to the catalog."},{"id":"appName","type":"string","role":"content","label":"App name","description":"Name of the brand this video promotes, credited in the corner of every banner. Use the real name of that brand.","portrays":["subject_name"],"default":"SmashCut"},{"id":"headlineTop","type":"string","role":"content","label":"End-card line 1","description":"First line of the closing card.","default":"SHIP VIDEO"},{"id":"headlineAccent","type":"string","role":"content","label":"End-card line 2","description":"Accented second line of the closing card.","default":"FROM HTML"},{"id":"footerText","type":"string","role":"content","label":"End-card footer","description":"Domain of the brand this video promotes, under the end-card headline. Use the real domain, or a call to action when no domain fits.","portrays":["subject_domain"],"default":"hyperframes.heygen.com"},{"id":"brandLogo","type":"image","role":"content","label":"Brand logo","description":"Transparent mark of the brand this video promotes, centered on the closing card.","portrays":["subject_logo"],"default":"assets/smashcut-logo-white.svg"}]}
 >
 
 ```html notification-cascade.html
@@ -23,11 +23,11 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
     { "id": "message2", "type": "string", "role": "content", "label": "Message 2", "description": "Subtitle of the second banner.", "default": "All checks passed." },
     { "id": "message3", "type": "string", "role": "content", "label": "Message 3", "description": "Subtitle of the third banner.", "default": "4K render done in 92s." },
     { "id": "message4", "type": "string", "role": "content", "label": "Message 4", "description": "Subtitle of the fourth banner.", "default": "Published to the catalog." },
-    { "id": "appName", "type": "string", "role": "content", "label": "App name", "description": "Name of the brand this video promotes, credited in the corner of every banner. Use the real name of that brand.", "portrays": ["subject_name"], "default": "HyperFrames" },
+    { "id": "appName", "type": "string", "role": "content", "label": "App name", "description": "Name of the brand this video promotes, credited in the corner of every banner. Use the real name of that brand.", "portrays": ["subject_name"], "default": "SmashCut" },
     { "id": "headlineTop", "type": "string", "role": "content", "label": "End-card line 1", "description": "First line of the closing card.", "default": "SHIP VIDEO" },
     { "id": "headlineAccent", "type": "string", "role": "content", "label": "End-card line 2", "description": "Accented second line of the closing card.", "default": "FROM HTML" },
     { "id": "footerText", "type": "string", "role": "content", "label": "End-card footer", "description": "Domain of the brand this video promotes, under the end-card headline. Use the real domain, or a call to action when no domain fits.", "portrays": ["subject_domain"], "default": "hyperframes.heygen.com" },
-    { "id": "brandLogo", "type": "image", "role": "content", "label": "Brand logo", "description": "Transparent mark of the brand this video promotes, centered on the closing card.", "portrays": ["subject_logo"], "default": "assets/hyperframes-logo-white.svg" }
+    { "id": "brandLogo", "type": "image", "role": "content", "label": "Brand logo", "description": "Transparent mark of the brand this video promotes, centered on the closing card.", "portrays": ["subject_logo"], "default": "assets/smashcut-logo-white.svg" }
   ]'
 >
   <head>
@@ -51,11 +51,11 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
         overflow: hidden;
         font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
         /* palette: warm glass banners over a bright soft backdrop, dark scrim under the end card */
-        --nc-glass: var(--hf-ui-surface-raised, rgba(250, 246, 241, 0.94));
-        --nc-ink-strong: var(--hf-ui-text-strong, #1c1c1e);
-        --nc-ink: var(--hf-ui-text, #464040);
-        --nc-ink-faint: var(--hf-ui-text-faint, #5a5450);
-        --nc-accent: var(--hf-ui-accent, #0a9c6b);
+        --nc-glass: var(--sc-ui-surface-raised, rgba(250, 246, 241, 0.94));
+        --nc-ink-strong: var(--sc-ui-text-strong, #1c1c1e);
+        --nc-ink: var(--sc-ui-text, #464040);
+        --nc-ink-faint: var(--sc-ui-text-faint, #5a5450);
+        --nc-accent: var(--sc-ui-accent, #0a9c6b);
         --nc-endcard-ink: #f7ece5;
         --nc-endcard-accent: #3ce6ac;
       }
@@ -316,7 +316,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
             <div class="nc-title">New render</div>
             <div class="nc-subtitle">Launch video is ready.</div>
             <div class="nc-now">NOW</div>
-            <div class="nc-credit">HyperFrames</div>
+            <div class="nc-credit">SmashCut</div>
           </div>
           <div class="nc-banner" id="nc-banner-2" style="top: 1260px">
             <div class="nc-icon">
@@ -330,7 +330,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
             <div class="nc-title">New render</div>
             <div class="nc-subtitle">All checks passed.</div>
             <div class="nc-now">NOW</div>
-            <div class="nc-credit">HyperFrames</div>
+            <div class="nc-credit">SmashCut</div>
           </div>
           <div class="nc-banner" id="nc-banner-3" style="top: 1260px">
             <div class="nc-icon">
@@ -344,7 +344,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
             <div class="nc-title">New render</div>
             <div class="nc-subtitle">4K render done in 92s.</div>
             <div class="nc-now">NOW</div>
-            <div class="nc-credit">HyperFrames</div>
+            <div class="nc-credit">SmashCut</div>
           </div>
           <div class="nc-banner" id="nc-banner-4" style="top: 1260px">
             <div class="nc-icon">
@@ -358,7 +358,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
             <div class="nc-title">New render</div>
             <div class="nc-subtitle">Published to the catalog.</div>
             <div class="nc-now">NOW</div>
-            <div class="nc-credit">HyperFrames</div>
+            <div class="nc-credit">SmashCut</div>
           </div>
         </div>
       </section>
@@ -378,7 +378,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
           <img
             id="nc-ec-mark"
             data-var-src="brandLogo"
-            src="assets/hyperframes-logo-white.svg"
+            src="assets/smashcut-logo-white.svg"
             alt="Brand logo"
           />
           <div id="nc-ec-footer">hyperframes.heygen.com</div>
@@ -397,8 +397,8 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 
         /* -------- variables: every override falls back to its declared default -------- */
         var vars =
-          window.__hyperframes && typeof window.__hyperframes.getVariables === "function"
-            ? window.__hyperframes.getVariables()
+          window.__smashcut && typeof window.__smashcut.getVariables === "function"
+            ? window.__smashcut.getVariables()
             : {};
 
         function text(value, fallback) {
@@ -415,7 +415,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
         }
 
         setAll(".nc-title", text(vars.notifTitle, "New render"));
-        setAll(".nc-credit", text(vars.appName, "HyperFrames"));
+        setAll(".nc-credit", text(vars.appName, "SmashCut"));
         var messages = [
           text(vars.message1, "Launch video is ready."),
           text(vars.message2, "All checks passed."),
@@ -540,7 +540,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 
 ## Install
 
-<InstallCommand command="npx hyperframes add notification-cascade" item="notification-cascade" />
+<InstallCommand command="npx smashcut add notification-cascade" item="notification-cascade" />
 
 That writes `compositions/notification-cascade.html`, plus 3 supporting files under `assets/`.
 
@@ -575,11 +575,11 @@ want to change on the element:
 | `message2` | `All checks passed.` | string | Subtitle of the second banner. |
 | `message3` | `4K render done in 92s.` | string | Subtitle of the third banner. |
 | `message4` | `Published to the catalog.` | string | Subtitle of the fourth banner. |
-| `appName` | `HyperFrames` | string | Name of the brand this video promotes, credited in the corner of every banner. Use the real name of that brand. |
+| `appName` | `SmashCut` | string | Name of the brand this video promotes, credited in the corner of every banner. Use the real name of that brand. |
 | `headlineTop` | `SHIP VIDEO` | string | First line of the closing card. |
 | `headlineAccent` | `FROM HTML` | string | Accented second line of the closing card. |
 | `footerText` | `hyperframes.heygen.com` | string | Domain of the brand this video promotes, under the end-card headline. Use the real domain, or a call to action when no domain fits. |
-| `brandLogo` | `assets/hyperframes-logo-white.svg` | image | Transparent mark of the brand this video promotes, centered on the closing card. |
+| `brandLogo` | `assets/smashcut-logo-white.svg` | image | Transparent mark of the brand this video promotes, centered on the closing card. |
 
 Set them with `data-variable-values` on the element that mounts it. These are the
 defaults, so this behaves exactly like the preview above until you change one:
@@ -588,7 +588,7 @@ defaults, so this behaves exactly like the preview above until you change one:
 <div
   data-composition-id="notification-cascade"
   data-composition-src="compositions/notification-cascade.html"
-  data-variable-values='{"notifTitle":"New render","message1":"Launch video is ready.","message2":"All checks passed.","message3":"4K render done in 92s.","message4":"Published to the catalog.","appName":"HyperFrames","headlineTop":"SHIP VIDEO","headlineAccent":"FROM HTML","footerText":"hyperframes.heygen.com","brandLogo":"assets/hyperframes-logo-white.svg"}'
+  data-variable-values='{"notifTitle":"New render","message1":"Launch video is ready.","message2":"All checks passed.","message3":"4K render done in 92s.","message4":"Published to the catalog.","appName":"SmashCut","headlineTop":"SHIP VIDEO","headlineAccent":"FROM HTML","footerText":"hyperframes.heygen.com","brandLogo":"assets/smashcut-logo-white.svg"}'
 ></div>
 ```
 
@@ -606,11 +606,11 @@ defaults, so this behaves exactly like the preview above until you change one:
     { "id": "message2", "type": "string", "role": "content", "label": "Message 2", "description": "Subtitle of the second banner.", "default": "All checks passed." },
     { "id": "message3", "type": "string", "role": "content", "label": "Message 3", "description": "Subtitle of the third banner.", "default": "4K render done in 92s." },
     { "id": "message4", "type": "string", "role": "content", "label": "Message 4", "description": "Subtitle of the fourth banner.", "default": "Published to the catalog." },
-    { "id": "appName", "type": "string", "role": "content", "label": "App name", "description": "Name of the brand this video promotes, credited in the corner of every banner. Use the real name of that brand.", "portrays": ["subject_name"], "default": "HyperFrames" },
+    { "id": "appName", "type": "string", "role": "content", "label": "App name", "description": "Name of the brand this video promotes, credited in the corner of every banner. Use the real name of that brand.", "portrays": ["subject_name"], "default": "SmashCut" },
     { "id": "headlineTop", "type": "string", "role": "content", "label": "End-card line 1", "description": "First line of the closing card.", "default": "SHIP VIDEO" },
     { "id": "headlineAccent", "type": "string", "role": "content", "label": "End-card line 2", "description": "Accented second line of the closing card.", "default": "FROM HTML" },
     { "id": "footerText", "type": "string", "role": "content", "label": "End-card footer", "description": "Domain of the brand this video promotes, under the end-card headline. Use the real domain, or a call to action when no domain fits.", "portrays": ["subject_domain"], "default": "hyperframes.heygen.com" },
-    { "id": "brandLogo", "type": "image", "role": "content", "label": "Brand logo", "description": "Transparent mark of the brand this video promotes, centered on the closing card.", "portrays": ["subject_logo"], "default": "assets/hyperframes-logo-white.svg" }
+    { "id": "brandLogo", "type": "image", "role": "content", "label": "Brand logo", "description": "Transparent mark of the brand this video promotes, centered on the closing card.", "portrays": ["subject_logo"], "default": "assets/smashcut-logo-white.svg" }
   ]'
 >
   <head>
@@ -634,11 +634,11 @@ defaults, so this behaves exactly like the preview above until you change one:
         overflow: hidden;
         font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
         /* palette: warm glass banners over a bright soft backdrop, dark scrim under the end card */
-        --nc-glass: var(--hf-ui-surface-raised, rgba(250, 246, 241, 0.94));
-        --nc-ink-strong: var(--hf-ui-text-strong, #1c1c1e);
-        --nc-ink: var(--hf-ui-text, #464040);
-        --nc-ink-faint: var(--hf-ui-text-faint, #5a5450);
-        --nc-accent: var(--hf-ui-accent, #0a9c6b);
+        --nc-glass: var(--sc-ui-surface-raised, rgba(250, 246, 241, 0.94));
+        --nc-ink-strong: var(--sc-ui-text-strong, #1c1c1e);
+        --nc-ink: var(--sc-ui-text, #464040);
+        --nc-ink-faint: var(--sc-ui-text-faint, #5a5450);
+        --nc-accent: var(--sc-ui-accent, #0a9c6b);
         --nc-endcard-ink: #f7ece5;
         --nc-endcard-accent: #3ce6ac;
       }
@@ -899,7 +899,7 @@ defaults, so this behaves exactly like the preview above until you change one:
             <div class="nc-title">New render</div>
             <div class="nc-subtitle">Launch video is ready.</div>
             <div class="nc-now">NOW</div>
-            <div class="nc-credit">HyperFrames</div>
+            <div class="nc-credit">SmashCut</div>
           </div>
           <div class="nc-banner" id="nc-banner-2" style="top: 1260px">
             <div class="nc-icon">
@@ -913,7 +913,7 @@ defaults, so this behaves exactly like the preview above until you change one:
             <div class="nc-title">New render</div>
             <div class="nc-subtitle">All checks passed.</div>
             <div class="nc-now">NOW</div>
-            <div class="nc-credit">HyperFrames</div>
+            <div class="nc-credit">SmashCut</div>
           </div>
           <div class="nc-banner" id="nc-banner-3" style="top: 1260px">
             <div class="nc-icon">
@@ -927,7 +927,7 @@ defaults, so this behaves exactly like the preview above until you change one:
             <div class="nc-title">New render</div>
             <div class="nc-subtitle">4K render done in 92s.</div>
             <div class="nc-now">NOW</div>
-            <div class="nc-credit">HyperFrames</div>
+            <div class="nc-credit">SmashCut</div>
           </div>
           <div class="nc-banner" id="nc-banner-4" style="top: 1260px">
             <div class="nc-icon">
@@ -941,7 +941,7 @@ defaults, so this behaves exactly like the preview above until you change one:
             <div class="nc-title">New render</div>
             <div class="nc-subtitle">Published to the catalog.</div>
             <div class="nc-now">NOW</div>
-            <div class="nc-credit">HyperFrames</div>
+            <div class="nc-credit">SmashCut</div>
           </div>
         </div>
       </section>
@@ -961,7 +961,7 @@ defaults, so this behaves exactly like the preview above until you change one:
           <img
             id="nc-ec-mark"
             data-var-src="brandLogo"
-            src="assets/hyperframes-logo-white.svg"
+            src="assets/smashcut-logo-white.svg"
             alt="Brand logo"
           />
           <div id="nc-ec-footer">hyperframes.heygen.com</div>
@@ -980,8 +980,8 @@ defaults, so this behaves exactly like the preview above until you change one:
 
         /* -------- variables: every override falls back to its declared default -------- */
         var vars =
-          window.__hyperframes && typeof window.__hyperframes.getVariables === "function"
-            ? window.__hyperframes.getVariables()
+          window.__smashcut && typeof window.__smashcut.getVariables === "function"
+            ? window.__smashcut.getVariables()
             : {};
 
         function text(value, fallback) {
@@ -998,7 +998,7 @@ defaults, so this behaves exactly like the preview above until you change one:
         }
 
         setAll(".nc-title", text(vars.notifTitle, "New render"));
-        setAll(".nc-credit", text(vars.appName, "HyperFrames"));
+        setAll(".nc-credit", text(vars.appName, "SmashCut"));
         var messages = [
           text(vars.message1, "Launch video is ready."),
           text(vars.message2, "All checks passed."),

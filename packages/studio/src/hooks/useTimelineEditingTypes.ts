@@ -1,5 +1,5 @@
 import type { MutableRefObject, RefObject } from "react";
-import type { Composition } from "@hyperframes/sdk";
+import type { Composition } from "@smashcut/sdk";
 import type { TimelineElement } from "../player";
 import type { TimelineStackingReorderIntent } from "../player/components/timelineEditing";
 import type { EditHistoryKind } from "../utils/editHistory";

@@ -16,8 +16,8 @@ Verified, from the [examples](/prompting/examples) page — a 30-second feature 
 > /pr-to-video Make a 30-second 1920x1080 feature-reveal video from [PR URL]. Lead with what users get, not the diff; show the key code change with the `code-diff` block for one beat only; end on version number + repo URL. No narration, kinetic captions instead.
 
 <DocsVideo
-  title="HyperFrames video: Example Pr Video"
-  src="https://static.heygen.ai/hyperframes-oss/docs/images/prompting/example-pr-video-v2.mp4#t=0.1"
+  title="SmashCut video: Example Pr Video"
+  src="https://static.heygen.ai/smashcut-oss/docs/images/prompting/example-pr-video-v2.mp4#t=0.1"
   loop
 />
 *Rendered from the prompt above, unedited.*
@@ -27,7 +27,7 @@ Verified, from the [examples](/prompting/examples) page — a 30-second feature 
 
 A code-change explainer built from a GitHub pull request. The [`/pr-to-video`](/prompting/overview) workflow reads the PR through `gh` — the diff, commits, files, and contributors — reshapes it into a story, and builds it frame by frame, rendering code beats on a purpose-built diff surface.
 
-The input is a **code change**, not a website or a product page. A PR link (`https://github.com/owner/repo/pull/N`), an `owner/repo#N` ref, or "this PR" in a checked-out repo all work. A product to sell → [`/product-launch-video`](/prompting/product-launch); a topic with no PR → [`/faceless-explainer`](/prompting/explainers). Unsure → start at `/hyperframes`.
+The input is a **code change**, not a website or a product page. A PR link (`https://github.com/owner/repo/pull/N`), an `owner/repo#N` ref, or "this PR" in a checked-out repo all work. A product to sell → [`/product-launch-video`](/prompting/product-launch); a topic with no PR → [`/faceless-explainer`](/prompting/explainers). Unsure → start at `/smashcut`.
 
 ## The knobs that matter
 
@@ -55,8 +55,8 @@ What you can already steer from the prompt, before you've learned any technique.
     > /pr-to-video Make a ~40-second 1920x1080 changelog video from [PR URL]. Changelog angle: open with the release line, then one beat per notable change — a short label and a one-line "what it does" each. Show at most two `code-diff` hunks across the whole video. End on version + repo URL. Calm male TTS narration, no captions.
 
     <DocsVideo
-      title="HyperFrames video: Variant Pr Changelog"
-      src="https://static.heygen.ai/hyperframes-oss/docs/images/prompting/variant-pr-changelog.mp4#t=0.1"
+      title="SmashCut video: Variant Pr Changelog"
+      src="https://static.heygen.ai/smashcut-oss/docs/images/prompting/variant-pr-changelog.mp4#t=0.1"
       loop
     />
     *Rendered from this prompt with [PR URL] = heygen-com/hyperframes#2092, unedited.*

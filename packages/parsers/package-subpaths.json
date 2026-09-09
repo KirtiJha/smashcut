@@ -1,5 +1,5 @@
 {
-  "package": "@hyperframes/parsers",
+  "package": "@smashcut/parsers",
   "localNodeRuntime": true,
   "subpaths": {
     ".": {
@@ -44,7 +44,7 @@
       "types": "./dist/springEase.d.ts",
       "environments": ["browser", "bun", "node"]
     },
-    "./hf-ids": {
+    "./sc-ids": {
       "source": "./src/hfIds.ts",
       "runtime": "./dist/hfIds.js",
       "types": "./dist/hfIds.d.ts",

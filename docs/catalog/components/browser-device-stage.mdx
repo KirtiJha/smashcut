@@ -16,7 +16,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 ```html browser-device-stage.html
 <!doctype html>
 <!--
-  browser-device-stage -- HyperFrames video primitive (product demo / stage)
+  browser-device-stage -- SmashCut video primitive (product demo / stage)
 
   A generic app surface presented in token-native device chrome. One settle
   entrance (rise + soft scale), then a slow readable hold; optionally the
@@ -529,8 +529,8 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
             var screen = root.querySelector(".bds-screen");
             var screenA = root.querySelector(".bds-screen-a");
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             var chromeKind =
@@ -668,7 +668,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 
 ## Install
 
-<InstallCommand command="npx hyperframes add browser-device-stage" item="browser-device-stage" />
+<InstallCommand command="npx smashcut add browser-device-stage" item="browser-device-stage" />
 
 That writes one file: `compositions/components/browser-device-stage.html`.
 
@@ -710,7 +710,7 @@ defaults, so this behaves exactly like the preview above until you change one:
 ```html
 <!doctype html>
 <!--
-  browser-device-stage -- HyperFrames video primitive (product demo / stage)
+  browser-device-stage -- SmashCut video primitive (product demo / stage)
 
   A generic app surface presented in token-native device chrome. One settle
   entrance (rise + soft scale), then a slow readable hold; optionally the
@@ -1223,8 +1223,8 @@ defaults, so this behaves exactly like the preview above until you change one:
             var screen = root.querySelector(".bds-screen");
             var screenA = root.querySelector(".bds-screen-a");
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             var chromeKind =

@@ -375,7 +375,7 @@
     -->
 
     <!-- JSON island -->
-    <script type="application/hyperframes-slideshow+json">
+    <script type="application/smashcut-slideshow+json">
       {
         "slides": [
           {
@@ -1344,7 +1344,7 @@
           }
         }
 
-        window.__hfSetTime = updateVisibility;
+        window.__scSetTime = updateVisibility;
 
         // Show first slide immediately
         updateVisibility(0);
@@ -1362,7 +1362,7 @@
     </script>
 
     <!-- SFX cue poster — posts transition cues to the parent unconditionally.
-         Mute state is owned by <hyperframes-slideshow sound> in the parent;
+         Mute state is owned by <smashcut-slideshow sound> in the parent;
          the parent gates playback on its mute state. The coral mute button has
          been removed — use the mute control in the nav capsule (demo.html). -->
     <script>
@@ -1420,8 +1420,8 @@
         function playSfx(name) {
           window.__sfxPlayed.push(name);
           // Post the cue to the parent unconditionally — the parent's audio player
-          // gates on the slideshow component's mute state (hf-sound event).
-          try { parent.postMessage({ type: 'hf-sfx', name: name }, '*'); } catch (e) {}
+          // gates on the slideshow component's mute state (sc-sound event).
+          try { parent.postMessage({ type: 'sc-sfx', name: name }, '*'); } catch (e) {}
           // Best-effort local play (only fires if this doc ever gets activation).
           if (!unlocked) return;
           switch (name) {
@@ -1439,8 +1439,8 @@
     <!-- Patch visibility controller to fire sfx on scene/fragment transitions -->
     <script>
       (function () {
-        // Wait for __hfSetTime and __playSfx to be defined, then wrap __hfSetTime
-        var origUpdateVisibility = window.__hfSetTime;
+        // Wait for __scSetTime and __playSfx to be defined, then wrap __scSetTime
+        var origUpdateVisibility = window.__scSetTime;
         var lastScene = null;
         var wasInBranch = false;
         var fragmentRevealedSfx = [false, false];
@@ -1522,7 +1522,7 @@
           }
         }
 
-        window.__hfSetTime = patchedUpdateVisibility;
+        window.__scSetTime = patchedUpdateVisibility;
 
         // Also re-hook the root timeline callback after load
         // (the timeline callback was set before our patch)
@@ -1558,7 +1558,7 @@
 
         function postTimeline() {
           parent.postMessage({
-            source: "hf-preview",
+            source: "sc-preview",
             type: "timeline",
             durationInFrames: totalFrames,
             scenes: scenes

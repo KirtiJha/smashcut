@@ -13,7 +13,7 @@ vi.mock("node:child_process", () => {
 });
 
 function tmpProject(name: string): string {
-  return mkdtempSync(join(tmpdir(), `hf-lint-test-${name}-`));
+  return mkdtempSync(join(tmpdir(), `sc-lint-test-${name}-`));
 }
 
 function validHtml(compId = "main"): string {
@@ -456,12 +456,12 @@ describe("hevc_preview_codec", () => {
   }
 
   beforeEach(() => {
-    process.env.HYPERFRAMES_FFPROBE_PATH = FAKE_FFPROBE_PATH;
+    process.env.SMASHCUT_FFPROBE_PATH = FAKE_FFPROBE_PATH;
     mockExecFile.mockReset();
   });
 
   afterEach(() => {
-    delete process.env.HYPERFRAMES_FFPROBE_PATH;
+    delete process.env.SMASHCUT_FFPROBE_PATH;
     mockExecFile.mockReset();
   });
 
@@ -510,7 +510,7 @@ describe("hevc_preview_codec", () => {
 
   it("does not flag anything, and lint completes normally, when ffprobe cannot be resolved", async () => {
     const { project } = makeVideoProject("clip.mp4");
-    process.env.HYPERFRAMES_FFPROBE_PATH = join(project, "missing-ffprobe");
+    process.env.SMASHCUT_FFPROBE_PATH = join(project, "missing-ffprobe");
 
     const { results, totalErrors } = await lintProject(project);
 

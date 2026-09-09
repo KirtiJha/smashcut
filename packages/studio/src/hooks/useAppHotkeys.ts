@@ -133,7 +133,7 @@ interface UseAppHotkeysParams {
   onDeleteSelectedKeyframes: () => void;
   onAfterUndoRedo?: () => void;
   onToggleRecording?: () => void;
-  /** Group the current multi-selection into a data-hf-group wrapper (⌘G). */
+  /** Group the current multi-selection into a data-sc-group wrapper (⌘G). */
   onGroupSelection?: () => void;
   /** Ungroup the selected group wrapper (⌘⇧G). */
   onUngroupSelection?: () => void;

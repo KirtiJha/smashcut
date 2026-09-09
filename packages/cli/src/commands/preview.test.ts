@@ -31,7 +31,7 @@ afterEach(() => {
 });
 
 function projectWith(storyboard: string | null, frameFiles: string[] = []): string {
-  const dir = mkdtempSync(join(tmpdir(), "hf-preview-landing-"));
+  const dir = mkdtempSync(join(tmpdir(), "sc-preview-landing-"));
   tempDirs.push(dir);
   if (storyboard !== null) writeFileSync(join(dir, "STORYBOARD.md"), storyboard);
   for (const file of frameFiles) {
@@ -384,7 +384,7 @@ describe("preview lifecycle JSON failures", () => {
   });
 
   it("wraps stop failures in one JSON document", async () => {
-    const missing = join(tmpdir(), `hf-preview-missing-${process.pid}-${Date.now()}`);
+    const missing = join(tmpdir(), `sc-preview-missing-${process.pid}-${Date.now()}`);
     const log = vi.spyOn(console, "log").mockImplementation(() => {});
     const error = vi.spyOn(console, "error").mockImplementation(() => {});
 
@@ -404,7 +404,7 @@ describe("preview lifecycle JSON failures", () => {
   });
 
   it("wraps missing-project start failures without human stderr", async () => {
-    const missing = join(tmpdir(), `hf-preview-missing-start-${process.pid}-${Date.now()}`);
+    const missing = join(tmpdir(), `sc-preview-missing-start-${process.pid}-${Date.now()}`);
     const log = vi.spyOn(console, "log").mockImplementation(() => {});
     const error = vi.spyOn(console, "error").mockImplementation(() => {});
 

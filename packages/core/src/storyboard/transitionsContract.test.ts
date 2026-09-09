@@ -15,7 +15,7 @@ afterEach(() => {
 });
 
 function makeProject({ preInflatedRoot = true } = {}): string {
-  const project = mkdtempSync(join(tmpdir(), "hf-transition-tail-"));
+  const project = mkdtempSync(join(tmpdir(), "sc-transition-tail-"));
   tempDirs.push(project);
   mkdirSync(join(project, "compositions"));
   writeFileSync(
@@ -55,7 +55,7 @@ describe.each(skillNames)("%s transition contract", (skillName) => {
     (_, preInflatedRoot) => {
       const project = makeProject({ preInflatedRoot });
       const script = join(REPO_ROOT, "skills", skillName, "scripts", "transitions.mjs");
-      execFileSync(process.execPath, [script, "inject", "--hyperframes", project], {
+      execFileSync(process.execPath, [script, "inject", "--smashcut", project], {
         stdio: "pipe",
       });
 

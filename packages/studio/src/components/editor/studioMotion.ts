@@ -226,7 +226,7 @@ export function applyStudioMotionManifest(
 }
 
 /**
- * Reads motion data from `data-hf-studio-motion` JSON attributes in the DOM,
+ * Reads motion data from `data-sc-studio-motion` JSON attributes in the DOM,
  * builds a GSAP timeline, and seeks to the current time.
  * This replaces the manifest-based `applyStudioMotionManifest` for the studio preview.
  */
@@ -318,11 +318,11 @@ function resolveGsapEaseFromPayload(
 
 export function installStudioMotionSeekReapply(win: Window, apply: () => void): boolean {
   const studioWin = win as StudioMotionWindow;
-  studioWin.__hfStudioMotionApply = () => {
+  studioWin.__scStudioMotionApply = () => {
     apply();
     return 0;
   };
-  if (studioWin.__hfStudioMotionWrapped) return false;
+  if (studioWin.__scStudioMotionWrapped) return false;
   const player = studioWin.__player;
   if (!player) return false;
 
@@ -331,11 +331,11 @@ export function installStudioMotionSeekReapply(win: Window, apply: () => void): 
     if (typeof original !== "function") return;
     player[key] = (time: number) => {
       original.call(player, time);
-      studioWin.__hfStudioMotionApply?.();
+      studioWin.__scStudioMotionApply?.();
     };
   };
   wrapPlayerMethod("renderSeek");
   wrapPlayerMethod("seek");
-  studioWin.__hfStudioMotionWrapped = true;
+  studioWin.__scStudioMotionWrapped = true;
   return true;
 }

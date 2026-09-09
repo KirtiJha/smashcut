@@ -23,8 +23,8 @@
  * the way through. A sweep across rotations is what tells us it is.
  */
 import { afterEach, expect, it, vi } from "vitest";
-import { classifyTweenPropertyGroup } from "@hyperframes/core/gsap-parser";
-import type { GsapAnimation } from "@hyperframes/core/gsap-parser";
+import { classifyTweenPropertyGroup } from "@smashcut/core/gsap-parser";
+import type { GsapAnimation } from "@smashcut/core/gsap-parser";
 import type { DomEditSelection } from "../components/editor/domEditingTypes";
 import { usePlayerStore } from "../player/store/playerStore";
 import { tryGsapResizeIntercept } from "./gsapResizeIntercept";
@@ -176,11 +176,11 @@ function committed(calls: unknown[][]) {
 function mountCase(testCase: Case, live: Pose) {
   const el = document.createElement("div");
   el.id = "el";
-  el.setAttribute("data-hf-studio-original-box-width", String(testCase.box.w));
-  el.setAttribute("data-hf-studio-original-box-height", String(testCase.box.h));
-  el.setAttribute("data-hf-drag-gsap-base-x", String(testCase.base.x));
-  el.setAttribute("data-hf-drag-gsap-base-y", String(testCase.base.y));
-  el.setAttribute("data-hf-studio-box-size", "true");
+  el.setAttribute("data-sc-studio-original-box-width", String(testCase.box.w));
+  el.setAttribute("data-sc-studio-original-box-height", String(testCase.box.h));
+  el.setAttribute("data-sc-drag-gsap-base-x", String(testCase.base.x));
+  el.setAttribute("data-sc-drag-gsap-base-y", String(testCase.base.y));
+  el.setAttribute("data-sc-studio-box-size", "true");
   el.style.width = `${testCase.drop.w}px`;
   el.style.height = `${testCase.drop.h}px`;
   document.body.append(el);

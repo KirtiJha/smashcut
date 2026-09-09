@@ -2,7 +2,7 @@
  * Publish-time proxy baking (U6 of
  * docs/plans/2026-07-14-002-feat-transparent-media-proxies-plan.md).
  *
- * Published pages are static (no server), so the on-demand `?hf-proxy=`
+ * Published pages are static (no server), so the on-demand `?sc-proxy=`
  * negotiation the preview/play surfaces use (U3/U4) isn't possible there.
  * Instead this scans the archive's HTML entries for local `<video src>`
  * references to browser-hostile codecs (HEVC, ProRes, ...), transcodes each
@@ -29,23 +29,23 @@ import { existsSync } from "node:fs";
 import { readFile } from "node:fs/promises";
 import { basename, dirname, resolve } from "node:path";
 import { parseHTML } from "linkedom";
-import { rewriteAssetPath } from "@hyperframes/parsers/asset-paths";
+import { rewriteAssetPath } from "@smashcut/parsers/asset-paths";
 import {
   cleanAssetUrl,
   isRemoteOrInlineUrl,
   resolveLocalAssetCandidates,
-} from "@hyperframes/parsers/asset-resolution";
+} from "@smashcut/parsers/asset-resolution";
 import {
   proxyVariantFor,
   scanProjectMediaCodecMap,
   type HtmlSourceLike,
-} from "@hyperframes/studio-server/media-codec-map";
+} from "@smashcut/studio-server/media-codec-map";
 import {
   ProxyTranscodeError,
   resolveProxy,
   waitForProxy,
   TRANSCODE_TIMEOUT_MS,
-} from "@hyperframes/studio-server/proxy-transcoder";
+} from "@smashcut/studio-server/proxy-transcoder";
 import { rewriteHtmlAttributes } from "./publishProject.js";
 
 /** Archive-path prefix for baked proxy files, mirroring `localizeExternalAssets`'s `_ext/`. */

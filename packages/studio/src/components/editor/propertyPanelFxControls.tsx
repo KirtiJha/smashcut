@@ -14,7 +14,7 @@ import type {
   HfAudioFxNumberParam,
   HfAudioFxParam,
   HfAudioFxParamValues,
-} from "@hyperframes/core/audio-fx";
+} from "@smashcut/core/audio-fx";
 
 /**
  * Frequency and time controls span three or four decades, so a linear slider
@@ -88,7 +88,7 @@ export function AutomationToggle({
     <Tooltip label={automated ? "Automated" : "Automate"}>
       <button
         type="button"
-        className={`hf-fx-automate w-[16px] flex-shrink-0 rounded-[3px] border font-mono text-[9px] leading-none ${
+        className={`sc-fx-automate w-[16px] flex-shrink-0 rounded-[3px] border font-mono text-[9px] leading-none ${
           automated
             ? "border-panel-accent text-panel-accent"
             : "border-panel-border-input text-panel-text-2 hover:text-panel-text-0"
@@ -187,7 +187,7 @@ export function FxParamRow({
 
   if (param.kind === "enum") {
     return (
-      <label className="hf-fx-row flex min-h-6 items-center gap-2" title={param.hint}>
+      <label className="sc-fx-row flex min-h-6 items-center gap-2" title={param.hint}>
         {/* Wraps rather than truncating. These names are whole questions — "How
             big the space is" — so 86px of truncation left "How big the sp…", and
             three rows of that read as the same word four times. A title only
@@ -195,11 +195,11 @@ export function FxParamRow({
             whole column at rest. `break-words` so a long single token breaks
             instead of widening the column. The row keeps `title={param.hint}`:
             the name and the explanation are different questions. */}
-        <span className="hf-fx-label w-[86px] flex-shrink-0 break-words text-[10px] leading-tight text-panel-text-2">
+        <span className="sc-fx-label w-[86px] flex-shrink-0 break-words text-[10px] leading-tight text-panel-text-2">
           {param.label}
         </span>
         <select
-          className="hf-fx-select min-w-0 flex-1 rounded-[3px] bg-panel-surface px-1 py-0.5 font-mono text-[10px] text-panel-text-0"
+          className="sc-fx-select min-w-0 flex-1 rounded-[3px] bg-panel-surface px-1 py-0.5 font-mono text-[10px] text-panel-text-0"
           value={String(value)}
           disabled={disabled}
           onChange={(e) => {
@@ -230,20 +230,20 @@ export function FxParamRow({
 
   return (
     <label
-      className={`hf-fx-row flex min-h-6 items-center gap-2${automated ? " hf-fx-row-automated" : ""}`}
+      className={`sc-fx-row flex min-h-6 items-center gap-2${automated ? " sc-fx-row-automated" : ""}`}
       title={param.hint}
       data-automated={automated ? "" : undefined}
     >
       {/* See the enum row above for why the name wraps instead of truncating. */}
       <span
-        className={`hf-fx-label w-[86px] flex-shrink-0 break-words text-[10px] leading-tight ${
+        className={`sc-fx-label w-[86px] flex-shrink-0 break-words text-[10px] leading-tight ${
           automated ? "text-panel-accent" : "text-panel-text-2"
         }`}
       >
         {param.label}
       </span>
       <input
-        className="hf-fx-slider h-1 min-w-0 flex-1 accent-panel-accent"
+        className="sc-fx-slider h-1 min-w-0 flex-1 accent-panel-accent"
         type="range"
         min={param.min}
         max={param.max}
@@ -258,7 +258,7 @@ export function FxParamRow({
         onBlur={commit}
       />
       <input
-        className="hf-fx-number w-[54px] flex-shrink-0 rounded-[3px] bg-panel-surface px-1 py-0.5 text-right font-mono text-[10px] text-panel-text-0"
+        className="sc-fx-number w-[54px] flex-shrink-0 rounded-[3px] bg-panel-surface px-1 py-0.5 text-right font-mono text-[10px] text-panel-text-0"
         type="number"
         min={param.min}
         max={param.max}
@@ -287,7 +287,7 @@ export function FxParamRow({
         }}
       />
       {param.unit ? (
-        <span className="hf-fx-unit w-[22px] flex-shrink-0 font-mono text-[9px] text-panel-text-2">
+        <span className="sc-fx-unit w-[22px] flex-shrink-0 font-mono text-[9px] text-panel-text-2">
           {param.unit}
         </span>
       ) : null}
@@ -338,7 +338,7 @@ export function FxParams({
     [params, onCommit],
   );
   return (
-    <div className="hf-fx-params space-y-0.5 border-t border-panel-border-input px-1.5 py-1.5">
+    <div className="sc-fx-params space-y-0.5 border-t border-panel-border-input px-1.5 py-1.5">
       {def.params.map((p) => {
         // Only a parameter the registry marks automatable has an AudioParam
         // behind it for an envelope to write to.

@@ -77,7 +77,7 @@ describe("verifyStaticFramesSafe catches drift the old fixed-point density would
         const globalWithWindow = globalThis as typeof globalThis & { window?: unknown };
         const previousWindow = globalWithWindow.window;
         globalWithWindow.window = {
-          __hf: {
+          __sc: {
             seek: (seekTime: number, options?: { suppressEvents?: boolean }) => {
               seekCalls.push({ t: seekTime, options });
             },

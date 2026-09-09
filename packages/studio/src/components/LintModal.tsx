@@ -14,8 +14,8 @@ export function LintModal({
   findings,
   projectId,
   projectDir,
-  title = "HyperFrame Lint Results",
-  promptIntro = "Fix these HyperFrames lint issues",
+  title = "SmashCut Lint Results",
+  promptIntro = "Fix these SmashCut lint issues",
   onClose,
 }: {
   findings: LintFinding[];
@@ -58,7 +58,7 @@ export function LintModal({
 
   return (
     <div
-      className="hf-backdrop-in fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm"
+      className="sc-backdrop-in fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm"
       onClick={requestClose}
     >
       <div

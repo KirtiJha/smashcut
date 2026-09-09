@@ -8,9 +8,9 @@ import {
   snapLaneTime,
   toUnit,
 } from "./automationLaneGeometry";
-import { applyCurve, sampleAutomationLane } from "@hyperframes/core/audio-automation";
-import { resolveAutomationRange, VOLUME_RANGE } from "@hyperframes/core/audio-automation";
-import type { HfAudioFxChain } from "@hyperframes/core/audio-fx";
+import { applyCurve, sampleAutomationLane } from "@smashcut/core/audio-automation";
+import { resolveAutomationRange, VOLUME_RANGE } from "@smashcut/core/audio-automation";
+import type { HfAudioFxChain } from "@smashcut/core/audio-fx";
 
 const chain: HfAudioFxChain = {
   version: 1,

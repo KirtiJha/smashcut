@@ -218,7 +218,7 @@ function cacheAsset(bytes: Buffer<ArrayBuffer>, ext: string, target: AssetTarget
   mkdirSync(target.dir, { recursive: true });
   if (!lstatSync(target.dir).isDirectory())
     throw new Error("Catalog cache must be a real directory");
-  const staging = mkdtempSync(join(target.dir, ".hf-asset-"));
+  const staging = mkdtempSync(join(target.dir, ".sc-asset-"));
   try {
     const staged = join(staging, "content");
     writeFileSync(staged, bytes, { flag: "wx" });

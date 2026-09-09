@@ -74,5 +74,5 @@ export function createStudioWriteToken(): string {
 export function studioWriteHeaders(): Record<string, string> {
   const token = createStudioWriteToken();
   markStudioWriteToken(token);
-  return { "X-Hyperframes-Write-Token": token };
+  return { "X-Smashcut-Write-Token": token };
 }

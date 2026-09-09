@@ -6,7 +6,7 @@ import {
   patchElementInHtml,
   type PatchOperation,
   type SourceMutationTarget,
-} from "@hyperframes/studio-server/source-mutation";
+} from "@smashcut/studio-server/source-mutation";
 import { describe, expect, it } from "vitest";
 import {
   collectDomEditTextFields,
@@ -33,7 +33,7 @@ function createSelection(input: {
 }): ReturnType<typeof makeSelection> {
   const element = document.createElement(input.tagName);
   element.id = input.id;
-  element.setAttribute("data-hf-id", input.hfId);
+  element.setAttribute("data-sc-id", input.hfId);
   return {
     ...makeSelection(input.id, element),
     hfId: input.hfId,
@@ -73,7 +73,7 @@ function findElementInHtml(html: string, selector: string): Element {
 }
 
 function findByHfId(html: string, hfId: string): Element {
-  return findElementInHtml(html, `[data-hf-id="${hfId}"]`);
+  return findElementInHtml(html, `[data-sc-id="${hfId}"]`);
 }
 
 function countOccurrences(value: string, needle: string): number {
@@ -138,7 +138,7 @@ describe("persist seam source mutation", () => {
     const shape = findByHfId(html, "qa-shape");
 
     expect(shape.getAttribute("style")).toContain(`${STUDIO_OFFSET_X_PROP}: 24px`);
-    expect(shape.getAttribute("style")).toContain("translate: var(--hf-studio-offset-x, 0px)");
+    expect(shape.getAttribute("style")).toContain("translate: var(--sc-studio-offset-x, 0px)");
     expect(shape.getAttribute(STUDIO_PATH_OFFSET_ATTR)).toBe("true");
   });
 
@@ -211,7 +211,7 @@ describe("persist seam source mutation", () => {
   });
 
   it("targets the second direct child when siblings share the same tag and class", () => {
-    const source = `<div data-hf-id="dups"><span class="dup">First</span><span class="dup">Second</span></div>`;
+    const source = `<div data-sc-id="dups"><span class="dup">First</span><span class="dup">Second</span></div>`;
     const html = patchAndExpectChange(source, { hfId: "dups" }, [
       buildDomEditStylePatchOperation("color", "#0000ff", {
         childSelector: ":scope > span",
@@ -240,10 +240,10 @@ describe("persist seam source mutation", () => {
   });
 
   it("uses same-tag source child indexes when a non-leaf sibling sits between fields", () => {
-    const source = `<div data-hf-id="mixed"><span class="leaf-a">First</span><span class="wrapper"><b>Wrapper</b></span><span class="leaf-b">Second</span></div>`;
+    const source = `<div data-sc-id="mixed"><span class="leaf-a">First</span><span class="wrapper"><b>Wrapper</b></span><span class="leaf-b">Second</span></div>`;
     const previewHost = document.createElement("div");
     previewHost.innerHTML = source;
-    const previewTarget = previewHost.querySelector('[data-hf-id="mixed"]');
+    const previewTarget = previewHost.querySelector('[data-sc-id="mixed"]');
     if (!(previewTarget instanceof HTMLElement)) throw new Error("Expected preview target");
 
     const originalFields = collectDomEditTextFields(previewTarget);

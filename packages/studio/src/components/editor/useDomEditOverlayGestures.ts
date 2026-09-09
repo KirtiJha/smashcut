@@ -138,7 +138,7 @@ export function createDomEditOverlayGestureHandlers(opts: UseDomEditOverlayGestu
 
     if (g.kind === "rotate") {
       // Single source of truth: preview the rotation through the GSAP channel (the
-      // same channel the commit lands in), not the `--hf-studio-rotation` CSS var.
+      // same channel the commit lands in), not the `--sc-studio-rotation` CSS var.
       const rotated = resolveDomEditRotationGesture({
         centerX: g.centerX,
         centerY: g.centerY,

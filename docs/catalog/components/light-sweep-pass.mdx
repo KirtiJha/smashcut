@@ -16,7 +16,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 ```html light-sweep-pass.html
 <!doctype html>
 <!--
-  light-sweep-pass: HyperFrames video primitive (overlays / light)
+  light-sweep-pass: SmashCut video primitive (overlays / light)
 
   Concept: a traveling key light re-shades a slotted scene. A soft diagonal
   gradient band crosses the frame once while every per-element highlight and
@@ -67,7 +67,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
   <template> contents; #root fills the host box (inset:0, container-type:
   size), has no data-width/data-height, and registers one paused timeline
   under the literal "light-sweep-pass" key. Variables come from
-  window.__hyperframes.getVariables().
+  window.__smashcut.getVariables().
 -->
 <html
   lang="en"
@@ -339,8 +339,8 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
             var band = root.querySelector(".lsp-band");
 
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             function clampNumber(raw, fallback, min, max) {
@@ -497,7 +497,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 
 ## Install
 
-<InstallCommand command="npx hyperframes add light-sweep-pass" item="light-sweep-pass" />
+<InstallCommand command="npx smashcut add light-sweep-pass" item="light-sweep-pass" />
 
 That writes one file: `compositions/components/light-sweep-pass.html`.
 
@@ -539,7 +539,7 @@ defaults, so this behaves exactly like the preview above until you change one:
 ```html
 <!doctype html>
 <!--
-  light-sweep-pass: HyperFrames video primitive (overlays / light)
+  light-sweep-pass: SmashCut video primitive (overlays / light)
 
   Concept: a traveling key light re-shades a slotted scene. A soft diagonal
   gradient band crosses the frame once while every per-element highlight and
@@ -590,7 +590,7 @@ defaults, so this behaves exactly like the preview above until you change one:
   <template> contents; #root fills the host box (inset:0, container-type:
   size), has no data-width/data-height, and registers one paused timeline
   under the literal "light-sweep-pass" key. Variables come from
-  window.__hyperframes.getVariables().
+  window.__smashcut.getVariables().
 -->
 <html
   lang="en"
@@ -862,8 +862,8 @@ defaults, so this behaves exactly like the preview above until you change one:
             var band = root.querySelector(".lsp-band");
 
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             function clampNumber(raw, fallback, min, max) {

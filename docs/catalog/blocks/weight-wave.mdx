@@ -153,8 +153,8 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
           var duration = Number(root.getAttribute("data-duration")) || 6;
 
           var vars =
-            window.__hyperframes && window.__hyperframes.getVariables
-              ? window.__hyperframes.getVariables()
+            window.__smashcut && window.__smashcut.getVariables
+              ? window.__smashcut.getVariables()
               : {};
 
           function num(value, fallback, min, max) {
@@ -319,7 +319,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 
 ## Install
 
-<InstallCommand command="npx hyperframes add weight-wave" item="weight-wave" />
+<InstallCommand command="npx smashcut add weight-wave" item="weight-wave" />
 
 That writes `compositions/weight-wave.html`, plus 2 supporting files under `compositions/assets/fonts/`.
 
@@ -514,8 +514,8 @@ defaults, so this behaves exactly like the preview above until you change one:
           var duration = Number(root.getAttribute("data-duration")) || 6;
 
           var vars =
-            window.__hyperframes && window.__hyperframes.getVariables
-              ? window.__hyperframes.getVariables()
+            window.__smashcut && window.__smashcut.getVariables
+              ? window.__smashcut.getVariables()
               : {};
 
           function num(value, fallback, min, max) {

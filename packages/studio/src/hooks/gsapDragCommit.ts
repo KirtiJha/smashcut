@@ -2,7 +2,7 @@
  * Low-level drag commit helpers for GSAP position mutations.
  * Extracted from gsapRuntimeBridge.ts to keep file sizes under the 600-line limit.
  */
-import type { GsapAnimation } from "@hyperframes/core/gsap-parser";
+import type { GsapAnimation } from "@smashcut/core/gsap-parser";
 import type { DomEditSelection } from "../components/editor/domEditingTypes";
 import {
   STUDIO_ORIGINAL_WIDTH_ATTR,
@@ -442,13 +442,13 @@ export async function commitWholePathOffset(
   const deltaX = newX - baseGsapX;
   // fallow-ignore-next-line code-duplication
   const deltaY = newY - baseGsapY;
-  const origX = Number.parseFloat(el.getAttribute("data-hf-drag-initial-offset-x") ?? "") || 0;
-  const origY = Number.parseFloat(el.getAttribute("data-hf-drag-initial-offset-y") ?? "") || 0;
+  const origX = Number.parseFloat(el.getAttribute("data-sc-drag-initial-offset-x") ?? "") || 0;
+  const origY = Number.parseFloat(el.getAttribute("data-sc-drag-initial-offset-y") ?? "") || 0;
   const restoreOffset = () => {
-    el.style.setProperty("--hf-studio-offset-x", `${origX}px`);
-    el.style.setProperty("--hf-studio-offset-y", `${origY}px`);
-    el.removeAttribute("data-hf-drag-initial-offset-x");
-    el.removeAttribute("data-hf-drag-initial-offset-y");
+    el.style.setProperty("--sc-studio-offset-x", `${origX}px`);
+    el.style.setProperty("--sc-studio-offset-y", `${origY}px`);
+    el.removeAttribute("data-sc-drag-initial-offset-x");
+    el.removeAttribute("data-sc-drag-initial-offset-y");
   };
 
   // fallow-ignore-next-line code-duplication

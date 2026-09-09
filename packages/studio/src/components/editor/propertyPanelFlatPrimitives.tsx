@@ -196,7 +196,7 @@ export function FlatGroupHeader({
         type="button"
         data-flat-group-collapsed="true"
         onClick={onToggleOpen}
-        className={`${animateEntrance ? "hf-flat-group-enter " : ""}flex min-h-10 w-full flex-shrink-0 items-center justify-between gap-2 border-b border-panel-hairline bg-panel-bg px-4 text-left`}
+        className={`${animateEntrance ? "sc-flat-group-enter " : ""}flex min-h-10 w-full flex-shrink-0 items-center justify-between gap-2 border-b border-panel-hairline bg-panel-bg px-4 text-left`}
       >
         <span className="flex min-w-0 items-center gap-2">
           <span className="text-[12px] font-medium text-panel-text-2">{title}</span>
@@ -221,7 +221,7 @@ export function FlatGroupHeader({
 
   return (
     <div
-      className={`${animateEntrance ? "hf-flat-group-enter " : ""}flex min-h-10 flex-shrink-0 items-center justify-between bg-panel-bg px-4`}
+      className={`${animateEntrance ? "sc-flat-group-enter " : ""}flex min-h-10 flex-shrink-0 items-center justify-between bg-panel-bg px-4`}
     >
       <span className="text-[12px] font-semibold text-panel-text-0">{title}</span>
       <span className="flex items-center gap-2.5 text-panel-text-5">

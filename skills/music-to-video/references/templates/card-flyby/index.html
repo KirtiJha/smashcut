@@ -185,7 +185,7 @@
   <body>
     <!-- duration 6.0s = a 6-card accelerating cascade (1 card lands per beat, dwells shrinking) -->
     <div
-      data-hf-id="hf-cf-root"
+      data-sc-id="sc-cf-root"
       id="root"
       data-composition-id="card-flyby"
       data-width="1920"
@@ -194,8 +194,8 @@
       data-duration="6.0"
       data-root="true"
     >
-      <div data-hf-id="hf-cf-stage" class="stage">
-        <div data-hf-id="hf-cf-scene" class="scene" id="scene"></div>
+      <div data-sc-id="sc-cf-stage" class="stage">
+        <div data-sc-id="sc-cf-scene" class="scene" id="scene"></div>
       </div>
 
       <script>
@@ -227,8 +227,8 @@
           var vars = Object.assign(
             {},
             defaults,
-            window.__hyperframes && window.__hyperframes.getVariables
-              ? window.__hyperframes.getVariables()
+            window.__smashcut && window.__smashcut.getVariables
+              ? window.__smashcut.getVariables()
               : {},
           );
 

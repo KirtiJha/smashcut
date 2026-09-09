@@ -46,9 +46,9 @@
         line-height: 1;
         font-weight: 900;
       }
-      .hf-tracking-in {
+      .sc-tracking-in {
         opacity: 0;
-        letter-spacing: var(--hf-tracking-value, 0.28em);
+        letter-spacing: var(--sc-tracking-value, 0.28em);
         transform: translateY(8px);
         will-change: opacity, letter-spacing, transform;
       }
@@ -68,16 +68,16 @@
   ]'
     >
       <div class="panel">
-        <div class="label hf-tracking-in">Editorial motion</div>
-        <div class="headline hf-tracking-in">TRACKING IN</div>
+        <div class="label sc-tracking-in">Editorial motion</div>
+        <div class="headline sc-tracking-in">TRACKING IN</div>
       </div>
       <script>
         (function () {
           "use strict";
 
           var vars =
-            window.__hyperframes && window.__hyperframes.getVariables
-              ? window.__hyperframes.getVariables()
+            window.__smashcut && window.__smashcut.getVariables
+              ? window.__smashcut.getVariables()
               : {};
 
           // Unrecognised overrides return to their declared defaults.
@@ -101,18 +101,18 @@
           // The class is applied to arbitrary host elements, so the resolved values
           // ride the document root and inherit down to every one of them.
           var host = document.documentElement;
-          host.style.setProperty("--hf-tracking-reach", String(reach));
-          host.style.setProperty("--hf-tracking-y", rise);
-          host.style.setProperty("--hf-tracking-color", tone);
+          host.style.setProperty("--sc-tracking-reach", String(reach));
+          host.style.setProperty("--sc-tracking-y", rise);
+          host.style.setProperty("--sc-tracking-color", tone);
         })();
       </script>
       <script>
         const tl = gsap.timeline({ paused: true });
         tl.to(
-          ".hf-tracking-in",
+          ".sc-tracking-in",
           {
             opacity: 1,
-            "--hf-tracking-value": "0.02em",
+            "--sc-tracking-value": "0.02em",
             y: 0,
             duration: 0.9,
             ease: "power3.out",
@@ -131,11 +131,11 @@
     { "id": "tone", "type": "enum", "role": "style", "label": "Tone", "description": "Text colour: inherit keeps the surrounding page colour, ink suits light frames, paper dark ones, accent rides --brand.", "default": "inherit", "options": [{ "value": "inherit", "label": "Inherit" }, { "value": "ink", "label": "Ink" }, { "value": "paper", "label": "Paper" }, { "value": "accent", "label": "Accent" }] }
   ]'
     >
-      .hf-tracking-in {
+      .sc-tracking-in {
         opacity: 0;
-        color: var(--hf-tracking-color, inherit);
-        letter-spacing: calc(var(--hf-tracking-value, 0.28em) * var(--hf-tracking-reach, 1));
-        transform: translateY(var(--hf-tracking-y, 8px));
+        color: var(--sc-tracking-color, inherit);
+        letter-spacing: calc(var(--sc-tracking-value, 0.28em) * var(--sc-tracking-reach, 1));
+        transform: translateY(var(--sc-tracking-y, 8px));
         will-change: opacity, letter-spacing, transform;
       }
     </style>

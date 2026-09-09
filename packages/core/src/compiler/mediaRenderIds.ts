@@ -8,7 +8,7 @@
  * 1. Two scenes each declare `<video id="clip">` — legal per file, duplicated
  *    once inlined.
  * 2. Two scenes each declare a bare `<video>` — the timing compiler numbers
- *    auto-ids per file, so both become `hf-video-0`.
+ *    auto-ids per file, so both become `sc-video-0`.
  *
  * The render pipeline keys media on that id (extract, inject, visibility,
  * bounds), so a collision collapses N elements into one entry and every
@@ -17,7 +17,7 @@
  * paints without footage.
  *
  * This module is the single owner of the fix: after inlining, every media
- * element gets a document-unique `data-hf-render-id`. It equals the element's
+ * element gets a document-unique `data-sc-render-id`. It equals the element's
  * own id whenever that id is already unique, so uncolliding documents keep
  * byte-identical pipeline keys and log output. Author-visible `id` attributes
  * are never rewritten — 158 of the 161 registry blocks reference their own ids
@@ -25,7 +25,7 @@
  * fix scene footage.
  */
 
-export const MEDIA_RENDER_ID_ATTR = "data-hf-render-id";
+export const MEDIA_RENDER_ID_ATTR = "data-sc-render-id";
 
 /**
  * The bus a member belongs to, as a DOCUMENT-unique key.
@@ -38,7 +38,7 @@ export const MEDIA_RENDER_ID_ATTR = "data-hf-render-id";
  * only B muted — dropped BOTH instances from the export. This attribute is that
  * collision resolved at the same boundary the media ids are.
  */
-export const AUDIO_GROUP_RENDER_ID_ATTR = "data-hf-group-render-id";
+export const AUDIO_GROUP_RENDER_ID_ATTR = "data-sc-group-render-id";
 
 /**
  * Elements the render pipeline addresses by id.
@@ -54,7 +54,7 @@ const MEDIA_SELECTOR = "video, audio, img[src]";
 
 /** Buses, which are addressed by id in exactly the same way and collide the
  *  same way. Only an id'd bus can be joined at all. */
-const AUDIO_GROUP_SELECTOR = "hf-audio-group[id]";
+const AUDIO_GROUP_SELECTOR = "sc-audio-group[id]";
 
 interface MediaElementLike {
   readonly tagName?: string;
@@ -83,12 +83,12 @@ interface DocumentLike {
 function uniqueRenderId(baseId: string, taken: Set<string>): string {
   if (!taken.has(baseId)) return baseId;
   let suffix = 2;
-  while (taken.has(`${baseId}__hf${suffix}`)) suffix += 1;
-  return `${baseId}__hf${suffix}`;
+  while (taken.has(`${baseId}__sc${suffix}`)) suffix += 1;
+  return `${baseId}__sc${suffix}`;
 }
 
 /**
- * Stamp `data-hf-render-id` on every media element in a compiled document.
+ * Stamp `data-sc-render-id` on every media element in a compiled document.
  *
  * Idempotent: an element that already carries the attribute keeps it, so
  * re-compiling a document (the resolved-durations recompile path) does not
@@ -112,7 +112,7 @@ export function assignMediaRenderIds(document: DocumentLike): void {
     // An element with no id yet is numbered by the timing compiler before this
     // runs. If one slips through, fall back to a positional id rather than
     // stamping an empty string that every other id-less element would share.
-    const renderId = uniqueRenderId(baseId || `hf-media-${taken.size}`, taken);
+    const renderId = uniqueRenderId(baseId || `sc-media-${taken.size}`, taken);
     taken.add(renderId);
     el.setAttribute(MEDIA_RENDER_ID_ATTR, renderId);
   }
@@ -121,7 +121,7 @@ export function assignMediaRenderIds(document: DocumentLike): void {
 }
 
 /**
- * Give every `<hf-audio-group>` a document-unique render id, and tell each
+ * Give every `<sc-audio-group>` a document-unique render id, and tell each
  * member which INSTANCE of its bus it belongs to.
  *
  * Shares the `taken` set with the media pass, so a bus id and a clip id can

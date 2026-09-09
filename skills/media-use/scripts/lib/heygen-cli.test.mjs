@@ -200,17 +200,17 @@ test("tracks generic failures without including raw detail", () => {
 });
 
 test("keeps failure output observable when telemetry is opted out", () => {
-  const previousOptOut = process.env.HYPERFRAMES_NO_TELEMETRY;
-  process.env.HYPERFRAMES_NO_TELEMETRY = "1";
+  const previousOptOut = process.env.SMASHCUT_NO_TELEMETRY;
+  process.env.SMASHCUT_NO_TELEMETRY = "1";
   try {
     const stderrCalls = captureFailureReport({ code: "ENOENT" }, "heygen asset search");
 
     assert.deepEqual(stderrCalls, [[HEYGEN_NOT_FOUND_MESSAGE]]);
   } finally {
     if (previousOptOut === undefined) {
-      delete process.env.HYPERFRAMES_NO_TELEMETRY;
+      delete process.env.SMASHCUT_NO_TELEMETRY;
     } else {
-      process.env.HYPERFRAMES_NO_TELEMETRY = previousOptOut;
+      process.env.SMASHCUT_NO_TELEMETRY = previousOptOut;
     }
   }
 });

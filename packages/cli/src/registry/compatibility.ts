@@ -1,4 +1,4 @@
-import type { RegistryItem } from "@hyperframes/core";
+import type { RegistryItem } from "@smashcut/core";
 import { compareVersions } from "compare-versions";
 import { VERSION } from "../version.js";
 
@@ -37,9 +37,9 @@ export function checkRegistryItemCompatibility(
   return {
     warnings,
     error:
-      `Registry item "${item.name}" requires hyperframes >= ${minCliVersion} ` +
-      `(current: ${currentCliVersion}). Run \`npx hyperframes@latest add ${item.name}\` ` +
-      "or upgrade your installed hyperframes CLI.",
+      `Registry item "${item.name}" requires smashcut >= ${minCliVersion} ` +
+      `(current: ${currentCliVersion}). Run \`npx smashcut@latest add ${item.name}\` ` +
+      "or upgrade your installed smashcut CLI.",
   };
 }
 
@@ -60,7 +60,7 @@ export class RegistryCompatibilityError extends Error {
  *
  * Every install path — `add`, template fetch, and the Studio "add block"
  * action — funnels through this so a dependency that ships `minCliVersion` is
- * rejected uniformly, not just by `hyperframes add`.
+ * rejected uniformly, not just by `smashcut add`.
  */
 export function gateRegistryItemsCompatibility(
   items: RegistryItem[],

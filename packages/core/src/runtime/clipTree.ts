@@ -38,13 +38,13 @@ const DECORATIVE_TAGS = new Set(["SCRIPT", "STYLE", "LINK", "META", "TEMPLATE", 
 /**
  * Stable identity for a timed element, shared by __clipTree and __clipManifest
  * so the two id spaces align. Prefers the author `id`, then the generator's
- * `data-hf-id` (present on every generated element). Without the data-hf-id
- * fallback an id-less child (root index.html children use data-hf-id, not id)
+ * `data-sc-id` (present on every generated element). Without the data-sc-id
+ * fallback an id-less child (root index.html children use data-sc-id, not id)
  * gets a synthetic `__clip-N` in the tree but `null` in the manifest, so inline
  * timeline expansion can't join them and never expands.
  */
 export function stableClipId(el: Element): string | null {
-  return (el as HTMLElement).id || el.getAttribute("data-hf-id") || null;
+  return (el as HTMLElement).id || el.getAttribute("data-sc-id") || null;
 }
 
 interface StartResolverLike {

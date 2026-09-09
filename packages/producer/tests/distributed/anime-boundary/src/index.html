@@ -44,14 +44,14 @@
     </div>
 
     <script>
-      window.__hfAnime = window.__hfAnime || [];
+      window.__scAnime = window.__scAnime || [];
       const tl = anime.createTimeline({ autoplay: false });
       tl.add(
         "#box",
         { translateX: [0, 280], rotate: [0, 360], duration: 2000, ease: "linear" },
         0,
       );
-      window.__hfAnime.push({
+      window.__scAnime.push({
         seek: function (globalTimeMs) {
           tl.seek(globalTimeMs);
         },

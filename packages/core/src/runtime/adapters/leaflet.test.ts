@@ -5,7 +5,7 @@ type LeafletMapLike = {
   whenReady: (cb: () => void) => void;
 };
 
-const mapWindow = window as Window & { __hfLeaflet?: LeafletMapLike[] };
+const mapWindow = window as Window & { __scLeaflet?: LeafletMapLike[] };
 
 function createMockMap(opts?: { ready?: boolean }): LeafletMapLike {
   return {
@@ -21,11 +21,11 @@ function createMockMap(opts?: { ready?: boolean }): LeafletMapLike {
 
 describe("leaflet adapter", () => {
   beforeEach(() => {
-    delete mapWindow.__hfLeaflet;
+    delete mapWindow.__scLeaflet;
   });
 
   afterEach(() => {
-    delete mapWindow.__hfLeaflet;
+    delete mapWindow.__scLeaflet;
   });
 
   it("has correct name", () => {
@@ -38,15 +38,15 @@ describe("leaflet adapter", () => {
       expect(adapter.getReadyPromise!()).toBeNull();
     });
 
-    it("returns null when __hfLeaflet is empty", () => {
-      mapWindow.__hfLeaflet = [];
+    it("returns null when __scLeaflet is empty", () => {
+      mapWindow.__scLeaflet = [];
       const adapter = createLeafletAdapter();
       expect(adapter.getReadyPromise!()).toBeNull();
     });
 
     it("resolves when map fires whenReady callback", async () => {
       const map = createMockMap() as LeafletMapLike & { _fireReady: () => void };
-      mapWindow.__hfLeaflet = [map];
+      mapWindow.__scLeaflet = [map];
       const adapter = createLeafletAdapter();
       const promise = adapter.getReadyPromise!();
       expect(promise).not.toBeNull();
@@ -56,7 +56,7 @@ describe("leaflet adapter", () => {
 
     it("resolves immediately for already-ready map", async () => {
       const map = createMockMap({ ready: true });
-      mapWindow.__hfLeaflet = [map];
+      mapWindow.__scLeaflet = [map];
       const adapter = createLeafletAdapter();
       const promise = adapter.getReadyPromise!();
       expect(promise).not.toBeNull();
@@ -65,7 +65,7 @@ describe("leaflet adapter", () => {
 
     it("returns same promise on repeated calls (stable identity)", () => {
       const map = createMockMap();
-      mapWindow.__hfLeaflet = [map];
+      mapWindow.__scLeaflet = [map];
       const adapter = createLeafletAdapter();
       const p1 = adapter.getReadyPromise!();
       const p2 = adapter.getReadyPromise!();
@@ -74,7 +74,7 @@ describe("leaflet adapter", () => {
 
     it("returns null after all maps have settled", async () => {
       const map = createMockMap({ ready: true });
-      mapWindow.__hfLeaflet = [map];
+      mapWindow.__scLeaflet = [map];
       const adapter = createLeafletAdapter();
       await adapter.getReadyPromise!();
       expect(adapter.getReadyPromise!()).toBeNull();

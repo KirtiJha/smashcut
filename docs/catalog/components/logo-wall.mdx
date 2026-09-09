@@ -16,7 +16,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 ```html logo-wall.html
 <!doctype html>
 <!--
-  logo-wall: HyperFrames video primitive (data / holdable / prove)
+  logo-wall: SmashCut video primitive (data / holdable / prove)
 
   Concept: a trusted-by wall of placeholder lettermark logos assembles in DOM
   order. Each cell fades and scales directly into its final grid slot with a
@@ -57,7 +57,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
   the host with inset:0 and container-type:size and has no data-width or
   data-height. The hardcoded id "logo-wall" matches the host id and timeline
   key after mount flattening. Variables come from
-  window.__hyperframes.getVariables(), which merges declarations with host
+  window.__smashcut.getVariables(), which merges declarations with host
   data-variable-values overrides.
 -->
 <html
@@ -201,8 +201,8 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
             // EDIT ZONE: the runtime variable table is read once. These
             // clamped values own DOM count, grid tracks, and stagger timing.
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             var rawRows = Number(vars.rows);
@@ -319,7 +319,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 
 ## Install
 
-<InstallCommand command="npx hyperframes add logo-wall" item="logo-wall" />
+<InstallCommand command="npx smashcut add logo-wall" item="logo-wall" />
 
 That writes one file: `compositions/components/logo-wall.html`.
 
@@ -359,7 +359,7 @@ defaults, so this behaves exactly like the preview above until you change one:
 ```html
 <!doctype html>
 <!--
-  logo-wall: HyperFrames video primitive (data / holdable / prove)
+  logo-wall: SmashCut video primitive (data / holdable / prove)
 
   Concept: a trusted-by wall of placeholder lettermark logos assembles in DOM
   order. Each cell fades and scales directly into its final grid slot with a
@@ -400,7 +400,7 @@ defaults, so this behaves exactly like the preview above until you change one:
   the host with inset:0 and container-type:size and has no data-width or
   data-height. The hardcoded id "logo-wall" matches the host id and timeline
   key after mount flattening. Variables come from
-  window.__hyperframes.getVariables(), which merges declarations with host
+  window.__smashcut.getVariables(), which merges declarations with host
   data-variable-values overrides.
 -->
 <html
@@ -544,8 +544,8 @@ defaults, so this behaves exactly like the preview above until you change one:
             // EDIT ZONE: the runtime variable table is read once. These
             // clamped values own DOM count, grid tracks, and stagger timing.
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             var rawRows = Number(vars.rows);

@@ -10,20 +10,20 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
   previewSrc="/public/catalog/components/scan-band.json"
   compositionId="scan-band"
   compositionSrc="compositions/components/scan-band.html"
-  variables={[{"id":"wordmark","type":"string","role":"content","label":"Wordmark","description":"Text displayed by the scan effect.","default":"HYPERFRAMES"},{"id":"band_angle","type":"number","role":"layout","label":"Band angle","description":"Diagonal angle of the distortion band in degrees.","default":12,"min":-30,"max":30,"step":1,"unit":"deg"}]}
+  variables={[{"id":"wordmark","type":"string","role":"content","label":"Wordmark","description":"Text displayed by the scan effect.","default":"SMASHCUT"},{"id":"band_angle","type":"number","role":"layout","label":"Band angle","description":"Diagonal angle of the distortion band in degrees.","default":12,"min":-30,"max":30,"step":1,"unit":"deg"}]}
 >
 
 ```html scan-band.html
 <!doctype html>
 <!--
-  scan-band: HyperFrames video primitive
+  scan-band: SmashCut video primitive
 
   A single diagonal distortion band crosses a clean wordmark. Inside the
   band, three clipped clones create red and cyan separation plus a small
   horizontal displacement. Everywhere outside the band remains clean.
 
   Variables:
-    - wordmark (string, default "HYPERFRAMES"): displayed text.
+    - wordmark (string, default "SMASHCUT"): displayed text.
     - band_angle (number, default 12): diagonal band angle in degrees.
 
   Envelope:
@@ -42,7 +42,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
   data-composition-id="scan-band"
   data-composition-duration="3.5"
   data-composition-variables='[
-    { "id": "wordmark", "type": "string", "role": "content", "label": "Wordmark", "description": "Text displayed by the scan effect.", "default": "HYPERFRAMES" },
+    { "id": "wordmark", "type": "string", "role": "content", "label": "Wordmark", "description": "Text displayed by the scan effect.", "default": "SMASHCUT" },
     { "id": "band_angle", "type": "number", "role": "layout", "label": "Band angle", "description": "Diagonal angle of the distortion band in degrees.", "default": 12, "min": -30, "max": 30, "step": 1, "unit": "deg" }
   ]'
 >
@@ -169,11 +169,11 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
             var band = root.querySelector(".sb-band");
             var clones = root.querySelectorAll(".sb-clone");
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
-            var text = vars.wordmark == null ? "HYPERFRAMES" : String(vars.wordmark);
+            var text = vars.wordmark == null ? "SMASHCUT" : String(vars.wordmark);
             var angleValue = vars.band_angle;
             var bandAngle = Number.isFinite(angleValue)
               ? Math.max(-30, Math.min(30, angleValue))
@@ -236,7 +236,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 
 ## Install
 
-<InstallCommand command="npx hyperframes add scan-band" item="scan-band" />
+<InstallCommand command="npx smashcut add scan-band" item="scan-band" />
 
 That writes one file: `compositions/components/scan-band.html`.
 
@@ -254,7 +254,7 @@ want to change on the element:
 
 | Variable | Default | Accepts | What it does |
 | --- | --- | --- | --- |
-| `wordmark` | `HYPERFRAMES` | string | Text displayed by the scan effect. |
+| `wordmark` | `SMASHCUT` | string | Text displayed by the scan effect. |
 | `band_angle` | `12` | -30deg to 30deg, step 1deg | Diagonal angle of the distortion band in degrees. |
 
 Set them with `data-variable-values` on the element that mounts it. These are the
@@ -264,7 +264,7 @@ defaults, so this behaves exactly like the preview above until you change one:
 <div
   data-composition-id="scan-band"
   data-composition-src="compositions/components/scan-band.html"
-  data-variable-values='{"wordmark":"HYPERFRAMES","band_angle":12}'
+  data-variable-values='{"wordmark":"SMASHCUT","band_angle":12}'
 ></div>
 ```
 
@@ -275,14 +275,14 @@ defaults, so this behaves exactly like the preview above until you change one:
 ```html
 <!doctype html>
 <!--
-  scan-band: HyperFrames video primitive
+  scan-band: SmashCut video primitive
 
   A single diagonal distortion band crosses a clean wordmark. Inside the
   band, three clipped clones create red and cyan separation plus a small
   horizontal displacement. Everywhere outside the band remains clean.
 
   Variables:
-    - wordmark (string, default "HYPERFRAMES"): displayed text.
+    - wordmark (string, default "SMASHCUT"): displayed text.
     - band_angle (number, default 12): diagonal band angle in degrees.
 
   Envelope:
@@ -301,7 +301,7 @@ defaults, so this behaves exactly like the preview above until you change one:
   data-composition-id="scan-band"
   data-composition-duration="3.5"
   data-composition-variables='[
-    { "id": "wordmark", "type": "string", "role": "content", "label": "Wordmark", "description": "Text displayed by the scan effect.", "default": "HYPERFRAMES" },
+    { "id": "wordmark", "type": "string", "role": "content", "label": "Wordmark", "description": "Text displayed by the scan effect.", "default": "SMASHCUT" },
     { "id": "band_angle", "type": "number", "role": "layout", "label": "Band angle", "description": "Diagonal angle of the distortion band in degrees.", "default": 12, "min": -30, "max": 30, "step": 1, "unit": "deg" }
   ]'
 >
@@ -428,11 +428,11 @@ defaults, so this behaves exactly like the preview above until you change one:
             var band = root.querySelector(".sb-band");
             var clones = root.querySelectorAll(".sb-clone");
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
-            var text = vars.wordmark == null ? "HYPERFRAMES" : String(vars.wordmark);
+            var text = vars.wordmark == null ? "SMASHCUT" : String(vars.wordmark);
             var angleValue = vars.band_angle;
             var bandAngle = Number.isFinite(angleValue)
               ? Math.max(-30, Math.min(30, angleValue))

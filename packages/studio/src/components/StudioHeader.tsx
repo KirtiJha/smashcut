@@ -18,8 +18,8 @@ export interface StudioHeaderProps {
   onExport?: () => void;
 }
 
-function HyperframesLogo() {
-  // Full logo from logo-dark.svg (263×79): heygen label + gradient mark + hyperframes wordmark.
+function SmashcutLogo() {
+  // Full logo from logo-dark.svg (263×79): heygen label + gradient mark + smashcut wordmark.
   // All fill="black" paths inverted to white for the dark header.
   const height = 28;
   const width = Math.round(height * (263 / 79));
@@ -30,11 +30,11 @@ function HyperframesLogo() {
       viewBox="0 0 263 79"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      aria-label="Hyperframes"
+      aria-label="Smashcut"
     >
       <defs>
         <linearGradient
-          id="hf-g0"
+          id="sc-g0"
           x1="225.869"
           y1="0"
           x2="222.845"
@@ -45,7 +45,7 @@ function HyperframesLogo() {
           <stop offset="1" stopColor="#4FDB5E" />
         </linearGradient>
         <linearGradient
-          id="hf-g1"
+          id="sc-g1"
           x1="230.87"
           y1="39"
           x2="244.661"
@@ -84,13 +84,13 @@ function HyperframesLogo() {
       {/* gradient icon mark */}
       <path
         d="M195.219 26.1937L213.529 38.9937C216.009 40.7237 220.239 38.7637 221.009 35.5337L228.419 4.33374C229.189 1.10374 225.879 -0.856262 222.589 0.873738L198.199 13.6737C192.649 16.5837 191.059 23.2837 195.219 26.1937Z"
-        fill="url(#hf-g0)"
+        fill="url(#sc-g0)"
       />
       <path
         d="M256.97 25.9638L232.58 38.7638C229.28 40.4938 225.98 38.5338 226.75 35.3038L234.16 4.10376C234.93 0.873757 239.16 -1.08624 241.64 0.643757L259.95 13.4438C264.12 16.3538 262.52 23.0538 256.97 25.9638Z"
-        fill="url(#hf-g1)"
+        fill="url(#sc-g1)"
       />
-      {/* hyperframes wordmark */}
+      {/* smashcut wordmark */}
       <path
         d="M0 71.9996V42.7256H7.7367V53.1806H17.9826V42.7256H25.7193V71.9996H17.9826V59.8718H7.7367V71.9996H0Z"
         fill="white"
@@ -235,7 +235,7 @@ export function StudioHeader({
     <div className="flex items-center justify-between h-10 px-3 bg-neutral-900 border-b border-neutral-800 flex-shrink-0">
       {/* Left: logo + project name */}
       <div className="flex items-center gap-3">
-        <HyperframesLogo />
+        <SmashcutLogo />
         <span className="text-neutral-700 select-none" aria-hidden="true">
           |
         </span>

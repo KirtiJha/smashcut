@@ -137,7 +137,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
       <div id="rf-backdrop"></div>
       <canvas id="rf-canvas" width="1920" height="1080"></canvas>
 
-      <!-- Driver clip: gives HyperFrames a timed element to own on track 0. -->
+      <!-- Driver clip: gives SmashCut a timed element to own on track 0. -->
       <div
         id="rf-drv"
         class="clip"
@@ -170,7 +170,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
         // aliasing machine, so points in focus bottom out here.
         var MIN_R_PX = 0.75;
 
-        var V = (window.__hyperframes && window.__hyperframes.getVariables()) || {};
+        var V = (window.__smashcut && window.__smashcut.getVariables()) || {};
         var CS = getComputedStyle(document.getElementById("rf-root"));
 
         // The runtime defines every declared variable as `--<slug>` on the
@@ -625,7 +625,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 
 ## Install
 
-<InstallCommand command="npx hyperframes add rack-focus" item="rack-focus" />
+<InstallCommand command="npx smashcut add rack-focus" item="rack-focus" />
 
 That writes one file: `compositions/rack-focus.html`.
 
@@ -822,7 +822,7 @@ defaults, so this behaves exactly like the preview above until you change one:
       <div id="rf-backdrop"></div>
       <canvas id="rf-canvas" width="1920" height="1080"></canvas>
 
-      <!-- Driver clip: gives HyperFrames a timed element to own on track 0. -->
+      <!-- Driver clip: gives SmashCut a timed element to own on track 0. -->
       <div
         id="rf-drv"
         class="clip"
@@ -855,7 +855,7 @@ defaults, so this behaves exactly like the preview above until you change one:
         // aliasing machine, so points in focus bottom out here.
         var MIN_R_PX = 0.75;
 
-        var V = (window.__hyperframes && window.__hyperframes.getVariables()) || {};
+        var V = (window.__smashcut && window.__smashcut.getVariables()) || {};
         var CS = getComputedStyle(document.getElementById("rf-root"));
 
         // The runtime defines every declared variable as `--<slug>` on the

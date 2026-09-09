@@ -7,7 +7,7 @@ const { applyFaststartMock, muxVideoWithAudioMock, padOrTrimAudioMock } = vi.hoi
   padOrTrimAudioMock: vi.fn(),
 }));
 
-vi.mock("@hyperframes/engine", () => ({
+vi.mock("@smashcut/engine", () => ({
   applyFaststart: applyFaststartMock,
   muxVideoWithAudio: muxVideoWithAudioMock,
 }));

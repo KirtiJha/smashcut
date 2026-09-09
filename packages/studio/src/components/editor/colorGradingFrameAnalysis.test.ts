@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import {
   normalizeHfColorGrading,
   type HfColorGradingSecondary,
-} from "@hyperframes/core/color-grading";
+} from "@smashcut/core/color-grading";
 import {
   analyzeColorGradingFrame,
   buildColorGradingSecondaryMatte,

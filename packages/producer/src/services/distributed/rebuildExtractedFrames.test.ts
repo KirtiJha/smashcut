@@ -53,7 +53,7 @@ const VIDEO_METADATA_STUB = {} as PlanVideosJson["extracted"][number]["metadata"
 
 describe("rebuildExtractedFramesFromPlanDir", () => {
   it("indexes framePaths 0-based (regression guard for HF#1731)", () => {
-    const planDir = mkdtempSync(join(tmpdir(), "hf-rebuild-frames-0based-"));
+    const planDir = mkdtempSync(join(tmpdir(), "sc-rebuild-frames-0based-"));
     try {
       const videoId = "vid-0";
       // Zero-padded monotonic names — same shape `extractVideoFramesRange`
@@ -108,7 +108,7 @@ describe("rebuildExtractedFramesFromPlanDir", () => {
     // (v1: 0-4s, v2: 4-8s, v3: 8-12s) and EVERY vid's first-paint frame
     // was PRISTINE black. The function must produce the 0-based contract
     // for every video in the manifest, not just the first.
-    const planDir = mkdtempSync(join(tmpdir(), "hf-rebuild-frames-multi-"));
+    const planDir = mkdtempSync(join(tmpdir(), "sc-rebuild-frames-multi-"));
     try {
       makeFramesDir(planDir, "vid-a", ["frame_00001.jpg", "frame_00002.jpg"]);
       makeFramesDir(planDir, "vid-b", ["frame_00001.jpg", "frame_00002.jpg", "frame_00003.jpg"]);
@@ -152,7 +152,7 @@ describe("rebuildExtractedFramesFromPlanDir", () => {
   });
 
   it("keeps the historical sorted-position mapping for v1 numeric filenames", () => {
-    const planDir = mkdtempSync(join(tmpdir(), "hf-rebuild-frames-v1-numeric-"));
+    const planDir = mkdtempSync(join(tmpdir(), "sc-rebuild-frames-v1-numeric-"));
     try {
       makeFramesDir(planDir, "vid-v1-numeric", ["frame_00000.jpg", "frame_00001.jpg"]);
       const [extracted] = rebuildExtractedFramesFromPlanDir(planDir, [
@@ -179,7 +179,7 @@ describe("rebuildExtractedFramesFromPlanDir", () => {
   });
 
   it("orders mixed-width dense-v1 filenames by numeric ordinal", () => {
-    const planDir = mkdtempSync(join(tmpdir(), "hf-rebuild-frames-v1-mixed-width-"));
+    const planDir = mkdtempSync(join(tmpdir(), "sc-rebuild-frames-v1-mixed-width-"));
     try {
       const frameNames = Array.from({ length: 10 }, (_, index) => `frame_${index + 1}.jpg`);
       makeFramesDir(planDir, "vid-v1-mixed-width", frameNames.toReversed());
@@ -207,7 +207,7 @@ describe("rebuildExtractedFramesFromPlanDir", () => {
   });
 
   it("preserves original indexes for a sparse v2 chunk materialization", () => {
-    const planDir = mkdtempSync(join(tmpdir(), "hf-rebuild-frames-sparse-"));
+    const planDir = mkdtempSync(join(tmpdir(), "sc-rebuild-frames-sparse-"));
     try {
       makeFramesDir(planDir, "vid-sparse", [
         "frame_00021.jpg",

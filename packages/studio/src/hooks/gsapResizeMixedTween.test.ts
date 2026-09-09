@@ -14,7 +14,7 @@
  * failure.
  */
 import { afterEach, expect, it, vi } from "vitest";
-import type { GsapAnimation } from "@hyperframes/core/gsap-parser";
+import type { GsapAnimation } from "@smashcut/core/gsap-parser";
 import type { DomEditSelection } from "../components/editor/domEditingTypes";
 import { usePlayerStore } from "../player/store/playerStore";
 import { tryGsapResizeIntercept } from "./gsapResizeIntercept";
@@ -57,8 +57,8 @@ function cardAnimations(): GsapAnimation[] {
 it("never sends an animation id the server does not have", async () => {
   const el = document.createElement("div");
   el.id = "card";
-  el.setAttribute("data-hf-studio-original-box-width", "326");
-  el.setAttribute("data-hf-studio-original-box-height", "213");
+  el.setAttribute("data-sc-studio-original-box-width", "326");
+  el.setAttribute("data-sc-studio-original-box-height", "213");
   document.body.append(el);
 
   // The server's view of the file, and its 404.
@@ -112,8 +112,8 @@ it("never sends an animation id the server does not have", async () => {
 it("does not write size into the tween that carries scale", async () => {
   const el = document.createElement("div");
   el.id = "card";
-  el.setAttribute("data-hf-studio-original-box-width", "630");
-  el.setAttribute("data-hf-studio-original-box-height", "408");
+  el.setAttribute("data-sc-studio-original-box-width", "630");
+  el.setAttribute("data-sc-studio-original-box-height", "408");
   document.body.append(el);
 
   // The element before the damage: one instant scale hold, nothing else.
@@ -149,8 +149,8 @@ it("does not write size into the tween that carries scale", async () => {
 it("leaves the drag offset to the caller when it commits size, not scale", async () => {
   const el = document.createElement("div");
   el.id = "card";
-  el.setAttribute("data-hf-studio-original-box-width", "630");
-  el.setAttribute("data-hf-studio-original-box-height", "408");
+  el.setAttribute("data-sc-studio-original-box-width", "630");
+  el.setAttribute("data-sc-studio-original-box-height", "408");
   document.body.append(el);
 
   const scaleHold = hold("#card-to-0-scale", "scale", { scale: 1.2 });

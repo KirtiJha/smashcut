@@ -51,7 +51,7 @@ Nothing throws, so a trace of the decision is the only way to avoid guessing.
 Channels are off by default. Turn one on and reload:
 
 ```js
-localStorage.setItem("hf-drag-debug", "1"); // then grep the console for [hf-drag]
+localStorage.setItem("sc-drag-debug", "1"); // then grep the console for [sc-drag]
 ```
 
 Live channels: `reload`, `select`, `drag`, `resize`, `commit`. Add one with

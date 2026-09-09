@@ -46,17 +46,17 @@ const MOTION_FPS = 20;
 const MOTION_MAX_SAMPLES = 300;
 
 export const examples: Example[] = [
-  ["Inspect visual layout across the current composition", "hyperframes layout"],
-  ["Inspect a specific project", "hyperframes layout ./my-video"],
-  ["Output agent-readable JSON", "hyperframes layout --json"],
-  ["Use explicit hero-frame timestamps", "hyperframes layout --at 1.5,4.0,7.25"],
+  ["Inspect visual layout across the current composition", "smashcut layout"],
+  ["Inspect a specific project", "smashcut layout ./my-video"],
+  ["Output agent-readable JSON", "smashcut layout --json"],
+  ["Use explicit hero-frame timestamps", "smashcut layout --at 1.5,4.0,7.25"],
   [
     "Also sample at tween boundaries to catch transient overlaps",
-    "hyperframes layout --at-transitions",
+    "smashcut layout --at-transitions",
   ],
   [
     "Verify motion intent (add a *.motion.json sidecar next to the composition)",
-    "hyperframes layout --json",
+    "smashcut layout --json",
   ],
 ];
 
@@ -81,11 +81,11 @@ async function getCompositionDuration(page: import("puppeteer-core").Page): Prom
   // fallow-ignore-next-line complexity
   return page.evaluate(() => {
     const win = window as unknown as {
-      __hf?: { duration?: number };
+      __sc?: { duration?: number };
       __player?: { duration?: number | (() => number) };
       __timelines?: Record<string, { duration?: number | (() => number) }>;
     };
-    if (typeof win.__hf?.duration === "number" && win.__hf.duration > 0) return win.__hf.duration;
+    if (typeof win.__sc?.duration === "number" && win.__sc.duration > 0) return win.__sc.duration;
     const playerDuration = win.__player?.duration;
     if (typeof playerDuration === "function") return playerDuration();
     if (typeof playerDuration === "number" && playerDuration > 0) return playerDuration;
@@ -163,7 +163,7 @@ async function collectTweenBoundaries(page: import("puppeteer-core").Page): Prom
 async function bundleProjectHtml(projectDir: string): Promise<string> {
   // `bundleToSingleHtml` now inlines the runtime IIFE by default, so the
   // previous post-bundle runtime substitution is no longer needed.
-  const { bundleToSingleHtml } = await import("@hyperframes/core/compiler");
+  const { bundleToSingleHtml } = await import("@smashcut/core/compiler");
   return bundleToSingleHtml(projectDir);
 }
 
@@ -202,7 +202,7 @@ async function runLayoutAudit(
 ): Promise<LayoutAuditResult> {
   const { ensureBrowser } = await import("../browser/manager.js");
   const puppeteer = await import("puppeteer-core");
-  const { buildChromeArgs } = await import("@hyperframes/engine");
+  const { buildChromeArgs } = await import("@smashcut/engine");
   const { assertWebGpuRequirement, resolveCaptureBrowserGpuMode, resolveLocalBrowserGpuMode } =
     await import("../browser/gpuPolicy.js");
   const html = await bundleProjectHtml(projectDir);
@@ -311,9 +311,9 @@ async function collectLayoutIssues(
     const sampleIssues = await page.evaluate(
       (auditOptions: { time: number; tolerance: number }) => {
         const win = window as unknown as {
-          __hyperframesLayoutAudit?: (options: { time: number; tolerance: number }) => unknown[];
+          __smashcutLayoutAudit?: (options: { time: number; tolerance: number }) => unknown[];
         };
-        return win.__hyperframesLayoutAudit?.(auditOptions) ?? [];
+        return win.__smashcutLayoutAudit?.(auditOptions) ?? [];
       },
       { time, tolerance },
     );
@@ -354,12 +354,12 @@ async function collectMotionFrames(
     const sample = await page.evaluate(
       (options: { selectors: string[]; livenessScopes: string[] }) => {
         const win = window as unknown as {
-          __hyperframesMotionSample?: (o: { selectors: string[]; livenessScopes: string[] }) => {
+          __smashcutMotionSample?: (o: { selectors: string[]; livenessScopes: string[] }) => {
             data: MotionFrame["data"];
             liveness: Record<string, string>;
           };
         };
-        return win.__hyperframesMotionSample?.(options) ?? { data: {}, liveness: {} };
+        return win.__smashcutMotionSample?.(options) ?? { data: {}, liveness: {} };
       },
       { selectors, livenessScopes },
     );

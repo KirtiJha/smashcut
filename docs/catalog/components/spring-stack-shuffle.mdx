@@ -16,7 +16,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 ```html spring-stack-shuffle.html
 <!doctype html>
 <!--
-  spring-stack-shuffle: HyperFrames video primitive (product demo / physics)
+  spring-stack-shuffle: SmashCut video primitive (product demo / physics)
 
   A stack of 3 to 5 cards reshuffles on cues: on each cue the card at the
   back of the stack throws over the top and lands at the front with real
@@ -70,7 +70,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
   size), has no data-width/data-height, and registers one paused timeline
   under the literal "spring-stack-shuffle" key. Stack geometry is measured
   in px from the mounted root once (cq-unit transform tweens are not
-  seek-safe); variables come from window.__hyperframes.getVariables().
+  seek-safe); variables come from window.__smashcut.getVariables().
 -->
 <html
   lang="en"
@@ -307,8 +307,8 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
             var compositionId = "spring-stack-shuffle";
             var stage = root.querySelector(".sss-stage");
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             var accentColors = {
@@ -627,7 +627,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 
 ## Install
 
-<InstallCommand command="npx hyperframes add spring-stack-shuffle" item="spring-stack-shuffle" />
+<InstallCommand command="npx smashcut add spring-stack-shuffle" item="spring-stack-shuffle" />
 
 That writes one file: `compositions/components/spring-stack-shuffle.html`.
 
@@ -668,7 +668,7 @@ defaults, so this behaves exactly like the preview above until you change one:
 ```html
 <!doctype html>
 <!--
-  spring-stack-shuffle: HyperFrames video primitive (product demo / physics)
+  spring-stack-shuffle: SmashCut video primitive (product demo / physics)
 
   A stack of 3 to 5 cards reshuffles on cues: on each cue the card at the
   back of the stack throws over the top and lands at the front with real
@@ -722,7 +722,7 @@ defaults, so this behaves exactly like the preview above until you change one:
   size), has no data-width/data-height, and registers one paused timeline
   under the literal "spring-stack-shuffle" key. Stack geometry is measured
   in px from the mounted root once (cq-unit transform tweens are not
-  seek-safe); variables come from window.__hyperframes.getVariables().
+  seek-safe); variables come from window.__smashcut.getVariables().
 -->
 <html
   lang="en"
@@ -959,8 +959,8 @@ defaults, so this behaves exactly like the preview above until you change one:
             var compositionId = "spring-stack-shuffle";
             var stage = root.querySelector(".sss-stage");
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             var accentColors = {

@@ -187,10 +187,10 @@ export const DocsVideo = ({
   const progress = duration > 0 ? (currentTime / duration) * 100 : 0;
   const replaying = duration > 0 && currentTime >= duration - 0.15;
   return (
-    <div className="hf-docs-video-block" data-portrait={portrait ? "true" : "false"}>
+    <div className="sc-docs-video-block" data-portrait={portrait ? "true" : "false"}>
       <div
         ref={playerRef}
-        className="hf-docs-video"
+        className="sc-docs-video"
         role="region"
         aria-label={title}
         tabIndex={0}
@@ -238,11 +238,11 @@ export const DocsVideo = ({
             {!playing && (currentTime <= 0.2 || replaying) && (
               <button
                 type="button"
-                className="hf-docs-video-hero-play"
+                className="sc-docs-video-hero-play"
                 onClick={togglePlayback}
                 aria-label={replaying ? "Replay video" : "Play video"}
               >
-                <span className="hf-docs-video-hero-icon" aria-hidden="true">
+                <span className="sc-docs-video-hero-icon" aria-hidden="true">
                   <svg viewBox="0 0 24 24">
                     <path d="M8 5.5v13l10-6.5z" />
                   </svg>
@@ -250,23 +250,23 @@ export const DocsVideo = ({
               </button>
             )}
 
-            {waiting && playing && <span className="hf-docs-video-spinner" aria-label="Loading" />}
+            {waiting && playing && <span className="sc-docs-video-spinner" aria-label="Loading" />}
 
             <div
-              className="hf-docs-video-controls"
+              className="sc-docs-video-controls"
               data-visible={controlsVisible ? "true" : "false"}
             >
               <div
-                className="hf-docs-video-scrub-preview"
+                className="sc-docs-video-scrub-preview"
                 data-visible={previewing ? "true" : "false"}
-                style={{ "--hf-video-preview-x": `${previewPosition}%` }}
+                style={{ "--sc-video-preview-x": `${previewPosition}%` }}
                 aria-hidden="true"
               >
                 <span>{formatTime(previewTime)}</span>
               </div>
 
               <input
-                className="hf-docs-video-progress"
+                className="sc-docs-video-progress"
                 type="range"
                 min="0"
                 max={duration || 0}
@@ -295,13 +295,13 @@ export const DocsVideo = ({
                 onPointerLeave={() => {
                   if (!scrubbing) setPreviewing(false);
                 }}
-                style={{ "--hf-video-progress": `${progress}%` }}
+                style={{ "--sc-video-progress": `${progress}%` }}
               />
 
-              <div className="hf-docs-video-control-row">
+              <div className="sc-docs-video-control-row">
                 <button
                   type="button"
-                  className="hf-docs-video-control"
+                  className="sc-docs-video-control"
                   onClick={togglePlayback}
                   aria-label={playing ? "Pause video" : "Play video"}
                 >
@@ -318,7 +318,7 @@ export const DocsVideo = ({
 
                 <button
                   type="button"
-                  className="hf-docs-video-control"
+                  className="sc-docs-video-control"
                   onClick={toggleMute}
                   aria-label={muted ? "Unmute video" : "Mute video"}
                 >
@@ -333,15 +333,15 @@ export const DocsVideo = ({
                   )}
                 </button>
 
-                <span className="hf-docs-video-time" aria-hidden="true">
+                <span className="sc-docs-video-time" aria-hidden="true">
                   {formatTime(currentTime)} <span>/</span> {formatTime(duration)}
                 </span>
 
-                <span className="hf-docs-video-spacer" />
+                <span className="sc-docs-video-spacer" />
 
                 <button
                   type="button"
-                  className="hf-docs-video-rate"
+                  className="sc-docs-video-rate"
                   onClick={cyclePlaybackRate}
                   aria-label={`Playback speed ${playbackRate} times`}
                 >
@@ -351,7 +351,7 @@ export const DocsVideo = ({
                 {fullscreenSupported && (
                   <button
                     type="button"
-                    className="hf-docs-video-control"
+                    className="sc-docs-video-control"
                     onClick={toggleFullscreen}
                     aria-label={fullscreen ? "Exit fullscreen" : "Enter fullscreen"}
                   >
@@ -377,7 +377,7 @@ export const DocsVideo = ({
 };
 
 export const ShowcaseWall = () => {
-  const CDN = "https://static.heygen.ai/hyperframes-oss/docs/images/showcase";
+  const CDN = "https://static.heygen.ai/smashcut-oss/docs/images/showcase";
   const films = [
     {
       id: "grading",
@@ -475,7 +475,7 @@ export const ShowcaseWall = () => {
           }}
         >
           <span style={{ fontSize: "0.875rem", opacity: 0.75 }}>
-            <strong>{open.title}</strong> · {open.length} · made with HyperFrames
+            <strong>{open.title}</strong> · {open.length} · made with SmashCut
           </span>
           <button
             type="button"

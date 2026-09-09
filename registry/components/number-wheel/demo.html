@@ -27,7 +27,7 @@
       }
       .metric {
         text-align: center;
-        /* ponytail: zoom scales the non-animated wrapper; GSAP owns .label and .hf-number-wheel-strip transforms */
+        /* ponytail: zoom scales the non-animated wrapper; GSAP owns .label and .sc-number-wheel-strip transforms */
         zoom: 2.8;
       }
       .label {
@@ -37,7 +37,7 @@
         text-transform: uppercase;
         letter-spacing: 0.1em;
       }
-      .hf-number-wheel {
+      .sc-number-wheel {
         margin-top: 36px;
         display: inline-flex;
         align-items: baseline;
@@ -46,17 +46,17 @@
         font-weight: 900;
         font-variant-numeric: tabular-nums;
       }
-      .hf-number-wheel-digit {
+      .sc-number-wheel-digit {
         display: inline-block;
         height: 1em;
         overflow: hidden;
       }
-      .hf-number-wheel-strip {
+      .sc-number-wheel-strip {
         display: grid;
         transform: translateY(0em);
         will-change: transform;
       }
-      .hf-number-wheel-strip span {
+      .sc-number-wheel-strip span {
         height: 1em;
         line-height: 1em;
       }
@@ -77,13 +77,13 @@
     >
       <div class="metric">
         <div class="label">GitHub stars</div>
-        <span class="hf-number-wheel" data-value="30222"></span>
+        <span class="sc-number-wheel" data-value="30222"></span>
       </div>
       <script>
         (function () {
           const vars =
-            window.__hyperframes && window.__hyperframes.getVariables
-              ? window.__hyperframes.getVariables()
+            window.__smashcut && window.__smashcut.getVariables
+              ? window.__smashcut.getVariables()
               : {};
 
           // Unrecognised overrides return to their declared defaults.
@@ -102,10 +102,10 @@
           const gap = pick(gaps, vars.spacing, "standard");
           const tone = pick(tones, vars.tone, "inherit");
 
-          document.querySelectorAll(".hf-number-wheel").forEach((el) => {
+          document.querySelectorAll(".sc-number-wheel").forEach((el) => {
             if (el.dataset.hfNumberWheelReady === "1") return;
-            el.style.setProperty("--hf-wheel-gap", gap);
-            el.style.setProperty("--hf-wheel-color", tone);
+            el.style.setProperty("--sc-wheel-gap", gap);
+            el.style.setProperty("--sc-wheel-color", tone);
             const value = el.dataset.value || "0";
             el.textContent = "";
             for (const char of value) {
@@ -115,10 +115,10 @@
               }
               const stops = cycles * 10 + Number(char);
               const frame = document.createElement("span");
-              frame.className = "hf-number-wheel-digit";
+              frame.className = "sc-number-wheel-digit";
               const strip = document.createElement("span");
-              strip.className = "hf-number-wheel-strip";
-              strip.style.setProperty("--hf-number-target-y", `${-stops}em`);
+              strip.className = "sc-number-wheel-strip";
+              strip.style.setProperty("--sc-number-target-y", `${-stops}em`);
               for (let i = 0; i <= stops; i++) {
                 const step = document.createElement("span");
                 step.textContent = String(i % 10);
@@ -132,7 +132,7 @@
         })();
       </script>
       <script>
-        document.querySelectorAll(".hf-number-wheel").forEach((el) => {
+        document.querySelectorAll(".sc-number-wheel").forEach((el) => {
           const value = el.dataset.value || "0";
           el.textContent = "";
           for (const char of value) {
@@ -142,10 +142,10 @@
             }
             const digit = Number(char);
             const frame = document.createElement("span");
-            frame.className = "hf-number-wheel-digit";
+            frame.className = "sc-number-wheel-digit";
             const strip = document.createElement("span");
-            strip.className = "hf-number-wheel-strip";
-            strip.style.setProperty("--hf-number-target-y", `${-digit}em`);
+            strip.className = "sc-number-wheel-strip";
+            strip.style.setProperty("--sc-number-target-y", `${-digit}em`);
             for (let i = 0; i <= digit; i++) {
               const step = document.createElement("span");
               step.textContent = String(i);
@@ -158,9 +158,9 @@
         const tl = gsap.timeline({ paused: true });
         tl.from(".label", { opacity: 0, y: 18, duration: 0.5, ease: "power3.out" }, 0.2);
         tl.to(
-          ".hf-number-wheel-strip",
+          ".sc-number-wheel-strip",
           {
-            y: (_, strip) => strip.style.getPropertyValue("--hf-number-target-y"),
+            y: (_, strip) => strip.style.getPropertyValue("--sc-number-target-y"),
             duration: 1.2,
             ease: "power3.out",
             stagger: 0.06,
@@ -178,24 +178,24 @@
     { "id": "tone", "type": "enum", "role": "style", "label": "Tone", "description": "Digit colour: inherit keeps the surrounding text colour, ink suits light frames, paper suits dark ones, accent rides --brand.", "default": "inherit", "options": [{ "value": "inherit", "label": "Inherit" }, { "value": "ink", "label": "Ink" }, { "value": "paper", "label": "Paper" }, { "value": "accent", "label": "Accent" }] }
   ]'
     >
-      .hf-number-wheel {
+      .sc-number-wheel {
         display: inline-flex;
         align-items: baseline;
-        gap: var(--hf-wheel-gap, 0.02em);
-        color: var(--hf-wheel-color, inherit);
+        gap: var(--sc-wheel-gap, 0.02em);
+        color: var(--sc-wheel-color, inherit);
         font-variant-numeric: tabular-nums;
       }
-      .hf-number-wheel-digit {
+      .sc-number-wheel-digit {
         display: inline-block;
         height: 1em;
         overflow: hidden;
       }
-      .hf-number-wheel-strip {
+      .sc-number-wheel-strip {
         display: grid;
         transform: translateY(0em);
         will-change: transform;
       }
-      .hf-number-wheel-strip span {
+      .sc-number-wheel-strip span {
         height: 1em;
         line-height: 1em;
       }

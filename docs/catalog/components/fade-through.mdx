@@ -10,15 +10,15 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
   previewSrc="/public/catalog/components/fade-through.json"
   compositionId="fade-through"
   compositionSrc="compositions/components/fade-through.html"
-  variables={[{"id":"wash","type":"enum","role":"style","label":"Wash","description":"Colour of the mid-transition frame. Paper resolves through --hf-fade-through-wash, accent rides --accent.","default":"paper","options":[{"value":"paper","label":"Paper"},{"value":"white","label":"White"},{"value":"ink","label":"Ink"},{"value":"accent","label":"Accent"}]},{"id":"strength","type":"number","role":"style","label":"Strength","description":"How far the wash covers at its peak. 1 is a full flash, 0.3 a light veil.","default":1,"min":0.1,"max":1,"step":0.05},{"id":"shape","type":"enum","role":"style","label":"Shape","description":"Flat fills the frame evenly, bloom concentrates the wash in the centre.","default":"flat","options":[{"value":"flat","label":"Flat"},{"value":"bloom","label":"Bloom"}]}]}
+  variables={[{"id":"wash","type":"enum","role":"style","label":"Wash","description":"Colour of the mid-transition frame. Paper resolves through --sc-fade-through-wash, accent rides --accent.","default":"paper","options":[{"value":"paper","label":"Paper"},{"value":"white","label":"White"},{"value":"ink","label":"Ink"},{"value":"accent","label":"Accent"}]},{"id":"strength","type":"number","role":"style","label":"Strength","description":"How far the wash covers at its peak. 1 is a full flash, 0.3 a light veil.","default":1,"min":0.1,"max":1,"step":0.05},{"id":"shape","type":"enum","role":"style","label":"Shape","description":"Flat fills the frame evenly, bloom concentrates the wash in the centre.","default":"flat","options":[{"value":"flat","label":"Flat"},{"value":"bloom","label":"Bloom"}]}]}
 >
 
 ```html fade-through.html
 <!--
   Fade Through - scene transition primitive.
 
-  Put class="hf-fade-through-out" on the outgoing layer and
-  class="hf-fade-through-in" on the incoming layer. Add the optional wash
+  Put class="sc-fade-through-out" on the outgoing layer and
+  class="sc-fade-through-in" on the incoming layer. Add the optional wash
   overlay below when you want a brighter mid-transition frame.
 
   Variables. The wash is the only surface this primitive paints, so all three
@@ -28,7 +28,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 
     - wash (paper | white | ink | accent, default paper): the colour of the
       mid-transition frame. paper still resolves through
-      --hf-fade-through-wash, so an existing override keeps working; accent
+      --sc-fade-through-wash, so an existing override keeps working; accent
       rides --accent.
     - strength (number 0.1 to 1, default 1): how far the wash is allowed to
       cover at its peak. 1 is a full flash, 0.3 a light veil over the cut.
@@ -40,26 +40,26 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 -->
 
 <div
-  class="hf-fade-through-wash"
+  class="sc-fade-through-wash"
   aria-hidden="true"
   data-composition-variables='[
-    { "id": "wash", "type": "enum", "role": "style", "label": "Wash", "description": "Colour of the mid-transition frame. Paper resolves through --hf-fade-through-wash, accent rides --accent.", "default": "paper", "options": [{ "value": "paper", "label": "Paper" }, { "value": "white", "label": "White" }, { "value": "ink", "label": "Ink" }, { "value": "accent", "label": "Accent" }] },
+    { "id": "wash", "type": "enum", "role": "style", "label": "Wash", "description": "Colour of the mid-transition frame. Paper resolves through --sc-fade-through-wash, accent rides --accent.", "default": "paper", "options": [{ "value": "paper", "label": "Paper" }, { "value": "white", "label": "White" }, { "value": "ink", "label": "Ink" }, { "value": "accent", "label": "Accent" }] },
     { "id": "strength", "type": "number", "role": "style", "label": "Strength", "description": "How far the wash covers at its peak. 1 is a full flash, 0.3 a light veil.", "default": 1, "min": 0.1, "max": 1, "step": 0.05 },
     { "id": "shape", "type": "enum", "role": "style", "label": "Shape", "description": "Flat fills the frame evenly, bloom concentrates the wash in the centre.", "default": "flat", "options": [{ "value": "flat", "label": "Flat" }, { "value": "bloom", "label": "Bloom" }] }
   ]'
 ></div>
 
 <style>
-  .hf-fade-through-in {
+  .sc-fade-through-in {
     opacity: 0;
   }
-  .hf-fade-through-wash {
+  .sc-fade-through-wash {
     position: absolute;
     inset: 0;
     opacity: 0;
     pointer-events: none;
-    background: var(--hf-fade-through-paint, var(--hf-fade-through-wash, #f8f5ec));
-    filter: opacity(var(--hf-fade-through-strength, 1));
+    background: var(--sc-fade-through-paint, var(--sc-fade-through-wash, #f8f5ec));
+    filter: opacity(var(--sc-fade-through-strength, 1));
     z-index: 900;
   }
 </style>
@@ -69,13 +69,13 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
     "use strict";
 
     var vars =
-      window.__hyperframes && window.__hyperframes.getVariables
-        ? window.__hyperframes.getVariables()
+      window.__smashcut && window.__smashcut.getVariables
+        ? window.__smashcut.getVariables()
         : {};
 
     // Unrecognised overrides return to their declared defaults.
     var washes = {
-      paper: "var(--hf-fade-through-wash, #f8f5ec)",
+      paper: "var(--sc-fade-through-wash, #f8f5ec)",
       white: "#ffffff",
       ink: "#0b0b0f",
       accent: "var(--accent, #38bdf8)",
@@ -94,10 +94,10 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
         ? "radial-gradient(circle at 50% 50%, " + colour + " 0%, transparent 72%)"
         : colour;
 
-    var overlays = document.querySelectorAll(".hf-fade-through-wash");
+    var overlays = document.querySelectorAll(".sc-fade-through-wash");
     for (var i = 0; i < overlays.length; i += 1) {
-      overlays[i].style.setProperty("--hf-fade-through-paint", paint);
-      overlays[i].style.setProperty("--hf-fade-through-strength", String(strength));
+      overlays[i].style.setProperty("--sc-fade-through-paint", paint);
+      overlays[i].style.setProperty("--sc-fade-through-strength", String(strength));
     }
   })();
 </script>
@@ -105,10 +105,10 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 <!--
   Timeline integration:
 
-  tl.to(".hf-fade-through-out", { opacity: 0, duration: 0.45, ease: "power2.inOut" }, startTime);
-  tl.to(".hf-fade-through-wash", { opacity: 1, duration: 0.35, ease: "power2.inOut" }, startTime);
-  tl.to(".hf-fade-through-wash", { opacity: 0, duration: 0.45, ease: "power2.inOut" }, startTime + 0.35);
-  tl.to(".hf-fade-through-in", { opacity: 1, duration: 0.55, ease: "power2.out" }, startTime + 0.35);
+  tl.to(".sc-fade-through-out", { opacity: 0, duration: 0.45, ease: "power2.inOut" }, startTime);
+  tl.to(".sc-fade-through-wash", { opacity: 1, duration: 0.35, ease: "power2.inOut" }, startTime);
+  tl.to(".sc-fade-through-wash", { opacity: 0, duration: 0.45, ease: "power2.inOut" }, startTime + 0.35);
+  tl.to(".sc-fade-through-in", { opacity: 1, duration: 0.55, ease: "power2.out" }, startTime + 0.35);
 -->
 ```
 
@@ -116,7 +116,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 
 ## Install
 
-<InstallCommand command="npx hyperframes add fade-through" item="fade-through" />
+<InstallCommand command="npx smashcut add fade-through" item="fade-through" />
 
 That writes one file: `compositions/components/fade-through.html`.
 
@@ -127,7 +127,7 @@ want to change on the element:
 
 | Variable | Default | Accepts | What it does |
 | --- | --- | --- | --- |
-| `wash` | `paper` | `paper`, `white`, `ink`, `accent` | Colour of the mid-transition frame. Paper resolves through --hf-fade-through-wash, accent rides --accent. |
+| `wash` | `paper` | `paper`, `white`, `ink`, `accent` | Colour of the mid-transition frame. Paper resolves through --sc-fade-through-wash, accent rides --accent. |
 | `strength` | `1` | 0.1 to 1, step 0.05 | How far the wash covers at its peak. 1 is a full flash, 0.3 a light veil. |
 | `shape` | `flat` | `flat`, `bloom` | Flat fills the frame evenly, bloom concentrates the wash in the centre. |
 
@@ -150,8 +150,8 @@ defaults, so this behaves exactly like the preview above until you change one:
 <!--
   Fade Through - scene transition primitive.
 
-  Put class="hf-fade-through-out" on the outgoing layer and
-  class="hf-fade-through-in" on the incoming layer. Add the optional wash
+  Put class="sc-fade-through-out" on the outgoing layer and
+  class="sc-fade-through-in" on the incoming layer. Add the optional wash
   overlay below when you want a brighter mid-transition frame.
 
   Variables. The wash is the only surface this primitive paints, so all three
@@ -161,7 +161,7 @@ defaults, so this behaves exactly like the preview above until you change one:
 
     - wash (paper | white | ink | accent, default paper): the colour of the
       mid-transition frame. paper still resolves through
-      --hf-fade-through-wash, so an existing override keeps working; accent
+      --sc-fade-through-wash, so an existing override keeps working; accent
       rides --accent.
     - strength (number 0.1 to 1, default 1): how far the wash is allowed to
       cover at its peak. 1 is a full flash, 0.3 a light veil over the cut.
@@ -173,26 +173,26 @@ defaults, so this behaves exactly like the preview above until you change one:
 -->
 
 <div
-  class="hf-fade-through-wash"
+  class="sc-fade-through-wash"
   aria-hidden="true"
   data-composition-variables='[
-    { "id": "wash", "type": "enum", "role": "style", "label": "Wash", "description": "Colour of the mid-transition frame. Paper resolves through --hf-fade-through-wash, accent rides --accent.", "default": "paper", "options": [{ "value": "paper", "label": "Paper" }, { "value": "white", "label": "White" }, { "value": "ink", "label": "Ink" }, { "value": "accent", "label": "Accent" }] },
+    { "id": "wash", "type": "enum", "role": "style", "label": "Wash", "description": "Colour of the mid-transition frame. Paper resolves through --sc-fade-through-wash, accent rides --accent.", "default": "paper", "options": [{ "value": "paper", "label": "Paper" }, { "value": "white", "label": "White" }, { "value": "ink", "label": "Ink" }, { "value": "accent", "label": "Accent" }] },
     { "id": "strength", "type": "number", "role": "style", "label": "Strength", "description": "How far the wash covers at its peak. 1 is a full flash, 0.3 a light veil.", "default": 1, "min": 0.1, "max": 1, "step": 0.05 },
     { "id": "shape", "type": "enum", "role": "style", "label": "Shape", "description": "Flat fills the frame evenly, bloom concentrates the wash in the centre.", "default": "flat", "options": [{ "value": "flat", "label": "Flat" }, { "value": "bloom", "label": "Bloom" }] }
   ]'
 ></div>
 
 <style>
-  .hf-fade-through-in {
+  .sc-fade-through-in {
     opacity: 0;
   }
-  .hf-fade-through-wash {
+  .sc-fade-through-wash {
     position: absolute;
     inset: 0;
     opacity: 0;
     pointer-events: none;
-    background: var(--hf-fade-through-paint, var(--hf-fade-through-wash, #f8f5ec));
-    filter: opacity(var(--hf-fade-through-strength, 1));
+    background: var(--sc-fade-through-paint, var(--sc-fade-through-wash, #f8f5ec));
+    filter: opacity(var(--sc-fade-through-strength, 1));
     z-index: 900;
   }
 </style>
@@ -202,13 +202,13 @@ defaults, so this behaves exactly like the preview above until you change one:
     "use strict";
 
     var vars =
-      window.__hyperframes && window.__hyperframes.getVariables
-        ? window.__hyperframes.getVariables()
+      window.__smashcut && window.__smashcut.getVariables
+        ? window.__smashcut.getVariables()
         : {};
 
     // Unrecognised overrides return to their declared defaults.
     var washes = {
-      paper: "var(--hf-fade-through-wash, #f8f5ec)",
+      paper: "var(--sc-fade-through-wash, #f8f5ec)",
       white: "#ffffff",
       ink: "#0b0b0f",
       accent: "var(--accent, #38bdf8)",
@@ -227,10 +227,10 @@ defaults, so this behaves exactly like the preview above until you change one:
         ? "radial-gradient(circle at 50% 50%, " + colour + " 0%, transparent 72%)"
         : colour;
 
-    var overlays = document.querySelectorAll(".hf-fade-through-wash");
+    var overlays = document.querySelectorAll(".sc-fade-through-wash");
     for (var i = 0; i < overlays.length; i += 1) {
-      overlays[i].style.setProperty("--hf-fade-through-paint", paint);
-      overlays[i].style.setProperty("--hf-fade-through-strength", String(strength));
+      overlays[i].style.setProperty("--sc-fade-through-paint", paint);
+      overlays[i].style.setProperty("--sc-fade-through-strength", String(strength));
     }
   })();
 </script>
@@ -238,10 +238,10 @@ defaults, so this behaves exactly like the preview above until you change one:
 <!--
   Timeline integration:
 
-  tl.to(".hf-fade-through-out", { opacity: 0, duration: 0.45, ease: "power2.inOut" }, startTime);
-  tl.to(".hf-fade-through-wash", { opacity: 1, duration: 0.35, ease: "power2.inOut" }, startTime);
-  tl.to(".hf-fade-through-wash", { opacity: 0, duration: 0.45, ease: "power2.inOut" }, startTime + 0.35);
-  tl.to(".hf-fade-through-in", { opacity: 1, duration: 0.55, ease: "power2.out" }, startTime + 0.35);
+  tl.to(".sc-fade-through-out", { opacity: 0, duration: 0.45, ease: "power2.inOut" }, startTime);
+  tl.to(".sc-fade-through-wash", { opacity: 1, duration: 0.35, ease: "power2.inOut" }, startTime);
+  tl.to(".sc-fade-through-wash", { opacity: 0, duration: 0.45, ease: "power2.inOut" }, startTime + 0.35);
+  tl.to(".sc-fade-through-in", { opacity: 1, duration: 0.55, ease: "power2.out" }, startTime + 0.35);
 -->
 ```
 

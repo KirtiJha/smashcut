@@ -64,8 +64,8 @@ export function AskAgentModal({
     <div
       className={
         anchorPoint
-          ? "hf-backdrop-in fixed inset-0 z-[100] bg-black/60 backdrop-blur-sm"
-          : "hf-backdrop-in fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm"
+          ? "sc-backdrop-in fixed inset-0 z-[100] bg-black/60 backdrop-blur-sm"
+          : "sc-backdrop-in fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm"
       }
       onClick={requestClose}
     >

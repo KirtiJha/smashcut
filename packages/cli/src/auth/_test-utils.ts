@@ -12,10 +12,10 @@ import { join } from "node:path";
 
 const ENV_KEYS = [
   "HEYGEN_API_KEY",
-  "HYPERFRAMES_API_KEY",
+  "SMASHCUT_API_KEY",
   "HEYGEN_CONFIG_DIR",
   "HEYGEN_API_URL",
-  "HYPERFRAMES_OAUTH_CLIENT_ID",
+  "SMASHCUT_OAUTH_CLIENT_ID",
 ] as const;
 
 type EnvKey = (typeof ENV_KEYS)[number];
@@ -32,7 +32,7 @@ export interface EnvFixture {
  * `HEYGEN_CONFIG_DIR`, and return a `restore()` that undoes all of
  * the above.
  */
-export async function setupTempAuthEnv(prefix = "hf-auth-test-"): Promise<EnvFixture> {
+export async function setupTempAuthEnv(prefix = "sc-auth-test-"): Promise<EnvFixture> {
   const dir = await fs.mkdtemp(join(tmpdir(), prefix));
   const saved: Partial<Record<EnvKey, string | undefined>> = {};
   for (const k of ENV_KEYS) {

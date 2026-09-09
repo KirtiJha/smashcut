@@ -17,9 +17,9 @@ describe("loadExternalCompositions", () => {
     document.head.querySelectorAll("style, link").forEach((node) => node.remove());
     delete (window as Window & { gsap?: unknown; __selectedTitle?: unknown }).gsap;
     delete (window as Window & { gsap?: unknown; __selectedTitle?: unknown }).__selectedTitle;
-    delete (window as Window & { __hyperframes?: unknown }).__hyperframes;
+    delete (window as Window & { __smashcut?: unknown }).__smashcut;
     delete (window as Window & { __timelines?: unknown }).__timelines;
-    delete (window as WindowWithScopedVars).__hfVariablesByComp;
+    delete (window as WindowWithScopedVars).__scVariablesByComp;
     vi.restoreAllMocks();
   });
 
@@ -454,7 +454,7 @@ describe("loadExternalCompositions", () => {
     });
 
     expect(injectedStyles[0]?.textContent).toContain('[data-composition-id="scene"] .title');
-    expect(injectedScripts[0]?.textContent).toContain('var __hfCompId = "scene";');
+    expect(injectedScripts[0]?.textContent).toContain('var __scCompId = "scene";');
     expect(injectedScripts[0]?.textContent).toContain("new Proxy(window.document");
     expect(host.querySelector(".title")?.textContent).toBe("Scene");
     expect(
@@ -492,17 +492,17 @@ describe("loadExternalCompositions", () => {
       injectedScripts,
     });
 
-    const authoredRoot = host.querySelector('[data-hf-authored-id="scene-root"]');
+    const authoredRoot = host.querySelector('[data-sc-authored-id="scene-root"]');
     expect(authoredRoot).toBeTruthy();
     expect(authoredRoot?.id).toBe("");
     expect(authoredRoot?.getAttribute("data-composition-id")).toBeNull();
-    expect(authoredRoot?.getAttribute("data-hf-inner-root")).toBe("true");
-    expect(authoredRoot?.getAttribute("data-hf-authored-id")).toBe("scene-root");
+    expect(authoredRoot?.getAttribute("data-sc-inner-root")).toBe("true");
+    expect(authoredRoot?.getAttribute("data-sc-authored-id")).toBe("scene-root");
     expect(injectedStyles[0]?.textContent).toContain(
       '[data-composition-id="scene"] .scene-root .title',
     );
     expect(injectedStyles[0]?.textContent).toContain(
-      '[data-composition-id="scene"] [data-hf-authored-id="scene-root"]',
+      '[data-composition-id="scene"] [data-sc-authored-id="scene-root"]',
     );
   });
 
@@ -531,7 +531,7 @@ describe("loadExternalCompositions", () => {
 
     await loadExternalCompositions({ ...defaultParams });
 
-    const authoredRoots = document.querySelectorAll('[data-hf-authored-id="scene-root"]');
+    const authoredRoots = document.querySelectorAll('[data-sc-authored-id="scene-root"]');
     expect(authoredRoots).toHaveLength(2);
     expect(document.querySelectorAll("#scene-root")).toHaveLength(0);
     expect(Array.from(authoredRoots).every((root) => !root.getAttribute("id"))).toBe(true);
@@ -579,26 +579,26 @@ describe("loadExternalCompositions", () => {
     const runtimeIdA = hostA.getAttribute("data-composition-id") ?? "";
     const runtimeIdB = hostB.getAttribute("data-composition-id") ?? "";
     const variables =
-      (window as Window & { __hfVariablesByComp?: Record<string, { title?: string }> })
-        .__hfVariablesByComp ?? {};
+      (window as Window & { __scVariablesByComp?: Record<string, { title?: string }> })
+        .__scVariablesByComp ?? {};
 
     expect(runtimeIdA).not.toBe("scene");
     expect(runtimeIdB).not.toBe("scene");
     expect(runtimeIdA).not.toBe(runtimeIdB);
-    expect(hostA.getAttribute("data-hf-original-composition-id")).toBe("scene");
-    expect(hostB.getAttribute("data-hf-original-composition-id")).toBe("scene");
+    expect(hostA.getAttribute("data-sc-original-composition-id")).toBe("scene");
+    expect(hostB.getAttribute("data-sc-original-composition-id")).toBe("scene");
     expect(hostA.querySelector(".title")?.textContent).toBe(runtimeIdA);
     expect(hostB.querySelector(".title")?.textContent).toBe(runtimeIdB);
     expect(variables[runtimeIdA]?.title).toBe("Scene A");
     expect(variables[runtimeIdB]?.title).toBe("Scene B");
     expect(
       injectedScripts.some((script) =>
-        script.textContent?.includes(`var __hfTimelineCompId = "${runtimeIdA}"`),
+        script.textContent?.includes(`var __scTimelineCompId = "${runtimeIdA}"`),
       ),
     ).toBe(true);
     expect(
       injectedScripts.some((script) =>
-        script.textContent?.includes(`var __hfTimelineCompId = "${runtimeIdB}"`),
+        script.textContent?.includes(`var __scTimelineCompId = "${runtimeIdB}"`),
       ),
     ).toBe(true);
   });
@@ -630,17 +630,17 @@ describe("loadExternalCompositions", () => {
 
     const runtimeIdA1 = hostA.getAttribute("data-composition-id");
     const runtimeIdB1 = hostB.getAttribute("data-composition-id");
-    expect(hostA.getAttribute("data-hf-original-composition-id")).toBe("scene");
-    expect(hostB.getAttribute("data-hf-original-composition-id")).toBe("scene");
+    expect(hostA.getAttribute("data-sc-original-composition-id")).toBe("scene");
+    expect(hostB.getAttribute("data-sc-original-composition-id")).toBe("scene");
 
     await loadExternalCompositions({ ...defaultParams });
 
-    expect(hostA.getAttribute("data-hf-original-composition-id")).toBe("scene");
-    expect(hostB.getAttribute("data-hf-original-composition-id")).toBe("scene");
+    expect(hostA.getAttribute("data-sc-original-composition-id")).toBe("scene");
+    expect(hostB.getAttribute("data-sc-original-composition-id")).toBe("scene");
     expect(hostA.getAttribute("data-composition-id")).toBe(runtimeIdA1);
     expect(hostB.getAttribute("data-composition-id")).toBe(runtimeIdB1);
-    expect(hostA.querySelector('[data-hf-authored-id="scene-root"]')).toBeTruthy();
-    expect(hostB.querySelector('[data-hf-authored-id="scene-root"]')).toBeTruthy();
+    expect(hostA.querySelector('[data-sc-authored-id="scene-root"]')).toBeTruthy();
+    expect(hostB.querySelector('[data-sc-authored-id="scene-root"]')).toBeTruthy();
   });
 
   it("normalizes a runtime composition id back to the authored id when only one host remains", async () => {
@@ -668,16 +668,16 @@ describe("loadExternalCompositions", () => {
 
     await loadExternalCompositions({ ...defaultParams });
 
-    expect(hostB.getAttribute("data-composition-id")).toBe("scene__hf2");
-    expect(hostB.getAttribute("data-hf-original-composition-id")).toBe("scene");
+    expect(hostB.getAttribute("data-composition-id")).toBe("scene__sc2");
+    expect(hostB.getAttribute("data-sc-original-composition-id")).toBe("scene");
 
     hostA.remove();
 
     await loadExternalCompositions({ ...defaultParams });
 
     expect(hostB.getAttribute("data-composition-id")).toBe("scene");
-    expect(hostB.hasAttribute("data-hf-original-composition-id")).toBe(false);
-    expect(hostB.querySelector('[data-hf-authored-id="scene-root"]')).toBeTruthy();
+    expect(hostB.hasAttribute("data-sc-original-composition-id")).toBe(false);
+    expect(hostB.querySelector('[data-sc-authored-id="scene-root"]')).toBeTruthy();
   });
 
   it("clears stale variable entries when a host runtime composition id changes", async () => {
@@ -706,17 +706,17 @@ describe("loadExternalCompositions", () => {
 
     await loadExternalCompositions({ ...defaultParams });
 
-    const byCompAfterFirstMount = (window as WindowWithScopedVars).__hfVariablesByComp ?? {};
-    expect(byCompAfterFirstMount["scene__hf2"]).toEqual({ title: "Scene B" });
+    const byCompAfterFirstMount = (window as WindowWithScopedVars).__scVariablesByComp ?? {};
+    expect(byCompAfterFirstMount["scene__sc2"]).toEqual({ title: "Scene B" });
 
     hostA.remove();
     hostB.innerHTML = "";
 
     await loadExternalCompositions({ ...defaultParams });
 
-    const byCompAfterSecondMount = (window as WindowWithScopedVars).__hfVariablesByComp ?? {};
+    const byCompAfterSecondMount = (window as WindowWithScopedVars).__scVariablesByComp ?? {};
     expect(byCompAfterSecondMount["scene"]).toEqual({ title: "Scene B" });
-    expect(byCompAfterSecondMount["scene__hf2"]).toBeUndefined();
+    expect(byCompAfterSecondMount["scene__sc2"]).toBeUndefined();
   });
 
   it("handles multiple compositions in parallel", async () => {
@@ -947,13 +947,13 @@ describe("loadExternalCompositions", () => {
     });
   });
 
-  describe("variable scoping (window.__hfVariablesByComp)", () => {
+  describe("variable scoping (window.__scVariablesByComp)", () => {
     type WindowWithScopedVars = Window & {
-      __hfVariablesByComp?: Record<string, Record<string, unknown>>;
+      __scVariablesByComp?: Record<string, Record<string, unknown>>;
     };
 
     afterEach(() => {
-      delete (window as WindowWithScopedVars).__hfVariablesByComp;
+      delete (window as WindowWithScopedVars).__scVariablesByComp;
     });
 
     it("merges sub-comp declared defaults with host data-variable-values", async () => {
@@ -980,7 +980,7 @@ describe("loadExternalCompositions", () => {
 
       await loadExternalCompositions({ ...defaultParams });
 
-      const byComp = (window as WindowWithScopedVars).__hfVariablesByComp ?? {};
+      const byComp = (window as WindowWithScopedVars).__scVariablesByComp ?? {};
       expect(byComp["card-1"]).toEqual({
         title: "Pro", // host wins over declared default
         price: "$29", // host wins
@@ -1035,7 +1035,7 @@ describe("loadExternalCompositions", () => {
 
       await loadExternalCompositions({ ...defaultParams });
 
-      const byComp = (window as WindowWithScopedVars).__hfVariablesByComp ?? {};
+      const byComp = (window as WindowWithScopedVars).__scVariablesByComp ?? {};
       expect(byComp["card-2"]).toEqual({ title: "Default Title" });
     });
 
@@ -1054,7 +1054,7 @@ describe("loadExternalCompositions", () => {
 
       await loadExternalCompositions({ ...defaultParams });
 
-      const byComp = (window as WindowWithScopedVars).__hfVariablesByComp;
+      const byComp = (window as WindowWithScopedVars).__scVariablesByComp;
       expect(byComp?.["card-empty"]).toBeUndefined();
     });
 
@@ -1082,7 +1082,7 @@ describe("loadExternalCompositions", () => {
 
       await loadExternalCompositions({ ...defaultParams });
 
-      const byCompAfterFirstMount = (window as WindowWithScopedVars).__hfVariablesByComp ?? {};
+      const byCompAfterFirstMount = (window as WindowWithScopedVars).__scVariablesByComp ?? {};
       expect(byCompAfterFirstMount["card-clear"]).toEqual({ title: "Pro" });
 
       host.removeAttribute("data-variable-values");
@@ -1090,7 +1090,7 @@ describe("loadExternalCompositions", () => {
 
       await loadExternalCompositions({ ...defaultParams });
 
-      const byCompAfterSecondMount = (window as WindowWithScopedVars).__hfVariablesByComp;
+      const byCompAfterSecondMount = (window as WindowWithScopedVars).__scVariablesByComp;
       expect(byCompAfterSecondMount?.["card-clear"]).toBeUndefined();
     });
 
@@ -1112,7 +1112,7 @@ describe("loadExternalCompositions", () => {
 
       await loadExternalCompositions({ ...defaultParams });
 
-      const byComp = (window as WindowWithScopedVars).__hfVariablesByComp ?? {};
+      const byComp = (window as WindowWithScopedVars).__scVariablesByComp ?? {};
       expect(byComp["card-bad"]).toEqual({ title: "OK" });
     });
 
@@ -1143,7 +1143,7 @@ describe("loadExternalCompositions", () => {
 
       await loadExternalCompositions({ ...defaultParams });
 
-      const byComp = (window as WindowWithScopedVars).__hfVariablesByComp ?? {};
+      const byComp = (window as WindowWithScopedVars).__scVariablesByComp ?? {};
       expect(byComp["card-A"]).toEqual({ title: "Pro", price: "$29" });
       expect(byComp["card-B"]).toEqual({ title: "Enterprise", price: "Custom" });
     });
@@ -1177,7 +1177,7 @@ describe("loadExternalCompositions", () => {
 
       await loadExternalCompositions({ ...defaultParams });
 
-      const byCompAfterFirstMount = (window as WindowWithScopedVars).__hfVariablesByComp ?? {};
+      const byCompAfterFirstMount = (window as WindowWithScopedVars).__scVariablesByComp ?? {};
       expect(byCompAfterFirstMount["card-a"]).toEqual({ title: "A" });
       expect(byCompAfterFirstMount["card-b"]).toEqual({ title: "B" });
 
@@ -1186,7 +1186,7 @@ describe("loadExternalCompositions", () => {
 
       await loadExternalCompositions({ ...defaultParams });
 
-      const byCompAfterSecondMount = (window as WindowWithScopedVars).__hfVariablesByComp ?? {};
+      const byCompAfterSecondMount = (window as WindowWithScopedVars).__scVariablesByComp ?? {};
       expect(byCompAfterSecondMount["card-a"]).toEqual({ title: "A" });
       expect(byCompAfterSecondMount["card-b"]).toBeUndefined();
     });
@@ -1207,14 +1207,14 @@ describe("loadExternalCompositions", () => {
 
       await loadExternalCompositions({ ...defaultParams });
 
-      const byCompAfterFirstMount = (window as WindowWithScopedVars).__hfVariablesByComp ?? {};
+      const byCompAfterFirstMount = (window as WindowWithScopedVars).__scVariablesByComp ?? {};
       expect(byCompAfterFirstMount["card-last"]).toEqual({ title: "Last" });
 
       host.remove();
 
       await loadExternalCompositions({ ...defaultParams });
 
-      const byCompAfterSecondMount = (window as WindowWithScopedVars).__hfVariablesByComp;
+      const byCompAfterSecondMount = (window as WindowWithScopedVars).__scVariablesByComp;
       expect(byCompAfterSecondMount?.["card-last"]).toBeUndefined();
     });
   });
@@ -1246,7 +1246,7 @@ describe("loadExternalCompositions", () => {
     // Flattened like every other mount, with the declared id restored so the
     // composition's scoped CSS and self-referencing queries still resolve.
     const mountedRoot = host.querySelector('[data-composition-id="scoped-text"]');
-    expect(mountedRoot?.getAttribute("data-hf-inner-root")).toBe("true");
+    expect(mountedRoot?.getAttribute("data-sc-inner-root")).toBe("true");
     expect(mountedRoot?.querySelector(".label")?.textContent).toBe(
       "Scoped Text Should Stay Styled",
     );
@@ -1308,8 +1308,8 @@ describe("loadExternalCompositions", () => {
     await loadExternalCompositions({ ...defaultParams, injectedScripts, injectedStyles });
 
     const scriptSource = injectedScripts.map((script) => script.textContent).join("\n");
-    expect(scriptSource).toContain('var __hfCompId = "captions";');
-    expect(scriptSource).not.toContain('var __hfCompId = "captions-comp";');
+    expect(scriptSource).toContain('var __scCompId = "captions";');
+    expect(scriptSource).not.toContain('var __scCompId = "captions-comp";');
   });
 });
 
@@ -1542,20 +1542,20 @@ describe("loadInlineTemplateCompositions", () => {
     expect(runtimeIdA).not.toBe("scene");
     expect(runtimeIdB).not.toBe("scene");
     expect(runtimeIdA).not.toBe(runtimeIdB);
-    expect(hostA.getAttribute("data-hf-original-composition-id")).toBe("scene");
-    expect(hostB.getAttribute("data-hf-original-composition-id")).toBe("scene");
+    expect(hostA.getAttribute("data-sc-original-composition-id")).toBe("scene");
+    expect(hostB.getAttribute("data-sc-original-composition-id")).toBe("scene");
 
     hostA.innerHTML = "";
     hostB.innerHTML = "";
 
     await loadInlineTemplateCompositions({ ...defaultParams });
 
-    expect(hostA.getAttribute("data-hf-original-composition-id")).toBe("scene");
-    expect(hostB.getAttribute("data-hf-original-composition-id")).toBe("scene");
+    expect(hostA.getAttribute("data-sc-original-composition-id")).toBe("scene");
+    expect(hostB.getAttribute("data-sc-original-composition-id")).toBe("scene");
     expect(hostA.getAttribute("data-composition-id")).toBe(runtimeIdA);
     expect(hostB.getAttribute("data-composition-id")).toBe(runtimeIdB);
-    expect(hostA.querySelector('[data-hf-authored-id="scene-root"]')).toBeTruthy();
-    expect(hostB.querySelector('[data-hf-authored-id="scene-root"]')).toBeTruthy();
+    expect(hostA.querySelector('[data-sc-authored-id="scene-root"]')).toBeTruthy();
+    expect(hostB.querySelector('[data-sc-authored-id="scene-root"]')).toBeTruthy();
   });
 
   it("does not rewrite ids for duplicate inline hosts that are skipped", async () => {
@@ -1590,12 +1590,12 @@ describe("loadInlineTemplateCompositions", () => {
 
     expect(filledHostA.getAttribute("data-composition-id")).toBe("filled-scene");
     expect(filledHostB.getAttribute("data-composition-id")).toBe("filled-scene");
-    expect(filledHostA.hasAttribute("data-hf-original-composition-id")).toBe(false);
-    expect(filledHostB.hasAttribute("data-hf-original-composition-id")).toBe(false);
+    expect(filledHostA.hasAttribute("data-sc-original-composition-id")).toBe(false);
+    expect(filledHostB.hasAttribute("data-sc-original-composition-id")).toBe(false);
     expect(orphanHostA.getAttribute("data-composition-id")).toBe("orphan-scene");
     expect(orphanHostB.getAttribute("data-composition-id")).toBe("orphan-scene");
-    expect(orphanHostA.hasAttribute("data-hf-original-composition-id")).toBe(false);
-    expect(orphanHostB.hasAttribute("data-hf-original-composition-id")).toBe(false);
+    expect(orphanHostA.hasAttribute("data-sc-original-composition-id")).toBe(false);
+    expect(orphanHostB.hasAttribute("data-sc-original-composition-id")).toBe(false);
   });
 
   it("uniquifies a mounted inline host when a skipped sibling already uses the authored id", async () => {
@@ -1620,10 +1620,10 @@ describe("loadInlineTemplateCompositions", () => {
     await loadInlineTemplateCompositions({ ...defaultParams });
 
     expect(skippedHost.getAttribute("data-composition-id")).toBe("scene");
-    expect(skippedHost.hasAttribute("data-hf-original-composition-id")).toBe(false);
+    expect(skippedHost.hasAttribute("data-sc-original-composition-id")).toBe(false);
     expect(mountedHost.getAttribute("data-composition-id")).not.toBe("scene");
-    expect(mountedHost.getAttribute("data-hf-original-composition-id")).toBe("scene");
-    expect(mountedHost.querySelector('[data-hf-authored-id="scene-root"]')).toBeTruthy();
+    expect(mountedHost.getAttribute("data-sc-original-composition-id")).toBe("scene");
+    expect(mountedHost.querySelector('[data-sc-authored-id="scene-root"]')).toBeTruthy();
   });
 
   it("re-numbers duplicate inline runtime ids when the mount set grows", async () => {
@@ -1648,17 +1648,17 @@ describe("loadInlineTemplateCompositions", () => {
     await loadInlineTemplateCompositions({ ...defaultParams });
 
     expect(hostA.getAttribute("data-composition-id")).toBe("scene");
-    expect(hostB.getAttribute("data-composition-id")).toBe("scene__hf1");
+    expect(hostB.getAttribute("data-composition-id")).toBe("scene__sc1");
 
     hostA.innerHTML = "";
     hostB.innerHTML = "";
 
     await loadInlineTemplateCompositions({ ...defaultParams });
 
-    expect(hostA.getAttribute("data-composition-id")).toBe("scene__hf1");
-    expect(hostB.getAttribute("data-composition-id")).toBe("scene__hf2");
-    expect(hostA.getAttribute("data-hf-original-composition-id")).toBe("scene");
-    expect(hostB.getAttribute("data-hf-original-composition-id")).toBe("scene");
+    expect(hostA.getAttribute("data-composition-id")).toBe("scene__sc1");
+    expect(hostB.getAttribute("data-composition-id")).toBe("scene__sc2");
+    expect(hostA.getAttribute("data-sc-original-composition-id")).toBe("scene");
+    expect(hostB.getAttribute("data-sc-original-composition-id")).toBe("scene");
   });
 
   it("uniquifies duplicate sub-compositions across inline-template and external hosts", async () => {
@@ -1692,10 +1692,10 @@ describe("loadInlineTemplateCompositions", () => {
     await loadExternalCompositions({ ...defaultParams });
     await loadInlineTemplateCompositions({ ...defaultParams });
 
-    expect(inlineHost.getAttribute("data-composition-id")).toBe("scene__hf1");
-    expect(externalHost.getAttribute("data-composition-id")).toBe("scene__hf2");
-    expect(inlineHost.getAttribute("data-hf-original-composition-id")).toBe("scene");
-    expect(externalHost.getAttribute("data-hf-original-composition-id")).toBe("scene");
+    expect(inlineHost.getAttribute("data-composition-id")).toBe("scene__sc1");
+    expect(externalHost.getAttribute("data-composition-id")).toBe("scene__sc2");
+    expect(inlineHost.getAttribute("data-sc-original-composition-id")).toBe("scene");
+    expect(externalHost.getAttribute("data-sc-original-composition-id")).toBe("scene");
     expect(inlineHost.querySelector("p")?.textContent).toBe("Inline scene");
     expect(externalHost.querySelector("p")?.textContent).toBeTruthy();
   });

@@ -7,9 +7,9 @@
  */
 
 import { useEffect, useRef } from "react";
-import type { HfAudioFxChain } from "@hyperframes/core/audio-fx";
-import { classifyAudioName, type HfCarveSettings } from "@hyperframes/core/audio-carve";
-import type { HfAutomation } from "@hyperframes/core/audio-automation";
+import type { HfAudioFxChain } from "@smashcut/core/audio-fx";
+import { classifyAudioName, type HfCarveSettings } from "@smashcut/core/audio-carve";
+import type { HfAutomation } from "@smashcut/core/audio-automation";
 import { trackChainObserved } from "./audioFxTelemetry.js";
 import type { DomEditSelection } from "./domEditingTypes";
 

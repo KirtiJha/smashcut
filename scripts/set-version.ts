@@ -259,7 +259,7 @@ export function missingChangelogArtifacts(version: string) {
 }
 
 export function changelogArtifacts(version: string) {
-  return [join("releases", `v${version}.md`), `docs/changelog.mdx#HyperFrames v${version}`];
+  return [join("releases", `v${version}.md`), `docs/changelog.mdx#SmashCut v${version}`];
 }
 
 export function unreviewedChangelogArtifacts(version: string) {
@@ -360,7 +360,7 @@ function printReleaseNextSteps(version: string) {
   if (isPrerelease(version)) {
     const distTag = version.replace(/^.*-([a-zA-Z]+).*$/, "$1");
     console.log(`\nThis is a pre-release — npm dist-tag will be "${distTag}" (not "latest").`);
-    console.log(`Consumers install with: npm install @hyperframes/core@${distTag}`);
+    console.log(`Consumers install with: npm install @smashcut/core@${distTag}`);
     console.log(`\nRun 'git push origin v${version}' to trigger the publish workflow.`);
   } else {
     // A stable tag push does NOT publish — publish.yml's push trigger is

@@ -29,8 +29,8 @@ const clip = (over: Partial<ClipManifestClip>): ClipManifestClip => ({
 function mountScene(): Document {
   document.body.innerHTML = `
     <div id="scene-2-slot" data-composition-id="scene-2" data-composition-src="scene-2.html">
-      <div data-hf-inner-root>
-        <div id="scene-2-video-region" class="hf-region">
+      <div data-sc-inner-root>
+        <div id="scene-2-video-region" class="sc-region">
           <video id="scene-2-video" class="clip" data-start="0" data-hidden></video>
         </div>
         <div id="scene-2-title" class="clip" data-start="0" data-hidden></div>

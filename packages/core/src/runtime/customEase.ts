@@ -9,7 +9,7 @@ type ConfigurableEase = RuntimeEase & { config?: (...params: unknown[]) => Runti
 type GsapEaseApi = {
   parseEase?: (ease: string | RuntimeEase, ...args: unknown[]) => RuntimeEase | null;
   registerEase?: (name: string, ease: RuntimeEase) => void;
-  __hfCustomEaseInstalled?: boolean;
+  __scCustomEaseInstalled?: boolean;
 };
 
 const BISECTION_STEPS = 24;
@@ -89,7 +89,7 @@ function resolveCustomEase(
 }
 
 export function installStudioCustomEase(gsap: GsapEaseApi): boolean {
-  if (gsap.__hfCustomEaseInstalled) return true;
+  if (gsap.__scCustomEaseInstalled) return true;
   const originalParseEase = gsap.parseEase;
   if (!originalParseEase) return false;
 
@@ -97,10 +97,10 @@ export function installStudioCustomEase(gsap: GsapEaseApi): boolean {
   const springEaseCache = new Map<number, RuntimeEase>();
   const wiggleEaseCache = new Map<string, RuntimeEase>();
 
-  // Single source of truth for "hyperframes ease string -> function". Both the
+  // Single source of truth for "smashcut ease string -> function". Both the
   // public parseEase override and the internal registerEase configs below route
   // through this, so the resolution rules live in exactly one place.
-  const resolveHyperframesEase = (ease: string | RuntimeEase): RuntimeEase | null => {
+  const resolveSmashcutEase = (ease: string | RuntimeEase): RuntimeEase | null => {
     if (typeof ease !== "string") return null;
     if (ease === "hold") return HOLD_EASE;
     return (
@@ -115,7 +115,7 @@ export function installStudioCustomEase(gsap: GsapEaseApi): boolean {
     context: GsapEaseApi,
     args: unknown[] = [],
   ): RuntimeEase => {
-    const resolved = resolveHyperframesEase(ease);
+    const resolved = resolveSmashcutEase(ease);
     if (resolved) return resolved;
     if (typeof ease === "string" && /^(?:hold|spring|wiggle|custom)(?:\(|$)/.test(ease.trim())) {
       emitAnalyticsEvent("custom_ease_parse_failed", { ease });
@@ -125,7 +125,7 @@ export function installStudioCustomEase(gsap: GsapEaseApi): boolean {
 
   // Public parseEase: direct callers (studio ease UI, adapters) resolve
   // synchronously; anything else falls through to GSAP's own parser.
-  gsap.parseEase = function parseHyperframesEase(ease, ...args) {
+  gsap.parseEase = function parseSmashcutEase(ease, ...args) {
     return parseEaseWithFallback(ease, this, args);
   };
 
@@ -148,6 +148,6 @@ export function installStudioCustomEase(gsap: GsapEaseApi): boolean {
     registerConfigurable("wiggle");
     registerConfigurable("custom");
   }
-  gsap.__hfCustomEaseInstalled = true;
+  gsap.__scCustomEaseInstalled = true;
   return true;
 }

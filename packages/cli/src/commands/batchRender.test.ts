@@ -13,7 +13,7 @@ import {
 let tmpDir: string;
 
 beforeEach(() => {
-  tmpDir = mkdtempSync(join(tmpdir(), "hf-local-batch-render-"));
+  tmpDir = mkdtempSync(join(tmpdir(), "sc-local-batch-render-"));
 });
 
 afterEach(() => {

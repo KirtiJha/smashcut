@@ -201,14 +201,14 @@ function audioClipElement() {
  * Start/Duration back on a thing that has no range.
  */
 function audioBusElement() {
-  const element = document.createElement("hf-audio-group");
+  const element = document.createElement("sc-audio-group");
   return {
     ...baseElement(),
     element,
     id: "voiceover",
     selector: "#voiceover",
     label: "Voiceover",
-    tagName: "hf-audio-group",
+    tagName: "sc-audio-group",
     textFields: [],
     dataAttributes: { start: "0", duration: "8" },
   };
@@ -970,19 +970,19 @@ describe("PropertyPanel — flat group entrance animation scoping (fix round)", 
 
       // Untouched, non-adjacent siblings must NOT receive the entrance class,
       // even though they shifted position in the collapsed-header list.
-      expect(collapsedRowByTitle("Style").classList.contains("hf-flat-group-enter")).toBe(false);
-      expect(collapsedRowByTitle("Layout").classList.contains("hf-flat-group-enter")).toBe(false);
-      expect(collapsedRowByTitle("Grade").classList.contains("hf-flat-group-enter")).toBe(false);
-      expect(collapsedRowByTitle("Media").classList.contains("hf-flat-group-enter")).toBe(false);
+      expect(collapsedRowByTitle("Style").classList.contains("sc-flat-group-enter")).toBe(false);
+      expect(collapsedRowByTitle("Layout").classList.contains("sc-flat-group-enter")).toBe(false);
+      expect(collapsedRowByTitle("Grade").classList.contains("sc-flat-group-enter")).toBe(false);
+      expect(collapsedRowByTitle("Media").classList.contains("sc-flat-group-enter")).toBe(false);
 
       // Motion — open a moment ago, just implicitly closed by the click on
       // Text — must still play its own collapse-entrance animation (Finding 1).
-      expect(collapsedRowByTitle("Motion").classList.contains("hf-flat-group-enter")).toBe(true);
+      expect(collapsedRowByTitle("Motion").classList.contains("sc-flat-group-enter")).toBe(true);
 
       // Text — the group actually clicked open — must animate too.
       const openWrapper = host.querySelector('[data-flat-group-open="true"]');
       if (!openWrapper) throw new Error("expected the open-group wrapper");
-      expect(openWrapper.querySelector(".hf-flat-group-enter")).not.toBeNull();
+      expect(openWrapper.querySelector(".sc-flat-group-enter")).not.toBeNull();
 
       act(() => root.unmount());
     },

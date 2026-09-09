@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * @hyperframes/producer — Public Server
+ * @smashcut/producer — Public Server
  *
  * Clean HTTP API for rendering HTML compositions to video.
  *
@@ -8,7 +8,7 @@
  *   POST /render         — blocking render, returns JSON
  *   POST /render/stream  — SSE streaming render with progress
  *   GET  /render/queue   — current render queue status
- *   POST /lint           — blocking Hyperframe lint
+ *   POST /lint           — blocking Smashcut lint
  *   GET  /health         — health check
  *   GET  /outputs/:token — download rendered MP4
  */
@@ -39,7 +39,7 @@ import {
 } from "./services/renderOrchestrator.js";
 import { prepareHyperframeLintBody, runHyperframeLint } from "./services/hyperframeLint.js";
 import { startHealthWorker, type HealthWorkerHandle } from "./services/healthWorker.js";
-import { isVideoFrameFormat } from "@hyperframes/engine";
+import { isVideoFrameFormat } from "@smashcut/engine";
 import { resolveRenderPaths } from "./utils/paths.js";
 import { defaultLogger, type ProducerLogger } from "./logger.js";
 import { Semaphore } from "./utils/semaphore.js";
@@ -48,7 +48,7 @@ import {
   normalizeResolutionFlag,
   isAspectAgnosticResolutionAlias,
   type CanvasResolution,
-} from "@hyperframes/core";
+} from "@smashcut/core";
 import { createRenderRequest, renderConfigFromRequest } from "./renderRequest.js";
 
 // ---------------------------------------------------------------------------
@@ -80,7 +80,7 @@ export interface ServerOptions extends HandlerOptions {
 interface RenderInput {
   projectDir: string;
   outputPath?: string | null;
-  fps: import("@hyperframes/core").Fps;
+  fps: import("@smashcut/core").Fps;
   quality: "draft" | "standard" | "high";
   format?: "mp4" | "webm" | "mov";
   videoFrameFormat?: RenderConfig["videoFrameFormat"];
@@ -986,7 +986,7 @@ export function startServer(options: ServerOptions = {}) {
 
   async function shutdown(signal: string) {
     log.info(`Received ${signal}, shutting down`);
-    const { drainBrowserPool } = await import("@hyperframes/engine");
+    const { drainBrowserPool } = await import("@smashcut/engine");
     await drainBrowserPool().catch(() => {});
     // Bounded await: if the worker hasn't come online within 1.5s of
     // shutdown there's no useful cleanup left to do — `worker.terminate()`

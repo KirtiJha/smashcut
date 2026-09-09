@@ -3,8 +3,8 @@
  * Frame Capture Service
  *
  * Uses Puppeteer to capture frames from any web page implementing the
- * window.__hf seek protocol. Navigates to a file server URL, waits for
- * the page to expose window.__hf, then captures frames deterministically
+ * window.__sc seek protocol. Navigates to a file server URL, waits for
+ * the page to expose window.__sc, then captures frames deterministically
  * via Chrome's BeginFrame API or Page.captureScreenshot fallback.
  */
 
@@ -16,7 +16,7 @@ import {
   fpsToNumber,
   resolveAuthoredTimingWindow,
   type RawAuthoredTiming,
-} from "@hyperframes/core";
+} from "@smashcut/core";
 
 // ── Extracted modules ───────────────────────────────────────────────────────
 import {
@@ -334,11 +334,11 @@ export function getDrawElementVerificationDetails(
 export async function decodeDynamicCssBackgroundImages(page: Page): Promise<void> {
   await page.evaluate(async () => {
     const root = globalThis as typeof globalThis & {
-      __hf_css_background_decoded?: Set<string>;
-      __hfDecodeDynamicCssBackgroundImages?: () => Promise<void>;
+      __sc_css_background_decoded?: Set<string>;
+      __scDecodeDynamicCssBackgroundImages?: () => Promise<void>;
     };
-    const decode = (root.__hfDecodeDynamicCssBackgroundImages ??= async () => {
-      const decoded = (root.__hf_css_background_decoded ??= new Set<string>());
+    const decode = (root.__scDecodeDynamicCssBackgroundImages ??= async () => {
+      const decoded = (root.__sc_css_background_decoded ??= new Set<string>());
       const urls: string[] = [];
       const parseBackgroundUrls = (value: string): string[] => {
         const found: string[] = [];
@@ -510,7 +510,7 @@ export function sanitizeDiagnosticUrl(input: string): string {
   if (input.startsWith("blob:")) return "blob:<redacted>";
   if (input.startsWith("/")) {
     try {
-      const url = new URL(input, "http://hyperframes.local");
+      const url = new URL(input, "http://smashcut.local");
       return url.pathname;
     } catch {
       return input;
@@ -916,8 +916,8 @@ async function initDrawElementOrTransparentBackground(
       console.log(
         `[engine] fast capture: falling back to ${session.launchCaptureMode} capture — ` +
           "this Chrome build does not implement canvas.drawElementImage (Dev/Canary-only " +
-          "feature, ~151+); run `hyperframes browser ensure --force` to fetch a supported " +
-          "build, or set HYPERFRAMES_BROWSER_PATH to one.",
+          "feature, ~151+); run `smashcut browser ensure --force` to fetch a supported " +
+          "build, or set SMASHCUT_BROWSER_PATH to one.",
       );
       await routeToFallback();
       return;
@@ -938,7 +938,7 @@ async function initDrawElementOrTransparentBackground(
         `[engine] fast capture: falling back to ${session.launchCaptureMode} capture — ` +
           "host ffmpeg is missing or was built without the `psnr` filter " +
           "(libpostproc), so drawElement self-verification cannot run. Install " +
-          "an ffmpeg build that includes libpostproc (or set HYPERFRAMES_FFMPEG_PATH " +
+          "an ffmpeg build that includes libpostproc (or set SMASHCUT_FFMPEG_PATH " +
           "to one) to re-enable fast capture.",
       );
       await routeToFallback();
@@ -1315,7 +1315,7 @@ async function constructCaptureSession(
   // wrappers around named functions. Empirically, this happens with:
   //   - tsx (its esbuild loader runs with keepNames=true), used by the
   //     producer's parity-harness, ad-hoc dev scripts, and the
-  //     `bun run --filter @hyperframes/engine test` Vitest path.
+  //     `bun run --filter @smashcut/engine test` Vitest path.
   //   - any tsup/esbuild build that explicitly enables keepNames.
   //
   // The HeyGen CLI (`packages/cli`) bundles this engine via tsup with
@@ -1380,9 +1380,9 @@ async function constructCaptureSession(
   if (options.variables && Object.keys(options.variables).length > 0) {
     const variablesJson = JSON.stringify(options.variables);
     await page.evaluateOnNewDocument((json: string) => {
-      type WindowWithVariables = Window & { __hfVariables?: Record<string, unknown> };
+      type WindowWithVariables = Window & { __scVariables?: Record<string, unknown> };
       try {
-        (window as WindowWithVariables).__hfVariables = JSON.parse(json);
+        (window as WindowWithVariables).__scVariables = JSON.parse(json);
       } catch {
         // The CLI validated the JSON before this point — a parse failure here
         // means the page swapped JSON.parse, which is the page's problem.
@@ -1415,7 +1415,7 @@ async function constructCaptureSession(
   // `[data-composition-id]{background:transparent}` stylesheet that
   // `initTransparentBackground` injects must land in a real `document.head`.
   // See `initializeSession()` below — it calls `initTransparentBackground` for
-  // PNG captures after `page.goto(...)` and the `window.__hf` readiness poll.
+  // PNG captures after `page.goto(...)` and the `window.__sc` readiness poll.
 
   return {
     browser,
@@ -1479,9 +1479,9 @@ export function formatConsoleDiagnostic(
   const isFontLoadError = isFontResourceError(type, text, locationUrl);
   if (isFontLoadError) return { text: `[Browser] ${text}`, suppressHostLog: true };
 
-  if (text.startsWith("[hyperframes]")) {
+  if (text.startsWith("[smashcut]")) {
     return {
-      text: `[HyperFrames] ${text.slice("[hyperframes]".length).trim()}`,
+      text: `[SmashCut] ${text.slice("[smashcut]".length).trim()}`,
       suppressHostLog: false,
     };
   }
@@ -1502,7 +1502,7 @@ export function formatConsoleDiagnostic(
 }
 
 const HF_READY_DIAGNOSTIC_EXPR = `(function() {
-  var hf = window.__hf;
+  var hf = window.__sc;
   var player = window.__player;
   var renderReady = !!window.__renderReady;
   var hasSeek = !!(hf && typeof hf.seek === "function");
@@ -1533,7 +1533,7 @@ function buildZeroDurationDiagnostic(diag: {
 }): string {
   const hints: string[] = [];
   if (!diag.hasPlayer) {
-    hints.push("window.__player was never set — the HyperFrames runtime did not initialize.");
+    hints.push("window.__player was never set — the SmashCut runtime did not initialize.");
   }
   if (!diag.hasTimeline) {
     hints.push(
@@ -1556,7 +1556,7 @@ function buildZeroDurationDiagnostic(diag: {
   return (
     `[FrameCapture] Composition has zero duration.\n` +
     `  Runtime ready: ${diag.renderReady}, __player: ${diag.hasPlayer}, ` +
-    `__hf.seek: ${diag.hasSeek}, GSAP timeline: ${diag.hasTimeline}, ` +
+    `__sc.seek: ${diag.hasSeek}, GSAP timeline: ${diag.hasTimeline}, ` +
     `data-duration: ${diag.declaredDuration > 0 ? diag.declaredDuration + "s" : "not set"}\n` +
     (hints.length > 0 ? hints.map((h) => `  → ${h}`).join("\n") : "")
   );
@@ -1577,7 +1577,7 @@ async function evaluateHfDiagnostic(page: Page): Promise<HfDiagnostic> {
 }
 
 async function pollHfReady(page: Page, timeoutMs: number, intervalMs: number = 100): Promise<void> {
-  const readyExpr = `!!(window.__hf && typeof window.__hf.seek === "function" && window.__hf.duration > 0)`;
+  const readyExpr = `!!(window.__sc && typeof window.__sc.seek === "function" && window.__sc.duration > 0)`;
   const FAST_FAIL_AFTER_MS = 10_000;
   // Throttle diagnostic CDP calls to ~1000ms — running evaluateHfDiagnostic on
   // every 100ms poll tick after the 10s mark generates ~350 unnecessary CDP
@@ -1629,9 +1629,9 @@ async function pollHfReady(page: Page, timeoutMs: number, intervalMs: number = 1
     throw new Error(buildZeroDurationDiagnostic(diag));
   }
   throw new Error(
-    `[FrameCapture] window.__hf not ready after ${timeoutMs}ms. ` +
-      `Page must expose window.__hf = { duration, seek }.\n` +
-      `  State: __hf=${diag.hasHf}, seek=${diag.hasSeek}, player=${diag.hasPlayer}, ` +
+    `[FrameCapture] window.__sc not ready after ${timeoutMs}ms. ` +
+      `Page must expose window.__sc = { duration, seek }.\n` +
+      `  State: __sc=${diag.hasHf}, seek=${diag.hasSeek}, player=${diag.hasPlayer}, ` +
       `renderReady=${diag.renderReady}, duration=${diag.duration}`,
   );
 }
@@ -1696,8 +1696,8 @@ export async function pollSubCompositionTimelines(
   // its GSAP animations.
   if (ready) {
     await page.evaluate(`(function() {
-      if (typeof window.__hfForceTimelineRebind === "function") {
-        window.__hfForceTimelineRebind();
+      if (typeof window.__scForceTimelineRebind === "function") {
+        window.__scForceTimelineRebind();
       }
     })()`);
     return "ready";
@@ -2013,7 +2013,7 @@ async function applyVideoMetadataHints(
           continue;
         }
 
-        const video = (window.__hfMediaEl?.(hint.id) ??
+        const video = (window.__scMediaEl?.(hint.id) ??
           document.getElementById(hint.id)) as HTMLVideoElement | null;
         if (!video) continue;
 
@@ -2065,8 +2065,8 @@ function recordScriptLoadFailure(session: CaptureSession, url: string): void {
 
 export function classifyConsoleScriptFailure(type: string, text: string): string | null {
   if (type !== "error") return null;
-  if (text.startsWith("[HyperFrames] composition script error:")) {
-    const detail = text.slice("[HyperFrames] composition script error:".length).trim();
+  if (text.startsWith("[SmashCut] composition script error:")) {
+    const detail = text.slice("[SmashCut] composition script error:".length).trim();
     const compId = detail.split(" ")[0] || "unknown";
     return `runtime-error:${compId}`;
   }
@@ -2083,7 +2083,7 @@ export function classifyConsoleScriptFailure(type: string, text: string): string
 export async function initializeSession(session: CaptureSession): Promise<void> {
   const { page, serverUrl } = session;
 
-  // Forward browser console to host. HyperFrames runtime logs get a dedicated
+  // Forward browser console to host. SmashCut runtime logs get a dedicated
   // prefix so page-context observability is visible in producer stdout.
   page.on("console", (msg: ConsoleMessage) => {
     const type = msg.type();
@@ -2198,7 +2198,7 @@ export async function initializeSession(session: CaptureSession): Promise<void> 
     // rAF-based batch ticks (100 ops/tick at ~16ms). In headless mode there's
     // no UI responsiveness concern, so draining instantly eliminates the
     // largest init-time cost for tween-heavy compositions.
-    await page.evaluate(`window.__hfFlushSync?.()`);
+    await page.evaluate(`window.__scFlushSync?.()`);
     logInitPhase("GSAP proxy flush complete");
 
     const pageReadyTimeout =
@@ -2355,10 +2355,10 @@ export async function initializeSession(session: CaptureSession): Promise<void> 
   // batch drain runs on the warmup loop's 33ms ticks — for tween-heavy
   // compositions this is the dominant init cost. Flushing synchronously
   // eliminates the wait entirely.
-  await page.evaluate(`window.__hfFlushSync?.()`);
+  await page.evaluate(`window.__scFlushSync?.()`);
   logInitPhase("GSAP proxy flush complete");
 
-  // Poll for window.__hf readiness using manual evaluate loop (waitForFunction
+  // Poll for window.__sc readiness using manual evaluate loop (waitForFunction
   // uses rAF polling internally, which won't fire in beginFrame mode).
   const pageReadyTimeout = session.config?.playerReadyTimeout ?? DEFAULT_CONFIG.playerReadyTimeout;
   try {
@@ -2539,8 +2539,8 @@ async function captureFrameErrorDiagnostics(
 export async function waitForPendingSeekCompletion(page: Pick<Page, "evaluate">): Promise<void> {
   await page.evaluate(async () => {
     const waitForCompletion = (
-      window as Window & { __hfWaitForSeekCompletion?: () => Promise<void> }
-    ).__hfWaitForSeekCompletion;
+      window as Window & { __scWaitForSeekCompletion?: () => Promise<void> }
+    ).__scWaitForSeekCompletion;
     await waitForCompletion?.();
   });
 }
@@ -2563,15 +2563,15 @@ async function prepareFrameForCapture(
   const quantizedTime = quantizeTimeToFrame(time, fpsToNumber(options.fps));
 
   const seekStart = Date.now();
-  // Seek via the __hf protocol. The page's seek() implementation handles
+  // Seek via the __sc protocol. The page's seek() implementation handles
   // all framework-specific logic (GSAP stepping, CSS animation sync, etc.)
   // Seek + check page-side composite pending flag in one round-trip.
   const hasPendingComposite = await page.evaluate((t: number) => {
-    if (window.__hf && typeof window.__hf.seek === "function") {
-      window.__hf.seek(t);
+    if (window.__sc && typeof window.__sc.seek === "function") {
+      window.__sc.seek(t);
     }
-    return !!(window as unknown as { __hf_page_composite_pending?: boolean })
-      .__hf_page_composite_pending;
+    return !!(window as unknown as { __sc_page_composite_pending?: boolean })
+      .__sc_page_composite_pending;
   }, quantizedTime);
 
   await decodeDynamicCssBackgroundImages(page);
@@ -2589,9 +2589,9 @@ async function prepareFrameForCapture(
   await page.evaluate(async () => {
     const runtime = (
       window as Window & {
-        __hf?: { colorGrading?: { waitForActiveLuts?: () => Promise<number> } };
+        __sc?: { colorGrading?: { waitForActiveLuts?: () => Promise<number> } };
       }
-    ).__hf?.colorGrading;
+    ).__sc?.colorGrading;
     await runtime?.waitForActiveLuts?.();
   });
   const beforeCaptureMs = Date.now() - beforeCaptureStart;
@@ -2606,9 +2606,9 @@ async function prepareFrameForCapture(
     session.captureMode !== "drawelement"
   ) {
     await page.evaluate(async () => {
-      const w = window as unknown as { __hf_page_composite_prepare?: () => Promise<boolean> };
-      if (typeof w.__hf_page_composite_prepare === "function") {
-        await w.__hf_page_composite_prepare();
+      const w = window as unknown as { __sc_page_composite_prepare?: () => Promise<boolean> };
+      if (typeof w.__sc_page_composite_prepare === "function") {
+        await w.__sc_page_composite_prepare();
       }
     });
     const cdp = await getCdpSession(page);
@@ -2618,9 +2618,9 @@ async function prepareFrameForCapture(
       clip: { x: 0, y: 0, width: 1, height: 1, scale: 1 },
     });
     await page.evaluate(() => {
-      const w = window as unknown as { __hf_page_composite_resolve?: () => boolean };
-      if (typeof w.__hf_page_composite_resolve === "function") {
-        w.__hf_page_composite_resolve();
+      const w = window as unknown as { __sc_page_composite_resolve?: () => boolean };
+      if (typeof w.__sc_page_composite_resolve === "function") {
+        w.__sc_page_composite_resolve();
       }
     });
   }
@@ -2666,9 +2666,9 @@ async function computeClipBoundaryFrames(page: Page, fps: number): Promise<Set<n
     Array.from(document.querySelectorAll("[data-start]")).map((el) => ({
       start: el.getAttribute("data-start"),
       duration: el.getAttribute("data-duration"),
-      authoredDuration: el.getAttribute("data-hf-authored-duration"),
+      authoredDuration: el.getAttribute("data-sc-authored-duration"),
       end: el.getAttribute("data-end"),
-      authoredEnd: el.getAttribute("data-hf-authored-end"),
+      authoredEnd: el.getAttribute("data-sc-authored-end"),
     })),
   );
   return computeAuthoredClipBoundaryFrames(schedule, fps);
@@ -2775,7 +2775,7 @@ export async function computeStaticFrameSet(
     }
     const w = window as unknown as {
       __timelines?: Record<string, AnyTween>;
-      __hf?: { duration?: number };
+      __sc?: { duration?: number };
     };
     for (const tl of Object.values(w.__timelines || {})) {
       if (tl && typeof tl.getChildren === "function") walk(tl, 0);
@@ -2808,7 +2808,7 @@ export async function computeStaticFrameSet(
     return {
       intervals,
       tweenCount,
-      duration: w.__hf?.duration ?? 0,
+      duration: w.__sc?.duration ?? 0,
       hasVideo,
       hasCanvas,
       hasNonGsapAnim,
@@ -3081,7 +3081,7 @@ export async function createStaticVerificationPage(session: CaptureSession): Pro
     if (session.options.variables && Object.keys(session.options.variables).length > 0) {
       const variablesJson = JSON.stringify(session.options.variables);
       await page.evaluateOnNewDocument((json: string) => {
-        (window as Window & { __hfVariables?: Record<string, unknown> }).__hfVariables =
+        (window as Window & { __scVariables?: Record<string, unknown> }).__scVariables =
           JSON.parse(json);
       }, variablesJson);
     }
@@ -3094,7 +3094,7 @@ export async function createStaticVerificationPage(session: CaptureSession): Pro
       waitUntil: "domcontentloaded",
       timeout: pageNavigationTimeout,
     });
-    await page.evaluate(`window.__hfFlushSync?.()`);
+    await page.evaluate(`window.__scFlushSync?.()`);
     await pollHfReady(page, pageReadyTimeout);
     await pollSubCompositionTimelines(page, pageReadyTimeout);
     await applyVideoMetadataHints(page, session.options.videoMetadataHints);
@@ -3172,9 +3172,9 @@ export async function verifyStaticFramesSafe(
     await page.evaluate((tt: number) => {
       const hf = (
         window as unknown as {
-          __hf?: { seek?: (t: number, options?: { suppressEvents?: boolean }) => void };
+          __sc?: { seek?: (t: number, options?: { suppressEvents?: boolean }) => void };
         }
-      ).__hf;
+      ).__sc;
       if (hf && typeof hf.seek === "function") hf.seek(tt, { suppressEvents: false });
     }, t);
   };
@@ -3280,8 +3280,8 @@ async function armStaticDedup(
   const pageComposite = await page
     .evaluate(
       () =>
-        typeof (window as unknown as { __hf_page_composite_prepare?: unknown })
-          .__hf_page_composite_prepare === "function",
+        typeof (window as unknown as { __sc_page_composite_prepare?: unknown })
+          .__sc_page_composite_prepare === "function",
     )
     .catch(() => true); // fail CLOSED: if we can't determine, assume compositing → skip dedup
   if (pageComposite) {
@@ -3423,7 +3423,7 @@ async function computeTimelineAtRiskFrames(
 
     const w = window as unknown as {
       __timelines?: Record<string, AnyTween>;
-      __hf?: { duration?: number };
+      __sc?: { duration?: number };
     };
     const timelines = w.__timelines || {};
     const intervals: Array<{ start: number; end: number }> = [];
@@ -3432,7 +3432,7 @@ async function computeTimelineAtRiskFrames(
         walkTimeline(tl, 0, intervals);
       }
     }
-    const duration = w.__hf?.duration ?? 0;
+    const duration = w.__sc?.duration ?? 0;
     return { intervals, duration };
   });
 
@@ -3473,7 +3473,7 @@ function isNoCachedPaintRecordError(err: unknown): boolean {
 /**
  * True for the drawElement "capture canvas isn't set up yet" error — thrown
  * (or, on the batch path, returned as a string) by drawElementService when
- * the injected capture canvas (`#__hf_de_canvas`) isn't set up yet (observed
+ * the injected capture canvas (`#__sc_de_canvas`) isn't set up yet (observed
  * at frame 0 on some macOS/Chrome combinations, see #3423). Recoverable:
  * the composition root IS present, so `pageScreenshotCapture` captures valid
  * content.
@@ -4290,7 +4290,7 @@ export async function getCompositionDuration(session: CaptureSession): Promise<n
   if (!session.isInitialized) throw new Error("[FrameCapture] Session not initialized");
 
   return session.page.evaluate(() => {
-    return window.__hf?.duration ?? 0;
+    return window.__sc?.duration ?? 0;
   });
 }
 
@@ -4338,14 +4338,14 @@ async function captureDeVerificationFrames(
   if (session.options.format === "png") return; // worker-encode drain (the consumer) is jpeg-only
   const fps = fpsToNumber(session.options.fps);
   // Prefer the producer-resolved duration (the range that will actually be
-  // drained). The page's raw __hf.duration can exceed it — timelines outrun
+  // drained). The page's raw __sc.duration can exceed it — timelines outrun
   // their data-duration, and infinite-repeat GSAP reports a huge sentinel —
   // and indices derived from it would never be drained, silently disarming
   // verification for exactly the comps that need it.
   const duration =
     session.options.compositionDurationSeconds ??
     (await page.evaluate(
-      () => (window as unknown as { __hf?: { duration?: number } }).__hf?.duration ?? 0,
+      () => (window as unknown as { __sc?: { duration?: number } }).__sc?.duration ?? 0,
     ));
   const totalFrames = Math.floor(duration * fps);
   if (totalFrames < 10) return;
@@ -4378,9 +4378,9 @@ async function captureDeVerificationFrames(
     await page.evaluate((tt: number) => {
       const hf = (
         window as unknown as {
-          __hf?: { seek?: (x: number, options?: { suppressEvents?: boolean }) => void };
+          __sc?: { seek?: (x: number, options?: { suppressEvents?: boolean }) => void };
         }
-      ).__hf;
+      ).__sc;
       if (hf && typeof hf.seek === "function") hf.seek(tt, { suppressEvents: true });
     }, t);
   };

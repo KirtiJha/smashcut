@@ -29,7 +29,7 @@
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
   <script>
     window.__timelines = window.__timelines || {};
-    window.__hfMapbox = window.__hfMapbox || [];
+    window.__scMapbox = window.__scMapbox || [];
 
     // Draw procedural map visualization on canvas
     var canvas = document.getElementById('map-canvas');
@@ -115,7 +115,7 @@
     }, 100);
 
     // Register for adapter
-    window.__hfMapbox = [mockMap];
+    window.__scMapbox = [mockMap];
 
     // GSAP timeline
     var compId = 'mapbox-test';

@@ -1,5 +1,5 @@
 /**
- * @hyperframes/producer
+ * @smashcut/producer
  *
  * Generic HTML-to-video rendering engine using Chrome's BeginFrame API.
  * Framework-agnostic: works with GSAP, Lottie, Three.js, CSS animations,
@@ -82,8 +82,8 @@ export {
   type FileServerHandle,
 } from "./services/fileServer.js";
 
-// ── Video frame injection (Hyperframes-specific hook) ───────────────────────
-export { createVideoFrameInjector } from "@hyperframes/engine";
+// ── Video frame injection (Smashcut-specific hook) ───────────────────────
+export { createVideoFrameInjector } from "@smashcut/engine";
 
 // ── Configuration ───────────────────────────────────────────────────────────
 export { resolveConfig, DEFAULT_CONFIG, type ProducerConfig } from "./config.js";
@@ -133,9 +133,9 @@ export {
 } from "./services/hyperframeLint.js";
 
 // ── Distributed render primitives ───────────────────────────────────────────
-// The full surface lives at `@hyperframes/producer/distributed`; we
+// The full surface lives at `@smashcut/producer/distributed`; we
 // additionally re-export the three activity functions + their result
-// types here so callers that pin `@hyperframes/producer` don't need a
+// types here so callers that pin `@smashcut/producer` don't need a
 // separate subpath import.
 export {
   assemble,

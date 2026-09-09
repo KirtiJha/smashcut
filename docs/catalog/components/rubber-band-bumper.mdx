@@ -16,7 +16,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 ```html rubber-band-bumper.html
 <!doctype html>
 <!--
-  rubber-band-bumper: HyperFrames video primitive
+  rubber-band-bumper: SmashCut video primitive
 
   The outgoing panel is pulled opposite its exit direction in progressively
   smaller steps, visibly loading two accent bands. After a still threshold
@@ -224,8 +224,8 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
             var incoming = root.querySelector(".rbb-incoming");
             var bands = root.querySelectorAll(".rbb-band");
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             var direction = vars.direction === "left" ? "left" : "up";
@@ -351,7 +351,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 
 ## Install
 
-<InstallCommand command="npx hyperframes add rubber-band-bumper" item="rubber-band-bumper" />
+<InstallCommand command="npx smashcut add rubber-band-bumper" item="rubber-band-bumper" />
 
 That writes one file: `compositions/components/rubber-band-bumper.html`.
 
@@ -390,7 +390,7 @@ defaults, so this behaves exactly like the preview above until you change one:
 ```html
 <!doctype html>
 <!--
-  rubber-band-bumper: HyperFrames video primitive
+  rubber-band-bumper: SmashCut video primitive
 
   The outgoing panel is pulled opposite its exit direction in progressively
   smaller steps, visibly loading two accent bands. After a still threshold
@@ -598,8 +598,8 @@ defaults, so this behaves exactly like the preview above until you change one:
             var incoming = root.querySelector(".rbb-incoming");
             var bands = root.querySelectorAll(".rbb-band");
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             var direction = vars.direction === "left" ? "left" : "up";

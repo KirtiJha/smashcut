@@ -49,9 +49,9 @@ function opts(executions: ExecutionsClientLike) {
     bucketName: "b",
     projectId: "proj",
     location: "us-central1",
-    workflowId: "hyperframes-render",
+    workflowId: "smashcut-render",
     serviceUrl: "https://render-abc.run.app",
-    renderId: "hf-render-fixed",
+    renderId: "sc-render-fixed",
     executions,
   };
 }
@@ -60,11 +60,11 @@ describe("renderToCloudRun", () => {
   it("starts an execution and returns a handle", async () => {
     const fake = new FakeExecutions();
     const handle = await renderToCloudRun(opts(fake));
-    expect(handle.renderId).toBe("hf-render-fixed");
+    expect(handle.renderId).toBe("sc-render-fixed");
     expect(handle.executionName).toBe(
-      "projects/proj/locations/us-central1/workflows/hyperframes-render/executions/exec-123",
+      "projects/proj/locations/us-central1/workflows/smashcut-render/executions/exec-123",
     );
-    expect(handle.outputGcsUri).toBe("gs://b/renders/hf-render-fixed/output.mp4");
+    expect(handle.outputGcsUri).toBe("gs://b/renders/sc-render-fixed/output.mp4");
     expect(handle.projectGcsUri).toBe("gs://b/sites/abc/project.tar.gz");
     expect(Object.keys(handle)).toEqual([
       "renderId",
@@ -82,16 +82,16 @@ describe("renderToCloudRun", () => {
     await renderToCloudRun(opts(fake));
     const arg = JSON.parse(fake.lastArgument ?? "{}");
     expect(arg).toEqual({
-      RenderId: "hf-render-fixed",
+      RenderId: "sc-render-fixed",
       ProjectGcsUri: "gs://b/sites/abc/project.tar.gz",
-      PlanOutputGcsPrefix: "gs://b/renders/hf-render-fixed/",
-      OutputGcsUri: "gs://b/renders/hf-render-fixed/output.mp4",
+      PlanOutputGcsPrefix: "gs://b/renders/sc-render-fixed/",
+      OutputGcsUri: "gs://b/renders/sc-render-fixed/output.mp4",
       ServiceUrl: "https://render-abc.run.app",
       Config: config,
       PlanProtocol: "v2",
     });
     expect(fake.lastParent).toBe(
-      "projects/proj/locations/us-central1/workflows/hyperframes-render",
+      "projects/proj/locations/us-central1/workflows/smashcut-render",
     );
   });
 
@@ -100,10 +100,10 @@ describe("renderToCloudRun", () => {
     await renderToCloudRun({ ...opts(fake), planProtocol: "v1" });
     const arg = JSON.parse(fake.lastArgument ?? "{}");
     expect(arg).toEqual({
-      RenderId: "hf-render-fixed",
+      RenderId: "sc-render-fixed",
       ProjectGcsUri: "gs://b/sites/abc/project.tar.gz",
-      PlanOutputGcsPrefix: "gs://b/renders/hf-render-fixed/",
-      OutputGcsUri: "gs://b/renders/hf-render-fixed/output.mp4",
+      PlanOutputGcsPrefix: "gs://b/renders/sc-render-fixed/",
+      OutputGcsUri: "gs://b/renders/sc-render-fixed/output.mp4",
       ServiceUrl: "https://render-abc.run.app",
       Config: config,
       PlanProtocol: "v1",
@@ -116,7 +116,7 @@ describe("renderToCloudRun", () => {
       ...opts(fake),
       config: { ...config, format: "webm" } as SerializableDistributedRenderConfig,
     });
-    expect(handle.outputGcsUri).toBe("gs://b/renders/hf-render-fixed/output.webm");
+    expect(handle.outputGcsUri).toBe("gs://b/renders/sc-render-fixed/output.webm");
   });
 
   it("requires serviceUrl", async () => {

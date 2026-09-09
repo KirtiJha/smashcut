@@ -70,7 +70,7 @@ Lives at the project root. One row per seam; this is the vector ledger as data.
 - `axis` — `"x"`, `"y"`, or `"z"` (z = scale). `dir` — sign of motion:
   x −1 = leftward, y −1 = upward, z +1 = push (growing), z −1 = pull (shrinking).
 - `selector` — the element that CARRIES the seam motion. Use the wrapper when the
-  master timeline moves the wrapper; use the in-comp hero (id or `[data-hf-id=…]`)
+  master timeline moves the wrapper; use the in-comp hero (id or `[data-sc-id=…]`)
   when the seam motion is authored inside the sub-comp. `probe` tells you which.
 - `entry.scanRoot` (z seams) — subtree scanned for sign-fighting internal entrances;
   defaults to the entry selector.

@@ -10,7 +10,7 @@ import { useCallback } from "react";
 import { usePlayerStore, type TimelineElement } from "../player";
 import { useExpandedTimelineElements } from "../player/hooks/useExpandedTimelineElements";
 import { saveProjectFilesWithHistory } from "../utils/studioFileHistory";
-import { HF_AUDIO_GROUP_ATTR, HF_AUDIO_GROUP_TAG } from "@hyperframes/core/audio-groups";
+import { HF_AUDIO_GROUP_ATTR, HF_AUDIO_GROUP_TAG } from "@smashcut/core/audio-groups";
 import { runtimeAudioId } from "../player/lib/timelineElementHelpers";
 import { invalidateGroupInfoCache } from "../player/lib/timelineGroupInfo";
 import { readTagSnippetByTarget, type PatchOperation } from "../utils/sourcePatcher";
@@ -74,7 +74,7 @@ function captureAudioGroupState(
 const GROUP_ID_PATTERN = /^[A-Za-z0-9_-]+$/;
 
 /**
- * The group's own `<hf-audio-group>` element, appended before `</body>` when it
+ * The group's own `<sc-audio-group>` element, appended before `</body>` when it
  * is not already in the file.
  *
  * Membership alone is enough for `resolveAudioGroups` to see the group, but
@@ -150,7 +150,7 @@ interface CreateAudioGroupAndAssignMembersInput {
 /**
  * Group two or more voice clips: write `data-audio-group="<groupId>"` on
  * every one of them, atomically, one undo entry — the same multi-target shape
- * `setElementsHidden` uses for mute — plus the group's own `<hf-audio-group>`
+ * `setElementsHidden` uses for mute — plus the group's own `<sc-audio-group>`
  * element, which every later group-level write addresses by DOM id. No naming
  * dialog: the id is the default name, the way `resolveAudioGroups` reads it.
  */

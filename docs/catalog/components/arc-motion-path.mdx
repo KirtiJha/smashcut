@@ -9,12 +9,12 @@ import { InstallCommand } from "/snippets/install-command.jsx";
   className="w-full aspect-video rounded-xl border-0 bg-zinc-100 dark:bg-zinc-800"
   title="arc-motion-path preview"
   loading="lazy"
-  srcDoc={`<!doctype html><html><head><meta charset="utf-8"><style>html,body{margin:0;height:100%;overflow:hidden;background:transparent}hyperframes-player{display:block;width:100%;height:100%}</style><script src="https://cdn.jsdelivr.net/npm/@hyperframes/player@latest/dist/hyperframes-player.global.js"><\/script></head><body><script>fetch("/public/catalog/components/arc-motion-path.json").then(function(r){return r.json()}).then(function(d){var p=document.createElement("hyperframes-player");p.setAttribute("srcdoc",d.html);p.setAttribute("controls","");p.setAttribute("autoplay","");p.setAttribute("loop","");p.setAttribute("muted","");p.setAttribute("poster","https://static.heygen.ai/hyperframes-oss/docs/images/catalog/components/arc-motion-path.png");document.body.appendChild(p)});<\/script></body></html>`}
+  srcDoc={`<!doctype html><html><head><meta charset="utf-8"><style>html,body{margin:0;height:100%;overflow:hidden;background:transparent}smashcut-player{display:block;width:100%;height:100%}</style><script src="https://cdn.jsdelivr.net/npm/@smashcut/player@latest/dist/smashcut-player.global.js"><\/script></head><body><script>fetch("/public/catalog/components/arc-motion-path.json").then(function(r){return r.json()}).then(function(d){var p=document.createElement("smashcut-player");p.setAttribute("srcdoc",d.html);p.setAttribute("controls","");p.setAttribute("autoplay","");p.setAttribute("loop","");p.setAttribute("muted","");p.setAttribute("poster","https://static.heygen.ai/smashcut-oss/docs/images/catalog/components/arc-motion-path.png");document.body.appendChild(p)});<\/script></body></html>`}
 />
 
 ## Install
 
-<InstallCommand command="npx hyperframes add arc-motion-path" item="arc-motion-path" />
+<InstallCommand command="npx smashcut add arc-motion-path" item="arc-motion-path" />
 
 That writes one file: `compositions/components/arc-motion-path.html`.
 
@@ -24,14 +24,14 @@ That writes one file: `compositions/components/arc-motion-path.html`.
 
 ```html
 <!--
-  Arc Motion Path - advanced HyperFrames primitive.
+  Arc Motion Path - advanced SmashCut primitive.
 
   This is intentionally seekable: drive it from a paused GSAP timeline.
   MotionPath examples require GSAP MotionPathPlugin. Three.js examples expose
   a render(progress) adapter instead of a free-running requestAnimationFrame loop.
 -->
 
-<div class="hf-advanced-arc-motion-path">
+<div class="sc-advanced-arc-motion-path">
   <svg viewBox="0 0 760 430" aria-hidden="true">
     <path
       id="arc-motion-path-path-a"
@@ -46,11 +46,11 @@ That writes one file: `compositions/components/arc-motion-path.html`.
 </div>
 
 <style>
-  .hf-advanced-arc-motion-path {
+  .sc-advanced-arc-motion-path {
     color: var(--fg, #111827);
     font-family: var(--font-body, Inter, system-ui, sans-serif);
   }
-  .hf-advanced-arc-motion-path {
+  .sc-advanced-arc-motion-path {
     position: relative;
     width: 760px;
     height: 430px;
@@ -64,20 +64,20 @@ That writes one file: `compositions/components/arc-motion-path.html`.
     );
     box-shadow: 0 28px 80px rgba(15, 23, 42, 0.18);
   }
-  .hf-advanced-arc-motion-path svg {
+  .sc-advanced-arc-motion-path svg {
     position: absolute;
     inset: 0;
     width: 100%;
     height: 100%;
     overflow: visible;
   }
-  .hf-advanced-arc-motion-path .path {
+  .sc-advanced-arc-motion-path .path {
     fill: none;
     stroke: color-mix(in srgb, var(--fg, #111827) 18%, transparent);
     stroke-width: 3;
     stroke-dasharray: 10 12;
   }
-  .hf-advanced-arc-motion-path .core {
+  .sc-advanced-arc-motion-path .core {
     position: absolute;
     left: 50%;
     top: 50%;
@@ -94,7 +94,7 @@ That writes one file: `compositions/components/arc-motion-path.html`.
     letter-spacing: -0.04em;
     box-shadow: 0 22px 54px rgba(15, 23, 42, 0.25);
   }
-  .hf-advanced-arc-motion-path .chip {
+  .sc-advanced-arc-motion-path .chip {
     position: absolute;
     left: 0;
     top: 0;
@@ -109,7 +109,7 @@ That writes one file: `compositions/components/arc-motion-path.html`.
     font-weight: 800;
     transform-origin: 50% 50%;
   }
-  .hf-advanced-arc-motion-path .dot {
+  .sc-advanced-arc-motion-path .dot {
     width: 10px;
     height: 10px;
     border-radius: var(--radius, 999px);
@@ -120,7 +120,7 @@ That writes one file: `compositions/components/arc-motion-path.html`.
 <!--
   Timeline integration:
   const startTime = 0;
-  if (window.MotionPathPlugin) gsap.registerPlugin(MotionPathPlugin); tl.to('.hf-advanced-arc-motion-path .chip-a', { motionPath: { path: '#arc-motion-path-path-a', align: '#arc-motion-path-path-a', alignOrigin: [0.5, 0.5], autoRotate: true }, duration: 2.4, ease: 'power1.inOut' }, startTime); tl.to('.hf-advanced-arc-motion-path .chip-b', { motionPath: { path: '#arc-motion-path-path-b', align: '#arc-motion-path-path-b', alignOrigin: [0.5, 0.5], autoRotate: true, start: 0.1, end: 0.92 }, duration: 2.1, ease: 'sine.inOut' }, startTime + 0.25);
+  if (window.MotionPathPlugin) gsap.registerPlugin(MotionPathPlugin); tl.to('.sc-advanced-arc-motion-path .chip-a', { motionPath: { path: '#arc-motion-path-path-a', align: '#arc-motion-path-path-a', alignOrigin: [0.5, 0.5], autoRotate: true }, duration: 2.4, ease: 'power1.inOut' }, startTime); tl.to('.sc-advanced-arc-motion-path .chip-b', { motionPath: { path: '#arc-motion-path-path-b', align: '#arc-motion-path-path-b', alignOrigin: [0.5, 0.5], autoRotate: true, start: 0.1, end: 0.92 }, duration: 2.1, ease: 'sine.inOut' }, startTime + 0.25);
 -->
 ```
 
@@ -132,7 +132,7 @@ Open `compositions/components/arc-motion-path.html` and paste its contents into 
 
 {/* hf:generated-footer */}
 
-Tagged `video-primitive` `motionpath` `gsap-plugin` `hyperframes-native`.
+Tagged `video-primitive` `motionpath` `gsap-plugin` `smashcut-native`.
 
 ## Related topics
 

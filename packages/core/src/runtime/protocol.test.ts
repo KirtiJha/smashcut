@@ -32,7 +32,7 @@ describe("runtime protocol", () => {
   });
 
   it("keeps an explicit legacy fallback", () => {
-    expect(inspectRuntimeProtocol({ source: "hf-preview" }, 24)).toEqual({
+    expect(inspectRuntimeProtocol({ source: "sc-preview" }, 24)).toEqual({
       status: "legacy",
       fps: 24,
     });

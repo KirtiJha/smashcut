@@ -53,7 +53,7 @@ vi.mock("fs", async (importOriginal) => {
         fsRaceControls.replaceStaleLockAfterObservationPath = undefined;
         actual.rmSync(path, { recursive: true, force: true });
         actual.mkdirSync(path);
-        actual.mkdirSync(join(path, ".hf-owner-successor"));
+        actual.mkdirSync(join(path, ".sc-owner-successor"));
       }
       return observed;
     }) as typeof actual.readdirSync,
@@ -63,7 +63,7 @@ vi.mock("fs", async (importOriginal) => {
         fsRaceControls.replaceLockOnReleasePath = undefined;
         actual.rmSync(path, { recursive: true, force: true });
         actual.mkdirSync(path);
-        actual.mkdirSync(join(path, ".hf-owner-successor"));
+        actual.mkdirSync(join(path, ".sc-owner-successor"));
       }
       return Reflect.apply(actual.rmdirSync, actual, args);
     }) as typeof actual.rmdirSync,
@@ -89,7 +89,7 @@ vi.mock("fs", async (importOriginal) => {
 const tempDirs: string[] = [];
 
 function makeTempDir(): string {
-  const dir = mkdtempSync(join(tmpdir(), "hf-url-download-"));
+  const dir = mkdtempSync(join(tmpdir(), "sc-url-download-"));
   tempDirs.push(dir);
   return dir;
 }
@@ -97,7 +97,7 @@ function makeTempDir(): string {
 function temporaryDownloadEntries(dir: string): string[] {
   return readdirSync(dir).filter(
     (name) =>
-      name.includes(".partial-") || name.startsWith(".hf-download-") || name.endsWith(".hf-lock"),
+      name.includes(".partial-") || name.startsWith(".sc-download-") || name.endsWith(".sc-lock"),
   );
 }
 
@@ -1229,7 +1229,7 @@ describe("downloadToTemp atomic publication and bounded retry", () => {
     const url = "https://cdn.example/locked.mp4";
     const dir = makeTempDir();
     const cacheName = `download_${createHash("md5").update(url).digest("hex").slice(0, 12)}.mp4`;
-    const lockPath = join(dir, `${cacheName}.hf-lock`);
+    const lockPath = join(dir, `${cacheName}.sc-lock`);
     mkdirSync(lockPath);
     const fetchMock = vi.fn().mockResolvedValue(new Response("complete"));
     vi.stubGlobal("fetch", fetchMock);
@@ -1249,9 +1249,9 @@ describe("downloadToTemp atomic publication and bounded retry", () => {
     const url = "https://cdn.example/stale-lock.mp4";
     const dir = makeTempDir();
     const cacheName = `download_${createHash("md5").update(url).digest("hex").slice(0, 12)}.mp4`;
-    const lockPath = join(dir, `${cacheName}.hf-lock`);
+    const lockPath = join(dir, `${cacheName}.sc-lock`);
     mkdirSync(lockPath);
-    mkdirSync(join(lockPath, ".hf-owner-stale"));
+    mkdirSync(join(lockPath, ".sc-owner-stale"));
     const staleTime = new Date(Date.now() - 6 * 60_000);
     utimesSync(lockPath, staleTime, staleTime);
     const fetchMock = vi.fn().mockResolvedValue(new Response("complete"));
@@ -1269,9 +1269,9 @@ describe("downloadToTemp atomic publication and bounded retry", () => {
     const url = "https://cdn.example/stale-lock-successor.mp4";
     const dir = makeTempDir();
     const cacheName = `download_${createHash("md5").update(url).digest("hex").slice(0, 12)}.mp4`;
-    const lockPath = join(dir, `${cacheName}.hf-lock`);
+    const lockPath = join(dir, `${cacheName}.sc-lock`);
     mkdirSync(lockPath);
-    mkdirSync(join(lockPath, ".hf-owner-stale"));
+    mkdirSync(join(lockPath, ".sc-owner-stale"));
     const staleTime = new Date(Date.now() - 6 * 60_000);
     utimesSync(lockPath, staleTime, staleTime);
     fsRaceControls.replaceStaleLockAfterObservationPath = lockPath;
@@ -1296,7 +1296,7 @@ describe("downloadToTemp atomic publication and bounded retry", () => {
     const dir = makeTempDir();
     const cacheName = `download_${createHash("md5").update(url).digest("hex").slice(0, 12)}.mp4`;
     const cachePath = join(dir, cacheName);
-    const lockPath = `${cachePath}.hf-lock`;
+    const lockPath = `${cachePath}.sc-lock`;
     writeFileSync(cachePath, "cached");
     fsRaceControls.replaceLockOnReleasePath = lockPath;
     const fetchMock = vi.fn();

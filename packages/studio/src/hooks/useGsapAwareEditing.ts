@@ -8,7 +8,7 @@
  * from the rest of the editing orchestration.
  */
 import { useCallback } from "react";
-import type { GsapAnimation } from "@hyperframes/core/gsap-parser";
+import type { GsapAnimation } from "@smashcut/core/gsap-parser";
 import type { DomEditSelection } from "../components/editor/domEditingTypes";
 import {
   POSITION_CHANNELS,
@@ -172,7 +172,7 @@ export function useGsapAwareEditing({
 
   // Multi-select (group) drag: route EACH element through the SAME GSAP intercept as
   // a single drag, so every position is written as GSAP code (tl.set / keyframes /
-  // gsap.set) — NEVER the deprecated `--hf-studio-offset` CSS var, and GSAP-animated
+  // gsap.set) — NEVER the deprecated `--sc-studio-offset` CSS var, and GSAP-animated
   // elements are no longer blocked in a group. No CSS fallback: with no GSAP
   // composition there's nothing to write (a no-op, exactly like the single-drag path).
   const handleGsapAwareGroupPathOffsetCommit = useCallback(

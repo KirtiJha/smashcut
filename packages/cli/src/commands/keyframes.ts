@@ -1,7 +1,7 @@
 import { defineCommand } from "citty";
 import { existsSync, readFileSync, statSync } from "node:fs";
 import { resolve, dirname, basename, join, relative, sep } from "node:path";
-import { parseGsapScript, type GsapAnimation } from "@hyperframes/core/gsap-parser";
+import { parseGsapScript, type GsapAnimation } from "@smashcut/core/gsap-parser";
 import type { Example } from "./_examples.js";
 import { c } from "../ui/colors.js";
 import { ensureDOMParser } from "../utils/dom.js";
@@ -9,11 +9,11 @@ import { resolveProject } from "../utils/project.js";
 import { withMeta } from "../utils/updateCheck.js";
 
 export const examples: Example[] = [
-  ["Surface every keyframe + motion path in the project", "hyperframes keyframes"],
-  ["Inspect one composition file", "hyperframes keyframes compositions/scene.html"],
-  ["Machine-readable output for an agent", "hyperframes keyframes --json"],
-  ["Only one element's keyframes", "hyperframes keyframes --selector '#puck-a'"],
-  ["Runtime-aware hint for CSS/Anime compositions", "hyperframes keyframes --runtime all"],
+  ["Surface every keyframe + motion path in the project", "smashcut keyframes"],
+  ["Inspect one composition file", "smashcut keyframes compositions/scene.html"],
+  ["Machine-readable output for an agent", "smashcut keyframes --json"],
+  ["Only one element's keyframes", "smashcut keyframes --selector '#puck-a'"],
+  ["Runtime-aware hint for CSS/Anime compositions", "smashcut keyframes --runtime all"],
 ];
 
 // ── Surfaced shapes ──────────────────────────────────────────────────────────
@@ -184,9 +184,9 @@ function flatKeyframes(anim: GsapAnimation): KeyframePoint[] {
 }
 
 // Studio-internal markers that aren't user motion: the position-hold `set` GSAP
-// runs before a keyframed position tween (`data: "hf-hold"`).
+// runs before a keyframed position tween (`data: "sc-hold"`).
 function isHoldMarker(anim: GsapAnimation): boolean {
-  return anim.properties?.data === "hf-hold" || anim.fromProperties?.data === "hf-hold";
+  return anim.properties?.data === "sc-hold" || anim.fromProperties?.data === "sc-hold";
 }
 
 // Drop internal / non-visual keys so they don't pollute the surfaced keyframes.
@@ -439,7 +439,7 @@ function animeAddTargets(script: string): string[] {
 
 function surfaceAnime(script: string): SurfacedAnimeAnimation[] {
   if (!/\banime\s*(?:\.(?:timeline|createTimeline))?\s*\(/.test(script)) return [];
-  const registered = /__hfAnime[\s\S]*?\.push\s*\(/.test(script) || /__hfAnime\s*=/.test(script);
+  const registered = /__scAnime[\s\S]*?\.push\s*\(/.test(script) || /__scAnime\s*=/.test(script);
   const timelineCount = (script.match(/\banime\.(?:timeline|createTimeline)\s*\(/g) ?? []).length;
   const animationCount = (script.match(/\banime\s*\(/g) ?? []).length;
   const targets = [
@@ -886,7 +886,7 @@ const defaultKeyframesCommand: KeyframesCommandOptions = {
   name: "keyframes",
   description:
     "See, debug, and refine keyframes — surface GSAP, CSS @keyframes, Anime.js, paths, and onion-shot diagnostics",
-  invocation: "hyperframes keyframes",
+  invocation: "smashcut keyframes",
   defaultRuntime: "all",
 };
 

@@ -1,7 +1,7 @@
 ---
 title: "Get unstuck"
 sidebarTitle: "Get unstuck"
-description: "Start with what you can see, try the smallest useful fix, and get back to your HyperFrames task."
+description: "Start with what you can see, try the smallest useful fix, and get back to your SmashCut task."
 ---
 
 Find the symptom that looks like yours below.
@@ -10,8 +10,8 @@ Find the symptom that looks like yours below.
 
 The browser never opens, the page is unreachable, or the project does not load.
 
-1. Open a terminal in the HyperFrames project folder.
-2. Run `npx hyperframes preview`.
+1. Open a terminal in the SmashCut project folder.
+2. Run `npx smashcut preview`.
 3. Keep that process running while Studio is open.
 4. Use the local URL printed in the terminal.
 
@@ -29,8 +29,8 @@ application, save that file first.
 3. Run the project checks:
 
 ```bash
-npx hyperframes lint
-npx hyperframes check
+npx smashcut lint
+npx smashcut check
 ```
 
 `lint` checks the composition structure. `check` opens the project in a browser gate and catches runtime, layout, motion, and contrast problems.
@@ -68,16 +68,16 @@ Motion jumps, drifts, starts at the wrong time, or changes after seeking. First 
 - only after scrubbing;
 - only in the final render.
 
-That distinction separates a timeline mistake from non-deterministic animation. HyperFrames animation must be seekable: the same frame should look the same every time it is requested.
+That distinction separates a timeline mistake from non-deterministic animation. SmashCut animation must be seekable: the same frame should look the same every time it is requested.
 
-Run `npx hyperframes check`, then give your agent the smallest affected scene and the exact timestamp.
+Run `npx smashcut check`, then give your agent the smallest affected scene and the exact timestamp.
 
 ## Render failed or differs from preview
 
 Export stops, produces the wrong result, or disagrees with Studio.
 
 1. Preserve the complete render error.
-2. Run `npx hyperframes check`.
+2. Run `npx smashcut check`.
 3. Confirm fonts and media are local and load before capture.
 4. Check the affected timestamp in Studio.
 5. Try the normal MP4 preset before changing codecs or advanced flags.
@@ -103,7 +103,7 @@ Where it happens: Studio / lint / check / render
 
 Does it happen every time?
 
-HyperFrames version:
+SmashCut version:
 
 Operating system:
 

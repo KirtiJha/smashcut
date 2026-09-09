@@ -47,7 +47,7 @@ const outputDir = resolve(repoRoot, "docs/images/templates");
 if (!process.env.PRODUCER_HYPERFRAME_MANIFEST_PATH) {
   process.env.PRODUCER_HYPERFRAME_MANIFEST_PATH = resolve(
     repoRoot,
-    "packages/core/dist/hyperframe.manifest.json",
+    "packages/core/dist/smashcut.manifest.json",
   );
 }
 
@@ -127,7 +127,7 @@ function discoverTemplates(only: string | null): string[] {
 }
 
 function prepareTemplateDir(templateId: string): string {
-  const tmpDir = mkdtempSync(join(tmpdir(), `hf-preview-${templateId}-`));
+  const tmpDir = mkdtempSync(join(tmpdir(), `sc-preview-${templateId}-`));
   const src = resolveTemplateDir(templateId);
   if (!src) throw new Error(`Template directory not found for "${templateId}"`);
   cpSync(src, tmpDir, { recursive: true });

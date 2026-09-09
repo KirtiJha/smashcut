@@ -95,7 +95,7 @@ describe("useElementLifecycleOps — deleting a canvas multi-selection", () => {
       onTrySdkDelete: vi.fn(async () => ({ status: "committed", version: "v1" }) as const),
     });
 
-    const target = { ...selectionFor("a"), hfId: "hf-a" };
+    const target = { ...selectionFor("a"), hfId: "sc-a" };
     let outcome: unknown;
     await act(async () => {
       outcome = await ops.handleDomEditElementsDelete([target]);

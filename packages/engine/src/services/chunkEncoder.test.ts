@@ -24,7 +24,7 @@ afterEach(() => {
 });
 
 function createFrameFixture(): { root: string; framesDir: string } {
-  const root = mkdtempSync(join(tmpdir(), "hf-chunk-encoder-"));
+  const root = mkdtempSync(join(tmpdir(), "sc-chunk-encoder-"));
   tempDirs.push(root);
   const framesDir = join(root, "frames");
   mkdirSync(framesDir);
@@ -457,7 +457,7 @@ describe("muxVideoWithAudio audio codec handling", () => {
     });
   });
 
-  it("copies HyperFrames AAC sidecars into MP4 instead of re-encoding", async () => {
+  it("copies SmashCut AAC sidecars into MP4 instead of re-encoding", async () => {
     const { spawn, calls } = createSpawnSpy();
     vi.resetModules();
     vi.doMock("child_process", () => ({ spawn }));
@@ -671,7 +671,7 @@ describe("muxVideoWithAudio audio codec handling", () => {
     await expect(muxPromise).resolves.toMatchObject({ success: true });
   });
 
-  it("copies HyperFrames AAC sidecars into MOV containers without MP4 faststart flags", async () => {
+  it("copies SmashCut AAC sidecars into MOV containers without MP4 faststart flags", async () => {
     const { spawn, calls } = createSpawnSpy();
     vi.resetModules();
     vi.doMock("child_process", () => ({ spawn }));

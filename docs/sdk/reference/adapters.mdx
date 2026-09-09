@@ -8,7 +8,7 @@ The SDK decouples editing sessions from storage and preview surfaces through two
 ## PersistAdapter
 
 ```typescript
-import type { PersistAdapter } from "@hyperframes/sdk";
+import type { PersistAdapter } from "@smashcut/sdk";
 ```
 
 Injectable storage adapter. Decouples the SDK from the underlying persistence mechanism so the same session code runs in tests (memory), local dev (filesystem), and production (cloud storage).
@@ -77,7 +77,7 @@ The `key` is adapter-defined and opaque to callers — pass it directly to `load
 ## PreviewAdapter
 
 ```typescript
-import type { PreviewAdapter } from "@hyperframes/sdk";
+import type { PreviewAdapter } from "@smashcut/sdk";
 ```
 
 Injectable preview surface adapter. Decouples the SDK from the host's rendering layer. The SDK is **not** in the 60fps draft loop: your pointer-move handler calls `applyDraft()` directly on the adapter at 60fps, and the SDK only gets involved once per gesture when `commitPreview()` fires to derive and dispatch the resulting op.
@@ -98,7 +98,7 @@ interface PreviewAdapter {
 ```
 
 <ParamField path="elementAtPoint" type="(x, y, opts?) => ElementAtPointResult | null">
-  Synchronous hit-test at composition coordinates `(x, y)`. Returns the nearest `[data-hf-id]` element under the point, or `null` for a transparent hit (the composition root, an opacity-0 element, or nothing at all). Requires a same-origin iframe — cross-origin access throws a DOMException. The `atTime` option reflects GSAP state at the current playhead; seeking to a speculative time is not supported.
+  Synchronous hit-test at composition coordinates `(x, y)`. Returns the nearest `[data-sc-id]` element under the point, or `null` for a transparent hit (the composition root, an opacity-0 element, or nothing at all). Requires a same-origin iframe — cross-origin access throws a DOMException. The `atTime` option reflects GSAP state at the current playhead; seeking to a speculative time is not supported.
 </ParamField>
 
 <ParamField path="isProvablyEmptyAt" type="(x, y, opts?) => boolean">
@@ -163,7 +163,7 @@ interface ElementAtPointResult {
 }
 ```
 
-The `id` is the element's `data-hf-id` value; `tag` is its lowercase tag name (e.g. `"div"`, `"img"`).
+The `id` is the element's `data-sc-id` value; `tag` is its lowercase tag name (e.g. `"div"`, `"img"`).
 
 ### DraftProps
 
@@ -192,13 +192,13 @@ interface PaintQueryOptions {
 </ParamField>
 
 <ParamField path="addressableOnly" type="boolean" default="true">
-  Consider only model-addressable elements (`[data-hf-id]`). Stamping happens once, on the document `openComposition` was given, so anything the runtime creates or fetches afterwards is invisible to the default walk: split-text word and character spans (splitting also empties the stamped parent's own text nodes, so the parent stops counting too), cloned nodes, and whole sub-composition scenes mounted from `data-composition-src`. Kinetic typography and registry-mounted lower-thirds — both canonical transparent-overlay content — therefore read as no-ink by default.
+  Consider only model-addressable elements (`[data-sc-id]`). Stamping happens once, on the document `openComposition` was given, so anything the runtime creates or fetches afterwards is invisible to the default walk: split-text word and character spans (splitting also empties the stamped parent's own text nodes, so the parent stops counting too), cloned nodes, and whole sub-composition scenes mounted from `data-composition-src`. Kinetic typography and registry-mounted lower-thirds — both canonical transparent-overlay content — therefore read as no-ink by default.
 
   Set `false` to widen the walk to every element, which sees that content at the cost of a larger candidate set.
 </ParamField>
 
 <Note>
-  `ElementAtPointResult` and `DraftProps` are the structural shapes a `PreviewAdapter` produces and consumes. They are **not** re-exported from the `@hyperframes/sdk` barrel — you implement against these shapes rather than importing them. `PaintQueryOptions` **is** re-exported, since callers pass it rather than implement it.
+  `ElementAtPointResult` and `DraftProps` are the structural shapes a `PreviewAdapter` produces and consumes. They are **not** re-exported from the `@smashcut/sdk` barrel — you implement against these shapes rather than importing them. `PaintQueryOptions` **is** re-exported, since callers pass it rather than implement it.
 </Note>
 
 ---
@@ -208,7 +208,7 @@ interface PaintQueryOptions {
 ### createMemoryAdapter
 
 ```typescript
-import { createMemoryAdapter } from "@hyperframes/sdk";
+import { createMemoryAdapter } from "@smashcut/sdk";
 
 function createMemoryAdapter(): PersistAdapter & { injectFault(message: string): void };
 ```
@@ -221,7 +221,7 @@ The returned value also exposes `injectFault(message)` — a test helper that ca
 const persist = createMemoryAdapter();
 
 const comp = await openComposition(html, { persist });
-comp.setText("hf-title", "Hello");
+comp.setText("sc-title", "Hello");
 await comp.flush();
 
 const saved = await persist.read("composition.html");
@@ -236,12 +236,12 @@ const saved = await persist.read("composition.html");
 ### createFsAdapter
 
 ```typescript
-import { createFsAdapter } from "@hyperframes/sdk/adapters/fs";
+import { createFsAdapter } from "@smashcut/sdk/adapters/fs";
 
 function createFsAdapter(opts: FsAdapterOptions): PersistAdapter;
 ```
 
-**Node.js only.** Returns a `PersistAdapter` that reads and writes files under a root directory. Import from the `@hyperframes/sdk/adapters/fs` subpath — this module uses Node `fs/promises` and is excluded from the browser-safe main bundle.
+**Node.js only.** Returns a `PersistAdapter` that reads and writes files under a root directory. Import from the `@smashcut/sdk/adapters/fs` subpath — this module uses Node `fs/promises` and is excluded from the browser-safe main bundle.
 
 #### FsAdapterOptions
 
@@ -262,18 +262,18 @@ interface FsAdapterOptions {
   Maximum number of historical versions retained per file. Oldest versions are pruned automatically when the limit is exceeded. Defaults to `20`.
 </ParamField>
 
-The adapter writes the current composition at `{root}/{path}` and stores version snapshots in `{root}/.hf-versions/{path}/`. Version keys encode `Date.now()` and a monotonic counter (`"1750000000000-0001"`), so `listVersions()` returns them newest-first by lexicographic descending sort.
+The adapter writes the current composition at `{root}/{path}` and stores version snapshots in `{root}/.sc-versions/{path}/`. Version keys encode `Date.now()` and a monotonic counter (`"1750000000000-0001"`), so `listVersions()` returns them newest-first by lexicographic descending sort.
 
 ```typescript
-import { openComposition } from "@hyperframes/sdk";
-import { createFsAdapter } from "@hyperframes/sdk/adapters/fs";
+import { openComposition } from "@smashcut/sdk";
+import { createFsAdapter } from "@smashcut/sdk/adapters/fs";
 
 const comp = await openComposition(html, {
   persist: createFsAdapter({ root: "./project", maxVersions: 50 }),
   persistPath: "index.html",
 });
 
-comp.setText("hf-title", "Saved");
+comp.setText("sc-title", "Saved");
 await comp.flush();
 
 // List saved versions
@@ -283,7 +283,7 @@ const previous = await adapter.loadFrom("index.html", versions[1].key);
 ```
 
 <Warning>
-  `createFsAdapter` uses Node.js `fs/promises`. Do not import it in browser or edge environments — import from `@hyperframes/sdk/adapters/fs` (the subpath) so bundlers can tree-shake it.
+  `createFsAdapter` uses Node.js `fs/promises`. Do not import it in browser or edge environments — import from `@smashcut/sdk/adapters/fs` (the subpath) so bundlers can tree-shake it.
 </Warning>
 
 ---
@@ -291,7 +291,7 @@ const previous = await adapter.loadFrom("index.html", versions[1].key);
 ### createHeadlessAdapter
 
 ```typescript
-import { createHeadlessAdapter } from "@hyperframes/sdk";
+import { createHeadlessAdapter } from "@smashcut/sdk";
 
 function createHeadlessAdapter(): PreviewAdapter;
 ```
@@ -303,7 +303,7 @@ Returns a no-op `PreviewAdapter` for headless use: agents, CI pipelines, and ser
 Pass this adapter when you open a composition for programmatic editing and do not need a live preview surface.
 
 ```typescript
-import { openComposition, createHeadlessAdapter } from "@hyperframes/sdk";
+import { openComposition, createHeadlessAdapter } from "@smashcut/sdk";
 
 const comp = await openComposition(html, {
   preview: createHeadlessAdapter(),
@@ -321,7 +321,7 @@ const comp = await openComposition(html, {
 ### createIframePreviewAdapter
 
 ```typescript
-import { createIframePreviewAdapter } from "@hyperframes/sdk";
+import { createIframePreviewAdapter } from "@smashcut/sdk";
 
 function createIframePreviewAdapter(
   iframe: HTMLIFrameElement,
@@ -346,11 +346,11 @@ import {
   imageAlphaOpaqueAt,
   alphaIsOpaque,
   mapPointToImagePixel,
-} from "@hyperframes/sdk/adapters/iframe";
+} from "@smashcut/sdk/adapters/iframe";
 ```
 
 ```typescript
-import { openComposition, createIframePreviewAdapter } from "@hyperframes/sdk";
+import { openComposition, createIframePreviewAdapter } from "@smashcut/sdk";
 
 const iframe = document.querySelector<HTMLIFrameElement>("#preview-frame")!;
 // Optional, and dispatched with `?.` — the callback cannot fire before
@@ -377,13 +377,13 @@ if (hit) {
 
 | Symbol | Imported from |
 |--------|---------------|
-| `PersistAdapter`, `PreviewAdapter`, `PersistVersionEntry` | `@hyperframes/sdk` (types only) |
-| `createMemoryAdapter` | `@hyperframes/sdk` |
-| `createHeadlessAdapter` | `@hyperframes/sdk` |
-| `createIframePreviewAdapter`, `resolveNearestHfElement` | `@hyperframes/sdk` |
-| `PaintQueryOptions` | `@hyperframes/sdk` (type only) |
-| `elementPaintsInk`, `compositionPaintsAt`, `imageAlphaOpaqueAt`, `alphaIsOpaque`, `mapPointToImagePixel`, `INTRINSIC_PAINT_TAGS` | `@hyperframes/sdk/adapters/iframe` |
-| `createFsAdapter`, `FsAdapterOptions` | `@hyperframes/sdk/adapters/fs` |
+| `PersistAdapter`, `PreviewAdapter`, `PersistVersionEntry` | `@smashcut/sdk` (types only) |
+| `createMemoryAdapter` | `@smashcut/sdk` |
+| `createHeadlessAdapter` | `@smashcut/sdk` |
+| `createIframePreviewAdapter`, `resolveNearestHfElement` | `@smashcut/sdk` |
+| `PaintQueryOptions` | `@smashcut/sdk` (type only) |
+| `elementPaintsInk`, `compositionPaintsAt`, `imageAlphaOpaqueAt`, `alphaIsOpaque`, `mapPointToImagePixel`, `INTRINSIC_PAINT_TAGS` | `@smashcut/sdk/adapters/iframe` |
+| `createFsAdapter`, `FsAdapterOptions` | `@smashcut/sdk/adapters/fs` |
 
 <CardGroup cols={2}>
   <Card title="Persistence Guide" icon="floppy-disk" href="/sdk/guides/persistence">

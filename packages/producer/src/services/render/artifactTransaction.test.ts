@@ -15,11 +15,11 @@ import { tmpdir } from "node:os";
 import { ArtifactTransaction, type ArtifactDurationProbe } from "./artifactTransaction.js";
 
 function tempDir(): string {
-  return mkdtempSync(join(tmpdir(), "hf-artifact-transaction-"));
+  return mkdtempSync(join(tmpdir(), "sc-artifact-transaction-"));
 }
 
 function transactionDirectories(dir: string): string[] {
-  return readdirSync(dir).filter((name) => name.includes(".hf-transaction-"));
+  return readdirSync(dir).filter((name) => name.includes(".sc-transaction-"));
 }
 
 describe("ArtifactTransaction", () => {

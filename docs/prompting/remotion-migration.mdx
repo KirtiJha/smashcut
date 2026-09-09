@@ -1,13 +1,13 @@
 ---
 title: Porting from Remotion
-description: "What to say to migrate an existing Remotion (React) composition's source into HyperFrames HTML — and what to expect the agent to refuse."
+description: "What to say to migrate an existing Remotion (React) composition's source into SmashCut HTML — and what to expect the agent to refuse."
 ---
 
 This is the last chapter of Level 6, and the last before the capstone level — bringing an existing Remotion project into everything you now know: brand systems, variables, editing, iteration, reference-matching, and export.
 
 ## What this makes
 
-Not a new video — a **translation**. The [`/remotion-to-hyperframes`](/prompting/overview) workflow reads an existing Remotion (React) composition's source and rewrites it as HyperFrames HTML: the same frames, the same timing, the same visual output, running on GSAP instead of React's frame-callback model.
+Not a new video — a **translation**. The [`/remotion-to-smashcut`](/prompting/overview) workflow reads an existing Remotion (React) composition's source and rewrites it as SmashCut HTML: the same frames, the same timing, the same visual output, running on GSAP instead of React's frame-callback model.
 
 This is a migration, not a creation workflow. It only fires on an explicit ask to port, convert, migrate, or translate a **Remotion** source. Two things that look similar but aren't this:
 
@@ -18,15 +18,15 @@ The direction is one-way. There's no export back out to Remotion or any other fr
 
 ## Base prompt
 
-> /remotion-to-hyperframes Port the composition at `src/HeroReveal.tsx` (Remotion project root: `.`) to HyperFrames. Keep the same duration, fps, and dimensions. Write `TRANSLATION_NOTES.md` for anything that doesn't translate cleanly.
+> /remotion-to-smashcut Port the composition at `src/HeroReveal.tsx` (Remotion project root: `.`) to SmashCut. Keep the same duration, fps, and dimensions. Write `TRANSLATION_NOTES.md` for anything that doesn't translate cleanly.
 
 Naming the exact file (not just "my Remotion project") matters once a project has more than one `<Composition>` registered — say which one.
 
 ## What won't translate — and why that's correct
 
-The skill lints the source before translating anything, and **refuses** rather than approximates when it hits a pattern HyperFrames' seek-driven model can't represent deterministically:
+The skill lints the source before translating anything, and **refuses** rather than approximates when it hits a pattern SmashCut' seek-driven model can't represent deterministically:
 
-- **State-driven animation** — `useState`, `useReducer`, or `useEffect`/`useLayoutEffect` with real dependencies. HyperFrames seeks to an arbitrary frame and expects the same pixels every time; a state machine that reacts to its own history can't guarantee that. The skill recommends a runtime-interop pattern instead of silently producing a translation that "looks right" but isn't frame-accurate.
+- **State-driven animation** — `useState`, `useReducer`, or `useEffect`/`useLayoutEffect` with real dependencies. SmashCut seeks to an arbitrary frame and expects the same pixels every time; a state machine that reacts to its own history can't guarantee that. The skill recommends a runtime-interop pattern instead of silently producing a translation that "looks right" but isn't frame-accurate.
 - **Third-party React UI kits** — MUI, Chakra, Mantine, antd, shadcn, Radix, NextUI. There's no HTML/CSS/GSAP equivalent to translate them into.
 - **`@remotion/lambda` deploy config** — not a blocker. It's dropped (deployment config, not animation) and the rest of the composition still translates.
 
@@ -36,7 +36,7 @@ If your source hits a blocker, expect the agent to stop and explain the interop 
 
 Every translation is graded against the Remotion original by SSIM (structural similarity) on rendered frames, not eyeballed. If you're porting something non-trivial, ask for the check explicitly:
 
-> After translating, render both the Remotion original and the HyperFrames version and report the SSIM diff.
+> After translating, render both the Remotion original and the SmashCut version and report the SSIM diff.
 
 A translation that "looks right" in preview can still measure meaningfully below the validated baseline — that's the difference this workflow is built to catch.
 
@@ -52,7 +52,7 @@ A translation that "looks right" in preview can still measure meaningfully below
 ## Common failure modes
 
 **Asking for a fresh build with Remotion as inspiration.** If you don't have an actual Remotion source to translate, this isn't the workflow — it's a normal build.
-- ❌ `/remotion-to-hyperframes make something like my Remotion intro`
+- ❌ `/remotion-to-smashcut make something like my Remotion intro`
 - ✅ `/general-video make an intro like this: [description]` — no Remotion source, no migration
 
 **Asking it to push past a lint blocker.** A `useState`-driven composition isn't a "translate it anyway, best effort" situation — it's a different problem (runtime interop), and forcing a translation produces something that looks plausible but isn't frame-accurate.

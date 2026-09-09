@@ -14,7 +14,7 @@
 -->
 
 <div
-  id="hf-vignette"
+  id="sc-vignette"
   style="
     position: absolute;
     top: 0;
@@ -27,7 +27,7 @@
 ></div>
 
 <style>
-  #hf-vignette {
+  #sc-vignette {
     background: radial-gradient(
       var(--vignette-shape, ellipse) at center,
       transparent var(--vignette-size, 45%),
@@ -40,12 +40,12 @@
   Timeline integration example (add to your composition's GSAP timeline):
 
   // Fade the vignette in over the first second
-  tl.fromTo("#hf-vignette",
+  tl.fromTo("#sc-vignette",
     { "--vignette-color": "rgba(0, 0, 0, 0)" },
     { "--vignette-color": "rgba(0, 0, 0, 0.7)", duration: 1, ease: "power2.out" },
     0,
   );
 
   // Or breathe the size in and out (works with any easing)
-  tl.to("#hf-vignette", { "--vignette-size": "35%", duration: 1, ease: "sine.inOut" }, 2);
+  tl.to("#sc-vignette", { "--vignette-size": "35%", duration: 1, ease: "sine.inOut" }, 2);
 -->

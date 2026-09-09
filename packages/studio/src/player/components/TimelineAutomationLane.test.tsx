@@ -5,15 +5,15 @@ import { createRoot } from "react-dom/client";
 import { TimelineAutomationLane } from "./TimelineAutomationLane";
 import { PAD_X } from "./automationLaneGeometry";
 import { AUTOMATION_LANE_H } from "./automationLaneHeight";
-import type { HfAudioFxChain } from "@hyperframes/core/audio-fx";
-import { MAX_AUDIO_GAIN } from "@hyperframes/core/audio-gain";
+import type { HfAudioFxChain } from "@smashcut/core/audio-fx";
+import { MAX_AUDIO_GAIN } from "@smashcut/core/audio-gain";
 import {
   normalizeAutomation,
   resolveAutomationRange,
   sampleAutomationLane,
   VOLUME_RANGE,
   type HfAutomation,
-} from "@hyperframes/core/audio-automation";
+} from "@smashcut/core/audio-automation";
 
 const chain: HfAudioFxChain = {
   version: 1,
@@ -248,7 +248,7 @@ describe("TimelineAutomationLane", () => {
     // Drawn as an overlay rather than a CSS border for this reason: hit testing maps
     // pointer positions through the svg's box, and a border would move it by a pixel.
     const { container } = render(<TimelineAutomationLane {...laneProps({ automation: ramp })} />);
-    const lane = container.querySelector<HTMLElement>(".hf-automation-lane");
+    const lane = container.querySelector<HTMLElement>(".sc-automation-lane");
     const svg = container.querySelector("svg");
     expect(lane?.style.height).toBe(`${AUTOMATION_LANE_H}px`);
     expect(svg?.getAttribute("height")).toBe(String(AUTOMATION_LANE_H));
@@ -261,7 +261,7 @@ describe("TimelineAutomationLane", () => {
     const { container } = render(
       <TimelineAutomationLane {...laneProps({ target: "fx.n1.frequency", leftPx: 0 })} />,
     );
-    expect(container.querySelector(".hf-automation-name")).toBeNull();
+    expect(container.querySelector(".sc-automation-name")).toBeNull();
     expect(container.textContent).not.toMatch(/Cutoff/);
   });
 
@@ -617,7 +617,7 @@ describe("TimelineAutomationLane point visibility", () => {
     return circle.style.opacity;
   };
   const svgOf = (container: HTMLElement): SVGSVGElement =>
-    container.querySelector<SVGSVGElement>(".hf-automation-svg")!;
+    container.querySelector<SVGSVGElement>(".sc-automation-svg")!;
   // React synthesises onPointerEnter/Leave from pointerover/pointerout, so those
   // are the events a hover has to be driven with.
   const enter = (el: Element) => fire(el, "pointerover");
@@ -877,7 +877,7 @@ describe("TimelineAutomationLane modifiers", () => {
     // far away the next click landed.
     const { svg, container, props } = mount(ramp);
     fire(svg, "dblclick", at(0, 1));
-    const input = container.querySelector<HTMLInputElement>(".hf-automation-value");
+    const input = container.querySelector<HTMLInputElement>(".sc-automation-value");
     expect(input).not.toBeNull();
     act(() => {
       if (!input) return;
@@ -892,7 +892,7 @@ describe("TimelineAutomationLane modifiers", () => {
     });
 
     fire(svg, "pointerdown", at(2, 0.5));
-    expect(container.querySelector(".hf-automation-value")).toBeNull();
+    expect(container.querySelector(".sc-automation-value")).toBeNull();
     const written = props.onCommit.mock.calls.at(-1)?.[0] as HfAutomation;
     expect(written.lanes[0]?.points[0]?.v).toBeCloseTo(0.4, 5);
   });
@@ -1026,7 +1026,7 @@ describe("TimelineAutomationLane modifiers", () => {
     // -6.0 dB is not a pixel you can find by dragging.
     const { container, svg, props } = mount(ramp);
     fire(svg, "dblclick", at(0, 1));
-    const input = container.querySelector<HTMLInputElement>(".hf-automation-value");
+    const input = container.querySelector<HTMLInputElement>(".sc-automation-value");
     expect(input).not.toBeNull();
     act(() => {
       Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, "value")?.set?.call(
@@ -1048,7 +1048,7 @@ describe("TimelineAutomationLane modifiers", () => {
   it("clamps a typed value to the parameter's range", () => {
     const { container, svg, props } = mount(ramp);
     fire(svg, "dblclick", at(0, 1));
-    const input = container.querySelector<HTMLInputElement>(".hf-automation-value");
+    const input = container.querySelector<HTMLInputElement>(".sc-automation-value");
     act(() => {
       Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, "value")?.set?.call(input, "99");
       input?.dispatchEvent(new Event("input", { bubbles: true }));
@@ -1065,7 +1065,7 @@ describe("TimelineAutomationLane modifiers", () => {
     const { container, svg, props } = mount(ramp, { range: VOLUME_RANGE });
     // On the real range unity sits a quarter of the way up, not at the top.
     fire(svg, "dblclick", at(0, 1 / MAX_AUDIO_GAIN));
-    const input = container.querySelector<HTMLInputElement>(".hf-automation-value");
+    const input = container.querySelector<HTMLInputElement>(".sc-automation-value");
     act(() => {
       Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, "value")?.set?.call(input, "99");
       input?.dispatchEvent(new Event("input", { bubbles: true }));
@@ -1475,7 +1475,7 @@ describe("TimelineAutomationLane selection menu", () => {
   it("right-click inside the selection opens the shape menu", () => {
     const { container, svg } = mount(ramp, { rangeSelection: { t0: 1, t1: 3, v0: 0, v1: 1 } });
     fire(svg, "contextmenu", at(2, 0.5));
-    expect(document.querySelector(".hf-automation-menu")).not.toBeNull();
+    expect(document.querySelector(".sc-automation-menu")).not.toBeNull();
     // The menu portals to document.body, outside `container` — dismiss it via
     // Escape before tearing down, or it leaks into the next test's DOM query.
     const escape = new Event("keydown", { bubbles: true, cancelable: true });
@@ -1483,7 +1483,7 @@ describe("TimelineAutomationLane selection menu", () => {
     act(() => {
       document.dispatchEvent(escape);
     });
-    expect(document.querySelector(".hf-automation-menu")).toBeNull();
+    expect(document.querySelector(".sc-automation-menu")).toBeNull();
     act(() => container.remove());
   });
 
@@ -1491,7 +1491,7 @@ describe("TimelineAutomationLane selection menu", () => {
     const { svg, props } = mount(ramp, { rangeSelection: { t0: 1, t1: 3, v0: 0, v1: 1 } });
     fire(svg, "contextmenu", at(2, 0.5));
     const swell = Array.from(
-      document.querySelectorAll<HTMLButtonElement>(".hf-automation-menu button"),
+      document.querySelectorAll<HTMLButtonElement>(".sc-automation-menu button"),
     ).find((b) => b.textContent === "Swell");
     expect(swell).toBeTruthy();
     act(() => swell?.click());
@@ -1504,7 +1504,7 @@ describe("TimelineAutomationLane selection menu", () => {
   it("right-click outside the selection does not open it", () => {
     const { svg } = mount(ramp, { rangeSelection: { t0: 1, t1: 3, v0: 0, v1: 1 } });
     fire(svg, "contextmenu", at(3.8, 0.5));
-    expect(document.querySelector(".hf-automation-menu")).toBeNull();
+    expect(document.querySelector(".sc-automation-menu")).toBeNull();
   });
 });
 

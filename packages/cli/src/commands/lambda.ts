@@ -1,63 +1,63 @@
 import { failCommand } from "../utils/commandResult.js";
 /**
- * `hyperframes lambda` — top-level dispatcher for AWS Lambda subcommands.
+ * `smashcut lambda` — top-level dispatcher for AWS Lambda subcommands.
  *
  * Each subverb lives in `./lambda/<name>.ts` and exports a single
  * `runXxx(args)` async function. The subcommand surface is intentionally
  * thin glue: argument parsing + help text here; the actual work
  * (`renderToLambda` / `getRenderProgress` / `deploySite` / SAM driver)
- * lives in `@hyperframes/aws-lambda/sdk`.
+ * lives in `@smashcut/aws-lambda/sdk`.
  */
 
 import { defineCommand } from "citty";
-import type { DistributedFormat } from "@hyperframes/aws-lambda/sdk";
-import { type CanvasResolution } from "@hyperframes/core";
+import type { DistributedFormat } from "@smashcut/aws-lambda/sdk";
+import { type CanvasResolution } from "@smashcut/core";
 import { parseOutputResolutionFlag } from "../utils/parseOutputResolution.js";
 import type { Example } from "./_examples.js";
 import { c } from "../ui/colors.js";
 import { readAllowedCompositionFpsFromDir } from "../utils/compositionFps.js";
 
 export const examples: Example[] = [
-  ["Deploy the Lambda render stack to AWS", "hyperframes lambda deploy"],
+  ["Deploy the Lambda render stack to AWS", "smashcut lambda deploy"],
   [
     "Render a composition on the deployed stack",
-    "hyperframes lambda render ./my-project --width 1920 --height 1080",
+    "smashcut lambda render ./my-project --width 1920 --height 1080",
   ],
   [
     "Render and stream progress until done",
-    "hyperframes lambda render ./my-project --width 1920 --height 1080 --wait",
+    "smashcut lambda render ./my-project --width 1920 --height 1080 --wait",
   ],
   [
     "Supersample a 1080p composition to 4K via Chrome deviceScaleFactor",
-    "hyperframes lambda render ./my-project --width 1920 --height 1080 --output-resolution 4k --wait",
+    "smashcut lambda render ./my-project --width 1920 --height 1080 --output-resolution 4k --wait",
   ],
   [
     "Render with composition variables (personalised template)",
-    'hyperframes lambda render ./my-template --site-id abc1234deadbeef0 --width 1920 --height 1080 --variables \'{"title":"Hello Alice","accent":"#ff0000"}\'',
+    'smashcut lambda render ./my-template --site-id abc1234deadbeef0 --width 1920 --height 1080 --variables \'{"title":"Hello Alice","accent":"#ff0000"}\'',
   ],
   [
     "Render with variables from a JSON file",
-    "hyperframes lambda render ./my-template --site-id abc1234deadbeef0 --width 1920 --height 1080 --variables-file ./alice.json",
+    "smashcut lambda render ./my-template --site-id abc1234deadbeef0 --width 1920 --height 1080 --variables-file ./alice.json",
   ],
   [
     "Batch-render N personalised videos from a JSONL file (deploys the site once)",
-    "hyperframes lambda render-batch ./my-template --batch ./users.jsonl --width 1920 --height 1080 --max-concurrent 10",
+    "smashcut lambda render-batch ./my-template --batch ./users.jsonl --width 1920 --height 1080 --max-concurrent 10",
   ],
-  ["Check progress for a started render", "hyperframes lambda progress hf-render-abcd1234"],
+  ["Check progress for a started render", "smashcut lambda progress sc-render-abcd1234"],
   [
     "Pre-upload a project so multiple renders share the upload",
-    "hyperframes lambda sites create ./my-project",
+    "smashcut lambda sites create ./my-project",
   ],
-  ["Tear the stack down", "hyperframes lambda destroy"],
-  ["Print the IAM policy the CLI needs", "hyperframes lambda policies user"],
+  ["Tear the stack down", "smashcut lambda destroy"],
+  ["Print the IAM policy the CLI needs", "smashcut lambda policies user"],
   [
     "Validate a checked-in IAM policy still covers the CLI",
-    "hyperframes lambda policies validate ./infra/iam/hyperframes.json",
+    "smashcut lambda policies validate ./infra/iam/smashcut.json",
   ],
 ];
 
 const HELP = `
-${c.bold("hyperframes lambda")} ${c.dim("<subcommand> [args]")}
+${c.bold("smashcut lambda")} ${c.dim("<subcommand> [args]")}
 
 Deploy + drive distributed video renders on AWS Lambda.
 
@@ -71,8 +71,8 @@ ${c.bold("SUBCOMMANDS:")}
   ${c.accent("policies")}          ${c.dim("Print or validate the IAM permissions the CLI needs")}
 
 ${c.bold("FIRST RUN:")}
-  ${c.accent("hyperframes lambda deploy")}
-  ${c.accent("hyperframes lambda render ./my-project --width 1920 --height 1080 --wait")}
+  ${c.accent("smashcut lambda deploy")}
+  ${c.accent("smashcut lambda render ./my-project --width 1920 --height 1080 --wait")}
 
 ${c.bold("REQUIREMENTS:")}
   • AWS CLI configured (env vars, ~/.aws/credentials, or SSO)
@@ -103,7 +103,7 @@ export default defineCommand({
     // Stack identity
     "stack-name": {
       type: "string",
-      description: "CloudFormation stack name (default: hyperframes-default)",
+      description: "CloudFormation stack name (default: smashcut-default)",
     },
     region: { type: "string", description: "AWS region (default: AWS_REGION env or us-east-1)" },
     profile: { type: "string", description: "AWS profile name (default: AWS_PROFILE env)" },
@@ -139,19 +139,19 @@ export default defineCommand({
     },
     "execution-name": {
       type: "string",
-      description: "Step Functions execution name (default: hf-render-<uuid>)",
+      description: "Step Functions execution name (default: sc-render-<uuid>)",
     },
     "output-key": {
       type: "string",
       description: "Final output S3 key (default: renders/<exec>/output.<ext>)",
     },
-    // Variables — mirrors the local `hyperframes render` UX. Inline JSON or
+    // Variables — mirrors the local `smashcut render` UX. Inline JSON or
     // file path, plus --strict-variables for type-checked validation against
     // the composition's `data-composition-variables` declaration.
     variables: {
       type: "string",
       description:
-        'JSON object of variable values for the composition. Example: --variables \'{"title":"Hello"}\'. Values flow into window.__hfVariables on the Lambda chunk workers.',
+        'JSON object of variable values for the composition. Example: --variables \'{"title":"Hello"}\'. Values flow into window.__scVariables on the Lambda chunk workers.',
     },
     "variables-file": {
       type: "string",
@@ -214,7 +214,7 @@ export default defineCommand({
     const regionFlag = args.region as string | undefined;
     if (regionFlag) process.env.AWS_REGION = regionFlag;
 
-    // The lambda subverbs dynamic-import `@hyperframes/aws-lambda` at call
+    // The lambda subverbs dynamic-import `@smashcut/aws-lambda` at call
     // time. We keep aws-lambda as a workspace devDependency (not a runtime
     // dep) so the published CLI install stays small for users who don't
     // deploy to Lambda. Subverbs other than `policies` need aws-lambda;
@@ -229,15 +229,15 @@ export default defineCommand({
     ]);
     if (verbsNeedingSDK.has(subcommand)) {
       try {
-        await import("@hyperframes/aws-lambda/sdk");
+        await import("@smashcut/aws-lambda/sdk");
       } catch (err) {
         if ((err as NodeJS.ErrnoException).code === "ERR_MODULE_NOT_FOUND") {
           console.error(
-            `${c.error("@hyperframes/aws-lambda is not installed.")} The ${c.accent(`hyperframes lambda ${subcommand}`)} command needs it at runtime.\n` +
+            `${c.error("@smashcut/aws-lambda is not installed.")} The ${c.accent(`smashcut lambda ${subcommand}`)} command needs it at runtime.\n` +
               `Install it alongside the CLI:\n` +
-              `  ${c.accent("npm install -g @hyperframes/aws-lambda")}\n` +
+              `  ${c.accent("npm install -g @smashcut/aws-lambda")}\n` +
               `Or, for an opt-in dev setup:\n` +
-              `  ${c.accent("npm install @hyperframes/aws-lambda")}`,
+              `  ${c.accent("npm install @smashcut/aws-lambda")}`,
           );
           failCommand();
         }
@@ -269,7 +269,7 @@ export default defineCommand({
         const projectDir = args.extra as string | undefined;
         if (!projectDir) {
           console.error(
-            "[lambda sites create] usage: hyperframes lambda sites create <projectDir>",
+            "[lambda sites create] usage: smashcut lambda sites create <projectDir>",
           );
           failCommand();
         }
@@ -286,7 +286,7 @@ export default defineCommand({
         const projectDir = args.target as string | undefined;
         if (!projectDir) {
           console.error(
-            "[lambda render] usage: hyperframes lambda render <projectDir> --width <px> --height <px>",
+            "[lambda render] usage: smashcut lambda render <projectDir> --width <px> --height <px>",
           );
           failCommand();
         }
@@ -336,7 +336,7 @@ export default defineCommand({
         const projectDir = args.target as string | undefined;
         if (!projectDir) {
           console.error(
-            "[lambda render-batch] usage: hyperframes lambda render-batch <projectDir> --batch <path.jsonl> --width <px> --height <px>",
+            "[lambda render-batch] usage: smashcut lambda render-batch <projectDir> --batch <path.jsonl> --width <px> --height <px>",
           );
           failCommand();
         }
@@ -390,7 +390,7 @@ export default defineCommand({
         const target = args.target as string | undefined;
         if (!target) {
           console.error(
-            "[lambda progress] usage: hyperframes lambda progress <renderId | executionArn>",
+            "[lambda progress] usage: smashcut lambda progress <renderId | executionArn>",
           );
           failCommand();
         }
@@ -407,7 +407,7 @@ export default defineCommand({
         const verb = args.target as string | undefined;
         if (verb !== "role" && verb !== "user" && verb !== "validate") {
           console.error(
-            `[lambda policies] usage: hyperframes lambda policies <role|user|validate> [args]`,
+            `[lambda policies] usage: smashcut lambda policies <role|user|validate> [args]`,
           );
           failCommand();
         }

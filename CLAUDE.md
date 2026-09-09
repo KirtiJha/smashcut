@@ -1,21 +1,21 @@
-# Hyperframes
+# Smashcut
 
 Open-source video rendering framework: write HTML, render video.
 
 ## Skills
 
-This repo ships 20 AI agent skills via [vercel-labs/skills](https://github.com/vercel-labs/skills). Install them before writing compositions — they encode framework-specific patterns that generic docs don't cover. **Default to the core set**: the `/hyperframes` router installs each creation workflow on demand; install all 20 only when the user explicitly asks for the full set.
+This repo ships 20 AI agent skills via [vercel-labs/skills](https://github.com/vercel-labs/skills). Install them before writing compositions — they encode framework-specific patterns that generic docs don't cover. **Default to the core set**: the `/smashcut` router installs each creation workflow on demand; install all 20 only when the user explicitly asks for the full set.
 
 ```bash
-npx hyperframes skills update                         # default: installs/refreshes the core set — workflows install on demand
-npx hyperframes skills                                # all 20 published skills at once — only on explicit request
+npx smashcut skills update                         # default: installs/refreshes the core set — workflows install on demand
+npx smashcut skills                                # all 20 published skills at once — only on explicit request
 npx skills add heygen-com/hyperframes                 # interactive picker (terminal only; --all also pulls the 6 repo-internal skills under .claude/skills)
 npx skills add heygen-com/hyperframes --skill <name>  # just one (bare name, no leading slash)
 ```
 
-`skills add` resolves the skills.sh registry blob, which can lag `main` by hours, so a freshly added skill may be a little behind. `npx hyperframes skills update` installs from the current `main`; prefer it when freshness matters.
+`skills add` resolves the skills.sh registry blob, which can lag `main` by hours, so a freshly added skill may be a little behind. `npx smashcut skills update` installs from the current `main`; prefer it when freshness matters.
 
-**`/hyperframes` is the entry skill — read it first.** It's the capability map for the domain skills below, the intent layer that confirms every creation brief up front, AND the intent router for the creation workflows. The full README skills section mirrors this list; keep them in sync (see "Skill catalog maintenance" below).
+**`/smashcut` is the entry skill — read it first.** It's the capability map for the domain skills below, the intent layer that confirms every creation brief up front, AND the intent router for the creation workflows. The full README skills section mirrors this list; keep them in sync (see "Skill catalog maintenance" below).
 
 ### Creation workflows
 
@@ -27,21 +27,21 @@ npx skills add heygen-com/hyperframes --skill <name>  # just one (bare name, no 
 - `/motion-graphics` — a short (typically under 10s) design-led **motion graphic**, motion-is-the-message, no narration: kinetic type, a stat / number count-up, a chart, a logo sting, a lower-third / overlay, or an animated tweet / headline / captured-page highlight; rendered to MP4 or a transparent overlay. Longer / narrated / custom → `/general-video`.
 - `/music-to-video` — a **music track** (audio file, video to pull audio from, or one generated from a mood brief) → beat-synced video (lyric / slideshow / kinetic promo). Music drives pacing; user-supplied images / videos are cut onto the same beat grid.
 - `/slideshow` — a **presentation / pitch deck / interactive deck** — discrete slides, fragment reveals, branching, hotspot navigation, presenter mode. Output is a navigable deck, not a rendered video.
-- `/general-video` — fallback for any other video creation (title card, longer brand / sizzle reel, multi-scene montage, static loop, custom composition) and the home of **companion mode** — co-create with the full HyperFrames toolbox; the original hyperframes flow — design → plan → layout → build → validate, any length.
-- `/remotion-to-hyperframes` — port an existing Remotion (React) composition to HyperFrames HTML. One-way migration, not creation.
+- `/general-video` — fallback for any other video creation (title card, longer brand / sizzle reel, multi-scene montage, static loop, custom composition) and the home of **companion mode** — co-create with the full SmashCut toolbox; the original smashcut flow — design → plan → layout → build → validate, any length.
+- `/remotion-to-smashcut` — port an existing Remotion (React) composition to SmashCut HTML. One-way migration, not creation.
 
 ### Domain skills (loaded on demand)
 
 Atomic capabilities the creation workflows compose against — pull one when you need that specific layer:
 
-- `/hyperframes-core` — the composition contract: `data-*` timing attributes, `class="clip"`, tracks, sub-compositions, variables, framework-owned media playback, determinism rules. Read before writing composition HTML.
-- `/hyperframes-animation` — all animation knowledge: atomic motion rules, scene blueprints, transitions, runtime adapters (GSAP default, plus Lottie / Three.js / Anime.js / CSS / WAAPI / TypeGPU).
-- `/hyperframes-keyframes` — seek-safe keyframe authoring across runtimes: GSAP timelines, CSS keyframes, Anime.js, WAAPI, FLIP, paths, masks, SVG morph/draw, text trails, 3D depth; plus `hyperframes keyframes` diagnostics for surfacing and verifying rendered motion.
-- `/hyperframes-creative` — non-animation creative direction: `frame.md` / `design.md` handling, palettes, typography, narration, beat planning, audio-reactive visuals, composition patterns.
+- `/smashcut-core` — the composition contract: `data-*` timing attributes, `class="clip"`, tracks, sub-compositions, variables, framework-owned media playback, determinism rules. Read before writing composition HTML.
+- `/smashcut-animation` — all animation knowledge: atomic motion rules, scene blueprints, transitions, runtime adapters (GSAP default, plus Lottie / Three.js / Anime.js / CSS / WAAPI / TypeGPU).
+- `/smashcut-keyframes` — seek-safe keyframe authoring across runtimes: GSAP timelines, CSS keyframes, Anime.js, WAAPI, FLIP, paths, masks, SVG morph/draw, text trails, 3D depth; plus `smashcut keyframes` diagnostics for surfacing and verifying rendered motion.
+- `/smashcut-creative` — non-animation creative direction: `frame.md` / `design.md` handling, palettes, typography, narration, beat planning, audio-reactive visuals, composition patterns.
 - `/media-use` — the media OS: resolve any media need (BGM, SFX, image, icon, logo, voice, color grade, LUT) into a frozen local file or paste-ready block + ledger record; generate via TTS / music / image models when the catalog misses; transcribe, caption, remove backgrounds, and reuse assets across projects. One shared `scripts/audio.mjs` engine + manifest tracking; keeps search noise on disk.
-- `/hyperframes-audio` — mix the audio already placed in a composition: voiceover carve (dip a music bed only in the bands the voice occupies, static or dynamic, level match included), the effect chain (EQ, compressor, limiter, gate, saturation, delay, reverb, chorus, phaser, bitcrush), automation envelopes on volume or any effect parameter, and submix buses (`<hf-audio-group>`) that carry one chain, fader and automation clock for several tracks at once. Sourcing the audio is `/media-use`; this is what happens to it afterwards.
-- `/hyperframes-cli` — CLI dev loop: `init`, `add`, `lint`, `check`, `snapshot`, `preview`, `render`, `publish`, `doctor`, `lambda` (AWS Lambda cloud rendering).
-- `/hyperframes-registry` — install and wire registry blocks and components into compositions via `hyperframes add`. Covers authoring a new block or component to contribute upstream.
+- `/smashcut-audio` — mix the audio already placed in a composition: voiceover carve (dip a music bed only in the bands the voice occupies, static or dynamic, level match included), the effect chain (EQ, compressor, limiter, gate, saturation, delay, reverb, chorus, phaser, bitcrush), automation envelopes on volume or any effect parameter, and submix buses (`<sc-audio-group>`) that carry one chain, fader and automation clock for several tracks at once. Sourcing the audio is `/media-use`; this is what happens to it afterwards.
+- `/smashcut-cli` — CLI dev loop: `init`, `add`, `lint`, `check`, `snapshot`, `preview`, `render`, `publish`, `doctor`, `lambda` (AWS Lambda cloud rendering).
+- `/smashcut-registry` — install and wire registry blocks and components into compositions via `smashcut add`. Covers authoring a new block or component to contribute upstream.
 - `/figma` — import Figma assets, tokens, components, and storyboard sections → reconstructed motion (frames read as states, not slides) (REST/CLI) plus Motion animations (MCP) and shaders (MCP source / native export) into a composition.
 
 ## Skill catalog maintenance
@@ -49,8 +49,8 @@ Atomic capabilities the creation workflows compose against — pull one when you
 When adding a new skill, or substantially renaming / repurposing an existing one, update all agent-facing discoverability surfaces in lockstep:
 
 1. The skill list above (CLAUDE.md) AND the workflow list in the root `AGENTS.md` (it carries workflows only, no domain-skill section) AND the `## Skills` section in `README.md` AND `docs/guides/skills.mdx` (rendered at [hyperframes.heygen.com/guides/skills](https://hyperframes.heygen.com/guides/skills)) AND the two setup tables that compress the same descriptions — `docs/prompting/overview.mdx` ("One-time setup") and `docs/quickstart.mdx`. Out-of-date entries silently kill discovery. This list is also the sync set for a **changed contract**, not just an added or renamed skill: a reworded `description:` has to be pushed to every surface or the compressed copies start asserting the opposite of the skill.
-2. The scaffolded project template `packages/cli/src/templates/_shared/CLAUDE.md` + `AGENTS.md` — written into every `hyperframes init` project, so a stale entry there ships to users. The two template files must stay byte-identical.
-3. If the skill changes the routing surface for "make a video" requests, also update the routing table + intent layer in `skills/hyperframes/SKILL.md` AND that workflow's own route file, `skills/hyperframes/references/routes/<workflow>.md`. One file carries both halves: the input/output/trigger contract the router reads before the workflow is installed, and its interview entry (must-haves, conditionals, deferred asks, run-shape). The older `references/workflow-catalog.md` and `references/route-briefs.md` are now "moved" stubs pointing at `routes/` — don't edit them.
+2. The scaffolded project template `packages/cli/src/templates/_shared/CLAUDE.md` + `AGENTS.md` — written into every `smashcut init` project, so a stale entry there ships to users. The two template files must stay byte-identical.
+3. If the skill changes the routing surface for "make a video" requests, also update the routing table + intent layer in `skills/smashcut/SKILL.md` AND that workflow's own route file, `skills/smashcut/references/routes/<workflow>.md`. One file carries both halves: the input/output/trigger contract the router reads before the workflow is installed, and its interview entry (must-haves, conditionals, deferred asks, run-shape). The older `references/workflow-catalog.md` and `references/route-briefs.md` are now "moved" stubs pointing at `routes/` — don't edit them.
 4. Mirror the Router / Creation workflows / Domain skills grouping across all surfaces so a skill always lives in the same column.
 5. Skill count appears in the README and CLAUDE.md intro lines ("20 AI agent skills…") — update on add/remove. The `docs/guides/skills.mdx` page and the CLI templates deliberately omit a count to avoid drift; keep them count-free.
 
@@ -81,8 +81,8 @@ Always lint and format changed files before committing. Lefthook pre-commit hook
 After creating or editing any `.html` composition:
 
 ```bash
-npx hyperframes lint       # Static HTML structure check
-npx hyperframes check      # Browser gate (headless Chrome — runtime errors, layout, motion, WCAG contrast)
+npx smashcut lint       # Static HTML structure check
+npx smashcut check      # Browser gate (headless Chrome — runtime errors, layout, motion, WCAG contrast)
 ```
 
 Both must pass before previewing or considering work complete.
@@ -91,10 +91,10 @@ Both must pass before previewing or considering work complete.
 
 ```
 packages/
-  cli/                  → hyperframes CLI (create, preview, lint, render)
+  cli/                  → smashcut CLI (create, preview, lint, render)
   core/                 → Types, parsers, generators, linter, runtime, frame adapters
   engine/               → Seekable page-to-video capture engine (Puppeteer + FFmpeg)
-  player/               → Embeddable <hyperframes-player> web component
+  player/               → Embeddable <smashcut-player> web component
   producer/             → Full rendering pipeline (capture + encode + audio mix)
   shader-transitions/   → WebGL shader transitions for compositions
   studio/               → Browser-based composition editor UI (read packages/studio/AGENTS.md first)

@@ -16,7 +16,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 ```html pan-stations.html
 <!doctype html>
 <!--
-  pan-stations -- HyperFrames video primitive (camera / holdable / exhibit)
+  pan-stations -- SmashCut video primitive (camera / holdable / exhibit)
 
   Concept: the camera pans laterally across a wide row of labeled feature
   stations, settling on each card before moving to the next. The exhibit
@@ -277,8 +277,8 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
             var clip = root.querySelector(".ps-clip");
             var strip = root.querySelector(".ps-strip");
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             // INVARIANT: stationCount is always an integer in the declared 3-6 range.
@@ -384,7 +384,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 
 ## Install
 
-<InstallCommand command="npx hyperframes add pan-stations" item="pan-stations" />
+<InstallCommand command="npx smashcut add pan-stations" item="pan-stations" />
 
 That writes one file: `compositions/components/pan-stations.html`.
 
@@ -424,7 +424,7 @@ defaults, so this behaves exactly like the preview above until you change one:
 ```html
 <!doctype html>
 <!--
-  pan-stations -- HyperFrames video primitive (camera / holdable / exhibit)
+  pan-stations -- SmashCut video primitive (camera / holdable / exhibit)
 
   Concept: the camera pans laterally across a wide row of labeled feature
   stations, settling on each card before moving to the next. The exhibit
@@ -685,8 +685,8 @@ defaults, so this behaves exactly like the preview above until you change one:
             var clip = root.querySelector(".ps-clip");
             var strip = root.querySelector(".ps-strip");
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             // INVARIANT: stationCount is always an integer in the declared 3-6 range.

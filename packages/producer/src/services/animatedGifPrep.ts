@@ -11,8 +11,8 @@ import {
 } from "node:fs";
 import { dirname, isAbsolute, join, resolve } from "node:path";
 import { parseHTML } from "linkedom";
-import { parseAnimatedGifMetadata, type AnimatedGifMetadata } from "@hyperframes/core";
-import { DEFAULT_VP9_CPU_USED, runFfmpeg } from "@hyperframes/engine";
+import { parseAnimatedGifMetadata, type AnimatedGifMetadata } from "@smashcut/core";
+import { DEFAULT_VP9_CPU_USED, runFfmpeg } from "@smashcut/engine";
 import { isHttpUrl } from "../utils/urlDownloader.js";
 import { encoderFailureError } from "./render/encoderInterruption.js";
 
@@ -320,8 +320,8 @@ function ensureElementId(el: Element, document: Document, fallbackIndex: number)
   const existing = (el.getAttribute("id") || "").trim();
   if (existing) return existing;
   let next = fallbackIndex;
-  while (document.getElementById(`hf-gif-${next}`)) next += 1;
-  const id = `hf-gif-${next}`;
+  while (document.getElementById(`sc-gif-${next}`)) next += 1;
+  const id = `sc-gif-${next}`;
   el.setAttribute("id", id);
   return id;
 }
@@ -360,7 +360,7 @@ function replaceImageWithVideo(input: {
   video.setAttribute("playsinline", "");
   video.setAttribute("preload", "auto");
   video.setAttribute("data-has-audio", "false");
-  video.setAttribute("data-hf-prepared-gif", "true");
+  video.setAttribute("data-sc-prepared-gif", "true");
   if (input.loop) {
     video.setAttribute("loop", "");
   } else {

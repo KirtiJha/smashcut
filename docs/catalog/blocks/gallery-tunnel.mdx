@@ -116,7 +116,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
       <canvas id="gt-canvas" width="1920" height="1080"></canvas>
       <div id="gt-assets" aria-hidden="true" data-layout-allow-overflow></div>
 
-      <!-- Driver clip: gives HyperFrames a timed element to own on track 0. -->
+      <!-- Driver clip: gives SmashCut a timed element to own on track 0. -->
       <div
         id="gt-drv"
         class="clip"
@@ -148,7 +148,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 
         // `data-composition-variables` is the single owner of every declared
         // default — parse it rather than repeating each default a second time
-        // in JS. `window.__hyperframes` is NOT guaranteed to exist yet when this
+        // in JS. `window.__smashcut` is NOT guaranteed to exist yet when this
         // inline script runs, so it can only ever be an override, never the
         // source. Precedence: host CSS custom property, runtime variable bag,
         // declared default.
@@ -156,7 +156,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
         JSON.parse(ROOT.getAttribute("data-composition-variables") || "[]").forEach(function (v) {
           DECL[v.id] = v.default;
         });
-        var HF = window.__hyperframes;
+        var HF = window.__smashcut;
         var V = (HF && HF.getVariables && HF.getVariables()) || {};
 
         function raw(id) {
@@ -474,7 +474,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 
 ## Install
 
-<InstallCommand command="npx hyperframes add gallery-tunnel" item="gallery-tunnel" />
+<InstallCommand command="npx smashcut add gallery-tunnel" item="gallery-tunnel" />
 
 That writes one file: `compositions/gallery-tunnel.html`.
 
@@ -648,7 +648,7 @@ defaults, so this behaves exactly like the preview above until you change one:
       <canvas id="gt-canvas" width="1920" height="1080"></canvas>
       <div id="gt-assets" aria-hidden="true" data-layout-allow-overflow></div>
 
-      <!-- Driver clip: gives HyperFrames a timed element to own on track 0. -->
+      <!-- Driver clip: gives SmashCut a timed element to own on track 0. -->
       <div
         id="gt-drv"
         class="clip"
@@ -680,7 +680,7 @@ defaults, so this behaves exactly like the preview above until you change one:
 
         // `data-composition-variables` is the single owner of every declared
         // default — parse it rather than repeating each default a second time
-        // in JS. `window.__hyperframes` is NOT guaranteed to exist yet when this
+        // in JS. `window.__smashcut` is NOT guaranteed to exist yet when this
         // inline script runs, so it can only ever be an override, never the
         // source. Precedence: host CSS custom property, runtime variable bag,
         // declared default.
@@ -688,7 +688,7 @@ defaults, so this behaves exactly like the preview above until you change one:
         JSON.parse(ROOT.getAttribute("data-composition-variables") || "[]").forEach(function (v) {
           DECL[v.id] = v.default;
         });
-        var HF = window.__hyperframes;
+        var HF = window.__smashcut;
         var V = (HF && HF.getVariables && HF.getVariables()) || {};
 
         function raw(id) {

@@ -28,7 +28,7 @@
 
 import { cpSync, existsSync, mkdirSync, renameSync, rmSync, writeFileSync } from "node:fs";
 import { join, relative, sep } from "node:path";
-import { type CanvasResolution, fpsToNumber } from "@hyperframes/core";
+import { type CanvasResolution, fpsToNumber } from "@smashcut/core";
 import {
   type EngineConfig,
   type VideoFrameFormat,
@@ -36,7 +36,7 @@ import {
   normalizeVp9CpuUsed,
   resolveConfig,
   type AudioProcessingFailure,
-} from "@hyperframes/engine";
+} from "@smashcut/engine";
 import { defaultLogger, type ProducerLogger } from "../../logger.js";
 import {
   applyRenderWarningPolicy,
@@ -237,7 +237,7 @@ export interface DistributedRenderConfig {
   /**
    * Render-time variable overrides for the composition. Snapshotted into
    * `meta/encoder.json` at plan time and re-injected by every chunk
-   * worker as `window.__hfVariables` before the first capture, mirroring
+   * worker as `window.__scVariables` before the first capture, mirroring
    * the in-process renderer's
    * `RenderConfig.variables` → `CaptureOptions.variables` path. The
    * runtime helper `getVariables()` merges these over the declared
@@ -248,7 +248,7 @@ export interface DistributedRenderConfig {
    * JSON-serializable plain object — `freezePlan`'s canonical-JSON pass
    * throws on non-serializable values (functions, Symbols, BigInts) when
    * the variables reach this layer. Adapters that ship to Lambda (the
-   * `@hyperframes/aws-lambda` SDK) also validate the shape client-side
+   * `@smashcut/aws-lambda` SDK) also validate the shape client-side
    * before any AWS call so the rejection lands at the SDK boundary
    * rather than mid-plan; the producer-side throw is the fallback.
    */
@@ -652,7 +652,7 @@ export function buildChunkSlices(
 }
 
 /**
- * Hash the deterministic-font bundle that ships inside `@hyperframes/producer`.
+ * Hash the deterministic-font bundle that ships inside `@smashcut/producer`.
  * The compiled HTML already inlines per-family `@font-face` data URIs, so the
  * snapshot SHA exists primarily to detect cross-version font-bundle drift on
  * chunk workers. Mixed into `planHash`.
@@ -1011,7 +1011,7 @@ export async function buildLocalExecutionPlan(
     // Close inside a try/catch — leaking a Chrome process here would mask
     // the original plan() result on cancellation paths.
     try {
-      const { closeCaptureSession } = await import("@hyperframes/engine");
+      const { closeCaptureSession } = await import("@smashcut/engine");
       await closeCaptureSession(probeResult.probeSession);
     } catch (err) {
       log.warn("[plan] probe session close failed", {
@@ -1077,9 +1077,9 @@ export async function buildLocalExecutionPlan(
   // shape. `workDir` is `<planDir>/.plan-work/` — always the same filesystem
   // as `planDir`, so `renameSync` succeeds without copying. Video frames
   // alone can be hundreds of MB; copying once instead of twice (the prior
-  // approach left a duplicate under `compiled/__hyperframes_video_frames/`)
+  // approach left a duplicate under `compiled/__smashcut_video_frames/`)
   // halves peak disk usage during `plan()`.
-  const stagedVideoFrames = join(compiledDir, "__hyperframes_video_frames");
+  const stagedVideoFrames = join(compiledDir, "__smashcut_video_frames");
   const videoFramesDst = join(planDir, "video-frames");
   if (existsSync(videoFramesDst)) rmSync(videoFramesDst, { recursive: true, force: true });
   if (existsSync(stagedVideoFrames)) {

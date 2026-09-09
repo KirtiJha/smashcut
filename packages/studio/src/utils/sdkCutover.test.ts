@@ -11,8 +11,8 @@ import {
   persistSdkSerialize,
 } from "./sdkCutover";
 // fallow-ignore-file code-duplication
-import { openComposition } from "@hyperframes/sdk";
-import { createMemoryAdapter } from "@hyperframes/sdk/adapters/memory";
+import { openComposition } from "@smashcut/sdk";
+import { createMemoryAdapter } from "@smashcut/sdk/adapters/memory";
 import type { PatchOperation } from "./sourcePatcher";
 import type { MutableRefObject } from "react";
 
@@ -58,11 +58,11 @@ const candidateTestDeps = () => ({
 
 describe("shouldUseSdkCutover", () => {
   it("returns false when flag disabled", () => {
-    expect(shouldUseSdkCutover(false, true, "hf-abc", [styleOp("color", "red")])).toBe(false);
+    expect(shouldUseSdkCutover(false, true, "sc-abc", [styleOp("color", "red")])).toBe(false);
   });
 
   it("returns false when no session", () => {
-    expect(shouldUseSdkCutover(true, false, "hf-abc", [styleOp("color", "red")])).toBe(false);
+    expect(shouldUseSdkCutover(true, false, "sc-abc", [styleOp("color", "red")])).toBe(false);
   });
 
   it("returns false when no hfId", () => {
@@ -71,70 +71,70 @@ describe("shouldUseSdkCutover", () => {
   });
 
   it("returns false when ops empty", () => {
-    expect(shouldUseSdkCutover(true, true, "hf-abc", [])).toBe(false);
+    expect(shouldUseSdkCutover(true, true, "sc-abc", [])).toBe(false);
   });
 
   it("returns true for inline-style ops", () => {
-    expect(shouldUseSdkCutover(true, true, "hf-abc", [styleOp("color", "red")])).toBe(true);
+    expect(shouldUseSdkCutover(true, true, "sc-abc", [styleOp("color", "red")])).toBe(true);
   });
 
   it("returns true for text-content ops", () => {
-    expect(shouldUseSdkCutover(true, true, "hf-abc", [textOp("hello")])).toBe(true);
+    expect(shouldUseSdkCutover(true, true, "sc-abc", [textOp("hello")])).toBe(true);
   });
 
   it("returns true for attribute ops", () => {
-    expect(shouldUseSdkCutover(true, true, "hf-abc", [attrOp("data-x", "10")])).toBe(true);
+    expect(shouldUseSdkCutover(true, true, "sc-abc", [attrOp("data-x", "10")])).toBe(true);
   });
 
   it("returns true for html-attribute ops", () => {
-    expect(shouldUseSdkCutover(true, true, "hf-abc", [htmlAttrOp("class", "foo")])).toBe(true);
+    expect(shouldUseSdkCutover(true, true, "sc-abc", [htmlAttrOp("class", "foo")])).toBe(true);
   });
 
   it("returns false for an attribute op that maps to a reserved data-* name", () => {
     // {type:'attribute', property:'end'} → 'data-end', which the SDK's
     // validateSetAttribute rejects. Decline the batch so it takes the server
     // path cleanly instead of throwing inside dispatch and falling back per op.
-    expect(shouldUseSdkCutover(true, true, "hf-abc", [attrOp("end", "2")])).toBe(false);
-    expect(shouldUseSdkCutover(true, true, "hf-abc", [attrOp("data-start", "1")])).toBe(false);
+    expect(shouldUseSdkCutover(true, true, "sc-abc", [attrOp("end", "2")])).toBe(false);
+    expect(shouldUseSdkCutover(true, true, "sc-abc", [attrOp("data-start", "1")])).toBe(false);
   });
 
   it("declines a case-variant reserved attribute (SDK lowercases before checking)", () => {
     // attribute op "END" → "data-END" → lower → "data-end" (reserved).
-    expect(shouldUseSdkCutover(true, true, "hf-abc", [attrOp("END", "2")])).toBe(false);
+    expect(shouldUseSdkCutover(true, true, "sc-abc", [attrOp("END", "2")])).toBe(false);
   });
 
   it("declines an html-attribute op whose raw name is reserved", () => {
     // html-attribute ops aren't data-prefixed, so a raw reserved name must still
     // be caught (the SDK throws on it just the same).
-    expect(shouldUseSdkCutover(true, true, "hf-abc", [htmlAttrOp("data-end", "3")])).toBe(false);
-    expect(shouldUseSdkCutover(true, true, "hf-abc", [htmlAttrOp("DATA-START", "1")])).toBe(false);
+    expect(shouldUseSdkCutover(true, true, "sc-abc", [htmlAttrOp("data-end", "3")])).toBe(false);
+    expect(shouldUseSdkCutover(true, true, "sc-abc", [htmlAttrOp("DATA-START", "1")])).toBe(false);
   });
 
   it("declines html-attribute ops with event handler names", () => {
-    expect(shouldUseSdkCutover(true, true, "hf-abc", [htmlAttrOp("onclick", "alert(1)")])).toBe(
+    expect(shouldUseSdkCutover(true, true, "sc-abc", [htmlAttrOp("onclick", "alert(1)")])).toBe(
       false,
     );
-    expect(shouldUseSdkCutover(true, true, "hf-abc", [htmlAttrOp("onload", "fetch()")])).toBe(
+    expect(shouldUseSdkCutover(true, true, "sc-abc", [htmlAttrOp("onload", "fetch()")])).toBe(
       false,
     );
   });
 
   it("declines html-attribute ops with disallowed attribute names", () => {
-    expect(shouldUseSdkCutover(true, true, "hf-abc", [htmlAttrOp("formaction", "/x")])).toBe(false);
+    expect(shouldUseSdkCutover(true, true, "sc-abc", [htmlAttrOp("formaction", "/x")])).toBe(false);
   });
 
   it("declines html-attribute ops with dangerous URI schemes", () => {
     expect(
-      shouldUseSdkCutover(true, true, "hf-abc", [htmlAttrOp("href", "javascript:alert(1)")]),
+      shouldUseSdkCutover(true, true, "sc-abc", [htmlAttrOp("href", "javascript:alert(1)")]),
     ).toBe(false);
-    expect(shouldUseSdkCutover(true, true, "hf-abc", [htmlAttrOp("src", "vbscript:run")])).toBe(
+    expect(shouldUseSdkCutover(true, true, "sc-abc", [htmlAttrOp("src", "vbscript:run")])).toBe(
       false,
     );
   });
 
   it("declines html-attribute ops with dangerous data URIs", () => {
     expect(
-      shouldUseSdkCutover(true, true, "hf-abc", [
+      shouldUseSdkCutover(true, true, "sc-abc", [
         htmlAttrOp("href", "data:text/html,<script>alert(1)</script>"),
       ]),
     ).toBe(false);
@@ -142,7 +142,7 @@ describe("shouldUseSdkCutover", () => {
 
   it("returns true when ops mix all supported types", () => {
     expect(
-      shouldUseSdkCutover(true, true, "hf-abc", [
+      shouldUseSdkCutover(true, true, "sc-abc", [
         styleOp("color", "red"),
         textOp("hello"),
         attrOp("x", "1"),
@@ -179,7 +179,7 @@ describe("sdkCutoverPersist", () => {
 
   it("returns false when session is null", async () => {
     const deps = makeDeps();
-    const sel = { hfId: "hf-abc" } as never;
+    const sel = { hfId: "sc-abc" } as never;
     const result = await sdkCutoverPersist(
       sel,
       [styleOp("color", "red")],
@@ -194,7 +194,7 @@ describe("sdkCutoverPersist", () => {
   it("returns false when element not found in session", async () => {
     const deps = makeDeps();
     const session = makeSession(false);
-    const sel = { hfId: "hf-abc" } as never;
+    const sel = { hfId: "sc-abc" } as never;
     const result = await sdkCutoverPersist(
       sel,
       [styleOp("color", "red")],
@@ -209,7 +209,7 @@ describe("sdkCutoverPersist", () => {
   it("dispatches setStyle for inline-style ops", async () => {
     const deps = makeDeps();
     const session = makeSession(true);
-    const sel = { hfId: "hf-abc" } as never;
+    const sel = { hfId: "sc-abc" } as never;
     const result = await sdkCutoverPersist(
       sel,
       [styleOp("color", "red"), styleOp("opacity", "0.5")],
@@ -221,7 +221,7 @@ describe("sdkCutoverPersist", () => {
     expect(result.status).toBe("committed");
     expect(session!.dispatch).toHaveBeenCalledWith({
       type: "setStyle",
-      target: "hf-abc",
+      target: "sc-abc",
       styles: { color: "red", opacity: "0.5" },
     });
     expect(deps.writeProjectFile).toHaveBeenCalledWith("/comp.html", "<html></html>", "before");
@@ -231,7 +231,7 @@ describe("sdkCutoverPersist", () => {
   it("dispatches setText for text-content op", async () => {
     const deps = makeDeps();
     const session = makeSession(true);
-    const sel = { hfId: "hf-abc" } as never;
+    const sel = { hfId: "sc-abc" } as never;
     const result = await sdkCutoverPersist(
       sel,
       [textOp("Hello world")],
@@ -243,7 +243,7 @@ describe("sdkCutoverPersist", () => {
     expect(result.status).toBe("committed");
     expect(session!.dispatch).toHaveBeenCalledWith({
       type: "setText",
-      target: "hf-abc",
+      target: "sc-abc",
       value: "Hello world",
     });
   });
@@ -255,7 +255,7 @@ describe("sdkCutoverPersist", () => {
     const deps = makeDeps();
     const session = makeSession(true);
     (session!.getElement as ReturnType<typeof vi.fn>).mockReturnValue({ children });
-    const sel = { hfId: "hf-abc" } as never;
+    const sel = { hfId: "sc-abc" } as never;
     const result = await sdkCutoverPersist(
       sel,
       [textOp("Hello world")],
@@ -272,7 +272,7 @@ describe("sdkCutoverPersist", () => {
   it("dispatches setAttribute for attribute op with data- prefix", async () => {
     const deps = makeDeps();
     const session = makeSession(true);
-    const sel = { hfId: "hf-abc" } as never;
+    const sel = { hfId: "sc-abc" } as never;
     const result = await sdkCutoverPersist(
       sel,
       [attrOp("x", "42")],
@@ -284,7 +284,7 @@ describe("sdkCutoverPersist", () => {
     expect(result.status).toBe("committed");
     expect(session!.dispatch).toHaveBeenCalledWith({
       type: "setAttribute",
-      target: "hf-abc",
+      target: "sc-abc",
       name: "data-x",
       value: "42",
     });
@@ -293,7 +293,7 @@ describe("sdkCutoverPersist", () => {
   it("dispatches setAttribute for html-attribute op", async () => {
     const deps = makeDeps();
     const session = makeSession(true);
-    const sel = { hfId: "hf-abc" } as never;
+    const sel = { hfId: "sc-abc" } as never;
     const result = await sdkCutoverPersist(
       sel,
       [htmlAttrOp("class", "foo bar")],
@@ -305,7 +305,7 @@ describe("sdkCutoverPersist", () => {
     expect(result.status).toBe("committed");
     expect(session!.dispatch).toHaveBeenCalledWith({
       type: "setAttribute",
-      target: "hf-abc",
+      target: "sc-abc",
       name: "class",
       value: "foo bar",
     });
@@ -314,7 +314,7 @@ describe("sdkCutoverPersist", () => {
   it("passes caller label to recordEdit", async () => {
     const deps = makeDeps();
     const session = makeSession(true);
-    const sel = { hfId: "hf-abc" } as never;
+    const sel = { hfId: "sc-abc" } as never;
     await sdkCutoverPersist(sel, [styleOp("color", "red")], "before", "/comp.html", session, deps, {
       label: "Resize layer box",
     });
@@ -326,7 +326,7 @@ describe("sdkCutoverPersist", () => {
   it("passes caller coalesceKey to recordEdit", async () => {
     const deps = makeDeps();
     const session = makeSession(true);
-    const sel = { hfId: "hf-abc" } as never;
+    const sel = { hfId: "sc-abc" } as never;
     await sdkCutoverPersist(sel, [styleOp("color", "red")], "before", "/comp.html", session, deps, {
       coalesceKey: "my-key",
     });
@@ -341,7 +341,7 @@ describe("sdkCutoverPersist", () => {
     (session!.dispatch as ReturnType<typeof vi.fn>).mockImplementation(() => {
       throw new Error("dispatch failed");
     });
-    const sel = { hfId: "hf-abc" } as never;
+    const sel = { hfId: "sc-abc" } as never;
     const result = await sdkCutoverPersist(
       sel,
       [styleOp("color", "red")],
@@ -357,7 +357,7 @@ describe("sdkCutoverPersist", () => {
   it("wraps all dispatches in session.batch() for atomic rollback", async () => {
     const deps = makeDeps();
     const session = makeSession(true);
-    const sel = { hfId: "hf-abc" } as never;
+    const sel = { hfId: "sc-abc" } as never;
     await sdkCutoverPersist(
       sel,
       [styleOp("color", "red"), styleOp("opacity", "0.5")],
@@ -380,7 +380,7 @@ describe("sdkCutoverPersist", () => {
       callCount++;
       if (callCount === 2) throw new Error("2nd op failed");
     });
-    const sel = { hfId: "hf-abc" } as never;
+    const sel = { hfId: "sc-abc" } as never;
     const result = await sdkCutoverPersist(
       sel,
       [styleOp("color", "red"), textOp("hello")],
@@ -397,9 +397,9 @@ describe("sdkCutoverPersist", () => {
 
 describe("transactional SDK candidate publication", () => {
   const html = `<!DOCTYPE html><html data-composition-variables='[]'><body>
-<div data-hf-id="hf-stage" data-hf-root><div data-hf-id="hf-box" data-start="0" data-duration="1"></div>
+<div data-sc-id="sc-stage" data-sc-root><div data-sc-id="sc-box" data-start="0" data-duration="1"></div>
 <script>var tl = gsap.timeline({ paused: true });
-tl.to('[data-hf-id="hf-box"]', { duration: 1, x: 100 }, 0);
+tl.to('[data-sc-id="sc-box"]', { duration: 1, x: 100 }, 0);
 window.__timelines = { main: tl };</script></div>
 </body></html>`;
 
@@ -407,16 +407,16 @@ window.__timelines = { main: tl };</script></div>
     [
       "style",
       (session: Awaited<ReturnType<typeof openComposition>>) =>
-        session.setStyle("hf-box", { color: "red" }),
+        session.setStyle("sc-box", { color: "red" }),
     ],
     [
       "timing",
       (session: Awaited<ReturnType<typeof openComposition>>) =>
-        session.setTiming("hf-box", { start: 2 }),
+        session.setTiming("sc-box", { start: 2 }),
     ],
     [
       "delete",
-      (session: Awaited<ReturnType<typeof openComposition>>) => session.removeElement("hf-box"),
+      (session: Awaited<ReturnType<typeof openComposition>>) => session.removeElement("sc-box"),
     ],
     [
       "variables",
@@ -426,12 +426,12 @@ window.__timelines = { main: tl };</script></div>
     [
       "grouping/structure",
       (session: Awaited<ReturnType<typeof openComposition>>) =>
-        session.addElement(null, 0, '<div data-hf-group="group-1"></div>'),
+        session.addElement(null, 0, '<div data-sc-group="group-1"></div>'),
     ],
     [
       "GSAP",
       (session: Awaited<ReturnType<typeof openComposition>>) => {
-        const animationId = session.getElement("hf-box")?.animationIds[0];
+        const animationId = session.getElement("sc-box")?.animationIds[0];
         if (!animationId) throw new Error("missing fixture animation");
         session.setGsapTween(animationId, { ease: "power2.in" });
       },
@@ -493,7 +493,7 @@ window.__timelines = { main: tl };</script></div>
         },
         publishSession,
       },
-      (next) => next.setStyle("hf-box", { color: "red" }),
+      (next) => next.setStyle("sc-box", { color: "red" }),
     );
 
     expect(result).toMatchObject({ status: "failed", error: writeError });
@@ -532,7 +532,7 @@ window.__timelines = { main: tl };</script></div>
           return "published";
         },
       },
-      (candidate) => candidate.setStyle("hf-box", { color: "red" }),
+      (candidate) => candidate.setStyle("sc-box", { color: "red" }),
     );
 
     expect(result.status).toBe("committed");
@@ -565,7 +565,7 @@ window.__timelines = { main: tl };</script></div>
           throw new Error("cleanup after publish failed");
         },
       },
-      (candidate) => candidate.setStyle("hf-box", { color: "red" }),
+      (candidate) => candidate.setStyle("sc-box", { color: "red" }),
     );
 
     expect(result.status).toBe("committed");
@@ -600,10 +600,10 @@ window.__timelines = { main: tl };</script></div>
 
     const [first, second] = await Promise.all([
       persistSdkCandidateMutation(live, "/comp.html", html, deps, (candidate) =>
-        candidate.setStyle("hf-box", { color: "red" }),
+        candidate.setStyle("sc-box", { color: "red" }),
       ),
       persistSdkCandidateMutation(live, "/comp.html", html, deps, (candidate) =>
-        candidate.setStyle("hf-box", { backgroundColor: "blue" }),
+        candidate.setStyle("sc-box", { backgroundColor: "blue" }),
       ),
     ]);
 
@@ -637,10 +637,10 @@ window.__timelines = { main: tl };</script></div>
     };
 
     const first = await persistSdkCandidateMutation(live, "/comp.html", html, deps, (candidate) =>
-      candidate.setStyle("hf-box", { color: "red" }),
+      candidate.setStyle("sc-box", { color: "red" }),
     );
     const second = await persistSdkCandidateMutation(live, "/comp.html", html, deps, (candidate) =>
-      candidate.setStyle("hf-box", { backgroundColor: "blue" }),
+      candidate.setStyle("sc-box", { backgroundColor: "blue" }),
     );
 
     expect(first.status).toBe("committed");
@@ -653,7 +653,7 @@ window.__timelines = { main: tl };</script></div>
 
   it("does not publish a delayed candidate after the active composition switches", async () => {
     const liveA = await openComposition(html, { history: false });
-    const liveB = await openComposition(html.replace("hf-box", "hf-other"), { history: false });
+    const liveB = await openComposition(html.replace("sc-box", "sc-other"), { history: false });
     const candidateA = await openComposition(html, { history: false });
     const disposeCandidate = vi.spyOn(candidateA, "dispose");
     let activePath = "/a.html";
@@ -694,7 +694,7 @@ window.__timelines = { main: tl };</script></div>
           return "published";
         },
       },
-      (candidate) => candidate.setStyle("hf-box", { color: "red" }),
+      (candidate) => candidate.setStyle("sc-box", { color: "red" }),
     );
 
     await didStartHistory;
@@ -714,7 +714,7 @@ window.__timelines = { main: tl };</script></div>
 
 describe("persistSdkSerialize — shared per-file transaction boundary", () => {
   const html = `<!DOCTYPE html><html data-composition-variables='[]'><body>
-<div data-hf-id="hf-stage" data-hf-root><div data-hf-id="hf-box" data-start="0" data-duration="1"></div></div>
+<div data-sc-id="sc-stage" data-sc-root><div data-sc-id="sc-box" data-start="0" data-duration="1"></div></div>
 </body></html>`;
 
   const makeDeps = (disk: { current: string }) => ({
@@ -794,7 +794,7 @@ describe("persistSdkSerialize — shared per-file transaction boundary", () => {
     });
 
     const candidateEdit = persistSdkCandidateMutation(live, "/comp.html", html, deps, (candidate) =>
-      candidate.setStyle("hf-box", { color: "red" }),
+      candidate.setStyle("sc-box", { color: "red" }),
     );
     await candidateWriteStarted;
     const islandEdit = persistSdkSerialize(
@@ -825,7 +825,7 @@ describe("sdkDeletePersist", () => {
 
   const makeSession = (hasEl = true) =>
     ({
-      getElement: vi.fn().mockReturnValue(hasEl ? { id: "hf-abc" } : null),
+      getElement: vi.fn().mockReturnValue(hasEl ? { id: "sc-abc" } : null),
       removeElement: vi.fn(),
       serialize: vi
         .fn()
@@ -836,23 +836,23 @@ describe("sdkDeletePersist", () => {
 
   it("returns false when session is null", async () => {
     expect(
-      (await sdkDeletePersist("hf-abc", "before", "/comp.html", null, makeDeps())).status,
+      (await sdkDeletePersist("sc-abc", "before", "/comp.html", null, makeDeps())).status,
     ).toBe("declined");
   });
 
   it("returns false when element not found in session", async () => {
     const session = makeSession(false);
     expect(
-      (await sdkDeletePersist("hf-abc", "before", "/comp.html", session, makeDeps())).status,
+      (await sdkDeletePersist("sc-abc", "before", "/comp.html", session, makeDeps())).status,
     ).toBe("declined");
   });
 
   it("calls removeElement and writes serialized content", async () => {
     const deps = makeDeps();
     const session = makeSession(true);
-    const result = await sdkDeletePersist("hf-abc", "before", "/comp.html", session, deps);
+    const result = await sdkDeletePersist("sc-abc", "before", "/comp.html", session, deps);
     expect(result.status).toBe("committed");
-    expect(session!.removeElement).toHaveBeenCalledWith("hf-abc");
+    expect(session!.removeElement).toHaveBeenCalledWith("sc-abc");
     expect(deps.writeProjectFile).toHaveBeenCalledWith(
       "/comp.html",
       "<html>after</html>",
@@ -863,7 +863,7 @@ describe("sdkDeletePersist", () => {
   it("records edit history with before/after diff", async () => {
     const deps = makeDeps();
     const session = makeSession(true);
-    await sdkDeletePersist("hf-abc", "before-content", "/comp.html", session, deps);
+    await sdkDeletePersist("sc-abc", "before-content", "/comp.html", session, deps);
     expect(deps.editHistory.recordEdit).toHaveBeenCalledWith(
       expect.objectContaining({
         label: "Delete element",
@@ -875,7 +875,7 @@ describe("sdkDeletePersist", () => {
   it("calls reloadPreview on success", async () => {
     const deps = makeDeps();
     const session = makeSession(true);
-    await sdkDeletePersist("hf-abc", "before", "/comp.html", session, deps);
+    await sdkDeletePersist("sc-abc", "before", "/comp.html", session, deps);
     expect(deps.reloadPreview).toHaveBeenCalled();
   });
 
@@ -885,7 +885,7 @@ describe("sdkDeletePersist", () => {
     (session!.removeElement as ReturnType<typeof vi.fn>).mockImplementation(() => {
       throw new Error("remove failed");
     });
-    const result = await sdkDeletePersist("hf-abc", "before", "/comp.html", session, deps);
+    const result = await sdkDeletePersist("sc-abc", "before", "/comp.html", session, deps);
     expect(result.status).toBe("failed");
     expect(deps.writeProjectFile).not.toHaveBeenCalled();
     expect(deps.reloadPreview).not.toHaveBeenCalled();
@@ -904,7 +904,7 @@ describe("sdkTimingPersist", () => {
 
   const makeSession = (hasEl = true) =>
     ({
-      getElement: vi.fn().mockReturnValue(hasEl ? { id: "hf-clip" } : null),
+      getElement: vi.fn().mockReturnValue(hasEl ? { id: "sc-clip" } : null),
       setTiming: vi.fn(),
       serialize: vi
         .fn()
@@ -915,14 +915,14 @@ describe("sdkTimingPersist", () => {
 
   it("returns false when session is null", async () => {
     expect(
-      (await sdkTimingPersist("hf-clip", "/comp.html", { start: 1 }, null, makeDeps())).status,
+      (await sdkTimingPersist("sc-clip", "/comp.html", { start: 1 }, null, makeDeps())).status,
     ).toBe("declined");
   });
 
   it("returns false when element not found in session", async () => {
     const session = makeSession(false);
     expect(
-      (await sdkTimingPersist("hf-clip", "/comp.html", { start: 1 }, session, makeDeps())).status,
+      (await sdkTimingPersist("sc-clip", "/comp.html", { start: 1 }, session, makeDeps())).status,
     ).toBe("declined");
   });
 
@@ -930,14 +930,14 @@ describe("sdkTimingPersist", () => {
     const deps = makeDeps();
     const session = makeSession(true);
     const result = await sdkTimingPersist(
-      "hf-clip",
+      "sc-clip",
       "/comp.html",
       { start: 2, duration: 5, trackIndex: 1 },
       session,
       deps,
     );
     expect(result.status).toBe("committed");
-    expect(session!.setTiming).toHaveBeenCalledWith("hf-clip", {
+    expect(session!.setTiming).toHaveBeenCalledWith("sc-clip", {
       start: 2,
       duration: 5,
       trackIndex: 1,
@@ -952,7 +952,7 @@ describe("sdkTimingPersist", () => {
   it("captures before-state before setTiming dispatch", async () => {
     const deps = makeDeps();
     const session = makeSession(true);
-    await sdkTimingPersist("hf-clip", "/comp.html", { start: 3 }, session, deps);
+    await sdkTimingPersist("sc-clip", "/comp.html", { start: 3 }, session, deps);
     expect(deps.editHistory.recordEdit).toHaveBeenCalledWith(
       expect.objectContaining({
         files: { "/comp.html": { before: "<html>before</html>", after: "<html>after</html>" } },
@@ -966,7 +966,7 @@ describe("sdkTimingPersist", () => {
     (session!.setTiming as ReturnType<typeof vi.fn>).mockImplementation(() => {
       throw new Error("timing error");
     });
-    const result = await sdkTimingPersist("hf-clip", "/comp.html", { start: 1 }, session, deps);
+    const result = await sdkTimingPersist("sc-clip", "/comp.html", { start: 1 }, session, deps);
     expect(result.status).toBe("failed");
     expect(deps.writeProjectFile).not.toHaveBeenCalled();
   });
@@ -980,7 +980,7 @@ describe("sdkTimingPersist", () => {
       readProjectFile: vi.fn().mockResolvedValue("<html>EXACT ON-DISK BYTES</html>"),
     };
     const session = makeSession(true);
-    await sdkTimingPersist("hf-clip", "/comp.html", { start: 3 }, session, deps);
+    await sdkTimingPersist("sc-clip", "/comp.html", { start: 3 }, session, deps);
     expect(deps.readProjectFile).toHaveBeenCalledWith("/comp.html");
     expect(deps.readProjectFile).toHaveBeenCalledOnce();
     expect(deps.editHistory.recordEdit).toHaveBeenCalledWith(
@@ -998,7 +998,7 @@ describe("sdkTimingPersist", () => {
       readProjectFile: vi.fn().mockRejectedValue(new Error("read failed")),
     };
     const session = makeSession(true);
-    const result = await sdkTimingPersist("hf-clip", "/comp.html", { start: 3 }, session, deps);
+    const result = await sdkTimingPersist("sc-clip", "/comp.html", { start: 3 }, session, deps);
     expect(result).toMatchObject({ status: "failed", error: new Error("read failed") });
     expect(deps.writeProjectFile).not.toHaveBeenCalled();
     expect(deps.editHistory.recordEdit).not.toHaveBeenCalled();
@@ -1009,7 +1009,7 @@ describe("sdkGsapTweenPersist — undo baseline (finding #12)", () => {
   const makeRef = <T>(val: T): MutableRefObject<T> => ({ current: val });
   const makeSession = () =>
     ({
-      getElement: vi.fn().mockReturnValue({ id: "hf-box" }),
+      getElement: vi.fn().mockReturnValue({ id: "sc-box" }),
       setGsapTween: vi.fn(),
       serialize: vi
         .fn()
@@ -1077,7 +1077,7 @@ describe("sdkGsapTweenPersist — per-file serialization (finding #8)", () => {
 
     let serializeCall = 0;
     const session = {
-      getElement: vi.fn().mockReturnValue({ id: "hf-box" }),
+      getElement: vi.fn().mockReturnValue({ id: "sc-box" }),
       setGsapTween: vi.fn(() => order.push("dispatch")),
       serialize: vi.fn(() => {
         serializeCall++;
@@ -1127,7 +1127,7 @@ describe("sdkGsapTweenPersist", () => {
 
   const makeSession = (opts?: { addGsapTween?: string; hasEl?: boolean }) =>
     ({
-      getElement: vi.fn().mockReturnValue(opts?.hasEl !== false ? { id: "hf-box" } : null),
+      getElement: vi.fn().mockReturnValue(opts?.hasEl !== false ? { id: "sc-box" } : null),
       addGsapTween: vi.fn().mockReturnValue(opts?.addGsapTween ?? "tw-1"),
       setGsapTween: vi.fn(),
       removeGsapTween: vi.fn(),
@@ -1156,7 +1156,7 @@ describe("sdkGsapTweenPersist", () => {
       "/comp.html",
       {
         kind: "add",
-        target: "hf-box",
+        target: "sc-box",
         spec: { method: "to", duration: 1, properties: { opacity: 1 } },
       },
       session,
@@ -1164,7 +1164,7 @@ describe("sdkGsapTweenPersist", () => {
     );
     expect(result.status).toBe("committed");
     expect(session!.addGsapTween).toHaveBeenCalledWith(
-      "hf-box",
+      "sc-box",
       expect.objectContaining({ method: "to" }),
     );
     expect(deps.writeProjectFile).toHaveBeenCalledWith(
@@ -1179,7 +1179,7 @@ describe("sdkGsapTweenPersist", () => {
     const session = makeSession({ hasEl: false });
     const result = await sdkGsapTweenPersist(
       "/comp.html",
-      { kind: "add", target: "hf-box", spec: { method: "to", properties: { x: 100 } } },
+      { kind: "add", target: "sc-box", spec: { method: "to", properties: { x: 100 } } },
       session,
       deps,
     );
@@ -1314,14 +1314,14 @@ describe("sdkCutoverPersist — GSAP script preservation (integration)", () => {
 
   it("preserves GSAP <script> block and data-position-mode through setStyle dispatch", async () => {
     const html = `<!DOCTYPE html><html><head></head><body>
-<div data-hf-id="hf-layer" style="color: blue; opacity: 1"></div>
-<script data-hf-gsap data-position-mode="relative">
-gsap.timeline().to('[data-hf-id="hf-layer"]', { duration: 1, x: 100 });
+<div data-sc-id="sc-layer" style="color: blue; opacity: 1"></div>
+<script data-sc-gsap data-position-mode="relative">
+gsap.timeline().to('[data-sc-id="sc-layer"]', { duration: 1, x: 100 });
 </script>
 </body></html>`;
     const comp = await openComposition(html, { persist: createMemoryAdapter() });
     const deps = makeDeps();
-    const sel = { hfId: "hf-layer" } as never;
+    const sel = { hfId: "sc-layer" } as never;
     const result = await sdkCutoverPersist(
       sel,
       [{ type: "inline-style", property: "color", value: "red" }],
@@ -1333,7 +1333,7 @@ gsap.timeline().to('[data-hf-id="hf-layer"]', { duration: 1, x: 100 });
     expect(result.status).toBe("committed");
     const written = (deps.writeProjectFile as ReturnType<typeof vi.fn>).mock
       .calls[0]?.[1] as string;
-    expect(written).toContain("data-hf-gsap");
+    expect(written).toContain("data-sc-gsap");
     expect(written).toContain('data-position-mode="relative"');
     expect(written).toContain("gsap.timeline()");
   });

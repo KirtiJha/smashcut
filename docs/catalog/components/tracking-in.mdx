@@ -17,7 +17,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 <!--
   Tracking In - letter-spacing reveal.
 
-  Add class="hf-tracking-in" to text elements, then animate the CSS variable
+  Add class="sc-tracking-in" to text elements, then animate the CSS variable
   from wide tracking to the final value in your composition timeline.
 
   Variables. The script reads each one, falls back to the declared default on
@@ -52,11 +52,11 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
     { "id": "tone", "type": "enum", "role": "style", "label": "Tone", "description": "Text colour: inherit keeps the surrounding page colour, ink suits light frames, paper dark ones, accent rides --brand.", "default": "inherit", "options": [{ "value": "inherit", "label": "Inherit" }, { "value": "ink", "label": "Ink" }, { "value": "paper", "label": "Paper" }, { "value": "accent", "label": "Accent" }] }
   ]'
 >
-  .hf-tracking-in {
+  .sc-tracking-in {
     opacity: 0;
-    color: var(--hf-tracking-color, inherit);
-    letter-spacing: calc(var(--hf-tracking-value, 0.28em) * var(--hf-tracking-reach, 1));
-    transform: translateY(var(--hf-tracking-y, 8px));
+    color: var(--sc-tracking-color, inherit);
+    letter-spacing: calc(var(--sc-tracking-value, 0.28em) * var(--sc-tracking-reach, 1));
+    transform: translateY(var(--sc-tracking-y, 8px));
     will-change: opacity, letter-spacing, transform;
   }
 </style>
@@ -66,8 +66,8 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
     "use strict";
 
     var vars =
-      window.__hyperframes && window.__hyperframes.getVariables
-        ? window.__hyperframes.getVariables()
+      window.__smashcut && window.__smashcut.getVariables
+        ? window.__smashcut.getVariables()
         : {};
 
     // Unrecognised overrides return to their declared defaults.
@@ -91,18 +91,18 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
     // The class is applied to arbitrary host elements, so the resolved values
     // ride the document root and inherit down to every one of them.
     var host = document.documentElement;
-    host.style.setProperty("--hf-tracking-reach", String(reach));
-    host.style.setProperty("--hf-tracking-y", rise);
-    host.style.setProperty("--hf-tracking-color", tone);
+    host.style.setProperty("--sc-tracking-reach", String(reach));
+    host.style.setProperty("--sc-tracking-y", rise);
+    host.style.setProperty("--sc-tracking-color", tone);
   })();
 </script>
 
 <!--
   Timeline integration:
 
-  tl.to(".hf-tracking-in", {
+  tl.to(".sc-tracking-in", {
     opacity: 1,
-    "--hf-tracking-value": "0.02em",
+    "--sc-tracking-value": "0.02em",
     y: 0,
     duration: 0.9,
     ease: "power3.out",
@@ -115,7 +115,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 
 ## Install
 
-<InstallCommand command="npx hyperframes add tracking-in" item="tracking-in" />
+<InstallCommand command="npx smashcut add tracking-in" item="tracking-in" />
 
 That writes one file: `compositions/components/tracking-in.html`.
 
@@ -149,7 +149,7 @@ defaults, so this behaves exactly like the preview above until you change one:
 <!--
   Tracking In - letter-spacing reveal.
 
-  Add class="hf-tracking-in" to text elements, then animate the CSS variable
+  Add class="sc-tracking-in" to text elements, then animate the CSS variable
   from wide tracking to the final value in your composition timeline.
 
   Variables. The script reads each one, falls back to the declared default on
@@ -184,11 +184,11 @@ defaults, so this behaves exactly like the preview above until you change one:
     { "id": "tone", "type": "enum", "role": "style", "label": "Tone", "description": "Text colour: inherit keeps the surrounding page colour, ink suits light frames, paper dark ones, accent rides --brand.", "default": "inherit", "options": [{ "value": "inherit", "label": "Inherit" }, { "value": "ink", "label": "Ink" }, { "value": "paper", "label": "Paper" }, { "value": "accent", "label": "Accent" }] }
   ]'
 >
-  .hf-tracking-in {
+  .sc-tracking-in {
     opacity: 0;
-    color: var(--hf-tracking-color, inherit);
-    letter-spacing: calc(var(--hf-tracking-value, 0.28em) * var(--hf-tracking-reach, 1));
-    transform: translateY(var(--hf-tracking-y, 8px));
+    color: var(--sc-tracking-color, inherit);
+    letter-spacing: calc(var(--sc-tracking-value, 0.28em) * var(--sc-tracking-reach, 1));
+    transform: translateY(var(--sc-tracking-y, 8px));
     will-change: opacity, letter-spacing, transform;
   }
 </style>
@@ -198,8 +198,8 @@ defaults, so this behaves exactly like the preview above until you change one:
     "use strict";
 
     var vars =
-      window.__hyperframes && window.__hyperframes.getVariables
-        ? window.__hyperframes.getVariables()
+      window.__smashcut && window.__smashcut.getVariables
+        ? window.__smashcut.getVariables()
         : {};
 
     // Unrecognised overrides return to their declared defaults.
@@ -223,18 +223,18 @@ defaults, so this behaves exactly like the preview above until you change one:
     // The class is applied to arbitrary host elements, so the resolved values
     // ride the document root and inherit down to every one of them.
     var host = document.documentElement;
-    host.style.setProperty("--hf-tracking-reach", String(reach));
-    host.style.setProperty("--hf-tracking-y", rise);
-    host.style.setProperty("--hf-tracking-color", tone);
+    host.style.setProperty("--sc-tracking-reach", String(reach));
+    host.style.setProperty("--sc-tracking-y", rise);
+    host.style.setProperty("--sc-tracking-color", tone);
   })();
 </script>
 
 <!--
   Timeline integration:
 
-  tl.to(".hf-tracking-in", {
+  tl.to(".sc-tracking-in", {
     opacity: 1,
-    "--hf-tracking-value": "0.02em",
+    "--sc-tracking-value": "0.02em",
     y: 0,
     duration: 0.9,
     ease: "power3.out",

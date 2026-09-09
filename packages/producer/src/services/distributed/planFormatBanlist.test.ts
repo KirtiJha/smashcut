@@ -36,7 +36,7 @@ let runRoot: string;
 let projectDir: string;
 
 beforeAll(() => {
-  runRoot = mkdtempSync(join(tmpdir(), "hf-plan-format-ban-"));
+  runRoot = mkdtempSync(join(tmpdir(), "sc-plan-format-ban-"));
   projectDir = join(runRoot, "project");
   mkdirSync(projectDir, { recursive: true });
   writeFileSync(join(projectDir, "index.html"), FIXTURE_HTML, "utf-8");

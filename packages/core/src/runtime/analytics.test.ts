@@ -13,7 +13,7 @@ describe("runtime analytics", () => {
   it("emits analytics event via postMessage", () => {
     emitAnalyticsEvent("composition_loaded");
     expect(postMessage).toHaveBeenCalledWith({
-      source: "hf-preview",
+      source: "sc-preview",
       type: "analytics",
       event: "composition_loaded",
       properties: {},
@@ -23,7 +23,7 @@ describe("runtime analytics", () => {
   it("passes properties through", () => {
     emitAnalyticsEvent("composition_played", { duration: 10, autoplay: true });
     expect(postMessage).toHaveBeenCalledWith({
-      source: "hf-preview",
+      source: "sc-preview",
       type: "analytics",
       event: "composition_played",
       properties: { duration: 10, autoplay: true },

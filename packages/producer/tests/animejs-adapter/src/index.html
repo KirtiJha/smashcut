@@ -26,7 +26,7 @@
   <script src="https://cdn.jsdelivr.net/npm/animejs@4.0.2/lib/anime.iife.min.js"></script>
   <script>
     window.__timelines = window.__timelines || {};
-    window.__hfAnime = window.__hfAnime || [];
+    window.__scAnime = window.__scAnime || [];
 
     // Generate dot grid
     const container = document.getElementById('dot-container');
@@ -79,7 +79,7 @@
       { tl: tl3, start: 3, end: 6 },
     ];
 
-    window.__hfAnime = [{
+    window.__scAnime = [{
       seek: function(globalTimeMs) {
         const t = globalTimeMs / 1000;
         for (const s of scenes) {

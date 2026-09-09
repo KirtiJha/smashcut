@@ -16,7 +16,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 ```html testimonial-proof-card.html
 <!doctype html>
 <!--
-  testimonial-proof-card: HyperFrames video primitive (proof-stats / testimonial)
+  testimonial-proof-card: SmashCut video primitive (proof-stats / testimonial)
 
   A quote card: the quote reveals per measured line through a soft overflow
   mask, an avatar disc (initials by default, an image via the avatar slot),
@@ -270,8 +270,8 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
             var quoteEl = root.querySelector(".tq-quote");
             var bylineEl = root.querySelector(".tq-byline");
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             function str(value, fallback) {
@@ -515,7 +515,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 
 ## Install
 
-<InstallCommand command="npx hyperframes add testimonial-proof-card" item="testimonial-proof-card" />
+<InstallCommand command="npx smashcut add testimonial-proof-card" item="testimonial-proof-card" />
 
 That writes one file: `compositions/components/testimonial-proof-card.html`.
 
@@ -559,7 +559,7 @@ defaults, so this behaves exactly like the preview above until you change one:
 ```html
 <!doctype html>
 <!--
-  testimonial-proof-card: HyperFrames video primitive (proof-stats / testimonial)
+  testimonial-proof-card: SmashCut video primitive (proof-stats / testimonial)
 
   A quote card: the quote reveals per measured line through a soft overflow
   mask, an avatar disc (initials by default, an image via the avatar slot),
@@ -813,8 +813,8 @@ defaults, so this behaves exactly like the preview above until you change one:
             var quoteEl = root.querySelector(".tq-quote");
             var bylineEl = root.querySelector(".tq-byline");
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             function str(value, fallback) {

@@ -58,7 +58,7 @@ export function useDomSelection({
   const [domEditSelection, setDomEditSelection] = useState<DomEditSelection | null>(null);
   const [domEditGroupSelections, setDomEditGroupSelections] = useState<DomEditSelection[]>([]);
   const [domEditHoverSelection, setDomEditHoverSelection] = useState<DomEditSelection | null>(null);
-  // The data-hf-group wrapper the user has drilled into (null = top level).
+  // The data-sc-group wrapper the user has drilled into (null = top level).
   const [activeGroupElement, setActiveGroupElementState] = useState<HTMLElement | null>(null);
 
   // ── Refs ──

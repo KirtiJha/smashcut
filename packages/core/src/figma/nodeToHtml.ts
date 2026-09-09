@@ -320,9 +320,9 @@ function renderNodeHtml(
   const style = escapeHtml(
     [...geometryCss(node, parentBox, isRoot), ...decorationCss(node, ctx, rasterized)].join("; "),
   );
-  // data-hf-snippet marks the file as a mountable fragment, not a standalone
+  // data-sc-snippet marks the file as a mountable fragment, not a standalone
   // composition — the project linter skips composition-root rules for it.
-  const snippetAttr = isRoot ? ' data-hf-snippet=""' : "";
+  const snippetAttr = isRoot ? ' data-sc-snippet=""' : "";
   const idAttrs = `id="${slug}"${snippetAttr} data-figma-id="${escapeHtml(node.id)}"${unresolvedAttr(node, ctx)}`;
 
   if (rasterized) {

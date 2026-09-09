@@ -57,7 +57,7 @@ let target: { dir: string; urlBase: string };
 const bytes = Buffer.alloc(4096, 42);
 const name = `${createHash("sha256").update(bytes).digest("hex").slice(0, 16)}.png`;
 beforeEach(() => {
-  root = fs.mkdtempSync(join(tmpdir(), "hf-catalog-cache-"));
+  root = fs.mkdtempSync(join(tmpdir(), "sc-catalog-cache-"));
   project = join(root, "project");
   fs.mkdirSync(project);
   fs.writeFileSync(join(project, "asset.png"), bytes);

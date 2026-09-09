@@ -5,7 +5,7 @@ import { mfluxImageGenerate } from "./mflux-provider.mjs";
 // 40GB clears the 32GB klein tier and the 8GB schnell tier below it; the 64GB
 // qwen tier stays out of reach. Two rungs is what makes demotion observable.
 const bothTiersSpecs = { availableRamMB: 40000, gpu: { present: true } };
-const SNAPSHOT = "/tmp/hf-snapshot";
+const SNAPSHOT = "/tmp/sc-snapshot";
 
 // exec stub covering all three shells-out mflux does: the PATH probe, the
 // idempotent `hf download`, and the generate itself.

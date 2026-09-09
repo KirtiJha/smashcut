@@ -102,7 +102,7 @@ async function waitForServer(child, logs) {
 function startStudioServer(logs) {
   const child = spawn("bun", ["run", "dev", "--", "--port", String(PORT), "--strictPort"], {
     cwd: STUDIO_DIR,
-    env: { ...process.env, HYPERFRAMES_AUTO_PROXY: "false" },
+    env: { ...process.env, SMASHCUT_AUTO_PROXY: "false" },
     stdio: ["ignore", "pipe", "pipe"],
   });
   const record = (chunk) => {
@@ -117,7 +117,7 @@ function startStudioServer(logs) {
 function installModelContextHarness(disabled) {
   if (window.top !== window) return;
   if (disabled) {
-    const key = "hf-studio-ui-preferences";
+    const key = "sc-studio-ui-preferences";
     const previous = JSON.parse(localStorage.getItem(key) ?? "{}");
     localStorage.setItem(key, JSON.stringify({ ...previous, agentToolsEnabled: false }));
   }
@@ -237,7 +237,7 @@ async function waitForLens(page, phase) {
     timeout: NAVIGATION_TIMEOUT_MS,
   });
   return page.evaluate((expectedPhase) => {
-    const player = document.querySelector("hyperframes-player");
+    const player = document.querySelector("smashcut-player");
     const frame = player?.shadowRoot?.querySelector("iframe");
     return {
       parentPhase: document
@@ -262,7 +262,7 @@ async function saveAnimatedPageScreenshot(page, name) {
 
 async function savePreviewScreenshot(page, name) {
   const handle = await page.evaluateHandle(() => {
-    const player = document.querySelector("hyperframes-player");
+    const player = document.querySelector("smashcut-player");
     return player?.shadowRoot?.querySelector("iframe") ?? null;
   });
   const element = handle.asElement();
@@ -273,7 +273,7 @@ async function savePreviewScreenshot(page, name) {
 
 async function capturePreviewHash(page) {
   const handle = await page.evaluateHandle(() => {
-    const player = document.querySelector("hyperframes-player");
+    const player = document.querySelector("smashcut-player");
     return player?.shadowRoot?.querySelector("iframe") ?? null;
   });
   const element = handle.asElement();
@@ -712,7 +712,7 @@ async function proveDisabledPreference(browser) {
     waitUntil: "domcontentloaded",
     timeout: NAVIGATION_TIMEOUT_MS,
   });
-  await page.waitForFunction(() => document.querySelector("hyperframes-player"), {
+  await page.waitForFunction(() => document.querySelector("smashcut-player"), {
     timeout: NAVIGATION_TIMEOUT_MS,
   });
   await new Promise((resolveWait) => setTimeout(resolveWait, 500));
@@ -730,7 +730,7 @@ if (!chromeExecutable) {
 assert(Number.isInteger(PORT) && PORT > 0 && PORT < 65_536, `Invalid WEBMCP_E2E_PORT: ${PORT}`);
 
 mkdirSync(EVIDENCE_DIR, { recursive: true });
-const tempRoot = mkdtempSync(join(tmpdir(), "hf-webmcp-edit-loop-"));
+const tempRoot = mkdtempSync(join(tmpdir(), "sc-webmcp-edit-loop-"));
 const projectRoot = join(tempRoot, PROJECT_ID);
 const dataProjectsDir = join(STUDIO_DIR, "data/projects");
 const projectLink = join(dataProjectsDir, PROJECT_ID);

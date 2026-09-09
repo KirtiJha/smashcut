@@ -1,4 +1,4 @@
-# HyperFrames documentation rules
+# SmashCut documentation rules
 
 Before changing a page, read its complete body and verify product behavior in
 the current source, tests, CLI help, or shipped skills.

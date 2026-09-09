@@ -10,7 +10,7 @@ import { join, dirname } from "path";
 import { parseHTML } from "linkedom";
 import { extractAudioMetadata } from "../utils/ffprobe.js";
 import { isNotMediaPayload } from "../utils/notMediaPayload.js";
-import { clampAudioGain } from "@hyperframes/core/audio-gain";
+import { clampAudioGain } from "@smashcut/core/audio-gain";
 import {
   downloadToTemp,
   isHttpUrl,
@@ -31,7 +31,7 @@ import type {
   MixResult,
 } from "./audioMixer.types.js";
 import { applyVolumeEnvelopeToWav } from "./audioVolumeEnvelope.js";
-import { HF_AUDIO_FX_ATTR, parseAudioFxChain } from "@hyperframes/core/audio-fx";
+import { HF_AUDIO_FX_ATTR, parseAudioFxChain } from "@smashcut/core/audio-fx";
 import {
   HF_AUDIO_AUTOMATION_ATTR,
   parseAutomation,
@@ -39,16 +39,16 @@ import {
   sampleAutomationLane,
   VOLUME_TARGET,
   type HfAutomationLane,
-} from "@hyperframes/core/audio-automation";
-import { chainTailSeconds } from "@hyperframes/core/audio-fx-tail";
+} from "@smashcut/core/audio-automation";
+import { chainTailSeconds } from "@smashcut/core/audio-fx-tail";
 import {
   MEDIA_RENDER_ID_ATTR,
   normalizePlaybackRate,
   parseStrictFiniteTimingNumber,
   readMediaStart,
-} from "@hyperframes/core";
-import { HF_AUDIO_GROUP_ATTR, resolveAudioGroups } from "@hyperframes/core/audio-groups";
-import { AUDIO_GROUP_RENDER_ID_ATTR } from "@hyperframes/core";
+} from "@smashcut/core";
+import { HF_AUDIO_GROUP_ATTR, resolveAudioGroups } from "@smashcut/core/audio-groups";
+import { AUDIO_GROUP_RENDER_ID_ATTR } from "@smashcut/core";
 import { applyAudioFxChain, AudioFxRenderError } from "./audioFxRender.js";
 import type { AudioVolumeKeyframe } from "./audioMixer.types.js";
 
@@ -72,7 +72,7 @@ export const MIXED_AUDIO_FILENAME = "audio.m4a";
 /**
  * The bus key a member belongs to, as `resolveAudioGroups` keys them.
  *
- * The compiler's `data-hf-group-render-id` names one INSTANCE of a bus; the
+ * The compiler's `data-sc-group-render-id` names one INSTANCE of a bus; the
  * author's `data-audio-group` names it only within its own composition file. A
  * sub-composition declaring a bus and its members, used twice, therefore had
  * both instances' members under one key: one sub-mix for two independent buses,

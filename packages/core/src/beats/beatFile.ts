@@ -96,7 +96,7 @@ function attr(tag: string, name: string): string | null {
  */
 export function findMusicAudioSrc(html: string): string | null {
   // `[^>]*` spans newlines (it's a negated class, not `.`), so multi-line opening
-  // tags are handled. HyperFrames authors src as an attribute on <audio>.
+  // tags are handled. SmashCut authors src as an attribute on <audio>.
   const tags = html.match(/<audio\b[^>]*>/gi) ?? [];
   for (const tag of tags) {
     const src = attr(tag, "src");

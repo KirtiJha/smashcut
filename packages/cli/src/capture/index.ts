@@ -97,7 +97,7 @@ export async function captureWebsite(
       ? budgetMs
       : Math.max(0, postNavigationDeadline - Date.now());
   let lastPhase: CapturePhaseProgress = {
-    schema: "hyperframes.capture.phase.v1",
+    schema: "smashcut.capture.phase.v1",
     phase: "browser",
     status: "started",
     remainingMs: null,
@@ -110,13 +110,13 @@ export async function captureWebsite(
     const remaining = postNavigationDeadline === undefined ? null : remainingMs();
     lastPhase = reason
       ? {
-          schema: "hyperframes.capture.phase.v1",
+          schema: "smashcut.capture.phase.v1",
           phase: name,
           status,
           remainingMs: remaining,
           reason,
         }
-      : { schema: "hyperframes.capture.phase.v1", phase: name, status, remainingMs: remaining };
+      : { schema: "smashcut.capture.phase.v1", phase: name, status, remainingMs: remaining };
     onPhase?.(lastPhase);
   };
 
@@ -182,7 +182,7 @@ export async function captureWebsite(
       HTMLCanvasElement.prototype.getContext = function(type, attrs) {
         var ctx = origGetContext.call(this, type, attrs);
         if (ctx && (type === 'webgl' || type === 'webgl2' || type === 'experimental-webgl')) {
-          if (ctx.shaderSource && !ctx.__hfHooked) {
+          if (ctx.shaderSource && !ctx.__scHooked) {
             var origShaderSource = ctx.shaderSource.bind(ctx);
             ctx.shaderSource = function(shader, source) {
               try {
@@ -194,7 +194,7 @@ export async function captureWebsite(
               } catch(e) {}
               return origShaderSource(shader, source);
             };
-            ctx.__hfHooked = true;
+            ctx.__scHooked = true;
           }
         }
         return ctx;
@@ -811,12 +811,12 @@ export async function captureWebsite(
           (process.env.OPENROUTER_API_KEY ||
             process.env.GEMINI_API_KEY ||
             process.env.GOOGLE_API_KEY ||
-            (process.env.HYPERFRAMES_VERTEX_PROJECT_ID &&
-              process.env.HYPERFRAMES_VERTEX_SERVICE_ACCOUNT))
+            (process.env.SMASHCUT_VERTEX_PROJECT_ID &&
+              process.env.SMASHCUT_VERTEX_SERVICE_ACCOUNT))
         );
         const header = hasVisionKey
           ? "# Asset Descriptions\n\nOne line per file. Read this instead of opening every image individually.\n\nTo find a specific brand or icon, **grep this file for the brand name in the description text** (e.g. `grep -i 'autodesk' asset-descriptions.md`). The Gemini Vision captions identify what's actually in each file — that's the agent's selector.\n\nThe `logo-<hash>.svg` filename prefix is a cheap structural hint (DOM said this SVG was inside a `<header>`, home-link `<a>`, or had an aria-label matching the page brand). It is NOT a content claim — many `logo-*` files are nav icons or decorative shapes. Trust the captions, not the filename prefix.\n\n"
-          : "# Asset Descriptions\n\n⚠️  No vision credentials — descriptions below are catalog-derived (alt text, headings, section context, filename) instead of Vision-generated. To get richer Vision descriptions on the next capture, set GEMINI_API_KEY (or GOOGLE_API_KEY), or HYPERFRAMES_VERTEX_PROJECT_ID plus HYPERFRAMES_VERTEX_SERVICE_ACCOUNT for Vertex service-account auth, and re-run.\n\nThe `logo-<hash>.svg` filename prefix is a structural hint (DOM said this SVG was inside a `<header>`, home-link `<a>`, or had an aria-label matching the page brand). To pick the actual brand logo without Vision, open the `logo-*` candidates in a previewer or rasterize them with `sharp` before referencing — composing a fake logo ships off-brand in the final video.\n\n";
+          : "# Asset Descriptions\n\n⚠️  No vision credentials — descriptions below are catalog-derived (alt text, headings, section context, filename) instead of Vision-generated. To get richer Vision descriptions on the next capture, set GEMINI_API_KEY (or GOOGLE_API_KEY), or SMASHCUT_VERTEX_PROJECT_ID plus SMASHCUT_VERTEX_SERVICE_ACCOUNT for Vertex service-account auth, and re-run.\n\nThe `logo-<hash>.svg` filename prefix is a structural hint (DOM said this SVG was inside a `<header>`, home-link `<a>`, or had an aria-label matching the page brand). To pick the actual brand logo without Vision, open the `logo-*` candidates in a previewer or rasterize them with `sharp` before referencing — composing a fake logo ships off-brand in the final video.\n\n";
         writeFileSync(
           join(outputDir, "extracted", "asset-descriptions.md"),
           header + lines.map((l) => "- " + l).join("\n") + "\n",

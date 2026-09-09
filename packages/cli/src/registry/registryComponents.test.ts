@@ -1,7 +1,7 @@
 import { existsSync, readFileSync, readdirSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import { lintHyperframeHtml } from "@hyperframes/lint";
+import { lintHyperframeHtml } from "@smashcut/lint";
 import { describe, expect, it } from "vitest";
 
 const componentsDir = resolve(
@@ -21,7 +21,7 @@ async function invalidInstallableMedia(entryName: string): Promise<string[]> {
   const invalidMedia: string[] = [];
 
   for (const file of manifest.files) {
-    if (file.type !== "hyperframes:snippet" || !file.path.endsWith(".html")) continue;
+    if (file.type !== "smashcut:snippet" || !file.path.endsWith(".html")) continue;
     const result = await lintHyperframeHtml(readFileSync(join(itemDir, file.path), "utf8"), {
       isSubComposition: true,
     });

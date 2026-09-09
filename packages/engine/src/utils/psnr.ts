@@ -16,7 +16,7 @@ export async function psnrDb(a: Buffer, b: Buffer): Promise<number> {
   // crashes any downstream test that partially mocks node:child_process
   // without an execFile export (vitest surfaces it as a load-time error).
   const execFileP = promisify(execFile);
-  const dir = await mkdtemp(join(tmpdir(), "hf-de-verify-"));
+  const dir = await mkdtemp(join(tmpdir(), "sc-de-verify-"));
   try {
     const pa = join(dir, "a.jpg");
     const pb = join(dir, "b.jpg");

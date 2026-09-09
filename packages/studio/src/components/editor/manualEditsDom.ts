@@ -74,7 +74,7 @@ export function readStudioPathOffset(element: HTMLElement): { x: number; y: numb
 }
 
 /**
- * The path offset ACTUALLY applied right now. The `--hf-studio-offset` vars can
+ * The path offset ACTUALLY applied right now. The `--sc-studio-offset` vars can
  * linger after GSAP re-bakes the element's transform (`translate:"none"`), so the
  * raw var isn't a safe drag base — using it re-commits a phantom offset and flings
  * the element off-screen. The offset only counts when the inline `translate` is the
@@ -273,10 +273,10 @@ function applyStudioPathOffsetViaGsap(
       })
     | null;
   if (win?.gsap) {
-    const baseX = Number.parseFloat(element.getAttribute("data-hf-drag-gsap-base-x") ?? "");
-    const baseY = Number.parseFloat(element.getAttribute("data-hf-drag-gsap-base-y") ?? "");
-    const origX = Number.parseFloat(element.getAttribute("data-hf-drag-initial-offset-x") ?? "");
-    const origY = Number.parseFloat(element.getAttribute("data-hf-drag-initial-offset-y") ?? "");
+    const baseX = Number.parseFloat(element.getAttribute("data-sc-drag-gsap-base-x") ?? "");
+    const baseY = Number.parseFloat(element.getAttribute("data-sc-drag-gsap-base-y") ?? "");
+    const origX = Number.parseFloat(element.getAttribute("data-sc-drag-initial-offset-x") ?? "");
+    const origY = Number.parseFloat(element.getAttribute("data-sc-drag-initial-offset-y") ?? "");
     const gsapBaseX = Number.isFinite(baseX)
       ? baseX
       : (win.gsap.getProperty(element, "x") as number);
@@ -284,9 +284,9 @@ function applyStudioPathOffsetViaGsap(
       ? baseY
       : (win.gsap.getProperty(element, "y") as number);
     if (!Number.isFinite(baseX))
-      element.setAttribute("data-hf-drag-gsap-base-x", String(gsapBaseX));
+      element.setAttribute("data-sc-drag-gsap-base-x", String(gsapBaseX));
     if (!Number.isFinite(baseY))
-      element.setAttribute("data-hf-drag-gsap-base-y", String(gsapBaseY));
+      element.setAttribute("data-sc-drag-gsap-base-y", String(gsapBaseY));
     const deltaX = offset.x - (Number.isFinite(origX) ? origX : 0);
     const deltaY = offset.y - (Number.isFinite(origY) ? origY : 0);
     win.gsap.set(element, { x: gsapBaseX + deltaX, y: gsapBaseY + deltaY });

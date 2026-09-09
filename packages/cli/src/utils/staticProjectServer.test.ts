@@ -60,13 +60,13 @@ const mocks = vi.hoisted(() => {
 });
 const FakeProxyTranscodeError = mocks.ProxyTranscodeError;
 
-vi.mock("@hyperframes/studio-server/proxy-transcoder", () => ({
+vi.mock("@smashcut/studio-server/proxy-transcoder", () => ({
   resolveProxy: mocks.resolveProxy,
   ProxyTranscodeError: mocks.ProxyTranscodeError,
   ProxyCapacityError: mocks.ProxyCapacityError,
 }));
 
-vi.mock("@hyperframes/studio-server/media-codec-map", () => ({
+vi.mock("@smashcut/studio-server/media-codec-map", () => ({
   probeAssetCodec: mocks.probeAssetCodec,
   decideMediaProxyEligibility: mocks.decideMediaProxyEligibility,
   isProxyVariant: (value: string) => value === "h264" || value === "vp8",
@@ -87,11 +87,11 @@ vi.mock("@hyperframes/studio-server/media-codec-map", () => ({
 // mocking the media-codec-map subpath can't reach inside it. The fake mirrors
 // the real contract (scan → inject tag) via this file's scan mock so the
 // injection assertions stay meaningful. Mirrors commands/play.test.ts.
-vi.mock("@hyperframes/studio-server/media-proxy-preview", () => ({
+vi.mock("@smashcut/studio-server/media-proxy-preview", () => ({
   injectMediaCodecMapIntoHtml: vi.fn(
     async (html: string, projectDir: string, htmlSources: unknown[]) => {
       const map = await mocks.scanProjectMediaCodecMap(projectDir, htmlSources);
-      const tag = `<script data-hf-media-codec-map>window.__HF_MEDIA_CODEC_MAP__=${JSON.stringify(map)};</script>`;
+      const tag = `<script data-sc-media-codec-map>window.__HF_MEDIA_CODEC_MAP__=${JSON.stringify(map)};</script>`;
       return html.includes("</head>")
         ? html.replace("</head>", `${tag}\n</head>`)
         : `${tag}\n${html}`;
@@ -117,7 +117,7 @@ afterEach(async () => {
 });
 
 async function serveWith(bytes: Buffer): Promise<{ url: string }> {
-  dir = mkdtempSync(join(tmpdir(), "hf-static-"));
+  dir = mkdtempSync(join(tmpdir(), "sc-static-"));
   writeFileSync(join(dir, "tone.wav"), bytes);
   server = await serveStaticProjectHtml(dir, "<html></html>");
   return { url: server.url };
@@ -126,7 +126,7 @@ async function serveWith(bytes: Buffer): Promise<{ url: string }> {
 describe("serveStaticProjectHtml range support", () => {
   it("answers a Range request with 206 + the requested byte slice", async () => {
     // Chromium needs byte-range seekability or WAV `.duration` reports Infinity,
-    // which makes `hyperframes validate` falsely warn it cannot read the duration.
+    // which makes `smashcut validate` falsely warn it cannot read the duration.
     const body = Buffer.from("0123456789", "utf-8");
     const { url } = await serveWith(body);
 
@@ -172,7 +172,7 @@ describe("serveStaticProjectHtml range support", () => {
 describe("serveStaticProjectHtml asset roots", () => {
   const extraDirs: string[] = [];
   const mk = (): string => {
-    const d = mkdtempSync(join(tmpdir(), "hf-static-root-"));
+    const d = mkdtempSync(join(tmpdir(), "sc-static-root-"));
     extraDirs.push(d);
     return d;
   };
@@ -215,7 +215,7 @@ describe("serveStaticProjectHtml asset roots", () => {
 describe("serveStaticProjectHtml transparent media proxies", () => {
   const dirs: string[] = [];
   const mk = (): string => {
-    const d = mkdtempSync(join(tmpdir(), "hf-static-proxy-"));
+    const d = mkdtempSync(join(tmpdir(), "sc-static-proxy-"));
     dirs.push(d);
     return d;
   };
@@ -236,13 +236,13 @@ describe("serveStaticProjectHtml transparent media proxies", () => {
     expect(html).toContain("/clip.mp4");
   });
 
-  it("lets an explicit proxy override win over hyperframes.json", async () => {
+  it("lets an explicit proxy override win over smashcut.json", async () => {
     mocks.scanProjectMediaCodecMap.mockResolvedValue({
       "/clip.mp4": { codecName: "hevc", browserHostile: true, representativeMime: null },
     });
     const projectDir = mk();
     writeFileSync(
-      join(projectDir, "hyperframes.json"),
+      join(projectDir, "smashcut.json"),
       JSON.stringify({ media: { autoProxy: false } }),
     );
     server = await serveStaticProjectHtml(
@@ -275,7 +275,7 @@ describe("serveStaticProjectHtml transparent media proxies", () => {
     expect(mocks.scanProjectMediaCodecMap).not.toHaveBeenCalled();
   });
 
-  it("serves the resolved proxy's bytes for ?hf-proxy=h264 on a hostile video asset", async () => {
+  it("serves the resolved proxy's bytes for ?sc-proxy=h264 on a hostile video asset", async () => {
     const projectDir = mk();
     writeFileSync(join(projectDir, "clip.mp4"), "original-hevc-bytes");
     const proxyPath = join(projectDir, "proxy.mp4");
@@ -283,7 +283,7 @@ describe("serveStaticProjectHtml transparent media proxies", () => {
     mocks.resolveProxy.mockResolvedValue(proxyPath);
     server = await serveStaticProjectHtml(projectDir, "<html></html>");
 
-    const res = await fetch(`${server.url}clip.mp4?hf-proxy=h264`);
+    const res = await fetch(`${server.url}clip.mp4?sc-proxy=h264`);
     expect(res.status).toBe(200);
     expect(await res.text()).toBe("transcoded-h264-bytes");
     expect(mocks.resolveProxy).toHaveBeenCalledWith(
@@ -304,7 +304,7 @@ describe("serveStaticProjectHtml transparent media proxies", () => {
       mocks.resolveProxy.mockResolvedValue(proxyPath);
       server = await serveStaticProjectHtml(projectDir, "<html></html>");
 
-      const res = await fetch(`${server.url}clip.${extension}?hf-proxy=h264`);
+      const res = await fetch(`${server.url}clip.${extension}?sc-proxy=h264`);
       expect(res.status).toBe(200);
       expect(await res.text()).toBe("transcoded-h264-bytes");
       expect(mocks.resolveProxy).toHaveBeenCalledWith(projectDir, sourcePath, "h264");
@@ -325,7 +325,7 @@ describe("serveStaticProjectHtml transparent media proxies", () => {
     mocks.resolveProxy.mockResolvedValueOnce(proxyPath);
     server = await serveStaticProjectHtml(projectDir, "<html></html>");
 
-    const res = await fetch(`${server.url}clip.mov?hf-proxy=auto`);
+    const res = await fetch(`${server.url}clip.mov?sc-proxy=auto`);
 
     expect(res.status).toBe(200);
     expect(res.headers.get("content-type")).toBe("video/webm");
@@ -345,7 +345,7 @@ describe("serveStaticProjectHtml transparent media proxies", () => {
     );
     server = await serveStaticProjectHtml(projectDir, "<html></html>");
 
-    const res = await fetch(`${server.url}clip.mp4?hf-proxy=h264`);
+    const res = await fetch(`${server.url}clip.mp4?sc-proxy=h264`);
     expect(res.status).toBe(502);
   });
 
@@ -355,17 +355,17 @@ describe("serveStaticProjectHtml transparent media proxies", () => {
     mocks.resolveProxy.mockRejectedValue(new mocks.ProxyCapacityError());
     server = await serveStaticProjectHtml(projectDir, "<html></html>");
 
-    const res = await fetch(`${server.url}clip.mp4?hf-proxy=h264`);
+    const res = await fetch(`${server.url}clip.mp4?sc-proxy=h264`);
     expect(res.status).toBe(503);
     expect(res.headers.get("retry-after")).toBe("1");
   });
 
-  it("404s ?hf-proxy=h264 for a non-video asset without attempting a transcode", async () => {
+  it("404s ?sc-proxy=h264 for a non-video asset without attempting a transcode", async () => {
     const projectDir = mk();
     writeFileSync(join(projectDir, "image.png"), "not-a-video");
     server = await serveStaticProjectHtml(projectDir, "<html></html>");
 
-    const res = await fetch(`${server.url}image.png?hf-proxy=h264`);
+    const res = await fetch(`${server.url}image.png?sc-proxy=h264`);
     expect(res.status).toBe(404);
     expect(mocks.resolveProxy).not.toHaveBeenCalled();
   });

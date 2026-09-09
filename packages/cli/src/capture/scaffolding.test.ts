@@ -34,7 +34,7 @@ describe("generateProjectScaffold metadata", () => {
   const progress = vi.fn();
 
   beforeEach(() => {
-    dir = fs.mkdtempSync(join(tmpdir(), "hf-scaffold-"));
+    dir = fs.mkdtempSync(join(tmpdir(), "sc-scaffold-"));
     metaPath = join(dir, "meta.json");
     warnings = [];
     vi.clearAllMocks();
@@ -42,7 +42,7 @@ describe("generateProjectScaffold metadata", () => {
 
   afterEach(() => {
     if (fs.existsSync(dir)) {
-      expect(fs.readdirSync(dir).filter((name) => name.startsWith(".hf-create-"))).toEqual([]);
+      expect(fs.readdirSync(dir).filter((name) => name.startsWith(".sc-create-"))).toEqual([]);
     }
     fs.rmSync(dir, { recursive: true, force: true });
   });

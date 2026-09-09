@@ -83,7 +83,7 @@
          reads it back so duration is single-sourced (no hard-coded value in JS).
          Rebased to scene-relative time — content starts at ~0, no dead pre-roll. -->
     <div
-      data-hf-id="hf-g3rt"
+      data-sc-id="sc-g3rt"
       id="root"
       data-composition-id="group-three-recreate"
       data-width="1920"
@@ -92,8 +92,8 @@
       data-duration="3.8"
       data-root="true"
     >
-      <div data-hf-id="hf-g3ov" class="g3-overlay">
-        <div data-hf-id="hf-g3sk" class="g3-stack" id="stack"></div>
+      <div data-sc-id="sc-g3ov" class="g3-overlay">
+        <div data-sc-id="sc-g3sk" class="g3-stack" id="stack"></div>
       </div>
     </div>
 
@@ -137,8 +137,8 @@
         var vars = Object.assign(
           {},
           defaults,
-          window.__hyperframes && window.__hyperframes.getVariables
-            ? window.__hyperframes.getVariables()
+          window.__smashcut && window.__smashcut.getVariables
+            ? window.__smashcut.getVariables()
             : {},
         );
 

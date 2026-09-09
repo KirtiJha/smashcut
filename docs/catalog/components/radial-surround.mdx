@@ -16,7 +16,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 ```html radial-surround.html
 <!doctype html>
 <!--
-  radial-surround: HyperFrames video primitive (problem setup)
+  radial-surround: SmashCut video primitive (problem setup)
 
   Labeled hairline chips assemble around a centered subject on an elliptical
   ring. Positions are baked exactly once via cos/sin before the timeline is
@@ -239,8 +239,8 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
             var ring = root.querySelector(".rs-ring");
             var vignette = root.querySelector(".rs-vignette");
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             var centerLabel =
@@ -452,7 +452,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 
 ## Install
 
-<InstallCommand command="npx hyperframes add radial-surround" item="radial-surround" />
+<InstallCommand command="npx smashcut add radial-surround" item="radial-surround" />
 
 That writes one file: `compositions/components/radial-surround.html`.
 
@@ -495,7 +495,7 @@ defaults, so this behaves exactly like the preview above until you change one:
 ```html
 <!doctype html>
 <!--
-  radial-surround: HyperFrames video primitive (problem setup)
+  radial-surround: SmashCut video primitive (problem setup)
 
   Labeled hairline chips assemble around a centered subject on an elliptical
   ring. Positions are baked exactly once via cos/sin before the timeline is
@@ -718,8 +718,8 @@ defaults, so this behaves exactly like the preview above until you change one:
             var ring = root.querySelector(".rs-ring");
             var vignette = root.querySelector(".rs-vignette");
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             var centerLabel =

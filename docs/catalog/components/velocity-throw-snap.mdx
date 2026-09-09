@@ -16,7 +16,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 ```html velocity-throw-snap.html
 <!doctype html>
 <!--
-  velocity-throw-snap: HyperFrames video primitive (feature-tour / exhibit)
+  velocity-throw-snap: SmashCut video primitive (feature-tour / exhibit)
 
   Concept: a five-shot rail whips in on an authored velocity curve, loses
   speed quickly, then snaps past and back onto the selected hero shot. The
@@ -353,8 +353,8 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
             var cards = Array.from(root.querySelectorAll(".vts-card"));
             var labels = Array.from(root.querySelectorAll(".vts-label"));
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             var heroValue = Number(vars.hero_index);
@@ -504,7 +504,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 
 ## Install
 
-<InstallCommand command="npx hyperframes add velocity-throw-snap" item="velocity-throw-snap" />
+<InstallCommand command="npx smashcut add velocity-throw-snap" item="velocity-throw-snap" />
 
 That writes one file: `compositions/components/velocity-throw-snap.html`.
 
@@ -544,7 +544,7 @@ defaults, so this behaves exactly like the preview above until you change one:
 ```html
 <!doctype html>
 <!--
-  velocity-throw-snap: HyperFrames video primitive (feature-tour / exhibit)
+  velocity-throw-snap: SmashCut video primitive (feature-tour / exhibit)
 
   Concept: a five-shot rail whips in on an authored velocity curve, loses
   speed quickly, then snaps past and back onto the selected hero shot. The
@@ -881,8 +881,8 @@ defaults, so this behaves exactly like the preview above until you change one:
             var cards = Array.from(root.querySelectorAll(".vts-card"));
             var labels = Array.from(root.querySelectorAll(".vts-label"));
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             var heroValue = Number(vars.hero_index);

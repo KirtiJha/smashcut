@@ -16,7 +16,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 ```html multi-device-splay.html
 <!doctype html>
 <!--
-  multi-device-splay: HyperFrames video primitive (ui-props / devices / reveal)
+  multi-device-splay: SmashCut video primitive (ui-props / devices / reveal)
 
   Concept: phone, tablet, and desktop product mockups begin as one centered
   stack, then fan into a proud three-device arrangement. Each screen uses the
@@ -614,8 +614,8 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 
             var root = document.getElementById("root");
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             var accentColors = {
@@ -747,7 +747,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 
 ## Install
 
-<InstallCommand command="npx hyperframes add multi-device-splay" item="multi-device-splay" />
+<InstallCommand command="npx smashcut add multi-device-splay" item="multi-device-splay" />
 
 That writes one file: `compositions/components/multi-device-splay.html`.
 
@@ -785,7 +785,7 @@ defaults, so this behaves exactly like the preview above until you change one:
 ```html
 <!doctype html>
 <!--
-  multi-device-splay: HyperFrames video primitive (ui-props / devices / reveal)
+  multi-device-splay: SmashCut video primitive (ui-props / devices / reveal)
 
   Concept: phone, tablet, and desktop product mockups begin as one centered
   stack, then fan into a proud three-device arrangement. Each screen uses the
@@ -1383,8 +1383,8 @@ defaults, so this behaves exactly like the preview above until you change one:
 
             var root = document.getElementById("root");
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             var accentColors = {

@@ -6,7 +6,7 @@ import { normalizeErrorMessage } from "../utils/errorMessage.js";
 import { diag } from "../ui/diagnostics.js";
 import type { CapturePhaseProgress } from "../capture/types.js";
 
-const CAPTURE_PHASE_PREFIX = "HYPERFRAMES_CAPTURE_PHASE ";
+const CAPTURE_PHASE_PREFIX = "SMASHCUT_CAPTURE_PHASE ";
 
 function emitCapturePhase(event: CapturePhaseProgress): void {
   diag.notice(`${CAPTURE_PHASE_PREFIX}${JSON.stringify(event)}`);
@@ -23,23 +23,23 @@ function parseCaptureBudget(raw: string | undefined): number | undefined {
 }
 
 export const examples: Example[] = [
-  ["Capture a website into ./capture/", "hyperframes capture https://stripe.com"],
-  ["Capture to a different directory", "hyperframes capture https://linear.app -o linear-video"],
-  ["JSON output for AI agents", "hyperframes capture https://example.com --json"],
+  ["Capture a website into ./capture/", "smashcut capture https://stripe.com"],
+  ["Capture to a different directory", "smashcut capture https://linear.app -o linear-video"],
+  ["JSON output for AI agents", "smashcut capture https://example.com --json"],
   [
     "Pull a video from the captured manifest by index",
-    "hyperframes capture --video ./linear-video --index 0",
+    "smashcut capture --video ./linear-video --index 0",
   ],
   [
     "List videos referenced in the captured manifest",
-    "hyperframes capture --video ./linear-video --list",
+    "smashcut capture --video ./linear-video --list",
   ],
 ];
 
 export default defineCommand({
   meta: {
     name: "capture",
-    description: "Capture a website as editable HyperFrames components",
+    description: "Capture a website as editable SmashCut components",
   },
   args: {
     url: {

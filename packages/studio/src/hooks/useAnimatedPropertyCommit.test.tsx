@@ -2,7 +2,7 @@
 
 import React, { act } from "react";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import type { GsapAnimation } from "@hyperframes/core/gsap-parser";
+import type { GsapAnimation } from "@smashcut/core/gsap-parser";
 import type { DomEditSelection } from "../components/editor/domEditingTypes";
 import { usePlayerStore } from "../player/store/playerStore";
 import { useAnimatedPropertyCommit } from "./useAnimatedPropertyCommit";

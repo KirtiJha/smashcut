@@ -148,7 +148,7 @@ export async function initHdrReadback(page: Page, width: number, height: number)
         },
       };
 
-      (window as unknown as Record<string, unknown>).__hfHdrCapture = captureRuntime;
+      (window as unknown as Record<string, unknown>).__scHdrCapture = captureRuntime;
       return true;
     },
     width,
@@ -170,7 +170,7 @@ export async function uploadAndReadbackHdrFrame(
 ): Promise<{ rawBuffer: Buffer; bytesPerRow: number }> {
   const result = await page.evaluate(
     async (b64: string): Promise<{ base64: string; bytesPerRow: number }> => {
-      const hdr = (window as unknown as Record<string, unknown>).__hfHdrCapture as
+      const hdr = (window as unknown as Record<string, unknown>).__scHdrCapture as
         | HdrCaptureRuntime
         | undefined;
       if (!hdr) throw new Error("HDR capture not initialized");

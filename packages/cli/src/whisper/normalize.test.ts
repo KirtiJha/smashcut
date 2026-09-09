@@ -14,7 +14,7 @@ import {
 import { detectSpeechOnset } from "./transcribe.js";
 
 function tmpFile(name: string, content: string): string {
-  const dir = mkdtempSync(join(tmpdir(), "hf-normalize-test-"));
+  const dir = mkdtempSync(join(tmpdir(), "sc-normalize-test-"));
   dirs.push(dir);
   const path = join(dir, name);
   writeFileSync(path, content);
@@ -524,7 +524,7 @@ describe("whisper-cpp zero-duration interpolation", () => {
 
 describe("patchCaptionHtml", () => {
   it("replaces const script = [] in HTML files", () => {
-    const dir = mkdtempSync(join(tmpdir(), "hf-patch-test-"));
+    const dir = mkdtempSync(join(tmpdir(), "sc-patch-test-"));
     dirs.push(dir);
 
     const html = `<html><body><script>
@@ -546,7 +546,7 @@ describe("patchCaptionHtml", () => {
   });
 
   it("replaces const TRANSCRIPT = [] variant", () => {
-    const dir = mkdtempSync(join(tmpdir(), "hf-patch-test-"));
+    const dir = mkdtempSync(join(tmpdir(), "sc-patch-test-"));
     dirs.push(dir);
 
     const html = `<script>const TRANSCRIPT = [];</script>`;
@@ -560,7 +560,7 @@ describe("patchCaptionHtml", () => {
   });
 
   it("does not modify HTML files without matching script patterns", () => {
-    const dir = mkdtempSync(join(tmpdir(), "hf-patch-test-"));
+    const dir = mkdtempSync(join(tmpdir(), "sc-patch-test-"));
     dirs.push(dir);
 
     const html = `<html><body><script>console.log("hello");</script></body></html>`;
@@ -573,7 +573,7 @@ describe("patchCaptionHtml", () => {
   });
 
   it("skips empty word arrays", () => {
-    const dir = mkdtempSync(join(tmpdir(), "hf-patch-test-"));
+    const dir = mkdtempSync(join(tmpdir(), "sc-patch-test-"));
     dirs.push(dir);
 
     const html = `<script>const script = [];</script>`;
@@ -614,7 +614,7 @@ describe("detectSpeechOnset", () => {
       const amplitude = energyFn(t);
       buf.writeInt16LE(Math.round(amplitude * 32767), 44 + i * 2);
     }
-    const dir = mkdtempSync(join(tmpdir(), "hf-wav-test-"));
+    const dir = mkdtempSync(join(tmpdir(), "sc-wav-test-"));
     dirs.push(dir);
     const path = join(dir, "tone.wav");
     writeFileSync(path, buf);

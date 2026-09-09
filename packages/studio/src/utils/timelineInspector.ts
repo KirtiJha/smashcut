@@ -1,4 +1,4 @@
-import { HF_AUDIO_GROUP_TAG } from "@hyperframes/core/audio-groups";
+import { HF_AUDIO_GROUP_TAG } from "@smashcut/core/audio-groups";
 import type { TimelineElement } from "../player";
 
 const AUDIO_TIMELINE_TAGS = new Set(["audio", "music", "sfx", "sound", "narration"]);
@@ -17,7 +17,7 @@ const MUSIC_ID_RE = /\b(music|bgm|soundtrack|background[-_]?music)\b/i;
 export function isAudioDomElement(node: Element | null | undefined): boolean {
   if (!node) return false;
   // A group bus counts: it is audio-only, and the panel's single-select path
-  // already treats `<hf-audio-group>` as audio for exactly these decisions.
+  // already treats `<sc-audio-group>` as audio for exactly these decisions.
   if (node.tagName.toLowerCase() === HF_AUDIO_GROUP_TAG) return true;
   return isAudioTimelineElement({
     tag: node.tagName,

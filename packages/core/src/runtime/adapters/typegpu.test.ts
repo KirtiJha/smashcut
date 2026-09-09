@@ -6,13 +6,13 @@ import {
   type HfSeekEventDetail,
 } from "./seek-dispatch";
 
-const gpuWindow = window as Window & { __hfTypegpuTime?: number };
+const gpuWindow = window as Window & { __scTypegpuTime?: number };
 
 describe("typegpu adapter", () => {
   beforeEach(() => {
     vi.useRealTimers();
     document.body.innerHTML = "";
-    delete gpuWindow.__hfTypegpuTime;
+    delete gpuWindow.__scTypegpuTime;
     // Reset shared dedup state so each test starts with a clean dispatch history
     resetSeekDispatchState();
   });
@@ -21,18 +21,18 @@ describe("typegpu adapter", () => {
     expect(createTypegpuAdapter().name).toBe("typegpu");
   });
 
-  it("seek sets __hfTypegpuTime", () => {
+  it("seek sets __scTypegpuTime", () => {
     const adapter = createTypegpuAdapter();
     adapter.seek({ time: 5 });
-    expect(gpuWindow.__hfTypegpuTime).toBe(5);
+    expect(gpuWindow.__scTypegpuTime).toBe(5);
   });
 
-  it("seek dispatches hf-seek custom event with time", () => {
+  it("seek dispatches sc-seek custom event with time", () => {
     const adapter = createTypegpuAdapter();
     const handler = vi.fn();
-    window.addEventListener("hf-seek", handler);
+    window.addEventListener("sc-seek", handler);
     adapter.seek({ time: 3.5 });
-    window.removeEventListener("hf-seek", handler);
+    window.removeEventListener("sc-seek", handler);
     expect(handler).toHaveBeenCalledOnce();
     const detail = (handler.mock.calls[0][0] as CustomEvent).detail;
     expect(detail.time).toBe(3.5);
@@ -41,43 +41,43 @@ describe("typegpu adapter", () => {
   it("seek clamps negative time to 0", () => {
     const adapter = createTypegpuAdapter();
     adapter.seek({ time: -5 });
-    expect(gpuWindow.__hfTypegpuTime).toBe(0);
+    expect(gpuWindow.__scTypegpuTime).toBe(0);
   });
 
   it("seek handles NaN gracefully", () => {
     const adapter = createTypegpuAdapter();
     adapter.seek({ time: NaN });
-    expect(gpuWindow.__hfTypegpuTime).toBe(0);
+    expect(gpuWindow.__scTypegpuTime).toBe(0);
   });
 
   it("multiple seeks to different times dispatch separate events", () => {
     const adapter = createTypegpuAdapter();
     const handler = vi.fn();
-    window.addEventListener("hf-seek", handler);
+    window.addEventListener("sc-seek", handler);
     adapter.seek({ time: 1 });
     adapter.seek({ time: 2 });
     adapter.seek({ time: 3 });
-    window.removeEventListener("hf-seek", handler);
+    window.removeEventListener("sc-seek", handler);
     expect(handler).toHaveBeenCalledTimes(3);
   });
 
   it("duplicate seek to same time fires event only once (dedup)", () => {
     const adapter = createTypegpuAdapter();
     const handler = vi.fn();
-    window.addEventListener("hf-seek", handler);
+    window.addEventListener("sc-seek", handler);
     adapter.seek({ time: 5 });
     adapter.seek({ time: 5 }); // same time — deduplicated
-    window.removeEventListener("hf-seek", handler);
+    window.removeEventListener("sc-seek", handler);
     expect(handler).toHaveBeenCalledOnce();
-    // __hfTypegpuTime is still updated on every seek regardless of dedup
-    expect(gpuWindow.__hfTypegpuTime).toBe(5);
+    // __scTypegpuTime is still updated on every seek regardless of dedup
+    expect(gpuWindow.__scTypegpuTime).toBe(5);
   });
 
   it("pause after seek preserves last time", () => {
     const adapter = createTypegpuAdapter();
     adapter.seek({ time: 8 });
     adapter.pause();
-    expect(gpuWindow.__hfTypegpuTime).toBe(8);
+    expect(gpuWindow.__scTypegpuTime).toBe(8);
   });
 
   it("revert resets state", () => {
@@ -85,7 +85,7 @@ describe("typegpu adapter", () => {
     adapter.seek({ time: 5 });
     adapter.revert!();
     adapter.pause();
-    expect(gpuWindow.__hfTypegpuTime).toBe(5);
+    expect(gpuWindow.__scTypegpuTime).toBe(5);
   });
 
   it("discover is a no-op and does not throw", () => {
@@ -102,17 +102,17 @@ describe("typegpu adapter", () => {
     const handler = (event: Event) => {
       times.push((event as CustomEvent<{ time: number }>).detail.time);
     };
-    window.addEventListener("hf-seek", handler);
+    window.addEventListener("sc-seek", handler);
 
     adapter.seek({ time: 1.25 });
     adapter.pause();
     await vi.advanceTimersByTimeAsync(TYPEGPU_PRESENT_HEARTBEAT_MS);
     adapter.play?.();
     await vi.advanceTimersByTimeAsync(TYPEGPU_PRESENT_HEARTBEAT_MS * 2);
-    window.removeEventListener("hf-seek", handler);
+    window.removeEventListener("sc-seek", handler);
 
     expect(times).toEqual([1.25, 1.25]);
-    expect(gpuWindow.__hfTypegpuTime).toBe(1.25);
+    expect(gpuWindow.__scTypegpuTime).toBe(1.25);
   });
 
   it("does not start a present heartbeat without the WebGPU capability marker", async () => {
@@ -120,12 +120,12 @@ describe("typegpu adapter", () => {
     document.body.innerHTML = '<div data-composition-id="dom" data-duration="2"></div>';
     const adapter = createTypegpuAdapter();
     const handler = vi.fn();
-    window.addEventListener("hf-seek", handler);
+    window.addEventListener("sc-seek", handler);
 
     adapter.seek({ time: 1.25 });
     adapter.pause();
     await vi.advanceTimersByTimeAsync(TYPEGPU_PRESENT_HEARTBEAT_MS * 2);
-    window.removeEventListener("hf-seek", handler);
+    window.removeEventListener("sc-seek", handler);
 
     expect(handler).toHaveBeenCalledOnce();
   });
@@ -146,7 +146,7 @@ describe("typegpu adapter", () => {
         }),
       );
     };
-    window.addEventListener("hf-seek", handler);
+    window.addEventListener("sc-seek", handler);
 
     adapter.seek({ time: 1.25 });
     adapter.pause();
@@ -161,7 +161,7 @@ describe("typegpu adapter", () => {
     await vi.advanceTimersByTimeAsync(1);
     await capture;
     adapter.play?.();
-    window.removeEventListener("hf-seek", handler);
+    window.removeEventListener("sc-seek", handler);
     expect(settled).toBe(true);
     expect(times).toEqual([1.25]);
   });

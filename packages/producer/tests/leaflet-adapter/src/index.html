@@ -31,7 +31,7 @@
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script>
     window.__timelines = window.__timelines || {};
-    window.__hfLeaflet = window.__hfLeaflet || [];
+    window.__scLeaflet = window.__scLeaflet || [];
 
     // Initialize Leaflet map
     var map = L.map('map', {
@@ -49,7 +49,7 @@
     L.marker([37.7749, -122.4194]).addTo(map);
 
     // Register for the adapter
-    window.__hfLeaflet = [map];
+    window.__scLeaflet = [map];
 
     // GSAP timeline for label animations
     var compId = 'leaflet-test';

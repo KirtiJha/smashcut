@@ -218,7 +218,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
         var SQUARE_SHARPNESS = 8;
 
         function readVariables() {
-          var api = window.__hyperframes && window.__hyperframes.getVariables;
+          var api = window.__smashcut && window.__smashcut.getVariables;
           if (typeof api === "function") return api() || {};
           // Standalone fallback (raw file opened without the runtime): read
           // the same declaration the runtime reads, so defaults have exactly
@@ -540,7 +540,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 
 ## Install
 
-<InstallCommand command="npx hyperframes add oscilloscope-trace" item="oscilloscope-trace" />
+<InstallCommand command="npx smashcut add oscilloscope-trace" item="oscilloscope-trace" />
 
 That writes one file: `compositions/oscilloscope-trace.html`.
 
@@ -798,7 +798,7 @@ defaults, so this behaves exactly like the preview above until you change one:
         var SQUARE_SHARPNESS = 8;
 
         function readVariables() {
-          var api = window.__hyperframes && window.__hyperframes.getVariables;
+          var api = window.__smashcut && window.__smashcut.getVariables;
           if (typeof api === "function") return api() || {};
           // Standalone fallback (raw file opened without the runtime): read
           // the same declaration the runtime reads, so defaults have exactly

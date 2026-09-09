@@ -12,7 +12,7 @@ hf_new_smoke_run_id() {
 hf_sam_deploy_bucket_name() {
   local account_id="$1" region="$2" run_id="$3" digest
   digest=$(printf '%s' "$run_id" | sha256sum | awk '{print substr($1,1,20)}')
-  printf 'hf-sam-%s-%s-%s\n' "$account_id" "$region" "$digest"
+  printf 'sc-sam-%s-%s-%s\n' "$account_id" "$region" "$digest"
 }
 
 hf_derive_project_name() {
@@ -21,7 +21,7 @@ hf_derive_project_name() {
     tr -c '[:alnum:]-' '-' |
     sed -E 's/^-+//; s/-+$//' |
     cut -c1-36)
-  [ -n "$prefix" ] || prefix="hf-smoke"
+  [ -n "$prefix" ] || prefix="sc-smoke"
   digest=$(printf '%s' "$stack_name" | sha256sum | awk '{print substr($1,1,12)}')
   printf '%s-%s\n' "$prefix" "$digest"
 }
@@ -106,7 +106,7 @@ hf_reserve_smoke_stack() {
     --stack-name "$stack_name" \
     --template-body \
       '{"Resources":{"SmokeOwnershipHandle":{"Type":"AWS::CloudFormation::WaitConditionHandle"}}}' \
-    --tags "Key=HyperframesSmokeRun,Value=$run_id" >/dev/null &&
+    --tags "Key=SmashcutSmokeRun,Value=$run_id" >/dev/null &&
     aws cloudformation wait stack-create-complete --stack-name "$stack_name"
 }
 
@@ -119,7 +119,7 @@ hf_stack_ownership_status() {
   error_file=$(mktemp)
   if aws cloudformation describe-stacks \
     --stack-name "$stack_name" \
-    --query "Stacks[0].Tags[?Key=='HyperframesSmokeRun'].Value | [0]" \
+    --query "Stacks[0].Tags[?Key=='SmashcutSmokeRun'].Value | [0]" \
     --output text >"$output_file" 2>"$error_file"; then
     owner=$(tr -d '\r\n' <"$output_file")
     rm -f "$output_file" "$error_file"

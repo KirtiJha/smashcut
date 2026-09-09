@@ -15,7 +15,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 
 ```html strikethrough-replace.html
 <!--
-  Strikethrough Replace - typography primitive for HyperFrames.
+  Strikethrough Replace - typography primitive for SmashCut.
 
   Paste the markup, CSS and script into a composition. Drive the timeline
   integration from a paused GSAP timeline so renders remain deterministic.
@@ -43,7 +43,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 -->
 
 <div
-  class="hf-catalog-strikethrough-replace"
+  class="sc-catalog-strikethrough-replace"
   data-composition-variables='[
     { "id": "origin", "type": "enum", "role": "motion", "label": "Origin", "description": "Edge the strike grows out of as the timeline runs its scale from 0 to 1.", "default": "left", "options": [{ "value": "left", "label": "Left" }, { "value": "center", "label": "Center" }, { "value": "right", "label": "Right" }] },
     { "id": "thickness", "type": "enum", "role": "style", "label": "Thickness", "description": "Height of the strike line, from a hairline rule to a heavy bar.", "default": "standard", "options": [{ "value": "thin", "label": "Thin" }, { "value": "standard", "label": "Standard" }, { "value": "thick", "label": "Thick" }] },
@@ -55,13 +55,13 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 </div>
 
 <style>
-  .hf-catalog-strikethrough-replace {
-    color: var(--hf-strike-text-color, #18181b);
+  .sc-catalog-strikethrough-replace {
+    color: var(--sc-strike-text-color, #18181b);
     font-family: Inter, system-ui, sans-serif;
     font-weight: 900;
     letter-spacing: -0.04em;
   }
-  .hf-catalog-strikethrough-replace {
+  .sc-catalog-strikethrough-replace {
     position: relative;
     display: inline-grid;
     grid-auto-flow: column;
@@ -69,18 +69,18 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
     align-items: center;
     font-size: 58px;
   }
-  .hf-catalog-strikethrough-replace i {
+  .sc-catalog-strikethrough-replace i {
     position: absolute;
     left: 0;
     width: 48%;
-    height: var(--hf-strike-thickness, 6px);
+    height: var(--sc-strike-thickness, 6px);
     border-radius: 999px;
-    background: var(--hf-strike-color, #ef4444);
-    transform: scaleX(var(--hf-strike-progress, 1));
-    transform-origin: var(--hf-strike-origin, left center);
+    background: var(--sc-strike-color, #ef4444);
+    transform: scaleX(var(--sc-strike-progress, 1));
+    transform-origin: var(--sc-strike-origin, left center);
   }
-  .hf-catalog-strikethrough-replace strong {
-    opacity: var(--hf-replace-opacity, 1);
+  .sc-catalog-strikethrough-replace strong {
+    opacity: var(--sc-replace-opacity, 1);
   }
 </style>
 
@@ -89,8 +89,8 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
     "use strict";
 
     var vars =
-      window.__hyperframes && window.__hyperframes.getVariables
-        ? window.__hyperframes.getVariables()
+      window.__smashcut && window.__smashcut.getVariables
+        ? window.__smashcut.getVariables()
         : {};
 
     // Unrecognised overrides return to their declared defaults.
@@ -113,19 +113,19 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
     var tint = tints[pick(tints, vars.tint, "red")];
     var tone = tones[pick(tones, vars.tone, "ink")];
 
-    var roots = document.querySelectorAll(".hf-catalog-strikethrough-replace");
+    var roots = document.querySelectorAll(".sc-catalog-strikethrough-replace");
     for (var i = 0; i < roots.length; i += 1) {
-      roots[i].style.setProperty("--hf-strike-origin", origin);
-      roots[i].style.setProperty("--hf-strike-thickness", thickness);
-      roots[i].style.setProperty("--hf-strike-color", tint);
-      roots[i].style.setProperty("--hf-strike-text-color", tone);
+      roots[i].style.setProperty("--sc-strike-origin", origin);
+      roots[i].style.setProperty("--sc-strike-thickness", thickness);
+      roots[i].style.setProperty("--sc-strike-color", tint);
+      roots[i].style.setProperty("--sc-strike-text-color", tone);
     }
   })();
 </script>
 
 <!--
   Timeline integration:
-  tl.fromTo('.hf-catalog-strikethrough-replace i', { '--hf-strike-progress': 0 }, { '--hf-strike-progress': 1, duration: 0.28, ease: 'power2.out' }, startTime); tl.fromTo('.hf-catalog-strikethrough-replace strong', { '--hf-replace-opacity': 0, y: 14 }, { '--hf-replace-opacity': 1, y: 0, duration: 0.3, ease: 'power2.out' }, startTime + 0.24);
+  tl.fromTo('.sc-catalog-strikethrough-replace i', { '--sc-strike-progress': 0 }, { '--sc-strike-progress': 1, duration: 0.28, ease: 'power2.out' }, startTime); tl.fromTo('.sc-catalog-strikethrough-replace strong', { '--sc-replace-opacity': 0, y: 14 }, { '--sc-replace-opacity': 1, y: 0, duration: 0.3, ease: 'power2.out' }, startTime + 0.24);
 -->
 ```
 
@@ -133,7 +133,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 
 ## Install
 
-<InstallCommand command="npx hyperframes add strikethrough-replace" item="strikethrough-replace" />
+<InstallCommand command="npx smashcut add strikethrough-replace" item="strikethrough-replace" />
 
 That writes one file: `compositions/components/strikethrough-replace.html`.
 
@@ -166,7 +166,7 @@ defaults, so this behaves exactly like the preview above until you change one:
 
 ```html
 <!--
-  Strikethrough Replace - typography primitive for HyperFrames.
+  Strikethrough Replace - typography primitive for SmashCut.
 
   Paste the markup, CSS and script into a composition. Drive the timeline
   integration from a paused GSAP timeline so renders remain deterministic.
@@ -194,7 +194,7 @@ defaults, so this behaves exactly like the preview above until you change one:
 -->
 
 <div
-  class="hf-catalog-strikethrough-replace"
+  class="sc-catalog-strikethrough-replace"
   data-composition-variables='[
     { "id": "origin", "type": "enum", "role": "motion", "label": "Origin", "description": "Edge the strike grows out of as the timeline runs its scale from 0 to 1.", "default": "left", "options": [{ "value": "left", "label": "Left" }, { "value": "center", "label": "Center" }, { "value": "right", "label": "Right" }] },
     { "id": "thickness", "type": "enum", "role": "style", "label": "Thickness", "description": "Height of the strike line, from a hairline rule to a heavy bar.", "default": "standard", "options": [{ "value": "thin", "label": "Thin" }, { "value": "standard", "label": "Standard" }, { "value": "thick", "label": "Thick" }] },
@@ -206,13 +206,13 @@ defaults, so this behaves exactly like the preview above until you change one:
 </div>
 
 <style>
-  .hf-catalog-strikethrough-replace {
-    color: var(--hf-strike-text-color, #18181b);
+  .sc-catalog-strikethrough-replace {
+    color: var(--sc-strike-text-color, #18181b);
     font-family: Inter, system-ui, sans-serif;
     font-weight: 900;
     letter-spacing: -0.04em;
   }
-  .hf-catalog-strikethrough-replace {
+  .sc-catalog-strikethrough-replace {
     position: relative;
     display: inline-grid;
     grid-auto-flow: column;
@@ -220,18 +220,18 @@ defaults, so this behaves exactly like the preview above until you change one:
     align-items: center;
     font-size: 58px;
   }
-  .hf-catalog-strikethrough-replace i {
+  .sc-catalog-strikethrough-replace i {
     position: absolute;
     left: 0;
     width: 48%;
-    height: var(--hf-strike-thickness, 6px);
+    height: var(--sc-strike-thickness, 6px);
     border-radius: 999px;
-    background: var(--hf-strike-color, #ef4444);
-    transform: scaleX(var(--hf-strike-progress, 1));
-    transform-origin: var(--hf-strike-origin, left center);
+    background: var(--sc-strike-color, #ef4444);
+    transform: scaleX(var(--sc-strike-progress, 1));
+    transform-origin: var(--sc-strike-origin, left center);
   }
-  .hf-catalog-strikethrough-replace strong {
-    opacity: var(--hf-replace-opacity, 1);
+  .sc-catalog-strikethrough-replace strong {
+    opacity: var(--sc-replace-opacity, 1);
   }
 </style>
 
@@ -240,8 +240,8 @@ defaults, so this behaves exactly like the preview above until you change one:
     "use strict";
 
     var vars =
-      window.__hyperframes && window.__hyperframes.getVariables
-        ? window.__hyperframes.getVariables()
+      window.__smashcut && window.__smashcut.getVariables
+        ? window.__smashcut.getVariables()
         : {};
 
     // Unrecognised overrides return to their declared defaults.
@@ -264,19 +264,19 @@ defaults, so this behaves exactly like the preview above until you change one:
     var tint = tints[pick(tints, vars.tint, "red")];
     var tone = tones[pick(tones, vars.tone, "ink")];
 
-    var roots = document.querySelectorAll(".hf-catalog-strikethrough-replace");
+    var roots = document.querySelectorAll(".sc-catalog-strikethrough-replace");
     for (var i = 0; i < roots.length; i += 1) {
-      roots[i].style.setProperty("--hf-strike-origin", origin);
-      roots[i].style.setProperty("--hf-strike-thickness", thickness);
-      roots[i].style.setProperty("--hf-strike-color", tint);
-      roots[i].style.setProperty("--hf-strike-text-color", tone);
+      roots[i].style.setProperty("--sc-strike-origin", origin);
+      roots[i].style.setProperty("--sc-strike-thickness", thickness);
+      roots[i].style.setProperty("--sc-strike-color", tint);
+      roots[i].style.setProperty("--sc-strike-text-color", tone);
     }
   })();
 </script>
 
 <!--
   Timeline integration:
-  tl.fromTo('.hf-catalog-strikethrough-replace i', { '--hf-strike-progress': 0 }, { '--hf-strike-progress': 1, duration: 0.28, ease: 'power2.out' }, startTime); tl.fromTo('.hf-catalog-strikethrough-replace strong', { '--hf-replace-opacity': 0, y: 14 }, { '--hf-replace-opacity': 1, y: 0, duration: 0.3, ease: 'power2.out' }, startTime + 0.24);
+  tl.fromTo('.sc-catalog-strikethrough-replace i', { '--sc-strike-progress': 0 }, { '--sc-strike-progress': 1, duration: 0.28, ease: 'power2.out' }, startTime); tl.fromTo('.sc-catalog-strikethrough-replace strong', { '--sc-replace-opacity': 0, y: 14 }, { '--sc-replace-opacity': 1, y: 0, duration: 0.3, ease: 'power2.out' }, startTime + 0.24);
 -->
 ```
 

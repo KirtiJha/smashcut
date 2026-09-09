@@ -24,7 +24,7 @@ Studio and the CLI store the resolved grade in `data-color-grading`:
 Apply the same validated payload from the CLI:
 
 ```bash
-npx hyperframes media-treatment \
+npx smashcut media-treatment \
   --selector '#interview' \
   --grading '{"preset":"skin-soft","intensity":0.7}' \
   --apply
@@ -39,15 +39,15 @@ Nine grading properties expose CSS custom properties that a paused timeline
 can tween directly:
 
 ```text
---hf-color-grading-ascii
---hf-color-grading-bloom
---hf-color-grading-blur
---hf-color-grading-dither
---hf-color-grading-exposure
---hf-color-grading-intensity
---hf-color-grading-kuwahara
---hf-color-grading-pixelate
---hf-color-grading-lut-intensity
+--sc-color-grading-ascii
+--sc-color-grading-bloom
+--sc-color-grading-blur
+--sc-color-grading-dither
+--sc-color-grading-exposure
+--sc-color-grading-intensity
+--sc-color-grading-kuwahara
+--sc-color-grading-pixelate
+--sc-color-grading-lut-intensity
 ```
 
 Start the value at identity in both the payload and inline style, then animate
@@ -57,7 +57,7 @@ it on the registered timeline:
 tl.to(
   "#plate",
   {
-    "--hf-color-grading-pixelate": 0.5,
+    "--sc-color-grading-pixelate": 0.5,
     duration: 3,
     ease: "power2.inOut",
   },
@@ -65,7 +65,7 @@ tl.to(
 );
 ```
 
-`--hf-color-grading-intensity` scales the primary correction, wheels, curves,
+`--sc-color-grading-intensity` scales the primary correction, wheels, curves,
 selections, and LUT. It is not a master control for detail and effect families
 such as grain, halftone, bloom, tape, or CRT. Animate the specific exposed
 property and verify that it moves before relying on it.
@@ -110,4 +110,4 @@ as its own media layer:
 Use the original clip as the background plate. A subject-removed plate leaves a
 hole and can create a dark edge beneath a feathered cutout. A fixed `clip-path`
 works only when the subject barely moves; real movement needs a tracked matte
-produced outside HyperFrames.
+produced outside SmashCut.

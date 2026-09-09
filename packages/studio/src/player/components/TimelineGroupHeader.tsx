@@ -1,4 +1,4 @@
-import type { HfAudioFxChain } from "@hyperframes/core/audio-fx";
+import type { HfAudioFxChain } from "@smashcut/core/audio-fx";
 import { TRACK_H } from "./timelineLayout";
 import type { TimelineTheme } from "./timelineTheme";
 import { TimelineFxButton } from "./TimelineFxButton";
@@ -119,7 +119,7 @@ export function TimelineGroupHeader({
         aria-label={`${isExpanded ? "Hide" : "Show"} ${label} tracks`}
         title={`${isExpanded ? "Hide" : "Show"} tracks`}
         // 13px mono, matching the property panel's preset-run caret
-        // (`hf-fx-preset-run-caret`) — the same disclosure, so the same glyph
+        // (`sc-fx-preset-run-caret`) — the same disclosure, so the same glyph
         // at the same size rather than a smaller one unique to this row.
         className={`flex h-6 w-6 shrink-0 items-center justify-center rounded border-0 bg-transparent p-0 font-mono text-[13px] focus-visible:outline focus-visible:outline-1 focus-visible:outline-[#3CE6AC] ${
           isExpanded ? "text-white" : "text-white/55 hover:text-white"

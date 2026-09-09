@@ -199,8 +199,8 @@ function resolvePositiveNumber(value: number | undefined, fallback: number): num
   return Number.isFinite(value) && value > 0 ? value : fallback;
 }
 
-const PLAYER_CAPTURE_SCALE_PARAM = "__hf_shader_capture_scale";
-const PLAYER_LOADING_PARAM = "__hf_shader_loading";
+const PLAYER_CAPTURE_SCALE_PARAM = "__sc_shader_capture_scale";
+const PLAYER_LOADING_PARAM = "__sc_shader_loading";
 
 function readPlayerOption(globalName: string, queryName: string): string | null {
   const globalValue = (window as unknown as Record<string, unknown>)[globalName];
@@ -260,7 +260,7 @@ function isGsapAnimationOnlyScript(text: string): boolean {
 
 function getDocumentScriptSignature(doc: Document): string {
   const projectSignature = Array.from(
-    doc.querySelectorAll<HTMLMetaElement>('meta[name="hyperframes-project-signature"]'),
+    doc.querySelectorAll<HTMLMetaElement>('meta[name="smashcut-project-signature"]'),
   )
     .map((meta) => meta.getAttribute("content") || "")
     .join("\n");
@@ -277,7 +277,7 @@ function getDocumentScriptSignature(doc: Document): string {
         script.src,
         script.getAttribute("integrity") || "",
         script.getAttribute("crossorigin") || "",
-        script.getAttribute("data-hyperframes-runtime") || "",
+        script.getAttribute("data-smashcut-runtime") || "",
       ].join(":");
       return `${attrs}\n${script.src ? "" : script.textContent || ""}`;
     })
@@ -544,9 +544,9 @@ function createSnapshotLoadingOverlay(
 
   const overlay = doc.createElement("div");
   overlay.setAttribute("data-hyper-shader-loading", "");
-  overlay.setAttribute("data-hyperframes-ignore", "");
-  overlay.setAttribute("data-hyperframes-picker-block", "");
-  overlay.setAttribute("data-hf-ignore", "");
+  overlay.setAttribute("data-smashcut-ignore", "");
+  overlay.setAttribute("data-smashcut-picker-block", "");
+  overlay.setAttribute("data-sc-ignore", "");
   overlay.setAttribute("data-no-capture", "");
   overlay.setAttribute("data-no-inspect", "");
   overlay.setAttribute("data-no-pick", "");
@@ -599,7 +599,7 @@ function createSnapshotLoadingOverlay(
   ].join(";");
 
   const markFrame = doc.createElement("div");
-  markFrame.setAttribute("data-hf-loader-mark-frame", "");
+  markFrame.setAttribute("data-sc-loader-mark-frame", "");
   markFrame.style.cssText = [
     "width:172px",
     "height:172px",
@@ -614,11 +614,11 @@ function createSnapshotLoadingOverlay(
   ].join(";");
   markFrame.innerHTML = [
     '<svg width="156" height="156" viewBox="0 0 100 100" fill="none" aria-hidden="true" draggable="false" style="display:block;overflow:visible;filter:drop-shadow(0 0 7px rgba(79,219,94,.2));user-select:none;-webkit-user-select:none">',
-    '<g data-hf-loader-mark transform="translate(50 50)">',
-    '<g data-hf-loader-core transform="scale(1)" opacity=".92">',
+    '<g data-sc-loader-mark transform="translate(50 50)">',
+    '<g data-sc-loader-core transform="scale(1)" opacity=".92">',
     '<g transform="translate(-50 -50)">',
-    '<path data-hf-loader-left d="M10.1851 57.8021L33.1145 73.8313C36.2202 75.9978 41.5173 73.5433 42.4816 69.4984L51.7611 30.4271C52.7253 26.3822 48.5802 23.9277 44.4602 26.0942L13.917 42.1235C6.96677 45.7676 4.97564 54.1579 10.1851 57.8021Z" fill="url(#hyper-shader-loader-grad-left)"/>',
-    '<path data-hf-loader-right d="M87.5129 57.5141L56.9696 73.5433C52.8371 75.7098 48.7046 73.2553 49.6688 69.2104L58.9483 30.1391C59.9125 26.0942 65.2097 23.6397 68.3154 25.8062L91.2447 41.8354C96.4668 45.4796 94.4631 53.8699 87.5129 57.5141Z" fill="url(#hyper-shader-loader-grad-right)"/>',
+    '<path data-sc-loader-left d="M10.1851 57.8021L33.1145 73.8313C36.2202 75.9978 41.5173 73.5433 42.4816 69.4984L51.7611 30.4271C52.7253 26.3822 48.5802 23.9277 44.4602 26.0942L13.917 42.1235C6.96677 45.7676 4.97564 54.1579 10.1851 57.8021Z" fill="url(#hyper-shader-loader-grad-left)"/>',
+    '<path data-sc-loader-right d="M87.5129 57.5141L56.9696 73.5433C52.8371 75.7098 48.7046 73.2553 49.6688 69.2104L58.9483 30.1391C59.9125 26.0942 65.2097 23.6397 68.3154 25.8062L91.2447 41.8354C96.4668 45.4796 94.4631 53.8699 87.5129 57.5141Z" fill="url(#hyper-shader-loader-grad-right)"/>',
     "</g>",
     "</g>",
     "</g>",
@@ -839,8 +839,8 @@ export function init(config: HyperShaderConfig): GsapTimeline {
     }
   }
 
-  // Locally redeclared (not imported) because @hyperframes/shader-transitions
-  // ships as a standalone CDN bundle and must not depend on @hyperframes/engine.
+  // Locally redeclared (not imported) because @smashcut/shader-transitions
+  // ships as a standalone CDN bundle and must not depend on @smashcut/engine.
   // Keep this in sync with HfTransitionMeta in packages/engine/src/types.ts.
   interface HfTransitionMeta {
     time: number;
@@ -850,11 +850,11 @@ export function init(config: HyperShaderConfig): GsapTimeline {
     fromScene: string;
     toScene: string;
   }
-  type HfWindowWrite = { __hf?: { transitions?: HfTransitionMeta[] } };
+  type HfWindowWrite = { __sc?: { transitions?: HfTransitionMeta[] } };
   if (typeof window !== "undefined") {
     const hfWin = window as unknown as HfWindowWrite;
-    if (hfWin.__hf) {
-      hfWin.__hf.transitions = transitions.map((t: TransitionConfig, i: number) => ({
+    if (hfWin.__sc) {
+      hfWin.__sc.transitions = transitions.map((t: TransitionConfig, i: number) => ({
         time: t.time,
         duration: t.duration ?? DEFAULT_DURATION,
         shader: t.shader,
@@ -876,9 +876,9 @@ export function init(config: HyperShaderConfig): GsapTimeline {
   const compWidth = Number.isFinite(rawW) && rawW > 0 ? rawW : DEFAULT_WIDTH;
   const compHeight = Number.isFinite(rawH) && rawH > 0 ? rawH : DEFAULT_HEIGHT;
 
-  // The Hyperframes engine injects a virtual-time shim (window.__HF_VIRTUAL_TIME__)
+  // The Smashcut engine injects a virtual-time shim (window.__HF_VIRTUAL_TIME__)
   // during render mode and composites every transition itself from the
-  // window.__hf.transitions metadata above. Doing GL work or html2canvas captures
+  // window.__sc.transitions metadata above. Doing GL work or html2canvas captures
   // here would (a) waste cycles and (b) leave .scene elements stuck at opacity:0
   // because captureScene resolves asynchronously, after the engine has already
   // sampled the DOM. In that mode we only need to keep each scene's effective
@@ -1559,13 +1559,13 @@ export function init(config: HyperShaderConfig): GsapTimeline {
 
   const setShaderReadyState = (status: Partial<ShaderReadyState>) => {
     const hfWin = window as unknown as {
-      __hf?: {
+      __sc?: {
         shaderTransitions?: Record<string, ShaderReadyState>;
       };
     };
-    hfWin.__hf = hfWin.__hf || {};
-    hfWin.__hf.shaderTransitions = hfWin.__hf.shaderTransitions || {};
-    const current = hfWin.__hf.shaderTransitions[compId] || {
+    hfWin.__sc = hfWin.__sc || {};
+    hfWin.__sc.shaderTransitions = hfWin.__sc.shaderTransitions || {};
+    const current = hfWin.__sc.shaderTransitions[compId] || {
       ready: false,
       progress: 0,
       total: 0,
@@ -1578,10 +1578,10 @@ export function init(config: HyperShaderConfig): GsapTimeline {
     };
     const next = { ...current, ...status };
     next.dirtyTransitions = cachedTransitions.filter((cache) => cache.dirty || !cache.ready).length;
-    hfWin.__hf.shaderTransitions[compId] = next;
+    hfWin.__sc.shaderTransitions[compId] = next;
     window.parent?.postMessage(
       {
-        source: "hf-preview",
+        source: "sc-preview",
         type: "shader-transition-state",
         compositionId: compId,
         state: next,
@@ -2207,13 +2207,13 @@ export function init(config: HyperShaderConfig): GsapTimeline {
   );
 
   const prewarmPromise = Promise.resolve().then(() => ensureTransitionCachesReady());
-  const hfWin = window as unknown as { __hf?: { shaderTransitionsReady?: Promise<void> } };
-  hfWin.__hf = hfWin.__hf || {};
-  hfWin.__hf.shaderTransitionsReady = prewarmPromise;
+  const hfWin = window as unknown as { __sc?: { shaderTransitionsReady?: Promise<void> } };
+  hfWin.__sc = hfWin.__sc || {};
+  hfWin.__sc.shaderTransitionsReady = prewarmPromise;
 
   (
-    window as Window & { __hfSuppressSceneMutations?: <T>(fn: () => T) => T }
-  ).__hfSuppressSceneMutations = <T>(fn: () => T): T => suppressSceneMutationTracking(fn);
+    window as Window & { __scSuppressSceneMutations?: <T>(fn: () => T) => T }
+  ).__scSuppressSceneMutations = <T>(fn: () => T): T => suppressSceneMutationTracking(fn);
 
   registerTimeline(compId, tl, config.timeline);
   return tl;
@@ -2305,7 +2305,7 @@ function initEngineMode(
   // sentinel `window.__HF_PAGE_SIDE_COMPOSITING__` via an early stub. We
   // detect it here and install the WebGL-on-page composite path on top of
   // the opacity-flip timeline. The opacity timeline still runs (the
-  // installer wraps `window.__hf.seek` AFTER the timeline runs, so DOM
+  // installer wraps `window.__sc.seek` AFTER the timeline runs, so DOM
   // state at the sampled time is correct before texture capture) but the
   // installed compositor overrides the seek's final visible state during
   // each transition window with a single shader-composited overlay canvas.

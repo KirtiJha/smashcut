@@ -6,7 +6,7 @@ import { readManifest, appendRecord, normalizePrompt } from "./manifest.mjs";
 
 const SCHEMA_PREFIX = "mu-v1-";
 const KEY_HEX_CHARS = 16;
-const COMPLETE_SENTINEL = ".hf-complete";
+const COMPLETE_SENTINEL = ".sc-complete";
 
 export function globalMediaDir() {
   return join(homedir(), ".media");
@@ -40,7 +40,7 @@ export function readGlobalManifest() {
 // Resolve a content-sha (full or unambiguous prefix) to a reusable global-cache
 // record, for `resolve --reuse <sha>`. Returns null on no match, or
 // { ambiguous: true, count } when a prefix matches multiple distinct entries.
-// Completeness (the .hf-complete sentinel) is left to importFromCache so the
+// Completeness (the .sc-complete sentinel) is left to importFromCache so the
 // caller can surface an "incomplete cache entry" error distinctly from a miss.
 export function findGlobalBySha(shaPrefix) {
   const p = String(shaPrefix || "")

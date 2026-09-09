@@ -1,5 +1,5 @@
 <!--
-  Page Slide - transitions.dev-inspired primitive for HyperFrames.
+  Page Slide - transitions.dev-inspired primitive for SmashCut.
 
   Paste the markup, CSS and script into a composition. Use the timeline
   integration note at the bottom as the starting point for deterministic GSAP
@@ -23,7 +23,7 @@
 -->
 
 <div
-  class="hf-transition-page-slide"
+  class="sc-transition-page-slide"
   data-composition-variables='[
     { "id": "label_a", "type": "string", "role": "content", "label": "Outgoing label", "description": "Label printed on the page that slides out.", "default": "Dashboard" },
     { "id": "label_b", "type": "string", "role": "content", "label": "Incoming label", "description": "Label printed on the page that slides in.", "default": "Analytics" },
@@ -31,28 +31,28 @@
     { "id": "corner", "type": "enum", "role": "style", "label": "Corner", "description": "Corner radius of the frame the pages slide inside.", "default": "round", "options": [{ "value": "square", "label": "Square" }, { "value": "soft", "label": "Soft" }, { "value": "round", "label": "Round" }] }
   ]'
 >
-  <section class="hf-transition-page old"><span>Dashboard</span></section>
-  <section class="hf-transition-page new"><span>Analytics</span></section>
+  <section class="sc-transition-page old"><span>Dashboard</span></section>
+  <section class="sc-transition-page new"><span>Analytics</span></section>
 </div>
 
 <style>
-  .hf-transition-page-slide {
+  .sc-transition-page-slide {
     position: relative;
     width: 560px;
     height: 320px;
     overflow: hidden;
-    border-radius: var(--hf-page-radius, 30px);
+    border-radius: var(--sc-page-radius, 30px);
     background: #111827;
     box-shadow: 0 28px 90px rgba(0, 0, 0, 0.22);
     font-family: Inter, system-ui, sans-serif;
   }
-  .hf-transition-page {
+  .sc-transition-page {
     position: absolute;
     inset: 0;
     display: grid;
     place-items: center;
   }
-  .hf-transition-page span {
+  .sc-transition-page span {
     padding: 14px 20px;
     border-radius: 999px;
     background: rgba(255, 255, 255, 0.14);
@@ -60,11 +60,11 @@
     font-size: 28px;
     font-weight: 900;
   }
-  .hf-transition-page.old {
+  .sc-transition-page.old {
     background: linear-gradient(135deg, #0f172a, #334155);
   }
-  .hf-transition-page.new {
-    background: linear-gradient(135deg, var(--hf-page-from, #155e75), var(--hf-page-to, #10b981));
+  .sc-transition-page.new {
+    background: linear-gradient(135deg, var(--sc-page-from, #155e75), var(--sc-page-to, #10b981));
   }
 </style>
 
@@ -73,8 +73,8 @@
     "use strict";
 
     var vars =
-      window.__hyperframes && window.__hyperframes.getVariables
-        ? window.__hyperframes.getVariables()
+      window.__smashcut && window.__smashcut.getVariables
+        ? window.__smashcut.getVariables()
         : {};
 
     // Unrecognised overrides return to their declared defaults.
@@ -97,14 +97,14 @@
     var accent = accents[pick(accents, vars.accent, "green")];
     var corner = corners[pick(corners, vars.corner, "round")];
 
-    var roots = document.querySelectorAll(".hf-transition-page-slide");
+    var roots = document.querySelectorAll(".sc-transition-page-slide");
     for (var i = 0; i < roots.length; i += 1) {
       var root = roots[i];
-      root.style.setProperty("--hf-page-radius", corner);
-      root.style.setProperty("--hf-page-from", accent.from);
-      root.style.setProperty("--hf-page-to", accent.to);
-      var oldLabel = root.querySelector(".hf-transition-page.old span");
-      var newLabel = root.querySelector(".hf-transition-page.new span");
+      root.style.setProperty("--sc-page-radius", corner);
+      root.style.setProperty("--sc-page-from", accent.from);
+      root.style.setProperty("--sc-page-to", accent.to);
+      var oldLabel = root.querySelector(".sc-transition-page.old span");
+      var newLabel = root.querySelector(".sc-transition-page.new span");
       if (oldLabel) oldLabel.textContent = labelA;
       if (newLabel) newLabel.textContent = labelB;
     }
@@ -113,8 +113,8 @@
 
 <!--
   Timeline integration:
-  tl.fromTo('.hf-transition-page-slide', { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.3, ease: 'power2.out' }, 0.25);
-  tl.fromTo('.hf-transition-page.new', { xPercent: 100 }, { xPercent: 0, duration: 0.74, ease: 'power3.inOut' }, 0.78);
-  tl.to('.hf-transition-page.old', { xPercent: -28, scale: 0.94, duration: 0.74, ease: 'power3.inOut' }, 0.78);
-  tl.fromTo('.hf-transition-page.new span', { y: 24, opacity: 0 }, { y: 0, opacity: 1, duration: 0.28, ease: 'power2.out' }, 1.24);
+  tl.fromTo('.sc-transition-page-slide', { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.3, ease: 'power2.out' }, 0.25);
+  tl.fromTo('.sc-transition-page.new', { xPercent: 100 }, { xPercent: 0, duration: 0.74, ease: 'power3.inOut' }, 0.78);
+  tl.to('.sc-transition-page.old', { xPercent: -28, scale: 0.94, duration: 0.74, ease: 'power3.inOut' }, 0.78);
+  tl.fromTo('.sc-transition-page.new span', { y: 24, opacity: 0 }, { y: 0, opacity: 1, duration: 0.28, ease: 'power2.out' }, 1.24);
 -->

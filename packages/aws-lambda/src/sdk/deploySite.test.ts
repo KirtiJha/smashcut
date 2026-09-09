@@ -9,7 +9,7 @@ import { deploySite } from "./deploySite.js";
 let projectDir: string;
 
 beforeEach(() => {
-  projectDir = mkdtempSync(join(tmpdir(), "hf-deploy-site-test-"));
+  projectDir = mkdtempSync(join(tmpdir(), "sc-deploy-site-test-"));
   mkdirSync(join(projectDir, "assets"));
   writeFileSync(join(projectDir, "index.html"), "<html><body>hi</body></html>");
   writeFileSync(join(projectDir, "assets", "style.css"), "body { color: red; }");

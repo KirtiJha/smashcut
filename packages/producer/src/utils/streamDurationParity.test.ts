@@ -3,7 +3,7 @@ import { execFileSync } from "node:child_process";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
-import { getFfmpegBinary } from "@hyperframes/engine";
+import { getFfmpegBinary } from "@smashcut/engine";
 import { checkStreamDurationParity, MAX_STREAM_DRIFT_SECONDS } from "../regression-harness.js";
 
 const tempDirs: string[] = [];
@@ -15,7 +15,7 @@ afterEach(() => {
 });
 
 function mktmp(): string {
-  const dir = mkdtempSync(join(tmpdir(), "hf-parity-"));
+  const dir = mkdtempSync(join(tmpdir(), "sc-parity-"));
   tempDirs.push(dir);
   return dir;
 }

@@ -1,4 +1,4 @@
-import type { CompositionVariable, VariableValidationIssue } from "@hyperframes/core/variables";
+import type { CompositionVariable, VariableValidationIssue } from "@smashcut/core/variables";
 
 /**
  * Cross-referenced variable usage for a whole composition: the per-script
@@ -22,7 +22,7 @@ export interface VariableUsageReport {
 // ─── Document model ───────────────────────────────────────────────────────────
 
 /** Full DOM-level view of one editable element. Built by the SDK adaptation layer. */
-export interface HyperFramesElement {
+export interface SmashCutElement {
   readonly id: string;
   /**
    * Fully-qualified scoped id — host-chain prefix + leaf, separated by "/".
@@ -33,7 +33,7 @@ export interface HyperFramesElement {
    */
   readonly scopedId: string;
   readonly tag: string;
-  readonly children: readonly HyperFramesElement[];
+  readonly children: readonly SmashCutElement[];
   /** camelCase property names — mirrors CSSStyleDeclaration convention */
   readonly inlineStyles: Readonly<Record<string, string>>;
   readonly classNames: readonly string[];
@@ -51,7 +51,7 @@ export interface HyperFramesElement {
 
 /** The SDK's in-memory document. Built from ensureHfIds + linkedom DOM walk. */
 export interface SdkDocument {
-  readonly roots: readonly HyperFramesElement[];
+  readonly roots: readonly SmashCutElement[];
   readonly gsapScript: string | null;
   readonly styles: string | null;
   readonly width: number | null;
@@ -69,7 +69,7 @@ export interface SdkDocument {
 /**
  * Sparse map of `hfId.prop.path → value` overrides layered on top of the base template.
  * null value = removal marker (element or property deleted by user).
- * Examples: { "hf-x7k2.style.fontSize": "96px", "hf-y3a1.text": "Hello", "hf-z5k2": null }
+ * Examples: { "sc-x7k2.style.fontSize": "96px", "sc-y3a1.text": "Hello", "sc-z5k2": null }
  *
  * Font and image variable overrides store their object values under the var.{id} key:
  * { "var.brand-font": { name: "Roboto", source: "https://fonts.googleapis.com/…" } }
@@ -342,7 +342,7 @@ export interface PatchEvent {
  * may forward patch events across. The namespace prefix keeps collision risk
  * with host-chosen origins negligible.
  */
-export const ORIGIN_APPLY_PATCHES = "@hyperframes/sdk:applyPatches" as const;
+export const ORIGIN_APPLY_PATCHES = "@smashcut/sdk:applyPatches" as const;
 
 /** Default origin when none specified — UI-driven dispatch. */
 export const ORIGIN_LOCAL = "local" as const;
@@ -356,14 +356,14 @@ export interface PersistErrorEvent {
 // ─── Element query / snapshot (F1 query API) ─────────────────────────────────
 
 /** Flat read-only snapshot returned by getElements() / getElement() */
-export type ElementSnapshot = HyperFramesElement;
+export type ElementSnapshot = SmashCutElement;
 
 export interface FindQuery {
   tag?: string;
   text?: string;
   name?: string;
   track?: number;
-  /** Filter to elements inside a specific sub-composition host (by host hf-id). */
+  /** Filter to elements inside a specific sub-composition host (by host sc-id). */
   composition?: string;
 }
 
@@ -384,7 +384,7 @@ export interface SelectionProxy {
 
 /**
  * Curried element handle — holds only the id string, no stale-ref hazard.
- * comp.element('hf-x7k2').setStyle({ color: '#fff' })
+ * comp.element('sc-x7k2').setStyle({ color: '#fff' })
  */
 export interface ElementHandle {
   readonly id: string;
@@ -425,7 +425,7 @@ export interface Composition {
   removeElement(id: HfId): void;
   /**
    * Insert an HTML fragment as a child of `parent` at `index` (WS-D).
-   * Mints a stable hf-id against the live document's existing id set.
+   * Mints a stable sc-id against the live document's existing id set.
    * Returns the minted id of the inserted root element.
    * Inverse = removeElement of the returned id.
    */

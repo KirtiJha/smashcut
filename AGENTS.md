@@ -1,18 +1,18 @@
-# Hyperframes
+# Smashcut
 
 Open-source video rendering framework: write HTML, render video.
 
 ## Skills
 
-This repo ships AI agent skills via [vercel-labs/skills](https://github.com/vercel-labs/skills). Install them before writing compositions — they encode framework-specific patterns that generic docs don't cover. **Default to the core set** — the `/hyperframes` router installs each creation workflow on demand; install everything only when the user explicitly asks for the full set.
+This repo ships AI agent skills via [vercel-labs/skills](https://github.com/vercel-labs/skills). Install them before writing compositions — they encode framework-specific patterns that generic docs don't cover. **Default to the core set** — the `/smashcut` router installs each creation workflow on demand; install everything only when the user explicitly asks for the full set.
 
 ```bash
-npx hyperframes skills update           # default: installs/refreshes the core set — workflows install on demand
-npx hyperframes skills                  # all 20 published skills at once
+npx smashcut skills update           # default: installs/refreshes the core set — workflows install on demand
+npx smashcut skills                  # all 20 published skills at once
 npx skills add heygen-com/hyperframes   # interactive picker (terminal only; --all also pulls the repo-internal skills under .claude/skills)
 ```
 
-**Creation workflows** route through one entry skill — read `/hyperframes` first: it orients you to the whole surface, confirms the brief up front (the intent layer), and maps "make me a…" intent — usually a video, but also a navigable deck (`/slideshow`) or a composition port (`/remotion-to-hyperframes`) — to a concrete workflow. Consult it before invoking a specific workflow:
+**Creation workflows** route through one entry skill — read `/smashcut` first: it orients you to the whole surface, confirms the brief up front (the intent layer), and maps "make me a…" intent — usually a video, but also a navigable deck (`/slideshow`) or a composition port (`/remotion-to-smashcut`) — to a concrete workflow. Consult it before invoking a specific workflow:
 
 - `/product-launch-video` — any **website** URL (or a pre-written script / text brief in no-capture mode) → a product launch / promo video, or a site tour / showcase featuring the site's own captured screens; up to ~3 min (sweet spot ~30-90s).
 - `/faceless-explainer` — arbitrary text, **no URL and no website capture** → faceless explainer, up to ~3 min (sweet spot ~30-90s); every visual is LLM-invented (typography / abstract graphics / diagram / data-viz).
@@ -22,9 +22,9 @@ npx skills add heygen-com/hyperframes   # interactive picker (terminal only; --a
 - `/motion-graphics` — a short (typically under 10s) design-led **motion graphic**, motion-is-the-message, no narration: kinetic type, a stat / number count-up, a chart, a logo sting, a lower-third / overlay, or an animated tweet / headline / captured-page highlight; rendered to MP4 or a transparent overlay. Longer / narrated / custom → `/general-video`.
 - `/music-to-video` — a **music track** (audio file, video to pull audio from, or one generated from a mood brief) → beat-synced video (lyric / slideshow / kinetic promo). Music drives pacing; user-supplied images / videos are cut onto the same beat grid.
 - `/slideshow` — a **presentation / pitch deck / interactive deck** — discrete slides, fragment reveals, branching, hotspot navigation, presenter mode. Output is a navigable deck, not a rendered video.
-- `/general-video` — fallback for any other video creation (title card, longer brand / sizzle reel, multi-scene montage, static loop, custom composition) and the home of **companion mode** — co-create with the full HyperFrames toolbox; the original hyperframes flow — design → plan → layout → build → validate, any length.
+- `/general-video` — fallback for any other video creation (title card, longer brand / sizzle reel, multi-scene montage, static loop, custom composition) and the home of **companion mode** — co-create with the full SmashCut toolbox; the original smashcut flow — design → plan → layout → build → validate, any length.
 
-**Porting an existing composition?** `/remotion-to-hyperframes` translates a Remotion (React) video composition into HyperFrames HTML — a source migration, separate from the creation workflows above.
+**Porting an existing composition?** `/remotion-to-smashcut` translates a Remotion (React) video composition into SmashCut HTML — a source migration, separate from the creation workflows above.
 
 ## Build & Test
 
@@ -51,8 +51,8 @@ Always lint and format changed files before committing. Lefthook pre-commit hook
 After creating or editing any `.html` composition:
 
 ```bash
-npx hyperframes lint       # Static HTML structure check
-npx hyperframes check      # Browser gate (headless Chrome — runtime errors, layout, motion, WCAG contrast)
+npx smashcut lint       # Static HTML structure check
+npx smashcut check      # Browser gate (headless Chrome — runtime errors, layout, motion, WCAG contrast)
 ```
 
 Both must pass before previewing or considering work complete.
@@ -61,10 +61,10 @@ Both must pass before previewing or considering work complete.
 
 ```
 packages/
-  cli/                  → hyperframes CLI (create, preview, lint, render)
+  cli/                  → smashcut CLI (create, preview, lint, render)
   core/                 → Types, parsers, generators, linter, runtime, frame adapters
   engine/               → Seekable page-to-video capture engine (Puppeteer + FFmpeg)
-  player/               → Embeddable <hyperframes-player> web component
+  player/               → Embeddable <smashcut-player> web component
   producer/             → Full rendering pipeline (capture + encode + audio mix)
   shader-transitions/   → WebGL shader transitions for compositions
   studio/               → Browser-based composition editor UI (read packages/studio/AGENTS.md first)

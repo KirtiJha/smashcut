@@ -1,15 +1,15 @@
 import { execFile } from "node:child_process";
 import { existsSync } from "node:fs";
 import { join } from "node:path";
-import { rewriteAssetPath } from "@hyperframes/parsers/asset-paths";
-import { findFfBinary } from "@hyperframes/parsers/ff-binaries";
+import { rewriteAssetPath } from "@smashcut/parsers/asset-paths";
+import { findFfBinary } from "@smashcut/parsers/ff-binaries";
 import {
   cleanAssetUrl,
   isRemoteOrInlineUrl,
   isUnresolvedAssetPlaceholder,
   maskNonScannableRanges,
   resolveExistingLocalAsset,
-} from "@hyperframes/parsers/asset-resolution";
+} from "@smashcut/parsers/asset-resolution";
 import type { HyperframeLintFinding } from "./types.js";
 import { mediaSrcTagRe } from "./utils";
 
@@ -158,8 +158,8 @@ export async function lintHevcPreviewCodec(
         "If playback still fails, verify ffmpeg/ffprobe are installed and auto-proxying is enabled.",
       fixHint:
         unique.length === 1
-          ? `If "${unique[0]}" fails to play in preview, run hyperframes doctor and confirm media.autoProxy is not false.`
-          : "If these files fail to play in preview, run hyperframes doctor and confirm media.autoProxy is not false.",
+          ? `If "${unique[0]}" fails to play in preview, run smashcut doctor and confirm media.autoProxy is not false.`
+          : "If these files fail to play in preview, run smashcut doctor and confirm media.autoProxy is not false.",
     },
   ];
 }

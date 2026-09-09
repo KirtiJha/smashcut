@@ -2,15 +2,15 @@ import { defineCommand } from "citty";
 import type { Example } from "./_examples.js";
 
 export const examples: Example[] = [
-  ["List all blocks and components", "hyperframes catalog"],
-  ["List blocks only", "hyperframes catalog --type block"],
-  ["Filter by tag", "hyperframes catalog --type block --tag social"],
-  ["Machine-readable JSON", "hyperframes catalog --json"],
-  ["Interactive picker (install on select)", "hyperframes catalog --human-friendly"],
+  ["List all blocks and components", "smashcut catalog"],
+  ["List blocks only", "smashcut catalog --type block"],
+  ["Filter by tag", "smashcut catalog --type block --tag social"],
+  ["Machine-readable JSON", "smashcut catalog --json"],
+  ["Interactive picker (install on select)", "smashcut catalog --human-friendly"],
 ];
 
 import * as clack from "@clack/prompts";
-import { type ItemType } from "@hyperframes/core";
+import { type ItemType } from "@smashcut/core";
 import { c } from "../ui/colors.js";
 import { loadAllItems } from "../registry/resolver.js";
 import { fetchRegistryManifest } from "../registry/remote.js";
@@ -95,7 +95,7 @@ async function prepareOnDeviceTier(opts: {
     // runtime is missing wastes the bandwidth the consent was granted for.
     warn(
       "on-device search needs the native ONNX runtime, which a single-file build cannot load. " +
-        "Install the CLI normally (npm i -g hyperframes) to use this tier.",
+        "Install the CLI normally (npm i -g smashcut) to use this tier.",
     );
     return warnings;
   }
@@ -181,8 +181,8 @@ export default defineCommand({
     const config = loadProjectConfig(dir) ?? DEFAULT_PROJECT_CONFIG;
 
     let typeFilter: ItemType | undefined;
-    if (args.type === "block") typeFilter = "hyperframes:block";
-    else if (args.type === "component") typeFilter = "hyperframes:component";
+    if (args.type === "block") typeFilter = "smashcut:block";
+    else if (args.type === "component") typeFilter = "smashcut:component";
     else if (args.type) {
       console.error(`Invalid --type: "${args.type}". Use "block" or "component".`);
       finishCommand(1);
@@ -193,7 +193,7 @@ export default defineCommand({
     const manifest = await fetchRegistryManifest(config.registry);
     const entries = manifest?.items ?? [];
     const artifactRevision = manifest?.catalogArtifact?.revision;
-    const catalog = entries.filter((e) => e.type !== "hyperframes:example");
+    const catalog = entries.filter((e) => e.type !== "smashcut:example");
     const registryNames = new Set(catalog.map((e) => e.name));
     const filtered = typeFilter ? catalog.filter((e) => e.type === typeFilter) : catalog;
 
@@ -321,7 +321,7 @@ export default defineCommand({
     if (json) {
       const output = matching.map((item) => ({
         name: item.name,
-        type: item.type.replace("hyperframes:", ""),
+        type: item.type.replace("smashcut:", ""),
         title: item.title,
         description: item.description,
         tags: item.tags ?? [],
@@ -458,7 +458,7 @@ export default defineCommand({
     console.log("-".repeat(80));
 
     for (const item of matching) {
-      const type = item.type.replace("hyperframes:", "");
+      const type = item.type.replace("smashcut:", "");
       const tags = item.tags?.length ? c.dim(` [${item.tags.join(", ")}]`) : "";
       console.log(
         `${c.cyan(item.name.padEnd(NAME_COL))}${type.padEnd(TYPE_COL)}${item.description}${tags}`,
@@ -466,7 +466,7 @@ export default defineCommand({
     }
 
     console.log("");
-    console.log(c.dim(`${matching.length} items. Run "hyperframes add <name>" to install.`));
+    console.log(c.dim(`${matching.length} items. Run "smashcut add <name>" to install.`));
   },
 });
 
@@ -637,7 +637,7 @@ export function searchMissCommand(query: string, tier: "on-device" | "words"): s
   // CJK, which single-quoting renders no more safely and reads worse.
   const quoted = query.replace(/(["\\$`])/g, "\\$1");
   return (
-    `npx hyperframes feedback --search-miss "${quoted}" ` +
+    `npx smashcut feedback --search-miss "${quoted}" ` +
     `--wanted "<the move you needed>" --tier ${tier}`
   );
 }

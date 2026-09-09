@@ -172,7 +172,7 @@ export function StoryboardLoaded({
   );
 }
 
-/** Batch-submit the per-frame comment drafts to `.hyperframes/frame-comments.json`. */
+/** Batch-submit the per-frame comment drafts to `.smashcut/frame-comments.json`. */
 function CommentsSubmitBar({
   draftCount,
   pendingCount,

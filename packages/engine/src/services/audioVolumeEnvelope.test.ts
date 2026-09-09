@@ -51,7 +51,7 @@ function sampleAt(path: string, frame: number, channel = 0): number {
 describe("applyVolumeEnvelopeToWav", () => {
   const dirs: string[] = [];
   const tmp = () => {
-    const d = mkdtempSync(join(tmpdir(), "hf-env-"));
+    const d = mkdtempSync(join(tmpdir(), "sc-env-"));
     dirs.push(d);
     return d;
   };

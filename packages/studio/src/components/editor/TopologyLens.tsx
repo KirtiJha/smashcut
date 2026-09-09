@@ -9,7 +9,7 @@ import {
   type RefObject,
 } from "react";
 import { studioEditLifecycle } from "../../webmcp/writeCoordinator";
-import { HyperframesMark } from "../ui/HyperframesMark";
+import { SmashcutMark } from "../ui/SmashcutMark";
 import { measureTopologyLensGeometry, type TopologyLensGeometry } from "./topologyLensGeometry";
 import { reduceTopologyLens, type TopologyLensState } from "./topologyLensState";
 
@@ -152,13 +152,13 @@ export function TopologyLens({ iframeRef, activeCompositionPath }: TopologyLensP
               data-topology-field="true"
               data-topology-node={geometry.field.label}
               data-topology-phase={state.phase}
-              className="hf-topology-field pointer-events-none absolute overflow-hidden rounded-md"
+              className="sc-topology-field pointer-events-none absolute overflow-hidden rounded-md"
               style={rectStyle(geometry.field.rect)}
             >
               {state.phase === "sealing" && (
-                <HyperframesMark
+                <SmashcutMark
                   data-topology-seal={state.receiptStage}
-                  className="hf-topology-seal absolute right-2 top-2 h-7 w-11 overflow-visible"
+                  className="sc-topology-seal absolute right-2 top-2 h-7 w-11 overflow-visible"
                   viewBox="0 18 100 64"
                 />
               )}
@@ -171,7 +171,7 @@ export function TopologyLens({ iframeRef, activeCompositionPath }: TopologyLensP
                   key={index}
                   data-topology-contour="true"
                   data-topology-node={label}
-                  className="hf-topology-contour pointer-events-none absolute z-[1] rounded"
+                  className="sc-topology-contour pointer-events-none absolute z-[1] rounded"
                   style={{
                     ...rectStyle(rect),
                     animationDelay: `${Math.min(index, 5) * 28}ms`,
@@ -184,7 +184,7 @@ export function TopologyLens({ iframeRef, activeCompositionPath }: TopologyLensP
                   className="pointer-events-none absolute z-[2] overflow-hidden rounded"
                   style={rectStyle(geometry.field.rect)}
                 >
-                  <div className="hf-topology-scan absolute inset-y-0 left-0 w-1/4" />
+                  <div className="sc-topology-scan absolute inset-y-0 left-0 w-1/4" />
                 </div>
               )}
             </>
@@ -196,7 +196,7 @@ export function TopologyLens({ iframeRef, activeCompositionPath }: TopologyLensP
             data-topology-terminal={
               state.phase === "localizing" ? (state.terminal ?? undefined) : undefined
             }
-            className="hf-topology-target pointer-events-none absolute z-[3] rounded-md"
+            className="sc-topology-target pointer-events-none absolute z-[3] rounded-md"
             style={rectStyle(geometry.target.rect)}
           />
         </>

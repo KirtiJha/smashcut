@@ -2,7 +2,7 @@ import { describe, expect, it, vi, beforeEach, afterEach } from "vitest";
 import { existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import type { RegistryItem, RegistryManifest } from "@hyperframes/core";
+import type { RegistryItem, RegistryManifest } from "@smashcut/core";
 import {
   AddError,
   buildSnippet,
@@ -25,20 +25,20 @@ const MANIFEST: RegistryManifest = {
   name: "test",
   homepage: "https://example.com",
   items: [
-    { name: "my-block", type: "hyperframes:block" },
-    { name: "deprecated-block", type: "hyperframes:block" },
-    { name: "future-block", type: "hyperframes:block" },
-    { name: "dep-block", type: "hyperframes:block" },
-    { name: "base-component", type: "hyperframes:component" },
-    { name: "my-component", type: "hyperframes:component" },
-    { name: "my-example", type: "hyperframes:example" },
+    { name: "my-block", type: "smashcut:block" },
+    { name: "deprecated-block", type: "smashcut:block" },
+    { name: "future-block", type: "smashcut:block" },
+    { name: "dep-block", type: "smashcut:block" },
+    { name: "base-component", type: "smashcut:component" },
+    { name: "my-component", type: "smashcut:component" },
+    { name: "my-example", type: "smashcut:example" },
   ],
 };
 
 const BLOCK_ITEM: RegistryItem = {
   $schema: "https://hyperframes.heygen.com/schema/registry-item.json",
   name: "my-block",
-  type: "hyperframes:block",
+  type: "smashcut:block",
   title: "My Block",
   description: "Block for tests",
   dimensions: { width: 1080, height: 1350 },
@@ -47,7 +47,7 @@ const BLOCK_ITEM: RegistryItem = {
     {
       path: "my-block.html",
       target: "compositions/my-block.html",
-      type: "hyperframes:composition",
+      type: "smashcut:composition",
     },
   ],
 };
@@ -55,24 +55,24 @@ const BLOCK_ITEM: RegistryItem = {
 const COMPONENT_ITEM: RegistryItem = {
   $schema: "https://hyperframes.heygen.com/schema/registry-item.json",
   name: "my-component",
-  type: "hyperframes:component",
+  type: "smashcut:component",
   title: "My Component",
   description: "Component for tests",
   files: [
     {
       path: "my-component.html",
       target: "compositions/components/my-component/my-component.html",
-      type: "hyperframes:snippet",
+      type: "smashcut:snippet",
     },
     {
       path: "my-component.css",
       target: "compositions/components/my-component/my-component.css",
-      type: "hyperframes:style",
+      type: "smashcut:style",
     },
     {
       path: "assets/mask.png",
       target: "assets/my-component/mask.png",
-      type: "hyperframes:asset",
+      type: "smashcut:asset",
     },
   ],
 };
@@ -86,7 +86,7 @@ const DEPRECATED_BLOCK_ITEM: RegistryItem = {
     {
       path: "deprecated-block.html",
       target: "compositions/deprecated-block.html",
-      type: "hyperframes:composition",
+      type: "smashcut:composition",
     },
   ],
 };
@@ -100,7 +100,7 @@ const FUTURE_BLOCK_ITEM: RegistryItem = {
     {
       path: "future-block.html",
       target: "compositions/future-block.html",
-      type: "hyperframes:composition",
+      type: "smashcut:composition",
     },
   ],
 };
@@ -108,14 +108,14 @@ const FUTURE_BLOCK_ITEM: RegistryItem = {
 const BASE_COMPONENT_ITEM: RegistryItem = {
   $schema: "https://hyperframes.heygen.com/schema/registry-item.json",
   name: "base-component",
-  type: "hyperframes:component",
+  type: "smashcut:component",
   title: "Base Component",
   description: "Base component dependency for tests",
   files: [
     {
       path: "base-component.css",
       target: "compositions/components/base-component/base-component.css",
-      type: "hyperframes:style",
+      type: "smashcut:style",
     },
   ],
 };
@@ -130,7 +130,7 @@ const DEP_BLOCK_ITEM: RegistryItem = {
     {
       path: "dep-block.html",
       target: "compositions/dep-block.html",
-      type: "hyperframes:composition",
+      type: "smashcut:composition",
     },
   ],
 };
@@ -138,12 +138,12 @@ const DEP_BLOCK_ITEM: RegistryItem = {
 const EXAMPLE_ITEM: RegistryItem = {
   $schema: "https://hyperframes.heygen.com/schema/registry-item.json",
   name: "my-example",
-  type: "hyperframes:example",
+  type: "smashcut:example",
   title: "My Example",
   description: "Example for tests",
   dimensions: { width: 1920, height: 1080 },
   duration: 10,
-  files: [{ path: "index.html", target: "index.html", type: "hyperframes:composition" }],
+  files: [{ path: "index.html", target: "index.html", type: "smashcut:composition" }],
 };
 
 const ITEM_BY_NAME: Record<string, RegistryItem> = {
@@ -180,7 +180,7 @@ function mockFetch(): void {
 }
 
 function tmp(): string {
-  return mkdtempSync(join(tmpdir(), "hf-add-test-"));
+  return mkdtempSync(join(tmpdir(), "sc-add-test-"));
 }
 
 function uniqueBase(): string {
@@ -198,9 +198,9 @@ function writeRegistryConfig(
   paths: typeof DEFAULT_TEST_PATHS = DEFAULT_TEST_PATHS,
 ): void {
   writeFileSync(
-    join(dir, "hyperframes.json"),
+    join(dir, "smashcut.json"),
     JSON.stringify({
-      $schema: "https://hyperframes.heygen.com/schema/hyperframes.json",
+      $schema: "https://hyperframes.heygen.com/schema/smashcut.json",
       registry: uniqueBase(),
       paths,
     }),
@@ -274,19 +274,19 @@ describe("runAdd (integration, mocked registry)", () => {
   it("installs a block into the default compositions/ path and returns the snippet", async () => {
     const dir = tmp();
     try {
-      // Write hyperframes.json so runAdd uses our unique baseUrl.
+      // Write smashcut.json so runAdd uses our unique baseUrl.
       writeRegistryConfig(dir);
 
       const result = await runAdd({ name: "my-block", projectDir: dir, skipClipboard: true });
       expect(result.ok).toBe(true);
       expect(result.name).toBe("my-block");
-      expect(result.type).toBe("hyperframes:block");
+      expect(result.type).toBe("smashcut:block");
       expect(result.written).toHaveLength(1);
       expect(result.installed).toEqual(["my-block"]);
       expect(result.warnings).toEqual([]);
       expect(existsSync(join(dir, "compositions/my-block.html"))).toBe(true);
       const installed = readFileSync(join(dir, "compositions/my-block.html"), "utf-8");
-      expect(installed).toContain("<!-- hyperframes-registry-item: my-block -->");
+      expect(installed).toContain("<!-- smashcut-registry-item: my-block -->");
       expect(installed).toContain("my-block.html");
       expect(result.snippet).toContain("compositions/my-block.html");
     } finally {
@@ -390,12 +390,12 @@ describe("runAdd (integration, mocked registry)", () => {
       expect(trackRegistryItemAdded).toHaveBeenCalledTimes(2);
       expect(trackRegistryItemAdded).toHaveBeenCalledWith({
         item: "base-component",
-        itemType: "hyperframes:component",
+        itemType: "smashcut:component",
         requested: false,
       });
       expect(trackRegistryItemAdded).toHaveBeenCalledWith({
         item: "dep-block",
-        itemType: "hyperframes:block",
+        itemType: "smashcut:block",
         requested: true,
       });
     } finally {
@@ -435,7 +435,7 @@ describe("runAdd (integration, mocked registry)", () => {
 describe("variable values in the snippet", () => {
   const block = {
     name: "split-flap-board",
-    type: "hyperframes:block",
+    type: "smashcut:block",
     duration: 3.5,
     dimensions: { width: 1920, height: 1080 },
   } as unknown as RegistryItem;
@@ -483,7 +483,7 @@ describe("describeInstallFailure", () => {
   });
 
   it("names the project's own registry when it is not the public one", () => {
-    // The reported failure: hyperframes.json pointed at a private host with a
+    // The reported failure: smashcut.json pointed at a private host with a
     // self-signed certificate. Telling that reader to check their connection
     // sends them to debug the one thing that was working.
     const message = describeInstallFailure(

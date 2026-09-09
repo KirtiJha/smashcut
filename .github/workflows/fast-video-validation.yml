@@ -39,7 +39,7 @@ jobs:
           context: .
           file: Dockerfile.test
           load: true
-          tags: hyperframes-producer:test
+          tags: smashcut-producer:test
           cache-from: type=gha,scope=regression-test-image
           cache-to: type=gha,mode=max,scope=regression-test-image
 
@@ -52,4 +52,4 @@ jobs:
             -e PRODUCER_VALIDATE_MIN_PSNR='${{ inputs.min_psnr }}' \
             --workdir /app/packages/producer \
             --entrypoint bunx \
-            hyperframes-producer:test tsx scripts/validate-fast-video.ts
+            smashcut-producer:test tsx scripts/validate-fast-video.ts

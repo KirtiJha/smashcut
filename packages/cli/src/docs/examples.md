@@ -1,6 +1,6 @@
 # Templates
 
-Built-in templates available via `npx hyperframes init --example <name>`.
+Built-in templates available via `npx smashcut init --example <name>`.
 
 ## blank
 

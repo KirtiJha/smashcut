@@ -148,7 +148,7 @@
   <body>
     <!-- duration 5.41s = the full group_6 span (lockup → 2 slot cycles → bg flip + shake → expand wipe) -->
     <div
-      data-hf-id="hf-g6rt"
+      data-sc-id="sc-g6rt"
       id="root"
       data-composition-id="group-six-recreate"
       data-width="1920"
@@ -157,13 +157,13 @@
       data-duration="5.41"
       data-root="true"
     >
-      <div data-hf-id="hf-g6frame" id="frame">
-        <div data-hf-id="hf-g6lock" id="lockup">
-          <div data-hf-id="hf-g6anch" id="anchors"></div>
-          <div data-hf-id="hf-g6box" id="slotbox">
-            <div data-hf-id="hf-g6c1" id="card1" class="card"></div>
-            <div data-hf-id="hf-g6c2" id="card2" class="card"></div>
-            <div data-hf-id="hf-g6c3" id="card3" class="card"></div>
+      <div data-sc-id="sc-g6frame" id="frame">
+        <div data-sc-id="sc-g6lock" id="lockup">
+          <div data-sc-id="sc-g6anch" id="anchors"></div>
+          <div data-sc-id="sc-g6box" id="slotbox">
+            <div data-sc-id="sc-g6c1" id="card1" class="card"></div>
+            <div data-sc-id="sc-g6c2" id="card2" class="card"></div>
+            <div data-sc-id="sc-g6c3" id="card3" class="card"></div>
             <div class="lines" id="lines"></div>
           </div>
         </div>
@@ -211,8 +211,8 @@
         var vars = Object.assign(
           {},
           defaults,
-          window.__hyperframes && window.__hyperframes.getVariables
-            ? window.__hyperframes.getVariables()
+          window.__smashcut && window.__smashcut.getVariables
+            ? window.__smashcut.getVariables()
             : {},
         );
         var ANCHORS = String(vars.anchors)

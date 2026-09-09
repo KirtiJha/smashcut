@@ -10,14 +10,14 @@ import {
   shouldShowCompositionLoadingOverlay,
 } from "./Player";
 
-vi.mock("@hyperframes/player", () => ({}));
+vi.mock("@smashcut/player", () => ({}));
 
 Object.assign(globalThis, { IS_REACT_ACT_ENVIRONMENT: true });
 
 let root: Root | null = null;
 let lifecycleLog: string[] = [];
 
-class TestHyperframesPlayer extends HTMLElement {
+class TestSmashcutPlayer extends HTMLElement {
   readonly iframeElement = document.createElement("iframe");
 
   constructor() {
@@ -43,8 +43,8 @@ class TestHyperframesPlayer extends HTMLElement {
   }
 }
 
-if (!customElements.get("hyperframes-player")) {
-  customElements.define("hyperframes-player", TestHyperframesPlayer);
+if (!customElements.get("smashcut-player")) {
+  customElements.define("smashcut-player", TestSmashcutPlayer);
 }
 
 afterEach(() => {
@@ -69,7 +69,7 @@ async function mountPlayer() {
     await Promise.resolve();
   });
 
-  const player = host.querySelector<TestHyperframesPlayer>("hyperframes-player");
+  const player = host.querySelector<TestSmashcutPlayer>("smashcut-player");
   if (!player) throw new Error("player did not mount");
   return { host, player };
 }

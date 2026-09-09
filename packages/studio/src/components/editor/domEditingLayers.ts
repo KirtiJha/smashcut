@@ -3,7 +3,7 @@ import {
   resolveEditingAffordances,
   resolveEditingSections,
   type EditableElementFacts,
-} from "@hyperframes/core/editing";
+} from "@smashcut/core/editing";
 import { groupScopedLayerRoots, resolveGroupCapture } from "./domEditingGroups";
 import type {
   DomEditCapabilities,
@@ -64,7 +64,7 @@ function buildTextField(
   sourceChildIndex?: number,
 ): DomEditTextField {
   const tagName = el.tagName.toLowerCase();
-  const key = el.getAttribute("data-hf-text-key") ?? `${source}:${index}:${tagName}`;
+  const key = el.getAttribute("data-sc-text-key") ?? `${source}:${index}:${tagName}`;
   return {
     key,
     label: getTextFieldLabel(tagName, index, total, source),
@@ -150,8 +150,8 @@ export function serializeDomEditTextFields(fields: DomEditTextField[]): string {
         return escapeHtmlText(field.value);
       }
       const attrs = [
-        ...field.attributes.filter((attribute) => attribute.name !== "data-hf-text-key"),
-        { name: "data-hf-text-key", value: field.key },
+        ...field.attributes.filter((attribute) => attribute.name !== "data-sc-text-key"),
+        { name: "data-sc-text-key", value: field.key },
       ]
         .map((attribute) => ` ${attribute.name}="${attribute.value.replace(/"/g, "&quot;")}"`)
         .join("");
@@ -585,7 +585,7 @@ export function isTextEditableSelection(selection: DomEditSelection): boolean {
 // buildElementAgentPrompt is in domEditingAgentPrompt.ts
 
 export function readHfId(element: Element): string | undefined {
-  return element.getAttribute("data-hf-id")?.trim() || undefined;
+  return element.getAttribute("data-sc-id")?.trim() || undefined;
 }
 
 export function buildDomEditPatchTarget(

@@ -299,8 +299,8 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
           easing: "power2.inOut",
         };
         var declared =
-          window.__hyperframes && window.__hyperframes.getVariables
-            ? window.__hyperframes.getVariables()
+          window.__smashcut && window.__smashcut.getVariables
+            ? window.__smashcut.getVariables()
             : {};
         var vars = Object.assign({}, DEFAULTS, declared);
 
@@ -374,7 +374,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 
 ## Install
 
-<InstallCommand command="npx hyperframes add camera-dolly-zoom" item="camera-dolly-zoom" />
+<InstallCommand command="npx smashcut add camera-dolly-zoom" item="camera-dolly-zoom" />
 
 That writes one file: `compositions/camera-dolly-zoom.html`.
 
@@ -710,8 +710,8 @@ defaults, so this behaves exactly like the preview above until you change one:
           easing: "power2.inOut",
         };
         var declared =
-          window.__hyperframes && window.__hyperframes.getVariables
-            ? window.__hyperframes.getVariables()
+          window.__smashcut && window.__smashcut.getVariables
+            ? window.__smashcut.getVariables()
             : {};
         var vars = Object.assign({}, DEFAULTS, declared);
 

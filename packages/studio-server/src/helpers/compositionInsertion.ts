@@ -201,7 +201,7 @@ export function insertCompositionIntoSource(input: {
   const host = document.createElement("div");
   host.id = hostId;
   host.className = "clip";
-  host.setAttribute("data-hf-id", `hf-${randomUUID()}`);
+  host.setAttribute("data-sc-id", `hf-${randomUUID()}`);
   host.setAttribute("data-composition-id", hostId);
   host.setAttribute("data-composition-src", relativeSourcePath(targetAbs, sourceAbs));
   host.setAttribute("data-start", String(Math.round(input.start * 100) / 100));

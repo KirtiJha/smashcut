@@ -150,7 +150,7 @@ function rewriteSubCompositionAssetPaths(root: ParentNode, compositionUrl: URL |
 }
 
 function uniqueCompositionId(baseId: string, index: number): string {
-  return `${baseId}__hf${index}`;
+  return `${baseId}__sc${index}`;
 }
 
 const waitForExternalScriptLoad = (
@@ -252,7 +252,7 @@ type HostCompositionIdentity = {
 function getHostCompositionIdentity(host: Element): HostCompositionIdentity {
   const currentCompositionId = (host.getAttribute("data-composition-id") || "").trim() || null;
   const authoredCompositionId =
-    (host.getAttribute("data-hf-original-composition-id") || currentCompositionId || "").trim() ||
+    (host.getAttribute("data-sc-original-composition-id") || currentCompositionId || "").trim() ||
     null;
   return {
     authoredCompositionId,
@@ -277,14 +277,14 @@ function hasMatchingInlineTemplate(host: Element): boolean {
 }
 
 function isMountedInlineCompositionHost(host: Element): boolean {
-  return !!host.querySelector('[data-hf-inner-root="true"]');
+  return !!host.querySelector('[data-sc-inner-root="true"]');
 }
 
 function shouldAssignRuntimeCompositionId(host: Element): boolean {
   if (host.hasAttribute("data-composition-src")) return true;
   if (!hasMatchingInlineTemplate(host)) return false;
   if (host.children.length === 0) return true;
-  if (host.hasAttribute("data-hf-original-composition-id")) return true;
+  if (host.hasAttribute("data-sc-original-composition-id")) return true;
   return isMountedInlineCompositionHost(host);
 }
 
@@ -299,7 +299,7 @@ function getTrackedCompositionHosts(): Element[] {
 }
 
 function cleanupDetachedScopedVariables() {
-  const byComp = window.__hfVariablesByComp;
+  const byComp = window.__scVariablesByComp;
   if (!byComp) return;
 
   const activeRuntimeCompositionIds = new Set(
@@ -349,17 +349,17 @@ function assignRuntimeCompositionIds(
         : authoredCompositionId;
 
       if (duplicateInstance) {
-        host.setAttribute("data-hf-original-composition-id", authoredCompositionId);
+        host.setAttribute("data-sc-original-composition-id", authoredCompositionId);
       } else {
-        host.removeAttribute("data-hf-original-composition-id");
+        host.removeAttribute("data-sc-original-composition-id");
       }
       host.setAttribute("data-composition-id", runtimeCompositionId);
       if (
         previousRuntimeCompositionId &&
         previousRuntimeCompositionId !== runtimeCompositionId &&
-        window.__hfVariablesByComp
+        window.__scVariablesByComp
       ) {
-        delete window.__hfVariablesByComp[previousRuntimeCompositionId];
+        delete window.__scVariablesByComp[previousRuntimeCompositionId];
       }
     }
 
@@ -536,7 +536,7 @@ async function mountCompositionContent(params: {
 
   // Stash the per-instance variables BEFORE running scripts. The scoped
   // `getVariables()` injected by `compositionScoping.ts` reads from
-  // `window.__hfVariablesByComp[compId]`, so this table must be populated
+  // `window.__scVariablesByComp[compId]`, so this table must be populated
   // before the wrapped IIFE evaluates.
   if (runtimeScopeCompositionId) {
     stashInstanceVariables(params, contentNode, runtimeScopeCompositionId);
@@ -557,7 +557,7 @@ async function mountCompositionContent(params: {
       injectedScript.textContent = wrapScopedCompositionScript(
         scriptPayload.content,
         scriptPayload.scopeCompositionId,
-        "[HyperFrames] composition script error:",
+        "[SmashCut] composition script error:",
         runtimeScopeSelector,
         runtimeScopeCompositionId || scriptPayload.scopeCompositionId,
         authoredRootId,
@@ -749,7 +749,7 @@ export async function loadExternalCompositions(
 
 /**
  * Stash per-instance variables BEFORE running scripts (the scoped
- * getVariables() reads window.__hfVariablesByComp[compId]) and mirror them
+ * getVariables() reads window.__scVariablesByComp[compId]) and mirror them
  * as CSS custom properties on the host so imported var(--slug, literal)
  * fills inside the sub-comp resolve per instance (cascade beats the document
  * root). Inline templates carry declared defaults on the content root;
@@ -777,7 +777,7 @@ function stashInstanceVariables(
   };
   // The sub-comp path never reaches the top-level getVariables(), so the
   // out-of-set enum guard runs here too, against the same merged values the
-  // instance reads back out of __hfVariablesByComp.
+  // instance reads back out of __scVariablesByComp.
   warnUnknownEnumValues(
     params.variableDeclarer ?? (contentNode instanceof Element ? contentNode : null),
     merged,
@@ -785,13 +785,13 @@ function stashInstanceVariables(
   );
   clearAppliedCssVariables(params.host);
   if (Object.keys(merged).length > 0) {
-    if (!window.__hfVariablesByComp) window.__hfVariablesByComp = {};
-    window.__hfVariablesByComp[runtimeScopeCompositionId] = merged;
+    if (!window.__scVariablesByComp) window.__scVariablesByComp = {};
+    window.__scVariablesByComp[runtimeScopeCompositionId] = merged;
     applyCssVariables(params.host, {
       ...filterVariablesIfAbsent(params.host, merged, window),
       ...readRenderOverrides(),
     });
-  } else if (window.__hfVariablesByComp) {
-    delete window.__hfVariablesByComp[runtimeScopeCompositionId];
+  } else if (window.__scVariablesByComp) {
+    delete window.__scVariablesByComp[runtimeScopeCompositionId];
   }
 }

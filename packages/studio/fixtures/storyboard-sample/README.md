@@ -16,7 +16,7 @@ It exercises the storyboard contract end to end:
 Preview the storyboard view:
 
 ```bash
-npx hyperframes preview packages/studio/fixtures/storyboard-sample
+npx smashcut preview packages/studio/fixtures/storyboard-sample
 ```
 
 Inspect just the parsed manifest the Studio consumes:

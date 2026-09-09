@@ -142,7 +142,7 @@ describe("prepareRenderBody — validation", () => {
   });
 
   it("threads variables + outputResolution into the prepared render input", async () => {
-    const dir = mkdtempSync(join(tmpdir(), "hf-server-test-"));
+    const dir = mkdtempSync(join(tmpdir(), "sc-server-test-"));
     writeFileSync(join(dir, "index.html"), "<html><body></body></html>", "utf-8");
 
     const result = await prepareRenderBody({

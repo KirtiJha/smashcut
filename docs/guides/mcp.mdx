@@ -1,12 +1,12 @@
 ---
 title: "Create through an AI chat"
-description: "Use the hosted HyperFrames MCP connector to create and render without installing the local CLI."
+description: "Use the hosted SmashCut MCP connector to create and render without installing the local CLI."
 ---
 
 import { DocsVideo } from "/snippets/docs-video.jsx";
 
-HyperFrames MCP is a hosted connector for supported AI chat products. It lets
-the chat call HyperFrames creation and rendering tools through your HeyGen
+SmashCut MCP is a hosted connector for supported AI chat products. It lets
+the chat call SmashCut creation and rendering tools through your HeyGen
 account without installing the local CLI.
 
 <Note>
@@ -16,8 +16,8 @@ account without installing the local CLI.
 
 <DocsVideo
   title="Making and revising a video inside an AI chat, then rendering it"
-  src="https://static.heygen.ai/hyperframes-oss/docs/images/showcase/mcp-flow-demo-v2.mp4"
-  poster="https://static.heygen.ai/hyperframes-oss/docs/images/showcase/mcp-flow-demo-v2.jpg"
+  src="https://static.heygen.ai/smashcut-oss/docs/images/showcase/mcp-flow-demo-v2.mp4"
+  poster="https://static.heygen.ai/smashcut-oss/docs/images/showcase/mcp-flow-demo-v2.jpg"
 />
 
 An illustration of the flow, labelled as such on screen — describe the video,
@@ -28,7 +28,7 @@ back. Nothing is installed locally.
 
 Use the hosted connector when you want:
 
-- no local HyperFrames setup;
+- no local SmashCut setup;
 - a conversational creation flow;
 - cloud rendering;
 
@@ -40,15 +40,15 @@ Use the [local Quickstart](/quickstart) when you need:
 - custom automation or deployment;
 - precise debugging and validation.
 
-## Connect HyperFrames
+## Connect SmashCut
 
 The production MCP address is:
 
 ```text
-https://mcp.heygen.com/mcp/hyperframes/
+https://mcp.heygen.com/mcp/smashcut/
 ```
 
-You need a HeyGen account and access to the HyperFrames connector.
+You need a HeyGen account and access to the SmashCut connector.
 
 Each host controls where custom connectors appear and which plans or workspace
 roles can add them. Use the steps below as orientation, then follow the linked
@@ -59,13 +59,13 @@ host documentation when its interface differs.
     1. Open **Customize → Connectors**.
     2. Choose **Add custom connector** and enter the MCP address above.
     3. Complete the HeyGen sign-in.
-    4. In a new chat, open the **+** menu, choose **Connectors**, and enable HyperFrames.
+    4. In a new chat, open the **+** menu, choose **Connectors**, and enable SmashCut.
 
     See [Anthropic’s current connector instructions](https://support.claude.com/en/articles/11175166-get-started-with-custom-connectors-using-remote-mcp) for plan and workspace requirements.
 
   </Tab>
   <Tab title="ChatGPT">
-    If HyperFrames appears in **Settings → Apps**, choose **Connect** and complete HeyGen authorization.
+    If SmashCut appears in **Settings → Apps**, choose **Connect** and complete HeyGen authorization.
 
     To add the MCP address as a custom app, an authorized user enables the host's developer mode, creates an app from the endpoint, scans the tools, and completes OAuth. Workspace admins may control publishing and action access.
 
@@ -83,7 +83,7 @@ host documentation when its interface differs.
   </Tab>
 </Tabs>
 
-Host products change their connector interfaces independently. If a menu or button is missing, check that host’s current plan and workspace permissions before treating it as a HyperFrames failure.
+Host products change their connector interfaces independently. If a menu or button is missing, check that host’s current plan and workspace permissions before treating it as a SmashCut failure.
 
 ## Create a first composition
 
@@ -126,7 +126,7 @@ The connector renders on hosted infrastructure. Keep any composition or render
 identifier the tool returns so you can refer to the same work in a follow-up.
 
 OAuth connects the server to your current HeyGen account. Plans, limits, and
-billing can change independently of HyperFrames, so confirm them in the account
+billing can change independently of SmashCut, so confirm them in the account
 before starting repeated or long renders.
 
 ## Current limits
@@ -141,7 +141,7 @@ before starting repeated or long renders.
 If authorization loops:
 
 1. confirm the production MCP address;
-2. disconnect and reconnect HyperFrames;
+2. disconnect and reconnect SmashCut;
 3. confirm that your host plan and workspace permit the connector;
 4. confirm that pop-ups and the HeyGen sign-in window are not blocked.
 
@@ -151,10 +151,10 @@ If a create or render action stalls:
 2. retry from a new chat if the host session has expired;
 3. report the prompt, expected result, actual result, host, and identifier.
 
-Use [Share feedback](/guides/feedback) when the failure belongs to HyperFrames. Use the host product’s support when the connector cannot be installed or invoked at all.
+Use [Share feedback](/guides/feedback) when the failure belongs to SmashCut. Use the host product’s support when the connector cannot be installed or invoked at all.
 
 <Warning>
-  Only connect the production HyperFrames server shown on this page. As with any external connector,
+  Only connect the production SmashCut server shown on this page. As with any external connector,
   review the permissions and do not send secrets or private material that the destination should not
   receive.
 </Warning>

@@ -3,12 +3,12 @@ name: Windows render verification
 permissions:
   contents: read
 
-# Suppress hyperframes CLI telemetry from HeyGen's own CI runs.
+# Suppress smashcut CLI telemetry from HeyGen's own CI runs.
 # External users' CI continues to emit telemetry unless they set this themselves.
 env:
-  HYPERFRAMES_NO_TELEMETRY: "1"
+  SMASHCUT_NO_TELEMETRY: "1"
 
-# Manually triggered smoke test that renders a HyperFrames composition on a
+# Manually triggered smoke test that renders a SmashCut composition on a
 # real Windows runner. Proves the PR #336 `where ffmpeg` fix actually works
 # end-to-end: FFmpeg is discovered natively on Windows, Chrome is installed
 # and launched, frames are captured, and an MP4 is produced — without Docker
@@ -192,17 +192,17 @@ jobs:
       - name: Build render prerequisites
         shell: pwsh
         run: |
-          bun run --filter '@hyperframes/{parsers,lint,studio-server}' build
+          bun run --filter '@smashcut/{parsers,lint,studio-server}' build
           bun run --cwd packages/core build
-          bun run --filter @hyperframes/player build
-          bun run --filter @hyperframes/studio build
-          bun run --filter @hyperframes/cli build
+          bun run --filter @smashcut/player build
+          bun run --filter @smashcut/studio build
+          bun run --filter @smashcut/cli build
 
       # -----------------------------------------------------------------
-      # Prove the PR #336 fix: hyperframes doctor exercises findFFmpeg()
+      # Prove the PR #336 fix: smashcut doctor exercises findFFmpeg()
       # and whichBinary() — both must pass on Windows without workarounds.
       # -----------------------------------------------------------------
-      - name: hyperframes doctor (verifies `where ffmpeg` fix)
+      - name: smashcut doctor (verifies `where ffmpeg` fix)
         shell: pwsh
         run: node packages/cli/dist/cli.js doctor
 
@@ -211,7 +211,7 @@ jobs:
         # init's --skip-skills flag is neutered (see init.ts); opt out of the
         # GitHub skills check via this env so the canary scaffold stays offline.
         env:
-          HYPERFRAMES_SKIP_SKILLS: "1"
+          SMASHCUT_SKIP_SKILLS: "1"
         run: |
           New-Item -ItemType Directory -Force -Path "$env:RUNNER_TEMP\windows-canary" | Out-Null
           cd "$env:RUNNER_TEMP\windows-canary"
@@ -400,11 +400,11 @@ jobs:
           # Studio concurrently with the process-heavy Engine and CLI suites.
           - lane: studio-core
             studio_shard: 1/2
-            packages: --filter @hyperframes/core --filter @hyperframes/player --filter @hyperframes/shader-transitions
+            packages: --filter @smashcut/core --filter @smashcut/player --filter @smashcut/shader-transitions
             runtime_contract: false
           - lane: studio-engine-cli
             studio_shard: 2/2
-            packages: --filter @hyperframes/engine --filter @hyperframes/cli
+            packages: --filter @smashcut/engine --filter @smashcut/cli
             runtime_contract: true
 
     steps:
@@ -461,7 +461,7 @@ jobs:
       - name: Build test prerequisites
         shell: pwsh
         run: |
-          bun run --filter '@hyperframes/{parsers,lint,studio-server}' build
+          bun run --filter '@smashcut/{parsers,lint,studio-server}' build
           bun run --cwd packages/core build
 
       - name: Run Studio shard ${{ matrix.studio_shard }}
@@ -497,7 +497,7 @@ jobs:
       - name: Run runtime contract test
         if: matrix.runtime_contract
         shell: pwsh
-        run: bun run --filter "@hyperframes/core" test:hyperframe-runtime-ci
+        run: bun run --filter "@smashcut/core" test:smashcut-runtime-ci
 
   # Preserve the existing required check name while the two balanced lanes stay
   # independently visible and rerunnable.

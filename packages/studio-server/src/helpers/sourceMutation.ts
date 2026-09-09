@@ -1,16 +1,16 @@
 import { parseHTML } from "linkedom";
-import { removeElementWithGsapCascade } from "@hyperframes/parsers";
+import { removeElementWithGsapCascade } from "@smashcut/parsers";
 import postcss from "postcss";
 import selectorParser from "postcss-selector-parser";
-import { isAllowedHtmlAttribute, isSafeAttributeValue } from "@hyperframes/core/html-attr-safety";
-import { sanitizeRichTextChildren } from "@hyperframes/core/rich-text-sanitize";
+import { isAllowedHtmlAttribute, isSafeAttributeValue } from "@smashcut/core/html-attr-safety";
+import { sanitizeRichTextChildren } from "@smashcut/core/rich-text-sanitize";
 import {
   EXCLUDED_TAGS,
   ensureHfIds,
   mintHfId,
   walkCompositionDescendants,
-} from "@hyperframes/parsers/hf-ids";
-import { readClipTiming, writeClipTiming } from "@hyperframes/core/composition-contract";
+} from "@smashcut/parsers/sc-ids";
+import { readClipTiming, writeClipTiming } from "@smashcut/core/composition-contract";
 import { parseStyleDecls, patchStyleAttrString } from "./sourceStyleMutation.js";
 
 export interface SourceMutationTarget {
@@ -81,7 +81,7 @@ function querySelectorAllWithTemplates(root: Document | Element, selector: strin
 
 // Prevent CSS attribute-selector injection via a crafted hfId: escape
 // backslashes first, then double-quotes. Keeps a malformed/hostile value from
-// breaking out of the `[data-hf-id="…"]` selector once callers beyond the
+// breaking out of the `[data-sc-id="…"]` selector once callers beyond the
 // internal mint contract (R2+ user flows) pass values here.
 function escapeCssAttrValue(value: string): string {
   return value.replace(/\\/g, "\\\\").replace(/"/g, '\\"');
@@ -91,14 +91,14 @@ function findByHfId(document: Document, hfId: string): Element | null {
   try {
     const matches = querySelectorAllWithTemplates(
       document,
-      `[data-hf-id="${escapeCssAttrValue(hfId)}"]`,
+      `[data-sc-id="${escapeCssAttrValue(hfId)}"]`,
     );
     if (matches.length > 1) {
       // The mint contract guarantees uniqueness; a duplicate means upstream
       // id drift. Don't silently patch an arbitrary one — surface it.
       // eslint-disable-next-line no-console
       console.warn(
-        `sourceMutation: data-hf-id "${hfId}" matched ${matches.length} elements; using the first. ids must be unique per document.`,
+        `sourceMutation: data-sc-id "${hfId}" matched ${matches.length} elements; using the first. ids must be unique per document.`,
       );
     }
     return matches[0] ?? null;
@@ -185,13 +185,13 @@ function stampNewChildIds(parent: Element): void {
   const assigned = new Set<string>();
   const root = parent.ownerDocument?.body ?? parent;
   walkCompositionDescendants(root, (el) => {
-    const id = el.getAttribute("data-hf-id");
+    const id = el.getAttribute("data-sc-id");
     if (id) assigned.add(id);
   });
   for (const el of parent.querySelectorAll("*")) {
-    if (el.getAttribute("data-hf-id")) continue;
+    if (el.getAttribute("data-sc-id")) continue;
     if (EXCLUDED_TAGS.has(el.tagName.toLowerCase())) continue;
-    el.setAttribute("data-hf-id", mintHfId(el, assigned));
+    el.setAttribute("data-sc-id", mintHfId(el, assigned));
   }
 }
 
@@ -359,10 +359,10 @@ export function splitElementInHtml(
     while (usedCompositionIds.has(nextCompositionId)) nextCompositionId = `${base}-${suffix++}`;
     clone.setAttribute("data-composition-id", nextCompositionId);
   }
-  clone.removeAttribute("data-hf-id");
-  // Descendants carry their own data-hf-id; leaving them duplicates the id of
+  clone.removeAttribute("data-sc-id");
+  // Descendants carry their own data-sc-id; leaving them duplicates the id of
   // every nested node (e.g. an inner <span>), so strip them on the clone too.
-  for (const node of clone.querySelectorAll("[data-hf-id]")) node.removeAttribute("data-hf-id");
+  for (const node of clone.querySelectorAll("[data-sc-id]")) node.removeAttribute("data-sc-id");
   setElementDuration(clone, splitTime, secondDuration);
 
   // Keep the "clip" class — the runtime uses it to control visibility
@@ -421,12 +421,12 @@ export function splitElementInHtml(
 }
 
 // --- Element grouping -------------------------------------------------------
-// A group is a real `<div data-hf-group="…">` wrapping its members in the DOM.
+// A group is a real `<div data-sc-group="…">` wrapping its members in the DOM.
 // Wrapping rebases each member's left/top so its absolute position is unchanged:
 // the wrapper sits at the selection bbox top-left, and each child's new left/top
 // is its old left/top minus the wrapper origin (computed client-side, where live
 // layout is available, and passed in via `rebases`). GSAP x/y, CSS translate and
-// --hf-studio-offset vars are deltas relative to flow position and stay untouched.
+// --sc-studio-offset vars are deltas relative to flow position and stay untouched.
 
 export interface WrapElementsResult {
   html: string;
@@ -538,7 +538,7 @@ export function wrapElementsInHtml(
   }
 
   const wrapper = document.createElement("div");
-  wrapper.setAttribute("data-hf-group", groupId);
+  wrapper.setAttribute("data-sc-group", groupId);
   // A real `id` (slug of the group name) makes the wrapper a first-class node in the
   // clip manifest / timeline parent-map (both keyed by id) and a clean GSAP target —
   // without it the wrapper is invisible to the timeline and breaks child enumeration.
@@ -590,7 +590,7 @@ export function unwrapElementsFromHtml(
   // group wrapper. A stale/desynced selection that resolves to a plain <div>
   // would otherwise be unwrapped — rebasing its children by the parent's origin
   // (silent corruption). Wrap enforces invariants; unwrap must too.
-  if (!group.hasAttribute("data-hf-group")) return { html: source, unwrapped: false };
+  if (!group.hasAttribute("data-sc-group")) return { html: source, unwrapped: false };
 
   const parent = group.parentElement;
   if (!parent) return { html: source, unwrapped: false };

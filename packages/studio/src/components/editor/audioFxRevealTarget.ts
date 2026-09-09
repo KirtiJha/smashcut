@@ -10,9 +10,9 @@
  * click doing nothing.
  */
 
-import { parseAutomationTarget } from "@hyperframes/core/audio-automation";
+import { parseAutomationTarget } from "@smashcut/core/audio-automation";
 import { escapeCssString } from "./domEditingDom";
-import type { HfAudioFxChain } from "@hyperframes/core/audio-fx";
+import type { HfAudioFxChain } from "@smashcut/core/audio-fx";
 
 export type AudioFxRevealTarget =
   /** A hand-built effect, addressed by its index in the chain. */
@@ -72,7 +72,7 @@ function revealRowSelector(where: AudioFxRevealTarget | null): string | null {
     case "eq":
       return `[data-fx-eq="${escapeCssString(where.eqId)}"]`;
     case "carve":
-      return ".hf-fx-carve-module";
+      return ".sc-fx-carve-module";
     case "preset":
       return `[data-fx-preset="${escapeCssString(where.runKey.replace(/-\d+$/, ""))}"]`;
     default:

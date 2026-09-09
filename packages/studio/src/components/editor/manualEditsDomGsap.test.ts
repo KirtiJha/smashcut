@@ -44,9 +44,9 @@ describe("applyStudioPathOffset — GSAP-owned transform", () => {
 
     applyStudioPathOffset(el, { x: -120, y: 40 });
 
-    expect(el.style.translate).toContain("var(--hf-studio-offset-x");
-    expect(el.style.getPropertyValue("--hf-studio-offset-x")).toBe("-120px");
-    expect(el.style.getPropertyValue("--hf-studio-offset-y")).toBe("40px");
+    expect(el.style.translate).toContain("var(--sc-studio-offset-x");
+    expect(el.style.getPropertyValue("--sc-studio-offset-x")).toBe("-120px");
+    expect(el.style.getPropertyValue("--sc-studio-offset-y")).toBe("40px");
   });
 
   it("GSAP element keeps translate:none and routes the offset through gsap.set", () => {

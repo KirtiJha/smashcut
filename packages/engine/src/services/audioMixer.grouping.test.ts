@@ -119,8 +119,8 @@ describe.skipIf(!HAS_FFMPEG)(
       // probe — two coherent copies sum to exactly +6.02 dB, so any residual
       // normalisation shows up as a plain arithmetic miss rather than something
       // that has to be teased out of unrelated material.
-      const projectDir = mkdtempSync(join(tmpdir(), "hf-grp-count-"));
-      const workDir = mkdtempSync(join(tmpdir(), "hf-grp-count-work-"));
+      const projectDir = mkdtempSync(join(tmpdir(), "sc-grp-count-"));
+      const workDir = mkdtempSync(join(tmpdir(), "sc-grp-count-work-"));
       tempDirs.push(projectDir, workDir);
 
       writeTone(join(projectDir, "a.wav"), 440, 2, 0.4);
@@ -154,8 +154,8 @@ describe.skipIf(!HAS_FFMPEG)(
       // Measured without apad (spike, 2026-08-14): the tail runs +1.94 dB hot.
       // Any group work that builds its own amix has to keep the padding, or
       // inherit that bug one level down.
-      const projectDir = mkdtempSync(join(tmpdir(), "hf-grp-drop-"));
-      const workDir = mkdtempSync(join(tmpdir(), "hf-grp-drop-work-"));
+      const projectDir = mkdtempSync(join(tmpdir(), "sc-grp-drop-"));
+      const workDir = mkdtempSync(join(tmpdir(), "sc-grp-drop-work-"));
       tempDirs.push(projectDir, workDir);
 
       writeTone(join(projectDir, "short.wav"), 440, 1, 0.5);
@@ -195,8 +195,8 @@ describe.skipIf(!HAS_FFMPEG)(
      * does `amix=normalize=0` with no correction at all.
      */
     it("mixes a grouped composition at the same level as the ungrouped one", async () => {
-      const projectDir = mkdtempSync(join(tmpdir(), "hf-grp-level-"));
-      const workDir = mkdtempSync(join(tmpdir(), "hf-grp-level-work-"));
+      const projectDir = mkdtempSync(join(tmpdir(), "sc-grp-level-"));
+      const workDir = mkdtempSync(join(tmpdir(), "sc-grp-level-work-"));
       tempDirs.push(projectDir, workDir);
 
       writeTone(join(projectDir, "a.wav"), 440, 2, 0.4);
@@ -230,8 +230,8 @@ describe.skipIf(!HAS_FFMPEG)(
     });
 
     it("a group FX chain fully cutting its members leaves an ungrouped track untouched (routing isolation)", async () => {
-      const projectDir = mkdtempSync(join(tmpdir(), "hf-grp-fx-"));
-      const workDir = mkdtempSync(join(tmpdir(), "hf-grp-fx-work-"));
+      const projectDir = mkdtempSync(join(tmpdir(), "sc-grp-fx-"));
+      const workDir = mkdtempSync(join(tmpdir(), "sc-grp-fx-work-"));
       tempDirs.push(projectDir, workDir);
 
       writeTone(join(projectDir, "voice.wav"), 440, 2, 0.4);
@@ -268,8 +268,8 @@ describe.skipIf(!HAS_FFMPEG)(
     });
 
     it("a member's own volume envelope still applies inside a group", async () => {
-      const projectDir = mkdtempSync(join(tmpdir(), "hf-grp-env-"));
-      const workDir = mkdtempSync(join(tmpdir(), "hf-grp-env-work-"));
+      const projectDir = mkdtempSync(join(tmpdir(), "sc-grp-env-"));
+      const workDir = mkdtempSync(join(tmpdir(), "sc-grp-env-work-"));
       tempDirs.push(projectDir, workDir);
 
       writeTone(join(projectDir, "a.wav"), 440, 4, 0.5);
@@ -309,8 +309,8 @@ describe.skipIf(!HAS_FFMPEG)(
     // here sums to ≤ 0.8, which is exactly why nothing caught it; preview cannot
     // reproduce it either, because its bus is float.
     it("does not clip an over-unity member sum before the group fader", async () => {
-      const projectDir = mkdtempSync(join(tmpdir(), "hf-grp-clip-"));
-      const workDir = mkdtempSync(join(tmpdir(), "hf-grp-clip-work-"));
+      const projectDir = mkdtempSync(join(tmpdir(), "sc-grp-clip-"));
+      const workDir = mkdtempSync(join(tmpdir(), "sc-grp-clip-work-"));
       tempDirs.push(projectDir, workDir);
 
       // Two coherent copies of the same tone: 0.7 + 0.7 = 1.4, comfortably over.
@@ -359,8 +359,8 @@ describe.skipIf(!HAS_FFMPEG)(
     // fader, one step later than the original bug but with the same result.
     // A transparent chain isolates the clamp from anything the effects do.
     it("does not clip an over-unity sum before the fader when the group has FX", async () => {
-      const projectDir = mkdtempSync(join(tmpdir(), "hf-grp-clipfx-"));
-      const workDir = mkdtempSync(join(tmpdir(), "hf-grp-clipfx-work-"));
+      const projectDir = mkdtempSync(join(tmpdir(), "sc-grp-clipfx-"));
+      const workDir = mkdtempSync(join(tmpdir(), "sc-grp-clipfx-work-"));
       tempDirs.push(projectDir, workDir);
 
       writePeakTone(join(projectDir, "a.wav"), 440, 2, 0.7);
@@ -412,8 +412,8 @@ describe.skipIf(!HAS_FFMPEG)("group sub-mix failure contract", () => {
   // bail()'s workDir cleanup. The per-element loop has always wrapped the
   // identical calls.
   it("reports an unparseable group fx-chain as a failure instead of throwing", async () => {
-    const projectDir = mkdtempSync(join(tmpdir(), "hf-grp-bad-"));
-    const workDir = mkdtempSync(join(tmpdir(), "hf-grp-bad-work-"));
+    const projectDir = mkdtempSync(join(tmpdir(), "sc-grp-bad-"));
+    const workDir = mkdtempSync(join(tmpdir(), "sc-grp-bad-work-"));
     tempDirs.push(projectDir, workDir);
     writeTone(join(projectDir, "a.wav"), 440, 1, 0.4);
 
@@ -442,7 +442,7 @@ describe.skipIf(!HAS_FFMPEG)("group sub-mix failure contract", () => {
   // holding a slash BEFORE the dots does escape: `a/../../x` normalizes to
   // `<workDir>/../x.wav`, outside the tree `bail()`'s rmSync can reach.
   it("keeps a traversal-shaped group id inside the work directory", async () => {
-    const parent = mkdtempSync(join(tmpdir(), "hf-grp-parent-"));
+    const parent = mkdtempSync(join(tmpdir(), "sc-grp-parent-"));
     tempDirs.push(parent);
     const projectDir = join(parent, "project");
     const workDir = join(parent, "work");
@@ -465,8 +465,8 @@ describe.skipIf(!HAS_FFMPEG)("group sub-mix failure contract", () => {
   });
 
   it("keeps distinct groups isolated when their sanitized ids collide", async () => {
-    const projectDir = mkdtempSync(join(tmpdir(), "hf-grp-collision-"));
-    const workDir = mkdtempSync(join(tmpdir(), "hf-grp-collision-work-"));
+    const projectDir = mkdtempSync(join(tmpdir(), "sc-grp-collision-"));
+    const workDir = mkdtempSync(join(tmpdir(), "sc-grp-collision-work-"));
     tempDirs.push(projectDir, workDir);
     writeTone(join(projectDir, "a.wav"), 440, 2, 0.4);
     writeTone(join(projectDir, "b.wav"), 880, 2, 0.4);
@@ -509,14 +509,14 @@ describe("duplicate bus instances", () => {
   it("drops only the muted instance's member", () => {
     const html = `<div id="root" data-composition-id="main" data-start="0" data-duration="4">
       <div data-composition-id="bedcomp">
-        <hf-audio-group id="bed" data-hf-render-id="bed" data-volume="0.5"></hf-audio-group>
+        <sc-audio-group id="bed" data-sc-render-id="bed" data-volume="0.5"></sc-audio-group>
         <audio id="m1" src="a.wav" data-start="0" data-duration="2"
-          data-audio-group="bed" data-hf-group-render-id="bed"></audio>
+          data-audio-group="bed" data-sc-group-render-id="bed"></audio>
       </div>
       <div data-composition-id="bedcomp">
-        <hf-audio-group id="bed" data-hf-render-id="bed__hf2" data-volume="0.5" data-hidden></hf-audio-group>
+        <sc-audio-group id="bed" data-sc-render-id="bed__sc2" data-volume="0.5" data-hidden></sc-audio-group>
         <audio id="m1" src="a.wav" data-start="2" data-duration="2"
-          data-audio-group="bed" data-hf-group-render-id="bed__hf2"></audio>
+          data-audio-group="bed" data-sc-group-render-id="bed__sc2"></audio>
       </div>
     </div>`;
 
@@ -527,12 +527,12 @@ describe("duplicate bus instances", () => {
 
   it("keeps two instances as two separate buses when neither is muted", () => {
     const html = `<div id="root" data-composition-id="main" data-start="0" data-duration="4">
-      <hf-audio-group id="bed" data-hf-render-id="bed" data-volume="0.25"></hf-audio-group>
+      <sc-audio-group id="bed" data-sc-render-id="bed" data-volume="0.25"></sc-audio-group>
       <audio id="m1" src="a.wav" data-start="0" data-duration="2"
-        data-audio-group="bed" data-hf-group-render-id="bed"></audio>
-      <hf-audio-group id="bed" data-hf-render-id="bed__hf2" data-volume="0.75"></hf-audio-group>
+        data-audio-group="bed" data-sc-group-render-id="bed"></audio>
+      <sc-audio-group id="bed" data-sc-render-id="bed__sc2" data-volume="0.75"></sc-audio-group>
       <audio id="m2" src="b.wav" data-start="2" data-duration="2"
-        data-audio-group="bed" data-hf-group-render-id="bed__hf2"></audio>
+        data-audio-group="bed" data-sc-group-render-id="bed__sc2"></audio>
     </div>`;
 
     const tracks = parseAudioElements(html);
@@ -540,7 +540,7 @@ describe("duplicate bus instances", () => {
     // whichever bus came last to both.
     expect(tracks.map((t) => [t.groupId, t.groupVolume])).toEqual([
       ["bed", 0.25],
-      ["bed__hf2", 0.75],
+      ["bed__sc2", 0.75],
     ]);
   });
 });

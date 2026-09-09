@@ -80,8 +80,8 @@ describe("useGestureRecording", () => {
     element.id = "card";
     element.style.visibility = "hidden";
     element.style.setProperty("translate", "10px 20px");
-    element.style.setProperty("--hf-studio-offset-x", "12px");
-    element.style.setProperty("--hf-studio-offset-y", "-8px");
+    element.style.setProperty("--sc-studio-offset-x", "12px");
+    element.style.setProperty("--sc-studio-offset-y", "-8px");
     previewDocument.body.append(element);
 
     const set = vi.fn();
@@ -103,8 +103,8 @@ describe("useGestureRecording", () => {
     const root = mountReactHarness(<Harness />);
 
     act(() => recording?.startRecording(element, iframe, 4));
-    expect(element.style.getPropertyValue("--hf-studio-offset-x")).toBe("0px");
-    expect(element.style.getPropertyValue("--hf-studio-offset-y")).toBe("0px");
+    expect(element.style.getPropertyValue("--sc-studio-offset-x")).toBe("0px");
+    expect(element.style.getPropertyValue("--sc-studio-offset-y")).toBe("0px");
 
     act(() => root.unmount());
 
@@ -114,7 +114,7 @@ describe("useGestureRecording", () => {
     });
     expect(element.style.visibility).toBe("hidden");
     expect(element.style.getPropertyValue("translate")).toBe("10px 20px");
-    expect(element.style.getPropertyValue("--hf-studio-offset-x")).toBe("12px");
-    expect(element.style.getPropertyValue("--hf-studio-offset-y")).toBe("-8px");
+    expect(element.style.getPropertyValue("--sc-studio-offset-x")).toBe("12px");
+    expect(element.style.getPropertyValue("--sc-studio-offset-y")).toBe("-8px");
   });
 });

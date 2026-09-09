@@ -1,5 +1,5 @@
 {
-  "name": "@hyperframes/studio",
+  "name": "@smashcut/studio",
   "version": "0.8.33",
   "description": "",
   "repository": {
@@ -67,11 +67,11 @@
     "@codemirror/state": "^6.6.0",
     "@codemirror/theme-one-dark": "^6.1.2",
     "@codemirror/view": "6.40.0",
-    "@hyperframes/core": "workspace:*",
-    "@hyperframes/parsers": "workspace:*",
-    "@hyperframes/player": "workspace:*",
-    "@hyperframes/sdk": "workspace:*",
-    "@hyperframes/studio-server": "workspace:*",
+    "@smashcut/core": "workspace:*",
+    "@smashcut/parsers": "workspace:*",
+    "@smashcut/player": "workspace:*",
+    "@smashcut/sdk": "workspace:*",
+    "@smashcut/studio-server": "workspace:*",
     "@mcp-b/global": "^5.0.1",
     "@phosphor-icons/react": "^2.1.10",
     "@tanstack/react-virtual": "^3.14.6",
@@ -82,7 +82,7 @@
     "mediabunny": "^1.45.3"
   },
   "devDependencies": {
-    "@hyperframes/producer": "workspace:*",
+    "@smashcut/producer": "workspace:*",
     "@types/react": "19",
     "@types/react-dom": "19",
     "@vitejs/plugin-react": "^4.0.0",

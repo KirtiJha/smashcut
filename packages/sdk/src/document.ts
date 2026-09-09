@@ -1,16 +1,16 @@
 /**
- * SDK document model — adaptation layer on top of @hyperframes/core.
+ * SDK document model — adaptation layer on top of @smashcut/core.
  *
  * F6 decision: SDK builds ON core, no parser duplication.
  * - ensureHfIds (from core) is the parse entry point: all construction starts here.
  * - DOMParser is NOT used (browser-only). linkedom is the node-safe primitive.
  * - ParsedHtml (core) is the Studio timeline view (timed elements only).
- *   HyperFramesElement is the editing view (ALL editable elements, with raw attrs).
+ *   SmashCutElement is the editing view (ALL editable elements, with raw attrs).
  */
 
 import { parseHTML } from "linkedom";
-import { ensureHfIds, isCompositionTemplate } from "@hyperframes/parsers/hf-ids";
-import { parseGsapScriptAcornForWrite } from "@hyperframes/core/gsap-parser-acorn";
+import { ensureHfIds, isCompositionTemplate } from "@smashcut/parsers/sc-ids";
+import { parseGsapScriptAcornForWrite } from "@smashcut/core/gsap-parser-acorn";
 import {
   findRoot,
   getElementStyles,
@@ -19,7 +19,7 @@ import {
   isNewHostBoundary,
   querySelectorAllDeep,
 } from "./engine/model.js";
-import type { HyperFramesElement, SdkDocument } from "./types.js";
+import type { SmashCutElement, SdkDocument } from "./types.js";
 
 // Tags that carry no editable content and must not enter the element tree.
 const EXCLUDED_TAGS = new Set([
@@ -43,7 +43,7 @@ function snapshotText(el: Element): string | null {
 
 // Parsing the GSAP script (acorn AST walk) is the expensive part and depends
 // only on the script text, so memoize the {tween id, selector} pairs by script.
-// Selector→hf-id resolution still runs each call — it depends on the live DOM,
+// Selector→sc-id resolution still runs each call — it depends on the live DOM,
 // which changes on dispatch. Single-entry cache covers the hot path (same comp,
 // repeated getElements() rebuilds) and stays bounded.
 let gsapLocatedCacheKey: string | null = null;
@@ -60,7 +60,7 @@ function parseLocatedCached(script: string): Array<{ id: string; selector: strin
 }
 
 /**
- * Map each element's data-hf-id → the GSAP tween ids targeting it. Tween ids
+ * Map each element's data-sc-id → the GSAP tween ids targeting it. Tween ids
  * come from the acorn parser's stable `targetSelector-method-position` scheme —
  * the SAME id-space the studio-api read path and the SDK GSAP ops use, so these
  * ids are dispatchable as-is via setGsapTween/removeGsapTween. Best-effort: a
@@ -92,7 +92,7 @@ function appendAnimationIdsForSelector(
   }
 
   for (const el of matches) {
-    const hfId = el.getAttribute("data-hf-id");
+    const hfId = el.getAttribute("data-sc-id");
     if (!hfId) continue;
     const list = map.get(hfId);
     if (list) list.push(animationId);
@@ -120,7 +120,7 @@ export function parsedAnimationIds(script: string): Set<string> {
  * inner elements are spliced in at the template's position, the template
  * itself gets no node. This mirrors the studio preview, which unwraps exactly
  * that pattern into the served body — so template-based sub-comps expose the
- * same elements (and hf-ids) here as the timeline reads from the live preview
+ * same elements (and sc-ids) here as the timeline reads from the live preview
  * DOM. A plain <template> (runtime clone-source) stays fully excluded: its
  * inert interior is not editable and its content is duplicated at runtime.
  */
@@ -128,8 +128,8 @@ function buildChildren(
   parent: Element,
   scopePrefix: string,
   animationIdsByHfId: Map<string, string[]>,
-): HyperFramesElement[] {
-  const out: HyperFramesElement[] = [];
+): SmashCutElement[] {
+  const out: SmashCutElement[] = [];
   for (const child of Array.from(parent.children)) {
     if (child.tagName.toLowerCase() === "template") {
       if (isCompositionTemplate(child)) {
@@ -148,11 +148,11 @@ function buildElement(
   el: Element,
   scopePrefix: string,
   animationIdsByHfId: Map<string, string[]>,
-): HyperFramesElement | null {
+): SmashCutElement | null {
   const tag = el.tagName.toLowerCase();
   if (EXCLUDED_TAGS.has(tag)) return null;
 
-  const id = el.getAttribute("data-hf-id") ?? "";
+  const id = el.getAttribute("data-sc-id") ?? "";
   if (!id) return null; // should never happen after ensureHfIds, but guard defensively
 
   // scopedId: if we're inside a sub-comp scope, prefix with "scopePrefix/".
@@ -243,11 +243,11 @@ function extractDuration(doc: Document): number | null {
 }
 
 /**
- * Build the element tree from an already-parsed (hf-id-stamped) linkedom Document.
+ * Build the element tree from an already-parsed (sc-id-stamped) linkedom Document.
  * Walks the live DOM directly — no serialize/re-parse round trip. This is what
  * the session's query API uses against its mutable document.
  */
-export function buildRoots(document: Document): HyperFramesElement[] {
+export function buildRoots(document: Document): SmashCutElement[] {
   const body = document.body;
   if (!body) return [];
   return buildChildren(body, "", buildAnimationIdMap(document));
@@ -255,7 +255,7 @@ export function buildRoots(document: Document): HyperFramesElement[] {
 
 /**
  * Parse an HTML string into the SDK document model.
- * Calls ensureHfIds first so every element has a stable data-hf-id.
+ * Calls ensureHfIds first so every element has a stable data-sc-id.
  * Uses linkedom — node-safe (works in agents, CI, server-side).
  */
 export function buildDocument(html: string): SdkDocument {
@@ -281,9 +281,9 @@ export function buildDocument(html: string): SdkDocument {
 }
 
 /** Flat walk of the element tree — returns every element in document order */
-export function flatElements(roots: readonly HyperFramesElement[]): HyperFramesElement[] {
-  const result: HyperFramesElement[] = [];
-  function walk(el: HyperFramesElement) {
+export function flatElements(roots: readonly SmashCutElement[]): SmashCutElement[] {
+  const result: SmashCutElement[] = [];
+  function walk(el: SmashCutElement) {
     result.push(el);
     for (const child of el.children) walk(child);
   }

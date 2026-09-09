@@ -1,5 +1,5 @@
-import type { ParsedGsap } from "@hyperframes/core/gsap-parser";
-import type { Composition } from "@hyperframes/sdk";
+import type { ParsedGsap } from "@smashcut/core/gsap-parser";
+import type { Composition } from "@smashcut/sdk";
 import type { DomEditSelection } from "../components/editor/domEditingTypes";
 import type { EditHistoryKind } from "../utils/editHistory";
 import type { PublishSdkSession } from "../utils/sdkCutover";

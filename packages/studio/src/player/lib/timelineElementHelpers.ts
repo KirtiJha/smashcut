@@ -11,7 +11,7 @@ import type { TimelineElement } from "../store/playerStore";
 import type { ClipManifestClip } from "./playbackTypes";
 import { isFinitePositive } from "./playbackAdapter";
 import { getSourceScopedSelectorIndex } from "../../utils/sourceScopedSelectorIndex";
-import { HF_AUDIO_GROUP_TAG } from "@hyperframes/core/audio-groups";
+import { HF_AUDIO_GROUP_TAG } from "@smashcut/core/audio-groups";
 
 // ---------------------------------------------------------------------------
 // Layer-reveal lift transparency
@@ -26,8 +26,8 @@ import { HF_AUDIO_GROUP_TAG } from "@hyperframes/core/audio-groups";
  * reason on the lifted value. A z-reorder commit removes the attributes (the
  * commit is the new truth).
  */
-export const LAYER_REVEAL_PRIOR_Z_ATTR = "data-hf-reveal-prior-z";
-export const LAYER_REVEAL_PRIOR_POSITION_ATTR = "data-hf-reveal-prior-pos";
+export const LAYER_REVEAL_PRIOR_Z_ATTR = "data-sc-reveal-prior-z";
+export const LAYER_REVEAL_PRIOR_POSITION_ATTR = "data-sc-reveal-prior-pos";
 
 /** The lifted element's true (pre-lift) z, or null when no lift is active. */
 export function readLayerRevealPriorZ(el: Element): number | null {
@@ -73,7 +73,7 @@ function readDurationAttribute(el: Element | null | undefined): number {
   if (!el) return 0;
   const duration =
     Number.parseFloat(el.getAttribute("data-duration") ?? "") ||
-    Number.parseFloat(el.getAttribute("data-hf-authored-duration") ?? "");
+    Number.parseFloat(el.getAttribute("data-sc-authored-duration") ?? "");
   return isFinitePositive(duration) ? duration : 0;
 }
 
@@ -82,7 +82,7 @@ function normalizePlaybackRate(raw: number): number {
 }
 
 export function isTimelineIgnoredElement(el: Element): boolean {
-  // An `<hf-audio-group>` is a mixer bus, not a clip: it carries the group's
+  // An `<sc-audio-group>` is a mixer bus, not a clip: it carries the group's
   // label, fader, mute and FX chain, has no timing of its own, and is drawn as
   // a GROUP ROW by the group derivation. Left in, the implicit-layer fallback
   // also gave it an ordinary full-duration track — so a grouped composition
@@ -93,10 +93,10 @@ export function isTimelineIgnoredElement(el: Element): boolean {
   return Boolean(
     el.closest(
       [
-        "[data-hyperframes-ignore]",
-        "[data-hyperframes-picker-ignore]",
-        "[data-hf-ignore]",
-        "[data-hf-color-grading-canvas]",
+        "[data-smashcut-ignore]",
+        "[data-smashcut-picker-ignore]",
+        "[data-sc-ignore]",
+        "[data-sc-color-grading-canvas]",
       ].join(","),
     ),
   );
@@ -359,7 +359,7 @@ export function getTimelineElementIdentity(element: { key?: string | null; id: s
  * The id space the RUNTIME matches on — a bare DOM id, never a store key.
  *
  * Studio addresses rows by `buildTimelineElementKey`'s composite
- * `<sourceFile>#<domId>`, but everything audio in `@hyperframes/core` keys off
+ * `<sourceFile>#<domId>`, but everything audio in `@smashcut/core` keys off
  * the live document: `resolveAudioGroups` collects `member.id`,
  * `resolveCarveSourceIds` goes through `getElementById`. Anything crossing into
  * that space — a group membership list, a carve source — has to be
@@ -430,7 +430,7 @@ function nodeMatchesManifestClip(node: Element, clip: ClipManifestClip): boolean
 function findTimelineDomNode(doc: Document, id: string): Element | null {
   return (
     doc.getElementById(id) ??
-    doc.querySelector(`[data-hf-id="${CSS.escape(id)}"]`) ??
+    doc.querySelector(`[data-sc-id="${CSS.escape(id)}"]`) ??
     doc.querySelector(`[data-composition-id="${CSS.escape(id)}"]`) ??
     doc.querySelector(`.${CSS.escape(id)}`) ??
     null

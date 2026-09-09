@@ -1,4 +1,4 @@
-import type { GsapAnimation } from "@hyperframes/core/gsap-parser";
+import type { GsapAnimation } from "@smashcut/core/gsap-parser";
 import type { DomEditSelection } from "../components/editor/domEditingTypes";
 import { usePlayerStore } from "../player/store/playerStore";
 import { resolveTweenStart, resolveTweenDuration } from "../utils/globalTimeCompiler";
@@ -279,13 +279,13 @@ export async function commitGsapPositionFromDrag(
     studioOffset,
     gsapPos,
   );
-  const origX = Number.parseFloat(el.getAttribute("data-hf-drag-initial-offset-x") ?? "") || 0;
-  const origY = Number.parseFloat(el.getAttribute("data-hf-drag-initial-offset-y") ?? "") || 0;
+  const origX = Number.parseFloat(el.getAttribute("data-sc-drag-initial-offset-x") ?? "") || 0;
+  const origY = Number.parseFloat(el.getAttribute("data-sc-drag-initial-offset-y") ?? "") || 0;
   const restoreOffset = () => {
-    el.style.setProperty("--hf-studio-offset-x", `${origX}px`);
-    el.style.setProperty("--hf-studio-offset-y", `${origY}px`);
-    el.removeAttribute("data-hf-drag-initial-offset-x");
-    el.removeAttribute("data-hf-drag-initial-offset-y");
+    el.style.setProperty("--sc-studio-offset-x", `${origX}px`);
+    el.style.setProperty("--sc-studio-offset-y", `${origY}px`);
+    el.removeAttribute("data-sc-drag-initial-offset-x");
+    el.removeAttribute("data-sc-drag-initial-offset-y");
   };
 
   const backfillDefaults: Record<string, number> = { x: baseGsapX, y: baseGsapY };

@@ -155,7 +155,7 @@ function makeDrawableImage(): HTMLImageElement {
   const image = document.createElement("img");
   image.id = "hero-image";
   image.setAttribute(HF_COLOR_GRADING_ATTR, serializeHfColorGrading({ effects: { blur: 0 } }));
-  image.style.setProperty("--hf-color-grading-blur", "0");
+  image.style.setProperty("--sc-color-grading-blur", "0");
   Object.defineProperty(image, "complete", { value: true, configurable: true });
   Object.defineProperty(image, "naturalWidth", { value: 640, configurable: true });
   Object.defineProperty(image, "naturalHeight", { value: 360, configurable: true });
@@ -201,8 +201,8 @@ describe("createColorGradingRuntime", () => {
     runtime = null;
     vi.unstubAllGlobals();
     getContextSpy.mockRestore();
-    delete window.__hfVariables;
-    delete window.__hfVariablesByComp;
+    delete window.__scVariables;
+    delete window.__scVariablesByComp;
     delete window.__player;
     document.head.innerHTML = "";
     document.body.innerHTML = "";
@@ -214,7 +214,7 @@ describe("createColorGradingRuntime", () => {
   } {
     document.body.appendChild(video);
     runtime = createColorGradingRuntime();
-    const canvas = document.querySelector<HTMLCanvasElement>("[data-hf-color-grading-canvas]");
+    const canvas = document.querySelector<HTMLCanvasElement>("[data-sc-color-grading-canvas]");
     if (!canvas) throw new Error("Expected color grading canvas");
     return { video, canvas };
   }
@@ -256,7 +256,7 @@ describe("createColorGradingRuntime", () => {
     const video = makeDrawableVideo();
     // Parse-time capture stamped the authored value; by hide time GSAP has
     // already left a from()-tween transient (0) in the inline style.
-    video.setAttribute("data-hf-authored-opacity", "0.75");
+    video.setAttribute("data-sc-authored-opacity", "0.75");
     video.style.opacity = "0";
     startRuntimeWithVideo(video);
 
@@ -272,7 +272,7 @@ describe("createColorGradingRuntime", () => {
 
   it("restores no inline opacity when the authored capture recorded none", () => {
     const video = makeDrawableVideo();
-    video.setAttribute("data-hf-authored-opacity", "");
+    video.setAttribute("data-sc-authored-opacity", "");
     video.style.opacity = "0";
     startRuntimeWithVideo(video);
 
@@ -309,11 +309,11 @@ describe("createColorGradingRuntime", () => {
   it("releases inactive attribute grading and recreates it when visible", () => {
     const { video, canvas } = startRuntimeWithVideo();
 
-    expect(canvas.id).toBe("__hf_color_grading_hero-video");
+    expect(canvas.id).toBe("__sc_color_grading_hero-video");
     expect(video.style.getPropertyValue("visibility")).toBe("");
     expect(video.style.getPropertyValue("opacity")).toBe("0");
     expect(video.style.getPropertyPriority("opacity")).toBe("important");
-    expect(video.hasAttribute("data-hf-color-grading-source-hidden")).toBe(true);
+    expect(video.hasAttribute("data-sc-color-grading-source-hidden")).toBe(true);
     expect(canvas?.style.visibility).toBe("visible");
     expect(canvas?.style.opacity).toBe("1");
 
@@ -322,13 +322,13 @@ describe("createColorGradingRuntime", () => {
 
     expect(video.style.getPropertyValue("visibility")).toBe("hidden");
     expect(video.style.getPropertyValue("opacity")).toBe("");
-    expect(video.hasAttribute("data-hf-color-grading-source-hidden")).toBe(false);
+    expect(video.hasAttribute("data-sc-color-grading-source-hidden")).toBe(false);
     expect(canvas.isConnected).toBe(false);
 
     video.style.visibility = "visible";
     expect(runtime.setSourceVisibility(video, true)).toBe(true);
 
-    const recreated = document.querySelector<HTMLCanvasElement>("[data-hf-color-grading-canvas]");
+    const recreated = document.querySelector<HTMLCanvasElement>("[data-sc-color-grading-canvas]");
     expect(recreated).not.toBeNull();
     expect(recreated).toBe(canvas);
     expect(getContextSpy).toHaveBeenCalledTimes(1);
@@ -344,7 +344,7 @@ describe("createColorGradingRuntime", () => {
     runtime = createColorGradingRuntime();
 
     expect(getContextSpy).not.toHaveBeenCalled();
-    expect(document.querySelector("[data-hf-color-grading-canvas]")).toBeNull();
+    expect(document.querySelector("[data-sc-color-grading-canvas]")).toBeNull();
     expect(runtime.getStatus(video)).toEqual({
       state: "pending",
       message: "Waiting for visible media",
@@ -353,7 +353,7 @@ describe("createColorGradingRuntime", () => {
     video.style.display = "block";
     expect(runtime.setSourceVisibility(video, true)).toBe(true);
     expect(getContextSpy).toHaveBeenCalledTimes(1);
-    expect(document.querySelector("[data-hf-color-grading-canvas]")).not.toBeNull();
+    expect(document.querySelector("[data-sc-color-grading-canvas]")).not.toBeNull();
   });
 
   it("renders exact preset previews for ungraded media without replacing the source", async () => {
@@ -383,7 +383,7 @@ describe("createColorGradingRuntime", () => {
       ],
     });
     expect(getContextSpy).toHaveBeenCalledTimes(1);
-    expect(document.querySelector("[data-hf-color-grading-canvas]")).toBeNull();
+    expect(document.querySelector("[data-sc-color-grading-canvas]")).toBeNull();
     expect(video.style.opacity).toBe("");
 
     await runtime.renderPreviews("#hero-video", [{ id: "mono", grading: "mono-clean" }]);
@@ -533,16 +533,16 @@ describe("createColorGradingRuntime", () => {
   });
 
   it("resolves grading values from the nearest sub-composition variable scope", () => {
-    window.__hfVariables = {
+    window.__scVariables = {
       exposure: -0.25,
     };
-    window.__hfVariablesByComp = {
-      card__hf1: {
+    window.__scVariablesByComp = {
+      card__sc1: {
         exposure: 0.75,
       },
     };
     const host = document.createElement("div");
-    host.setAttribute("data-composition-id", "card__hf1");
+    host.setAttribute("data-composition-id", "card__sc1");
     const video = makeDrawableVideo();
     video.id = "first-video";
     video.setAttribute(
@@ -559,7 +559,7 @@ describe("createColorGradingRuntime", () => {
   });
 
   it("falls back to top-level variables for root media color grading", () => {
-    window.__hfVariables = {
+    window.__scVariables = {
       exposure: 0.35,
     };
     const video = makeDrawableVideo();
@@ -592,15 +592,15 @@ describe("createColorGradingRuntime", () => {
         lut: { src: "assets/luts/test.cube", intensity: 0.4 },
       }),
     );
-    video.style.setProperty("--hf-color-grading-intensity", "0.25");
-    video.style.setProperty("--hf-color-grading-lut-intensity", "0.35");
-    video.style.setProperty("--hf-color-grading-exposure", "-0.15");
-    video.style.setProperty("--hf-color-grading-blur", "0.45");
-    video.style.setProperty("--hf-color-grading-bloom", "0.45");
-    video.style.setProperty("--hf-color-grading-kuwahara", "0.45");
-    video.style.setProperty("--hf-color-grading-pixelate", "0.55");
-    video.style.setProperty("--hf-color-grading-ascii", "0.65");
-    video.style.setProperty("--hf-color-grading-dither", "0.75");
+    video.style.setProperty("--sc-color-grading-intensity", "0.25");
+    video.style.setProperty("--sc-color-grading-lut-intensity", "0.35");
+    video.style.setProperty("--sc-color-grading-exposure", "-0.15");
+    video.style.setProperty("--sc-color-grading-blur", "0.45");
+    video.style.setProperty("--sc-color-grading-bloom", "0.45");
+    video.style.setProperty("--sc-color-grading-kuwahara", "0.45");
+    video.style.setProperty("--sc-color-grading-pixelate", "0.55");
+    video.style.setProperty("--sc-color-grading-ascii", "0.65");
+    video.style.setProperty("--sc-color-grading-dither", "0.75");
     stubCubeLutFetch();
     startRuntimeWithVideo(video);
 
@@ -615,15 +615,15 @@ describe("createColorGradingRuntime", () => {
     expect(lastUniform1f).toHaveBeenCalledWith("u_ascii", 0.65);
     expect(lastUniform1f).toHaveBeenCalledWith("u_dither", 0.75);
 
-    video.style.setProperty("--hf-color-grading-intensity", "0.75");
-    video.style.setProperty("--hf-color-grading-lut-intensity", "0.65");
-    video.style.setProperty("--hf-color-grading-exposure", "0.15");
-    video.style.setProperty("--hf-color-grading-blur", "0.15");
-    video.style.setProperty("--hf-color-grading-bloom", "0.15");
-    video.style.setProperty("--hf-color-grading-kuwahara", "0.15");
-    video.style.setProperty("--hf-color-grading-pixelate", "0.05");
-    video.style.setProperty("--hf-color-grading-ascii", "0.15");
-    video.style.setProperty("--hf-color-grading-dither", "0.25");
+    video.style.setProperty("--sc-color-grading-intensity", "0.75");
+    video.style.setProperty("--sc-color-grading-lut-intensity", "0.65");
+    video.style.setProperty("--sc-color-grading-exposure", "0.15");
+    video.style.setProperty("--sc-color-grading-blur", "0.15");
+    video.style.setProperty("--sc-color-grading-bloom", "0.15");
+    video.style.setProperty("--sc-color-grading-kuwahara", "0.15");
+    video.style.setProperty("--sc-color-grading-pixelate", "0.05");
+    video.style.setProperty("--sc-color-grading-ascii", "0.15");
+    video.style.setProperty("--sc-color-grading-dither", "0.25");
     lastUniform1f.mockClear();
     runtime?.redraw();
 
@@ -637,15 +637,15 @@ describe("createColorGradingRuntime", () => {
     expect(lastUniform1f).toHaveBeenCalledWith("u_ascii", 0.15);
     expect(lastUniform1f).toHaveBeenCalledWith("u_dither", 0.25);
 
-    video.style.setProperty("--hf-color-grading-intensity", "invalid");
-    video.style.setProperty("--hf-color-grading-lut-intensity", "2");
-    video.style.setProperty("--hf-color-grading-exposure", "-3");
-    video.style.setProperty("--hf-color-grading-blur", "-1");
-    video.style.setProperty("--hf-color-grading-bloom", "invalid");
-    video.style.setProperty("--hf-color-grading-kuwahara", "invalid");
-    video.style.setProperty("--hf-color-grading-pixelate", "invalid");
-    video.style.setProperty("--hf-color-grading-ascii", "-1");
-    video.style.setProperty("--hf-color-grading-dither", "invalid");
+    video.style.setProperty("--sc-color-grading-intensity", "invalid");
+    video.style.setProperty("--sc-color-grading-lut-intensity", "2");
+    video.style.setProperty("--sc-color-grading-exposure", "-3");
+    video.style.setProperty("--sc-color-grading-blur", "-1");
+    video.style.setProperty("--sc-color-grading-bloom", "invalid");
+    video.style.setProperty("--sc-color-grading-kuwahara", "invalid");
+    video.style.setProperty("--sc-color-grading-pixelate", "invalid");
+    video.style.setProperty("--sc-color-grading-ascii", "-1");
+    video.style.setProperty("--sc-color-grading-dither", "invalid");
     lastUniform1f.mockClear();
     runtime?.redraw();
 
@@ -670,8 +670,8 @@ describe("createColorGradingRuntime", () => {
         effects: { kuwahara: 0 },
       }),
     );
-    video.style.setProperty("--hf-color-grading-intensity", "0");
-    video.style.setProperty("--hf-color-grading-kuwahara", "0");
+    video.style.setProperty("--sc-color-grading-intensity", "0");
+    video.style.setProperty("--sc-color-grading-kuwahara", "0");
     document.body.appendChild(video);
 
     runtime = createColorGradingRuntime();
@@ -682,8 +682,8 @@ describe("createColorGradingRuntime", () => {
     expect(lastUniform1f).toHaveBeenCalledWith("u_kuwahara", 0);
     expect(texImage2DCalls.some((args) => args.includes(0x8d61))).toBe(true);
 
-    video.style.setProperty("--hf-color-grading-intensity", "1");
-    video.style.setProperty("--hf-color-grading-kuwahara", "1");
+    video.style.setProperty("--sc-color-grading-intensity", "1");
+    video.style.setProperty("--sc-color-grading-kuwahara", "1");
     lastUniform1f.mockClear();
     runtime.redraw();
 
@@ -695,7 +695,7 @@ describe("createColorGradingRuntime", () => {
     const image = makeDrawableImage();
     document.body.appendChild(image);
     runtime = createColorGradingRuntime();
-    image.style.setProperty("--hf-color-grading-blur", "0.7");
+    image.style.setProperty("--sc-color-grading-blur", "0.7");
     lastUniform1f?.mockClear();
 
     expect(runtime.redrawAnimated()).toBe(1);
@@ -704,7 +704,7 @@ describe("createColorGradingRuntime", () => {
 
   it("redraws animated held video frames without duplicating active video draws", () => {
     const video = makeDrawableVideo();
-    video.style.setProperty("--hf-color-grading-blur", "0.1");
+    video.style.setProperty("--sc-color-grading-blur", "0.1");
     startRuntimeWithVideo(video);
     Object.defineProperty(video, "paused", { value: false, configurable: true });
     Object.defineProperty(video, "ended", { value: false, configurable: true });
@@ -713,7 +713,7 @@ describe("createColorGradingRuntime", () => {
 
     Object.defineProperty(video, "paused", { value: true, configurable: true });
     Object.defineProperty(video, "ended", { value: true, configurable: true });
-    video.style.setProperty("--hf-color-grading-blur", "0.8");
+    video.style.setProperty("--sc-color-grading-blur", "0.8");
     lastUniform1f?.mockClear();
 
     expect(runtime?.redrawAnimated()).toBe(1);
@@ -748,7 +748,7 @@ describe("createColorGradingRuntime", () => {
     document.body.appendChild(video);
 
     runtime = createColorGradingRuntime();
-    const canvas = document.querySelector<HTMLCanvasElement>("[data-hf-color-grading-canvas]");
+    const canvas = document.querySelector<HTMLCanvasElement>("[data-sc-color-grading-canvas]");
     if (!canvas) throw new Error("Expected color grading canvas");
     expect(canvas.style.display).toBe("none");
 
@@ -782,7 +782,7 @@ describe("createColorGradingRuntime", () => {
     document.body.appendChild(scene);
 
     runtime = createColorGradingRuntime();
-    const canvas = document.querySelector<HTMLCanvasElement>("[data-hf-color-grading-canvas]");
+    const canvas = document.querySelector<HTMLCanvasElement>("[data-sc-color-grading-canvas]");
     if (!canvas) throw new Error("Expected color grading canvas");
     expect(canvas.style.visibility).toBe("visible");
 
@@ -804,11 +804,11 @@ describe("createColorGradingRuntime", () => {
     // Simulate a CSS entrance animation: the authored opacity is empty (no
     // inline opacity), but at parse time the element has opacity 0 from the
     // animation's initial keyframe.
-    video.setAttribute("data-hf-authored-opacity", "");
+    video.setAttribute("data-sc-authored-opacity", "");
     document.body.appendChild(video);
 
     runtime = createColorGradingRuntime();
-    const canvas = document.querySelector<HTMLCanvasElement>("[data-hf-color-grading-canvas]");
+    const canvas = document.querySelector<HTMLCanvasElement>("[data-sc-color-grading-canvas]");
     if (!canvas) throw new Error("Expected color grading canvas");
 
     // Source is hidden by color grading.
@@ -846,7 +846,7 @@ describe("createColorGradingRuntime", () => {
     runtime = createColorGradingRuntime();
 
     expect(getContextSpy).toHaveBeenCalledTimes(1);
-    expect(document.querySelector("[data-hf-color-grading-canvas]")).not.toBeNull();
+    expect(document.querySelector("[data-sc-color-grading-canvas]")).not.toBeNull();
   });
 
   it("does not recreate an inactive clip from its hidden producer frame", () => {
@@ -865,7 +865,7 @@ describe("createColorGradingRuntime", () => {
     runtime.refresh();
     expect(canvas.isConnected).toBe(false);
     expect(getContextSpy).toHaveBeenCalledTimes(1);
-    expect(video.hasAttribute("data-hf-color-grading-source-hidden")).toBe(false);
+    expect(video.hasAttribute("data-sc-color-grading-source-hidden")).toBe(false);
   });
 
   it("moves the canvas above producer render-frame images before capture", () => {
@@ -879,7 +879,7 @@ describe("createColorGradingRuntime", () => {
     document.body.appendChild(video);
 
     runtime = createColorGradingRuntime();
-    const canvas = document.querySelector<HTMLCanvasElement>("[data-hf-color-grading-canvas]");
+    const canvas = document.querySelector<HTMLCanvasElement>("[data-sc-color-grading-canvas]");
     if (!canvas) throw new Error("Expected color grading canvas");
 
     const frame = document.createElement("img");
@@ -1147,7 +1147,7 @@ describe("createColorGradingRuntime", () => {
     expect(gl.deleteTexture).toHaveBeenCalledTimes(2);
     expect(gl.deleteProgram).toHaveBeenCalledTimes(2);
     expect(loseContextCalls).toBe(0);
-    expect(document.querySelector("[data-hf-color-grading-canvas]")).toBeNull();
+    expect(document.querySelector("[data-sc-color-grading-canvas]")).toBeNull();
   });
 
   it("releases pooled WebGL contexts when the runtime is destroyed", () => {
@@ -1591,7 +1591,7 @@ describe("createColorGradingRuntime", () => {
 
     expect(lost.defaultPrevented).toBe(true);
     expect(canvas.style.display).toBe("none");
-    expect(video.hasAttribute("data-hf-color-grading-source-hidden")).toBe(false);
+    expect(video.hasAttribute("data-sc-color-grading-source-hidden")).toBe(false);
     expect(video.style.getPropertyValue("opacity")).toBe("");
     expect(runtime?.getStatus("#hero-video")).toEqual({
       state: "unavailable",
@@ -1601,7 +1601,7 @@ describe("createColorGradingRuntime", () => {
     canvas.dispatchEvent(new Event("webglcontextrestored"));
 
     expect(runtime?.getStatus("#hero-video").state).toBe("active");
-    expect(video.hasAttribute("data-hf-color-grading-source-hidden")).toBe(true);
+    expect(video.hasAttribute("data-sc-color-grading-source-hidden")).toBe(true);
     expect(video.style.getPropertyValue("opacity")).toBe("0");
   });
 });
@@ -1614,7 +1614,7 @@ describe("installAuthoredOpacityCapture", () => {
     el.style.opacity = "0.98";
     document.body.appendChild(el);
     await Promise.resolve();
-    expect(el.getAttribute("data-hf-authored-opacity")).toBe("0.98");
+    expect(el.getAttribute("data-sc-authored-opacity")).toBe("0.98");
 
     // A re-insert after an animation engine mutated the element keeps the
     // original capture (has-attribute guard).
@@ -1622,7 +1622,7 @@ describe("installAuthoredOpacityCapture", () => {
     el.remove();
     document.body.appendChild(el);
     await Promise.resolve();
-    expect(el.getAttribute("data-hf-authored-opacity")).toBe("0.98");
+    expect(el.getAttribute("data-sc-authored-opacity")).toBe("0.98");
     el.remove();
   });
 
@@ -1632,7 +1632,7 @@ describe("installAuthoredOpacityCapture", () => {
     el.setAttribute(HF_COLOR_GRADING_ATTR, serializeHfColorGrading({ adjust: { exposure: 0.5 } }));
     document.body.appendChild(el);
     await Promise.resolve();
-    expect(el.getAttribute("data-hf-authored-opacity")).toBe("");
+    expect(el.getAttribute("data-sc-authored-opacity")).toBe("");
     el.remove();
   });
 
@@ -1642,20 +1642,20 @@ describe("installAuthoredOpacityCapture", () => {
     el.style.opacity = "0.9";
     document.body.appendChild(el);
     await Promise.resolve();
-    expect(el.getAttribute("data-hf-authored-opacity")).toBe("0.9");
+    expect(el.getAttribute("data-sc-authored-opacity")).toBe("0.9");
 
     // The live runtime hides the source before Studio persists the attribute.
     el.style.setProperty("opacity", "0", "important");
     el.setAttribute(HF_COLOR_GRADING_ATTR, serializeHfColorGrading({ adjust: { exposure: 0.5 } }));
     await Promise.resolve();
-    expect(el.getAttribute("data-hf-authored-opacity")).toBe("0.9");
+    expect(el.getAttribute("data-sc-authored-opacity")).toBe("0.9");
 
     // Later attribute rewrites (preset tweaks) never overwrite the stamp,
     // even if a transient is live by then.
     el.style.opacity = "0";
     el.setAttribute(HF_COLOR_GRADING_ATTR, serializeHfColorGrading({ adjust: { exposure: 0.9 } }));
     await Promise.resolve();
-    expect(el.getAttribute("data-hf-authored-opacity")).toBe("0.9");
+    expect(el.getAttribute("data-sc-authored-opacity")).toBe("0.9");
     el.remove();
   });
 });

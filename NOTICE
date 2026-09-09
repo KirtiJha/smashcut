@@ -1,0 +1,45 @@
+SmashCut
+Copyright 2026 Kirti Jha
+
+This product includes software developed by HeyGen (https://www.heygen.com)
+as the HyperFrames project (https://github.com/heygen-com/hyperframes),
+licensed under the Apache License, Version 2.0.
+
+SmashCut is a fork of HyperFrames. It is not produced, endorsed, sponsored or
+supported by HeyGen, and the HyperFrames and HeyGen names and logos are
+trademarks of HeyGen used here only to identify the origin of this work.
+
+
+Statement of changes (Apache License 2.0, Section 4b)
+-----------------------------------------------------
+
+The following changes have been made to the original HyperFrames work:
+
+1. Renamed throughout, from HyperFrames to SmashCut. This covers the npm scope
+   (@hyperframes/* -> @smashcut/*), the CLI binary, package and skill names,
+   documentation, and the runtime identifier prefixes (hf-* -> sc-*,
+   __hf* -> __sc*).
+
+   Deliberately NOT renamed, because they refer to a third party rather than to
+   this project:
+     - HeyGen as a service provider: the `heygen` CLI, api.heygen.com and other
+       heygen.com endpoints, HEYGEN_* environment variables, and the
+       X-HeyGen-Client-Source request header. These are calls into HeyGen's
+       platform and renaming them would break voice, music and asset retrieval.
+     - References to the upstream project's own URLs and repository
+       (hyperframes.heygen.com, heygen-com/hyperframes), which are retained as
+       accurate attribution.
+
+2. Removed HeyGen's brand marks. The `hyperframes-logo-*` image assets were
+   deleted rather than renamed, and replaced with SmashCut's own wordmark.
+   Apache-2.0 Section 6 grants no trademark rights, so redistributing those
+   marks under this project's name would be a misuse of them regardless of the
+   code licence.
+
+3. Added application capture. SmashCut adds the ability to drive a real
+   application — a web app, a locally running app, or a command-line program —
+   through a scripted and asserted flow, record it, and hand the resulting
+   footage and shot manifest to the composition pipeline. This capability does
+   not exist in the original work.
+
+The LICENSE file and CREDITS.md are retained from the original work, unmodified.

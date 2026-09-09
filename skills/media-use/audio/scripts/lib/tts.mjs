@@ -1,13 +1,13 @@
 // tts.mjs — multi-provider TTS for the media audio engine. The provider chain,
 // auto-detected from env, is the one documented in ../SKILL.md:
 //
-//   1. HeyGen (Starfish)  — $HEYGEN_API_KEY / $HYPERFRAMES_API_KEY / ~/.heygen.
-//        Direct v3 REST (NOT `hyperframes tts`, which in the published build is
+//   1. HeyGen (Starfish)  — $HEYGEN_API_KEY / $SMASHCUT_API_KEY / ~/.heygen.
+//        Direct v3 REST (NOT `smashcut tts`, which in the published build is
 //        Kokoro-only and silently ignores a HeyGen key). Returns word_timestamps
 //        in the same call, so no separate transcribe pass.
 //   2. ElevenLabs         — $ELEVENLABS_API_KEY + `pip install elevenlabs`. No
 //        word timings → caller chains transcribeWav().
-//   3. Kokoro-82M (local) — always available, via the published `hyperframes tts`
+//   3. Kokoro-82M (local) — always available, via the published `smashcut tts`
 //        CLI. No word timings → caller chains transcribeWav().
 //
 // "HeyGen available" is decided by CREDENTIAL presence (heygenCredential), never
@@ -40,7 +40,7 @@ export function pickProvider(userProvider) {
       throw new Error(`invalid provider "${userProvider}" (heygen | elevenlabs | kokoro)`);
     if (userProvider === "heygen" && !heygenAvailable())
       throw new Error(
-        "provider=heygen but no HeyGen credentials (set $HEYGEN_API_KEY or run `npx hyperframes auth login`)",
+        "provider=heygen but no HeyGen credentials (set $HEYGEN_API_KEY or run `npx smashcut auth login`)",
       );
     if (userProvider === "elevenlabs" && !process.env.ELEVENLABS_API_KEY)
       throw new Error("provider=elevenlabs but $ELEVENLABS_API_KEY is not set");
@@ -210,7 +210,7 @@ export function spawnP(
 
 // mp3/whatever bytes → wav 44.1k mono at destWav (ffmpeg detects true format).
 function transcodeToWav(bytes, destWav) {
-  const td = mkdtempSync(join(tmpdir(), "hf-tts-"));
+  const td = mkdtempSync(join(tmpdir(), "sc-tts-"));
   const tmp = join(td, "a.mp3");
   writeFileSync(tmp, bytes);
   mkdirSync(dirname(destWav), { recursive: true });
@@ -248,12 +248,12 @@ export async function synthesizeOne({
   lang = "en",
   speed = 1.0,
   wavAbs,
-  hyperframesDir,
+  smashcutDir,
 }) {
   if (provider === "heygen") return synthesizeHeygen({ text, voiceId, lang, speed, wavAbs });
   if (provider === "elevenlabs") {
     // The Python helper writes straight to wavAbs; unlike heygen (transcodeToWav)
-    // and kokoro (the `hyperframes tts` CLI), it does NOT create the parent dir,
+    // and kokoro (the `smashcut tts` CLI), it does NOT create the parent dir,
     // so on a fresh project (no assets/voice/ yet) the save fails and the line is
     // silently dropped as "TTS failed - omitted". Create it first, like the other
     // providers do. Guarded so a mkdir failure (EACCES/EROFS) returns
@@ -275,11 +275,11 @@ export async function synthesizeOne({
     return synthResult(r, wavAbs, "elevenlabs (python)");
   }
   // kokoro — via the published CLI; --output is relative to the project dir.
-  const wavRel = relTo(hyperframesDir, wavAbs);
-  const args = ["hyperframes", "tts", writeTmpText(text), "--voice", voiceId, "--output", wavRel];
+  const wavRel = relTo(smashcutDir, wavAbs);
+  const args = ["smashcut", "tts", writeTmpText(text), "--voice", voiceId, "--output", wavRel];
   if (lang !== "en") args.push("--lang", lang);
-  const r = await spawnP("npx", args, { cwd: hyperframesDir });
-  return synthResult(r, wavAbs, "kokoro (npx hyperframes tts)");
+  const r = await spawnP("npx", args, { cwd: smashcutDir });
+  return synthResult(r, wavAbs, "kokoro (npx smashcut tts)");
 }
 
 // Shape a spawn result into { ok, words, error }, naming why on failure so the
@@ -346,12 +346,12 @@ export async function synthesizeHeygen({ text, voiceId, lang, speed, wavAbs }, d
 // ElevenLabs/Kokoro have no word timings — run Whisper over the wav. Returns the
 // flat [{id,text,start,end}] word array, or null. Each call uses a throwaway
 // --dir so parallel scenes don't collide on transcript.json.
-export async function transcribeWav({ wavRel, lang = "en", hyperframesDir }) {
+export async function transcribeWav({ wavRel, lang = "en", smashcutDir }) {
   const model = lang === "en" ? "small.en" : "small";
-  const td = mkdtempSync(join(tmpdir(), "hf-trans-"));
-  const args = ["hyperframes", "transcribe", wavRel, "--model", model, "--dir", td];
+  const td = mkdtempSync(join(tmpdir(), "sc-trans-"));
+  const args = ["smashcut", "transcribe", wavRel, "--model", model, "--dir", td];
   if (lang !== "en") args.push("--language", lang);
-  const r = await spawnP("npx", args, { cwd: hyperframesDir });
+  const r = await spawnP("npx", args, { cwd: smashcutDir });
   let words = null;
   if (r.status === 0) {
     const src = join(td, "transcript.json");
@@ -368,7 +368,7 @@ export async function transcribeWav({ wavRel, lang = "en", hyperframesDir }) {
 
 // ── tiny local utils ──────────────────────────────────────────────────────────
 function writeTmpText(text) {
-  const td = mkdtempSync(join(tmpdir(), "hf-txt-"));
+  const td = mkdtempSync(join(tmpdir(), "sc-txt-"));
   const p = join(td, "line.txt");
   writeFileSync(p, text);
   return p;

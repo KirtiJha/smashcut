@@ -231,9 +231,9 @@ export function isStudioMotionManifestPath(path: string | null): boolean {
   if (!path) return false;
   const normalized = normalizeStudioFileChangePath(path);
   return (
-    normalized === "." + "/" + ".hyperframes/studio-motion.json".slice(1) ||
-    normalized === ".hyperframes/studio-motion.json" ||
-    normalized.endsWith("/.hyperframes/studio-motion.json")
+    normalized === "." + "/" + ".smashcut/studio-motion.json".slice(1) ||
+    normalized === ".smashcut/studio-motion.json" ||
+    normalized.endsWith("/.smashcut/studio-motion.json")
   );
 }
 

@@ -18,7 +18,7 @@ const SIGNATURE_TEXT_EXTENSIONS = new Set([
 const SIGNATURE_EXCLUDED_DIRS = new Set([
   ".cache",
   ".git",
-  ".hyperframes",
+  ".smashcut",
   ".next",
   ".thumbnails",
   ".transcode-cache",
@@ -33,8 +33,8 @@ const SIGNATURE_EXCLUDED_DIRS = new Set([
 ]);
 const MAX_SIGNATURE_TEXT_BYTES = 2_000_000;
 const STUDIO_SIGNATURE_MANIFEST_PATHS = [
-  ".hyperframes/studio-manual-edits.json",
-  ".hyperframes/studio-motion.json",
+  ".smashcut/studio-manual-edits.json",
+  ".smashcut/studio-motion.json",
 ] as const;
 
 /**
@@ -48,7 +48,7 @@ const STUDIO_SIGNATURE_MANIFEST_PATHS = [
  * the one workload the memo exists for.
  *
  * Note this is not `WATCHER_EXCLUDED_DIRS`, which is character-identical but
- * excludes all of `.hyperframes/` — the signature deliberately reads two manifest
+ * excludes all of `.smashcut/` — the signature deliberately reads two manifest
  * files from inside it, so filtering with that set would stop motion-state saves
  * from ever invalidating.
  *

@@ -12,7 +12,7 @@ afterEach(() => {
 });
 
 function project(): string {
-  const dir = mkdtempSync(join(tmpdir(), "hf-comp-insert-"));
+  const dir = mkdtempSync(join(tmpdir(), "sc-comp-insert-"));
   dirs.push(dir);
   return dir;
 }
@@ -44,7 +44,7 @@ describe("insertCompositionIntoSource", () => {
     expect(host?.getAttribute("data-composition-src")).toBe("headline.html");
     expect(host?.getAttribute("data-playback-start")).toBe("0");
     expect(host?.getAttribute("data-duration")).toBe("4.9");
-    expect(host?.getAttribute("data-hf-id")).toMatch(/^hf-/);
+    expect(host?.getAttribute("data-sc-id")).toMatch(/^hf-/);
     expect(result.html).toContain('data-duration="6.9"');
   });
 

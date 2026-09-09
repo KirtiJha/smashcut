@@ -79,7 +79,7 @@ export interface CdpAnimationEntry {
  */
 export async function setupAnimationCapture(page: Page): Promise<void> {
   await page.evaluateOnNewDocument(`
-    window.__hf_io_targets = [];
+    window.__sc_io_targets = [];
     var OrigIO = window.IntersectionObserver;
     window.IntersectionObserver = function(callback, options) {
       var observer = new OrigIO(callback, options);
@@ -92,7 +92,7 @@ export async function setupAnimationCapture(page: Page): Promise<void> {
         }
         try {
           var rect = target.getBoundingClientRect();
-          window.__hf_io_targets.push({
+          window.__sc_io_targets.push({
             selector: sel,
             rect: { top: Math.round(rect.top + window.scrollY), height: Math.round(rect.height), width: Math.round(rect.width) }
           });
@@ -207,7 +207,7 @@ export async function collectAnimationCatalog(
       } catch(e) {}
     }
 
-    var scrollTargets = (window.__hf_io_targets || []).map(function(t) {
+    var scrollTargets = (window.__sc_io_targets || []).map(function(t) {
       return { selector: t.selector, rect: t.rect };
     });
 

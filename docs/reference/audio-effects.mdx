@@ -17,14 +17,14 @@ nothing to load beside the markup.
 
 | Attribute | Holds | Shape | Goes on | Read at playback |
 | --- | --- | --- | --- | --- |
-| `data-fx-chain` | The effects, in signal order | JSON | `<audio>`, `<video>`, `<hf-audio-group>` | Yes |
-| `data-automation` | Envelopes on volume or an effect parameter | JSON | `<audio>`, `<video>`, `<hf-audio-group>` | Yes |
+| `data-fx-chain` | The effects, in signal order | JSON | `<audio>`, `<video>`, `<sc-audio-group>` | Yes |
+| `data-automation` | Envelopes on volume or an effect parameter | JSON | `<audio>`, `<video>`, `<sc-audio-group>` | Yes |
 | `data-fx-carve` | A voiceover carve's own settings | JSON | `<audio>`, `<video>` | No — see [below](#data-fx-carve) |
 | `data-audio-group` | The id of the group this clip belongs to | A plain id, not JSON | `<audio>` only | Yes |
 
 `data-audio-group` is the odd one: a bare string, and **ignored on `<video>`**.
 The other three are JSON. Of those, only `data-fx-chain` and `data-automation`
-can also sit on an `<hf-audio-group>`, where they apply to the group's whole bus;
+can also sit on an `<sc-audio-group>`, where they apply to the group's whole bus;
 `data-fx-carve` belongs to a clip.
 
 **Write the JSON attributes double-quoted, escaping the JSON's own quotes as
@@ -103,7 +103,7 @@ gain moving to −6 dB by 1 s along a bent segment.
 | Lane on | `t: 0` means |
 | --- | --- |
 | A clip (`<audio>` / `<video>`) | The start of **that clip**. A bed with `data-start="8"` has `t: 0` at composition time 8 |
-| A group (`<hf-audio-group>`) | **Composition time.** A group has no `data-start`, so its clock starts at zero |
+| A group (`<sc-audio-group>`) | **Composition time.** A group has no `data-start`, so its clock starts at zero |
 
 Getting this backwards is the most expensive mistake on the page: a group lane
 written in clip-relative time lands wherever the first member happens to start.
@@ -155,9 +155,9 @@ speech now.
 ### `data-audio-group`
 
 ```html
-<style>hf-audio-group { display: none !important; }</style>
+<style>sc-audio-group { display: none !important; }</style>
 
-<hf-audio-group id="voiceover" data-label="Voiceover" data-volume="1"></hf-audio-group>
+<sc-audio-group id="voiceover" data-label="Voiceover" data-volume="1"></sc-audio-group>
 
 <audio id="vo-intro"  data-audio-group="voiceover" src="assets/vo1.wav" …></audio>
 <audio id="vo-middle" data-audio-group="voiceover" src="assets/vo2.wav" …></audio>
@@ -167,14 +167,14 @@ Membership is held by the **member**, not by the group nesting its members, so a
 deleted clip simply disappears from the group on the next resolve and nothing
 dangles.
 
-- `<hf-audio-group>` is optional metadata: `data-label`, `data-volume`,
+- `<sc-audio-group>` is optional metadata: `data-label`, `data-volume`,
   `data-hidden`, and its own `data-fx-chain` / `data-automation`. A group with
   members but no element still resolves, using its id as the label.
 - **Audio only.** `data-audio-group` on a `<video>` is ignored, and groups do
   not nest.
 - `data-audio-group=""` is no group at all.
 - The element must be inert. The runtime injects
-  `hf-audio-group{display:none!important}` so an unknown custom element cannot
+  `sc-audio-group{display:none!important}` so an unknown custom element cannot
   take a flex gap or shift `:nth-child` — but author the rule yourself so a bare
   preview never lays it out.
 - Group ids and element ids share one namespace.
@@ -183,7 +183,7 @@ dangles.
 
 Sixteen effects. Values outside a range are clamped on read. **AUTO** marks a
 parameter an automation lane can drive; anything unmarked cannot move over time.
-`HF_AUDIO_FX` in `@hyperframes/core/audio-fx` is the source of truth.
+`HF_AUDIO_FX` in `@smashcut/core/audio-fx` is the source of truth.
 
 ### Filter — which frequencies a track may occupy
 
@@ -419,7 +419,7 @@ point of naming the group.
 Track choice is by name first, using the same classifier Studio's picker uses, so
 the two cannot disagree: an id or filename that looks like music (`music`, `bgm`,
 `bed`, `score`…) is the bed, and everything else playing over it that is not
-SFX-shaped is a voice. Needs `ffmpeg` on `PATH` and `@hyperframes/core`
+SFX-shaped is a voice. Needs `ffmpeg` on `PATH` and `@smashcut/core`
 installed in the project.
 
 ## Groups, mute, and solo

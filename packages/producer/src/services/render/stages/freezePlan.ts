@@ -13,7 +13,7 @@
 import { existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from "node:fs";
 import { join, relative, resolve } from "node:path";
 
-import type { Fps } from "@hyperframes/core";
+import type { Fps } from "@smashcut/core";
 import { PLAN_PROTOCOL_V1 } from "../../distributed/planProtocol.js";
 import {
   canonicalJsonStringify,
@@ -77,7 +77,7 @@ export interface LockedRenderConfig {
 
   /**
    * Render-time variable overrides snapshotted at plan time. Chunk workers
-   * re-inject these into the page as `window.__hfVariables` before the
+   * re-inject these into the page as `window.__scVariables` before the
    * first capture, so every chunk sees the same `getVariables()` resolution
    * the controller used to size the plan.
    *

@@ -1,4 +1,4 @@
-import type { NormalizedHfColorGrading } from "@hyperframes/core/color-grading";
+import type { NormalizedHfColorGrading } from "@smashcut/core/color-grading";
 import type { ColorGradingPreviewOptions } from "./useColorGradingController";
 
 export function presetPreviewHandlers({

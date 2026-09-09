@@ -1,5 +1,5 @@
 {
-  "package": "@hyperframes/core",
+  "package": "@smashcut/core",
   "localNodeRuntime": true,
   "subpaths": {
     ".": {
@@ -81,9 +81,9 @@
       "environments": ["browser", "bun", "node"]
     },
     "./generators": {
-      "source": "./src/generators/hyperframes.ts",
-      "runtime": "./dist/generators/hyperframes.js",
-      "types": "./dist/generators/hyperframes.d.ts",
+      "source": "./src/generators/smashcut.ts",
+      "runtime": "./dist/generators/smashcut.js",
+      "types": "./dist/generators/smashcut.d.ts",
       "environments": ["browser", "bun", "node"]
     },
     "./lint": {
@@ -201,8 +201,8 @@
       "environments": ["browser", "bun", "node"]
     },
     "./runtime": {
-      "source": "./dist/hyperframe.runtime.iife.js",
-      "runtime": "./dist/hyperframe.runtime.iife.js",
+      "source": "./dist/smashcut.runtime.iife.js",
+      "runtime": "./dist/smashcut.runtime.iife.js",
       "types": null,
       "environments": ["browser"]
     },
@@ -326,7 +326,7 @@
       "types": "./dist/runtime/mediaVolumeEnvelope.d.ts",
       "environments": ["browser", "bun", "node"]
     },
-    "./hf-ids": {
+    "./sc-ids": {
       "source": "./src/parsers/hfIds.ts",
       "runtime": "./dist/parsers/hfIds.js",
       "types": "./dist/parsers/hfIds.d.ts",

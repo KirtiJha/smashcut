@@ -37,7 +37,7 @@ describe("serializeDomEditTextFields — mixed content", () => {
         },
       ]),
     ).toBe(
-      `If you're <span class="accent" data-hf-text-key="child:1:span" style="color: red">turning 65</span> soon...`,
+      `If you're <span class="accent" data-sc-text-key="child:1:span" style="color: red">turning 65</span> soon...`,
     );
   });
 

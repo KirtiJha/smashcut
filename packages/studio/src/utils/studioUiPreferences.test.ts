@@ -40,7 +40,7 @@ describe("studio UI preferences", () => {
   it("ignores malformed stored values", () => {
     const storage = createStorage();
     storage.setItem(
-      "hf-studio-ui-preferences",
+      "sc-studio-ui-preferences",
       JSON.stringify({
         leftCollapsed: "yes",
         leftWidth: "wide",
@@ -68,7 +68,7 @@ describe("timelineSnapEnabled preference", () => {
 
   it("ignores non-boolean values", () => {
     const storage = createStorage();
-    storage.setItem("hf-studio-ui-preferences", JSON.stringify({ timelineSnapEnabled: "yes" }));
+    storage.setItem("sc-studio-ui-preferences", JSON.stringify({ timelineSnapEnabled: "yes" }));
     expect(readStudioUiPreferences(storage).timelineSnapEnabled).toBeUndefined();
   });
 });
@@ -82,7 +82,7 @@ describe("thumbnailMode preference", () => {
 
   it("migrates the legacy boolean without retaining two owners", () => {
     const storage = createStorage();
-    storage.setItem("hf-studio-ui-preferences", JSON.stringify({ thumbnailsEnabled: false }));
+    storage.setItem("sc-studio-ui-preferences", JSON.stringify({ thumbnailsEnabled: false }));
     expect(readStudioUiPreferences(storage).thumbnailMode).toBe("hidden");
   });
 });
@@ -102,7 +102,7 @@ describe("timeline zoom pin persistence", () => {
   it("ignores an invalid zoom mode and a non-finite percent", () => {
     const storage = createStorage();
     storage.setItem(
-      "hf-studio-ui-preferences",
+      "sc-studio-ui-preferences",
       JSON.stringify({ timelineZoomMode: "zoomy", timelineManualZoomPercent: "big" }),
     );
     const prefs = readStudioUiPreferences(storage);

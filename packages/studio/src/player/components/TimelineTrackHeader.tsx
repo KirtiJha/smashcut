@@ -1,10 +1,10 @@
-import type { GsapAnimation } from "@hyperframes/core/gsap-parser";
+import type { GsapAnimation } from "@smashcut/core/gsap-parser";
 import {
   HF_AUDIO_FX_ATTR,
   serializeAudioFxChain,
   type HfAudioFxChain,
-} from "@hyperframes/core/audio-fx";
-import { classifyAudioName } from "@hyperframes/core/audio-carve";
+} from "@smashcut/core/audio-fx";
+import { classifyAudioName } from "@smashcut/core/audio-carve";
 import { usePlayerStore, type TimelineElement } from "../store/playerStore";
 import { VisibilityButton, PlainTrackHeader } from "./TimelineTrackPlainHeader";
 import type { TimelineEditCallbacks } from "./timelineCallbacks";

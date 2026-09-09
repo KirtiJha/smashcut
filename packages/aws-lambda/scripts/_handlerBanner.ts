@@ -20,11 +20,11 @@
  * with it, and assert the globals actually resolve.
  */
 export const HANDLER_BANNER = [
-  "// hyperframes-aws-lambda handler bundle",
-  'import { createRequire as __hf_createRequire } from "module";',
-  'import { fileURLToPath as __hf_fileURLToPath } from "url";',
-  'import { dirname as __hf_dirname } from "path";',
-  "const require = __hf_createRequire(import.meta.url);",
-  "const __filename = __hf_fileURLToPath(import.meta.url);",
-  "const __dirname = __hf_dirname(__filename);",
+  "// smashcut-aws-lambda handler bundle",
+  'import { createRequire as __sc_createRequire } from "module";',
+  'import { fileURLToPath as __sc_fileURLToPath } from "url";',
+  'import { dirname as __sc_dirname } from "path";',
+  "const require = __sc_createRequire(import.meta.url);",
+  "const __filename = __sc_fileURLToPath(import.meta.url);",
+  "const __dirname = __sc_dirname(__filename);",
 ].join("\n");

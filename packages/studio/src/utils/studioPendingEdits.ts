@@ -1,6 +1,6 @@
 import { StudioFileConflictError, type StudioSaveDrainResult } from "./studioSaveDiagnostics";
 
-const STUDIO_FLUSH_PENDING_EDITS_EVENT = "hf-studio-flush-pending-edits";
+const STUDIO_FLUSH_PENDING_EDITS_EVENT = "sc-studio-flush-pending-edits";
 
 interface StudioFlushPendingEditsDetail {
   promises: Array<Promise<unknown>>;

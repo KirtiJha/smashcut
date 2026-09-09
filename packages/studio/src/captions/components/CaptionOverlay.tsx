@@ -117,7 +117,7 @@ export const CaptionOverlay = memo(function CaptionOverlay({ iframeRef }: Captio
     const unsubPlayer = usePlayerStore.subscribe(scheduleTick);
     const handleMessage = (e: MessageEvent) => {
       const data = e.data;
-      if (data?.source === "hf-preview") scheduleTick();
+      if (data?.source === "sc-preview") scheduleTick();
     };
     window.addEventListener("message", handleMessage);
     window.addEventListener("resize", scheduleTick);
@@ -457,7 +457,7 @@ export const CaptionOverlay = memo(function CaptionOverlay({ iframeRef }: Captio
                       width: HANDLE,
                       height: HANDLE,
                       borderRadius: "50%",
-                      backgroundColor: "var(--hf-accent, #3CE6AC)",
+                      backgroundColor: "var(--sc-accent, #3CE6AC)",
                       border: "1px solid rgba(0,0,0,0.5)",
                     }}
                   />
@@ -471,7 +471,7 @@ export const CaptionOverlay = memo(function CaptionOverlay({ iframeRef }: Captio
                     width: 1,
                     height: ROTATION_OFFSET,
                     marginLeft: -0.5,
-                    backgroundColor: "var(--hf-accent, #3CE6AC)",
+                    backgroundColor: "var(--sc-accent, #3CE6AC)",
                     opacity: 0.5,
                     pointerEvents: "none",
                   }}
@@ -516,7 +516,7 @@ export const CaptionOverlay = memo(function CaptionOverlay({ iframeRef }: Captio
                       style={{
                         width: HANDLE,
                         height: HANDLE,
-                        backgroundColor: "var(--hf-accent, #3CE6AC)",
+                        backgroundColor: "var(--sc-accent, #3CE6AC)",
                         border: "1px solid rgba(0,0,0,0.5)",
                         borderRadius: 2,
                       }}

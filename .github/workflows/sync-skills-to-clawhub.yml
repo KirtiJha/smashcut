@@ -45,7 +45,7 @@ jobs:
       - name: Authenticate
         env:
           CLAWHUB_TOKEN: ${{ secrets.CLAWHUB_TOKEN }}
-        run: clawhub login --token "$CLAWHUB_TOKEN" --no-input --label "hyperframes CI"
+        run: clawhub login --token "$CLAWHUB_TOKEN" --no-input --label "smashcut CI"
 
       - name: Sync skills
         env:

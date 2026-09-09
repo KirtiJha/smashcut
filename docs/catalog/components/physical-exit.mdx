@@ -16,7 +16,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 ```html physical-exit.html
 <!doctype html>
 <!--
-  physical-exit: HyperFrames video primitive (motion / exit / physical)
+  physical-exit: SmashCut video primitive (motion / exit / physical)
 
   Concept: one card leaves the frame with visible momentum. The mode variable
   owns the exit behavior: toss follows an arc, drop accelerates under gravity,
@@ -138,8 +138,8 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
             var card = root.querySelector(".pe-card");
             var label = root.querySelector(".pe-label");
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             var mode = vars.mode === "drop" || vars.mode === "slide" ? vars.mode : "toss";
@@ -267,7 +267,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 
 ## Install
 
-<InstallCommand command="npx hyperframes add physical-exit" item="physical-exit" />
+<InstallCommand command="npx smashcut add physical-exit" item="physical-exit" />
 
 That writes one file: `compositions/components/physical-exit.html`.
 
@@ -307,7 +307,7 @@ defaults, so this behaves exactly like the preview above until you change one:
 ```html
 <!doctype html>
 <!--
-  physical-exit: HyperFrames video primitive (motion / exit / physical)
+  physical-exit: SmashCut video primitive (motion / exit / physical)
 
   Concept: one card leaves the frame with visible momentum. The mode variable
   owns the exit behavior: toss follows an arc, drop accelerates under gravity,
@@ -429,8 +429,8 @@ defaults, so this behaves exactly like the preview above until you change one:
             var card = root.querySelector(".pe-card");
             var label = root.querySelector(".pe-label");
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             var mode = vars.mode === "drop" || vars.mode === "slide" ? vars.mode : "toss";

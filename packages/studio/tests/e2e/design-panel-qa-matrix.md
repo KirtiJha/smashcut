@@ -1,7 +1,7 @@
 # Design Panel QA Matrix
 
 Campaign artifact for `docs/plans/2026-07-02-001-fix-studio-design-panel-inputs-plan.md`.
-Environment: published CLI `hyperframes@0.7.26`, embedded mode (`npx hyperframes preview`
+Environment: published CLI `smashcut@0.7.26`, embedded mode (`npx smashcut preview`
 in a scaffolded `warm-grain` project outside the repo), Chrome via agent-browser.
 
 ## Step 0: demo-failure reproduction (baseline, pre-fix)
@@ -11,8 +11,8 @@ root cause is the **selection layer**, not the persist pipeline.
 
 ### S0.1 Master view: click on visible text selects the invisible top overlay
 
-- Action: click the "Hyperframes" H1 (from `compositions/intro.html`, embedded in `index.html`).
-- Selected instead: `.grain-texture` (`hf-0qtj`, label "Grain Texture"), the full-canvas grain
+- Action: click the "Smashcut" H1 (from `compositions/intro.html`, embedded in `index.html`).
+- Selected instead: `.grain-texture` (`sc-0qtj`, label "Grain Texture"), the full-canvas grain
   overlay on `data-track-index="100"`, even though its parent `#grain-overlay-comp` has
   `pointer-events: none`.
 - Panel then shows generic values (Size 16px) and a Text section with an empty Content field
@@ -38,7 +38,7 @@ root cause is the **selection layer**, not the persist pipeline.
 
 - After selecting `.grain-texture` in Master and switching the canvas to `compositions/intro.html`,
   a subsequent click re-emitted the old target: `probe-element/compositions%2Fintro.html` with
-  `{hfId: hf-0qtj, selector: .grain-texture}` (an element that does not exist in intro.html),
+  `{hfId: sc-0qtj, selector: .grain-texture}` (an element that does not exist in intro.html),
   followed by a selection PUT labeled "Grain Texture" with `sourceFile: compositions/intro.html`,
   then `selection: null`.
 - If a patch had been committed in that state it would have written to the wrong file or

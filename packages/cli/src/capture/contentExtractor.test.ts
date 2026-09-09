@@ -75,7 +75,7 @@ vi.mock("@google/genai", () => ({
 // don't need to clear the Gemini keys for the OpenRouter cases.
 
 function makeProjectWithImages(files = ["hero.png"]): string {
-  const dir = mkdtempSync(join(tmpdir(), "hf-caption-"));
+  const dir = mkdtempSync(join(tmpdir(), "sc-caption-"));
   mkdirSync(join(dir, "assets"), { recursive: true });
   // Contents are irrelevant to the OpenRouter path (it just base64-encodes the
   // bytes); only the .png extension matters for the image filter.
@@ -98,7 +98,7 @@ describe("captionImagesWithGemini — OpenRouter provider", () => {
     const dir = makeProjectWithImages();
     dirs.push(dir);
     vi.stubEnv("OPENROUTER_API_KEY", "or-test-key");
-    vi.stubEnv("HYPERFRAMES_OPENROUTER_MODEL", "google/gemini-3.1-flash-lite");
+    vi.stubEnv("SMASHCUT_OPENROUTER_MODEL", "google/gemini-3.1-flash-lite");
 
     // Capture the request inside the mock, where the args are well-typed —
     // avoids casting `mock.calls` (and the repo's ban on `as` assertions).
@@ -172,7 +172,7 @@ describe("captionImagesWithGemini — OpenRouter provider", () => {
     const dir = makeProjectWithImages();
     dirs.push(dir);
     vi.stubEnv("OPENROUTER_API_KEY", "or-hanging-key");
-    vi.stubEnv("HYPERFRAMES_VISION_TIMEOUT_MS", "20");
+    vi.stubEnv("SMASHCUT_VISION_TIMEOUT_MS", "20");
 
     vi.stubGlobal(
       "fetch",
@@ -203,7 +203,7 @@ describe("captionImagesWithGemini — OpenRouter provider", () => {
       const dir = makeProjectWithImages();
       dirs.push(dir);
       vi.stubEnv("OPENROUTER_API_KEY", "or-stalled-body-key");
-      vi.stubEnv("HYPERFRAMES_VISION_TIMEOUT_MS", "20");
+      vi.stubEnv("SMASHCUT_VISION_TIMEOUT_MS", "20");
 
       vi.stubGlobal(
         "fetch",
@@ -286,7 +286,7 @@ describe("captionImagesWithGemini — OpenRouter provider", () => {
     const dir = makeProjectWithImages(["hang.png", "success.png"]);
     dirs.push(dir);
     vi.stubEnv("OPENROUTER_API_KEY", "or-mixed-key");
-    vi.stubEnv("HYPERFRAMES_VISION_TIMEOUT_MS", "20");
+    vi.stubEnv("SMASHCUT_VISION_TIMEOUT_MS", "20");
 
     vi.stubGlobal(
       "fetch",
@@ -361,7 +361,7 @@ describe("captionImagesWithGemini — OpenRouter provider", () => {
   });
 
   it("classifies non-provider pipeline failures without leaking the local path", async () => {
-    const dir = mkdtempSync(join(tmpdir(), "hf-caption-no-assets-"));
+    const dir = mkdtempSync(join(tmpdir(), "sc-caption-no-assets-"));
     dirs.push(dir);
     vi.stubEnv("OPENROUTER_API_KEY", "or-unused-key");
 
@@ -422,7 +422,7 @@ describe("captionImagesWithGemini — Gemini provider", () => {
     dirs.push(dir);
     vi.stubEnv("OPENROUTER_API_KEY", "");
     vi.stubEnv("GEMINI_API_KEY", "gemini-hanging-key");
-    vi.stubEnv("HYPERFRAMES_VISION_TIMEOUT_MS", "20");
+    vi.stubEnv("SMASHCUT_VISION_TIMEOUT_MS", "20");
     generateContentMock.mockImplementation(() => new Promise(() => {}));
 
     const result = await Promise.race([
@@ -491,8 +491,8 @@ describe("captionImagesWithGemini — Vertex AI provider", () => {
 
   function vertexEnv(): void {
     vi.stubEnv("OPENROUTER_API_KEY", "");
-    vi.stubEnv("HYPERFRAMES_VERTEX_PROJECT_ID", "prefab-kit-000000");
-    vi.stubEnv("HYPERFRAMES_VERTEX_SERVICE_ACCOUNT", SERVICE_ACCOUNT);
+    vi.stubEnv("SMASHCUT_VERTEX_PROJECT_ID", "prefab-kit-000000");
+    vi.stubEnv("SMASHCUT_VERTEX_SERVICE_ACCOUNT", SERVICE_ACCOUNT);
   }
 
   it("prefers a service account over a bare API key, and authenticates against the project", async () => {
@@ -530,7 +530,7 @@ describe("captionImagesWithGemini — Vertex AI provider", () => {
     const dir = makeProjectWithImages();
     dirs.push(dir);
     vertexEnv();
-    vi.stubEnv("HYPERFRAMES_VERTEX_LOCATION", "europe-west4");
+    vi.stubEnv("SMASHCUT_VERTEX_LOCATION", "europe-west4");
     generateContentMock.mockResolvedValue({ text: "A caption." });
 
     await captionImagesWithGemini(dir, () => {}, []);
@@ -569,8 +569,8 @@ describe("captionImagesWithGemini — Vertex AI provider", () => {
     dirs.push(dir);
     vi.stubEnv("OPENROUTER_API_KEY", "");
     vi.stubEnv("GEMINI_API_KEY", "");
-    vi.stubEnv("HYPERFRAMES_VERTEX_PROJECT_ID", "prefab-kit-000000");
-    vi.stubEnv("HYPERFRAMES_VERTEX_SERVICE_ACCOUNT", "{not-json super-secret-material");
+    vi.stubEnv("SMASHCUT_VERTEX_PROJECT_ID", "prefab-kit-000000");
+    vi.stubEnv("SMASHCUT_VERTEX_SERVICE_ACCOUNT", "{not-json super-secret-material");
 
     const warnings: string[] = [];
     let outcome: VisionCaptionOutcome | undefined;
@@ -615,8 +615,8 @@ describe("captionImagesWithGemini — Vertex AI provider", () => {
     dirs.push(dir);
     vi.stubEnv("OPENROUTER_API_KEY", "");
     vi.stubEnv("GEMINI_API_KEY", "");
-    vi.stubEnv("HYPERFRAMES_VERTEX_PROJECT_ID", "prefab-kit-000000");
-    vi.stubEnv("HYPERFRAMES_VERTEX_SERVICE_ACCOUNT", "");
+    vi.stubEnv("SMASHCUT_VERTEX_PROJECT_ID", "prefab-kit-000000");
+    vi.stubEnv("SMASHCUT_VERTEX_SERVICE_ACCOUNT", "");
 
     const captions = await captionImagesWithGemini(dir, () => {}, []);
 
@@ -647,7 +647,7 @@ describe("captionImagesWithGemini — SVG rasterization", () => {
   });
 
   function makeProjectWithSvgs(count: number): string {
-    const dir = mkdtempSync(join(tmpdir(), "hf-svg-"));
+    const dir = mkdtempSync(join(tmpdir(), "sc-svg-"));
     mkdirSync(join(dir, "assets", "svgs"), { recursive: true });
     for (let i = 0; i < count; i++) {
       writeFileSync(

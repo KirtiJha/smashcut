@@ -1,7 +1,7 @@
 {
   "$schema": "https://hyperframes.heygen.com/schema/registry-item.json",
   "name": "number-wheel",
-  "type": "hyperframes:component",
+  "type": "smashcut:component",
   "title": "Number Wheel",
   "description": "A rolling digit counter primitive for metrics, prices, counts, and scoreboards",
   "tags": ["video-primitive", "motion-primitive", "number", "counter", "data"],
@@ -9,7 +9,7 @@
     {
       "path": "number-wheel.html",
       "target": "compositions/components/number-wheel.html",
-      "type": "hyperframes:snippet"
+      "type": "smashcut:snippet"
     }
   ],
   "variables": [
@@ -85,6 +85,6 @@
     }
   ],
   "preview": {
-    "poster": "https://static.heygen.ai/hyperframes-oss/docs/images/catalog/components/number-wheel.png"
+    "poster": "https://static.heygen.ai/smashcut-oss/docs/images/catalog/components/number-wheel.png"
   }
 }

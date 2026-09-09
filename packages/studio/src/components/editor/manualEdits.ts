@@ -81,7 +81,7 @@ function wrapSeekReapplyFunction(
 
   const wrappedSeek = function (this: unknown, ...args: unknown[]): unknown {
     const result = seek.apply(this, args);
-    win.__hfStudioManualEditsApply?.();
+    win.__scStudioManualEditsApply?.();
     return result;
   };
   markWrapped(wrappedSeek);
@@ -166,11 +166,11 @@ function isStudioManualEditPlaybackActive(win: StudioManualEditSeekWindow): bool
 }
 
 function startStudioManualEditPlaybackReapply(win: StudioManualEditSeekWindow): void {
-  win.__hfStudioManualEditsApply?.();
+  win.__scStudioManualEditsApply?.();
   if (win[STUDIO_MANUAL_EDITS_PLAYBACK_FRAME_PROP] != null) return;
 
   const tick = () => {
-    win.__hfStudioManualEditsApply?.();
+    win.__scStudioManualEditsApply?.();
     if (!isStudioManualEditPlaybackActive(win)) {
       win[STUDIO_MANUAL_EDITS_PLAYBACK_FRAME_PROP] = null;
       return;
@@ -217,7 +217,7 @@ function wrapApplyAfterFunction(
 
   const wrappedApplyAfter = function (this: unknown, ...args: unknown[]): unknown {
     const result = applyAfter.apply(this, args);
-    win.__hfStudioManualEditsApply?.();
+    win.__scStudioManualEditsApply?.();
     return result;
   };
   markWrapped(wrappedApplyAfter);
@@ -233,7 +233,7 @@ export function installStudioManualEditSeekReapply(win: Window, apply: () => voi
   const studioWin = win as StudioManualEditSeekWindow;
   studioWin[STUDIO_MANUAL_EDITS_APPLY_PROP] = apply;
 
-  const wrappedHfSeek = wrapSeekReapplyFunction(studioWin, studioWin.__hf, "seek");
+  const wrappedHfSeek = wrapSeekReapplyFunction(studioWin, studioWin.__sc, "seek");
   const wrappedPlayerSeek = wrapSeekReapplyFunction(studioWin, studioWin.__player, "seek");
   const wrappedPlayerRenderSeek = wrapSeekReapplyFunction(
     studioWin,
@@ -274,7 +274,7 @@ export function installStudioManualEditSeekReapply(win: Window, apply: () => voi
           wrapSeekReapplyFunction(studioWin, tl, "totalTime");
           wrapPlayReapplyFunction(studioWin, tl, "play");
           wrapApplyAfterFunction(studioWin, tl, "pause");
-          studioWin.__hfStudioManualEditsApply?.();
+          studioWin.__scStudioManualEditsApply?.();
         }
         return true;
       },

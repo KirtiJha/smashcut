@@ -1,6 +1,6 @@
 import { watch, type FSWatcher } from "node:fs";
 import { join } from "node:path";
-import { affectsProjectSignature } from "@hyperframes/studio-server";
+import { affectsProjectSignature } from "@smashcut/studio-server";
 
 export type FileChangeListener = (relativePath: string) => void;
 
@@ -13,7 +13,7 @@ export interface ProjectWatcher {
 const WATCHER_EXCLUDED_DIRS = new Set([
   ".cache",
   ".git",
-  ".hyperframes",
+  ".smashcut",
   ".next",
   ".thumbnails",
   ".transcode-cache",
@@ -44,7 +44,7 @@ export function createProjectWatcher(projectDir: string): ProjectWatcher {
     watcher = watch(projectDir, { recursive: true }, (_event, filename) => {
       if (!filename) return;
       const relativePath = filename.toString();
-      // The reload filter excludes all of `.hyperframes/`, but two files in
+      // The reload filter excludes all of `.smashcut/`, but two files in
       // there feed the preview signature and Studio writes one of them at
       // runtime — dropping those at ingest left the CLI server's ETag stale
       // until restart. Admit them here and let the reload listener re-apply

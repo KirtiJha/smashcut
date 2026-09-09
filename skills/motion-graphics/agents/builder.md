@@ -1,13 +1,13 @@
 # Motion-Graphics Builder
 
-Turn `shot-plan.json` into one renderable HyperFrames composition (`compositions/index.html`). Everything stays in the HF ecosystem — HTML is the source of truth; a single **paused** GSAP timeline carries all motion; the engine seeks it. Category-specific build rules live in `categories/<id>/module.md`; this file is the shared contract.
+Turn `shot-plan.json` into one renderable SmashCut composition (`compositions/index.html`). Everything stays in the HF ecosystem — HTML is the source of truth; a single **paused** GSAP timeline carries all motion; the engine seeks it. Category-specific build rules live in `categories/<id>/module.md`; this file is the shared contract.
 
 ## Reuse-first (the default)
 
 Default = **compose existing catalog capabilities, not hand-author**:
 
-- `npx hyperframes add <block>` (registry) → customize in place. Most blocks bake content/data into their own script (only a few expose CSS-var params), so reuse = **add + edit**.
-- `hyperframes-animation` rules / blueprints / transitions for motion; runtime adapters (GSAP default).
+- `npx smashcut add <block>` (registry) → customize in place. Most blocks bake content/data into their own script (only a few expose CSS-var params), so reuse = **add + edit**.
+- `smashcut-animation` rules / blueprints / transitions for motion; runtime adapters (GSAP default).
 
 Hand-author only (a) gaps no block/rule covers, (b) the `asset-fusion` affordance binding. The Director named the block(s) + customizations in `shot-plan.json` (`content.block` + `content.customize`); see `catalog-map.md`.
 
@@ -25,7 +25,7 @@ Build the **hero-frame end-state** in CSS first (flex + padding; never absolute 
 
 ## IR → composition
 
-- `content.block` → `hyperframes add` it (or inline) + apply `content.customize`.
+- `content.block` → `smashcut add` it (or inline) + apply `content.customize`.
 - per-category `content` (text scenes / chart data / fusion positions / news-tweet content) → realize per `categories/<id>/module.md`.
 - resolved `asset_needs` → reference **frozen project-local paths** (never a remote URL or a prompt).
 - `palette[-1]` / bg + `font` from the envelope.
@@ -33,8 +33,8 @@ Build the **hero-frame end-state** in CSS first (flex + padding; never absolute 
 
 ## Critical correctness (GSAP / seek)
 
-Opacity-gate delayed elements (set hidden until their entrance). Clamp at tween bounds (no overshoot past a held value). Allowed eases: `power1–4`, `back`, `bounce`, `circ`, `elastic`, `expo`, `sine` (`.in/.out/.inOut`). One motif per scene. Run `hyperframes check` for overflow / collisions.
+Opacity-gate delayed elements (set hidden until their entrance). Clamp at tween bounds (no overshoot past a held value). Allowed eases: `power1–4`, `back`, `bounce`, `circ`, `elastic`, `expo`, `sine` (`.in/.out/.inOut`). One motif per scene. Run `smashcut check` for overflow / collisions.
 
 ## Hand off for verification
 
-Self-check the authored file, then return it to the orchestrator. Step 5 runs `hyperframes lint`, `hyperframes check`, and proof snapshots on the assembled project. Do not render. When redispatched with a finding, fix the offending element and never change a fixed `data-duration` during repair. Remotion-source migrations use `/remotion-to-hyperframes` and its SSIM harness instead.
+Self-check the authored file, then return it to the orchestrator. Step 5 runs `smashcut lint`, `smashcut check`, and proof snapshots on the assembled project. Do not render. When redispatched with a finding, fix the offending element and never change a fixed `data-duration` during repair. Remotion-source migrations use `/remotion-to-smashcut` and its SSIM harness instead.

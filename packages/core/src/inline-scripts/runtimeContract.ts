@@ -7,8 +7,8 @@ export const HYPERFRAME_RUNTIME_GLOBALS = {
 } as const;
 
 export const HYPERFRAME_BRIDGE_SOURCES = {
-  parent: "hf-parent",
-  preview: "hf-preview",
+  parent: "sc-parent",
+  preview: "sc-preview",
 } as const;
 
 export const HYPERFRAME_CONTROL_ACTIONS = [

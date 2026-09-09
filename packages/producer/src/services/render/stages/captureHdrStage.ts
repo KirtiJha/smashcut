@@ -50,8 +50,8 @@ import {
   initTransparentBackground,
   initializeSession,
   spawnStreamingEncoder,
-} from "@hyperframes/engine";
-import { fpsToNumber } from "@hyperframes/core";
+} from "@smashcut/engine";
+import { fpsToNumber } from "@smashcut/core";
 import type { FileServerHandle } from "../../fileServer.js";
 import type { ProducerLogger } from "../../../logger.js";
 import { createHdrImageTransferCache } from "../../hdrImageTransferCache.js";
@@ -226,7 +226,7 @@ export async function runCaptureHdrStage(
 
     // ── Scene detection for shader transitions ──────────────────────────
     const transitionMeta: HdrTransitionMeta[] = await domSession.page.evaluate(() => {
-      return window.__hf?.transitions ?? [];
+      return window.__sc?.transitions ?? [];
     });
     const sceneElements: Record<string, string[]> = await domSession.page.evaluate(() => {
       const scenes = document.querySelectorAll(".scene");

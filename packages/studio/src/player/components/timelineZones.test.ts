@@ -186,7 +186,7 @@ describe("normalizeToZones — legacy overlap spill (display-only, deterministic
 });
 
 describe("normalizeToZones — legacy file with scattered z (requirement 6)", () => {
-  // Mirrors /tmp/hf-fixwave/userproj/index.html: many visual clips on contiguous
+  // Mirrors /tmp/sc-fixwave/userproj/index.html: many visual clips on contiguous
   // authored tracks (0..17) each carrying an unrelated, scattered inline z-index,
   // and audio on the highest tracks (18..). The display must follow the
   // track-index, NOT the z, and a well-formed (contiguous, audio-last) legacy file

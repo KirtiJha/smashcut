@@ -5,7 +5,7 @@
  *
  * Launches headless Chrome with real GSAP + the real runtime IIFE, loads a
  * fixture whose elements carry committed moveElement state (data-x/data-y +
- * data-hf-edit-base-x/y), seeks the timeline across its range, and asserts
+ * data-sc-edit-base-x/y), seeks the timeline across its range, and asserts
  * the rendered position reflects the edit on BOTH axes at every sample:
  *  - an X-animated element keeps its edited offset while X animates
  *  - a Y-animated element keeps its edited offset while Y animates
@@ -23,7 +23,7 @@ import { createRequire } from "node:module";
 import { readFileSync } from "node:fs";
 import { resolve as resolvePath, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
-import { buildHyperframesRuntimeScript } from "../../core/src/inline-scripts/hyperframesRuntime.engine";
+import { buildSmashcutRuntimeScript } from "../../core/src/inline-scripts/smashcutRuntime.engine";
 
 const thisDir = dirname(fileURLToPath(import.meta.url));
 
@@ -84,14 +84,14 @@ async function main(): Promise<void> {
     return;
   }
 
-  const runtimeSource = buildHyperframesRuntimeScript({ minify: false });
+  const runtimeSource = buildSmashcutRuntimeScript({ minify: false });
   assert(
     runtimeSource !== null,
-    "buildHyperframesRuntimeScript returned null — entry.ts not found",
+    "buildSmashcutRuntimeScript returned null — entry.ts not found",
   );
 
   // Committed moveElement state: every element moved by (50, -70). data-x/y
-  // hold the post-edit values; data-hf-edit-base-x/y hold the pre-edit ones
+  // hold the post-edit values; data-sc-edit-base-x/y hold the pre-edit ones
   // (absent → "0"), exactly as handleMoveElement serializes them.
   const html = `<!DOCTYPE html>
 <html><head><style>
@@ -99,16 +99,16 @@ async function main(): Promise<void> {
   .el { position: absolute; left: 0; top: 0; width: 40px; height: 40px; }
 </style></head><body>
 <div data-composition-id="root" data-width="1920" data-height="1080" data-duration="4">
-  <div id="ax" class="clip el" data-hf-id="hf-ax" data-start="0" data-duration="4"
-       data-x="50" data-y="-70" data-hf-edit-base-x="0" data-hf-edit-base-y="0"></div>
-  <div id="ay" class="clip el" data-hf-id="hf-ay" data-start="0" data-duration="4"
-       data-x="50" data-y="-70" data-hf-edit-base-x="0" data-hf-edit-base-y="0"></div>
-  <div id="axy" class="clip el" data-hf-id="hf-axy" data-start="0" data-duration="4"
-       data-x="50" data-y="-70" data-hf-edit-base-x="0" data-hf-edit-base-y="0"></div>
-  <div id="ts" class="clip el" data-hf-id="hf-ts" data-start="0" data-duration="4"
-       data-x="50" data-y="-70" data-hf-edit-base-x="0" data-hf-edit-base-y="0"></div>
-  <div id="st" class="clip el" data-hf-id="hf-st" data-start="0" data-duration="4"
-       data-x="50" data-y="-70" data-hf-edit-base-x="0" data-hf-edit-base-y="0"></div>
+  <div id="ax" class="clip el" data-sc-id="sc-ax" data-start="0" data-duration="4"
+       data-x="50" data-y="-70" data-sc-edit-base-x="0" data-sc-edit-base-y="0"></div>
+  <div id="ay" class="clip el" data-sc-id="sc-ay" data-start="0" data-duration="4"
+       data-x="50" data-y="-70" data-sc-edit-base-x="0" data-sc-edit-base-y="0"></div>
+  <div id="axy" class="clip el" data-sc-id="sc-axy" data-start="0" data-duration="4"
+       data-x="50" data-y="-70" data-sc-edit-base-x="0" data-sc-edit-base-y="0"></div>
+  <div id="ts" class="clip el" data-sc-id="sc-ts" data-start="0" data-duration="4"
+       data-x="50" data-y="-70" data-sc-edit-base-x="0" data-sc-edit-base-y="0"></div>
+  <div id="st" class="clip el" data-sc-id="sc-st" data-start="0" data-duration="4"
+       data-x="50" data-y="-70" data-sc-edit-base-x="0" data-sc-edit-base-y="0"></div>
 </div>
 <script>${gsapSource}</script>
 <script>
@@ -147,10 +147,10 @@ async function main(): Promise<void> {
     const sampleScript = `(function (time) {
       if (window.__player && typeof window.__player.renderSeek === "function") {
         window.__player.renderSeek(time);
-      } else if (window.__hf && typeof window.__hf.seek === "function") {
-        window.__hf.seek(time);
+      } else if (window.__sc && typeof window.__sc.seek === "function") {
+        window.__sc.seek(time);
       } else {
-        throw new Error("no runtime seek surface (__player.renderSeek / __hf.seek)");
+        throw new Error("no runtime seek surface (__player.renderSeek / __sc.seek)");
       }
       function read(id) {
         var el = document.getElementById(id);
@@ -227,8 +227,8 @@ async function main(): Promise<void> {
   .el { position: absolute; left: 0; top: 0; width: 40px; height: 40px; }
 </style></head><body>
 <div data-composition-id="root" data-width="1920" data-height="1080" data-duration="2">
-  <div id="st" class="clip el" data-hf-id="hf-st" data-start="0" data-duration="2"
-       data-x="50" data-y="-70" data-hf-edit-base-x="0" data-hf-edit-base-y="0"></div>
+  <div id="st" class="clip el" data-sc-id="sc-st" data-start="0" data-duration="2"
+       data-x="50" data-y="-70" data-sc-edit-base-x="0" data-sc-edit-base-y="0"></div>
 </div>
 <script>${runtimeSource}</script>
 </body></html>`;

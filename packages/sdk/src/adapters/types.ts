@@ -58,7 +58,7 @@ export interface PaintQueryOptions {
   fullBleedFraction?: number;
 
   /**
-   * Consider only model-addressable elements (`[data-hf-id]`). Default true.
+   * Consider only model-addressable elements (`[data-sc-id]`). Default true.
    *
    * False widens the walk to every element, which catches nodes created after the
    * document was stamped (split-text word spans, cloned nodes) at the cost of a larger
@@ -132,7 +132,7 @@ export interface PreviewAdapter {
 
   /**
    * Optional: apply composition-variable values to the preview so it renders
-   * as `window.__hfVariables` injection would at render time (values must be
+   * as `window.__scVariables` injection would at render time (values must be
    * visible to the runtime BEFORE composition scripts run — typically a
    * preview reload with injection, not a live poke). Pass null to restore
    * declared defaults. Values are ephemeral preview state, never persisted.

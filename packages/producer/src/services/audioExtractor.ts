@@ -9,7 +9,7 @@
 import { spawn } from "node:child_process";
 import { existsSync, mkdirSync, rmSync, readFileSync } from "node:fs";
 import { join, dirname } from "node:path";
-import { getFfmpegBinary, trackChildProcess } from "@hyperframes/engine";
+import { getFfmpegBinary, trackChildProcess } from "@smashcut/engine";
 
 export interface AudioElement {
   id: string;
@@ -45,10 +45,10 @@ export function parseAudioElements(html: string): AudioElement[] {
     const tagName = (match[1] ?? "").toLowerCase() as "audio" | "video";
     const start = parseFloat(match[2] ?? "");
 
-    // `(?<![\w-])` keeps the plain-id pattern off `data-hf-render-id="…"` (and
-    // `data-hf-id`), which would otherwise match first and report the wrong id.
+    // `(?<![\w-])` keeps the plain-id pattern off `data-sc-render-id="…"` (and
+    // `data-sc-id`), which would otherwise match first and report the wrong id.
     const idMatch = fullTag.match(/(?<![\w-])id=["']([^"']+)["']/);
-    const renderIdMatch = fullTag.match(/data-hf-render-id=["']([^"']+)["']/);
+    const renderIdMatch = fullTag.match(/data-sc-render-id=["']([^"']+)["']/);
     const srcMatch = fullTag.match(/src=["']([^"']+)["']/);
     if (!srcMatch) continue;
 

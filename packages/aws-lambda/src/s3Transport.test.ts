@@ -22,7 +22,7 @@ import {
 let scratchRoot: string;
 
 beforeAll(() => {
-  scratchRoot = mkdtempSync(join(tmpdir(), "hf-s3transport-test-"));
+  scratchRoot = mkdtempSync(join(tmpdir(), "sc-s3transport-test-"));
 });
 
 afterAll(() => {

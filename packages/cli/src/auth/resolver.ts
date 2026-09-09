@@ -3,7 +3,7 @@
  *
  * Priority — first non-empty wins:
  *   1. `HEYGEN_API_KEY` env (matches heygen-cli)
- *   2. `HYPERFRAMES_API_KEY` env (alias for parity with other tools)
+ *   2. `SMASHCUT_API_KEY` env (alias for parity with other tools)
  *   3. `~/.heygen/credentials` (JSON) — unexpired OAuth, else api_key
  *
  * Absent sources fall through. A broken file (parse error, bad shape)
@@ -57,10 +57,10 @@ export async function resolveCredential(opts: ResolveOptions = {}): Promise<Reso
     return { type: "api_key", key: heygenEnv, source: "env" };
   }
 
-  const hfEnv = process.env["HYPERFRAMES_API_KEY"];
+  const hfEnv = process.env["SMASHCUT_API_KEY"];
   if (hfEnv && hfEnv.length > 0) {
     if (!isHeaderSafe(hfEnv)) {
-      throw ErrInvalidStore("HYPERFRAMES_API_KEY contains control characters");
+      throw ErrInvalidStore("SMASHCUT_API_KEY contains control characters");
     }
     return { type: "api_key", key: hfEnv, source: "env_alias" };
   }

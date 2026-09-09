@@ -56,7 +56,7 @@ function acceptedPreviewMessage(
   if (hasTimelinePerformanceFixtureLease()) return null;
   if (isForeignSource(e, iframe)) return null;
   const data = e.data as PreviewMessage | null;
-  if (data?.source !== "hf-preview") return null;
+  if (data?.source !== "sc-preview") return null;
   return acceptStudioRuntimeMessage(data) ? data : null;
 }
 

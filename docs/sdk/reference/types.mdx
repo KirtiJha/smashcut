@@ -1,9 +1,9 @@
 ---
 title: "Types"
-description: "Core types exported from @hyperframes/sdk, with pointers to the adapter, history, and persistence types."
+description: "Core types exported from @smashcut/sdk, with pointers to the adapter, history, and persistence types."
 ---
 
-This page documents the core types exported from `@hyperframes/sdk`, verified against `packages/sdk/src/types.ts` and the export barrel at `packages/sdk/src/index.ts`. Adapter, history, and persistence types live with the APIs that take them — see [Adapters](/sdk/reference/adapters), [Utilities](/sdk/reference/utilities), [Composition](/sdk/reference/composition), and [openComposition](/sdk/reference/open-composition).
+This page documents the core types exported from `@smashcut/sdk`, verified against `packages/sdk/src/types.ts` and the export barrel at `packages/sdk/src/index.ts`. Adapter, history, and persistence types live with the APIs that take them — see [Adapters](/sdk/reference/adapters), [Utilities](/sdk/reference/utilities), [Composition](/sdk/reference/composition), and [openComposition](/sdk/reference/open-composition).
 
 See also: [`Composition`](/sdk/reference/composition) for the main session interface, [`Edit Operations`](/sdk/reference/edit-operations) for the `EditOp` catalog.
 
@@ -15,20 +15,20 @@ See also: [`Composition`](/sdk/reference/composition) for the main session inter
 type HfId = string;
 ```
 
-A stable HyperFrames element identifier — the value of the `data-hf-id` attribute stamped on every editable element by `ensureHfIds`. Use `HfId` wherever you would write a raw `string` to signal that the value is an element id.
+A stable SmashCut element identifier — the value of the `data-sc-id` attribute stamped on every editable element by `ensureHfIds`. Use `HfId` wherever you would write a raw `string` to signal that the value is an element id.
 
 ---
 
-## HyperFramesElement
+## SmashCutElement
 
 Full DOM-level view of one editable element. Returned by `comp.getElements()` and `comp.getElement(id)`.
 
 ```typescript
-interface HyperFramesElement {
+interface SmashCutElement {
   readonly id: string;
   readonly scopedId: string;
   readonly tag: string;
-  readonly children: readonly HyperFramesElement[];
+  readonly children: readonly SmashCutElement[];
   readonly inlineStyles: Readonly<Record<string, string>>;
   readonly classNames: readonly string[];
   readonly attributes: Readonly<Record<string, string>>;
@@ -41,7 +41,7 @@ interface HyperFramesElement {
 ```
 
 <ResponseField name="id" type="string">
-  The element's `data-hf-id` value — unique within the top-level document.
+  The element's `data-sc-id` value — unique within the top-level document.
 </ResponseField>
 
 <ResponseField name="scopedId" type="string">
@@ -52,8 +52,8 @@ interface HyperFramesElement {
   Lowercase HTML tag name (`"div"`, `"img"`, `"p"`, …).
 </ResponseField>
 
-<ResponseField name="children" type="readonly HyperFramesElement[]">
-  Direct child elements. Build a flat list with `flatElements()` from `@hyperframes/sdk` utilities.
+<ResponseField name="children" type="readonly SmashCutElement[]">
+  Direct child elements. Build a flat list with `flatElements()` from `@smashcut/sdk` utilities.
 </ResponseField>
 
 <ResponseField name="inlineStyles" type="Readonly<Record<string, string>>">
@@ -93,10 +93,10 @@ interface HyperFramesElement {
 ## ElementSnapshot
 
 ```typescript
-type ElementSnapshot = HyperFramesElement;
+type ElementSnapshot = SmashCutElement;
 ```
 
-Type alias for `HyperFramesElement`. Used in return types of `getElements()` and `getElement()` to signal that the value is a read-only snapshot — it does not update after subsequent mutations.
+Type alias for `SmashCutElement`. Used in return types of `getElements()` and `getElement()` to signal that the value is a read-only snapshot — it does not update after subsequent mutations.
 
 ---
 
@@ -106,7 +106,7 @@ The SDK's in-memory document model. Returned by `buildDocument()`.
 
 ```typescript
 interface SdkDocument {
-  readonly roots: readonly HyperFramesElement[];
+  readonly roots: readonly SmashCutElement[];
   readonly gsapScript: string | null;
   readonly styles: string | null;
   readonly width: number | null;
@@ -116,7 +116,7 @@ interface SdkDocument {
 }
 ```
 
-<ResponseField name="roots" type="readonly HyperFramesElement[]">
+<ResponseField name="roots" type="readonly SmashCutElement[]">
   Top-level elements of the composition body. Walk the tree via `.children`.
 </ResponseField>
 
@@ -169,10 +169,10 @@ A sparse map of overrides layered on top of a base composition template. Used in
 
 ```typescript
 const overrides: OverrideSet = {
-  "hf-title.text": "Customer headline",
-  "hf-logo.attr.src": "/customers/acme/logo.png",
-  "hf-title.style.color": "#0EA5E9",
-  "hf-old-badge": null,                         // element removed
+  "sc-title.text": "Customer headline",
+  "sc-logo.attr.src": "/customers/acme/logo.png",
+  "sc-title.style.color": "#0EA5E9",
+  "sc-old-badge": null,                         // element removed
   "var.brand-font": {                            // font variable
     name: "Inter",
     source: "https://fonts.googleapis.com/css2?family=Inter",
@@ -217,7 +217,7 @@ interface FindQuery {
 </ResponseField>
 
 <ResponseField name="composition" type="string">
-  Restrict results to elements inside a specific sub-composition, identified by the host element's hf-id.
+  Restrict results to elements inside a specific sub-composition, identified by the host element's sc-id.
 </ResponseField>
 
 All fields are optional; non-null fields are ANDed.
@@ -227,7 +227,7 @@ All fields are optional; non-null fields are ANDed.
 const ids = comp.find({ tag: "p", track: 2 });
 
 // Find inside a sub-composition:
-const subIds = comp.find({ composition: "hf-scene-2", tag: "img" });
+const subIds = comp.find({ composition: "sc-scene-2", tag: "img" });
 ```
 
 ---
@@ -295,7 +295,7 @@ interface GsapTweenSpec {
 
 ## KeyframeSpec
 
-A single keyframe entry for `addWithKeyframes` and `replaceWithKeyframes`. This is a structural shape, not a runtime export — you pass plain objects of this form to those methods; it is **not** re-exported from the `@hyperframes/sdk` barrel, so there is nothing to import.
+A single keyframe entry for `addWithKeyframes` and `replaceWithKeyframes`. This is a structural shape, not a runtime export — you pass plain objects of this form to those methods; it is **not** re-exported from the `@smashcut/sdk` barrel, so there is nothing to import.
 
 ```typescript
 interface KeyframeSpec {
@@ -641,7 +641,7 @@ interface SelectionProxy {
 ```
 
 <ResponseField name="ids" type="readonly string[]">
-  The hf-ids in the current selection at the moment `comp.selection()` was called.
+  The sc-ids in the current selection at the moment `comp.selection()` was called.
 </ResponseField>
 
 ```typescript
@@ -669,7 +669,7 @@ interface ElementHandle {
 ```
 
 ```typescript
-const title = comp.element("hf-title");
+const title = comp.element("sc-title");
 title.setText("Launch Day");
 title.setStyle({ color: "#FFD60A", fontSize: "96px" });
 title.setTiming({ start: 0.5, duration: 3 });
@@ -685,7 +685,7 @@ type CompositionVariableType =
 ```
 
 The declared type of a composition variable. Re-exported from
-`@hyperframes/parsers`; `VARIABLE_TYPES` is the matching runtime list, useful
+`@smashcut/parsers`; `VARIABLE_TYPES` is the matching runtime list, useful
 for validators that need the set rather than the union.
 
 ## VariableUsageScan
@@ -707,7 +707,7 @@ unknown rather than unused.
 ## ORIGIN_APPLY_PATCHES / ORIGIN_LOCAL
 
 ```typescript
-const ORIGIN_APPLY_PATCHES = "@hyperframes/sdk:applyPatches";
+const ORIGIN_APPLY_PATCHES = "@smashcut/sdk:applyPatches";
 const ORIGIN_LOCAL = "local";
 ```
 

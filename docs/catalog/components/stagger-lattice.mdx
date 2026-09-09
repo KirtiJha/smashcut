@@ -1,6 +1,6 @@
 ---
 title: "Stagger Lattice"
-description: "A staggered grid reveal inspired by Anime.js v4 stagger utilities, implemented with GSAP for HyperFrames."
+description: "A staggered grid reveal inspired by Anime.js v4 stagger utilities, implemented with GSAP for SmashCut."
 ---
 
 import { InstallCommand } from "/snippets/install-command.jsx";
@@ -9,12 +9,12 @@ import { InstallCommand } from "/snippets/install-command.jsx";
   className="w-full aspect-video rounded-xl border-0 bg-zinc-100 dark:bg-zinc-800"
   title="stagger-lattice preview"
   loading="lazy"
-  srcDoc={`<!doctype html><html><head><meta charset="utf-8"><style>html,body{margin:0;height:100%;overflow:hidden;background:transparent}hyperframes-player{display:block;width:100%;height:100%}</style><script src="https://cdn.jsdelivr.net/npm/@hyperframes/player@latest/dist/hyperframes-player.global.js"><\/script></head><body><script>fetch("/public/catalog/components/stagger-lattice.json").then(function(r){return r.json()}).then(function(d){var p=document.createElement("hyperframes-player");p.setAttribute("srcdoc",d.html);p.setAttribute("controls","");p.setAttribute("autoplay","");p.setAttribute("loop","");p.setAttribute("muted","");p.setAttribute("poster","https://static.heygen.ai/hyperframes-oss/docs/images/catalog/components/stagger-lattice.png");document.body.appendChild(p)});<\/script></body></html>`}
+  srcDoc={`<!doctype html><html><head><meta charset="utf-8"><style>html,body{margin:0;height:100%;overflow:hidden;background:transparent}smashcut-player{display:block;width:100%;height:100%}</style><script src="https://cdn.jsdelivr.net/npm/@smashcut/player@latest/dist/smashcut-player.global.js"><\/script></head><body><script>fetch("/public/catalog/components/stagger-lattice.json").then(function(r){return r.json()}).then(function(d){var p=document.createElement("smashcut-player");p.setAttribute("srcdoc",d.html);p.setAttribute("controls","");p.setAttribute("autoplay","");p.setAttribute("loop","");p.setAttribute("muted","");p.setAttribute("poster","https://static.heygen.ai/smashcut-oss/docs/images/catalog/components/stagger-lattice.png");document.body.appendChild(p)});<\/script></body></html>`}
 />
 
 ## Install
 
-<InstallCommand command="npx hyperframes add stagger-lattice" item="stagger-lattice" />
+<InstallCommand command="npx smashcut add stagger-lattice" item="stagger-lattice" />
 
 That writes one file: `compositions/components/stagger-lattice.html`.
 
@@ -24,14 +24,14 @@ That writes one file: `compositions/components/stagger-lattice.html`.
 
 ```html
 <!--
-  Stagger Lattice - advanced HyperFrames primitive.
+  Stagger Lattice - advanced SmashCut primitive.
 
   This is intentionally seekable: drive it from a paused GSAP timeline.
   MotionPath examples require GSAP MotionPathPlugin. Three.js examples expose
   a render(progress) adapter instead of a free-running requestAnimationFrame loop.
 -->
 
-<div class="hf-advanced-stagger-lattice">
+<div class="sc-advanced-stagger-lattice">
   <div class="grid">
     <span class="cell"></span><span class="cell"></span><span class="cell"></span
     ><span class="cell"></span><span class="cell"></span><span class="cell"></span
@@ -51,16 +51,16 @@ That writes one file: `compositions/components/stagger-lattice.html`.
 </div>
 
 <style>
-  .hf-advanced-stagger-lattice {
-    --hf-accent: var(--accent, rgba(17, 24, 39, 0.72));
-    --hf-l1: rgba(17, 24, 39, 0.72);
-    --hf-l3: rgba(17, 24, 39, 0.18);
-    --hf-l4: rgba(17, 24, 39, 0.08);
-    --hf-hair: rgba(17, 24, 39, 0.14);
-    color: var(--hf-l1);
+  .sc-advanced-stagger-lattice {
+    --sc-accent: var(--accent, rgba(17, 24, 39, 0.72));
+    --sc-l1: rgba(17, 24, 39, 0.72);
+    --sc-l3: rgba(17, 24, 39, 0.18);
+    --sc-l4: rgba(17, 24, 39, 0.08);
+    --sc-hair: rgba(17, 24, 39, 0.14);
+    color: var(--sc-l1);
     font-family: Inter, system-ui, sans-serif;
   }
-  .hf-advanced-stagger-lattice {
+  .sc-advanced-stagger-lattice {
     width: 720px;
     min-height: 420px;
     border-radius: 30px;
@@ -70,53 +70,53 @@ That writes one file: `compositions/components/stagger-lattice.html`.
     display: grid;
     place-items: center;
   }
-  .hf-advanced-stagger-lattice .grid {
+  .sc-advanced-stagger-lattice .grid {
     display: grid;
     grid-template-columns: repeat(8, 46px);
     gap: 10px;
   }
-  .hf-advanced-stagger-lattice .cell {
+  .sc-advanced-stagger-lattice .cell {
     width: 46px;
     height: 46px;
     border-radius: 14px;
-    background: var(--hf-l1);
-    transform: translateY(var(--hf-cell-y, 0px)) scale(var(--hf-cell-scale, 1));
-    opacity: var(--hf-cell-opacity, 1);
+    background: var(--sc-l1);
+    transform: translateY(var(--sc-cell-y, 0px)) scale(var(--sc-cell-scale, 1));
+    opacity: var(--sc-cell-opacity, 1);
   }
-  .hf-advanced-stagger-lattice svg {
+  .sc-advanced-stagger-lattice svg {
     width: 520px;
     height: 220px;
     overflow: visible;
   }
-  .hf-advanced-stagger-lattice path {
+  .sc-advanced-stagger-lattice path {
     fill: none;
-    stroke: var(--hf-accent);
+    stroke: var(--sc-accent);
     stroke-width: 14;
     stroke-linecap: round;
     stroke-dasharray: 900;
-    stroke-dashoffset: var(--hf-dash, 0);
+    stroke-dashoffset: var(--sc-dash, 0);
   }
-  .hf-advanced-stagger-lattice .stack {
+  .sc-advanced-stagger-lattice .stack {
     position: relative;
     width: 520px;
     height: 260px;
   }
-  .hf-advanced-stagger-lattice .card {
+  .sc-advanced-stagger-lattice .card {
     position: absolute;
     inset: 0;
     border-radius: 26px;
-    background: linear-gradient(var(--hf-l4), var(--hf-l4)), #ffffff;
-    border: 1px solid var(--hf-hair);
+    background: linear-gradient(var(--sc-l4), var(--sc-l4)), #ffffff;
+    border: 1px solid var(--sc-hair);
     box-shadow: 0 20px 54px rgba(15, 23, 42, 0.14);
-    transform: translateY(var(--hf-card-y, 0px)) scale(var(--hf-card-scale, 1));
-    opacity: var(--hf-card-opacity, 1);
+    transform: translateY(var(--sc-card-y, 0px)) scale(var(--sc-card-scale, 1));
+    opacity: var(--sc-card-opacity, 1);
   }
 </style>
 
 <!--
   Timeline integration:
   const startTime = 0;
-  tl.fromTo('.hf-advanced-stagger-lattice .cell', { '--hf-cell-y': '24px', '--hf-cell-scale': 0.72, '--hf-cell-opacity': 0 }, { '--hf-cell-y': '0px', '--hf-cell-scale': 1, '--hf-cell-opacity': 1, duration: 0.28, stagger: { each: 0.018, from: 'center', grid: [5, 8] }, ease: 'power2.out' }, startTime);
+  tl.fromTo('.sc-advanced-stagger-lattice .cell', { '--sc-cell-y': '24px', '--sc-cell-scale': 0.72, '--sc-cell-opacity': 0 }, { '--sc-cell-y': '0px', '--sc-cell-scale': 1, '--sc-cell-opacity': 1, duration: 0.28, stagger: { each: 0.018, from: 'center', grid: [5, 8] }, ease: 'power2.out' }, startTime);
 -->
 ```
 
@@ -128,7 +128,7 @@ Open `compositions/components/stagger-lattice.html` and paste its contents into 
 
 {/* hf:generated-footer */}
 
-Tagged `advanced-motion` `anime-inspired` `hyperframes-native`.
+Tagged `advanced-motion` `anime-inspired` `smashcut-native`.
 
 ## Related topics
 

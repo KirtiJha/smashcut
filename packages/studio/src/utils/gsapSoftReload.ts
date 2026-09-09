@@ -1,16 +1,16 @@
-import { COLOR_GRADING_SOURCE_HIDDEN_ATTR } from "@hyperframes/core/color-grading";
+import { COLOR_GRADING_SOURCE_HIDDEN_ATTR } from "@smashcut/core/color-grading";
 import { applyAuthoredInlineOpacity, readStampedAuthoredOpacity } from "./authoredOpacity";
 
 type IframeWindow = Window & {
   __timelines?: Record<string, { kill?: () => void; pause?: () => void }>;
   __player?: { getTime?: () => number; seek?: (t: number) => void };
-  __hfForceTimelineRebind?: () => void;
-  __hfSuppressSceneMutations?: <T>(fn: () => T) => T;
-  __hfStudioManualEditsApply?: () => void;
+  __scForceTimelineRebind?: () => void;
+  __scSuppressSceneMutations?: <T>(fn: () => T) => T;
+  __scStudioManualEditsApply?: () => void;
   // Set while a MotionPathPlugin <script> is being fetched, so overlapping soft
   // reloads (each needing the plugin) don't queue duplicate plugin scripts that
   // re-flash the iframe. Cleared once the plugin loads or errors.
-  __hfMotionPathPluginLoading?: boolean;
+  __scMotionPathPluginLoading?: boolean;
   gsap?: {
     timeline?: (...args: unknown[]) => unknown;
     registerPlugin?: (...plugins: unknown[]) => unknown;
@@ -59,14 +59,14 @@ export function ensureMotionPathPluginLoaded(iframe: HTMLIFrameElement | null): 
   }
   if (!win.gsap?.registerPlugin) return;
   // A load is already in flight for this iframe — don't queue a second script.
-  if (win.__hfMotionPathPluginLoading) return;
+  if (win.__scMotionPathPluginLoading) return;
 
   try {
-    win.__hfMotionPathPluginLoading = true;
+    win.__scMotionPathPluginLoading = true;
     const pluginScript = doc.createElement("script");
     pluginScript.src = MOTION_PATH_PLUGIN_CDN;
     const finalize = () => {
-      win.__hfMotionPathPluginLoading = false;
+      win.__scMotionPathPluginLoading = false;
       try {
         if (win.MotionPathPlugin && win.gsap?.registerPlugin) {
           win.gsap.registerPlugin(win.MotionPathPlugin);
@@ -77,7 +77,7 @@ export function ensureMotionPathPluginLoaded(iframe: HTMLIFrameElement | null): 
     pluginScript.onerror = finalize;
     doc.head.appendChild(pluginScript);
   } catch {
-    win.__hfMotionPathPluginLoading = false;
+    win.__scMotionPathPluginLoading = false;
   }
 }
 
@@ -188,7 +188,7 @@ export interface SoftReloadOptions {
  * The soft reload's finalization step, shared with the rebind-only preview sync
  * below: seek → force timeline rebind → reapply studio manual edits.
  *
- * Seek BEFORE rebind: __hfForceTimelineRebind's own internal force-render
+ * Seek BEFORE rebind: __scForceTimelineRebind's own internal force-render
  * (see init.ts) renders the freshly-created timeline at whatever the
  * runtime's internal scrub position already is, not at whatever we pass
  * here afterward — a redundant seek() call after rebind can be a GSAP
@@ -196,14 +196,14 @@ export interface SoftReloadOptions {
  */
 function finalizeSoftReload(win: IframeWindow, currentTime: number): void {
   win.__player?.seek?.(currentTime);
-  win.__hfForceTimelineRebind?.();
-  win.__hfStudioManualEditsApply?.();
+  win.__scForceTimelineRebind?.();
+  win.__scStudioManualEditsApply?.();
 }
 
 /**
- * Run ONLY applySoftReload's finalization (seek → __hfForceTimelineRebind →
+ * Run ONLY applySoftReload's finalization (seek → __scForceTimelineRebind →
  * manual-edits reapply) against the live iframe — executing NO scripts and
- * touching NO script elements. `__hfForceTimelineRebind` makes the runtime
+ * touching NO script elements. `__scForceTimelineRebind` makes the runtime
  * re-derive every clip's visibility window from the live DOM's `data-start` /
  * `data-duration` attributes (init.ts: bindRootTimelineIfAvailable +
  * syncTimedElementVisibility), so this is the flashless sync for a timing edit
@@ -220,10 +220,10 @@ export function applySoftReloadFinalization(
   currentTime: number,
 ): boolean {
   const win = iframe?.contentWindow as IframeWindow | null;
-  if (!win?.__hfForceTimelineRebind) return false;
+  if (!win?.__scForceTimelineRebind) return false;
   try {
-    if (win.__hfSuppressSceneMutations) {
-      win.__hfSuppressSceneMutations(() => finalizeSoftReload(win, currentTime));
+    if (win.__scSuppressSceneMutations) {
+      win.__scSuppressSceneMutations(() => finalizeSoftReload(win, currentTime));
     } else {
       finalizeSoftReload(win, currentTime);
     }
@@ -244,7 +244,7 @@ export function applySoftReload(
   const win = iframe.contentWindow as IframeWindow | null;
   const doc = iframe.contentDocument;
   if (!win || !doc) return "cannot-soft-reload";
-  if (!win.gsap || !win.__hfForceTimelineRebind) return "cannot-soft-reload";
+  if (!win.gsap || !win.__scForceTimelineRebind) return "cannot-soft-reload";
 
   // Which composition(s) does this script rebuild? A soft reload re-runs ONE
   // composition's GSAP script, which re-registers its own window.__timelines[key].
@@ -295,7 +295,7 @@ export function applySoftReload(
   //   null   — unknown (no authored HTML supplied, element not found in it,
   //            and no runtime parse-time stamp)
   // The just-written file (`authoredHtml`) is the current truth; the runtime's
-  // parse-time stamp (data-hf-authored-opacity, installAuthoredOpacityCapture)
+  // parse-time stamp (data-sc-authored-opacity, installAuthoredOpacityCapture)
   // covers elements the file lookup can't resolve. Parsed lazily, at most once.
   let authoredDoc: Document | null | undefined;
   const findAuthoredSource = (el: HTMLElement): Element | null => {
@@ -309,8 +309,8 @@ export function applySoftReload(
       }
     }
     if (!authoredDoc) return null;
-    const hfId = el.getAttribute("data-hf-id");
-    if (hfId) return authoredDoc.querySelector(`[data-hf-id="${hfId}"]`);
+    const hfId = el.getAttribute("data-sc-id");
+    if (hfId) return authoredDoc.querySelector(`[data-sc-id="${hfId}"]`);
     return el.id ? authoredDoc.getElementById(el.id) : null;
   };
   const readAuthoredOpacity = (el: HTMLElement): string | null => {
@@ -430,13 +430,13 @@ export function applySoftReload(
       // <script> (it re-flashes the iframe). Defer THIS script's execution until
       // the in-flight load settles via a one-shot poll. The bootstrap guard is
       // the single source of truth for "plugin fetch in progress".
-      if (win.__hfMotionPathPluginLoading) {
+      if (win.__scMotionPathPluginLoading) {
         const started = Date.now();
         const poll = win.setInterval(() => {
           if (win.MotionPathPlugin) {
             win.clearInterval(poll);
             executeScript();
-          } else if (!win.__hfMotionPathPluginLoading || Date.now() - started > 10000) {
+          } else if (!win.__scMotionPathPluginLoading || Date.now() - started > 10000) {
             // The in-flight load finished without registering the plugin (errored)
             // or we timed out — recover with a full reload instead of running a
             // script that references a missing plugin.
@@ -446,11 +446,11 @@ export function applySoftReload(
         }, 50);
         return;
       }
-      win.__hfMotionPathPluginLoading = true;
+      win.__scMotionPathPluginLoading = true;
       const pluginScript = doc.createElement("script");
       pluginScript.src = MOTION_PATH_PLUGIN_CDN;
       pluginScript.onload = () => {
-        win.__hfMotionPathPluginLoading = false;
+        win.__scMotionPathPluginLoading = false;
         executeScript();
       };
       pluginScript.onerror = () => {
@@ -458,7 +458,7 @@ export function applySoftReload(
         // iframe with a motionPath tween referencing a missing plugin while the
         // caller already thinks the soft reload succeeded. Signal failure so the
         // caller can full-reload (which fetches the plugin fresh) instead.
-        win.__hfMotionPathPluginLoading = false;
+        win.__scMotionPathPluginLoading = false;
         onAsyncFailure?.();
       };
       doc.head.appendChild(pluginScript);
@@ -469,8 +469,8 @@ export function applySoftReload(
   };
 
   try {
-    if (win.__hfSuppressSceneMutations) {
-      win.__hfSuppressSceneMutations(doReload);
+    if (win.__scSuppressSceneMutations) {
+      win.__scSuppressSceneMutations(doReload);
     } else {
       doReload();
     }

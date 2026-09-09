@@ -11,10 +11,10 @@ import {
   audioFxPresetsByFamily,
   HF_AUDIO_FX_PRESET_FAMILIES,
   type HfAudioFxPresetFamily,
-} from "@hyperframes/core/audio-fx-presets";
-import { PRESET_PROBLEM } from "@hyperframes/core/audio-fx-copy";
+} from "@smashcut/core/audio-fx-presets";
+import { PRESET_PROBLEM } from "@smashcut/core/audio-fx-copy";
 import { useRef } from "react";
-import type { HfAudioNameKind } from "@hyperframes/core/audio-carve";
+import type { HfAudioNameKind } from "@smashcut/core/audio-carve";
 
 /**
  * Shelf names in the author's language, which is deliberately not the effect
@@ -91,7 +91,7 @@ export function FxPresetMenu({
       : HF_AUDIO_FX_PRESET_FAMILIES;
   return (
     <div
-      className="hf-fx-preset-menu space-y-1.5 rounded-[4px] border border-panel-border-input p-1.5"
+      className="sc-fx-preset-menu space-y-1.5 rounded-[4px] border border-panel-border-input p-1.5"
       // One handler for the shelf rather than one per button: leaving any preset
       // for the gap between two of them has to revert, and a per-button leave
       // fires that on the way to the next one.
@@ -102,8 +102,8 @@ export function FxPresetMenu({
       onBlur={onAudition ? () => onAudition(null) : undefined}
     >
       {families.map((family) => (
-        <div key={family} className="hf-fx-preset-group space-y-0.5">
-          <span className="hf-fx-preset-group-label block font-mono text-[9px] uppercase tracking-wide text-panel-text-2">
+        <div key={family} className="sc-fx-preset-group space-y-0.5">
+          <span className="sc-fx-preset-group-label block font-mono text-[9px] uppercase tracking-wide text-panel-text-2">
             {FAMILY_LABEL[family]}
           </span>
           {audioFxPresetsByFamily(family).map((preset) => (
@@ -111,7 +111,7 @@ export function FxPresetMenu({
               key={preset.id}
               type="button"
               // `pr-8` so a long complaint does not run under the wave.
-              className="hf-fx-preset-item block w-full rounded-[3px] bg-panel-surface py-1 pl-1.5 pr-8 text-left text-panel-text-1 hover:text-panel-text-0"
+              className="sc-fx-preset-item block w-full rounded-[3px] bg-panel-surface py-1 pl-1.5 pr-8 text-left text-panel-text-1 hover:text-panel-text-0"
               // The description says what it does; the count is doing real work
               // — it tells the author a preset IS a chain they can open and
               // edit, rather than an opaque setting they cannot follow.
@@ -130,18 +130,18 @@ export function FxPresetMenu({
                 onAudition?.(preset.id);
               }}
             >
-              <span className="hf-fx-preset-problem block truncate text-[10px]">
+              <span className="sc-fx-preset-problem block truncate text-[10px]">
                 {PRESET_PROBLEM[preset.id] ?? preset.description}
               </span>
               {/* "Clean Voice · 5 effects" — the count is on the row in the
                   designs, not hidden in a tooltip. It is doing real work there:
                   it tells the author a preset IS a chain they can open and edit,
                   rather than an opaque setting they cannot follow. The count is
-                  its own span so `.hf-fx-preset-name` stays the NAME — several
+                  its own span so `.sc-fx-preset-name` stays the NAME — several
                   tests read it as the preset's identity. */}
               <span className="block truncate font-mono text-[9px] text-panel-text-2">
-                <span className="hf-fx-preset-name">{preset.label}</span>
-                <span className="hf-fx-preset-count">
+                <span className="sc-fx-preset-name">{preset.label}</span>
+                <span className="sc-fx-preset-count">
                   {" · "}
                   {preset.nodes.length} effect{preset.nodes.length === 1 ? "" : "s"}
                 </span>
@@ -153,7 +153,7 @@ export function FxPresetMenu({
                   happening. Four bars because that reads as a level meter at
                   this size; three reads as an ellipsis. */}
               {onAudition ? (
-                <span className="hf-fx-preset-wave" aria-hidden="true">
+                <span className="sc-fx-preset-wave" aria-hidden="true">
                   <span />
                   <span />
                   <span />

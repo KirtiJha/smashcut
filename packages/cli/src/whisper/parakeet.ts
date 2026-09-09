@@ -25,7 +25,7 @@ const PARAKEET_INSTALL =
   "uv venv ~/.venvs/parakeet && VIRTUAL_ENV=~/.venvs/parakeet uv pip install parakeet-mlx";
 
 /** Verify a candidate binary actually runs (mirrors the --version gate on
- *  HYPERFRAMES_PYTHON) so a stale $HYPERFRAMES_PARAKEET path can't shadow a
+ *  SMASHCUT_PYTHON) so a stale $SMASHCUT_PARAKEET path can't shadow a
  *  working install on PATH. */
 function isRunnable(bin: string): boolean {
   try {
@@ -39,7 +39,7 @@ function isRunnable(bin: string): boolean {
 /** Locate the `parakeet-mlx` runner: env override, the documented venv, then PATH. */
 export function findParakeet(): string | undefined {
   const candidates = [
-    process.env.HYPERFRAMES_PARAKEET,
+    process.env.SMASHCUT_PARAKEET,
     join(homedir(), ".venvs", "parakeet", "bin", "parakeet-mlx"),
   ].filter((p): p is string => Boolean(p));
 
@@ -131,7 +131,7 @@ export function transcribeWithParakeet(
   options?.onProgress?.(
     cached ? "Transcribing with Parakeet..." : "Downloading Parakeet model (first run, ~600MB)...",
   );
-  const workDir = mkdtempSync(join(tmpdir(), "hyperframes-parakeet-"));
+  const workDir = mkdtempSync(join(tmpdir(), "smashcut-parakeet-"));
   try {
     const argv = [inputPath, "--model", model, "--output-format", "json", "--output-dir", workDir];
     if (options?.language) argv.push("--language", options.language);

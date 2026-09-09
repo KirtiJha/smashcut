@@ -14,7 +14,7 @@ import { useTrackDesignInput } from "../../contexts/DesignPanelInputContext";
 // can't be read (detached/unmeasured), never to a fixed magic number.
 function naturalDepthPerspective(el: HTMLElement | null | undefined): number {
   if (!el) return 0;
-  const root = el.closest("[data-hf-inner-root],[data-composition-id]") as HTMLElement | null;
+  const root = el.closest("[data-sc-inner-root],[data-composition-id]") as HTMLElement | null;
   const compHeight = root?.offsetHeight || el.ownerDocument?.documentElement?.clientHeight || 0;
   if (compHeight > 0) return Math.round(compHeight);
   return Math.round((el.offsetHeight || 0) * 4) || 0;

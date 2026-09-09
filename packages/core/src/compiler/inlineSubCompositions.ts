@@ -21,7 +21,7 @@ import {
   wrapInlineScriptWithErrorBoundary,
   wrapScopedCompositionScript,
 } from "./compositionScoping";
-import { checkSubCompositionUsability } from "@hyperframes/parsers/sub-composition-validity";
+import { checkSubCompositionUsability } from "@smashcut/parsers/sub-composition-validity";
 import { enumerateNestedCompositionHosts, planCompositionAssembly } from "./compositionAssembly";
 
 // ---------------------------------------------------------------------------
@@ -64,7 +64,7 @@ export interface InlineSubCompositionsOptions {
   /**
    * Prepare the inner root element before injecting it into the host.
    * The bundler's `prepareFlattenedInnerRoot` clones the element, strips
-   * timing attributes, and adds `data-hf-inner-root`. When omitted, the
+   * timing attributes, and adds `data-sc-inner-root`. When omitted, the
    * inner root's outerHTML is injected as-is.
    */
   flattenInnerRoot?: (innerRoot: Element) => Element;
@@ -100,7 +100,7 @@ export interface InlineSubCompositionsOptions {
 
   /**
    * Error label prefix used in wrapped composition scripts.
-   * Defaults to `"[HyperFrames] composition script error:"`.
+   * Defaults to `"[SmashCut] composition script error:"`.
    */
   scriptErrorLabel?: string;
 
@@ -177,7 +177,7 @@ export function inlineSubCompositions(
     readVariableDefaults,
     parseHostVariables,
     buildScopeSelector = defaultBuildScopeSelector,
-    scriptErrorLabel = "[HyperFrames] composition script error:",
+    scriptErrorLabel = "[SmashCut] composition script error:",
     onMissingComposition,
     assetExists,
   } = options;
@@ -197,7 +197,7 @@ export function inlineSubCompositions(
     if (!src) continue;
 
     const compHtml = resolveHtml(src);
-    // Shared with lint + render pre-flight (@hyperframes/parsers'
+    // Shared with lint + render pre-flight (@smashcut/parsers'
     // subCompositionValidity.ts) so all three callers agree on what counts
     // as a usable sub-composition file. This path stays intentionally
     // tolerant (skip, don't throw) — preview and studio must keep bundling
@@ -274,7 +274,7 @@ export function inlineSubCompositions(
         variablesByComp[runtimeCompId] = mergedVariables;
       }
       // Compile time is the only place this defect is visible on the sub-comp
-      // path: the instance value is baked into `__hfVariablesByComp` right
+      // path: the instance value is baked into `__scVariablesByComp` right
       // here, and the scoped `getVariables` shim only reads that table, so the
       // runtime's identical guard never runs. Same helper, so the message and
       // the per-process dedupe set are shared with the runtime path and the
@@ -418,9 +418,9 @@ export function inlineSubCompositions(
         hostEl.innerHTML = compId ? innerRoot.innerHTML || "" : innerRoot.outerHTML || "";
         // When the producer path strips the inner root (innerHTML), the
         // authored id attribute is lost. Propagate it to the host so that
-        // rewritten #ID selectors ([data-hf-authored-id="X"]) still resolve.
+        // rewritten #ID selectors ([data-sc-authored-id="X"]) still resolve.
         if (compId && authoredRootId) {
-          hostEl.setAttribute("data-hf-authored-id", authoredRootId);
+          hostEl.setAttribute("data-sc-authored-id", authoredRootId);
         }
       }
     } else {

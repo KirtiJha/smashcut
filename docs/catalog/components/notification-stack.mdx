@@ -16,7 +16,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 ```html notification-stack.html
 <!doctype html>
 <!--
-  notification-stack: HyperFrames video primitive (product demo)
+  notification-stack: SmashCut video primitive (product demo)
 
   1 to 5 token notification cards (accent icon dot, title, one body line)
   slide-settle into a vertical stack on cues, newest on top: each new card
@@ -186,8 +186,8 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
             var root = document.getElementById("root");
             var stage = root.querySelector(".ns-stage");
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             function toList(value, fallback) {
@@ -407,7 +407,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 
 ## Install
 
-<InstallCommand command="npx hyperframes add notification-stack" item="notification-stack" />
+<InstallCommand command="npx smashcut add notification-stack" item="notification-stack" />
 
 That writes one file: `compositions/components/notification-stack.html`.
 
@@ -450,7 +450,7 @@ defaults, so this behaves exactly like the preview above until you change one:
 ```html
 <!doctype html>
 <!--
-  notification-stack: HyperFrames video primitive (product demo)
+  notification-stack: SmashCut video primitive (product demo)
 
   1 to 5 token notification cards (accent icon dot, title, one body line)
   slide-settle into a vertical stack on cues, newest on top: each new card
@@ -620,8 +620,8 @@ defaults, so this behaves exactly like the preview above until you change one:
             var root = document.getElementById("root");
             var stage = root.querySelector(".ns-stage");
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             function toList(value, fallback) {

@@ -1,7 +1,7 @@
 {
   "$schema": "https://hyperframes.heygen.com/schema/registry-item.json",
   "name": "icon-swap",
-  "type": "hyperframes:component",
+  "type": "smashcut:component",
   "title": "Icon Swap",
   "description": "A scale-and-blur icon swap primitive for toolbar and action state changes",
   "tags": ["video-primitive", "transition-primitive", "transitions-dev-port", "icon", "swap"],
@@ -9,7 +9,7 @@
     {
       "path": "icon-swap.html",
       "target": "compositions/components/icon-swap.html",
-      "type": "hyperframes:snippet"
+      "type": "smashcut:snippet"
     }
   ],
   "variables": [
@@ -103,6 +103,6 @@
     }
   ],
   "preview": {
-    "poster": "https://static.heygen.ai/hyperframes-oss/docs/images/catalog/components/icon-swap.png"
+    "poster": "https://static.heygen.ai/smashcut-oss/docs/images/catalog/components/icon-swap.png"
   }
 }

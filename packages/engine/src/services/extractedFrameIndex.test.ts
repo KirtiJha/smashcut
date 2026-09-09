@@ -12,7 +12,7 @@ import {
 const roots: string[] = [];
 
 function frameDir(): string {
-  const root = mkdtempSync(join(tmpdir(), "hf-extracted-frame-index-"));
+  const root = mkdtempSync(join(tmpdir(), "sc-extracted-frame-index-"));
   roots.push(root);
   return root;
 }

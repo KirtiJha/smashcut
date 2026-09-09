@@ -114,7 +114,7 @@ export function getDomLayerPatchTarget(
   const { sourceFile } = getSourceFileForElement(el, activeCompositionPath);
   return {
     id: el.id || undefined,
-    hfId: el.getAttribute("data-hf-id") || undefined,
+    hfId: el.getAttribute("data-sc-id") || undefined,
     selector,
     selectorIndex: getSelectorIndex(
       el.ownerDocument,
@@ -255,7 +255,7 @@ export function findElementForSelection(
     querySelectorAllSafely(doc, selector).filter(sourceMatches);
 
   if (selection.hfId) {
-    const byHfId = findAll(`[data-hf-id="${escapeCssString(selection.hfId)}"]`)[0];
+    const byHfId = findAll(`[data-sc-id="${escapeCssString(selection.hfId)}"]`)[0];
     if (byHfId) return byHfId;
   }
 

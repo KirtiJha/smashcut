@@ -10,7 +10,7 @@ import {
   ensureHfIds,
   isCompositionTemplate,
   walkCompositionDescendants,
-} from "@hyperframes/core/hf-ids";
+} from "@smashcut/core/sc-ids";
 
 export interface ParsedDocument {
   document: Document;
@@ -35,7 +35,7 @@ export function parseMutable(html: string): ParsedDocument {
 export function findById(document: Document, id: string): Element | null {
   // Delegate to resolveScoped so patch replay (undo/redo, override-set apply)
   // resolves an id the SAME way forward dispatch does: canonical-first for an
-  // ambiguous bare id, and scoped-path ("hf-host/hf-leaf") aware. Otherwise the
+  // ambiguous bare id, and scoped-path ("sc-host/sc-leaf") aware. Otherwise the
   // two paths disagree on which duplicate a bare id targets and undo reverts the
   // wrong element. (function declaration is hoisted.)
   return resolveScoped(document, id);
@@ -95,9 +95,9 @@ function isCanonicalScope(el: Element): boolean {
 }
 
 /**
- * Resolve a bare or scoped hf-id to its DOM element.
+ * Resolve a bare or scoped sc-id to its DOM element.
  *
- * Bare id ("hf-x"): top-level document search. When the bare id is ambiguous
+ * Bare id ("sc-x"): top-level document search. When the bare id is ambiguous
  * (duplicated across a sub-composition and the top level), prefer the canonical
  * (top-level) instance — the one whose scopedId equals the bare id — falling
  * back to document order when no canonical match exists. This matches
@@ -115,14 +115,14 @@ export function resolveScoped(document: Document, id: string): Element | null {
   // resolution agrees with getElement (scopedId === id wins over document order).
   if (parts.length === 1) {
     const escaped = escapeHfId(id);
-    const matches = querySelectorAllDeep(document, `[data-hf-id="${escaped}"]`);
+    const matches = querySelectorAllDeep(document, `[data-sc-id="${escaped}"]`);
     if (matches.length > 0) {
       return matches.find((el) => isCanonicalScope(el)) ?? matches[0] ?? null;
     }
     // Fall back to a sub-composition ROOT addressed by its composition id. A
-    // host element carries data-hf-id (its own leaf id) AND data-composition-id
-    // (the id studio passes when targeting the sub-comp root). data-hf-id takes
-    // precedence above; only when no hf-id matches do we treat the bare id as a
+    // host element carries data-sc-id (its own leaf id) AND data-composition-id
+    // (the id studio passes when targeting the sub-comp root). data-sc-id takes
+    // precedence above; only when no sc-id matches do we treat the bare id as a
     // composition id, making comp-ids first-class resolvable addresses.
     return querySelectorAllDeep(document, `[data-composition-id="${escaped}"]`)[0] ?? null;
   }
@@ -131,7 +131,7 @@ export function resolveScoped(document: Document, id: string): Element | null {
   for (const part of parts) {
     const escaped = escapeHfId(part);
     const found: Element | null =
-      querySelectorAllDeep(context, `[data-hf-id="${escaped}"]`)[0] ?? null;
+      querySelectorAllDeep(context, `[data-sc-id="${escaped}"]`)[0] ?? null;
     if (!found) return null;
     context = found;
   }
@@ -139,8 +139,8 @@ export function resolveScoped(document: Document, id: string): Element | null {
 }
 
 /**
- * Bare leaf id from a scoped hf-id ("hf-HOST/hf-LEAF" → "hf-LEAF"; a bare id
- * passes through unchanged). The live DOM's `data-hf-id` attribute never
+ * Bare leaf id from a scoped sc-id ("hf-HOST/hf-LEAF" → "hf-LEAF"; a bare id
+ * passes through unchanged). The live DOM's `data-sc-id` attribute never
  * carries the host-chain prefix, so a consumer holding a scopedId (from
  * getElements()/getElement()) needs this to query the rendered DOM directly.
  */
@@ -182,7 +182,7 @@ export function declarationElement(document: Document, wrapped: boolean): Elemen
 
 export function findRoot(document: Document): Element | null {
   return (
-    document.querySelector("[data-hf-root]") ??
+    document.querySelector("[data-sc-root]") ??
     document.getElementById("stage") ??
     // Descend into a composition <template> so a wrapped template sub-comp
     // resolves to its inner [data-composition-id] root, not the <template> shell.
@@ -367,7 +367,7 @@ export function setOwnText(el: Element, text: string): void {
 
   // Flat text leaf (text and/or `<br>` only): rebuild the text/`<br>` run from
   // the "\n"-separated value — the inverse of getOwnText. Existing `<br>` nodes
-  // are reused in order so their identity (data-hf-id, etc.) survives an edit
+  // are reused in order so their identity (data-sc-id, etc.) survives an edit
   // that keeps the line, and a new one is only minted when a line is added.
   // Never writes text into a `<br>`, so no `</br>` corruption.
   if (isTextOrBrLeaf(el)) {

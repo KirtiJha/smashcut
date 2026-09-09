@@ -99,7 +99,7 @@
   </head>
   <body>
     <div
-      data-hf-id="hf-0m1b"
+      data-sc-id="sc-0m1b"
       id="root"
       data-composition-id="carousel-vision-5"
       data-start="0"
@@ -110,8 +110,8 @@
       data-layout-allow-overflow=""
     >
       <div id="carousel-vision-5-partA" class="clip" data-start="0" data-duration="6">
-        <div data-hf-id="hf-elyu" id="carousel-vision-5-scaler" class="scaler">
-          <div data-hf-id="hf-mi5e" id="carousel-vision-5-stage" class="stage"></div>
+        <div data-sc-id="sc-elyu" id="carousel-vision-5-scaler" class="scaler">
+          <div data-sc-id="sc-mi5e" id="carousel-vision-5-stage" class="stage"></div>
         </div>
       </div>
     </div>
@@ -626,8 +626,8 @@
 
         const REG = DATA.registry || null;
         const V =
-          REG && window.__hyperframes && window.__hyperframes.getVariables
-            ? window.__hyperframes.getVariables() || {}
+          REG && window.__smashcut && window.__smashcut.getVariables
+            ? window.__smashcut.getVariables() || {}
             : {};
         const varUrl = (v) => (v && typeof v === "object" ? v.url || v.src || "" : v || "");
         if (REG) {

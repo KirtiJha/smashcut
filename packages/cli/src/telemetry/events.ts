@@ -1,5 +1,5 @@
-import { redactTelemetryString, type OutputResolutionIssueKind } from "@hyperframes/core";
-import type { SubTimelineWaitOutcome } from "@hyperframes/engine";
+import { redactTelemetryString, type OutputResolutionIssueKind } from "@smashcut/core";
+import type { SubTimelineWaitOutcome } from "@smashcut/engine";
 import { FEEDBACK_RATING_SCALE } from "../utils/feedbackRating.js";
 import type { CatalogUsage } from "../utils/catalogUsage.js";
 import { flush, shouldTrack, trackEvent } from "./client.js";
@@ -27,7 +27,7 @@ function powerStateFields(): { on_battery?: boolean; low_power_mode?: boolean } 
   };
 }
 
-// run_id is attached only when the orchestrator set HYPERFRAMES_RUN_ID — an
+// run_id is attached only when the orchestrator set SMASHCUT_RUN_ID — an
 // absent property, never null/"" (PostHog treats those as real values).
 function runIdField(runId: string | undefined): { run_id?: string } {
   return runId !== undefined ? { run_id: runId } : {};
@@ -246,7 +246,7 @@ export function trackRenderComplete(
     // Worker auto-sizing provenance (RenderPerfSummary.workerSizing). Answers
     // "why N workers?" fleet-wide, and validates the advisory per-worker heap
     // budget before it's enforced (field OOM: 6 auto workers on a 24GB/4GB-heap
-    // machine — see computeWorkerSizing in @hyperframes/engine).
+    // machine — see computeWorkerSizing in @smashcut/engine).
     workersBoundBy?: string;
     workersCpuBased?: number;
     workersMemoryBased?: number;
@@ -298,7 +298,7 @@ export function trackRenderComplete(
     deBoundaryFrames?: number;
     deNcprFallbacks?: number;
     deFrameTimeouts?: number;
-    // "cli" when triggered by `hyperframes render` (default), "studio" when
+    // "cli" when triggered by `smashcut render` (default), "studio" when
     // triggered by a studio preview-server render (POST /api/projects/:id/render).
     source?: "cli" | "studio";
     // Composition metadata
@@ -579,7 +579,7 @@ export function trackInitTemplate(templateId: string, props?: { tailwind?: boole
  *
  * Item names are public registry identifiers, never user content or project
  * data. This routes through `trackEvent`, so an install that opted out
- * (`hyperframes telemetry disable`, `HYPERFRAMES_NO_TELEMETRY`, `DO_NOT_TRACK`)
+ * (`smashcut telemetry disable`, `SMASHCUT_NO_TELEMETRY`, `DO_NOT_TRACK`)
  * emits nothing.
  */
 export function trackRegistryItemAdded(props: {

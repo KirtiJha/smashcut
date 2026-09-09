@@ -75,7 +75,7 @@ describe("Acorn motion-path writer parity", () => {
     const acorn = syncAcorn(SCRIPT);
     const recast = syncRecast(SCRIPT);
     expect(motionModel(acorn)).toEqual(motionModel(recast));
-    expect(acorn).toContain('data: "hf-hold"');
+    expect(acorn).toContain('data: "sc-hold"');
     expect(syncAcorn(acorn)).toBe(acorn);
   });
 });

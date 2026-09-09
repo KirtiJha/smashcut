@@ -16,7 +16,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 ```html pull-back-reveal.html
 <!doctype html>
 <!--
-  pull-back-reveal: HyperFrames video primitive (camera / reveal / recontextualize)
+  pull-back-reveal: SmashCut video primitive (camera / reveal / recontextualize)
 
   Concept: the frame starts tight on one stat chip, pauses long enough to
   establish it as the subject, then pulls back to reveal the headline and two
@@ -277,8 +277,8 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
             var detail = root.querySelector(".pbr-detail-chip");
             var ground = root.querySelector(".pbr-ground");
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             var detailText = vars.detail_text == null ? "+312%" : String(vars.detail_text);
@@ -356,7 +356,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 
 ## Install
 
-<InstallCommand command="npx hyperframes add pull-back-reveal" item="pull-back-reveal" />
+<InstallCommand command="npx smashcut add pull-back-reveal" item="pull-back-reveal" />
 
 That writes one file: `compositions/components/pull-back-reveal.html`.
 
@@ -396,7 +396,7 @@ defaults, so this behaves exactly like the preview above until you change one:
 ```html
 <!doctype html>
 <!--
-  pull-back-reveal: HyperFrames video primitive (camera / reveal / recontextualize)
+  pull-back-reveal: SmashCut video primitive (camera / reveal / recontextualize)
 
   Concept: the frame starts tight on one stat chip, pauses long enough to
   establish it as the subject, then pulls back to reveal the headline and two
@@ -657,8 +657,8 @@ defaults, so this behaves exactly like the preview above until you change one:
             var detail = root.querySelector(".pbr-detail-chip");
             var ground = root.querySelector(".pbr-ground");
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             var detailText = vars.detail_text == null ? "+312%" : String(vars.detail_text);

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Owner-isolated real-GCP smoke + v1/v2 parity test for the HyperFrames
+# Owner-isolated real-GCP smoke + v1/v2 parity test for the SmashCut
 # Cloud Run adapter.
 #
 # The default exercises Plan v2. Deprecated v1 compatibility can be selected
@@ -34,11 +34,11 @@ FIXTURE="${FIXTURE:-mp4-h264-sdr}"
 CHUNK_SIZES="${CHUNK_SIZES:-}"
 PSNR_THRESHOLD="${PSNR_THRESHOLD:-35}"
 PROTOCOLS="${PROTOCOLS:-v2}"
-OWNER="${HYPERFRAMES_SMOKE_OWNER:-}"
+OWNER="${SMASHCUT_SMOKE_OWNER:-}"
 AR_REPO="${AR_REPO:-}"
 AR_REPO_WAS_EXPLICIT=0
 [ -z "$AR_REPO" ] || AR_REPO_WAS_EXPLICIT=1
-EXPLICIT_IMAGE="${HYPERFRAMES_GCP_IMAGE:-}"
+EXPLICIT_IMAGE="${SMASHCUT_GCP_IMAGE:-}"
 KEEP_STACK=0
 SKIP_BUILD=0
 
@@ -101,8 +101,8 @@ RUN_NONCE="$(date -u +%Y%m%dT%H%M%S)-$$-$RANDOM"
 OWNER_HASH="$(printf '%s' "$OWNER:$PROJECT:$REGION:$RUN_NONCE" | sha256sum | cut -c1-10)"
 # 19 chars. With the longest "-run"/"-wf" suffix, service-account IDs stay
 # comfortably under GCP's 30-character limit.
-STACK_NAME="hf-smoke-$OWNER_HASH"
-[ "$STACK_NAME" != "hyperframes" ] || {
+STACK_NAME="sc-smoke-$OWNER_HASH"
+[ "$STACK_NAME" != "smashcut" ] || {
   echo "ERROR: refusing to use the shared static resource prefix" >&2
   exit 1
 }

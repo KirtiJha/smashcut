@@ -16,7 +16,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 ```html pull-to-refresh.html
 <!doctype html>
 <!--
-  pull-to-refresh: HyperFrames video primitive (pointers / interaction / demonstrate)
+  pull-to-refresh: SmashCut video primitive (pointers / interaction / demonstrate)
 
   Concept: a mobile list yields under a scripted pull, arms at a visible
   threshold, commits into a bounded loading state, then snaps exactly back
@@ -60,7 +60,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
   container-type:size. It has no data-width or data-height. All internal
   geometry uses cqw/cqh, and the hardcoded composition id is required because
   FLATTENED_INNER_ROOT_STRIP_ATTRS removes the mounted root id attribute.
-  Variables come from window.__hyperframes.getVariables(), which owns merged
+  Variables come from window.__smashcut.getVariables(), which owns merged
   declared defaults and per-instance overrides after mounting.
 -->
 <html
@@ -446,8 +446,8 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
             var dots = Array.prototype.slice.call(root.querySelectorAll(".ptr-dot"));
             var updated = root.querySelector(".ptr-updated");
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             // INVARIANT: only finite 60–220 input reaches the physics owner.
@@ -699,7 +699,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 
 ## Install
 
-<InstallCommand command="npx hyperframes add pull-to-refresh" item="pull-to-refresh" />
+<InstallCommand command="npx smashcut add pull-to-refresh" item="pull-to-refresh" />
 
 That writes one file: `compositions/components/pull-to-refresh.html`.
 
@@ -738,7 +738,7 @@ defaults, so this behaves exactly like the preview above until you change one:
 ```html
 <!doctype html>
 <!--
-  pull-to-refresh: HyperFrames video primitive (pointers / interaction / demonstrate)
+  pull-to-refresh: SmashCut video primitive (pointers / interaction / demonstrate)
 
   Concept: a mobile list yields under a scripted pull, arms at a visible
   threshold, commits into a bounded loading state, then snaps exactly back
@@ -782,7 +782,7 @@ defaults, so this behaves exactly like the preview above until you change one:
   container-type:size. It has no data-width or data-height. All internal
   geometry uses cqw/cqh, and the hardcoded composition id is required because
   FLATTENED_INNER_ROOT_STRIP_ATTRS removes the mounted root id attribute.
-  Variables come from window.__hyperframes.getVariables(), which owns merged
+  Variables come from window.__smashcut.getVariables(), which owns merged
   declared defaults and per-instance overrides after mounting.
 -->
 <html
@@ -1168,8 +1168,8 @@ defaults, so this behaves exactly like the preview above until you change one:
             var dots = Array.prototype.slice.call(root.querySelectorAll(".ptr-dot"));
             var updated = root.querySelector(".ptr-updated");
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             // INVARIANT: only finite 60–220 input reaches the physics owner.

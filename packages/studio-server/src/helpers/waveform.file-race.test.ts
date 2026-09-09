@@ -34,7 +34,7 @@ vi.mock("node:child_process", async () => {
     }),
   };
 });
-vi.mock("@hyperframes/parsers/ff-binaries", () => ({ findFfBinary: () => "ffmpeg" }));
+vi.mock("@smashcut/parsers/ff-binaries", () => ({ findFfBinary: () => "ffmpeg" }));
 vi.mock("node:fs", async (importOriginal) => {
   const fs = await importOriginal<typeof import("node:fs")>();
   return {
@@ -73,7 +73,7 @@ beforeEach(() => {
     failRename: false,
     failCleanup: false,
   });
-  projectDir = fs.mkdtempSync(join(tmpdir(), "hf-waveform-test-"));
+  projectDir = fs.mkdtempSync(join(tmpdir(), "sc-waveform-test-"));
   fs.writeFileSync(join(projectDir, "audio.wav"), "audio");
   cacheDir = join(projectDir, ".waveform-cache");
   cachePath = join(
@@ -137,7 +137,7 @@ for (const caller of ["helper", "route"]) {
     it.each([true, false])(
       "rejects a cache-directory symlink (target exists: %s)",
       async (exists) => {
-        const outside = fs.mkdtempSync(join(tmpdir(), "hf-waveform-outside-"));
+        const outside = fs.mkdtempSync(join(tmpdir(), "sc-waveform-outside-"));
         const target = join(outside, "cache");
         const outsideCache = join(
           target,
@@ -167,7 +167,7 @@ for (const caller of ["helper", "route"]) {
     );
 
     it("rejects a cache-directory symlink planted during decoding", async () => {
-      const outside = fs.mkdtempSync(join(tmpdir(), "hf-waveform-outside-"));
+      const outside = fs.mkdtempSync(join(tmpdir(), "sc-waveform-outside-"));
       hooks.decode = () =>
         fs.symlinkSync(outside, cacheDir, process.platform === "win32" ? "junction" : "dir");
       try {

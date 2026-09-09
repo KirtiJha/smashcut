@@ -9,7 +9,7 @@ describe("createRenderPlan", () => {
   let projectDir: string;
 
   beforeEach(() => {
-    projectDir = mkdtempSync(join(tmpdir(), "hf-render-plan-"));
+    projectDir = mkdtempSync(join(tmpdir(), "sc-render-plan-"));
     writeFileSync(
       join(projectDir, "index.html"),
       '<main data-composition-id="main" data-width="1920" data-height="1080" data-fps="24"></main>',
@@ -55,12 +55,12 @@ describe("createRenderPlan", () => {
       );
     }
     writeFileSync(
-      join(projectDir, "hyperframes.json"),
+      join(projectDir, "smashcut.json"),
       JSON.stringify({
         registry: "https://example.test",
         registryItems: [
-          { name: "kept", type: "hyperframes:block", target: "compositions/kept.html" },
-          { name: "dropped", type: "hyperframes:block", target: "compositions/dropped.html" },
+          { name: "kept", type: "smashcut:block", target: "compositions/kept.html" },
+          { name: "dropped", type: "smashcut:block", target: "compositions/dropped.html" },
         ],
       }),
     );
@@ -138,17 +138,17 @@ describe("createRenderPlan", () => {
 
   it("resolves a relative frame-cache directory into the execution environment", () => {
     const plan = createRenderPlan({ dir: projectDir, "frames-cache-dir": "./frame-cache" });
-    expect(plan.environment.HYPERFRAMES_EXTRACT_CACHE_DIR).toBe(resolve("./frame-cache"));
+    expect(plan.environment.SMASHCUT_EXTRACT_CACHE_DIR).toBe(resolve("./frame-cache"));
   });
 
   it("preserves frame-cache disable aliases for engine normalization", () => {
     const plan = createRenderPlan({ dir: projectDir, "frames-cache-dir": "OFF" });
-    expect(plan.environment.HYPERFRAMES_EXTRACT_CACHE_DIR).toBe("OFF");
+    expect(plan.environment.SMASHCUT_EXTRACT_CACHE_DIR).toBe("OFF");
   });
 
-  it("attributes a flag-less render to the skill persisted in hyperframes.json", () => {
+  it("attributes a flag-less render to the skill persisted in smashcut.json", () => {
     writeFileSync(
-      join(projectDir, "hyperframes.json"),
+      join(projectDir, "smashcut.json"),
       JSON.stringify({ authoringSkill: "product-launch-video" }),
     );
     const plan = createRenderPlan({ dir: projectDir });
@@ -157,7 +157,7 @@ describe("createRenderPlan", () => {
 
   it("lets an explicit --skill flag override the persisted project owner", () => {
     writeFileSync(
-      join(projectDir, "hyperframes.json"),
+      join(projectDir, "smashcut.json"),
       JSON.stringify({ authoringSkill: "product-launch-video" }),
     );
     const plan = createRenderPlan({ dir: projectDir, skill: "motion-graphics" });

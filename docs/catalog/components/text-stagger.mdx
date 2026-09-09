@@ -15,7 +15,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 
 ```html text-stagger.html
 <!--
-  Text Stagger - transitions.dev-inspired primitive for HyperFrames.
+  Text Stagger - transitions.dev-inspired primitive for SmashCut.
 
   Paste the markup, CSS and script into a composition. Use the timeline
   integration note at the bottom as the starting point for deterministic GSAP
@@ -45,7 +45,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 -->
 
 <div
-  class="hf-transition-text-stagger"
+  class="sc-transition-text-stagger"
   data-composition-variables='[
     {"id": "text", "type": "string", "role": "content", "label": "Text", "description": "Headline copy. Every whitespace-separated word becomes one staggered span.", "default": "Build motion systems fast"},
     {"id": "size", "type": "number", "role": "layout", "label": "Size", "description": "Type size of every word in pixels, clamped to 24-160. Line height stays proportional.", "default": 74, "min": 24, "max": 160, "step": 1, "unit": "px"},
@@ -60,26 +60,26 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 </div>
 
 <style>
-  .hf-transition-text-stagger {
+  .sc-transition-text-stagger {
     display: flex;
     flex-wrap: wrap;
     gap: 0.24em;
-    color: var(--hf-stagger-ink, #111827);
+    color: var(--sc-stagger-ink, #111827);
     font:
       900 74px/0.95 Inter,
       system-ui,
       sans-serif;
-    font-size: var(--hf-stagger-size, 74px);
+    font-size: var(--sc-stagger-size, 74px);
     letter-spacing: -0.045em;
   }
-  .hf-transition-text-stagger span {
+  .sc-transition-text-stagger span {
     display: inline-block;
     background: linear-gradient(
       90deg,
-      var(--hf-stagger-ink, #111827),
-      var(--hf-stagger-ink, #111827),
-      var(--hf-stagger-accent, #38bdf8),
-      var(--hf-stagger-ink, #111827)
+      var(--sc-stagger-ink, #111827),
+      var(--sc-stagger-ink, #111827),
+      var(--sc-stagger-accent, #38bdf8),
+      var(--sc-stagger-ink, #111827)
     );
     background-size: 240% 100%;
     -webkit-background-clip: text;
@@ -94,8 +94,8 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
     "use strict";
 
     var vars =
-      window.__hyperframes && window.__hyperframes.getVariables
-        ? window.__hyperframes.getVariables()
+      window.__smashcut && window.__smashcut.getVariables
+        ? window.__smashcut.getVariables()
         : {};
 
     // Unrecognised overrides return to their declared defaults.
@@ -123,12 +123,12 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
     var tone = tones[pick(tones, vars.tone, "ink")];
     var accent = accents[pick(accents, vars.accent, "blue")];
 
-    var roots = document.querySelectorAll(".hf-transition-text-stagger");
+    var roots = document.querySelectorAll(".sc-transition-text-stagger");
     for (var i = 0; i < roots.length; i += 1) {
       var root = roots[i];
-      root.style.setProperty("--hf-stagger-size", size + "px");
-      root.style.setProperty("--hf-stagger-ink", tone);
-      root.style.setProperty("--hf-stagger-accent", accent);
+      root.style.setProperty("--sc-stagger-size", size + "px");
+      root.style.setProperty("--sc-stagger-ink", tone);
+      root.style.setProperty("--sc-stagger-accent", accent);
       // Rebuilt without whitespace between the spans: whitespace-only text
       // between flex items is not rendered, so this matches the markup above.
       root.textContent = "";
@@ -143,8 +143,8 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 
 <!--
   Timeline integration:
-  tl.fromTo('.hf-transition-text-stagger span', { opacity: 0, y: 48, filter: 'blur(14px)' }, { opacity: 1, y: 0, filter: 'blur(0px)', duration: 0.54, stagger: 0.09, ease: 'power3.out' }, 0.35);
-  tl.to('.hf-transition-text-stagger span', { backgroundPosition: '100% 0%', duration: 0.72, stagger: 0.04, ease: 'power2.inOut' }, 1.05);
+  tl.fromTo('.sc-transition-text-stagger span', { opacity: 0, y: 48, filter: 'blur(14px)' }, { opacity: 1, y: 0, filter: 'blur(0px)', duration: 0.54, stagger: 0.09, ease: 'power3.out' }, 0.35);
+  tl.to('.sc-transition-text-stagger span', { backgroundPosition: '100% 0%', duration: 0.72, stagger: 0.04, ease: 'power2.inOut' }, 1.05);
 -->
 ```
 
@@ -152,7 +152,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 
 ## Install
 
-<InstallCommand command="npx hyperframes add text-stagger" item="text-stagger" />
+<InstallCommand command="npx smashcut add text-stagger" item="text-stagger" />
 
 That writes one file: `compositions/components/text-stagger.html`.
 
@@ -185,7 +185,7 @@ defaults, so this behaves exactly like the preview above until you change one:
 
 ```html
 <!--
-  Text Stagger - transitions.dev-inspired primitive for HyperFrames.
+  Text Stagger - transitions.dev-inspired primitive for SmashCut.
 
   Paste the markup, CSS and script into a composition. Use the timeline
   integration note at the bottom as the starting point for deterministic GSAP
@@ -215,7 +215,7 @@ defaults, so this behaves exactly like the preview above until you change one:
 -->
 
 <div
-  class="hf-transition-text-stagger"
+  class="sc-transition-text-stagger"
   data-composition-variables='[
     {"id": "text", "type": "string", "role": "content", "label": "Text", "description": "Headline copy. Every whitespace-separated word becomes one staggered span.", "default": "Build motion systems fast"},
     {"id": "size", "type": "number", "role": "layout", "label": "Size", "description": "Type size of every word in pixels, clamped to 24-160. Line height stays proportional.", "default": 74, "min": 24, "max": 160, "step": 1, "unit": "px"},
@@ -230,26 +230,26 @@ defaults, so this behaves exactly like the preview above until you change one:
 </div>
 
 <style>
-  .hf-transition-text-stagger {
+  .sc-transition-text-stagger {
     display: flex;
     flex-wrap: wrap;
     gap: 0.24em;
-    color: var(--hf-stagger-ink, #111827);
+    color: var(--sc-stagger-ink, #111827);
     font:
       900 74px/0.95 Inter,
       system-ui,
       sans-serif;
-    font-size: var(--hf-stagger-size, 74px);
+    font-size: var(--sc-stagger-size, 74px);
     letter-spacing: -0.045em;
   }
-  .hf-transition-text-stagger span {
+  .sc-transition-text-stagger span {
     display: inline-block;
     background: linear-gradient(
       90deg,
-      var(--hf-stagger-ink, #111827),
-      var(--hf-stagger-ink, #111827),
-      var(--hf-stagger-accent, #38bdf8),
-      var(--hf-stagger-ink, #111827)
+      var(--sc-stagger-ink, #111827),
+      var(--sc-stagger-ink, #111827),
+      var(--sc-stagger-accent, #38bdf8),
+      var(--sc-stagger-ink, #111827)
     );
     background-size: 240% 100%;
     -webkit-background-clip: text;
@@ -264,8 +264,8 @@ defaults, so this behaves exactly like the preview above until you change one:
     "use strict";
 
     var vars =
-      window.__hyperframes && window.__hyperframes.getVariables
-        ? window.__hyperframes.getVariables()
+      window.__smashcut && window.__smashcut.getVariables
+        ? window.__smashcut.getVariables()
         : {};
 
     // Unrecognised overrides return to their declared defaults.
@@ -293,12 +293,12 @@ defaults, so this behaves exactly like the preview above until you change one:
     var tone = tones[pick(tones, vars.tone, "ink")];
     var accent = accents[pick(accents, vars.accent, "blue")];
 
-    var roots = document.querySelectorAll(".hf-transition-text-stagger");
+    var roots = document.querySelectorAll(".sc-transition-text-stagger");
     for (var i = 0; i < roots.length; i += 1) {
       var root = roots[i];
-      root.style.setProperty("--hf-stagger-size", size + "px");
-      root.style.setProperty("--hf-stagger-ink", tone);
-      root.style.setProperty("--hf-stagger-accent", accent);
+      root.style.setProperty("--sc-stagger-size", size + "px");
+      root.style.setProperty("--sc-stagger-ink", tone);
+      root.style.setProperty("--sc-stagger-accent", accent);
       // Rebuilt without whitespace between the spans: whitespace-only text
       // between flex items is not rendered, so this matches the markup above.
       root.textContent = "";
@@ -313,8 +313,8 @@ defaults, so this behaves exactly like the preview above until you change one:
 
 <!--
   Timeline integration:
-  tl.fromTo('.hf-transition-text-stagger span', { opacity: 0, y: 48, filter: 'blur(14px)' }, { opacity: 1, y: 0, filter: 'blur(0px)', duration: 0.54, stagger: 0.09, ease: 'power3.out' }, 0.35);
-  tl.to('.hf-transition-text-stagger span', { backgroundPosition: '100% 0%', duration: 0.72, stagger: 0.04, ease: 'power2.inOut' }, 1.05);
+  tl.fromTo('.sc-transition-text-stagger span', { opacity: 0, y: 48, filter: 'blur(14px)' }, { opacity: 1, y: 0, filter: 'blur(0px)', duration: 0.54, stagger: 0.09, ease: 'power3.out' }, 0.35);
+  tl.to('.sc-transition-text-stagger span', { backgroundPosition: '100% 0%', duration: 0.72, stagger: 0.04, ease: 'power2.inOut' }, 1.05);
 -->
 ```
 

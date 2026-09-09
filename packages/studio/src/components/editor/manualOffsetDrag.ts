@@ -99,7 +99,7 @@ export interface ManualOffsetDragMember {
   initialOffset: { x: number; y: number };
   /**
    * The element's GSAP x/y at gesture start, captured in JS so a mid-drag
-   * re-render (which reverts inline style + wipes the `data-hf-drag-gsap-base-*`
+   * re-render (which reverts inline style + wipes the `data-sc-drag-gsap-base-*`
    * attrs) can't drop the base. Without this the draft falls back to the LIVE
    * transform — i.e. the value it set last frame — and `base + delta` integrates,
    * making the element accelerate away ("flies"). See applyOffsetDragDraftViaGsap.
@@ -337,8 +337,8 @@ export function createManualOffsetDragMember(input: {
   // var — see readAppliedStudioPathOffset. This keeps the commit purely relative
   // (applied + delta) so a stale offset can't fling the element off-screen.
   const initialOffset = readAppliedStudioPathOffset(input.element);
-  input.element.setAttribute("data-hf-drag-initial-offset-x", String(initialOffset.x));
-  input.element.setAttribute("data-hf-drag-initial-offset-y", String(initialOffset.y));
+  input.element.setAttribute("data-sc-drag-initial-offset-x", String(initialOffset.x));
+  input.element.setAttribute("data-sc-drag-initial-offset-y", String(initialOffset.y));
 
   const win = input.element.ownerDocument.defaultView as
     | (Window & {
@@ -348,8 +348,8 @@ export function createManualOffsetDragMember(input: {
     | null;
   const gsapX = win?.gsap?.getProperty?.(input.element, "x") || 0;
   const gsapY = win?.gsap?.getProperty?.(input.element, "y") || 0;
-  input.element.setAttribute("data-hf-drag-gsap-base-x", String(gsapX));
-  input.element.setAttribute("data-hf-drag-gsap-base-y", String(gsapY));
+  input.element.setAttribute("data-sc-drag-gsap-base-x", String(gsapX));
+  input.element.setAttribute("data-sc-drag-gsap-base-y", String(gsapY));
 
   if (win?.__timelines) {
     const paused: string[] = [];
@@ -364,7 +364,7 @@ export function createManualOffsetDragMember(input: {
       }
     }
     if (paused.length > 0) {
-      input.element.setAttribute("data-hf-drag-paused-timelines", paused.join(","));
+      input.element.setAttribute("data-sc-drag-paused-timelines", paused.join(","));
     }
   }
 
@@ -452,10 +452,10 @@ export function applyManualOffsetDragDraft(
  * true gesture-start values in JS, immune to the re-render.
  */
 function restampManualOffsetDragGestureBase(member: ManualOffsetDragMember): void {
-  member.element.setAttribute("data-hf-drag-gsap-base-x", String(member.baseGsap.x));
-  member.element.setAttribute("data-hf-drag-gsap-base-y", String(member.baseGsap.y));
-  member.element.setAttribute("data-hf-drag-initial-offset-x", String(member.initialOffset.x));
-  member.element.setAttribute("data-hf-drag-initial-offset-y", String(member.initialOffset.y));
+  member.element.setAttribute("data-sc-drag-gsap-base-x", String(member.baseGsap.x));
+  member.element.setAttribute("data-sc-drag-gsap-base-y", String(member.baseGsap.y));
+  member.element.setAttribute("data-sc-drag-initial-offset-x", String(member.initialOffset.x));
+  member.element.setAttribute("data-sc-drag-initial-offset-y", String(member.initialOffset.y));
 }
 
 function applyManualOffsetCommitValue(
@@ -465,7 +465,7 @@ function applyManualOffsetCommitValue(
   restampManualOffsetDragGestureBase(member);
   // Optimistic visual through the GSAP channel (same as the live draft and the
   // committed `tl.set`), so the element holds its dropped position until the
-  // source mutation soft-reloads — no transient CSS `--hf-studio-offset` write.
+  // source mutation soft-reloads — no transient CSS `--sc-studio-offset` write.
   // CSS apply only when gsap is unavailable.
   if (!applyOffsetDragDraftViaGsap(member.element, offset, member.baseGsap)) {
     applyStudioPathOffset(member.element, offset);
@@ -529,10 +529,10 @@ export function restoreManualOffsetDragMembers(members: ManualOffsetDragMember[]
 export function endManualOffsetDragMembers(members: ManualOffsetDragMember[]): void {
   for (const member of members) {
     endStudioManualEditGesture(member.element, member.gestureToken);
-    member.element.removeAttribute("data-hf-drag-initial-offset-x");
-    member.element.removeAttribute("data-hf-drag-initial-offset-y");
-    member.element.removeAttribute("data-hf-drag-gsap-base-x");
-    member.element.removeAttribute("data-hf-drag-gsap-base-y");
+    member.element.removeAttribute("data-sc-drag-initial-offset-x");
+    member.element.removeAttribute("data-sc-drag-initial-offset-y");
+    member.element.removeAttribute("data-sc-drag-gsap-base-x");
+    member.element.removeAttribute("data-sc-drag-gsap-base-y");
     // Clear the draft's `translate: none` so the soft reload starts clean —
     // otherwise button-less pointermoves after the reload compute deltas
     // from a stale base and fling the element off-screen (#1673).
@@ -542,9 +542,9 @@ export function endManualOffsetDragMembers(members: ManualOffsetDragMember[]): v
       member.element.style.removeProperty("translate");
     }
     // Migration: when GSAP owns the position (the committed value lives in the
-    // GSAP transform), the legacy `--hf-studio-offset` CSS channel is obsolete.
+    // GSAP transform), the legacy `--sc-studio-offset` CSS channel is obsolete.
     // Clear it on the LIVE element — otherwise the leftover `translate:
-    // var(--hf-studio-offset)` composes with the GSAP transform and the element
+    // var(--sc-studio-offset)` composes with the GSAP transform and the element
     // renders offset by the stale value until a full page reload (the source is
     // already stripped). clearStudioPathOffset leaves `transform` untouched.
     if (getOffsetDragGsap(member.element)) {
@@ -556,8 +556,8 @@ export function endManualOffsetDragMembers(members: ManualOffsetDragMember[]): v
 
 /** Shared timeline teardown for either the committed or restored path. */
 export function resumeGsapTimelines(element: HTMLElement): void {
-  const ids = element.getAttribute("data-hf-drag-paused-timelines");
-  element.removeAttribute("data-hf-drag-paused-timelines");
+  const ids = element.getAttribute("data-sc-drag-paused-timelines");
+  element.removeAttribute("data-sc-drag-paused-timelines");
   if (!ids) return;
   const win = element.ownerDocument.defaultView as
     | (Window & {

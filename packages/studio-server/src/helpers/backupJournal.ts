@@ -39,7 +39,7 @@ export function snapshotBeforeWrite(
     const content = readFileSync(absPath);
 
     const relativePath = relative(projectDir, absPath);
-    const backupDir = join(projectDir, ".hyperframes", "backup");
+    const backupDir = join(projectDir, ".smashcut", "backup");
     mkdirSync(backupDir, { recursive: true });
 
     const backupKey = backupKeyForPath(relativePath);

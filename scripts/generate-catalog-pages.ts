@@ -29,7 +29,7 @@ const scriptDir = dirname(fileURLToPath(import.meta.url));
 const repoRoot = resolve(scriptDir, "..");
 const registryDir = resolve(repoRoot, "registry");
 const docsDir = resolve(repoRoot, "docs");
-const catalogImageBase = "https://static.heygen.ai/hyperframes-oss/docs/images/catalog";
+const catalogImageBase = "https://static.heygen.ai/smashcut-oss/docs/images/catalog";
 const payloadRoot = resolve(repoRoot, "docs/public/catalog");
 
 /**
@@ -61,7 +61,7 @@ function hasPayload(kind: ItemKind, name: string): boolean {
  *
  * The player is mounted inside the iframe rather than written into the page
  * because the docs renderer strips unknown custom elements from MDX, so a
- * `<hyperframes-player>` written here would never reach the DOM. Nothing
+ * `<smashcut-player>` written here would never reach the DOM. Nothing
  * rewrites the inside of a `srcDoc` document, so it survives there.
  *
  * The composition arrives as JSON because the docs host publishes only JSON and
@@ -75,11 +75,11 @@ function playerEmbed(kind: ItemKind, name: string, posterUrl: string | null | un
   const bootstrap = [
     '<!doctype html><html><head><meta charset="utf-8">',
     "<style>html,body{margin:0;height:100%;overflow:hidden;background:transparent}",
-    "hyperframes-player{display:block;width:100%;height:100%}</style>",
-    `<script src="https://cdn.jsdelivr.net/npm/@hyperframes/player@${playerVersionRange}/dist/hyperframes-player.global.js"><\\/script>`,
+    "smashcut-player{display:block;width:100%;height:100%}</style>",
+    `<script src="https://cdn.jsdelivr.net/npm/@smashcut/player@${playerVersionRange}/dist/smashcut-player.global.js"><\\/script>`,
     "</head><body><script>",
     `fetch("${payloadUrl}").then(function(r){return r.json()}).then(function(d){`,
-    'var p=document.createElement("hyperframes-player");',
+    'var p=document.createElement("smashcut-player");',
     'p.setAttribute("srcdoc",d.html);p.setAttribute("controls","");',
     'p.setAttribute("autoplay","");p.setAttribute("loop","");p.setAttribute("muted","");',
     poster,
@@ -141,9 +141,9 @@ function discoverItems(): { kind: ItemKind; manifest: RegistryItem }[] {
 
   for (const item of registryManifest.items ?? []) {
     const kind =
-      item.type === "hyperframes:block"
+      item.type === "smashcut:block"
         ? "block"
-        : item.type === "hyperframes:component"
+        : item.type === "smashcut:component"
           ? "component"
           : null;
 
@@ -291,7 +291,7 @@ export function carriedSectionsFrom(pagePath: string): CarriedContent {
 }
 
 function typeDir(kind: ItemKind): string {
-  return ITEM_TYPE_DIRS[kind === "block" ? "hyperframes:block" : "hyperframes:component"];
+  return ITEM_TYPE_DIRS[kind === "block" ? "smashcut:block" : "smashcut:component"];
 }
 
 function textureGroupsFor(manifest: RegistryItem): TextureGroup[] {
@@ -348,22 +348,22 @@ function textureMaskUrlFor(manifest: RegistryItem, texture: string): string {
 }
 
 function generateTextureExamples(manifest: RegistryItem, textureGroups: TextureGroup[]): string[] {
-  const lines: string[] = ["## Every texture", "", '<div className="hf-texture-example-groups">'];
+  const lines: string[] = ["## Every texture", "", '<div className="sc-texture-example-groups">'];
 
   for (const group of textureGroups) {
     lines.push(
       "  <div>",
-      `    <h3 className="hf-texture-example-title">${group.title}</h3>`,
-      '    <div className="hf-texture-example-grid">',
+      `    <h3 className="sc-texture-example-title">${group.title}</h3>`,
+      '    <div className="sc-texture-example-grid">',
     );
     for (const item of group.items) {
       const maskPath = textureMaskUrlFor(manifest, item);
-      const textureClass = `hf-texture-${item}`;
+      const textureClass = `sc-texture-${item}`;
       lines.push(
-        `      <div className="hf-texture-example-card" style={{ "--mask-url": "url('${maskPath}')" }}>`,
-        `        <div className="hf-texture-example-meta"><div className="hf-texture-example-label">${textureLabel(item)}</div><code className="hf-texture-example-class">${textureClass}</code></div>`,
-        `        <div className="hf-texture-example-shadow"><div className="hf-texture-example-word">${textureSampleWord(item)}</div></div>`,
-        `        <div className="hf-texture-example-usage">Use <code>hf-texture-text ${textureClass}</code></div>`,
+        `      <div className="sc-texture-example-card" style={{ "--mask-url": "url('${maskPath}')" }}>`,
+        `        <div className="sc-texture-example-meta"><div className="sc-texture-example-label">${textureLabel(item)}</div><code className="sc-texture-example-class">${textureClass}</code></div>`,
+        `        <div className="sc-texture-example-shadow"><div className="sc-texture-example-word">${textureSampleWord(item)}</div></div>`,
+        `        <div className="sc-texture-example-usage">Use <code>sc-texture-text ${textureClass}</code></div>`,
         "      </div>",
       );
     }
@@ -379,7 +379,7 @@ function generateTextureAgentUsage(
   textureGroups: TextureGroup[],
 ): string[] {
   const firstTexture = textureGroups[0]?.items[0] ?? "brick";
-  const firstClass = `hf-texture-${firstTexture}`;
+  const firstClass = `sc-texture-${firstTexture}`;
   const installedSnippet = `compositions/components/${manifest.name}/${manifest.name}.html`;
 
   return [
@@ -391,26 +391,26 @@ function generateTextureAgentUsage(
     `Use the ${manifest.title} catalog component.`,
     "",
     "1. From the project root, run:",
-    `   npx hyperframes add ${manifest.name}`,
+    `   npx smashcut add ${manifest.name}`,
     "2. That command creates this installed snippet:",
     `   ${installedSnippet}`,
     "3. Open that file and paste the real <style> block",
     "   near the bottom into the composition once. That CSS defines",
-    "   hf-texture-text and every hf-texture-* class.",
+    "   sc-texture-text and every sc-texture-* class.",
     "4. Apply this class to the target text:",
-    `   class="hf-texture-text ${firstClass}"`,
-    "5. For another material, copy one hf-texture-* class",
+    `   class="sc-texture-text ${firstClass}"`,
+    "5. For another material, copy one sc-texture-* class",
     "   from the Texture Examples cards.",
     "6. This is the proper way to apply drop shadow",
     "   to textured text: wrap the text and put",
     "   filter on the wrapper, not on the text.",
     "   Use this markup:",
     `   <div style="filter: drop-shadow(1px 2px 1px rgba(0,0,0,0.48))">`,
-    `     <div class="hf-texture-text ${firstClass}">TEXT</div>`,
+    `     <div class="sc-texture-text ${firstClass}">TEXT</div>`,
     "   </div>",
     "```",
     "",
-    `Swap \`${firstClass}\` for the class on any texture card below. Every texture also needs the base class \`hf-texture-text\`.`,
+    `Swap \`${firstClass}\` for the class on any texture card below. Every texture also needs the base class \`sc-texture-text\`.`,
     "",
   ];
 }
@@ -423,7 +423,7 @@ function generateTextureAnimationExample(
     textureGroups.flatMap((group) => group.items).find((item) => item === "lava") ??
     textureGroups[0]?.items[0] ??
     "brick";
-  const textureClass = `hf-texture-${texture}`;
+  const textureClass = `sc-texture-${texture}`;
   const maskPath = textureMaskUrlFor(manifest, texture);
 
   return [
@@ -431,19 +431,19 @@ function generateTextureAnimationExample(
     "",
     "Move the mask position on the text element. Keep the drop shadow on a wrapper so it follows the textured contour.",
     "",
-    `<div className="hf-texture-animate-demo" style={{ "--mask-url": "url('${maskPath}')" }}>`,
-    '  <div className="hf-texture-animate-meta">',
-    '    <div className="hf-texture-animate-label">Animated mask position</div>',
-    `    <code className="hf-texture-animate-class">hf-texture-text ${textureClass}</code>`,
+    `<div className="sc-texture-animate-demo" style={{ "--mask-url": "url('${maskPath}')" }}>`,
+    '  <div className="sc-texture-animate-meta">',
+    '    <div className="sc-texture-animate-label">Animated mask position</div>',
+    `    <code className="sc-texture-animate-class">sc-texture-text ${textureClass}</code>`,
     "  </div>",
-    '  <div className="hf-texture-animate-shadow">',
-    '    <div className="hf-texture-animate-word">MOTION</div>',
+    '  <div className="sc-texture-animate-shadow">',
+    '    <div className="sc-texture-animate-word">MOTION</div>',
     "  </div>",
     "</div>",
     "",
     "```html",
     '<div class="texture-shadow">',
-    `  <div class="hf-texture-text ${textureClass} animated-texture">MOTION</div>`,
+    `  <div class="sc-texture-text ${textureClass} animated-texture">MOTION</div>`,
     "</div>",
     "```",
     "",
@@ -474,15 +474,15 @@ function generateTexturePreview(manifest: RegistryItem, textureGroups: TextureGr
     .map((group) => group.items[0])
     .filter((item): item is string => Boolean(item))
     .slice(0, 6);
-  const lines: string[] = ['<div className="hf-texture-preview-panel">'];
+  const lines: string[] = ['<div className="sc-texture-preview-panel">'];
 
   for (const item of sampleItems) {
     if (!item) continue;
     const maskPath = textureMaskUrlFor(manifest, item);
     lines.push(
-      `  <div className="hf-texture-preview-card" style={{ "--mask-url": "url('${maskPath}')" }}>`,
-      `    <div className="hf-texture-preview-label">${textureLabel(item)}</div>`,
-      `    <div className="hf-texture-preview-shadow"><div className="hf-texture-preview-word">${textureSampleWord(item)}</div></div>`,
+      `  <div className="sc-texture-preview-card" style={{ "--mask-url": "url('${maskPath}')" }}>`,
+      `    <div className="sc-texture-preview-label">${textureLabel(item)}</div>`,
+      `    <div className="sc-texture-preview-shadow"><div className="sc-texture-preview-word">${textureSampleWord(item)}</div></div>`,
       "  </div>",
     );
   }
@@ -496,7 +496,7 @@ function generateTexturePreview(manifest: RegistryItem, textureGroups: TextureGr
  * nowhere else.
  *
  * Two readers, because there are two ways a preview consumes variables:
- *   - `window.__hfVariables` — what `getVariables()` merges over the declared
+ *   - `window.__scVariables` — what `getVariables()` merges over the declared
  *     defaults in a composition that reads them itself.
  *   - `data-variable-values` on the host element — what the runtime loader
  *     layers over a mounted sub-composition's defaults.
@@ -525,7 +525,7 @@ export function variableBootstrap(ownFile: string): string {
     "    var v;",
     "    try { v = JSON.parse(raw); } catch (e) { return; }",
     "    if (!v || typeof v !== 'object') return;",
-    "    window.__hfVariables = v;",
+    "    window.__scVariables = v;",
     "    var hosts = document.querySelectorAll('[data-composition-src]');",
     "    for (var i = 0; i < hosts.length; i++) {",
     "      var src = (hosts[i].getAttribute('data-composition-src') || '').split('?')[0];",
@@ -557,7 +557,7 @@ export function variableBootstrap(ownFile: string): string {
  */
 export function variablePreviewWrapper(src: string): string[] {
   return [
-    '<hyperframes-player id="p" controls muted></hyperframes-player>',
+    '<smashcut-player id="p" controls muted></smashcut-player>',
     "<script>",
     "  const player = document.getElementById('p');",
     `  const BASE = ${JSON.stringify(src)};`,
@@ -630,8 +630,8 @@ function sentenceList(parts: string[]): string {
 /** The file a reader actually opens — by type, not array position. */
 function primaryFileFor(manifest: RegistryItem): FileTarget | undefined {
   return (
-    manifest.files.find((f) => f.type === "hyperframes:composition") ??
-    manifest.files.find((f) => f.type === "hyperframes:snippet") ??
+    manifest.files.find((f) => f.type === "smashcut:composition") ??
+    manifest.files.find((f) => f.type === "smashcut:snippet") ??
     manifest.files[0]
   );
 }
@@ -950,7 +950,7 @@ function usageSection(
       "## Paste it into your composition",
       "",
       `Open \`${primaryTarget}\`. Paste the real \`<style>\` element near the bottom into`,
-      "your composition once. It defines `hf-texture-text` and every `hf-texture-*` class.",
+      "your composition once. It defines `sc-texture-text` and every `sc-texture-*` class.",
       "",
       `Leave the texture PNGs in \`assets/${manifest.name}/masks/\`. The CSS looks for them there.`,
       "",
@@ -1012,7 +1012,7 @@ function generateItemMdx(
   carried: CarriedContent = { sections: [], hasCustomUsage: false },
 ): string {
   const tags = manifest.tags ?? [];
-  const installCmd = `npx hyperframes add ${manifest.name}`;
+  const installCmd = `npx smashcut add ${manifest.name}`;
   const source = manifest as RegistryItem & SourceMetadata;
   const textureGroups = textureGroupsFor(manifest);
   const primaryTarget = primaryFileFor(manifest)?.target ?? `compositions/${manifest.name}.html`;

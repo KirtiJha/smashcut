@@ -12,12 +12,12 @@ function baseHtml(body: string, style = ""): string {
 }
 
 const textureCss = `
-.hf-texture-text {
+.sc-texture-text {
   color: #fff;
   -webkit-mask-size: var(--mask-size, cover);
   mask-size: var(--mask-size, cover);
 }
-.hf-texture-lava {
+.sc-texture-lava {
   -webkit-mask-image: url("masks/lava.png");
   mask-image: url("masks/lava.png");
 }
@@ -26,7 +26,7 @@ const textureCss = `
 describe("texture rules", () => {
   it("does not warn for a valid texture mask text usage", async () => {
     const html = baseHtml(
-      '<div class="shadow"><div class="hf-texture-text hf-texture-lava">TEXT</div></div>',
+      '<div class="shadow"><div class="sc-texture-text sc-texture-lava">TEXT</div></div>',
       `${textureCss}.shadow { filter: drop-shadow(1px 2px 1px rgba(0,0,0,.48)); }`,
     );
 
@@ -35,19 +35,19 @@ describe("texture rules", () => {
     expect(result.findings.filter((finding) => finding.code.startsWith("texture_"))).toEqual([]);
   });
 
-  it("warns when a material class is used without hf-texture-text", async () => {
-    const html = baseHtml('<div class="hf-texture-lava">TEXT</div>', textureCss);
+  it("warns when a material class is used without sc-texture-text", async () => {
+    const html = baseHtml('<div class="sc-texture-lava">TEXT</div>', textureCss);
 
     const result = await lintHyperframeHtml(html);
     const finding = result.findings.find((item) => item.code === "texture_class_missing_base");
 
     expect(finding).toBeDefined();
     expect(finding?.severity).toBe("warning");
-    expect(finding?.fixHint).toContain("hf-texture-text");
+    expect(finding?.fixHint).toContain("sc-texture-text");
   });
 
-  it("warns when hf-texture-text has no material class or custom mask image", async () => {
-    const html = baseHtml('<div class="hf-texture-text">TEXT</div>', textureCss);
+  it("warns when sc-texture-text has no material class or custom mask image", async () => {
+    const html = baseHtml('<div class="sc-texture-text">TEXT</div>', textureCss);
 
     const result = await lintHyperframeHtml(html);
     const finding = result.findings.find((item) => item.code === "texture_text_missing_mask");
@@ -56,9 +56,9 @@ describe("texture rules", () => {
     expect(finding?.severity).toBe("warning");
   });
 
-  it("allows hf-texture-text with an inline custom mask image", async () => {
+  it("allows sc-texture-text with an inline custom mask image", async () => {
     const html = baseHtml(
-      '<div class="hf-texture-text" style="-webkit-mask-image:url(custom.png); mask-image:url(custom.png)">TEXT</div>',
+      '<div class="sc-texture-text" style="-webkit-mask-image:url(custom.png); mask-image:url(custom.png)">TEXT</div>',
       textureCss,
     );
 
@@ -69,18 +69,18 @@ describe("texture rules", () => {
   });
 
   it("warns when a texture material class is not defined by local CSS", async () => {
-    const html = baseHtml('<div class="hf-texture-text hf-texture-marbel">TEXT</div>', textureCss);
+    const html = baseHtml('<div class="sc-texture-text sc-texture-marbel">TEXT</div>', textureCss);
 
     const result = await lintHyperframeHtml(html);
     const finding = result.findings.find((item) => item.code === "texture_class_unknown");
 
     expect(finding).toBeDefined();
-    expect(finding?.message).toContain("hf-texture-marbel");
+    expect(finding?.message).toContain("sc-texture-marbel");
   });
 
   it("warns when drop-shadow is applied inline to the textured text element", async () => {
     const html = baseHtml(
-      '<div class="hf-texture-text hf-texture-lava" style="filter: drop-shadow(1px 2px 1px black)">TEXT</div>',
+      '<div class="sc-texture-text sc-texture-lava" style="filter: drop-shadow(1px 2px 1px black)">TEXT</div>',
       textureCss,
     );
 
@@ -91,23 +91,23 @@ describe("texture rules", () => {
     expect(finding?.fixHint).toContain("wrapper");
   });
 
-  it("warns when drop-shadow is applied by CSS directly to hf-texture-text", async () => {
+  it("warns when drop-shadow is applied by CSS directly to sc-texture-text", async () => {
     const html = baseHtml(
-      '<div class="hf-texture-text hf-texture-lava">TEXT</div>',
-      `${textureCss}.hf-texture-text { filter: drop-shadow(1px 2px 1px black); }`,
+      '<div class="sc-texture-text sc-texture-lava">TEXT</div>',
+      `${textureCss}.sc-texture-text { filter: drop-shadow(1px 2px 1px black); }`,
     );
 
     const result = await lintHyperframeHtml(html);
     const finding = result.findings.find((item) => item.code === "texture_drop_shadow_on_text");
 
     expect(finding).toBeDefined();
-    expect(finding?.selector).toBe(".hf-texture-text");
+    expect(finding?.selector).toBe(".sc-texture-text");
   });
 
   it("warns when drop-shadow targets a material class before the mask rule is declared", async () => {
     const html = baseHtml(
-      '<div class="hf-texture-text hf-texture-lava">TEXT</div>',
-      `.hf-texture-lava { filter: drop-shadow(1px 2px 1px black); }
+      '<div class="sc-texture-text sc-texture-lava">TEXT</div>',
+      `.sc-texture-lava { filter: drop-shadow(1px 2px 1px black); }
        ${textureCss}`,
     );
 
@@ -115,12 +115,12 @@ describe("texture rules", () => {
     const finding = result.findings.find((item) => item.code === "texture_drop_shadow_on_text");
 
     expect(finding).toBeDefined();
-    expect(finding?.selector).toBe(".hf-texture-lava");
+    expect(finding?.selector).toBe(".sc-texture-lava");
   });
 
   it("warns when drop-shadow targets another class on the textured text element", async () => {
     const html = baseHtml(
-      '<div class="hf-texture-text hf-texture-lava headline">TEXT</div>',
+      '<div class="sc-texture-text sc-texture-lava headline">TEXT</div>',
       `${textureCss}.headline { filter: drop-shadow(1px 2px 1px black); }`,
     );
 
@@ -133,7 +133,7 @@ describe("texture rules", () => {
 
   it("does not warn when another-class drop-shadow selector needs an unmatched ancestor", async () => {
     const html = baseHtml(
-      '<div class="hf-texture-text hf-texture-lava headline">TEXT</div>',
+      '<div class="sc-texture-text sc-texture-lava headline">TEXT</div>',
       `${textureCss}.card .headline { filter: drop-shadow(1px 2px 1px black); }`,
     );
 

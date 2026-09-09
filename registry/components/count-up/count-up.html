@@ -1,6 +1,6 @@
 <!doctype html>
 <!--
-  count-up: HyperFrames video primitive (proof and stats / prove)
+  count-up: SmashCut video primitive (proof and stats / prove)
 
   A value accelerates from start to end, decelerates into the exact final
   integer, and lands with one restrained scale pulse. Prefix and suffix stay
@@ -157,8 +157,8 @@
             var prefixElement = root.querySelector(".cu-prefix");
             var suffixElement = root.querySelector(".cu-suffix");
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             var startCandidate = vars.start;

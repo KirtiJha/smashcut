@@ -80,7 +80,7 @@ export const VariablesExplorer = ({
   };
 
   const CSS = `
-.hf-ve {
+.sc-ve {
   --ve-fg: #18181b;
   --ve-muted: #71717a;
   --ve-line: #e4e4e7;
@@ -92,7 +92,7 @@ export const VariablesExplorer = ({
   --ve-ring: rgba(24, 24, 27, 0.14);
   --ve-danger: #b42318;
 }
-:where(html.dark) .hf-ve {
+:where(html.dark) .sc-ve {
   --ve-fg: #f4f4f5;
   --ve-muted: #a1a1aa;
   --ve-line: #27272a;
@@ -105,7 +105,7 @@ export const VariablesExplorer = ({
   --ve-danger: #ff9d95;
 }
 
-.hf-ve-tabs {
+.sc-ve-tabs {
   display: inline-flex;
   gap: 2px;
   padding: 3px;
@@ -113,7 +113,7 @@ export const VariablesExplorer = ({
   border-radius: 9999px;
   background: var(--ve-sunken);
 }
-.hf-ve-tab {
+.sc-ve-tab {
   padding: 4px 12px;
   border-radius: 9999px;
   font-size: 12px;
@@ -121,21 +121,21 @@ export const VariablesExplorer = ({
   color: var(--ve-muted);
   background: transparent;
 }
-.hf-ve-tab[data-on="true"] {
+.sc-ve-tab[data-on="true"] {
   color: var(--ve-fg);
   background: var(--ve-surface);
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
 }
-.hf-ve-tab:hover:not([data-on="true"]) { color: var(--ve-fg); }
+.sc-ve-tab:hover:not([data-on="true"]) { color: var(--ve-fg); }
 
 /* Not a grid. A grid row is as tall as its tallest cell, so a five-line snippet
    sat in the preview's 16:9 box with 300px of dead area under it. The inactive
    pane is taken out of flow instead — and stretches left/right rather than to
    inset 0, so the iframe keeps its own height. An iframe resized on every tab
    switch reflows the composition running inside it. */
-.hf-ve-frame { position: relative; }
-.hf-ve-cell { min-width: 0; }
-.hf-ve-cell[data-on="false"] {
+.sc-ve-frame { position: relative; }
+.sc-ve-cell { min-width: 0; }
+.sc-ve-cell[data-on="false"] {
   position: absolute;
   top: 0;
   left: 0;
@@ -143,7 +143,7 @@ export const VariablesExplorer = ({
   visibility: hidden;
   pointer-events: none;
 }
-.hf-ve-preview {
+.sc-ve-preview {
   overflow: hidden;
   border: 1px solid var(--ve-line);
   border-radius: 12px;
@@ -151,7 +151,7 @@ export const VariablesExplorer = ({
 /* CodeBlock carries the page margins (mt-5 mb-8) that separate it from prose,
    which is dead space inside a tab. Element plus two classes out-specifies a
    Tailwind utility without !important. */
-.hf-ve-cell > div.code-block { margin: 0; }
+.sc-ve-cell > div.code-block { margin: 0; }
 /* The snippet wraps; the source does not.
    A value the reader has to read in full should not hide half of itself off the
    right edge, so the snippet pane wraps — what \`\`\`html wrap does for a fence.
@@ -160,8 +160,8 @@ export const VariablesExplorer = ({
    Source is left to scroll sideways like every other code block on the site.
    Wrapping it breaks its indentation, and a comment paragraph re-flowed to a
    narrow column reads worse than one the reader can scroll. */
-.hf-ve-snippet .shiki,
-.hf-ve-snippet .shiki code {
+.sc-ve-snippet .shiki,
+.sc-ve-snippet .shiki code {
   white-space: pre-wrap;
   overflow-wrap: anywhere;
 }
@@ -170,67 +170,67 @@ export const VariablesExplorer = ({
    rather than the block, so the filename and its copy button stay put; and it
    is a max-height, so a short source still hugs its own content and the dead
    area under it stays gone. */
-.hf-ve-cell .code-block pre {
+.sc-ve-cell .code-block pre {
   max-height: 460px;
   overflow: auto;
 }
 /* Four classes deep because the rule being answered is three
    (\`html:not(.dark) .codeblock-light pre.shiki code\`), and a shorter selector
    silently loses to it. */
-.hf-ve .hf-ve-snippet .code-block pre.shiki code {
+.sc-ve .sc-ve-snippet .code-block pre.shiki code {
   width: auto;
   min-width: 0;
 }
 
-.hf-ve-panel {
+.sc-ve-panel {
   margin-top: 12px;
   border: 1px solid var(--ve-line);
   border-radius: 12px;
 }
-.hf-ve-head {
+.sc-ve-head {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 8px 16px;
   border-bottom: 1px solid var(--ve-line);
 }
-.hf-ve-title {
+.sc-ve-title {
   font-size: 11px;
   font-weight: 600;
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--ve-muted);
 }
-.hf-ve-grid {
+.sc-ve-grid {
   display: grid;
   gap: 16px 28px;
   padding: 16px;
 }
 @media (min-width: 640px) {
-  .hf-ve-grid { grid-template-columns: 1fr 1fr; }
+  .sc-ve-grid { grid-template-columns: 1fr 1fr; }
 }
-.hf-ve-row {
+.sc-ve-row {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
   gap: 12px;
   margin-bottom: 6px;
 }
-.hf-ve-label { font-size: 14px; font-weight: 500; color: var(--ve-fg); }
-.hf-ve-value {
+.sc-ve-label { font-size: 14px; font-weight: 500; color: var(--ve-fg); }
+.sc-ve-value {
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
   font-size: 12px;
   font-variant-numeric: tabular-nums;
   color: var(--ve-muted);
 }
-.hf-ve-desc {
+.sc-ve-desc {
   margin: 6px 0 0;
   font-size: 12px;
   line-height: 1.45;
   color: var(--ve-muted);
 }
 
-.hf-ve-btn {
+.sc-ve-btn {
   padding: 4px 10px;
   border: 1px solid transparent;
   border-radius: 8px;
@@ -239,10 +239,10 @@ export const VariablesExplorer = ({
   color: var(--ve-muted);
   background: transparent;
 }
-.hf-ve-btn:hover:not(:disabled) { color: var(--ve-fg); background: var(--ve-hover); }
-.hf-ve-btn:disabled { opacity: 0.4; cursor: default; }
+.sc-ve-btn:hover:not(:disabled) { color: var(--ve-fg); background: var(--ve-hover); }
+.sc-ve-btn:disabled { opacity: 0.4; cursor: default; }
 
-.hf-ve-field {
+.sc-ve-field {
   width: 100%;
   height: 36px;
   padding: 0 12px;
@@ -253,36 +253,36 @@ export const VariablesExplorer = ({
   color: var(--ve-fg);
   background: var(--ve-surface);
 }
-.hf-ve-field::placeholder { color: var(--ve-muted); }
-.hf-ve-mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 13px; }
+.sc-ve-field::placeholder { color: var(--ve-muted); }
+.sc-ve-mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 13px; }
 
 /* Focus, once, for every control here. A ring outside the border rather than a
    border colour alone: the border already carries the resting state, so
    recolouring it is a change a reader can miss. Nothing shifts, because the
    ring is a shadow. :focus-visible, so a pointer click does not light it up. */
-.hf-ve-field:focus-visible,
-.hf-ve-seg-btn:focus-visible,
-.hf-ve-tab:focus-visible,
-.hf-ve-btn:focus-visible,
-.hf-ve-switch:focus-visible,
-.hf-ve-swatch:focus-visible {
+.sc-ve-field:focus-visible,
+.sc-ve-seg-btn:focus-visible,
+.sc-ve-tab:focus-visible,
+.sc-ve-btn:focus-visible,
+.sc-ve-switch:focus-visible,
+.sc-ve-swatch:focus-visible {
   outline: none;
   border-color: var(--ve-on-bg);
   box-shadow: 0 0 0 3px var(--ve-ring);
 }
 /* A range is a track, and ringing the track rings a pill the width of the
    panel. The thumb is the part that has focus, so the thumb is what says so. */
-.hf-ve-range:focus-visible { outline: none; }
-.hf-ve-range:focus-visible::-webkit-slider-thumb { box-shadow: 0 0 0 4px var(--ve-ring); }
-.hf-ve-range:focus-visible::-moz-range-thumb { box-shadow: 0 0 0 4px var(--ve-ring); }
+.sc-ve-range:focus-visible { outline: none; }
+.sc-ve-range:focus-visible::-webkit-slider-thumb { box-shadow: 0 0 0 4px var(--ve-ring); }
+.sc-ve-range:focus-visible::-moz-range-thumb { box-shadow: 0 0 0 4px var(--ve-ring); }
 /* Safari still fires :focus for a click on a button, so the pair is kept. */
-.hf-ve-field:focus { outline: none; border-color: var(--ve-on-bg); }
+.sc-ve-field:focus { outline: none; border-color: var(--ve-on-bg); }
 
 /* The enum branch above sends anything past four options here. No shipped item
    does today (every enum in the registry has two to four), so this is styled to
    the point of not looking foreign and no further — the chevron is one neutral
    grey rather than a per-theme pair, because a data URI cannot read a token. */
-.hf-ve-select {
+.sc-ve-select {
   appearance: none;
   -webkit-appearance: none;
   padding-right: 34px;
@@ -292,13 +292,13 @@ export const VariablesExplorer = ({
   cursor: pointer;
 }
 
-.hf-ve-seg {
+.sc-ve-seg {
   display: flex;
   padding: 2px;
   border: 1px solid var(--ve-line);
   border-radius: 8px;
 }
-.hf-ve-seg-btn {
+.sc-ve-seg-btn {
   flex: 1;
   padding: 4px 8px;
   border-radius: 6px;
@@ -307,15 +307,15 @@ export const VariablesExplorer = ({
   color: var(--ve-muted);
   background: transparent;
 }
-.hf-ve-seg-btn:hover:not([data-on="true"]) { color: var(--ve-fg); background: var(--ve-hover); }
-.hf-ve-seg-btn[data-on="true"] { color: var(--ve-on-fg); background: var(--ve-on-bg); }
+.sc-ve-seg-btn:hover:not([data-on="true"]) { color: var(--ve-fg); background: var(--ve-hover); }
+.sc-ve-seg-btn[data-on="true"] { color: var(--ve-on-fg); background: var(--ve-on-bg); }
 
 /* A range, rebuilt. \`accent-color\` alone leaves the platform's hairline track,
    which reads as an unstyled browser part next to everything else here. Each
    engine names its parts differently and shares none of them, so the same
    track and thumb are written twice; a selector either engine cannot parse
    drops the whole rule, which is why they are never grouped. */
-.hf-ve-range {
+.sc-ve-range {
   width: 100%;
   height: 20px;
   appearance: none;
@@ -327,7 +327,7 @@ export const VariablesExplorer = ({
 }
 /* --ve-fill is set per render: painting progress on a native track means a
    two-stop gradient, and only the component knows where the value sits. */
-.hf-ve-range::-webkit-slider-runnable-track {
+.sc-ve-range::-webkit-slider-runnable-track {
   height: 6px;
   border-radius: 9999px;
   background: linear-gradient(
@@ -336,7 +336,7 @@ export const VariablesExplorer = ({
     var(--ve-line) var(--ve-fill, 0%)
   );
 }
-.hf-ve-range::-webkit-slider-thumb {
+.sc-ve-range::-webkit-slider-thumb {
   -webkit-appearance: none;
   width: 16px;
   height: 16px;
@@ -346,9 +346,9 @@ export const VariablesExplorer = ({
   background: var(--ve-surface);
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.14);
 }
-.hf-ve-range::-moz-range-track { height: 6px; border-radius: 9999px; background: var(--ve-line); }
-.hf-ve-range::-moz-range-progress { height: 6px; border-radius: 9999px; background: var(--ve-on-bg); }
-.hf-ve-range::-moz-range-thumb {
+.sc-ve-range::-moz-range-track { height: 6px; border-radius: 9999px; background: var(--ve-line); }
+.sc-ve-range::-moz-range-progress { height: 6px; border-radius: 9999px; background: var(--ve-on-bg); }
+.sc-ve-range::-moz-range-thumb {
   width: 16px;
   height: 16px;
   border: 2px solid var(--ve-on-bg);
@@ -359,8 +359,8 @@ export const VariablesExplorer = ({
 /* Hover reads on the part being aimed at rather than on the whole strip: a
    track that darkens under the pointer says "click me and the thumb comes
    here", which is what a native range actually does. */
-.hf-ve-range:hover::-webkit-slider-thumb { border-color: var(--ve-fg); }
-.hf-ve-range:hover::-moz-range-thumb { border-color: var(--ve-fg); }
+.sc-ve-range:hover::-webkit-slider-thumb { border-color: var(--ve-fg); }
+.sc-ve-range:hover::-moz-range-thumb { border-color: var(--ve-fg); }
 
 /* The number control, and the three things it used to leave unsaid.
  *
@@ -382,11 +382,11 @@ export const VariablesExplorer = ({
  * replaced. Nothing moves that a finger is not moving: the value tracks the
  * pointer because it is the pointer's own readout, and the only transition is
  * the colour one every other control here shares. */
-.hf-ve-slider {
+.sc-ve-slider {
   display: grid;
   gap: 1px;
 }
-.hf-ve-ruler {
+.sc-ve-ruler {
   position: relative;
   height: 17px;
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
@@ -395,22 +395,22 @@ export const VariablesExplorer = ({
   line-height: 17px;
   color: var(--ve-muted);
 }
-.hf-ve-bound {
+.sc-ve-bound {
   position: absolute;
   top: 0;
 }
-.hf-ve-bound[data-end="min"] { left: 0; }
-.hf-ve-bound[data-end="max"] { right: 0; }
+.sc-ve-bound[data-end="min"] { left: 0; }
+.sc-ve-bound[data-end="max"] { right: 0; }
 /* An end steps aside rather than being overprinted by the value arriving on
    top of it. Visibility, not opacity: there is no fade here, the label is
    either the thing being read or it is out of the way. */
-.hf-ve-ruler[data-near="min"] .hf-ve-bound[data-end="min"],
-.hf-ve-ruler[data-near="max"] .hf-ve-bound[data-end="max"] {
+.sc-ve-ruler[data-near="min"] .sc-ve-bound[data-end="min"],
+.sc-ve-ruler[data-near="max"] .sc-ve-bound[data-end="max"] {
   visibility: hidden;
 }
 /* translateX is centring, not motion: the readout is as wide as its own digits
    and has to hang half of that either side of the thumb. */
-.hf-ve-readout {
+.sc-ve-readout {
   position: absolute;
   top: 0;
   left: calc(var(--ve-fill, 0%) + var(--ve-fill-nudge, 0px));
@@ -419,12 +419,12 @@ export const VariablesExplorer = ({
   font-weight: 600;
   white-space: nowrap;
 }
-.hf-ve-track {
+.sc-ve-track {
   position: relative;
   display: block;
 }
-.hf-ve-range { display: block; }
-.hf-ve-default {
+.sc-ve-range { display: block; }
+.sc-ve-default {
   position: absolute;
   top: 5px;
   left: calc(var(--ve-default, 50%) + var(--ve-default-nudge, 0px));
@@ -438,7 +438,7 @@ export const VariablesExplorer = ({
 
 /* A switch, for the boolean type. It used to fall through to the text input at
    the end of control(), which asked the reader to type the word "true". */
-.hf-ve-switch {
+.sc-ve-switch {
   display: inline-flex;
   align-items: center;
   width: 40px;
@@ -449,15 +449,15 @@ export const VariablesExplorer = ({
   background: var(--ve-sunken);
   cursor: pointer;
 }
-.hf-ve-switch[data-on="true"] { border-color: var(--ve-on-bg); background: var(--ve-on-bg); }
-.hf-ve-switch-dot {
+.sc-ve-switch[data-on="true"] { border-color: var(--ve-on-bg); background: var(--ve-on-bg); }
+.sc-ve-switch-dot {
   width: 18px;
   height: 18px;
   border-radius: 9999px;
   background: var(--ve-surface);
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.18);
 }
-.hf-ve-switch[data-on="true"] .hf-ve-switch-dot {
+.sc-ve-switch[data-on="true"] .sc-ve-switch-dot {
   background: var(--ve-on-fg);
   transform: translateX(16px);
 }
@@ -474,11 +474,11 @@ export const VariablesExplorer = ({
  * a reader sees and what a keyboard reaches. Hidden with size and opacity
  * rather than display:none, because an input that is not rendered at all is one
  * some browsers decline to open a picker for. */
-.hf-ve-drop {
+.sc-ve-drop {
   display: grid;
   gap: 8px;
 }
-.hf-ve-drop[data-over="true"] .hf-ve-dropzone {
+.sc-ve-drop[data-over="true"] .sc-ve-dropzone {
   border-color: var(--ve-on-bg);
   border-style: solid;
 }
@@ -487,7 +487,7 @@ export const VariablesExplorer = ({
    shape, not with path data. A dashed target reads as "put a file here" on
    sight, where a button beneath a field of coordinates read as an afterthought
    to the coordinates. */
-.hf-ve-dropzone {
+.sc-ve-dropzone {
   display: grid;
   justify-items: center;
   gap: 6px;
@@ -497,48 +497,48 @@ export const VariablesExplorer = ({
   background: var(--ve-surface);
   text-align: center;
 }
-.hf-ve-dropzone .hf-ve-btn {
+.sc-ve-dropzone .sc-ve-btn {
   padding: 7px 16px;
   font-size: 13px;
   color: var(--ve-fg);
   border-color: var(--ve-line);
   background: var(--ve-bg);
 }
-.hf-ve-dropzone .hf-ve-btn:hover:not(:disabled) { background: var(--ve-hover); }
+.sc-ve-dropzone .sc-ve-btn:hover:not(:disabled) { background: var(--ve-hover); }
 
 /* Path data stays reachable, but a reader has to ask for it. A native details
    element rather than our own toggle, so it opens with the keyboard and is
    announced as expandable without any wiring. */
-.hf-ve-advanced > summary {
+.sc-ve-advanced > summary {
   font-size: 12px;
   color: var(--ve-muted);
   cursor: pointer;
   list-style: none;
   padding: 2px 0;
 }
-.hf-ve-advanced > summary::-webkit-details-marker { display: none; }
-.hf-ve-advanced > summary::before { content: "▸ "; }
-.hf-ve-advanced[open] > summary::before { content: "▾ "; }
-.hf-ve-advanced > summary:hover { color: var(--ve-fg); }
-.hf-ve-advanced .hf-ve-field { margin-top: 6px; }
-.hf-ve-file {
+.sc-ve-advanced > summary::-webkit-details-marker { display: none; }
+.sc-ve-advanced > summary::before { content: "▸ "; }
+.sc-ve-advanced[open] > summary::before { content: "▾ "; }
+.sc-ve-advanced > summary:hover { color: var(--ve-fg); }
+.sc-ve-advanced .sc-ve-field { margin-top: 6px; }
+.sc-ve-file {
   position: absolute;
   width: 1px;
   height: 1px;
   opacity: 0;
   pointer-events: none;
 }
-.hf-ve-note {
+.sc-ve-note {
   margin: 0;
   min-width: 0;
   font-size: 12px;
   line-height: 1.4;
   color: var(--ve-muted);
 }
-.hf-ve-note[data-tone="error"] { color: var(--ve-danger); }
-.hf-ve-note[data-tone="ok"] { color: var(--ve-fg); }
+.sc-ve-note[data-tone="error"] { color: var(--ve-danger); }
+.sc-ve-note[data-tone="ok"] { color: var(--ve-fg); }
 
-.hf-ve-swatch {
+.sc-ve-swatch {
   width: 40px;
   height: 32px;
   flex-shrink: 0;
@@ -560,7 +560,7 @@ export const VariablesExplorer = ({
  *
  * Which is also why there is no prefers-reduced-motion block any more. There is
  * no motion left to reduce. */
-.hf-ve-tint {
+.sc-ve-tint {
   transition:
     background-color 100ms ease,
     border-color 100ms ease,
@@ -1228,7 +1228,7 @@ export const VariablesExplorer = ({
     // segments shrink out of readability and a select is the honest control.
     if (variable.type === "enum" && options.length > 0 && options.length <= 4) {
       return (
-        <div className="hf-ve-seg">
+        <div className="sc-ve-seg">
           {options.map((o) => (
             <button
               key={o.value}
@@ -1236,7 +1236,7 @@ export const VariablesExplorer = ({
               data-on={value === o.value}
               aria-pressed={value === o.value}
               onClick={() => onChange(o.value)}
-              className="hf-ve-seg-btn hf-ve-tint"
+              className="sc-ve-seg-btn sc-ve-tint"
             >
               {o.label ?? o.value}
             </button>
@@ -1248,7 +1248,7 @@ export const VariablesExplorer = ({
     if (variable.type === "enum") {
       return (
         <select
-          className="hf-ve-field hf-ve-select hf-ve-tint"
+          className="sc-ve-field sc-ve-select sc-ve-tint"
           value={value}
           aria-label={variable.label ?? variable.id}
           onChange={(e) => onChange(e.target.value)}
@@ -1288,7 +1288,7 @@ export const VariablesExplorer = ({
         return (
           <input
             type="number"
-            className="hf-ve-field hf-ve-mono hf-ve-tint"
+            className="sc-ve-field sc-ve-mono sc-ve-tint"
             value={value}
             min={Number.isFinite(min) ? min : undefined}
             max={Number.isFinite(max) ? max : undefined}
@@ -1336,7 +1336,7 @@ export const VariablesExplorer = ({
 
       return (
         <div
-          className="hf-ve-slider"
+          className="sc-ve-slider"
           style={{
             "--ve-fill": value_.offset,
             "--ve-fill-nudge": value_.nudge,
@@ -1352,25 +1352,25 @@ export const VariablesExplorer = ({
               nothing or nearly everything. Each end hides itself when the value
               arrives on top of it, so the two never overprint. */}
           <div
-            className="hf-ve-ruler"
+            className="sc-ve-ruler"
             data-near={now < 0.14 ? "min" : now > 0.86 ? "max" : ""}
             aria-hidden="true"
           >
-            <span className="hf-ve-bound" data-end="min">
+            <span className="sc-ve-bound" data-end="min">
               {min}
             </span>
-            <span className="hf-ve-bound" data-end="max">
+            <span className="sc-ve-bound" data-end="max">
               {max}
             </span>
-            <span className="hf-ve-readout">
+            <span className="sc-ve-readout">
               {value}
               {unit}
             </span>
           </div>
-          <span className="hf-ve-track">
+          <span className="sc-ve-track">
             <input
               type="range"
-              className="hf-ve-range"
+              className="sc-ve-range"
               min={min}
               max={max}
               step={step}
@@ -1394,7 +1394,7 @@ export const VariablesExplorer = ({
                 Four percent of the track is about one thumb at every width
                 this panel is laid out at. */}
             {Math.abs(now - authored) > 0.04 && (
-              <span className="hf-ve-default" aria-hidden="true" />
+              <span className="sc-ve-default" aria-hidden="true" />
             )}
           </span>
         </div>
@@ -1414,9 +1414,9 @@ export const VariablesExplorer = ({
           aria-label={variable.label ?? variable.id}
           data-on={on}
           onClick={() => onChange(!on)}
-          className="hf-ve-switch"
+          className="sc-ve-switch"
         >
-          <span className="hf-ve-switch-dot" />
+          <span className="sc-ve-switch-dot" />
         </button>
       );
     }
@@ -1426,14 +1426,14 @@ export const VariablesExplorer = ({
         <div className="flex items-center gap-2">
           <input
             type="color"
-            className="hf-ve-swatch hf-ve-tint"
+            className="sc-ve-swatch sc-ve-tint"
             value={value}
             aria-label={variable.label ?? variable.id}
             onChange={(e) => onChange(e.target.value)}
           />
           <input
             type="text"
-            className="hf-ve-field hf-ve-mono hf-ve-tint"
+            className="sc-ve-field sc-ve-mono sc-ve-tint"
             value={value}
             onChange={(e) => onChange(e.target.value)}
             onFocus={() => onTyping(variable.id)}
@@ -1449,8 +1449,8 @@ export const VariablesExplorer = ({
     // A string variable whose default is path data. See `isSvgPathData` at the
     // foot of this file for why the default decides and the name does not.
     if (isSvgPathData(variable.default)) {
-      const fileId = `hf-ve-file-${variable.id}`;
-      const noteId = `hf-ve-note-${variable.id}`;
+      const fileId = `sc-ve-file-${variable.id}`;
+      const noteId = `sc-ve-note-${variable.id}`;
       const receive = (file) => {
         if (!file) return;
         file
@@ -1468,7 +1468,7 @@ export const VariablesExplorer = ({
 
       return (
         <div
-          className="hf-ve-drop"
+          className="sc-ve-drop"
           onDragOver={(event) => {
             event.preventDefault();
             event.currentTarget.dataset.over = "true";
@@ -1485,10 +1485,10 @@ export const VariablesExplorer = ({
           {/* The button is the trigger, so the picker is reachable by tab and
               Enter and carries the focus ring every other control here has.
               Dropping a file does the same thing and is never the only way. */}
-          <div className="hf-ve-dropzone">
+          <div className="sc-ve-dropzone">
             <button
               type="button"
-              className="hf-ve-btn hf-ve-tint"
+              className="sc-ve-btn sc-ve-tint"
               onClick={() => document.getElementById(fileId).click()}
             >
               Import SVG
@@ -1497,7 +1497,7 @@ export const VariablesExplorer = ({
               id={fileId}
               type="file"
               accept=".svg,image/svg+xml"
-              className="hf-ve-file"
+              className="sc-ve-file"
               tabIndex={-1}
               aria-hidden="true"
               onChange={(event) => {
@@ -1508,15 +1508,15 @@ export const VariablesExplorer = ({
             />
             {/* Always present, so the region is one a screen reader is
                 already watching when a message arrives. */}
-            <p id={noteId} role="status" className="hf-ve-note" data-tone={note ? note.tone : ""}>
+            <p id={noteId} role="status" className="sc-ve-note" data-tone={note ? note.tone : ""}>
               {note ? note.message : "Or drop one here. Scaled to fit and centred."}
             </p>
           </div>
-          <details className="hf-ve-advanced">
+          <details className="sc-ve-advanced">
             <summary>Path data</summary>
             <input
               type="text"
-              className="hf-ve-field hf-ve-mono hf-ve-tint"
+              className="sc-ve-field sc-ve-mono sc-ve-tint"
               value={value}
               aria-label={variable.label ?? variable.id}
               onChange={(e) => onChange(e.target.value)}
@@ -1534,7 +1534,7 @@ export const VariablesExplorer = ({
     return (
       <input
         type="text"
-        className="hf-ve-field hf-ve-tint"
+        className="sc-ve-field sc-ve-tint"
         value={value}
         aria-label={variable.label ?? variable.id}
         onChange={(e) => onChange(e.target.value)}
@@ -1628,7 +1628,7 @@ export const VariablesExplorer = ({
       window.history.replaceState(null, "", next);
       // `replaceState` fires no event, and the install command on the same page
       // needs to follow these values.
-      window.dispatchEvent(new CustomEvent("hf-vars-changed"));
+      window.dispatchEvent(new CustomEvent("sc-vars-changed"));
     }
   }, [values, defaults, urlKey]);
   // What the SVG import last had to say, per variable. Held here because
@@ -1661,19 +1661,19 @@ export const VariablesExplorer = ({
   // The composition now arrives as JSON and is mounted here, so the only thing
   // that has to survive the deploy is the payload, which is a servable type.
   //
-  // Values are injected as `window.__hfVariables` into the composition's own
+  // Values are injected as `window.__scVariables` into the composition's own
   // head before any of its scripts run. That is where the runtime reads render
   // overrides from, and doing it in the markup rather than after load is what
   // guarantees the composition never initialises with the wrong values first.
   const bootstrap = [
     "<!doctype html><html><head><meta charset='utf-8'>",
     "<style>html,body{margin:0;height:100%;overflow:hidden;background:transparent}",
-    "hyperframes-player{display:block;width:100%;height:100%}</style>",
+    "smashcut-player{display:block;width:100%;height:100%}</style>",
     // `latest`, not a pinned line. A pin here is a number nothing reads back:
     // the panel keeps working on whatever build the pin names, so a stale one
     // is invisible until someone wonders why a shipped fix never arrived.
     // `scripts/player-cdn-pin.test.ts` fails if a pin comes back.
-    '<script src="https://cdn.jsdelivr.net/npm/@hyperframes/player@latest/dist/hyperframes-player.global.js"></' +
+    '<script src="https://cdn.jsdelivr.net/npm/@smashcut/player@latest/dist/smashcut-player.global.js"></' +
       "script>",
     "</head><body><script>",
     "(function(){",
@@ -1685,7 +1685,7 @@ export const VariablesExplorer = ({
     `  var INITIAL = ${JSON.stringify({ ...defaults, ...readFromUrl() })};`,
     "  var html = null, player = null, poll = null;",
     // Two ways in, because a composition can be either shape. A top-level one
-    // reads overrides off `window.__hfVariables`; one mounted through
+    // reads overrides off `window.__scVariables`; one mounted through
     // `data-composition-src` is fed from its host's `data-variable-values`,
     // which the loader reads before the sub-composition runs — so that has to
     // be in the markup, not assigned afterwards.
@@ -1694,7 +1694,7 @@ export const VariablesExplorer = ({
     "    var attr = json.replace(/'/g, '&#39;');",
     "    var out = source.replace(/\\sdata-variable-values=(?:\"[^\"]*\"|'[^']*')/gi, '');",
     "    out = out.replace(/(data-composition-src=)/gi, \"data-variable-values='\" + attr + \"' $1\");",
-    "    var tag = '<' + 'script>window.__hfVariables=' + json + ';<' + '/script>';",
+    "    var tag = '<' + 'script>window.__scVariables=' + json + ';<' + '/script>';",
     "    return /<head[^>]*>/i.test(out)",
     "      ? out.replace(/<head([^>]*)>/i, '<head$1>' + tag)",
     "      : tag + out;",
@@ -1722,7 +1722,7 @@ export const VariablesExplorer = ({
     "    player.setAttribute('srcdoc', withValues(html, values));",
     "    arm(resumeAt || 0);",
     "  }",
-    "  player = document.createElement('hyperframes-player');",
+    "  player = document.createElement('smashcut-player');",
     "  player.setAttribute('controls', ''); player.setAttribute('muted', '');",
     "  document.body.appendChild(player);",
     "  player.addEventListener('ended', function () { player.seek(0); player.play(); });",
@@ -1786,7 +1786,7 @@ export const VariablesExplorer = ({
   // command the Install block does, and a tuned one carries exactly what
   // changed rather than every variable restated.
   const installCommand = (() => {
-    const base = `npx hyperframes add ${compositionId}`;
+    const base = `npx smashcut add ${compositionId}`;
     if (!dirty) return base;
     const changed = {};
     for (const v of variables) {
@@ -1807,11 +1807,11 @@ export const VariablesExplorer = ({
   ];
 
   return (
-    <div className="hf-ve not-prose my-4">
+    <div className="sc-ve not-prose my-4">
       <style dangerouslySetInnerHTML={{ __html: CSS }} />
 
       <div className="mb-3 flex items-center gap-3">
-        <div className="hf-ve-tabs">
+        <div className="sc-ve-tabs">
           {TABS.map(([id, label]) => (
             <button
               key={id}
@@ -1819,7 +1819,7 @@ export const VariablesExplorer = ({
               data-on={tab === id}
               aria-pressed={tab === id}
               onClick={() => setTab(id)}
-              className="hf-ve-tab hf-ve-tint"
+              className="sc-ve-tab sc-ve-tint"
             >
               {label}
             </button>
@@ -1829,21 +1829,21 @@ export const VariablesExplorer = ({
 
       {/* One grid cell, two panes. Switching tabs must not unmount the iframe —
           that reloads the composition and throws it back to frame zero. */}
-      <div className="hf-ve-frame">
-        <div className="hf-ve-cell" data-on={tab === "preview"}>
+      <div className="sc-ve-frame">
+        <div className="sc-ve-cell" data-on={tab === "preview"}>
           <iframe
             ref={frame}
             srcDoc={bootstrap}
-            className="hf-ve-preview block aspect-video w-full"
+            className="sc-ve-preview block aspect-video w-full"
             title={`${compositionId} preview`}
           />
         </div>
         {children && (
-          <div className="hf-ve-cell" data-on={tab === "code"}>
+          <div className="sc-ve-cell" data-on={tab === "code"}>
             {children}
           </div>
         )}
-        <div className="hf-ve-cell hf-ve-snippet" data-on={tab === "snippet"}>
+        <div className="sc-ve-cell sc-ve-snippet" data-on={tab === "snippet"}>
           {/* The Install block further down the page is generated before anyone
               touches a knob, so it can only ever offer the plain command. This
               one is the panel's, and it carries what the reader actually chose:
@@ -1897,9 +1897,9 @@ export const VariablesExplorer = ({
         </div>
       </div>
 
-      <div className="hf-ve-panel">
-        <div className="hf-ve-head">
-          <span className="hf-ve-title">Customize</span>
+      <div className="sc-ve-panel">
+        <div className="sc-ve-head">
+          <span className="sc-ve-title">Customize</span>
           <button
             type="button"
             onClick={() => {
@@ -1907,17 +1907,17 @@ export const VariablesExplorer = ({
               setNotes({});
             }}
             disabled={!dirty}
-            className="hf-ve-btn hf-ve-tint"
+            className="sc-ve-btn sc-ve-tint"
           >
             Reset
           </button>
         </div>
-        <div className="hf-ve-grid">
+        <div className="sc-ve-grid">
           {variables.map((v) => (
             <div key={v.id}>
-              <div className="hf-ve-row">
-                <label className="hf-ve-label">{v.label ?? v.id}</label>
-                <span className="hf-ve-value">{readout(v, values[v.id])}</span>
+              <div className="sc-ve-row">
+                <label className="sc-ve-label">{v.label ?? v.id}</label>
+                <span className="sc-ve-value">{readout(v, values[v.id])}</span>
               </div>
               {control(
                 v,
@@ -1927,7 +1927,7 @@ export const VariablesExplorer = ({
                 (note) => setNotes((prev) => ({ ...prev, [v.id]: note })),
                 setTyping,
               )}
-              {v.description && <p className="hf-ve-desc">{v.description}</p>}
+              {v.description && <p className="sc-ve-desc">{v.description}</p>}
             </div>
           ))}
         </div>

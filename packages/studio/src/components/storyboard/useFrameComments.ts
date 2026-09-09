@@ -19,7 +19,7 @@ export interface FrameCommentsValue {
   submitState: CommentsSubmitState;
   /** Most recent submit failure, shown next to the submit action. */
   submitError: string | null;
-  /** Write the batch to `.hyperframes/frame-comments.json` and clear the drafts. */
+  /** Write the batch to `.smashcut/frame-comments.json` and clear the drafts. */
   submit: () => Promise<boolean>;
   /**
    * Comments already submitted but not yet consumed by the agent (the file

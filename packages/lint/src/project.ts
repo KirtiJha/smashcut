@@ -2,8 +2,8 @@ export { shouldBlockRender } from "./shouldBlockRender.js";
 import { createHash } from "node:crypto";
 import { existsSync, readFileSync, readdirSync } from "node:fs";
 import { dirname, extname, join, relative, resolve } from "node:path";
-import { rewriteAssetPath } from "@hyperframes/parsers/asset-paths";
-import { checkSubCompositionUsability } from "@hyperframes/parsers/sub-composition-validity";
+import { rewriteAssetPath } from "@smashcut/parsers/asset-paths";
+import { checkSubCompositionUsability } from "@smashcut/parsers/sub-composition-validity";
 import { parseHTML } from "linkedom";
 import {
   cleanAssetUrl,
@@ -14,11 +14,11 @@ import {
   maskNonScannableRanges,
   resolveExistingLocalAsset,
   resolveLocalAssetCandidates,
-} from "@hyperframes/parsers/asset-resolution";
+} from "@smashcut/parsers/asset-resolution";
 import { collectLocalVideoCandidates, lintHevcPreviewCodec } from "./hevcPreviewLint.js";
 import { lintHyperframeHtml } from "./hyperframeLinter.js";
 import type { HyperframeLintFinding, HyperframeLintResult } from "./types.js";
-import type { ParsableDocumentLike } from "@hyperframes/parsers/sub-composition-validity";
+import type { ParsableDocumentLike } from "@smashcut/parsers/sub-composition-validity";
 import { mediaSrcTagRe } from "./utils";
 
 /** Adapts linkedom's `parseHTML` to the `checkSubCompositionUsability` contract. */
@@ -650,10 +650,10 @@ function lintMissingOrEmptySubComposition(
   return findings;
 }
 
-/** True when the file's first element carries data-hf-snippet — i.e. the file
+/** True when the file's first element carries data-sc-snippet — i.e. the file
  * IS a mountable fragment, not a composition that merely contains one. */
 function isSnippetFragment(html: string): boolean {
   const firstTag = html.match(/<[a-zA-Z][^>]*>/);
   if (!firstTag) return false;
-  return /\bdata-hf-snippet\b/.test(firstTag[0]);
+  return /\bdata-sc-snippet\b/.test(firstTag[0]);
 }

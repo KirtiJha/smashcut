@@ -1,7 +1,7 @@
 {
-  "name": "@hyperframes/cli",
+  "name": "@smashcut/cli",
   "version": "0.8.33",
-  "description": "HyperFrames CLI — create, preview, and render HTML video compositions",
+  "description": "SmashCut CLI — create, preview, and render HTML video compositions",
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
@@ -9,8 +9,8 @@
     "directory": "packages/cli"
   },
   "bin": {
-    "hyperframes": "./bin/hyperframes.mjs",
-    "hyperframes-localize-fonts": "./bin/hyperframes-localize-fonts.mjs"
+    "smashcut": "./bin/smashcut.mjs",
+    "smashcut-localize-fonts": "./bin/smashcut-localize-fonts.mjs"
   },
   "files": [
     "bin",
@@ -50,15 +50,15 @@
   },
   "devDependencies": {
     "@clack/prompts": "^1.1.0",
-    "@hyperframes/aws-lambda": "workspace:*",
-    "@hyperframes/core": "workspace:*",
-    "@hyperframes/engine": "workspace:*",
-    "@hyperframes/gcp-cloud-run": "workspace:*",
-    "@hyperframes/lint": "workspace:*",
-    "@hyperframes/parsers": "workspace:*",
-    "@hyperframes/producer": "workspace:*",
-    "@hyperframes/studio": "workspace:*",
-    "@hyperframes/studio-server": "workspace:*",
+    "@smashcut/aws-lambda": "workspace:*",
+    "@smashcut/core": "workspace:*",
+    "@smashcut/engine": "workspace:*",
+    "@smashcut/gcp-cloud-run": "workspace:*",
+    "@smashcut/lint": "workspace:*",
+    "@smashcut/parsers": "workspace:*",
+    "@smashcut/producer": "workspace:*",
+    "@smashcut/studio": "workspace:*",
+    "@smashcut/studio-server": "workspace:*",
     "@types/fontkit": "^2.0.9",
     "@types/mime-types": "^3.0.1",
     "@types/node": "^25.0.10",

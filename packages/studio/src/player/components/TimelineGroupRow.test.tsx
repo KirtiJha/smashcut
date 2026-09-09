@@ -159,7 +159,7 @@ describe("TimelineGroupRow", () => {
       b.getAttribute("aria-label")?.startsWith("Effects"),
     );
     act(() => fx?.click());
-    const preset = document.querySelector<HTMLButtonElement>(".hf-fx-preset-item");
+    const preset = document.querySelector<HTMLButtonElement>(".sc-fx-preset-item");
     act(() => preset?.click());
 
     expect(onSetAudioGroupAttributeQuiet).toHaveBeenCalledTimes(1);

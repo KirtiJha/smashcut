@@ -137,8 +137,8 @@
           var duration = Number(root.getAttribute("data-duration")) || 6;
 
           var vars =
-            window.__hyperframes && window.__hyperframes.getVariables
-              ? window.__hyperframes.getVariables()
+            window.__smashcut && window.__smashcut.getVariables
+              ? window.__smashcut.getVariables()
               : {};
 
           function num(value, fallback, min, max) {

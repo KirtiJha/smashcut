@@ -92,10 +92,10 @@ describe("clonePinStyleFor", () => {
 
 describe("page-side compositor exported constants", () => {
   it("exports a stable canary string used by the bundled-CLI smoke", () => {
-    expect(PAGE_COMPOSITOR_BUILD_CANARY).toBe("__hf_page_compositor_v1__");
+    expect(PAGE_COMPOSITOR_BUILD_CANARY).toBe("__sc_page_compositor_v1__");
   });
 
   it("exports a stable canvas id", () => {
-    expect(PAGE_COMPOSITOR_CANVAS_ID).toBe("__hf-page-side-compositor");
+    expect(PAGE_COMPOSITOR_CANVAS_ID).toBe("__sc-page-side-compositor");
   });
 });

@@ -1,8 +1,8 @@
 <!--
   Dynamic Grid - animated background primitive.
 
-  Paste the grid as the first child of a scene. Animate --hf-grid-x,
-  --hf-grid-y, and --hf-grid-opacity from your paused GSAP timeline.
+  Paste the grid as the first child of a scene. Animate --sc-grid-x,
+  --sc-grid-y, and --sc-grid-opacity from your paused GSAP timeline.
 
   Variables. The script reads each one, falls back to the declared default on
   anything missing or unrecognised, and writes the result as a custom property
@@ -23,7 +23,7 @@
 -->
 
 <div
-  class="hf-dynamic-grid"
+  class="sc-dynamic-grid"
   aria-hidden="true"
   data-composition-variables='[
     { "id": "density", "type": "enum", "role": "style", "label": "Density", "description": "Cell size of the grid: fine reads as graph paper, coarse as a few large panels.", "default": "standard", "options": [{ "value": "fine", "label": "Fine" }, { "value": "standard", "label": "Standard" }, { "value": "coarse", "label": "Coarse" }] },
@@ -33,26 +33,26 @@
 ></div>
 
 <style>
-  .hf-dynamic-grid {
-    --hf-grid-size: 72px;
-    --hf-grid-line: 1px;
-    --hf-grid-color: rgba(255, 255, 255, 0.16);
-    --hf-grid-x: 0px;
-    --hf-grid-y: 0px;
-    --hf-grid-opacity: 1;
+  .sc-dynamic-grid {
+    --sc-grid-size: 72px;
+    --sc-grid-line: 1px;
+    --sc-grid-color: rgba(255, 255, 255, 0.16);
+    --sc-grid-x: 0px;
+    --sc-grid-y: 0px;
+    --sc-grid-opacity: 1;
     position: absolute;
     inset: 0;
     pointer-events: none;
-    opacity: var(--hf-grid-opacity);
+    opacity: var(--sc-grid-opacity);
     background-image:
-      linear-gradient(var(--hf-grid-color) var(--hf-grid-line), transparent var(--hf-grid-line)),
+      linear-gradient(var(--sc-grid-color) var(--sc-grid-line), transparent var(--sc-grid-line)),
       linear-gradient(
         90deg,
-        var(--hf-grid-color) var(--hf-grid-line),
-        transparent var(--hf-grid-line)
+        var(--sc-grid-color) var(--sc-grid-line),
+        transparent var(--sc-grid-line)
       );
-    background-size: var(--hf-grid-size) var(--hf-grid-size);
-    background-position: var(--hf-grid-x) var(--hf-grid-y);
+    background-size: var(--sc-grid-size) var(--sc-grid-size);
+    background-position: var(--sc-grid-x) var(--sc-grid-y);
   }
 </style>
 
@@ -61,8 +61,8 @@
     "use strict";
 
     var vars =
-      window.__hyperframes && window.__hyperframes.getVariables
-        ? window.__hyperframes.getVariables()
+      window.__smashcut && window.__smashcut.getVariables
+        ? window.__smashcut.getVariables()
         : {};
 
     // Unrecognised overrides return to their declared defaults.
@@ -83,11 +83,11 @@
     var line = weights[pick(weights, vars.weight, "hairline")];
     var color = tones[pick(tones, vars.tone, "neutral")];
 
-    var roots = document.querySelectorAll(".hf-dynamic-grid");
+    var roots = document.querySelectorAll(".sc-dynamic-grid");
     for (var i = 0; i < roots.length; i += 1) {
-      roots[i].style.setProperty("--hf-grid-size", size);
-      roots[i].style.setProperty("--hf-grid-line", line);
-      roots[i].style.setProperty("--hf-grid-color", color);
+      roots[i].style.setProperty("--sc-grid-size", size);
+      roots[i].style.setProperty("--sc-grid-line", line);
+      roots[i].style.setProperty("--sc-grid-color", color);
     }
   })();
 </script>
@@ -95,9 +95,9 @@
 <!--
   Timeline integration:
 
-  tl.to(".hf-dynamic-grid", {
-    "--hf-grid-x": "72px",
-    "--hf-grid-y": "-72px",
+  tl.to(".sc-dynamic-grid", {
+    "--sc-grid-x": "72px",
+    "--sc-grid-y": "-72px",
     duration: 6,
     ease: "none",
   }, 0);

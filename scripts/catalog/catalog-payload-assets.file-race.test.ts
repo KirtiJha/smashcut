@@ -100,7 +100,7 @@ let root: string;
 let project: string;
 let out: { dir: string; urlBase: string };
 beforeEach(() => {
-  root = fs.mkdtempSync(join(tmpdir(), "hf-catalog-security-"));
+  root = fs.mkdtempSync(join(tmpdir(), "sc-catalog-security-"));
   project = join(root, "project");
   fs.mkdirSync(project);
   out = { dir: join(root, "output"), urlBase: "/assets" };

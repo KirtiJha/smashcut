@@ -3,7 +3,7 @@ export interface StudioManualEditsRenderScriptOptions {
   activeCompositionPath?: string | null;
 }
 
-export const STUDIO_MANUAL_EDITS_PATH = ".hyperframes/studio-manual-edits.json";
+export const STUDIO_MANUAL_EDITS_PATH = ".smashcut/studio-manual-edits.json";
 
 export function createStudioManualEditsRenderBodyScript(
   manifestContent: string,
@@ -24,19 +24,19 @@ export function createStudioPositionSeekReapplyScript(): string {
 }
 
 function studioPositionSeekReapplyRuntime(): void {
-  const OFFSET_X_PROP = "--hf-studio-offset-x";
-  const OFFSET_Y_PROP = "--hf-studio-offset-y";
-  const WIDTH_PROP = "--hf-studio-width";
-  const HEIGHT_PROP = "--hf-studio-height";
-  const ROTATION_PROP = "--hf-studio-rotation";
-  const PATH_OFFSET_ATTR = "data-hf-studio-path-offset";
-  const BOX_SIZE_ATTR = "data-hf-studio-box-size";
-  const ROTATION_ATTR = "data-hf-studio-rotation";
-  const ORIGINAL_TRANSLATE_ATTR = "data-hf-studio-original-translate";
-  const ORIGINAL_ROTATE_ATTR = "data-hf-studio-original-rotate";
-  const MOTION_ATTR = "data-hf-studio-motion";
+  const OFFSET_X_PROP = "--sc-studio-offset-x";
+  const OFFSET_Y_PROP = "--sc-studio-offset-y";
+  const WIDTH_PROP = "--sc-studio-width";
+  const HEIGHT_PROP = "--sc-studio-height";
+  const ROTATION_PROP = "--sc-studio-rotation";
+  const PATH_OFFSET_ATTR = "data-sc-studio-path-offset";
+  const BOX_SIZE_ATTR = "data-sc-studio-box-size";
+  const ROTATION_ATTR = "data-sc-studio-rotation";
+  const ORIGINAL_TRANSLATE_ATTR = "data-sc-studio-original-translate";
+  const ORIGINAL_ROTATE_ATTR = "data-sc-studio-original-rotate";
+  const MOTION_ATTR = "data-sc-studio-motion";
   const MOTION_TL_KEY = "studio-motion";
-  const WRAPPED_PROP = "__hfStudioPositionSeekReapplyWrapped";
+  const WRAPPED_PROP = "__scStudioPositionSeekReapplyWrapped";
 
   if (
     !document.querySelector("[" + PATH_OFFSET_ATTR + '="true"]') &&
@@ -259,7 +259,7 @@ function studioPositionSeekReapplyRuntime(): void {
   };
 
   const runtimeWindow = window as Window & {
-    __hf?: Record<string, unknown>;
+    __sc?: Record<string, unknown>;
     __player?: Record<string, unknown>;
   };
 
@@ -304,9 +304,9 @@ function studioPositionSeekReapplyRuntime(): void {
 
   const wrapSeekFunctions = (): boolean => {
     const a = wrapFn(
-      () => runtimeWindow.__hf?.["seek"],
+      () => runtimeWindow.__sc?.["seek"],
       (fn) => {
-        if (runtimeWindow.__hf) runtimeWindow.__hf["seek"] = fn;
+        if (runtimeWindow.__sc) runtimeWindow.__sc["seek"] = fn;
       },
     );
     const b = wrapFn(
@@ -353,11 +353,11 @@ function studioPositionSeekReapplyRuntime(): void {
 
   wrapSeekFunctions();
   installSeekTrap(
-    runtimeWindow.__hf,
+    runtimeWindow.__sc,
     "seek",
-    () => runtimeWindow.__hf?.["seek"],
+    () => runtimeWindow.__sc?.["seek"],
     (fn) => {
-      if (runtimeWindow.__hf) runtimeWindow.__hf["seek"] = fn;
+      if (runtimeWindow.__sc) runtimeWindow.__sc["seek"] = fn;
     },
   );
   installSeekTrap(
@@ -380,17 +380,17 @@ function studioManualEditsRenderRuntime(
   manifestContent: string,
   activeCompositionPath: string | null,
 ): void {
-  const OFFSET_X_PROP = "--hf-studio-offset-x";
-  const OFFSET_Y_PROP = "--hf-studio-offset-y";
-  const WIDTH_PROP = "--hf-studio-width";
-  const HEIGHT_PROP = "--hf-studio-height";
-  const ROTATION_PROP = "--hf-studio-rotation";
-  const PATH_OFFSET_ATTR = "data-hf-studio-path-offset";
-  const BOX_SIZE_ATTR = "data-hf-studio-box-size";
-  const ROTATION_ATTR = "data-hf-studio-rotation";
-  const ORIGINAL_TRANSLATE_ATTR = "data-hf-studio-original-translate";
-  const ORIGINAL_ROTATE_ATTR = "data-hf-studio-original-rotate";
-  const WRAPPED_SEEK_PROP = "__hfStudioManualEditsWrapped";
+  const OFFSET_X_PROP = "--sc-studio-offset-x";
+  const OFFSET_Y_PROP = "--sc-studio-offset-y";
+  const WIDTH_PROP = "--sc-studio-width";
+  const HEIGHT_PROP = "--sc-studio-height";
+  const ROTATION_PROP = "--sc-studio-rotation";
+  const PATH_OFFSET_ATTR = "data-sc-studio-path-offset";
+  const BOX_SIZE_ATTR = "data-sc-studio-box-size";
+  const ROTATION_ATTR = "data-sc-studio-rotation";
+  const ORIGINAL_TRANSLATE_ATTR = "data-sc-studio-original-translate";
+  const ORIGINAL_ROTATE_ATTR = "data-sc-studio-original-rotate";
+  const WRAPPED_SEEK_PROP = "__scStudioManualEditsWrapped";
   const ROTATION_TRANSFORM_ORIGIN = "center center";
 
   const finiteNumber = (value: unknown): number | null =>
@@ -400,8 +400,8 @@ function studioManualEditsRenderRuntime(
     value && typeof value === "object" ? (value as Record<string, unknown>) : null;
 
   const runtimeWindow = window as Window & {
-    __hf?: { seek?: (time: number) => unknown };
-    __hfStudioManualEditsApply?: () => number;
+    __sc?: { seek?: (time: number) => unknown };
+    __scStudioManualEditsApply?: () => number;
     __player?: { renderSeek?: (time: number) => unknown };
   };
 
@@ -659,7 +659,7 @@ function studioManualEditsRenderRuntime(
     }
     return applied;
   };
-  runtimeWindow.__hfStudioManualEditsApply = applyManifest;
+  runtimeWindow.__scStudioManualEditsApply = applyManifest;
 
   const markWrapped = (fn: (time: number) => unknown): void => {
     try {
@@ -705,9 +705,9 @@ function studioManualEditsRenderRuntime(
 
   const wrapSeekFunctions = (): boolean => {
     const wrappedHfSeek = wrapFunction(
-      () => runtimeWindow.__hf?.seek,
+      () => runtimeWindow.__sc?.seek,
       (fn) => {
-        if (runtimeWindow.__hf) runtimeWindow.__hf.seek = fn;
+        if (runtimeWindow.__sc) runtimeWindow.__sc.seek = fn;
       },
     );
     const wrappedPlayerRenderSeek = wrapFunction(

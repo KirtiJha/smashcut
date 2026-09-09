@@ -2,7 +2,7 @@ export interface StudioMotionRenderScriptOptions {
   activeCompositionPath?: string | null;
 }
 
-export const STUDIO_MOTION_PATH = ".hyperframes/studio-motion.json";
+export const STUDIO_MOTION_PATH = ".smashcut/studio-motion.json";
 
 function hasStudioMotionEntries(manifestContent: string): boolean {
   try {
@@ -29,10 +29,10 @@ function studioMotionRenderRuntime(
   activeCompositionPath: string | null,
 ): void {
   const STUDIO_MOTION_TIMELINE_ID = "studio-motion";
-  const STUDIO_MOTION_ATTR = "data-hf-studio-motion";
-  const ORIGINAL_TRANSFORM_ATTR = "data-hf-studio-motion-original-transform";
-  const ORIGINAL_OPACITY_ATTR = "data-hf-studio-motion-original-opacity";
-  const ORIGINAL_VISIBILITY_ATTR = "data-hf-studio-motion-original-visibility";
+  const STUDIO_MOTION_ATTR = "data-sc-studio-motion";
+  const ORIGINAL_TRANSFORM_ATTR = "data-sc-studio-motion-original-transform";
+  const ORIGINAL_OPACITY_ATTR = "data-sc-studio-motion-original-opacity";
+  const ORIGINAL_VISIBILITY_ATTR = "data-sc-studio-motion-original-visibility";
 
   const objectRecord = (value: unknown): Record<string, unknown> | null =>
     value && typeof value === "object" ? (value as Record<string, unknown>) : null;
@@ -67,7 +67,7 @@ function studioMotionRenderRuntime(
         }
       | undefined
     >;
-    __hfStudioMotionApply?: () => number;
+    __scStudioMotionApply?: () => number;
   };
 
   const parseMotionValues = (value: unknown): Record<string, number> | null => {
@@ -255,6 +255,6 @@ function studioMotionRenderRuntime(
     return applied;
   };
 
-  runtimeWindow.__hfStudioMotionApply = applyManifest;
+  runtimeWindow.__scStudioMotionApply = applyManifest;
   applyManifest();
 }

@@ -62,16 +62,16 @@ describe("renderProvenanceArgs", () => {
 describe("readRenderProvenance", () => {
   it("reads mp4-cased tags", () => {
     expect(
-      readRenderProvenance({ hyperframes_renderer: "hyperframes", hyperframes_version: "1.2.3" }),
-    ).toEqual({ renderer: "hyperframes", version: "1.2.3" });
+      readRenderProvenance({ smashcut_renderer: "smashcut", smashcut_version: "1.2.3" }),
+    ).toEqual({ renderer: "smashcut", version: "1.2.3" });
   });
 
   it("reads matroska-uppercased tags", () => {
     // Matroska uppercases keys on read; a case-sensitive lookup would work on
     // mp4 and miss every webm.
     expect(
-      readRenderProvenance({ HYPERFRAMES_RENDERER: "hyperframes", HYPERFRAMES_VERSION: "1.2.3" }),
-    ).toEqual({ renderer: "hyperframes", version: "1.2.3" });
+      readRenderProvenance({ SMASHCUT_RENDERER: "smashcut", SMASHCUT_VERSION: "1.2.3" }),
+    ).toEqual({ renderer: "smashcut", version: "1.2.3" });
   });
 
   it("returns null when there is no provenance", () => {
@@ -83,7 +83,7 @@ describe("readRenderProvenance", () => {
 describe.skipIf(!HAS_FFMPEG)("provenance survives a real encode", () => {
   let dir: string;
   beforeEach(() => {
-    dir = mkdtempSync(join(tmpdir(), "hf-provenance-"));
+    dir = mkdtempSync(join(tmpdir(), "sc-provenance-"));
   });
   afterEach(() => {
     rmSync(dir, { recursive: true, force: true });

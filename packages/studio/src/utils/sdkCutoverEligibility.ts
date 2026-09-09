@@ -22,7 +22,7 @@ const CUTOVER_OP_TYPES = new Set<PatchOperation["type"]>([
 // ponytail: small mirror of the SDK set; if the SDK adds a reserved attr, a new
 // op for it just reverts to the (working) throw→fallback path until synced.
 const RESERVED_CUTOVER_ATTRS = new Set<string>([
-  "data-hf-id",
+  "data-sc-id",
   "data-composition-id",
   "data-width",
   "data-height",

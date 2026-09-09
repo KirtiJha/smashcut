@@ -10,12 +10,12 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
   previewSrc="/public/catalog/components/matrix-decode.json"
   compositionId="matrix-decode"
   compositionSrc="compositions/components/matrix-decode.html"
-  variables={[{"id":"text","type":"string","role":"content","label":"Target text","description":"Word the scramble resolves into. One scrambling cell per character, up to 32.","default":"HYPERFRAMES"},{"id":"accent","type":"enum","role":"style","label":"Accent","description":"Colour family of the cells and their glow.","default":"green","options":[{"value":"green","label":"Green"},{"value":"blue","label":"Blue"},{"value":"violet","label":"Violet"}]},{"id":"size","type":"number","role":"style","label":"Size","description":"Type size of the cells in pixels. Cell width follows it.","default":64,"min":24,"max":160,"step":4,"unit":"px"},{"id":"glow","type":"enum","role":"style","label":"Glow","description":"Strength of the halo behind the cells, from none to a heavy bloom.","default":"standard","options":[{"value":"none","label":"None"},{"value":"standard","label":"Standard"},{"value":"strong","label":"Strong"}]}]}
+  variables={[{"id":"text","type":"string","role":"content","label":"Target text","description":"Word the scramble resolves into. One scrambling cell per character, up to 32.","default":"SMASHCUT"},{"id":"accent","type":"enum","role":"style","label":"Accent","description":"Colour family of the cells and their glow.","default":"green","options":[{"value":"green","label":"Green"},{"value":"blue","label":"Blue"},{"value":"violet","label":"Violet"}]},{"id":"size","type":"number","role":"style","label":"Size","description":"Type size of the cells in pixels. Cell width follows it.","default":64,"min":24,"max":160,"step":4,"unit":"px"},{"id":"glow","type":"enum","role":"style","label":"Glow","description":"Strength of the halo behind the cells, from none to a heavy bloom.","default":"standard","options":[{"value":"none","label":"None"},{"value":"standard","label":"Standard"},{"value":"strong","label":"Strong"}]}]}
 >
 
 ```html matrix-decode.html
 <!--
-  Matrix Decode - typography primitive for HyperFrames.
+  Matrix Decode - typography primitive for SmashCut.
 
   Paste the markup, CSS and script into a composition. Drive the timeline
   integration from a paused GSAP timeline so renders remain deterministic.
@@ -26,7 +26,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
   recipe below is untouched by them: it keeps staggering whatever cells are
   present.
 
-    - text (text, default HYPERFRAMES): the word the scramble resolves into.
+    - text (text, default SMASHCUT): the word the scramble resolves into.
       One scrambling cell per character, up to 32. Also written to data-final,
       which a decode routine can read.
     - accent (green | blue | violet, default green): colour family of the cells
@@ -41,10 +41,10 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 -->
 
 <div
-  class="hf-catalog-matrix-decode"
-  data-final="HYPERFRAMES"
+  class="sc-catalog-matrix-decode"
+  data-final="SMASHCUT"
   data-composition-variables='[
-    { "id": "text", "type": "string", "role": "content", "label": "Target text", "description": "Word the scramble resolves into. One scrambling cell per character, up to 32.", "default": "HYPERFRAMES" },
+    { "id": "text", "type": "string", "role": "content", "label": "Target text", "description": "Word the scramble resolves into. One scrambling cell per character, up to 32.", "default": "SMASHCUT" },
     { "id": "accent", "type": "enum", "role": "style", "label": "Accent", "description": "Colour family of the cells and their glow.", "default": "green", "options": [{ "value": "green", "label": "Green" }, { "value": "blue", "label": "Blue" }, { "value": "violet", "label": "Violet" }] },
     { "id": "size", "type": "number", "role": "style", "label": "Size", "description": "Type size of the cells in pixels. Cell width follows it.", "default": 64, "min": 24, "max": 160, "step": 4, "unit": "px" },
     { "id": "glow", "type": "enum", "role": "style", "label": "Glow", "description": "Strength of the halo behind the cells, from none to a heavy bloom.", "default": "standard", "options": [{ "value": "none", "label": "None" }, { "value": "standard", "label": "Standard" }, { "value": "strong", "label": "Strong" }] }
@@ -55,13 +55,13 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 </div>
 
 <style>
-  .hf-catalog-matrix-decode {
+  .sc-catalog-matrix-decode {
     color: #18181b;
     font-family: Inter, system-ui, sans-serif;
     font-weight: 900;
     letter-spacing: -0.04em;
   }
-  .hf-catalog-matrix-decode {
+  .sc-catalog-matrix-decode {
     display: inline-flex;
     gap: 3px;
     font:
@@ -69,15 +69,15 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
       SFMono-Regular,
       Menlo,
       monospace;
-    font-size: var(--hf-matrix-size, 64px);
-    color: var(--hf-matrix-color, #16a34a);
-    text-shadow: 0 0 var(--hf-matrix-glow-radius, 18px)
-      rgba(var(--hf-matrix-glow-rgb, 22, 163, 74), var(--hf-matrix-glow-alpha, 0.28));
+    font-size: var(--sc-matrix-size, 64px);
+    color: var(--sc-matrix-color, #16a34a);
+    text-shadow: 0 0 var(--sc-matrix-glow-radius, 18px)
+      rgba(var(--sc-matrix-glow-rgb, 22, 163, 74), var(--sc-matrix-glow-alpha, 0.28));
   }
-  .hf-catalog-matrix-decode span {
+  .sc-catalog-matrix-decode span {
     display: inline-block;
     min-width: 0.64em;
-    opacity: var(--hf-matrix-opacity, 1);
+    opacity: var(--sc-matrix-opacity, 1);
   }
 </style>
 
@@ -86,8 +86,8 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
     "use strict";
 
     var vars =
-      window.__hyperframes && window.__hyperframes.getVariables
-        ? window.__hyperframes.getVariables()
+      window.__smashcut && window.__smashcut.getVariables
+        ? window.__smashcut.getVariables()
         : {};
 
     // Anything missing or invalid returns to its declared default.
@@ -108,7 +108,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 
     var text = typeof vars.text === "string" ? vars.text.trim().slice(0, 32) : "";
     if (!text) {
-      text = "HYPERFRAMES";
+      text = "SMASHCUT";
     }
 
     var size =
@@ -118,13 +118,13 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
     var accent = accents[pick(accents, vars.accent, "green")];
     var glow = glows[pick(glows, vars.glow, "standard")];
 
-    var roots = document.querySelectorAll(".hf-catalog-matrix-decode");
+    var roots = document.querySelectorAll(".sc-catalog-matrix-decode");
     for (var i = 0; i < roots.length; i += 1) {
-      roots[i].style.setProperty("--hf-matrix-size", size + "px");
-      roots[i].style.setProperty("--hf-matrix-color", accent.color);
-      roots[i].style.setProperty("--hf-matrix-glow-rgb", accent.rgb);
-      roots[i].style.setProperty("--hf-matrix-glow-radius", glow.radius);
-      roots[i].style.setProperty("--hf-matrix-glow-alpha", glow.alpha);
+      roots[i].style.setProperty("--sc-matrix-size", size + "px");
+      roots[i].style.setProperty("--sc-matrix-color", accent.color);
+      roots[i].style.setProperty("--sc-matrix-glow-rgb", accent.rgb);
+      roots[i].style.setProperty("--sc-matrix-glow-radius", glow.radius);
+      roots[i].style.setProperty("--sc-matrix-glow-alpha", glow.alpha);
       roots[i].setAttribute("data-final", text);
       while (roots[i].firstChild) {
         roots[i].removeChild(roots[i].firstChild);
@@ -140,7 +140,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 
 <!--
   Timeline integration:
-  tl.fromTo('.hf-catalog-matrix-decode span', { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.18, stagger: 0.035, ease: 'power2.out' }, startTime);
+  tl.fromTo('.sc-catalog-matrix-decode span', { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.18, stagger: 0.035, ease: 'power2.out' }, startTime);
 -->
 ```
 
@@ -148,7 +148,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 
 ## Install
 
-<InstallCommand command="npx hyperframes add matrix-decode" item="matrix-decode" />
+<InstallCommand command="npx smashcut add matrix-decode" item="matrix-decode" />
 
 That writes one file: `compositions/components/matrix-decode.html`.
 
@@ -159,7 +159,7 @@ want to change on the element:
 
 | Variable | Default | Accepts | What it does |
 | --- | --- | --- | --- |
-| `text` | `HYPERFRAMES` | string | Word the scramble resolves into. One scrambling cell per character, up to 32. |
+| `text` | `SMASHCUT` | string | Word the scramble resolves into. One scrambling cell per character, up to 32. |
 | `accent` | `green` | `green`, `blue`, `violet` | Colour family of the cells and their glow. |
 | `size` | `64` | 24px to 160px, step 4px | Type size of the cells in pixels. Cell width follows it. |
 | `glow` | `standard` | `none`, `standard`, `strong` | Strength of the halo behind the cells, from none to a heavy bloom. |
@@ -171,7 +171,7 @@ defaults, so this behaves exactly like the preview above until you change one:
 <div
   data-composition-id="matrix-decode"
   data-composition-src="compositions/components/matrix-decode.html"
-  data-variable-values='{"text":"HYPERFRAMES","accent":"green","size":64,"glow":"standard"}'
+  data-variable-values='{"text":"SMASHCUT","accent":"green","size":64,"glow":"standard"}'
 ></div>
 ```
 
@@ -181,7 +181,7 @@ defaults, so this behaves exactly like the preview above until you change one:
 
 ```html
 <!--
-  Matrix Decode - typography primitive for HyperFrames.
+  Matrix Decode - typography primitive for SmashCut.
 
   Paste the markup, CSS and script into a composition. Drive the timeline
   integration from a paused GSAP timeline so renders remain deterministic.
@@ -192,7 +192,7 @@ defaults, so this behaves exactly like the preview above until you change one:
   recipe below is untouched by them: it keeps staggering whatever cells are
   present.
 
-    - text (text, default HYPERFRAMES): the word the scramble resolves into.
+    - text (text, default SMASHCUT): the word the scramble resolves into.
       One scrambling cell per character, up to 32. Also written to data-final,
       which a decode routine can read.
     - accent (green | blue | violet, default green): colour family of the cells
@@ -207,10 +207,10 @@ defaults, so this behaves exactly like the preview above until you change one:
 -->
 
 <div
-  class="hf-catalog-matrix-decode"
-  data-final="HYPERFRAMES"
+  class="sc-catalog-matrix-decode"
+  data-final="SMASHCUT"
   data-composition-variables='[
-    { "id": "text", "type": "string", "role": "content", "label": "Target text", "description": "Word the scramble resolves into. One scrambling cell per character, up to 32.", "default": "HYPERFRAMES" },
+    { "id": "text", "type": "string", "role": "content", "label": "Target text", "description": "Word the scramble resolves into. One scrambling cell per character, up to 32.", "default": "SMASHCUT" },
     { "id": "accent", "type": "enum", "role": "style", "label": "Accent", "description": "Colour family of the cells and their glow.", "default": "green", "options": [{ "value": "green", "label": "Green" }, { "value": "blue", "label": "Blue" }, { "value": "violet", "label": "Violet" }] },
     { "id": "size", "type": "number", "role": "style", "label": "Size", "description": "Type size of the cells in pixels. Cell width follows it.", "default": 64, "min": 24, "max": 160, "step": 4, "unit": "px" },
     { "id": "glow", "type": "enum", "role": "style", "label": "Glow", "description": "Strength of the halo behind the cells, from none to a heavy bloom.", "default": "standard", "options": [{ "value": "none", "label": "None" }, { "value": "standard", "label": "Standard" }, { "value": "strong", "label": "Strong" }] }
@@ -221,13 +221,13 @@ defaults, so this behaves exactly like the preview above until you change one:
 </div>
 
 <style>
-  .hf-catalog-matrix-decode {
+  .sc-catalog-matrix-decode {
     color: #18181b;
     font-family: Inter, system-ui, sans-serif;
     font-weight: 900;
     letter-spacing: -0.04em;
   }
-  .hf-catalog-matrix-decode {
+  .sc-catalog-matrix-decode {
     display: inline-flex;
     gap: 3px;
     font:
@@ -235,15 +235,15 @@ defaults, so this behaves exactly like the preview above until you change one:
       SFMono-Regular,
       Menlo,
       monospace;
-    font-size: var(--hf-matrix-size, 64px);
-    color: var(--hf-matrix-color, #16a34a);
-    text-shadow: 0 0 var(--hf-matrix-glow-radius, 18px)
-      rgba(var(--hf-matrix-glow-rgb, 22, 163, 74), var(--hf-matrix-glow-alpha, 0.28));
+    font-size: var(--sc-matrix-size, 64px);
+    color: var(--sc-matrix-color, #16a34a);
+    text-shadow: 0 0 var(--sc-matrix-glow-radius, 18px)
+      rgba(var(--sc-matrix-glow-rgb, 22, 163, 74), var(--sc-matrix-glow-alpha, 0.28));
   }
-  .hf-catalog-matrix-decode span {
+  .sc-catalog-matrix-decode span {
     display: inline-block;
     min-width: 0.64em;
-    opacity: var(--hf-matrix-opacity, 1);
+    opacity: var(--sc-matrix-opacity, 1);
   }
 </style>
 
@@ -252,8 +252,8 @@ defaults, so this behaves exactly like the preview above until you change one:
     "use strict";
 
     var vars =
-      window.__hyperframes && window.__hyperframes.getVariables
-        ? window.__hyperframes.getVariables()
+      window.__smashcut && window.__smashcut.getVariables
+        ? window.__smashcut.getVariables()
         : {};
 
     // Anything missing or invalid returns to its declared default.
@@ -274,7 +274,7 @@ defaults, so this behaves exactly like the preview above until you change one:
 
     var text = typeof vars.text === "string" ? vars.text.trim().slice(0, 32) : "";
     if (!text) {
-      text = "HYPERFRAMES";
+      text = "SMASHCUT";
     }
 
     var size =
@@ -284,13 +284,13 @@ defaults, so this behaves exactly like the preview above until you change one:
     var accent = accents[pick(accents, vars.accent, "green")];
     var glow = glows[pick(glows, vars.glow, "standard")];
 
-    var roots = document.querySelectorAll(".hf-catalog-matrix-decode");
+    var roots = document.querySelectorAll(".sc-catalog-matrix-decode");
     for (var i = 0; i < roots.length; i += 1) {
-      roots[i].style.setProperty("--hf-matrix-size", size + "px");
-      roots[i].style.setProperty("--hf-matrix-color", accent.color);
-      roots[i].style.setProperty("--hf-matrix-glow-rgb", accent.rgb);
-      roots[i].style.setProperty("--hf-matrix-glow-radius", glow.radius);
-      roots[i].style.setProperty("--hf-matrix-glow-alpha", glow.alpha);
+      roots[i].style.setProperty("--sc-matrix-size", size + "px");
+      roots[i].style.setProperty("--sc-matrix-color", accent.color);
+      roots[i].style.setProperty("--sc-matrix-glow-rgb", accent.rgb);
+      roots[i].style.setProperty("--sc-matrix-glow-radius", glow.radius);
+      roots[i].style.setProperty("--sc-matrix-glow-alpha", glow.alpha);
       roots[i].setAttribute("data-final", text);
       while (roots[i].firstChild) {
         roots[i].removeChild(roots[i].firstChild);
@@ -306,7 +306,7 @@ defaults, so this behaves exactly like the preview above until you change one:
 
 <!--
   Timeline integration:
-  tl.fromTo('.hf-catalog-matrix-decode span', { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.18, stagger: 0.035, ease: 'power2.out' }, startTime);
+  tl.fromTo('.sc-catalog-matrix-decode span', { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.18, stagger: 0.035, ease: 'power2.out' }, startTime);
 -->
 ```
 

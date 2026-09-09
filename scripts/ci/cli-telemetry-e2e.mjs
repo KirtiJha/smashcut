@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * End-to-end check that `hyperframes add` reports what it installed.
+ * End-to-end check that `smashcut add` reports what it installed.
  *
  * Unit tests can only assert the emit seam. `shouldTrack()` short-circuits
  * whenever `isDevMode()` is true, and that is true for any `.ts` entry — so
@@ -11,7 +11,7 @@
  *
  * Two fixtures, because neither case can be reached through the real registry:
  * a local registry (the origin is a first-class project setting,
- * `hyperframes.json#registry`) supplies an item with a `registryDependencies`
+ * `smashcut.json#registry`) supplies an item with a `registryDependencies`
  * edge, which no shipped catalog item declares today; and `globalThis.fetch`
  * is wrapped so the batch is captured instead of sent. Faking a 200 is what
  * keeps this off production analytics — `flush()` only leaves events queued
@@ -38,14 +38,14 @@ if (!existsSync(cliPath)) {
 const BASE_COMPONENT = {
   $schema: "https://hyperframes.heygen.com/schema/registry-item.json",
   name: "e2e-base-component",
-  type: "hyperframes:component",
+  type: "smashcut:component",
   title: "E2E Base Component",
   description: "Dependency target",
   files: [
     {
       path: "e2e-base-component.html",
       target: "compositions/components/e2e-base-component/e2e-base-component.html",
-      type: "hyperframes:snippet",
+      type: "smashcut:snippet",
     },
   ],
 };
@@ -53,7 +53,7 @@ const BASE_COMPONENT = {
 const DEP_BLOCK = {
   $schema: "https://hyperframes.heygen.com/schema/registry-item.json",
   name: "e2e-dep-block",
-  type: "hyperframes:block",
+  type: "smashcut:block",
   title: "E2E Dep Block",
   description: "Block that pulls a component in behind it",
   dimensions: { width: 1920, height: 1080 },
@@ -63,7 +63,7 @@ const DEP_BLOCK = {
     {
       path: "e2e-dep-block.html",
       target: "compositions/e2e-dep-block.html",
-      type: "hyperframes:composition",
+      type: "smashcut:composition",
     },
   ],
 };
@@ -111,7 +111,7 @@ const server = createServer((req, res) => {
 await new Promise((r) => server.listen(0, "127.0.0.1", r));
 const registryUrl = `http://127.0.0.1:${server.address().port}`;
 
-const sandbox = mkdtempSync(join(tmpdir(), "hf-telemetry-e2e-"));
+const sandbox = mkdtempSync(join(tmpdir(), "sc-telemetry-e2e-"));
 const hookPath = join(sandbox, "capture-hook.cjs");
 writeFileSync(
   hookPath,
@@ -153,9 +153,9 @@ function addedEvents(batches) {
 function runAdd(name, { optOut = "", doNotTrack = "" } = {}) {
   const projectDir = mkdtempSync(join(sandbox, "project-"));
   writeFileSync(
-    join(projectDir, "hyperframes.json"),
+    join(projectDir, "smashcut.json"),
     JSON.stringify({
-      $schema: "https://hyperframes.heygen.com/schema/hyperframes.json",
+      $schema: "https://hyperframes.heygen.com/schema/smashcut.json",
       registry: registryUrl,
       paths: { blocks: "compositions", components: "compositions/components", assets: "assets" },
     }),
@@ -168,7 +168,7 @@ function runAdd(name, { optOut = "", doNotTrack = "" } = {}) {
       {
         env: {
           ...process.env,
-          HYPERFRAMES_NO_TELEMETRY: optOut,
+          SMASHCUT_NO_TELEMETRY: optOut,
           DO_NOT_TRACK: doNotTrack,
           TELEMETRY_CAPTURE_FILE: capture,
         },
@@ -210,7 +210,7 @@ check(
   JSON.stringify(tracked.added.find((a) => a.item === "e2e-base-component")) ===
     JSON.stringify({
       item: "e2e-base-component",
-      item_type: "hyperframes:component",
+      item_type: "smashcut:component",
       requested: false,
     }),
   tracked.added.find((a) => a.item === "e2e-base-component"),
@@ -218,13 +218,13 @@ check(
 check(
   "requested item reported as a request",
   JSON.stringify(tracked.added.find((a) => a.item === "e2e-dep-block")) ===
-    JSON.stringify({ item: "e2e-dep-block", item_type: "hyperframes:block", requested: true }),
+    JSON.stringify({ item: "e2e-dep-block", item_type: "smashcut:block", requested: true }),
   tracked.added.find((a) => a.item === "e2e-dep-block"),
 );
 
 console.log("opt out");
 for (const [label, env] of [
-  ["HYPERFRAMES_NO_TELEMETRY=1", { optOut: "1" }],
+  ["SMASHCUT_NO_TELEMETRY=1", { optOut: "1" }],
   ["DO_NOT_TRACK=1", { doNotTrack: "1" }],
 ]) {
   const optedOut = await runAdd("e2e-dep-block", env);

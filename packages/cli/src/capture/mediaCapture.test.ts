@@ -13,7 +13,7 @@ import {
 const tempDirs: string[] = [];
 
 function tempDir(): string {
-  const dir = mkdtempSync(join(tmpdir(), "hf-media-budget-"));
+  const dir = mkdtempSync(join(tmpdir(), "sc-media-budget-"));
   tempDirs.push(dir);
   return dir;
 }

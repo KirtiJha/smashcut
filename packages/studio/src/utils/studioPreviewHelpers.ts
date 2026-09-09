@@ -70,7 +70,7 @@ function resolvePreviewLocalPointer(
   };
 }
 
-const POINTER_EVENTS_OVERRIDE_ID = "__hf_studio_pointer_events_override__";
+const POINTER_EVENTS_OVERRIDE_ID = "__sc_studio_pointer_events_override__";
 
 function forcePointerEventsAuto(doc: Document): HTMLStyleElement | null {
   try {
@@ -179,7 +179,7 @@ function filterAuthorInteractiveTargets(
 function findGroupAtPoint(doc: Document, x: number, y: number): HTMLElement | null {
   let best: HTMLElement | null = null;
   let bestArea = Infinity;
-  for (const group of Array.from(doc.querySelectorAll<HTMLElement>("[data-hf-group]"))) {
+  for (const group of Array.from(doc.querySelectorAll<HTMLElement>("[data-sc-group]"))) {
     let left = Infinity;
     let top = Infinity;
     let right = -Infinity;

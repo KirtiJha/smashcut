@@ -3,7 +3,7 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import { dispatchModifierKey, dispatchPlainKey } from "./useAppHotkeys";
 import { usePlayerStore } from "../player/store/playerStore";
 import { clearAutomationClipboard, copyRange } from "../player/components/automationClipboard";
-import { VOLUME_RANGE } from "@hyperframes/core/audio-automation";
+import { VOLUME_RANGE } from "@smashcut/core/audio-automation";
 import type { TimelineElement } from "../player/store/timelineElement";
 
 /** Minimal valid fixture — TimelineElement only requires these five fields. */

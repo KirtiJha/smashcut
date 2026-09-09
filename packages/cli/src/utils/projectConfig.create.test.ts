@@ -17,13 +17,13 @@ vi.mock("node:fs", async (importOriginal) => {
 
 const dirs: string[] = [];
 function project() {
-  const dir = fs.mkdtempSync(join(tmpdir(), "hf-config-create-"));
+  const dir = fs.mkdtempSync(join(tmpdir(), "sc-config-create-"));
   dirs.push(dir);
   return dir;
 }
 afterEach(() => {
   for (const dir of dirs.splice(0)) {
-    expect(fs.readdirSync(dir).filter((name) => name.startsWith(".hf-create-"))).toEqual([]);
+    expect(fs.readdirSync(dir).filter((name) => name.startsWith(".sc-create-"))).toEqual([]);
     fs.rmSync(dir, { recursive: true, force: true });
   }
 });

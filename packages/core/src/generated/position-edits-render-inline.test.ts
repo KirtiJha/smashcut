@@ -5,7 +5,7 @@ describe("getPositionEditsRenderScript", () => {
   it("returns a non-empty IIFE string built from the real algorithm", () => {
     const script = getPositionEditsRenderScript();
     expect(script.length).toBeGreaterThan(0);
-    expect(script).toContain("data-hf-edit-base-x");
+    expect(script).toContain("data-sc-edit-base-x");
   });
 
   it("is a safe no-op without position-edit markers", () => {
@@ -16,7 +16,7 @@ describe("getPositionEditsRenderScript", () => {
 
   it("applies the translate delta when markers are present", () => {
     document.body.innerHTML =
-      '<h1 data-x="10" data-y="0" data-hf-edit-base-x="0" data-hf-edit-base-y="0">hi</h1>';
+      '<h1 data-x="10" data-y="0" data-sc-edit-base-x="0" data-sc-edit-base-y="0">hi</h1>';
     new Function(getPositionEditsRenderScript())();
     expect(document.querySelector("h1")?.style.getPropertyValue("translate")).toBe("10px 0px");
   });

@@ -28,7 +28,7 @@ describe("collectRuntimeTimelinePayload", () => {
     clip.setAttribute("data-start", "0");
     clip.setAttribute("data-duration", duration);
     if (authoredDuration != null) {
-      clip.setAttribute("data-hf-authored-duration", authoredDuration);
+      clip.setAttribute("data-sc-authored-duration", authoredDuration);
     }
     root.appendChild(clip);
     return clip;
@@ -36,7 +36,7 @@ describe("collectRuntimeTimelinePayload", () => {
 
   it("returns minimal payload for empty document", () => {
     const result = collectRuntimeTimelinePayload(defaultParams);
-    expect(result.source).toBe("hf-preview");
+    expect(result.source).toBe("sc-preview");
     expect(result.type).toBe("timeline");
     expect(result.clips).toEqual([]);
     expect(result.scenes).toEqual([]);
@@ -52,22 +52,22 @@ describe("collectRuntimeTimelinePayload", () => {
   });
 
   // Regression: id-less timed elements (root index.html children carry
-  // data-hf-id, not id) must get their data-hf-id as the clip id — not null —
+  // data-sc-id, not id) must get their data-sc-id as the clip id — not null —
   // so the manifest aligns with __clipTree and inline expansion can join them.
-  it("ids an id-less clip by its data-hf-id", () => {
+  it("ids an id-less clip by its data-sc-id", () => {
     const root = document.createElement("div");
     root.setAttribute("data-composition-id", "main");
     root.setAttribute("data-duration", "10");
     document.body.appendChild(root);
 
     const clip = document.createElement("h1");
-    clip.setAttribute("data-hf-id", "hf-headline");
+    clip.setAttribute("data-sc-id", "sc-headline");
     clip.setAttribute("data-start", "1");
     clip.setAttribute("data-duration", "3");
     root.appendChild(clip);
 
     const result = collectRuntimeTimelinePayload(defaultParams);
-    expect(result.clips[0].id).toBe("hf-headline");
+    expect(result.clips[0].id).toBe("sc-headline");
   });
 
   // Regression: the authored data-track-index must round-trip verbatim, even
@@ -664,21 +664,21 @@ describe("collectRuntimeTimelinePayload", () => {
     slide1.id = "slide-1";
     slide1.setAttribute("data-composition-id", "slide-1");
     slide1.setAttribute("data-start", "0");
-    slide1.setAttribute("data-hf-authored-duration", "14");
+    slide1.setAttribute("data-sc-authored-duration", "14");
     root.appendChild(slide1);
 
     const slide2 = document.createElement("div");
     slide2.id = "slide-2";
     slide2.setAttribute("data-composition-id", "slide-2");
     slide2.setAttribute("data-start", "slide-1");
-    slide2.setAttribute("data-hf-authored-duration", "12");
+    slide2.setAttribute("data-sc-authored-duration", "12");
     root.appendChild(slide2);
 
     const slide3 = document.createElement("div");
     slide3.id = "slide-3";
     slide3.setAttribute("data-composition-id", "slide-3");
     slide3.setAttribute("data-start", "slide-2");
-    slide3.setAttribute("data-hf-authored-duration", "16");
+    slide3.setAttribute("data-sc-authored-duration", "16");
     root.appendChild(slide3);
 
     const result = collectRuntimeTimelinePayload(defaultParams);

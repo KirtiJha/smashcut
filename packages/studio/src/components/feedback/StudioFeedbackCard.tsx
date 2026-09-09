@@ -52,7 +52,7 @@ const CRASH_FOLLOW_UP: FollowUpQuestion = {
 
 /** Long enough to read the render result first; short enough to stay polite. */
 const AUTO_DISMISS_MS = 30_000;
-/** Matches the .hf-toast-exit animation so the node leaves as it finishes. */
+/** Matches the .sc-toast-exit animation so the node leaves as it finishes. */
 const EXIT_MS = 160;
 /**
  * The thanks state carries the interview link, so it has to outlast a glance.
@@ -200,13 +200,13 @@ export const StudioFeedbackCard = memo(function StudioFeedbackCard() {
   // sit on one axis if they asked the same thing; what makes them comparable is
   // `reason`, which records the moment, not a reworded prompt.
   const title =
-    step === "rating" ? "How likely are you to recommend HyperFrames?" : followUp.prompt;
+    step === "rating" ? "How likely are you to recommend SmashCut?" : followUp.prompt;
 
   return (
     <div
       role="dialog"
-      aria-label="Send feedback to the HyperFrames team"
-      className={`motion-reduce:animate-none ${exiting ? "hf-toast-exit" : "hf-toast-enter"}`}
+      aria-label="Send feedback to the SmashCut team"
+      className={`motion-reduce:animate-none ${exiting ? "sc-toast-exit" : "sc-toast-enter"}`}
       onKeyDown={(e) => {
         if (e.key === "Escape") close("escape");
       }}
@@ -287,7 +287,7 @@ export const StudioFeedbackCard = memo(function StudioFeedbackCard() {
                 >
                   <input
                     type="radio"
-                    name="hf-studio-feedback-rating"
+                    name="sc-studio-feedback-rating"
                     value={n}
                     checked={rating === n}
                     onChange={() => pickRating(n)}

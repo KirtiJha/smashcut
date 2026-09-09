@@ -37,7 +37,7 @@ const FIXTURE_HTML = `<!doctype html>
 let runRoot: string;
 
 beforeAll(() => {
-  runRoot = mkdtempSync(join(tmpdir(), "hf-plan-size-cap-"));
+  runRoot = mkdtempSync(join(tmpdir(), "sc-plan-size-cap-"));
 });
 
 afterAll(() => {
@@ -133,10 +133,10 @@ describe("measurePlanSizeBreakdown path boundaries", () => {
 
   it("classifies staged extracted frames separately from compiled assets", () => {
     const dir = mkdtempSync(join(runRoot, "staged-breakdown-"));
-    mkdirSync(join(dir, "__hyperframes_video_frames", "video-1"), { recursive: true });
+    mkdirSync(join(dir, "__smashcut_video_frames", "video-1"), { recursive: true });
     writeFileSync(join(dir, "index.html"), Buffer.alloc(25));
     writeFileSync(
-      join(dir, "__hyperframes_video_frames", "video-1", "frame_000001.jpg"),
+      join(dir, "__smashcut_video_frames", "video-1", "frame_000001.jpg"),
       Buffer.alloc(75),
     );
 

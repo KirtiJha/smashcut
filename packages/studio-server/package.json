@@ -1,5 +1,5 @@
 {
-  "name": "@hyperframes/studio-server",
+  "name": "@smashcut/studio-server",
   "version": "0.8.33",
   "repository": {
     "type": "git",
@@ -134,8 +134,8 @@
     "prepublishOnly": "echo skip"
   },
   "dependencies": {
-    "@hyperframes/core": "workspace:*",
-    "@hyperframes/parsers": "workspace:*",
+    "@smashcut/core": "workspace:*",
+    "@smashcut/parsers": "workspace:*",
     "hono": "^4.0.0",
     "linkedom": "^0.18.12",
     "postcss": "^8.5.8",

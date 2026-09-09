@@ -38,7 +38,7 @@ function fakePage(
 
 describe("captureFullPagePlate — the scroll shot's plate", () => {
   it("writes one full-page png and returns its relative path", async () => {
-    const dir = mkdtempSync(join(tmpdir(), "hf-plate-"));
+    const dir = mkdtempSync(join(tmpdir(), "sc-plate-"));
     const { page, screenshot } = fakePage({ docHeight: 10962, plateHeight: 10962 });
 
     const out = await captureFullPagePlate(page, dir);
@@ -49,7 +49,7 @@ describe("captureFullPagePlate — the scroll shot's plate", () => {
   });
 
   it("stays 1x: it never touches the viewport's deviceScaleFactor", async () => {
-    const dir = mkdtempSync(join(tmpdir(), "hf-plate-"));
+    const dir = mkdtempSync(join(tmpdir(), "sc-plate-"));
     const setViewport = vi.fn(async () => undefined);
     const { page } = fakePage({}, { setViewport });
 
@@ -60,7 +60,7 @@ describe("captureFullPagePlate — the scroll shot's plate", () => {
   });
 
   it("skips a page taller than Chrome can capture, instead of writing a clipped plate", async () => {
-    const dir = mkdtempSync(join(tmpdir(), "hf-plate-"));
+    const dir = mkdtempSync(join(tmpdir(), "sc-plate-"));
     const { page, screenshot } = fakePage({ docHeight: MAX_PLATE_HEIGHT_PX + 1 });
 
     const out = await captureFullPagePlate(page, dir);
@@ -71,7 +71,7 @@ describe("captureFullPagePlate — the scroll shot's plate", () => {
   });
 
   it("neutralises sticky/fixed chrome for the shot and restores it afterwards", async () => {
-    const dir = mkdtempSync(join(tmpdir(), "hf-plate-"));
+    const dir = mkdtempSync(join(tmpdir(), "sc-plate-"));
     const { page, evaluate, screenshot } = fakePage();
 
     await captureFullPagePlate(page, dir);
@@ -82,11 +82,11 @@ describe("captureFullPagePlate — the scroll shot's plate", () => {
     expect(scripts).toHaveLength(3);
     expect(scripts[0]).toContain("'fixed'");
     expect(scripts[0]).toContain("'sticky'");
-    expect(scripts[0]).toContain("data-hf-plate-position");
+    expect(scripts[0]).toContain("data-sc-plate-position");
     expect(scripts[1]).toContain("scrollHeight");
     // Then hand the page back unchanged: the caller keeps reading the DOM after this.
     expect(scripts[2]).toContain("removeAttribute");
-    expect(scripts[2]).toContain("data-hf-plate-position");
+    expect(scripts[2]).toContain("data-sc-plate-position");
     expect(evaluate.mock.invocationCallOrder[1]).toBeLessThan(
       screenshot.mock.invocationCallOrder[0]!,
     );
@@ -96,7 +96,7 @@ describe("captureFullPagePlate — the scroll shot's plate", () => {
   });
 
   it("restores the page even when the screenshot throws", async () => {
-    const dir = mkdtempSync(join(tmpdir(), "hf-plate-"));
+    const dir = mkdtempSync(join(tmpdir(), "sc-plate-"));
     const screenshot = vi.fn(async (_opts?: unknown) => {
       throw new Error("capture failed");
     });
@@ -111,7 +111,7 @@ describe("captureFullPagePlate — the scroll shot's plate", () => {
 
 describe("captureScrollScreenshots — capture budget", () => {
   it("does not begin page work when the post-navigation budget is exhausted", async () => {
-    const dir = mkdtempSync(join(tmpdir(), "hf-scroll-budget-"));
+    const dir = mkdtempSync(join(tmpdir(), "sc-scroll-budget-"));
     const evaluate = vi.fn(async () => 1080);
     const screenshot = vi.fn(async () => pngBuffer(1080));
     const page = { evaluate, screenshot } as unknown as Page;
@@ -126,7 +126,7 @@ describe("captureScrollScreenshots — capture budget", () => {
   it("re-checks the budget after settling and before each viewport screenshot", async () => {
     vi.useFakeTimers();
     vi.setSystemTime(0);
-    const dir = mkdtempSync(join(tmpdir(), "hf-scroll-expiring-budget-"));
+    const dir = mkdtempSync(join(tmpdir(), "sc-scroll-expiring-budget-"));
     const evaluate = vi.fn(async (expression: unknown) => {
       const source = String(expression);
       if (source.includes("Math.max(document.body.scrollHeight")) return 1080;
@@ -155,7 +155,7 @@ describe("captureFullPagePlate — capture budget", () => {
   it("re-checks the budget immediately before the full-page screenshot", async () => {
     vi.useFakeTimers();
     vi.setSystemTime(0);
-    const dir = mkdtempSync(join(tmpdir(), "hf-plate-expiring-budget-"));
+    const dir = mkdtempSync(join(tmpdir(), "sc-plate-expiring-budget-"));
     const screenshot = vi.fn(async () => pngBuffer(8000));
     const evaluate = vi.fn(async (expression: unknown) => {
       if (String(expression).includes("scrollHeight")) {
@@ -181,7 +181,7 @@ describe("captureFullPagePlate — capture budget", () => {
 
 describe("captureFullPagePlate — guards against a silently clipped plate", () => {
   it("measures the height itself, after lazy content has grown the page", async () => {
-    const dir = mkdtempSync(join(tmpdir(), "hf-plate-"));
+    const dir = mkdtempSync(join(tmpdir(), "sc-plate-"));
     // A page that measured 9000 before scrolling but is 20000 once lazy images land: the
     // pre-scroll number would have passed the guard and emitted a clipped plate.
     const { page, screenshot } = fakePage({ docHeight: 20000 });
@@ -191,7 +191,7 @@ describe("captureFullPagePlate — guards against a silently clipped plate", () 
   });
 
   it("discards a plate Chrome clipped, even when the measurement passed", async () => {
-    const dir = mkdtempSync(join(tmpdir(), "hf-plate-"));
+    const dir = mkdtempSync(join(tmpdir(), "sc-plate-"));
     // Measurement said 16000, but the capture itself triggered more loading and came back
     // over the cap. Emitting it would be undetectable downstream.
     const { page } = fakePage({ docHeight: 16000, plateHeight: MAX_PLATE_HEIGHT_PX + 500 });
@@ -201,7 +201,7 @@ describe("captureFullPagePlate — guards against a silently clipped plate", () 
   });
 
   it("survives a restore that throws — the real error is what propagates", async () => {
-    const dir = mkdtempSync(join(tmpdir(), "hf-plate-"));
+    const dir = mkdtempSync(join(tmpdir(), "sc-plate-"));
     let call = 0;
     const evaluate = vi.fn(async (script?: unknown) => {
       call++;
@@ -233,7 +233,7 @@ describe("pngHeight", () => {
 
 describe("captureFullPagePlate — the guard sees the post-neutralisation page (Magi's case)", () => {
   it("skips when the initial height is under the cap but the final height is over it", async () => {
-    const dir = mkdtempSync(join(tmpdir(), "hf-plate-"));
+    const dir = mkdtempSync(join(tmpdir(), "sc-plate-"));
     // Pre-traversal the page measured 9000. Lazy content and un-fixing the sticky header push
     // it over the cap by the time the plate would be shot. Probing before either step would
     // have passed the guard and emitted a clipped plate.

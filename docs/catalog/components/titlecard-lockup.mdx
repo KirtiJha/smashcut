@@ -10,13 +10,13 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
   previewSrc="/public/catalog/components/titlecard-lockup.json"
   compositionId="titlecard-lockup"
   compositionSrc="compositions/components/titlecard-lockup.html"
-  variables={[{"id":"wordmark","type":"string","role":"content","label":"Wordmark","description":"Display wordmark that settles dead-center.","default":"HYPERFRAMES"},{"id":"label","type":"string","role":"content","label":"Label","description":"Mono caption under the rule. Empty hides it.","default":"WRITE HTML. RENDER VIDEO."},{"id":"kicker","type":"string","role":"content","label":"Kicker","description":"Small mono label above the wordmark. Empty hides it.","default":"INTRODUCING"},{"id":"rule","type":"enum","role":"style","label":"Rule","description":"Hairline rule drawn left to right under the wordmark.","default":"show","options":[{"value":"show","label":"Show"},{"value":"hide","label":"Hide"}]},{"id":"accent","type":"enum","role":"style","label":"Accent","description":"Contract color carried by the hairline rule.","default":"green","options":[{"value":"green","label":"Green"},{"value":"blue","label":"Blue"},{"value":"violet","label":"Violet"}]},{"id":"exit","type":"enum","role":"style","label":"Exit","description":"Optional departure. Frame roots own transitions, so none is the default.","default":"none","options":[{"value":"none","label":"None"},{"value":"fade","label":"Fade"},{"value":"up","label":"Up"}]}]}
+  variables={[{"id":"wordmark","type":"string","role":"content","label":"Wordmark","description":"Display wordmark that settles dead-center.","default":"SMASHCUT"},{"id":"label","type":"string","role":"content","label":"Label","description":"Mono caption under the rule. Empty hides it.","default":"WRITE HTML. RENDER VIDEO."},{"id":"kicker","type":"string","role":"content","label":"Kicker","description":"Small mono label above the wordmark. Empty hides it.","default":"INTRODUCING"},{"id":"rule","type":"enum","role":"style","label":"Rule","description":"Hairline rule drawn left to right under the wordmark.","default":"show","options":[{"value":"show","label":"Show"},{"value":"hide","label":"Hide"}]},{"id":"accent","type":"enum","role":"style","label":"Accent","description":"Contract color carried by the hairline rule.","default":"green","options":[{"value":"green","label":"Green"},{"value":"blue","label":"Blue"},{"value":"violet","label":"Violet"}]},{"id":"exit","type":"enum","role":"style","label":"Exit","description":"Optional departure. Frame roots own transitions, so none is the default.","default":"none","options":[{"value":"none","label":"None"},{"value":"fade","label":"Fade"},{"value":"up","label":"Up"}]}]}
 >
 
 ```html titlecard-lockup.html
 <!doctype html>
 <!--
-  titlecard-lockup: HyperFrames video primitive (intros and reveals / breather)
+  titlecard-lockup: SmashCut video primitive (intros and reveals / breather)
 
   The calm breather titlecard. An optional mono kicker fades up, the wordmark
   settles dead-center with ONE restrained move (scale 0.96 to 1, smooth
@@ -53,7 +53,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
   data-composition-id="titlecard-lockup"
   data-composition-duration="4"
   data-composition-variables='[
-    { "id": "wordmark", "type": "string", "role": "content", "label": "Wordmark", "description": "Display wordmark that settles dead-center.", "default": "HYPERFRAMES" },
+    { "id": "wordmark", "type": "string", "role": "content", "label": "Wordmark", "description": "Display wordmark that settles dead-center.", "default": "SMASHCUT" },
     { "id": "label", "type": "string", "role": "content", "label": "Label", "description": "Mono caption under the rule. Empty hides it.", "default": "WRITE HTML. RENDER VIDEO." },
     { "id": "kicker", "type": "string", "role": "content", "label": "Kicker", "description": "Small mono label above the wordmark. Empty hides it.", "default": "INTRODUCING" },
     { "id": "rule", "type": "enum", "role": "style", "label": "Rule", "description": "Hairline rule drawn left to right under the wordmark.", "default": "show", "options": [{ "value": "show", "label": "Show" }, { "value": "hide", "label": "Hide" }] },
@@ -208,8 +208,8 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
             var ruleLine = root.querySelector(".tl-rule");
             var label = root.querySelector(".tl-label");
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             function readText(value, fallback) {
@@ -217,7 +217,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
               return String(value).trim().replace(/\s+/g, " ");
             }
 
-            var wordmarkText = readText(vars.wordmark, "HYPERFRAMES");
+            var wordmarkText = readText(vars.wordmark, "SMASHCUT");
             var labelText = readText(vars.label, "WRITE HTML. RENDER VIDEO.");
             var kickerText = readText(vars.kicker, "INTRODUCING");
             var ruleShown = vars.rule !== "hide";
@@ -341,7 +341,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 
 ## Install
 
-<InstallCommand command="npx hyperframes add titlecard-lockup" item="titlecard-lockup" />
+<InstallCommand command="npx smashcut add titlecard-lockup" item="titlecard-lockup" />
 
 That writes one file: `compositions/components/titlecard-lockup.html`.
 
@@ -359,7 +359,7 @@ want to change on the element:
 
 | Variable | Default | Accepts | What it does |
 | --- | --- | --- | --- |
-| `wordmark` | `HYPERFRAMES` | string | Display wordmark that settles dead-center. |
+| `wordmark` | `SMASHCUT` | string | Display wordmark that settles dead-center. |
 | `label` | `WRITE HTML. RENDER VIDEO.` | string | Mono caption under the rule. Empty hides it. |
 | `kicker` | `INTRODUCING` | string | Small mono label above the wordmark. Empty hides it. |
 | `rule` | `show` | `show`, `hide` | Hairline rule drawn left to right under the wordmark. |
@@ -373,7 +373,7 @@ defaults, so this behaves exactly like the preview above until you change one:
 <div
   data-composition-id="titlecard-lockup"
   data-composition-src="compositions/components/titlecard-lockup.html"
-  data-variable-values='{"wordmark":"HYPERFRAMES","label":"WRITE HTML. RENDER VIDEO.","kicker":"INTRODUCING","rule":"show","accent":"green","exit":"none"}'
+  data-variable-values='{"wordmark":"SMASHCUT","label":"WRITE HTML. RENDER VIDEO.","kicker":"INTRODUCING","rule":"show","accent":"green","exit":"none"}'
 ></div>
 ```
 
@@ -384,7 +384,7 @@ defaults, so this behaves exactly like the preview above until you change one:
 ```html
 <!doctype html>
 <!--
-  titlecard-lockup: HyperFrames video primitive (intros and reveals / breather)
+  titlecard-lockup: SmashCut video primitive (intros and reveals / breather)
 
   The calm breather titlecard. An optional mono kicker fades up, the wordmark
   settles dead-center with ONE restrained move (scale 0.96 to 1, smooth
@@ -421,7 +421,7 @@ defaults, so this behaves exactly like the preview above until you change one:
   data-composition-id="titlecard-lockup"
   data-composition-duration="4"
   data-composition-variables='[
-    { "id": "wordmark", "type": "string", "role": "content", "label": "Wordmark", "description": "Display wordmark that settles dead-center.", "default": "HYPERFRAMES" },
+    { "id": "wordmark", "type": "string", "role": "content", "label": "Wordmark", "description": "Display wordmark that settles dead-center.", "default": "SMASHCUT" },
     { "id": "label", "type": "string", "role": "content", "label": "Label", "description": "Mono caption under the rule. Empty hides it.", "default": "WRITE HTML. RENDER VIDEO." },
     { "id": "kicker", "type": "string", "role": "content", "label": "Kicker", "description": "Small mono label above the wordmark. Empty hides it.", "default": "INTRODUCING" },
     { "id": "rule", "type": "enum", "role": "style", "label": "Rule", "description": "Hairline rule drawn left to right under the wordmark.", "default": "show", "options": [{ "value": "show", "label": "Show" }, { "value": "hide", "label": "Hide" }] },
@@ -576,8 +576,8 @@ defaults, so this behaves exactly like the preview above until you change one:
             var ruleLine = root.querySelector(".tl-rule");
             var label = root.querySelector(".tl-label");
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             function readText(value, fallback) {
@@ -585,7 +585,7 @@ defaults, so this behaves exactly like the preview above until you change one:
               return String(value).trim().replace(/\s+/g, " ");
             }
 
-            var wordmarkText = readText(vars.wordmark, "HYPERFRAMES");
+            var wordmarkText = readText(vars.wordmark, "SMASHCUT");
             var labelText = readText(vars.label, "WRITE HTML. RENDER VIDEO.");
             var kickerText = readText(vars.kicker, "INTRODUCING");
             var ruleShown = vars.rule !== "hide";

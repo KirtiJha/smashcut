@@ -15,7 +15,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 
 ```html shared-axis-y.html
 <!--
-  Shared Axis Y - typography primitive for HyperFrames.
+  Shared Axis Y - typography primitive for SmashCut.
 
   Paste the markup, CSS and script into a composition. Drive the timeline
   integration from a paused GSAP timeline so renders remain deterministic.
@@ -39,7 +39,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 -->
 
 <div
-  class="hf-catalog-shared-axis-y"
+  class="sc-catalog-shared-axis-y"
   data-composition-variables='[
     { "id": "direction", "type": "enum", "role": "motion", "label": "Direction", "description": "Which side of the baseline the words travel in from.", "default": "up", "options": [{ "value": "up", "label": "Up" }, { "value": "down", "label": "Down" }] },
     { "id": "distance", "type": "enum", "role": "motion", "label": "Distance", "description": "Scales the vertical offset, so the words cover a shorter or longer run in the same time.", "default": "standard", "options": [{ "value": "close", "label": "Close" }, { "value": "standard", "label": "Standard" }, { "value": "far", "label": "Far" }] },
@@ -50,26 +50,26 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 </div>
 
 <style>
-  .hf-catalog-shared-axis-y {
-    color: var(--hf-word-color, #18181b);
+  .sc-catalog-shared-axis-y {
+    color: var(--sc-word-color, #18181b);
     font-family: Inter, system-ui, sans-serif;
     font-weight: 900;
     letter-spacing: -0.04em;
   }
-  .hf-catalog-shared-axis-y {
+  .sc-catalog-shared-axis-y {
     display: inline-flex;
     gap: 12px;
     font-size: 56px;
     line-height: 1;
   }
-  .hf-catalog-shared-axis-y span {
+  .sc-catalog-shared-axis-y span {
     display: inline-block;
     transform: translate(
-        var(--hf-word-x, 0px),
-        calc(var(--hf-word-y, 0px) * var(--hf-word-axis-y, 1))
+        var(--sc-word-x, 0px),
+        calc(var(--sc-word-y, 0px) * var(--sc-word-axis-y, 1))
       )
-      scale(var(--hf-word-scale, 1));
-    filter: blur(var(--hf-word-blur, 0px));
+      scale(var(--sc-word-scale, 1));
+    filter: blur(var(--sc-word-blur, 0px));
     will-change: transform, filter, opacity;
   }
 </style>
@@ -79,8 +79,8 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
     "use strict";
 
     var vars =
-      window.__hyperframes && window.__hyperframes.getVariables
-        ? window.__hyperframes.getVariables()
+      window.__smashcut && window.__smashcut.getVariables
+        ? window.__smashcut.getVariables()
         : {};
 
     // Unrecognised overrides return to their declared defaults.
@@ -100,17 +100,17 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
     var reach = reaches[pick(reaches, vars.distance, "standard")];
     var tone = tones[pick(tones, vars.tone, "ink")];
 
-    var roots = document.querySelectorAll(".hf-catalog-shared-axis-y");
+    var roots = document.querySelectorAll(".sc-catalog-shared-axis-y");
     for (var i = 0; i < roots.length; i += 1) {
-      roots[i].style.setProperty("--hf-word-axis-y", String(sign * reach));
-      roots[i].style.setProperty("--hf-word-color", tone);
+      roots[i].style.setProperty("--sc-word-axis-y", String(sign * reach));
+      roots[i].style.setProperty("--sc-word-color", tone);
     }
   })();
 </script>
 
 <!--
   Timeline integration:
-  tl.fromTo('.hf-catalog-shared-axis-y span', { opacity: 0, '--hf-word-y': '32px' }, { opacity: 1, '--hf-word-y': '0px', duration: 0.22, stagger: 0.075, ease: 'power2.out' }, startTime);
+  tl.fromTo('.sc-catalog-shared-axis-y span', { opacity: 0, '--sc-word-y': '32px' }, { opacity: 1, '--sc-word-y': '0px', duration: 0.22, stagger: 0.075, ease: 'power2.out' }, startTime);
 -->
 ```
 
@@ -118,7 +118,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 
 ## Install
 
-<InstallCommand command="npx hyperframes add shared-axis-y" item="shared-axis-y" />
+<InstallCommand command="npx smashcut add shared-axis-y" item="shared-axis-y" />
 
 That writes one file: `compositions/components/shared-axis-y.html`.
 
@@ -150,7 +150,7 @@ defaults, so this behaves exactly like the preview above until you change one:
 
 ```html
 <!--
-  Shared Axis Y - typography primitive for HyperFrames.
+  Shared Axis Y - typography primitive for SmashCut.
 
   Paste the markup, CSS and script into a composition. Drive the timeline
   integration from a paused GSAP timeline so renders remain deterministic.
@@ -174,7 +174,7 @@ defaults, so this behaves exactly like the preview above until you change one:
 -->
 
 <div
-  class="hf-catalog-shared-axis-y"
+  class="sc-catalog-shared-axis-y"
   data-composition-variables='[
     { "id": "direction", "type": "enum", "role": "motion", "label": "Direction", "description": "Which side of the baseline the words travel in from.", "default": "up", "options": [{ "value": "up", "label": "Up" }, { "value": "down", "label": "Down" }] },
     { "id": "distance", "type": "enum", "role": "motion", "label": "Distance", "description": "Scales the vertical offset, so the words cover a shorter or longer run in the same time.", "default": "standard", "options": [{ "value": "close", "label": "Close" }, { "value": "standard", "label": "Standard" }, { "value": "far", "label": "Far" }] },
@@ -185,26 +185,26 @@ defaults, so this behaves exactly like the preview above until you change one:
 </div>
 
 <style>
-  .hf-catalog-shared-axis-y {
-    color: var(--hf-word-color, #18181b);
+  .sc-catalog-shared-axis-y {
+    color: var(--sc-word-color, #18181b);
     font-family: Inter, system-ui, sans-serif;
     font-weight: 900;
     letter-spacing: -0.04em;
   }
-  .hf-catalog-shared-axis-y {
+  .sc-catalog-shared-axis-y {
     display: inline-flex;
     gap: 12px;
     font-size: 56px;
     line-height: 1;
   }
-  .hf-catalog-shared-axis-y span {
+  .sc-catalog-shared-axis-y span {
     display: inline-block;
     transform: translate(
-        var(--hf-word-x, 0px),
-        calc(var(--hf-word-y, 0px) * var(--hf-word-axis-y, 1))
+        var(--sc-word-x, 0px),
+        calc(var(--sc-word-y, 0px) * var(--sc-word-axis-y, 1))
       )
-      scale(var(--hf-word-scale, 1));
-    filter: blur(var(--hf-word-blur, 0px));
+      scale(var(--sc-word-scale, 1));
+    filter: blur(var(--sc-word-blur, 0px));
     will-change: transform, filter, opacity;
   }
 </style>
@@ -214,8 +214,8 @@ defaults, so this behaves exactly like the preview above until you change one:
     "use strict";
 
     var vars =
-      window.__hyperframes && window.__hyperframes.getVariables
-        ? window.__hyperframes.getVariables()
+      window.__smashcut && window.__smashcut.getVariables
+        ? window.__smashcut.getVariables()
         : {};
 
     // Unrecognised overrides return to their declared defaults.
@@ -235,17 +235,17 @@ defaults, so this behaves exactly like the preview above until you change one:
     var reach = reaches[pick(reaches, vars.distance, "standard")];
     var tone = tones[pick(tones, vars.tone, "ink")];
 
-    var roots = document.querySelectorAll(".hf-catalog-shared-axis-y");
+    var roots = document.querySelectorAll(".sc-catalog-shared-axis-y");
     for (var i = 0; i < roots.length; i += 1) {
-      roots[i].style.setProperty("--hf-word-axis-y", String(sign * reach));
-      roots[i].style.setProperty("--hf-word-color", tone);
+      roots[i].style.setProperty("--sc-word-axis-y", String(sign * reach));
+      roots[i].style.setProperty("--sc-word-color", tone);
     }
   })();
 </script>
 
 <!--
   Timeline integration:
-  tl.fromTo('.hf-catalog-shared-axis-y span', { opacity: 0, '--hf-word-y': '32px' }, { opacity: 1, '--hf-word-y': '0px', duration: 0.22, stagger: 0.075, ease: 'power2.out' }, startTime);
+  tl.fromTo('.sc-catalog-shared-axis-y span', { opacity: 0, '--sc-word-y': '32px' }, { opacity: 1, '--sc-word-y': '0px', duration: 0.22, stagger: 0.075, ease: 'power2.out' }, startTime);
 -->
 ```
 

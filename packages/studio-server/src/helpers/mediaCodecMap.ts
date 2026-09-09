@@ -1,13 +1,13 @@
 import { existsSync, statSync } from "node:fs";
 import { relative, resolve, sep } from "node:path";
-import { rewriteAssetPath } from "@hyperframes/parsers/asset-paths";
+import { rewriteAssetPath } from "@smashcut/parsers/asset-paths";
 import {
   cleanAssetUrl,
   isRemoteOrInlineUrl,
   isUnresolvedAssetPlaceholder,
   maskNonScannableRanges,
   resolveLocalAssetCandidates,
-} from "@hyperframes/parsers/asset-resolution";
+} from "@smashcut/parsers/asset-resolution";
 import { pixelFormatHasAlpha, probeMediaMetadata, type FfprobeRunner } from "./mediaMetadata.js";
 
 /**
@@ -185,7 +185,7 @@ export interface HtmlSourceLike {
 }
 
 // --- <video src> collection: shared primitives live in
-// @hyperframes/parsers/asset-resolution; the <video>-specific regex and the
+// @smashcut/parsers/asset-resolution; the <video>-specific regex and the
 // pinned key derivation stay here.
 const VIDEO_SRC_RE = /<video\b[^>]*\bsrc\s*=\s*["']([^"']+)["'][^>]*>/gi;
 

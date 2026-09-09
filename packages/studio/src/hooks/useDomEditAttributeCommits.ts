@@ -9,7 +9,7 @@ import type { PersistDomEditOperations } from "./domEditCommitTypes";
 import { reportDomEditPersistFailure } from "./domEditPersistFailure";
 import { bumpDomEditCommitMapVersion, runDomEditCommit } from "./domEditCommitRunner";
 import { syncStoredAutomationFromPreview } from "../player/lib/automationStoreSync";
-import { HF_AUDIO_GROUP_ATTR, HF_AUDIO_GROUP_TAG } from "@hyperframes/core/audio-groups";
+import { HF_AUDIO_GROUP_ATTR, HF_AUDIO_GROUP_TAG } from "@smashcut/core/audio-groups";
 import { invalidateGroupInfoCache } from "../player/lib/timelineGroupInfo";
 
 // ── Types ──
@@ -67,7 +67,7 @@ function setOrRemovePreviewAttribute(
   }
   // Every DOM-edit attribute write funnels through here, which is the only
   // place that can catch a group edit made from the rack rather than from the
-  // group header — `openGroupFxRack` hands the `<hf-audio-group>` to the DOM
+  // group header — `openGroupFxRack` hands the `<sc-audio-group>` to the DOM
   // editor, and that path never went near the timeline's own writers.
   //
   // The group element itself OR a member's membership attribute: writing

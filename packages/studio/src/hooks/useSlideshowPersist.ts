@@ -1,6 +1,6 @@
 import { useCallback, type MutableRefObject } from "react";
-import type { Composition } from "@hyperframes/sdk";
-import type { SlideshowManifest } from "@hyperframes/core/slideshow";
+import type { Composition } from "@smashcut/sdk";
+import type { SlideshowManifest } from "@smashcut/core/slideshow";
 import type { EditHistoryKind } from "../utils/editHistory";
 import type { PublishSdkSession } from "../utils/sdkCutover";
 import { persistSlideshowManifest } from "../utils/setSlideshowManifest";

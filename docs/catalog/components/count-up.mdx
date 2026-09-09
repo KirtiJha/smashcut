@@ -16,7 +16,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 ```html count-up.html
 <!doctype html>
 <!--
-  count-up: HyperFrames video primitive (proof and stats / prove)
+  count-up: SmashCut video primitive (proof and stats / prove)
 
   A value accelerates from start to end, decelerates into the exact final
   integer, and lands with one restrained scale pulse. Prefix and suffix stay
@@ -173,8 +173,8 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
             var prefixElement = root.querySelector(".cu-prefix");
             var suffixElement = root.querySelector(".cu-suffix");
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             var startCandidate = vars.start;
@@ -317,7 +317,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 
 ## Install
 
-<InstallCommand command="npx hyperframes add count-up" item="count-up" />
+<InstallCommand command="npx smashcut add count-up" item="count-up" />
 
 That writes one file: `compositions/components/count-up.html`.
 
@@ -361,7 +361,7 @@ defaults, so this behaves exactly like the preview above until you change one:
 ```html
 <!doctype html>
 <!--
-  count-up: HyperFrames video primitive (proof and stats / prove)
+  count-up: SmashCut video primitive (proof and stats / prove)
 
   A value accelerates from start to end, decelerates into the exact final
   integer, and lands with one restrained scale pulse. Prefix and suffix stay
@@ -518,8 +518,8 @@ defaults, so this behaves exactly like the preview above until you change one:
             var prefixElement = root.querySelector(".cu-prefix");
             var suffixElement = root.querySelector(".cu-suffix");
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             var startCandidate = vars.start;

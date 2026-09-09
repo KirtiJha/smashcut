@@ -2,7 +2,7 @@
 import { act } from "react";
 import { createRoot } from "react-dom/client";
 import { describe, expect, it, vi } from "vitest";
-import type { Composition } from "@hyperframes/sdk";
+import type { Composition } from "@smashcut/sdk";
 import type { DomEditSelection } from "../components/editor/domEditingTypes";
 import {
   VariablePromoteProvider,
@@ -26,7 +26,7 @@ describe("VariablePromoteProvider save failures", () => {
       on: vi.fn().mockReturnValue(() => {}),
     } as unknown as Composition;
     const selection = {
-      hfId: "hf-box",
+      hfId: "sc-box",
       tagName: "div",
       label: "Box",
       capabilities: { canEditStyles: true },

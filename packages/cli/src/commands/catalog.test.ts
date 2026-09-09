@@ -162,12 +162,12 @@ vi.mock("../registry/localSemantic.js", () => ({
 
 const block = (name: string, tags?: string[]): { name: string; type: string; tags?: string[] } => ({
   name,
-  type: "hyperframes:block",
+  type: "smashcut:block",
   tags,
 });
 const component = (name: string): { name: string; type: string } => ({
   name,
-  type: "hyperframes:component",
+  type: "smashcut:component",
 });
 
 interface Envelope {
@@ -360,7 +360,7 @@ describe("catalog --json meaning search", () => {
 
     expect(envelope.shown).toBeGreaterThan(0);
     expect(envelope.report_gap).toBe(
-      'npx hyperframes feedback --search-miss "make a number count up" ' +
+      'npx smashcut feedback --search-miss "make a number count up" ' +
         '--wanted "<the move you needed>" --tier on-device',
     );
   });

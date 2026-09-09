@@ -2,7 +2,7 @@
 
 import React, { act } from "react";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import type { GsapAnimation } from "@hyperframes/core/gsap-parser";
+import type { GsapAnimation } from "@smashcut/core/gsap-parser";
 import type { DomEditSelection } from "../components/editor/domEditingTypes";
 import type { DomEditGroupPathOffsetCommit } from "../components/editor/DomEditOverlay";
 import { mountReactHarness } from "./domSelectionTestHarness";
@@ -170,10 +170,10 @@ describe("useGsapAwareEditing anchored resize", () => {
     mocks.drag.mockResolvedValue({ status: "persisted" });
     mocks.readPosition.mockReturnValue({ x: 120.4, y: 80.2 });
     const h = mountResizeHandler([]);
-    h.selection.element.setAttribute("data-hf-drag-gsap-base-x", "120.4");
-    h.selection.element.setAttribute("data-hf-drag-gsap-base-y", "80.2");
-    h.selection.element.setAttribute("data-hf-drag-initial-offset-x", "0");
-    h.selection.element.setAttribute("data-hf-drag-initial-offset-y", "0");
+    h.selection.element.setAttribute("data-sc-drag-gsap-base-x", "120.4");
+    h.selection.element.setAttribute("data-sc-drag-gsap-base-y", "80.2");
+    h.selection.element.setAttribute("data-sc-drag-initial-offset-x", "0");
+    h.selection.element.setAttribute("data-sc-drag-initial-offset-y", "0");
 
     let commit!: Promise<void>;
     act(() => {

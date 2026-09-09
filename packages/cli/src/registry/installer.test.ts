@@ -3,7 +3,7 @@ import { mkdirSync, mkdtempSync, readFileSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { dirname, join } from "node:path";
 import { describe, expect, it, vi } from "vitest";
-import type { RegistryItem } from "@hyperframes/core";
+import type { RegistryItem } from "@smashcut/core";
 
 // The installer fetches over the network; the point of these tests is what it
 // does to files on disk, so the fetch is replaced by a local write.
@@ -19,14 +19,14 @@ vi.mock("./remote.js", () => ({
 const { hasLocalEdits, installItem } = await import("./installer.js");
 
 function project(): string {
-  return mkdtempSync(join(tmpdir(), "hf-installer-"));
+  return mkdtempSync(join(tmpdir(), "sc-installer-"));
 }
 
 const item = {
   name: "data-chart",
-  type: "hyperframes:component",
+  type: "smashcut:component",
   files: [
-    { path: "data-chart.html", target: "components/data-chart.html", type: "hyperframes:file" },
+    { path: "data-chart.html", target: "components/data-chart.html", type: "smashcut:file" },
   ],
 } as unknown as RegistryItem;
 
@@ -58,7 +58,7 @@ describe("installItem", () => {
 
     expect(result.written).toHaveLength(1);
     expect(result.preserved).toEqual([]);
-    const record = JSON.parse(readFileSync(join(dir, "hyperframes.lock.json"), "utf-8"));
+    const record = JSON.parse(readFileSync(join(dir, "smashcut.lock.json"), "utf-8"));
     expect(record[target]).toMatch(/^[0-9a-f]{64}$/);
   });
 
@@ -113,8 +113,8 @@ describe("installItem", () => {
     // the pre-marker bytes would make every reinstall look like an edit.
     const block = {
       name: "hero",
-      type: "hyperframes:block",
-      files: [{ path: "hero.html", target: "blocks/hero.html", type: "hyperframes:composition" }],
+      type: "smashcut:block",
+      files: [{ path: "hero.html", target: "blocks/hero.html", type: "smashcut:composition" }],
     } as unknown as RegistryItem;
 
     const dir = project();
@@ -129,12 +129,12 @@ describe("installItem", () => {
 describe("installing several items, as a dependency plan does", () => {
   const other = {
     name: "shared-caption",
-    type: "hyperframes:component",
+    type: "smashcut:component",
     files: [
       {
         path: "shared-caption.html",
         target: "components/shared-caption.html",
-        type: "hyperframes:file",
+        type: "smashcut:file",
       },
     ],
   } as unknown as RegistryItem;
@@ -149,7 +149,7 @@ describe("installing several items, as a dependency plan does", () => {
     return installItem(item, { destDir: dir })
       .then(() => installItem(other, { destDir: dir }))
       .then(() => {
-        const record = JSON.parse(readFileSync(join(dir, "hyperframes.lock.json"), "utf-8"));
+        const record = JSON.parse(readFileSync(join(dir, "smashcut.lock.json"), "utf-8"));
         expect(Object.keys(record).sort()).toEqual([otherTarget, target].sort());
       });
   });

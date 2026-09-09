@@ -3,10 +3,10 @@ name: preview-regression
 permissions:
   contents: read
 
-# Suppress hyperframes CLI telemetry from HeyGen's own CI runs.
+# Suppress smashcut CLI telemetry from HeyGen's own CI runs.
 # External users' CI continues to emit telemetry unless they set this themselves.
 env:
-  HYPERFRAMES_NO_TELEMETRY: "1"
+  SMASHCUT_NO_TELEMETRY: "1"
 
 on:
   pull_request:
@@ -78,7 +78,7 @@ jobs:
 
       - name: Build workspace packages (required for vite config loading)
         run: |
-          bun run --filter '@hyperframes/{parsers,lint,studio-server}' build
+          bun run --filter '@smashcut/{parsers,lint,studio-server}' build
           bun run --cwd packages/core build
 
       - name: Run Studio preview routing regression
@@ -87,7 +87,7 @@ jobs:
           bun run --cwd packages/studio-server test -- src/routes/thumbnail.test.ts
 
       - name: Build preview runtime
-        run: bun run --cwd packages/core build:hyperframes-runtime
+        run: bun run --cwd packages/core build:smashcut-runtime
 
       - name: Prepare parity fixtures
         run: bun run --cwd packages/producer parity:fixtures:ci

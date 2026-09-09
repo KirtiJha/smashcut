@@ -14,7 +14,7 @@ export async function renderChunkV2(
   chunkIndex: number,
   outputChunkPath: string,
 ): Promise<EffectiveChunkResult> {
-  const workRoot = mkdtempSync(join(tmpdir(), "hf-plan-v2-chunk-"));
+  const workRoot = mkdtempSync(join(tmpdir(), "sc-plan-v2-chunk-"));
   const materializedPlanDir = join(workRoot, "plan");
   try {
     materializePlanV2Target(planV2Dir, { role: "chunk", chunkIndex }, materializedPlanDir);
@@ -34,7 +34,7 @@ export async function assembleV2(
   outputPath: string,
   options?: Parameters<typeof assemble>[4],
 ): Promise<AssembleResult> {
-  const workRoot = mkdtempSync(join(tmpdir(), "hf-plan-v2-assembler-"));
+  const workRoot = mkdtempSync(join(tmpdir(), "sc-plan-v2-assembler-"));
   const materializedPlanDir = join(workRoot, "plan");
   try {
     const materialized = materializePlanV2Target(

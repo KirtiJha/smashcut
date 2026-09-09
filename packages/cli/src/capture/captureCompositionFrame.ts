@@ -98,7 +98,7 @@ function compositionRuntimeReadyInBrowser(): boolean {
 
 function shaderTransitionsReadyInBrowser(): boolean {
   function shaderTransitionRegistryReady(): boolean | undefined {
-    const hf = Reflect.get(window, "__hf");
+    const hf = Reflect.get(window, "__sc");
     if (typeof hf !== "object" || hf === null) return undefined;
 
     const shaderTransitions = Reflect.get(hf, "shaderTransitions");
@@ -172,7 +172,7 @@ export async function openSettledCompositionPage(
   const { ensureBrowser, findSystemBrowser } = await import("../browser/manager.js");
   const browser = await ensureBrowser();
   const puppeteer = await import("puppeteer-core");
-  const { buildChromeArgs } = await import("@hyperframes/engine");
+  const { buildChromeArgs } = await import("@smashcut/engine");
   const requestedGpuMode = options.browserGpuMode ?? resolveCliChromeGpuMode();
   const launch = async (executablePath: string): Promise<Browser> => {
     const resolvedGpuMode = await resolveCaptureBrowserGpuMode(requestedGpuMode, executablePath);
@@ -205,7 +205,7 @@ export async function openSettledCompositionPage(
       }
 
       console.warn(
-        `[hyperframes] Managed chrome-headless-shell crashed at launch; retrying once with system Chrome at ${systemBrowser.executablePath}.`,
+        `[smashcut] Managed chrome-headless-shell crashed at launch; retrying once with system Chrome at ${systemBrowser.executablePath}.`,
       );
       try {
         chromeBrowser = await launch(systemBrowser.executablePath);
@@ -264,7 +264,7 @@ export async function seekCompositionTimeline(
       const safe = Math.max(0, Number(t) || 0);
       const renderSeek = getProperty(player, "renderSeek");
       const playerSeek = getProperty(player, "seek");
-      const hf = Reflect.get(window, "__hf");
+      const hf = Reflect.get(window, "__sc");
       const bridgeSeek = getProperty(hf, "seek");
 
       // Prefer renderSeek because it also runs the runtime's data-start/data-duration
@@ -295,7 +295,7 @@ export async function seekCompositionTimeline(
   );
 
   await page.evaluate(async () => {
-    const waitForCompletion = Reflect.get(window, "__hfWaitForSeekCompletion");
+    const waitForCompletion = Reflect.get(window, "__scWaitForSeekCompletion");
     if (typeof waitForCompletion === "function") {
       await Reflect.apply(waitForCompletion, window, []);
     }
@@ -341,7 +341,7 @@ export async function waitForPreferredSeekTarget(
     await page.waitForFunction(
       () => {
         const player = Reflect.get(window, "__player");
-        const hf = Reflect.get(window, "__hf");
+        const hf = Reflect.get(window, "__sc");
         const renderSeek =
           typeof player === "object" && player !== null
             ? Reflect.get(player, "renderSeek")

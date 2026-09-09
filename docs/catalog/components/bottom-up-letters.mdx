@@ -17,7 +17,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 <!--
   Bottom Up Letters - deterministic text splitter.
 
-  Add class="hf-bottom-up-letters" to a plain text element. This script wraps
+  Add class="sc-bottom-up-letters" to a plain text element. This script wraps
   each character in a span so your paused GSAP timeline can stagger the reveal.
 
   Variables. This fragment has no markup of its own, so the declaration rides
@@ -48,15 +48,15 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
   { "id": "travel", "type": "enum", "role": "motion", "label": "Travel", "description": "How far each span starts from its resting position, from 0.45em to 1.5em.", "default": "standard", "options": [{ "value": "close", "label": "Close" }, { "value": "standard", "label": "Standard" }, { "value": "far", "label": "Far" }] }
 ]'
 >
-  .hf-bottom-up-letters {
+  .sc-bottom-up-letters {
     display: inline-block;
   }
-  .hf-bottom-up-letters-char {
+  .sc-bottom-up-letters-char {
     display: inline-block;
     opacity: 0;
     transform: translate3d(
       0,
-      calc(var(--hf-letters-travel, 0.85em) * var(--hf-letters-direction, 1)),
+      calc(var(--sc-letters-travel, 0.85em) * var(--sc-letters-direction, 1)),
       0
     );
     will-change: transform, opacity;
@@ -68,8 +68,8 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
     "use strict";
 
     var vars =
-      window.__hyperframes && window.__hyperframes.getVariables
-        ? window.__hyperframes.getVariables()
+      window.__smashcut && window.__smashcut.getVariables
+        ? window.__smashcut.getVariables()
         : {};
 
     // Unrecognised overrides return to their declared defaults.
@@ -85,9 +85,9 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
     var direction = directions[pick(directions, vars.direction, "up")];
     var unit = pick(units, vars.unit, "letter");
 
-    document.querySelectorAll(".hf-bottom-up-letters").forEach((el) => {
-      el.style.setProperty("--hf-letters-travel", travel);
-      el.style.setProperty("--hf-letters-direction", direction);
+    document.querySelectorAll(".sc-bottom-up-letters").forEach((el) => {
+      el.style.setProperty("--sc-letters-travel", travel);
+      el.style.setProperty("--sc-letters-direction", direction);
       if (el.dataset.hfLettersReady === "1") return;
       const text = el.textContent || "";
       el.textContent = "";
@@ -99,7 +99,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
           continue;
         }
         const span = document.createElement("span");
-        span.className = "hf-bottom-up-letters-char";
+        span.className = "sc-bottom-up-letters-char";
         span.textContent = part === " " ? "\u00a0" : part;
         el.appendChild(span);
       }
@@ -111,7 +111,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 <!--
   Timeline integration:
 
-  tl.to(".hf-bottom-up-letters-char", {
+  tl.to(".sc-bottom-up-letters-char", {
     opacity: 1,
     y: 0,
     duration: 0.48,
@@ -125,7 +125,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 
 ## Install
 
-<InstallCommand command="npx hyperframes add bottom-up-letters" item="bottom-up-letters" />
+<InstallCommand command="npx smashcut add bottom-up-letters" item="bottom-up-letters" />
 
 That writes one file: `compositions/components/bottom-up-letters.html`.
 
@@ -159,7 +159,7 @@ defaults, so this behaves exactly like the preview above until you change one:
 <!--
   Bottom Up Letters - deterministic text splitter.
 
-  Add class="hf-bottom-up-letters" to a plain text element. This script wraps
+  Add class="sc-bottom-up-letters" to a plain text element. This script wraps
   each character in a span so your paused GSAP timeline can stagger the reveal.
 
   Variables. This fragment has no markup of its own, so the declaration rides
@@ -190,15 +190,15 @@ defaults, so this behaves exactly like the preview above until you change one:
   { "id": "travel", "type": "enum", "role": "motion", "label": "Travel", "description": "How far each span starts from its resting position, from 0.45em to 1.5em.", "default": "standard", "options": [{ "value": "close", "label": "Close" }, { "value": "standard", "label": "Standard" }, { "value": "far", "label": "Far" }] }
 ]'
 >
-  .hf-bottom-up-letters {
+  .sc-bottom-up-letters {
     display: inline-block;
   }
-  .hf-bottom-up-letters-char {
+  .sc-bottom-up-letters-char {
     display: inline-block;
     opacity: 0;
     transform: translate3d(
       0,
-      calc(var(--hf-letters-travel, 0.85em) * var(--hf-letters-direction, 1)),
+      calc(var(--sc-letters-travel, 0.85em) * var(--sc-letters-direction, 1)),
       0
     );
     will-change: transform, opacity;
@@ -210,8 +210,8 @@ defaults, so this behaves exactly like the preview above until you change one:
     "use strict";
 
     var vars =
-      window.__hyperframes && window.__hyperframes.getVariables
-        ? window.__hyperframes.getVariables()
+      window.__smashcut && window.__smashcut.getVariables
+        ? window.__smashcut.getVariables()
         : {};
 
     // Unrecognised overrides return to their declared defaults.
@@ -227,9 +227,9 @@ defaults, so this behaves exactly like the preview above until you change one:
     var direction = directions[pick(directions, vars.direction, "up")];
     var unit = pick(units, vars.unit, "letter");
 
-    document.querySelectorAll(".hf-bottom-up-letters").forEach((el) => {
-      el.style.setProperty("--hf-letters-travel", travel);
-      el.style.setProperty("--hf-letters-direction", direction);
+    document.querySelectorAll(".sc-bottom-up-letters").forEach((el) => {
+      el.style.setProperty("--sc-letters-travel", travel);
+      el.style.setProperty("--sc-letters-direction", direction);
       if (el.dataset.hfLettersReady === "1") return;
       const text = el.textContent || "";
       el.textContent = "";
@@ -241,7 +241,7 @@ defaults, so this behaves exactly like the preview above until you change one:
           continue;
         }
         const span = document.createElement("span");
-        span.className = "hf-bottom-up-letters-char";
+        span.className = "sc-bottom-up-letters-char";
         span.textContent = part === " " ? "\u00a0" : part;
         el.appendChild(span);
       }
@@ -253,7 +253,7 @@ defaults, so this behaves exactly like the preview above until you change one:
 <!--
   Timeline integration:
 
-  tl.to(".hf-bottom-up-letters-char", {
+  tl.to(".sc-bottom-up-letters-char", {
     opacity: 1,
     y: 0,
     duration: 0.48,

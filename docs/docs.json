@@ -1,6 +1,6 @@
 {
   "$schema": "https://mintlify.com/docs.json",
-  "name": "HyperFrames",
+  "name": "SmashCut",
   "theme": "aspen",
   "colors": {
     "primary": "#16785B",
@@ -169,7 +169,7 @@
               "guides/music-to-video",
               "guides/slideshow",
               "guides/general-video",
-              "guides/hyperframes-vs-remotion"
+              "guides/smashcut-vs-remotion"
             ]
           },
           {
@@ -878,7 +878,7 @@
               "deploy/aws-lambda",
               "deploy/gcp-cloud-run",
               "deploy/templates-on-lambda",
-              "deploy/migrating-to-hyperframes-lambda",
+              "deploy/migrating-to-smashcut-lambda",
               "packages/aws-lambda",
               "packages/gcp-cloud-run"
             ]
@@ -979,7 +979,7 @@
           },
           {
             "label": "Playground",
-            "href": "https://www.hyperframes.dev/"
+            "href": "https://www.smashcut.dev/"
           },
           {
             "label": "GitHub",
@@ -999,7 +999,7 @@
     "primary": {
       "type": "button",
       "label": "Playground",
-      "href": "https://www.hyperframes.dev/"
+      "href": "https://www.smashcut.dev/"
     }
   },
   "redirects": [

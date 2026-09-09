@@ -20,8 +20,8 @@ import {
   resolveAutomationRange,
   type HfAutomation,
   type HfAutomationLane,
-} from "@hyperframes/core/audio-automation";
-import { parseAudioFxChain, type HfAudioFxChain } from "@hyperframes/core/audio-fx";
+} from "@smashcut/core/audio-automation";
+import { parseAudioFxChain, type HfAudioFxChain } from "@smashcut/core/audio-fx";
 import { isAudioTimelineElement } from "../../utils/timelineInspector";
 import type { TimelineElement } from "../store/playerStore";
 

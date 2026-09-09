@@ -7,7 +7,7 @@ import { mkdtempSync, mkdirSync, writeFileSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 
-const HOME = mkdtempSync(join(tmpdir(), "hf-lintrun-"));
+const HOME = mkdtempSync(join(tmpdir(), "sc-lintrun-"));
 vi.mock("node:os", async (importOriginal) => {
   const actual = await importOriginal<typeof import("node:os")>();
   return { ...actual, homedir: () => HOME };
@@ -34,7 +34,7 @@ vi.mock("./config.js", async (importOriginal) => {
 });
 
 const { trackLintRun } = await import("./lintRun.js");
-const { lintProject } = await import("@hyperframes/lint");
+const { lintProject } = await import("@smashcut/lint");
 
 const COMPOSITION = `<html><body>
   <div id="scene" data-composition-id="main" data-width="1920" data-height="1080"
@@ -49,7 +49,7 @@ const COMPOSITION = `<html><body>
 </body></html>`;
 
 function makeProject(html: string): string {
-  const dir = mkdtempSync(join(tmpdir(), "hf-proj-"));
+  const dir = mkdtempSync(join(tmpdir(), "sc-proj-"));
   mkdirSync(join(dir, "compositions"), { recursive: true });
   writeFileSync(join(dir, "index.html"), html, "utf-8");
   return dir;
@@ -57,7 +57,7 @@ function makeProject(html: string): string {
 
 beforeEach(() => {
   enqueued.length = 0;
-  rmSync(join(HOME, ".hyperframes"), { recursive: true, force: true });
+  rmSync(join(HOME, ".smashcut"), { recursive: true, force: true });
 });
 
 describe("trackLintRun end to end", () => {

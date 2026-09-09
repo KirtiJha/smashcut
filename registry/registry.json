@@ -1,1639 +1,1639 @@
 {
   "$schema": "https://hyperframes.heygen.com/schema/registry.json",
-  "name": "hyperframes",
+  "name": "smashcut",
   "homepage": "https://hyperframes.heygen.com",
   "items": [
     {
       "name": "decision-tree",
-      "type": "hyperframes:example"
+      "type": "smashcut:example"
     },
     {
       "name": "kinetic-type",
-      "type": "hyperframes:example"
+      "type": "smashcut:example"
     },
     {
       "name": "nyt-graph",
-      "type": "hyperframes:example"
+      "type": "smashcut:example"
     },
     {
       "name": "play-mode",
-      "type": "hyperframes:example"
+      "type": "smashcut:example"
     },
     {
       "name": "product-promo",
-      "type": "hyperframes:example"
+      "type": "smashcut:example"
     },
     {
       "name": "swiss-grid",
-      "type": "hyperframes:example"
+      "type": "smashcut:example"
     },
     {
       "name": "vignelli",
-      "type": "hyperframes:example"
+      "type": "smashcut:example"
     },
     {
       "name": "vscode-theme-visualizer",
-      "type": "hyperframes:example"
+      "type": "smashcut:example"
     },
     {
       "name": "warm-grain",
-      "type": "hyperframes:example"
+      "type": "smashcut:example"
     },
     {
       "name": "ai-chat-reveal",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "app-showcase",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "apple-money-count",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "bar-chart-race",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "beat-freeze-cut",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "blue-sweater-intro-video",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "camcorder-hud",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "camera-dolly-zoom",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "carousel-circle-1",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "carousel-circle-2",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "carousel-circle-3",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "carousel-circle-4",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "carousel-circle-5",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "carousel-orbit-1",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "carousel-orbit-2",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "carousel-orbit-3",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "carousel-orbit-4",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "carousel-orbit-5",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "carousel-path-1",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "carousel-path-2",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "carousel-path-3",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "carousel-path-4",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "carousel-path-5",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "carousel-text-circle-1",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "carousel-text-circle-2",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "carousel-text-circle-3",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "carousel-text-circle-4",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "carousel-text-circle-5",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "carousel-vision-1",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "carousel-vision-2",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "carousel-vision-3",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "carousel-vision-4",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "carousel-vision-5",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "chatgpt-exchange",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "chromatic-radial-split",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "cinematic-zoom",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "claude-exchange",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "code-3d-extrude",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "code-diff",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "code-highlight",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "code-morph",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "code-particle-assemble",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "code-scroll",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "code-shader-dissolve",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "code-snippet-apple-terminal-basic",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "code-snippet-apple-terminal-clear-dark",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "code-snippet-apple-terminal-clear-light",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "code-snippet-apple-terminal-grass",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "code-snippet-apple-terminal-homebrew",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "code-snippet-apple-terminal-man-page",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "code-snippet-apple-terminal-novel",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "code-snippet-apple-terminal-ocean",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "code-snippet-apple-terminal-pro",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "code-snippet-apple-terminal-red-sands",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "code-snippet-apple-terminal-silver-aerogel",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "code-snippet-apple-terminal-solid-colors",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "code-snippet-dark-2026",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "code-snippet-dark-modern",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "code-snippet-dark-plus",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "code-snippet-flight",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "code-snippet-high-contrast",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "code-snippet-high-contrast-light",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "code-snippet-light-2026",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "code-snippet-light-modern",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "code-snippet-light-plus",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "code-snippet-monokai",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "code-snippet-solarized-light",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "code-snippet-visual-studio-dark",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "code-snippet-visual-studio-light",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "code-typing",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "cosmic-orb",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "cross-warp-morph",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "data-chart",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "domain-warp-dissolve",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "editorial-flash-overlay",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "flash-through-white",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "flowchart",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "flowchart-vertical",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "freeze-frame-dressing",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "gallery-tunnel",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "glitch",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "gravitational-lens",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "halftone-field",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "heygen-avatar-promo-card",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "hw-frame",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "hw-path-text",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "hw-pipeline",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "hw-scribble-transition",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "hw-text-cloud",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "hw-title",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "hw-write-title",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "instagram-follow",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "ios26-liquid-glass",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "light-leak",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "liquid-glass-context-menu",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "liquid-glass-media-controls",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "liquid-glass-notification",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "liquid-glass-widgets",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "logo-outro",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "lower-third-bild",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "lt-accent-underline",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "lt-bold-block",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "lt-clean-bar",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "lt-color-block",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "lt-dark-card",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "lt-kicker-name",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "lt-mask-reveal",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "lt-neon-border",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "lt-side-rule",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "lt-soft-pill",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "lt-stack-bars",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "macos-notification",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "macos-tahoe-liquid-glass",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "message-thread-reveal",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "mk-background",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "mk-callout-highlight",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "mk-clone-wall-transition",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "mk-line-graph",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "mk-placeholder-grid",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "mk-progress-stat",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "mk-specs-list",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "news-ticker",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "north-korea-locked-down",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "notes-reveal",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "notification-cascade",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "nyc-paris-flight",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "organic-light-leak-overlay",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "oscilloscope-trace",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "rack-focus",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "reddit-post",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "ridged-burn",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "ripple-waves",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "sdf-iris",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "share-sheet-carousel",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "slack-notification-ad",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "spain-map",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "spiral-galaxy",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "split-flap-board",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "spotify-card",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "swirl-vortex",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "thermal-distortion",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "thread-message-stack",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "tiktok-follow",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "transitions-3d",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "transitions-blur",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "transitions-cover",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "transitions-destruction",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "transitions-dissolve",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "transitions-distortion",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "transitions-grid",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "transitions-light",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "transitions-mechanical",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "transitions-other",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "transitions-push",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "transitions-radial",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "transitions-scale",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "ui-3d-reveal",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "us-map",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "us-map-bubble",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "us-map-flow",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "us-map-hex",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "vfx-anamorphic-flare",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "vfx-iphone-device",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "vfx-liquid-background",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "vfx-liquid-glass",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "vfx-magnetic",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "vfx-portal",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "vfx-shatter",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "vfx-text-cursor",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "vpn-youtube-spot",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "weight-wave",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "whip-pan",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "world-map",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "x-post",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "yt-comment-card",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "yt-lcd-background",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "yt-logo-intro",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "yt-lower-third",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "yt-prism-title",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "yt-vertical-fill",
-      "type": "hyperframes:block"
+      "type": "smashcut:block"
     },
     {
       "name": "animated-bar-chart",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "arc-motion-path",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "ascii-render-pass",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "ascii-trail-reveal",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "aurora-drift",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "avatar-cloud",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "avatar-group-hover",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "badge-pop",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "beat-accent",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "beat-pulse-background",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "beat-timeline",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "before-after-wipe",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "blur-in",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "blur-out-up",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "bottom-up-letters",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "browser-device-stage",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "camera-rig-depth-stack",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "camera-scan-gate",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "camera-shake",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "caption-blend-difference",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "caption-camera-follow",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "caption-clip-wipe",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "caption-editorial-emphasis",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "caption-emoji-pop",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "caption-glitch-rgb",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "caption-gradient-fill",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "caption-highlight",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "caption-kinetic-slam",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "caption-matrix-decode",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "caption-neon-accent",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "caption-neon-glow",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "caption-parallax-layers",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "caption-particle-burst",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "caption-pill-karaoke",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "caption-texture",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "caption-weight-shift",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "card-resize",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "char-slam-explode",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "chart-story",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "chat-message",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "chat-thread",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "chromatic-aberration-wipe",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "code-terminal-run",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "comparison-split",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "confetti",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "conic-progress-ring",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "constellation-hub",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "count-up",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "cta-close",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "cta-lockup",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "cursor-glyph-trail",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "cut-the-curve",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "decline-chart",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "device-frame-stage",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "directional-wipe",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "drift-hold",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "dynamic-grid",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "echo-trail",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "facet-morph",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "fade-through",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "focus-blur-resolve",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "focus-rack",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "focus-swap",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "gesture-tap",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "gloss-sweep",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "grade-split-reveal",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "grain-field",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "grain-overlay",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "grid-card-assemble",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "grid-pixelate-wipe",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "halftone-dissolve",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "headline-slam",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "hw-arrow",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "hw-boil",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "hw-box-label",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "hw-callout-circle",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "hw-underline",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "icon-morph-beat",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "icon-swap",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "ink-bleed-reveal",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "inline-highlight",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "input-feedback",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "iris-reveal",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "keyframe-scrub-stack",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "kinetic-center-build",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "kinetic-type-swap",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "light-sweep-pass",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "line-by-line-slide",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "line-swap",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "locked-nucleus-orbit",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "logo-brand-close",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "logo-sting",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "logo-wall",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "marker-checklist-card",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "marker-highlight",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "match-cut",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "matrix-decode",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "menu-morph",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "mesh-gradient-bg",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "micro-transitions",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "mk-emphasis-type",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "mk-usage-arc",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "modal-morph",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "morph-swap",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "morph-text",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "motion-blur",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "multi-device-splay",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "multiplayer-cursors",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "native-notification-pop",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "notes-typing",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "notification-pileup",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "notification-stack",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "number-pop-in",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "number-wheel",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "offset-path-traveler",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "onboarding-stepper-flow",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "ordered-dither-pass",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "outline-draw",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "oversized-cursor",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "overwhelm-surround",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "page-slide",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "pan-stations",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "panel-reveal",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "parallax-device-dive",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "parallax-unzoom",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "parallax-zoom",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "particle-image-reveal",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "particle-text-dissolve",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "per-word-crossfade",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "per-word-rise",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "perspective-marquee",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "physical-exit",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "press-ripple",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "pull-back-reveal",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "pull-to-refresh",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "push-in",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "radial-surround",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "rgb-glitch-text",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "rubber-band-bumper",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "scan-band",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "scramble-reveal",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "screen-flow-carousel",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "scroll-camera-story",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "scroll-feed",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "segmentation-flood",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "separator",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "settings-toggle-flow",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "shared-axis-y",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "shared-axis-z",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "sheet-spring-up",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "shimmer-sweep",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "signup-flow",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "simulated-cursor",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "skeleton-reveal",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "slit-scan-reveal",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "slot-machine-roll",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "social-proof-card",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "soft-blob-touch",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "soft-blur-in",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "split-tilt-cards",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "spotlight-card",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "spring-pop",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "spring-stack-shuffle",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "stagger-cascade",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "stagger-lattice",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "staggered-fade-up",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "star-rating-fill",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "state-chip-rail",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "sticky-mock-swap",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "stitched-text-draw",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "stop-motion-cadence",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "store-badge-lockup",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "streaming-text",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "strikethrough-replace",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "success-check",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "svg-line-draw-loader",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "svg-mask-reveal",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "svg-stroke-trace",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "swipe-rail",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "tabs-slide-indicator",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "telemetry-hud",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "terminal-simulator",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "testimonial-card",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "testimonial-proof-card",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "text-shimmer",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "text-stagger",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "text-state-swap",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "texture-mask-text",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "three-orbiting-cards",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "ticker-takeover",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "tilt-card",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "titlecard-calm",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "titlecard-lockup",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "toggle-flip",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "top-down-letters",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "touch-indicator",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "tracing-beam",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "tracking-in",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "trust-strip",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "type-match-cut",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "typed-prompt",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "typewriter",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "typing-indicator",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "ui-focus-zoom",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "variable-axis-type",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "variable-font-flex",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "vector-editor-rig",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "velocity-throw-snap",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "vignette",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "vox-annotate",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "whip-pan-cut",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "whiteboard-ink",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "wordmark-tiles",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "x-follow-card",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "yt-camera-move",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "yt-circle-pointer",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "yt-feather-highlight",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "yt-screen-warp",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     },
     {
       "name": "zoom-through-transition",
-      "type": "hyperframes:component"
+      "type": "smashcut:component"
     }
   ],
   "catalogArtifact": {

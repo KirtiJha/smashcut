@@ -3,7 +3,7 @@
  * selector utilities, and composition source resolution.
  * No imports from other domEditing* modules — safe to import from anywhere.
  */
-import { COLOR_GRADING_SOURCE_HIDDEN_ATTR } from "@hyperframes/core/color-grading";
+import { COLOR_GRADING_SOURCE_HIDDEN_ATTR } from "@smashcut/core/color-grading";
 import { getSourceScopedSelectorIndex } from "../../utils/sourceScopedSelectorIndex";
 import { CURATED_STYLE_PROPERTIES } from "./domEditingTypes";
 
@@ -21,10 +21,10 @@ export function isHtmlElement(value: unknown): value is HTMLElement {
 
 // ─── Style parsing ────────────────────────────────────────────────────────────
 
-// Single source of truth lives in @hyperframes/core/editing so the studio
+// Single source of truth lives in @smashcut/core/editing so the studio
 // callers and the core resolver can't drift. Re-exported here to keep this
 // module's public surface (6 studio callers import parsePx from it).
-export { parsePx } from "@hyperframes/core/editing";
+export { parsePx } from "@smashcut/core/editing";
 
 export function isTextBearingTag(tagName: string): boolean {
   return ["div", "span", "p", "strong", "h1", "h2", "h3", "h4", "h5", "h6"].includes(tagName);
@@ -117,8 +117,8 @@ export function setCompositionSourceMap(map: Map<string, string>): void {
 function sourceFromCompositionId(ownerRoot: HTMLElement | null): string | undefined {
   if (!ownerRoot || compositionSourceMap.size === 0) return undefined;
   // The runtime may rename the mounted id to a runtime-unique one, preserving the
-  // authored id on `data-hf-original-composition-id` — prefer that, then the current id.
-  const authored = ownerRoot.getAttribute("data-hf-original-composition-id");
+  // authored id on `data-sc-original-composition-id` — prefer that, then the current id.
+  const authored = ownerRoot.getAttribute("data-sc-original-composition-id");
   const current = ownerRoot.getAttribute("data-composition-id");
   return (
     (authored ? compositionSourceMap.get(authored) : undefined) ??
@@ -241,11 +241,11 @@ export function buildStableSelector(el: HTMLElement): string | undefined {
   const compositionId = el.getAttribute("data-composition-id");
   if (compositionId) return `[data-composition-id="${escapeCssString(compositionId)}"]`;
 
-  // Group wrappers carry no id/class; their data-hf-group value is the unique,
+  // Group wrappers carry no id/class; their data-sc-group value is the unique,
   // stable handle the source mutations write — use it so the wrapper is
   // selectable, patchable (move/scale), and addressable for ungroup.
-  const group = el.getAttribute("data-hf-group");
-  if (group) return `[data-hf-group="${escapeCssString(group)}"]`;
+  const group = el.getAttribute("data-sc-group");
+  if (group) return `[data-sc-group="${escapeCssString(group)}"]`;
 
   return getPreferredClassSelector(el);
 }
@@ -256,7 +256,7 @@ function getPreferredClassSelector(el: HTMLElement): string | undefined {
     .filter(Boolean);
   if (classes.length === 0) return undefined;
   const preferred =
-    classes.find((value) => value !== "clip" && !value.startsWith("__hf-")) ?? classes[0];
+    classes.find((value) => value !== "clip" && !value.startsWith("__sc-")) ?? classes[0];
   return preferred ? `.${escapeCssIdentifier(preferred)}` : undefined;
 }
 
@@ -273,7 +273,7 @@ export function buildElementLabel(el: HTMLElement): string {
     return humanizeIdentifier(compositionSrc);
   }
 
-  const group = el.getAttribute("data-hf-group");
+  const group = el.getAttribute("data-sc-group");
   if (group) return group;
 
   if (el.id) return humanizeIdentifier(el.id);

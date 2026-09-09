@@ -167,7 +167,7 @@ describe("buildFxNode", () => {
     const c = ctx();
     const h = buildFxNode(asCtx(c), "compressor", defaultAudioFxParams("compressor"));
     expect(workletNodes).toHaveLength(1);
-    expect(workletNodes[0]!.name).toBe("hf-compressor");
+    expect(workletNodes[0]!.name).toBe("sc-compressor");
     h.update({ ...defaultAudioFxParams("compressor"), threshold: -30 });
     // Turning a dial re-parameterises the running processor instead of
     // rebuilding it, which is what keeps the knob-to-ear loop immediate.
@@ -182,7 +182,7 @@ describe("buildFxNode", () => {
     workletNodes.length = 0;
     const h = buildFxNode(asCtx(ctx()), "compressor", defaultAudioFxParams("compressor"));
     h.dispose();
-    expect(workletNodes[0]!.messages).toEqual([{ __hfDispose: true }]);
+    expect(workletNodes[0]!.messages).toEqual([{ __scDispose: true }]);
   });
 
   it("rebuilds the saturation curve for the selected shape", () => {

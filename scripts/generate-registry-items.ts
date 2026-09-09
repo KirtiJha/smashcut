@@ -31,7 +31,7 @@ import {
 
 const scriptDir = dirname(fileURLToPath(import.meta.url));
 const repoRoot = resolve(scriptDir, "..");
-const examplesDir = resolve(repoRoot, "registry", ITEM_TYPE_DIRS["hyperframes:example"]);
+const examplesDir = resolve(repoRoot, "registry", ITEM_TYPE_DIRS["smashcut:example"]);
 const registryManifestPath = resolve(repoRoot, "registry/registry.json");
 const legacyManifestPath = resolve(examplesDir, "templates.json");
 
@@ -100,8 +100,8 @@ function probeCanvas(exampleDir: string): CanvasMeta {
 }
 
 function fileTypeFor(path: string): FileType {
-  if (path.endsWith(".html")) return "hyperframes:composition";
-  return "hyperframes:asset";
+  if (path.endsWith(".html")) return "smashcut:composition";
+  return "smashcut:asset";
 }
 
 /** Walk the example dir and collect every tracked file (HTML + assets). */
@@ -136,7 +136,7 @@ function buildItem(entry: LegacyTemplateEntry): RegistryItem {
   return {
     $schema: "https://hyperframes.heygen.com/schema/registry-item.json",
     name: entry.id,
-    type: "hyperframes:example",
+    type: "smashcut:example",
     title: entry.label,
     description: entry.hint,
     dimensions: { width: canvas.width, height: canvas.height },
@@ -146,7 +146,7 @@ function buildItem(entry: LegacyTemplateEntry): RegistryItem {
 }
 
 function writeItem(item: RegistryItem): void {
-  if (item.type !== "hyperframes:example") return;
+  if (item.type !== "smashcut:example") return;
   const out = join(examplesDir, item.name, "registry-item.json");
   writeFileSync(out, JSON.stringify(item, null, 2) + "\n", "utf-8");
   console.log(`wrote ${relative(repoRoot, out)}`);
@@ -196,7 +196,7 @@ function writeRegistryManifest(): void {
   })();
   const manifest: RegistryManifest = {
     $schema: "https://hyperframes.heygen.com/schema/registry.json",
-    name: "hyperframes",
+    name: "smashcut",
     homepage: "https://hyperframes.heygen.com",
     items,
     ...(existing.catalogArtifact ? { catalogArtifact: existing.catalogArtifact } : {}),

@@ -14,11 +14,11 @@
  * `swallow(label, err)` is the single funnel for these intentional silences.
  * It dispatches to:
  *
- *   - `console.debug` with the label, the error, and a `[hyperframes]` prefix
- *     when `window.__hfDebug === true` (or the legacy `__HYPERFRAMES_DEBUG`
+ *   - `console.debug` with the label, the error, and a `[smashcut]` prefix
+ *     when `window.__scDebug === true` (or the legacy `__SMASHCUT_DEBUG`
  *     env-style global). Quiet by default; flip the flag in DevTools when
  *     hunting a regression.
- *   - A custom `__hf.onSwallowed` handler if installed — lets the studio /
+ *   - A custom `__sc.onSwallowed` handler if installed — lets the studio /
  *     embeddings collect runtime swallow events without polluting the page
  *     console.
  *
@@ -33,7 +33,7 @@ export function swallow(label: string, error?: unknown): void {
   if (typeof window === "undefined") return;
   const w = getDebugSurface();
 
-  const handler = w.__hf?.onSwallowed;
+  const handler = w.__sc?.onSwallowed;
   if (handler) {
     try {
       handler({ label, error });
@@ -46,8 +46,8 @@ export function swallow(label: string, error?: unknown): void {
     }
   }
 
-  if (w.__hfDebug || w.__HYPERFRAMES_DEBUG) {
+  if (w.__scDebug || w.__SMASHCUT_DEBUG) {
     // eslint-disable-next-line no-console -- intentional debug surface
-    console.debug(`[hyperframes] ${label} swallowed:`, error);
+    console.debug(`[smashcut] ${label} swallowed:`, error);
   }
 }

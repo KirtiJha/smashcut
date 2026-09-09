@@ -3,8 +3,8 @@ import { roundToCenti } from "./rounding";
 import { COMPOSITION_ROOT_OPEN_TAG_RE } from "./compositionPatterns";
 import { patchRootCompositionDuration, readRootCompositionDuration } from "./rootDuration";
 
-export const TIMELINE_ASSET_MIME = "application/x-hyperframes-asset";
-export const TIMELINE_BLOCK_MIME = "application/x-hyperframes-block";
+export const TIMELINE_ASSET_MIME = "application/x-smashcut-asset";
+export const TIMELINE_BLOCK_MIME = "application/x-smashcut-block";
 const FALLBACK_TIMELINE_FILE_DROP_DURATION = 5;
 
 export type TimelineAssetKind = "image" | "video" | "audio";
@@ -54,7 +54,7 @@ export function resolveTimelineAssetSrc(targetPath: string, assetPath: string): 
  * the track the user dropped onto. The clip lands where the ghost showed it — we do
  * NOT bump to a different track on overlap (that produced surprise "new tracks" and,
  * because it jumped past high indices like a grain-overlay track, wild numbers).
- * HyperFrames allows time-overlap on a track; the user can nudge if they want a gap.
+ * SmashCut allows time-overlap on a track; the user can nudge if they want a gap.
  */
 export function buildTimelineFileDropPlacements(
   placement: { start: number; track: number },
@@ -117,7 +117,7 @@ export function buildTimelineAssetInsertHtml(input: {
   zIndex: number;
   geometry?: { left: number; top: number; width: number; height: number };
 }): string {
-  const sharedAttrs = `id="${input.id}" data-hf-id="${input.hfId}" class="clip" src="${input.assetPath}" data-start="${input.start}" data-duration="${input.duration}" data-track-index="${input.track}"`;
+  const sharedAttrs = `id="${input.id}" data-sc-id="${input.hfId}" class="clip" src="${input.assetPath}" data-start="${input.start}" data-duration="${input.duration}" data-track-index="${input.track}"`;
   const geometry = input.geometry ?? { left: 0, top: 0, width: 640, height: 360 };
   const visualStyles = `position: absolute; left: ${geometry.left}px; top: ${geometry.top}px; width: ${geometry.width}px; height: ${geometry.height}px; object-fit: contain; z-index: ${input.zIndex}`;
 

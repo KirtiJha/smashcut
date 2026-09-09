@@ -15,12 +15,12 @@
  *   /style/css                              ← <style> element textContent
  *
  * Override-set key mapping:
- *   /elements/hf-x/inlineStyles/fontSize    → "hf-x.style.fontSize"
- *   /elements/hf-x/text                     → "hf-x.text"
- *   /elements/hf-x/attributes/src           → "hf-x.attr.src"
- *   /elements/hf-x/timing/start             → "hf-x.timing.start"
- *   /elements/hf-x/hold/start               → "hf-x.hold.start"
- *   /elements/hf-x                          → "hf-x"  (null = removal marker)
+ *   /elements/sc-x/inlineStyles/fontSize    → "sc-x.style.fontSize"
+ *   /elements/sc-x/text                     → "sc-x.text"
+ *   /elements/sc-x/attributes/src           → "sc-x.attr.src"
+ *   /elements/sc-x/timing/start             → "sc-x.timing.start"
+ *   /elements/sc-x/hold/start               → "sc-x.hold.start"
+ *   /elements/sc-x                          → "sc-x"  (null = removal marker)
  *   /variables/brand-color-primary          → "var.brand-color-primary"
  *   /variableDeclarations/brand-color-primary → "varDecl.brand-color-primary"
  *   /metadata/width                         → "meta.width"
@@ -33,7 +33,7 @@ import type { JsonPatchOp, PatchEvent } from "../types.js";
 // ─── Path builders ────────────────────────────────────────────────────────────
 
 /**
- * RFC 6902 JSON Pointer escaping for an hf-id (bare or scoped).
+ * RFC 6902 JSON Pointer escaping for an sc-id (bare or scoped).
  * Scoped ids contain "/" which must be encoded as "~1" in a path segment.
  * "~" must be encoded as "~0" first (order matters per RFC 6902 §3).
  */
@@ -41,7 +41,7 @@ function escapeIdForPath(id: string): string {
   return id.replace(/~/g, "~0").replace(/\//g, "~1");
 }
 
-/** Decode a path segment that may contain RFC 6902-escaped characters back to an hf-id. */
+/** Decode a path segment that may contain RFC 6902-escaped characters back to an sc-id. */
 function decodePathSegment(segment: string): string {
   // RFC 6902 §3: unescape ~1 → /, then ~0 → ~ (reverse order)
   return segment.replace(/~1/g, "/").replace(/~0/g, "~");

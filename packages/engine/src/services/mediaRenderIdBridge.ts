@@ -4,7 +4,7 @@
  * The pipeline addresses media by id, but element ids are only unique within
  * one composition FILE and the render document inlines many, so
  * `document.getElementById` silently resolves duplicates to whichever element
- * comes first. The producer stamps a document-unique `data-hf-render-id`
+ * comes first. The producer stamps a document-unique `data-sc-render-id`
  * (core's mediaRenderIds.ts); these helpers are the single place that knows to
  * prefer it, so every capture stage addresses the same element.
  *
@@ -13,21 +13,21 @@
  * never compiled by the producer (snapshot, check, and direct engine callers),
  * where the authored id already is the identity.
  *
- * `__hfMediaId` mirrors core's `readMediaRenderId`, which is the definition of
+ * `__scMediaId` mirrors core's `readMediaRenderId`, which is the definition of
  * this rule; the copy exists only because code serialized into `page.evaluate`
  * cannot import. The runtime readers in core call that function directly, and
  * `renderFrameSibling.test.ts` pins the sibling-id format both sides build.
  */
 
-import { MEDIA_RENDER_ID_ATTR } from "@hyperframes/core";
+import { MEDIA_RENDER_ID_ATTR } from "@smashcut/core";
 import type { Page } from "puppeteer-core";
 
 declare global {
   interface Window {
     /** Element for a render media id, or null. */
-    __hfMediaEl?: (id: string) => Element | null;
+    __scMediaEl?: (id: string) => Element | null;
     /** Render media id for an element — its stamped id, else its plain id. */
-    __hfMediaId?: (el: Element) => string;
+    __scMediaId?: (el: Element) => string;
   }
 }
 
@@ -37,12 +37,12 @@ declare global {
  */
 export async function installMediaRenderIdBridge(page: Page): Promise<void> {
   await page.evaluateOnNewDocument((attr: string) => {
-    window.__hfMediaEl = (id: string): Element | null => {
+    window.__scMediaEl = (id: string): Element | null => {
       // CSS.escape covers ids with characters that are not valid in a selector
       // literal; the attribute value still needs its own quote escaping.
       const escaped = id.replace(/\\/g, "\\\\").replace(/"/g, '\\"');
       return document.querySelector(`[${attr}="${escaped}"]`) ?? document.getElementById(id);
     };
-    window.__hfMediaId = (el: Element): string => el.getAttribute(attr) || el.id;
+    window.__scMediaId = (el: Element): string => el.getAttribute(attr) || el.id;
   }, MEDIA_RENDER_ID_ATTR);
 }

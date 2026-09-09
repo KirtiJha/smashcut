@@ -129,8 +129,8 @@ describe("processCompositionAudio", () => {
   ])(
     "drops a known zero timeline window without audio prep or mix: %s",
     async (_label, start, mediaStart) => {
-      const baseDir = mkdtempSync(join(tmpdir(), "hf-audio-base-"));
-      const workDir = mkdtempSync(join(tmpdir(), "hf-audio-work-"));
+      const baseDir = mkdtempSync(join(tmpdir(), "sc-audio-base-"));
+      const workDir = mkdtempSync(join(tmpdir(), "sc-audio-work-"));
       tempDirs.push(baseDir, workDir);
       writeFileSync(join(baseDir, "tone.wav"), Buffer.from("RIFF0000WAVEfmt "));
       const elements = parseAudioElements(
@@ -155,8 +155,8 @@ describe("processCompositionAudio", () => {
   );
 
   it("classifies an HTML-as-200 audio source as deterministic user input", async () => {
-    const baseDir = mkdtempSync(join(tmpdir(), "hf-audio-base-"));
-    const workDir = mkdtempSync(join(tmpdir(), "hf-audio-work-"));
+    const baseDir = mkdtempSync(join(tmpdir(), "sc-audio-base-"));
+    const workDir = mkdtempSync(join(tmpdir(), "sc-audio-work-"));
     tempDirs.push(baseDir, workDir);
     const fetchMock = vi
       .fn()
@@ -206,8 +206,8 @@ describe("processCompositionAudio", () => {
       retryable: true,
     },
   ] as const)("classifies probe failure '$reason' independently", async (expected) => {
-    const baseDir = mkdtempSync(join(tmpdir(), "hf-audio-base-"));
-    const workDir = mkdtempSync(join(tmpdir(), "hf-audio-work-"));
+    const baseDir = mkdtempSync(join(tmpdir(), "sc-audio-base-"));
+    const workDir = mkdtempSync(join(tmpdir(), "sc-audio-work-"));
     tempDirs.push(baseDir, workDir);
     writeFileSync(join(baseDir, "voice.wav"), "stub");
     extractAudioMetadataMock.mockRejectedValueOnce(new Error(expected.message));
@@ -247,8 +247,8 @@ describe("processCompositionAudio", () => {
   // surface as `prepare/ffmpeg_failed` with owner "system" — an authoring bug
   // paged as a platform fault, after every frame had already been captured.
   it("classifies a document audio source as a user-owned invalid media source", async () => {
-    const baseDir = mkdtempSync(join(tmpdir(), "hf-audio-base-"));
-    const workDir = mkdtempSync(join(tmpdir(), "hf-audio-work-"));
+    const baseDir = mkdtempSync(join(tmpdir(), "sc-audio-base-"));
+    const workDir = mkdtempSync(join(tmpdir(), "sc-audio-work-"));
     tempDirs.push(baseDir, workDir);
     writeFileSync(join(baseDir, "bgm.mp3"), "<!DOCTYPE html><html><body>not audio</body></html>");
 
@@ -286,8 +286,8 @@ describe("processCompositionAudio", () => {
   });
 
   it("preserves muted tracks and uses unity master gain by default", async () => {
-    const baseDir = mkdtempSync(join(tmpdir(), "hf-audio-base-"));
-    const workDir = mkdtempSync(join(tmpdir(), "hf-audio-work-"));
+    const baseDir = mkdtempSync(join(tmpdir(), "sc-audio-base-"));
+    const workDir = mkdtempSync(join(tmpdir(), "sc-audio-work-"));
     tempDirs.push(baseDir, workDir);
 
     writeFileSync(join(baseDir, "voice.wav"), "stub");
@@ -325,8 +325,8 @@ describe("processCompositionAudio", () => {
   });
 
   it("trims the consumed source span and applies pitch-preserving tempo at 2x", async () => {
-    const baseDir = mkdtempSync(join(tmpdir(), "hf-audio-base-"));
-    const workDir = mkdtempSync(join(tmpdir(), "hf-audio-work-"));
+    const baseDir = mkdtempSync(join(tmpdir(), "sc-audio-base-"));
+    const workDir = mkdtempSync(join(tmpdir(), "sc-audio-work-"));
     tempDirs.push(baseDir, workDir);
     writeFileSync(join(baseDir, "timecode.wav"), "stub");
 
@@ -361,8 +361,8 @@ describe("processCompositionAudio", () => {
     { rate: 0.1, filter: "atempo=0.5,atempo=0.5,atempo=0.5,atempo=0.8" },
     { rate: 5, filter: "atempo=2,atempo=2,atempo=1.25" },
   ])("builds a bounded atempo chain for normalized rate $rate", async ({ rate, filter }) => {
-    const baseDir = mkdtempSync(join(tmpdir(), "hf-audio-base-"));
-    const workDir = mkdtempSync(join(tmpdir(), "hf-audio-work-"));
+    const baseDir = mkdtempSync(join(tmpdir(), "sc-audio-base-"));
+    const workDir = mkdtempSync(join(tmpdir(), "sc-audio-work-"));
     tempDirs.push(baseDir, workDir);
     writeFileSync(join(baseDir, "timecode.wav"), "stub");
 
@@ -390,8 +390,8 @@ describe("processCompositionAudio", () => {
   });
 
   it("keeps automation on authored timeline time after constant retiming", async () => {
-    const baseDir = mkdtempSync(join(tmpdir(), "hf-audio-base-"));
-    const workDir = mkdtempSync(join(tmpdir(), "hf-audio-work-"));
+    const baseDir = mkdtempSync(join(tmpdir(), "sc-audio-base-"));
+    const workDir = mkdtempSync(join(tmpdir(), "sc-audio-work-"));
     tempDirs.push(baseDir, workDir);
     writeFileSync(join(baseDir, "timecode.wav"), "stub");
     const automation = JSON.stringify({
@@ -450,8 +450,8 @@ describe("processCompositionAudio", () => {
   it("lets an FX tail run past the clip, still bounded by the composition", async () => {
     // A reverb is still decaying when the clip's own audio stops. Trimming at
     // the clip boundary is what cut every tail short in the render.
-    const baseDir = mkdtempSync(join(tmpdir(), "hf-audio-base-"));
-    const workDir = mkdtempSync(join(tmpdir(), "hf-audio-work-"));
+    const baseDir = mkdtempSync(join(tmpdir(), "sc-audio-base-"));
+    const workDir = mkdtempSync(join(tmpdir(), "sc-audio-work-"));
     tempDirs.push(baseDir, workDir);
     writeFileSync(join(baseDir, "bed.wav"), "stub");
 
@@ -494,8 +494,8 @@ describe("processCompositionAudio", () => {
     // clipped there. Ducking afterwards bakes that distortion in even though
     // the lane pulls the track well down; the envelope has to travel into the
     // FX pass and land on its float output.
-    const baseDir = mkdtempSync(join(tmpdir(), "hf-audio-base-"));
-    const workDir = mkdtempSync(join(tmpdir(), "hf-audio-work-"));
+    const baseDir = mkdtempSync(join(tmpdir(), "sc-audio-base-"));
+    const workDir = mkdtempSync(join(tmpdir(), "sc-audio-work-"));
     tempDirs.push(baseDir, workDir);
     writeFileSync(join(baseDir, "voice.wav"), "stub");
 
@@ -546,8 +546,8 @@ describe("processCompositionAudio", () => {
   });
 
   it("cuts at the clip boundary when the chain has no tail", async () => {
-    const baseDir = mkdtempSync(join(tmpdir(), "hf-audio-base-"));
-    const workDir = mkdtempSync(join(tmpdir(), "hf-audio-work-"));
+    const baseDir = mkdtempSync(join(tmpdir(), "sc-audio-base-"));
+    const workDir = mkdtempSync(join(tmpdir(), "sc-audio-work-"));
     tempDirs.push(baseDir, workDir);
     writeFileSync(join(baseDir, "bed.wav"), "stub");
 
@@ -579,8 +579,8 @@ describe("processCompositionAudio", () => {
   });
 
   it("compensates amix normalization so multi-track master gain equals track count", async () => {
-    const baseDir = mkdtempSync(join(tmpdir(), "hf-audio-base-"));
-    const workDir = mkdtempSync(join(tmpdir(), "hf-audio-work-"));
+    const baseDir = mkdtempSync(join(tmpdir(), "sc-audio-base-"));
+    const workDir = mkdtempSync(join(tmpdir(), "sc-audio-work-"));
     tempDirs.push(baseDir, workDir);
 
     writeFileSync(join(baseDir, "a.wav"), "stub");
@@ -639,8 +639,8 @@ describe("processCompositionAudio", () => {
   });
 
   it("fails the audio result instead of silently mixing after one track preparation fails", async () => {
-    const baseDir = mkdtempSync(join(tmpdir(), "hf-audio-base-"));
-    const workDir = mkdtempSync(join(tmpdir(), "hf-audio-work-"));
+    const baseDir = mkdtempSync(join(tmpdir(), "sc-audio-base-"));
+    const workDir = mkdtempSync(join(tmpdir(), "sc-audio-work-"));
     tempDirs.push(baseDir, workDir);
 
     writeFileSync(join(baseDir, "working.wav"), "stub");
@@ -710,8 +710,8 @@ describe("processCompositionAudio", () => {
   });
 
   it("preserves and classifies unsupported FFmpeg filter failures", async () => {
-    const baseDir = mkdtempSync(join(tmpdir(), "hf-audio-base-"));
-    const workDir = mkdtempSync(join(tmpdir(), "hf-audio-work-"));
+    const baseDir = mkdtempSync(join(tmpdir(), "sc-audio-base-"));
+    const workDir = mkdtempSync(join(tmpdir(), "sc-audio-work-"));
     tempDirs.push(baseDir, workDir);
     writeFileSync(join(baseDir, "voice.wav"), "stub");
 
@@ -763,8 +763,8 @@ describe("processCompositionAudio", () => {
   });
 
   it("preserves a sanitized FFmpeg spawn failure cause", async () => {
-    const baseDir = mkdtempSync(join(tmpdir(), "hf-audio-base-"));
-    const workDir = mkdtempSync(join(tmpdir(), "hf-audio-work-"));
+    const baseDir = mkdtempSync(join(tmpdir(), "sc-audio-base-"));
+    const workDir = mkdtempSync(join(tmpdir(), "sc-audio-work-"));
     tempDirs.push(baseDir, workDir);
     writeFileSync(join(baseDir, "voice.wav"), "stub");
 
@@ -811,8 +811,8 @@ describe("processCompositionAudio", () => {
   });
 
   it("keeps invalid data from producer-generated mix inputs system-owned", async () => {
-    const baseDir = mkdtempSync(join(tmpdir(), "hf-audio-base-"));
-    const workDir = mkdtempSync(join(tmpdir(), "hf-audio-work-"));
+    const baseDir = mkdtempSync(join(tmpdir(), "sc-audio-base-"));
+    const workDir = mkdtempSync(join(tmpdir(), "sc-audio-work-"));
     tempDirs.push(baseDir, workDir);
     writeFileSync(join(baseDir, "voice.wav"), "stub");
 
@@ -862,8 +862,8 @@ describe("processCompositionAudio", () => {
   });
 
   it("bounds per-cause details and the aggregate error across many authored IDs", async () => {
-    const baseDir = mkdtempSync(join(tmpdir(), "hf-audio-base-"));
-    const workDir = mkdtempSync(join(tmpdir(), "hf-audio-work-"));
+    const baseDir = mkdtempSync(join(tmpdir(), "sc-audio-base-"));
+    const workDir = mkdtempSync(join(tmpdir(), "sc-audio-work-"));
     tempDirs.push(baseDir, workDir);
     const oversizedId = "authored-id-".repeat(300);
 
@@ -891,8 +891,8 @@ describe("processCompositionAudio", () => {
   });
 
   it("uses frame-evaluated volume automation when keyframes are present", async () => {
-    const baseDir = mkdtempSync(join(tmpdir(), "hf-audio-base-"));
-    const workDir = mkdtempSync(join(tmpdir(), "hf-audio-work-"));
+    const baseDir = mkdtempSync(join(tmpdir(), "sc-audio-base-"));
+    const workDir = mkdtempSync(join(tmpdir(), "sc-audio-work-"));
     tempDirs.push(baseDir, workDir);
 
     writeFileSync(join(baseDir, "voice.wav"), "stub");
@@ -932,8 +932,8 @@ describe("processCompositionAudio", () => {
   });
 
   it("bounds expression nesting for dense keyframe automation without dropping the envelope", async () => {
-    const baseDir = mkdtempSync(join(tmpdir(), "hf-audio-base-"));
-    const workDir = mkdtempSync(join(tmpdir(), "hf-audio-work-"));
+    const baseDir = mkdtempSync(join(tmpdir(), "sc-audio-base-"));
+    const workDir = mkdtempSync(join(tmpdir(), "sc-audio-work-"));
     tempDirs.push(baseDir, workDir);
 
     writeFileSync(join(baseDir, "bgm.wav"), "stub");
@@ -985,8 +985,8 @@ describe("processCompositionAudio", () => {
   });
 
   it("falls back to a static-volume mix instead of dropping audio when the automated mix fails", async () => {
-    const baseDir = mkdtempSync(join(tmpdir(), "hf-audio-base-"));
-    const workDir = mkdtempSync(join(tmpdir(), "hf-audio-work-"));
+    const baseDir = mkdtempSync(join(tmpdir(), "sc-audio-base-"));
+    const workDir = mkdtempSync(join(tmpdir(), "sc-audio-work-"));
     tempDirs.push(baseDir, workDir);
 
     writeFileSync(join(baseDir, "bgm.wav"), "stub");
@@ -1048,8 +1048,8 @@ describe("processCompositionAudio", () => {
   });
 
   it("keeps the ffmpeg command line short with a large track count (regression for spawn ENAMETOOLONG)", async () => {
-    const baseDir = mkdtempSync(join(tmpdir(), "hf-audio-base-"));
-    const workDir = mkdtempSync(join(tmpdir(), "hf-audio-work-"));
+    const baseDir = mkdtempSync(join(tmpdir(), "sc-audio-base-"));
+    const workDir = mkdtempSync(join(tmpdir(), "sc-audio-work-"));
     tempDirs.push(baseDir, workDir);
 
     // Reported in the wild at 146 timed audio clips: the old inline
@@ -1110,8 +1110,8 @@ describe("processCompositionAudio", () => {
     // last one vanishes from the mix. `asetpts=N/SR/TB` between the two rebuilds
     // the timestamps from the sample count and costs no portability, since all
     // three filters exist in every build we support.
-    const baseDir = mkdtempSync(join(tmpdir(), "hf-audio-base-"));
-    const workDir = mkdtempSync(join(tmpdir(), "hf-audio-work-"));
+    const baseDir = mkdtempSync(join(tmpdir(), "sc-audio-base-"));
+    const workDir = mkdtempSync(join(tmpdir(), "sc-audio-work-"));
     tempDirs.push(baseDir, workDir);
     writeFileSync(join(baseDir, "a.wav"), "stub");
     writeFileSync(join(baseDir, "b.wav"), "stub");
@@ -1157,8 +1157,8 @@ describe("processCompositionAudio", () => {
   });
 
   it("retries with the current file-valued filter option when a nightly removes the legacy alias", async () => {
-    const baseDir = mkdtempSync(join(tmpdir(), "hf-audio-base-"));
-    const workDir = mkdtempSync(join(tmpdir(), "hf-audio-work-"));
+    const baseDir = mkdtempSync(join(tmpdir(), "sc-audio-base-"));
+    const workDir = mkdtempSync(join(tmpdir(), "sc-audio-work-"));
     tempDirs.push(baseDir, workDir);
 
     writeFileSync(join(baseDir, "voice.wav"), "stub");
@@ -1208,8 +1208,8 @@ describe("processCompositionAudio", () => {
   });
 
   it("prepares percent-encoded non-Latin audio srcs from decoded filesystem paths", async () => {
-    const baseDir = mkdtempSync(join(tmpdir(), "hf-audio-base-"));
-    const workDir = mkdtempSync(join(tmpdir(), "hf-audio-work-"));
+    const baseDir = mkdtempSync(join(tmpdir(), "sc-audio-base-"));
+    const workDir = mkdtempSync(join(tmpdir(), "sc-audio-work-"));
     tempDirs.push(baseDir, workDir);
 
     const encodedFilename =
@@ -1246,8 +1246,8 @@ describe("processCompositionAudio", () => {
   });
 
   it("prepares browser root-absolute audio srcs from the project root", async () => {
-    const baseDir = mkdtempSync(join(tmpdir(), "hf-audio-base-"));
-    const workDir = mkdtempSync(join(tmpdir(), "hf-audio-work-"));
+    const baseDir = mkdtempSync(join(tmpdir(), "sc-audio-base-"));
+    const workDir = mkdtempSync(join(tmpdir(), "sc-audio-work-"));
     tempDirs.push(baseDir, workDir);
 
     mkdirSync(join(baseDir, ".media"), { recursive: true });
@@ -1278,8 +1278,8 @@ describe("processCompositionAudio", () => {
   });
 
   it("preserves authored clip gain above unity for quiet-source boosting", async () => {
-    const baseDir = mkdtempSync(join(tmpdir(), "hf-audio-base-"));
-    const workDir = mkdtempSync(join(tmpdir(), "hf-audio-work-"));
+    const baseDir = mkdtempSync(join(tmpdir(), "sc-audio-base-"));
+    const workDir = mkdtempSync(join(tmpdir(), "sc-audio-work-"));
     tempDirs.push(baseDir, workDir);
     writeFileSync(join(baseDir, "quiet.wav"), "stub");
 
@@ -1307,8 +1307,8 @@ describe("processCompositionAudio", () => {
   });
 
   it("clamps an out-of-range gain to the shared authoring ceiling", async () => {
-    const baseDir = mkdtempSync(join(tmpdir(), "hf-audio-base-"));
-    const workDir = mkdtempSync(join(tmpdir(), "hf-audio-work-"));
+    const baseDir = mkdtempSync(join(tmpdir(), "sc-audio-base-"));
+    const workDir = mkdtempSync(join(tmpdir(), "sc-audio-work-"));
     tempDirs.push(baseDir, workDir);
     writeFileSync(join(baseDir, "quiet.wav"), "stub");
 
@@ -1478,7 +1478,7 @@ describe("parseAudioElements — hidden tracks", () => {
   it("excludes every member of a hidden group, even though the members carry no data-hidden of their own", () => {
     const html =
       `<div data-composition-id="main" data-start="0" data-duration="3">` +
-      `<hf-audio-group id="vo" data-hidden></hf-audio-group>` +
+      `<sc-audio-group id="vo" data-hidden></sc-audio-group>` +
       `<audio id="master" src="master.wav" data-start="0" data-duration="3"></audio>` +
       `<audio id="a" src="a.wav" data-start="0" data-duration="3" data-audio-group="vo"></audio>` +
       `<audio id="b" src="b.wav" data-start="0" data-duration="3" data-audio-group="vo"></audio>` +

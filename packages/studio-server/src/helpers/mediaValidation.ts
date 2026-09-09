@@ -65,7 +65,7 @@ export function validateUploadedMediaBuffer(
   buffer: Uint8Array,
   runner: FfprobeRunner = spawnSync as unknown as FfprobeRunner,
 ): { ok: true } | { ok: false; reason: string } {
-  const tempDir = mkdtempSync(join(tmpdir(), "hyperframes-upload-"));
+  const tempDir = mkdtempSync(join(tmpdir(), "smashcut-upload-"));
   const tempPath = join(tempDir, basename(fileName));
 
   try {

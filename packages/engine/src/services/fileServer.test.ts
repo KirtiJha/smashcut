@@ -12,7 +12,7 @@ describe("file server media responses", () => {
     ["mov", "video/quicktime"],
     ["ico", "image/vnd.microsoft.icon"],
   ])("serves .%s with its content type and unchanged bytes", async (ext, type) => {
-    const projectDir = mkdtempSync(join(tmpdir(), "hf-engine-media-type-"));
+    const projectDir = mkdtempSync(join(tmpdir(), "sc-engine-media-type-"));
     const bytes = new Uint8Array([0, 255, 128, 64, 32]);
     try {
       writeFileSync(join(projectDir, `asset.${ext}`), bytes);

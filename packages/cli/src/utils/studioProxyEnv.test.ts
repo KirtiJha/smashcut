@@ -5,11 +5,11 @@ describe("studioProxyEnv", () => {
   it("forwards an explicit --proxy decision to a Studio child process", () => {
     expect(studioProxyEnv(true, { KEEP: "yes" })).toEqual({
       KEEP: "yes",
-      HYPERFRAMES_AUTO_PROXY: "true",
+      SMASHCUT_AUTO_PROXY: "true",
     });
     expect(studioProxyEnv(false, { KEEP: "yes" })).toEqual({
       KEEP: "yes",
-      HYPERFRAMES_AUTO_PROXY: "false",
+      SMASHCUT_AUTO_PROXY: "false",
     });
   });
 
@@ -25,9 +25,9 @@ describe("studioProxyEnv", () => {
         },
       ),
     ).toMatchObject({
-      HYPERFRAMES_PREVIEW_PROJECT_DIR: "/tmp/video",
-      HYPERFRAMES_PREVIEW_PROJECT_NAME: "video",
-      HYPERFRAMES_PREVIEW_BROWSER_GPU_MODE: "software",
+      SMASHCUT_PREVIEW_PROJECT_DIR: "/tmp/video",
+      SMASHCUT_PREVIEW_PROJECT_NAME: "video",
+      SMASHCUT_PREVIEW_BROWSER_GPU_MODE: "software",
     });
   });
 });

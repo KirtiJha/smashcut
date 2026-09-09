@@ -16,7 +16,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 ```html screen-flow-carousel.html
 <!doctype html>
 <!--
-  screen-flow-carousel -- HyperFrames video primitive (product demo / feature tour)
+  screen-flow-carousel -- SmashCut video primitive (product demo / feature tour)
 
   Two to five app screens ride a horizontal rail. One screen is primary at
   center while its neighbors recede (smaller and dimmer). On each cue the
@@ -350,8 +350,8 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
             var rail = root.querySelector(".sfc-rail");
             var captionsBand = root.querySelector(".sfc-captions");
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             var screensValue = Number(vars.screens);
@@ -596,7 +596,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 
 ## Install
 
-<InstallCommand command="npx hyperframes add screen-flow-carousel" item="screen-flow-carousel" />
+<InstallCommand command="npx smashcut add screen-flow-carousel" item="screen-flow-carousel" />
 
 That writes one file: `compositions/components/screen-flow-carousel.html`.
 
@@ -638,7 +638,7 @@ defaults, so this behaves exactly like the preview above until you change one:
 ```html
 <!doctype html>
 <!--
-  screen-flow-carousel -- HyperFrames video primitive (product demo / feature tour)
+  screen-flow-carousel -- SmashCut video primitive (product demo / feature tour)
 
   Two to five app screens ride a horizontal rail. One screen is primary at
   center while its neighbors recede (smaller and dimmer). On each cue the
@@ -972,8 +972,8 @@ defaults, so this behaves exactly like the preview above until you change one:
             var rail = root.querySelector(".sfc-rail");
             var captionsBand = root.querySelector(".sfc-captions");
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             var screensValue = Number(vars.screens);

@@ -10,8 +10,8 @@ import {
   truncateSnippet,
   WINDOW_TIMELINE_ASSIGN_PATTERN,
 } from "../utils";
-import { COMPOSITION_VARIABLE_TYPES, isSafeMediaUrl } from "@hyperframes/parsers/composition";
-import { COMPOSITION_ATTRIBUTES, readClipTiming } from "@hyperframes/parsers/composition-contract";
+import { COMPOSITION_VARIABLE_TYPES, isSafeMediaUrl } from "@smashcut/parsers/composition";
+import { COMPOSITION_ATTRIBUTES, readClipTiming } from "@smashcut/parsers/composition-contract";
 
 // Agent guidance thresholds: warning-only nudges for files/tracks that become hard
 // to inspect and revise reliably in a single composition.
@@ -23,7 +23,7 @@ const CAPTION_CUE_TOKEN =
 
 // composition_heavy_overlay_count_high — warn when a composition carries this
 // many or more elements whose CSS uses filter:blur, clip-path (non-none), or
-// radial-gradient. Field signal ts=1784040753 (#hyperframes-cli-feedback):
+// radial-gradient. Field signal ts=1784040753 (#smashcut-cli-feedback):
 // a composition with ~40 such elements captures solid-black for the first
 // ~half of the render, recovering near the end. Presence alone matters —
 // opacity:0 and visibility:hidden overlays still contribute — so the rule
@@ -94,7 +94,7 @@ export function isRegistrySourceFile(filePath?: string): boolean {
 }
 
 export function isRegistryInstalledFile(rawSource: string): boolean {
-  return /^\s*<!--\s*hyperframes-registry-item:[^>]*-->/i.test(rawSource.slice(0, 512));
+  return /^\s*<!--\s*smashcut-registry-item:[^>]*-->/i.test(rawSource.slice(0, 512));
 }
 
 function isCompositionRootOrMount(rawTag: string): boolean {
@@ -268,7 +268,7 @@ export const compositionRules: Array<(ctx: LintContext) => HyperframeLintFinding
       // composition root, and sub-compositions.md documents mounting one source
       // repeatedly with different `data-variable-values` to get per-instance
       // variations. Those mounts legitimately share an id: the runtime rewrites
-      // repeated ones to `id__hf1`, `id__hf2` so they coexist. Counting them
+      // repeated ones to `id__sc1`, `id__sc2` so they coexist. Counting them
       // here made the documented pattern an error with no correct way to
       // satisfy it. The collision this rule exists for -- a <meta> tag carrying
       // the root's id, per its own fixHint -- is unaffected, since that tag has
@@ -942,7 +942,7 @@ export const compositionRules: Array<(ctx: LintContext) => HyperframeLintFinding
   // element's own class (e.g. `.frame { ... }` on the same element that carries
   // data-composition-id) therefore becomes a DESCENDANT selector that can never
   // match the SCOPED element itself. NOTE on the symptom: since #1886 the producer
-  // preserves the authored root as a `data-hf-inner-root` wrapper INSIDE the scoped
+  // preserves the authored root as a `data-sc-inner-root` wrapper INSIDE the scoped
   // element (regression fixture packages/producer/tests/sub-comp-class-selector),
   // so the class still matches as a descendant and the scene no longer renders
   // unstyled. This rule is now a consistency constraint, not a render-bug guard:
@@ -981,7 +981,7 @@ export const compositionRules: Array<(ctx: LintContext) => HyperframeLintFinding
   // root_composition_missing_duration_source
   //
   // The render engine (packages/engine/src/services/frameCapture.ts) needs a
-  // positive window.__hf.duration to know how many frames to capture. GSAP
+  // positive window.__sc.duration to know how many frames to capture. GSAP
   // timelines set this automatically. Non-GSAP runtimes (CSS, WAAPI, Lottie)
   // are now auto-inferred by the runtime too (see
   // packages/core/src/runtime/init.ts resolveAdapterDurationFloorSeconds and
@@ -1011,7 +1011,7 @@ export const compositionRules: Array<(ctx: LintContext) => HyperframeLintFinding
     if (options.isSubComposition) return [];
     if (!rootTag) return [];
     // Not every file linted as a "root" HTML document is a video composition
-    // — e.g. a slideshow demo.html mounts <hyperframes-player src="index.html">
+    // — e.g. a slideshow demo.html mounts <smashcut-player src="index.html">
     // with no data-composition-id of its own. Nothing to capture there, so
     // there's no duration contract to enforce.
     if (readDecodedAttr(rootTag.raw, "data-composition-id") === null) return [];
@@ -1036,7 +1036,7 @@ export const compositionRules: Array<(ctx: LintContext) => HyperframeLintFinding
 
     const usesLottie =
       tags.some((t) => readAttr(t.raw, "data-lottie-src") !== null) ||
-      allScriptTexts.some((t) => /lottie\.(loadAnimation)\b|__hfLottie\b/.test(t));
+      allScriptTexts.some((t) => /lottie\.(loadAnimation)\b|__scLottie\b/.test(t));
     const usesThree = allScriptTexts.some((t) => /\bTHREE\./.test(t));
     // `.animate([...], ...)` catches the array-literal keyframes form;
     // `.animate({...}, ...)` catches the object-literal (PropertyIndexedKeyframes)
@@ -1123,7 +1123,7 @@ export const compositionRules: Array<(ctx: LintContext) => HyperframeLintFinding
   },
 
   // composition_heavy_overlay_count_high
-  // Field signal ts=1784040753 (#hyperframes-cli-feedback): a composition
+  // Field signal ts=1784040753 (#smashcut-cli-feedback): a composition
   // with ~40 heavy overlay DOM elements — `filter:blur`, oversized
   // `radial-gradient`, and `clip-path` animations — captures solid-black for
   // the first ~half of the render, recovering near the end. Reproduces
@@ -1200,7 +1200,7 @@ export const compositionRules: Array<(ctx: LintContext) => HyperframeLintFinding
           `(opacity:0 / visibility:hidden) contribute — either remove truly unused ones from ` +
           `the source or scope them into their own per-transition sub-composition. If an ` +
           `overlay is genuinely inert for the whole clip, use display:none so it never enters ` +
-          `the render tree. Field ref ts=1784040753 (#hyperframes-cli-feedback).`,
+          `the render tree. Field ref ts=1784040753 (#smashcut-cli-feedback).`,
       },
     ];
   },

@@ -2296,7 +2296,7 @@ function insertInheritedStateSetInScript(
   return ms.toString();
 }
 
-const STUDIO_HOLD_MARKER = "hf-hold";
+const STUDIO_HOLD_MARKER = "sc-hold";
 
 function isStudioHoldSet(animation: GsapAnimation): boolean {
   return animation.method === "set" && animation.properties.data === STUDIO_HOLD_MARKER;

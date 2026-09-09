@@ -45,7 +45,7 @@ const keyFor = (videoPath: string, overrides: Partial<CacheKeyInput> = {}): Cach
 };
 
 function makeCacheRoot(): { tmpRoot: string; sourceFile: string } {
-  const tmpRoot = mkdtempSync(join(tmpdir(), "hf-extract-cache-test-"));
+  const tmpRoot = mkdtempSync(join(tmpdir(), "sc-extract-cache-test-"));
   const sourceFile = join(tmpRoot, "clip.mp4");
   writeFileSync(sourceFile, "fake-video-bytes", "utf-8");
   return { tmpRoot, sourceFile };
@@ -383,7 +383,7 @@ describe("gcExtractionCache", () => {
   let tmpRoot: string;
 
   beforeEach(() => {
-    tmpRoot = mkdtempSync(join(tmpdir(), "hf-extract-cache-gc-test-"));
+    tmpRoot = mkdtempSync(join(tmpdir(), "sc-extract-cache-gc-test-"));
   });
 
   afterEach(() => {
@@ -404,9 +404,9 @@ describe("gcExtractionCache", () => {
     const oldGen = join(tmpRoot, "hfcache-v2-0123456789abcdef");
     mkdirSync(oldGen, { recursive: true });
     writeFileSync(join(oldGen, "frame_00001.jpg"), "x".repeat(2048), "utf-8");
-    writeFileSync(join(oldGen, ".hf-complete"), "", "utf-8");
+    writeFileSync(join(oldGen, ".sc-complete"), "", "utf-8");
     const aged = new Date(Date.now() - 2 * 60 * 60 * 1000);
-    utimesSync(join(oldGen, ".hf-complete"), aged, aged);
+    utimesSync(join(oldGen, ".sc-complete"), aged, aged);
     utimesSync(oldGen, aged, aged);
 
     const stats = gcExtractionCache(tmpRoot, { maxBytes: 1024, minAgeMs: 60 * 60 * 1000 });

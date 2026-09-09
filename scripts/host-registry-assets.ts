@@ -52,8 +52,8 @@ import { ITEM_TYPE_DIRS, type FileTarget, type RegistryItem } from "../packages/
 
 const repoRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 
-const CDN_BASE = "https://static.heygen.ai/hyperframes-oss/registry-assets";
-const S3_DEST = "s3://heygen-public/hyperframes-oss/registry-assets";
+const CDN_BASE = "https://static.heygen.ai/smashcut-oss/registry-assets";
+const S3_DEST = "s3://heygen-public/smashcut-oss/registry-assets";
 const PROFILE = process.env.AWS_PROFILE ?? "engineering-767398024897";
 const STAGING_DIR = resolve(repoRoot, ".registry-assets-staging");
 

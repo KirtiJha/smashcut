@@ -2,7 +2,7 @@
  * Stable hf- element id minting (R1). Node-safe (linkedom only, not browser DOM).
  *
  * Two surfaces share these helpers:
- *  - ensureHfIds(html): node-id surface — mints data-hf-id on every element.
+ *  - ensureHfIds(html): node-id surface — mints data-sc-id on every element.
  *  - mintHfId(el, assigned): shared by htmlParser for clip ids.
  *
  * Hash is CONTENT ONLY (tag + sorted attrs + own text) — no sibling position,

@@ -8,8 +8,8 @@
 
 import type { MutableRefObject } from "react";
 import type { StudioEditPersistenceProps } from "./panels/VariablesPanel";
-import type { BlockParam } from "@hyperframes/core/registry";
-import type { Composition } from "@hyperframes/sdk";
+import type { BlockParam } from "@smashcut/core/registry";
+import type { Composition } from "@smashcut/sdk";
 import type { EditHistoryKind } from "../utils/editHistory";
 import type { UseSlideshowPersistParams } from "../hooks/useSlideshowPersist";
 import type { AddMediaOverlayHandler } from "./editor/propertyPanelTypes";

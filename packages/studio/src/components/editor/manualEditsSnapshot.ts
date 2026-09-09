@@ -191,8 +191,8 @@ export function restoreStudioPathOffset(
   );
 
   // Restore GSAP x/y if a draft was applied via gsap.set during drag
-  const baseX = element.getAttribute("data-hf-drag-gsap-base-x");
-  const baseY = element.getAttribute("data-hf-drag-gsap-base-y");
+  const baseX = element.getAttribute("data-sc-drag-gsap-base-x");
+  const baseY = element.getAttribute("data-sc-drag-gsap-base-y");
   if (baseX != null || baseY != null) {
     const win = element.ownerDocument.defaultView as
       | (Window & { gsap?: { set: (el: Element, vars: Record<string, unknown>) => void } })
@@ -202,8 +202,8 @@ export function restoreStudioPathOffset(
       const y = Number.parseFloat(baseY ?? "0") || 0;
       win.gsap.set(element, { x, y });
     }
-    element.removeAttribute("data-hf-drag-gsap-base-x");
-    element.removeAttribute("data-hf-drag-gsap-base-y");
+    element.removeAttribute("data-sc-drag-gsap-base-x");
+    element.removeAttribute("data-sc-drag-gsap-base-y");
   }
 }
 

@@ -102,7 +102,7 @@ function requestUrl(input: Parameters<typeof fetch>[0]): string {
 
 function stubPatchFetch(
   patchResponse: PatchResponseBody | Error,
-  sourceContent = '<div data-hf-id="hf-card" style="color: red">Card</div>',
+  sourceContent = '<div data-sc-id="sc-card" style="color: red">Card</div>',
 ) {
   const fetchMock = vi.fn(
     async (
@@ -131,7 +131,7 @@ async function flushAsyncWork(): Promise<void> {
 }
 
 function createPreviewElement(
-  bodyHtml = '<div data-hf-id="hf-card" style="color: red">Card</div>',
+  bodyHtml = '<div data-sc-id="sc-card" style="color: red">Card</div>',
 ): {
   iframe: HTMLIFrameElement;
   element: HTMLElement;
@@ -141,7 +141,7 @@ function createPreviewElement(
   const doc = iframe.contentDocument;
   if (!doc) throw new Error("Expected iframe contentDocument");
   doc.body.innerHTML = bodyHtml;
-  const element = doc.querySelector('[data-hf-id="hf-card"]');
+  const element = doc.querySelector('[data-sc-id="sc-card"]');
   if (!(element instanceof HTMLElement)) throw new Error("Expected HTML target element");
   return { iframe, element };
 }
@@ -192,8 +192,8 @@ function createSelection(
       canApplyManualSize: true,
       canApplyManualRotation: true,
     },
-    hfId: "hf-card",
-    selector: '[data-hf-id="hf-card"]',
+    hfId: "sc-card",
+    selector: '[data-sc-id="sc-card"]',
     selectorIndex: 0,
   };
   return { ...base, ...overrides };
@@ -295,7 +295,7 @@ describe("useDomEditCommits z-index reorder persistence", () => {
     );
     vi.stubGlobal("fetch", fetchMock);
     const { iframe, element } = createPreviewElement(
-      '<div data-hf-id="hf-card"></div><div id="b"></div><div id="c"></div>',
+      '<div data-sc-id="sc-card"></div><div id="b"></div><div id="c"></div>',
     );
     element.id = "a";
     const elements = [
@@ -419,7 +419,7 @@ describe("useDomEditCommits z-index reorder persistence", () => {
     vi.stubGlobal("fetch", fetchMock);
     const warnSpy = vi.spyOn(console, "warn").mockImplementation(() => {});
     const { iframe, element } = createPreviewElement(
-      '<div data-hf-id="hf-card"></div><div id="b"></div>',
+      '<div data-sc-id="sc-card"></div><div id="b"></div>',
     );
     element.id = "a";
     const second = iframe.contentDocument!.getElementById("b")!;
@@ -498,7 +498,7 @@ describe("useDomEditCommits z-index reorder persistence", () => {
     vi.stubGlobal("fetch", fetchMock);
     const warnSpy = vi.spyOn(console, "warn").mockImplementation(() => {});
     const { iframe, element } = createPreviewElement(
-      '<div data-hf-id="hf-card" style="z-index: 4"></div><div id="b" style="z-index: 5"></div>',
+      '<div data-sc-id="sc-card" style="z-index: 4"></div><div id="b" style="z-index: 5"></div>',
     );
     element.id = "a";
     const second = iframe.contentDocument!.getElementById("b")!;
@@ -582,7 +582,7 @@ describe("useDomEditCommits z-index reorder persistence", () => {
     vi.stubGlobal("fetch", fetchMock);
     const writeProjectFile = vi.fn(async () => {});
     const { iframe, element } = createPreviewElement(
-      '<div data-hf-id="hf-card" style="z-index: 7"></div><div id="b"></div>',
+      '<div data-sc-id="sc-card" style="z-index: 7"></div><div id="b"></div>',
     );
     element.id = "a";
     const second = iframe.contentDocument!.getElementById("b")!;
@@ -631,8 +631,8 @@ describe("useDomEditCommits z-index reorder persistence", () => {
   });
 
   it("reloads after the server commits but the aggregate response is lost", async () => {
-    const original = '<div data-hf-id="hf-card" id="a" style="z-index: 7"></div>';
-    const after = '<div data-hf-id="hf-card" id="a" style="z-index: 2"></div>';
+    const original = '<div data-sc-id="sc-card" id="a" style="z-index: 7"></div>';
+    const after = '<div data-sc-id="sc-card" id="a" style="z-index: 2"></div>';
     let diskContent = original;
     const fetchMock = vi.fn(async (input: Parameters<typeof fetch>[0]): Promise<Response> => {
       const url = requestUrl(input);
@@ -829,10 +829,10 @@ async function expectPersistedTextStructureEdit(
     ok: true,
     changed: true,
     matched: true,
-    content: '<div data-hf-id="hf-card"><span>First</span></div>',
+    content: '<div data-sc-id="sc-card"><span>First</span></div>',
   });
   const { iframe, element } = createPreviewElement(
-    '<div data-hf-id="hf-card"><span>First</span><span>Second</span></div>',
+    '<div data-sc-id="sc-card"><span>First</span><span>Second</span></div>',
   );
   const selection = createSelection(element, {
     textFields: [
@@ -875,7 +875,7 @@ describe("useDomEditCommits rich-text persist handling", () => {
     stubPatchFetch({ ok: true, changed: false, matched: false });
     const previousHtml = '<span style="color: red">Before</span>';
     const html = '<span style="color: blue">After</span>';
-    const { iframe, element } = createPreviewElement(`<div data-hf-id="hf-card">${html}</div>`);
+    const { iframe, element } = createPreviewElement(`<div data-sc-id="sc-card">${html}</div>`);
     const rendered = renderDomEditCommits(createSelection(element), iframe);
     const warnSpy = vi.spyOn(console, "warn").mockImplementation(() => {});
 
@@ -898,10 +898,10 @@ describe("useDomEditCommits rich-text persist handling", () => {
   it("does not retarget a commit onto a replacement preview node", async () => {
     const fetchMock = stubPatchFetch({ ok: true, changed: true, matched: true });
     const html = '<span style="color: blue">After</span>';
-    const { iframe, element } = createPreviewElement(`<div data-hf-id="hf-card">${html}</div>`);
+    const { iframe, element } = createPreviewElement(`<div data-sc-id="sc-card">${html}</div>`);
     const rendered = renderDomEditCommits(createSelection(element), iframe);
     const replacement = document.createElement("div");
-    replacement.dataset.hfId = "hf-card";
+    replacement.dataset.hfId = "sc-card";
     replacement.innerHTML = "Reloaded elsewhere";
     element.replaceWith(replacement);
 
@@ -996,7 +996,7 @@ describe("useDomEditCommits style persist handling", () => {
       configurable: true,
       value: { seek },
     });
-    Object.defineProperty(iframe.contentWindow, "__hfForceTimelineRebind", {
+    Object.defineProperty(iframe.contentWindow, "__scForceTimelineRebind", {
       configurable: true,
       value: forceTimelineRebind,
     });
@@ -1036,7 +1036,7 @@ describe("useDomEditCommits style persist handling", () => {
       ok: true,
       changed: true,
       matched: true,
-      content: '<div data-hf-id="hf-card" style="color: blue">Card</div>',
+      content: '<div data-sc-id="sc-card" style="color: blue">Card</div>',
       path: "index.html",
       version: '"sha256:after"',
     });
@@ -1071,8 +1071,8 @@ describe("useDomEditCommits style persist handling", () => {
           return jsonResponse({
             content:
               readCount === 1
-                ? '<div data-hf-id="hf-card" style="color: red">Card</div>'
-                : '<div data-hf-id="hf-card" style="color: blue">Card</div>',
+                ? '<div data-sc-id="sc-card" style="color: red">Card</div>'
+                : '<div data-sc-id="sc-card" style="color: blue">Card</div>',
           });
         }
         if (url.includes("/api/projects/p1/file-mutations/patch-element/")) {
@@ -1082,7 +1082,7 @@ describe("useDomEditCommits style persist handling", () => {
             ok: true,
             changed: true,
             matched: true,
-            content: '<div data-hf-id="hf-card" style="color: green">Card</div>',
+            content: '<div data-sc-id="sc-card" style="color: green">Card</div>',
             path: "index.html",
             version: '"sha256:green"',
           });
@@ -1110,7 +1110,7 @@ describe("useDomEditCommits style persist handling", () => {
           ok: true,
           changed: true,
           matched: true,
-          content: '<div data-hf-id="hf-card" style="color: blue">Card</div>',
+          content: '<div data-sc-id="sc-card" style="color: blue">Card</div>',
           path: "index.html",
           version: '"sha256:blue"',
         }),
@@ -1155,7 +1155,7 @@ describe("useDomEditCommits style persist handling", () => {
       const url = requestUrl(input);
       if (url.includes("/api/projects/p1/files/")) {
         return jsonResponse({
-          content: '<div data-hf-id="hf-card" style="color: red">Card</div>',
+          content: '<div data-sc-id="sc-card" style="color: red">Card</div>',
         });
       }
       if (url.includes("/api/projects/p1/file-mutations/patch-element/")) {
@@ -1181,7 +1181,7 @@ describe("useDomEditCommits style persist handling", () => {
           ok: true,
           changed: true,
           matched: true,
-          content: '<div data-hf-id="hf-card" style="color: blue">Card</div>',
+          content: '<div data-sc-id="sc-card" style="color: blue">Card</div>',
           path: "index.html",
           version: '"sha256:blue"',
         }),
@@ -1237,7 +1237,7 @@ describe("useDomEditCommits style persist handling", () => {
       const url = requestUrl(input);
       if (url.includes("/api/projects/p1/files/")) {
         return jsonResponse({
-          content: '<div data-hf-id="hf-card" style="color: red">Card</div>',
+          content: '<div data-sc-id="sc-card" style="color: red">Card</div>',
         });
       }
       if (url.includes("/api/projects/p1/file-mutations/patch-element/")) {
@@ -1261,7 +1261,7 @@ describe("useDomEditCommits style persist handling", () => {
           ok: true,
           changed: true,
           matched: true,
-          content: '<div data-hf-id="hf-card" style="color: green">Card</div>',
+          content: '<div data-sc-id="sc-card" style="color: green">Card</div>',
         }),
       );
       await secondCommit;
@@ -1306,9 +1306,9 @@ describe("useDomEditCommits style persist handling", () => {
         changed: true,
         matched: true,
         content:
-          '<!doctype html><html><head></head><body><div data-hf-id="hf-card">Card</div></body></html>',
+          '<!doctype html><html><head></head><body><div data-sc-id="sc-card">Card</div></body></html>',
       },
-      '<!doctype html><html><head></head><body><div data-hf-id="hf-card">Card</div></body></html>',
+      '<!doctype html><html><head></head><body><div data-sc-id="sc-card">Card</div></body></html>',
     );
     const warnSpy = vi.spyOn(console, "warn").mockImplementation(() => {});
     const { iframe, element } = createPreviewElement();
@@ -1357,7 +1357,7 @@ describe("useDomEditCommits style persist handling", () => {
 
   it("uses the patched server content as the custom-font write precondition", async () => {
     const patchedContent =
-      '<!doctype html><html><head></head><body><div data-hf-id="hf-card">Card</div></body></html>';
+      '<!doctype html><html><head></head><body><div data-sc-id="sc-card">Card</div></body></html>';
     stubPatchFetch(
       { ok: true, changed: true, matched: true, content: patchedContent },
       patchedContent,
@@ -1400,7 +1400,7 @@ describe("useDomEditCommits style persist handling", () => {
       const url = requestUrl(input);
       if (url.includes("/api/projects/p1/files/")) {
         return jsonResponse({
-          content: '<div data-hf-id="hf-card" style="color: red">Card</div>',
+          content: '<div data-sc-id="sc-card" style="color: red">Card</div>',
         });
       }
       if (url.includes("/api/projects/p1/file-mutations/patch-element/")) {
@@ -1429,7 +1429,7 @@ describe("useDomEditCommits style persist handling", () => {
       ok: true,
       changed: true,
       matched: true,
-      content: '<div data-hf-id="hf-card" style="color: blue">Card</div>',
+      content: '<div data-sc-id="sc-card" style="color: blue">Card</div>',
     });
     const warnSpy = vi.spyOn(console, "warn").mockImplementation(() => {});
     const { iframe, element } = createPreviewElement();
@@ -1478,9 +1478,9 @@ describe("useDomEditCommits style persist handling", () => {
       ok: true,
       changed: true,
       matched: true,
-      content: '<div data-hf-id="hf-card">A &lt; B</div>',
+      content: '<div data-sc-id="sc-card">A &lt; B</div>',
     });
-    const { iframe, element } = createPreviewElement('<div data-hf-id="hf-card">Card</div>');
+    const { iframe, element } = createPreviewElement('<div data-sc-id="sc-card">Card</div>');
     const selection = createSelection(element, {
       textFields: [textField({ key: "self", value: "Card", source: "self", tagName: "div" })],
     });
@@ -1501,7 +1501,7 @@ describe("useDomEditCommits style persist handling", () => {
 
   it("reverts and toasts a text commit when the server rejects the patch", async () => {
     stubPatchFetch(new Error("network down"));
-    const { iframe, element } = createPreviewElement('<div data-hf-id="hf-card">Card</div>');
+    const { iframe, element } = createPreviewElement('<div data-sc-id="sc-card">Card</div>');
     const selection = createSelection(element, {
       textFields: [textField({ key: "self", value: "Card", source: "self", tagName: "div" })],
     });
@@ -1642,7 +1642,7 @@ describe("useDomEditCommits attribute persist handling", () => {
       ok: true,
       changed: true,
       matched: true,
-      content: '<div data-hf-id="hf-card" data-volume="0.8">Card</div>',
+      content: '<div data-sc-id="sc-card" data-volume="0.8">Card</div>',
     });
     const { iframe, element } = createPreviewElement();
     const rendered = renderDomEditCommits(createSelection(element), iframe);
@@ -1689,7 +1689,7 @@ describe("useDomEditCommits attribute persist handling", () => {
       vi.fn(async (input: Parameters<typeof fetch>[0]) => {
         const url = requestUrl(input);
         if (url.includes("/api/projects/p1/files/")) {
-          return jsonResponse({ content: '<div data-hf-id="hf-card"></div>' });
+          return jsonResponse({ content: '<div data-sc-id="sc-card"></div>' });
         }
         call += 1;
         if (call === 1) return first.promise;

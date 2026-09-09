@@ -9,7 +9,7 @@ import { LOCAL_MODEL_DIMENSIONS } from "./localModel.js";
 describe("fetchLocalVectors", () => {
   let dir: string;
   beforeEach(() => {
-    dir = mkdtempSync(join(tmpdir(), "hf-vec-"));
+    dir = mkdtempSync(join(tmpdir(), "sc-vec-"));
   });
   afterEach(() => {
     rmSync(dir, { recursive: true, force: true });

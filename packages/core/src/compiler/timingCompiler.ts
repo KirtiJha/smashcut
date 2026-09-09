@@ -18,7 +18,7 @@
  * `data-end` off so extract can resolve the id-ref later.
  */
 
-import { parseNumeric } from "@hyperframes/parsers/composition-contract";
+import { parseNumeric } from "@smashcut/parsers/composition-contract";
 import {
   parseStrictFiniteTimingNumber,
   readElementPlaybackRate,
@@ -86,10 +86,10 @@ export function shouldClampResolvedMediaDuration(
 
 function getAttr(tag: string, attr: string): string | null {
   // `(?<![\w-])` anchors the attribute name to a fresh start. Without it,
-  // `getAttr(tag, "id")` matches the trailing `id="…"` inside `data-hf-id="…"`
+  // `getAttr(tag, "id")` matches the trailing `id="…"` inside `data-sc-id="…"`
   // (and "src" inside `data-src`, etc.) and returns a phantom value. That bug
-  // made compileTag believe a Studio-stamped `data-hf-id`-only element already
-  // had an `id`, so it skipped its `hf-video-N` injection — leaving the element
+  // made compileTag believe a Studio-stamped `data-sc-id`-only element already
+  // had an `id`, so it skipped its `sc-video-N` injection — leaving the element
   // with no real `el.id`, which the render pipeline keys off of (blank wash).
   const match = tag.match(new RegExp(`(?<![\\w-])${attr}=["']([^"']+)["']`));
   return match ? (match[1] ?? null) : null;
@@ -218,13 +218,13 @@ function compileTag(
 
   let id = getAttr(result, "id");
   if (!id) {
-    id = `${isVideo ? "hf-video" : "hf-audio"}-${generateId()}`;
+    id = `${isVideo ? "sc-video" : "sc-audio"}-${generateId()}`;
     result = injectAttr(result, "id", id);
   }
   let startStr = getAttr(result, "data-start");
   if (startStr === null) {
     result = injectAttr(result, "data-start", "0");
-    result = injectAttr(result, "data-hf-auto-start", "");
+    result = injectAttr(result, "data-sc-auto-start", "");
     startStr = "0";
   }
   const start = parseNumeric(startStr);

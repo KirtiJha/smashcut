@@ -20,7 +20,7 @@ vi.mock("puppeteer-core", () => ({ default: { launch: browserMocks.launch } }));
 
 import { findSystemChrome, generateThumbnail, type GenerateThumbnailOptions } from "./vite.browser";
 
-const originalBrowserPath = process.env["HYPERFRAMES_BROWSER_PATH"];
+const originalBrowserPath = process.env["SMASHCUT_BROWSER_PATH"];
 
 function options(signal = new AbortController().signal): GenerateThumbnailOptions {
   return {
@@ -39,7 +39,7 @@ function options(signal = new AbortController().signal): GenerateThumbnailOption
 
 describe("generateThumbnail", () => {
   beforeAll(() => {
-    process.env["HYPERFRAMES_BROWSER_PATH"] = process.execPath;
+    process.env["SMASHCUT_BROWSER_PATH"] = process.execPath;
   });
 
   beforeEach(() => {
@@ -49,8 +49,8 @@ describe("generateThumbnail", () => {
   });
 
   afterAll(() => {
-    if (originalBrowserPath === undefined) delete process.env["HYPERFRAMES_BROWSER_PATH"];
-    else process.env["HYPERFRAMES_BROWSER_PATH"] = originalBrowserPath;
+    if (originalBrowserPath === undefined) delete process.env["SMASHCUT_BROWSER_PATH"];
+    else process.env["SMASHCUT_BROWSER_PATH"] = originalBrowserPath;
   });
 
   it("contains a transient browser launch failure and retries the next request", async () => {
@@ -114,7 +114,7 @@ describe("findSystemChrome", () => {
     expect(
       findSystemChrome(
         {
-          HYPERFRAMES_BROWSER_PATH: "/custom/browser",
+          SMASHCUT_BROWSER_PATH: "/custom/browser",
           PRODUCER_HEADLESS_SHELL_PATH: "/legacy/browser",
         },
         pathExists,

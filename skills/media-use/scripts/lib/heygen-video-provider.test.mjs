@@ -86,7 +86,7 @@ async function withFakeHeygen(options, run) {
     HEYGEN_VIDEO_MODE: process.env.HEYGEN_VIDEO_MODE,
     HEYGEN_VIDEO_RESPONSE: process.env.HEYGEN_VIDEO_RESPONSE,
     HEYGEN_DISCOVERY_MODE: process.env.HEYGEN_DISCOVERY_MODE,
-    HYPERFRAMES_NO_TELEMETRY: process.env.HYPERFRAMES_NO_TELEMETRY,
+    SMASHCUT_NO_TELEMETRY: process.env.SMASHCUT_NO_TELEMETRY,
   };
 
   writeFileSync(
@@ -122,7 +122,7 @@ esac
   process.env.HEYGEN_VIDEO_MODE = options.mode ?? "success";
   process.env.HEYGEN_VIDEO_RESPONSE = options.response ?? "";
   process.env.HEYGEN_DISCOVERY_MODE = options.discoveryMode ?? "";
-  process.env.HYPERFRAMES_NO_TELEMETRY = "1";
+  process.env.SMASHCUT_NO_TELEMETRY = "1";
 
   try {
     return await run({
@@ -152,7 +152,7 @@ test("downloads a generated avatar video and returns the generated MP4 result", 
       { response: JSON.stringify({ data: { video_url: url } }) },
       async ({ invocations }) => {
         const heygenVideoGenerate = await freshGenerate();
-        const intent = "Welcome to the HyperFrames launch";
+        const intent = "Welcome to the SmashCut launch";
         const result = await heygenVideoGenerate(intent, {});
         localPath = result?.localPath;
         const calls = invocations();
@@ -367,7 +367,7 @@ test("download failure after a successful create returns null and logs a diagnos
 });
 
 test("uses private unique downloads even when time is fixed and the old name is planted", async (t) => {
-  const root = mkdtempSync(join(tmpdir(), "hf-video-temp-test-"));
+  const root = mkdtempSync(join(tmpdir(), "sc-video-temp-test-"));
   const previousTmpdir = process.env.TMPDIR;
   process.env.TMPDIR = root;
   t.mock.method(Date, "now", () => 123456);
@@ -401,7 +401,7 @@ test("uses private unique downloads even when time is fixed and the old name is 
 });
 
 test("removes private download staging on failure while returning null", async (t) => {
-  const root = mkdtempSync(join(tmpdir(), "hf-video-temp-fail-"));
+  const root = mkdtempSync(join(tmpdir(), "sc-video-temp-fail-"));
   const previousTmpdir = process.env.TMPDIR;
   process.env.TMPDIR = root;
   t.mock.method(globalThis, "fetch", async () => {

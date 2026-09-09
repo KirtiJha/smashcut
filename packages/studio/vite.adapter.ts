@@ -20,8 +20,8 @@ import {
   createBackgroundRemovalJob,
   createProjectSignature,
   affectsProjectSignature,
-} from "@hyperframes/studio-server";
-import type { RegistryItem } from "@hyperframes/core/registry";
+} from "@smashcut/studio-server";
+import type { RegistryItem } from "@smashcut/core/registry";
 import { createRetryingModuleLoader, ensureProducerDist } from "./vite.producer";
 import { createStudioDevRenderBodyScripts } from "./vite.studioMotion";
 import { generateThumbnail, findSystemChrome } from "./vite.browser";
@@ -125,7 +125,7 @@ export function createViteAdapter(
   const getBundler = async () => {
     if (!_bundler) {
       try {
-        const mod = await server.ssrLoadModule("@hyperframes/core/compiler");
+        const mod = await server.ssrLoadModule("@smashcut/core/compiler");
         _bundler = (dir, options) => mod.bundleToSingleHtml(dir, options);
       } catch (err) {
         console.warn("[Studio] Failed to load compiler, previews will use raw HTML:", err);
@@ -144,10 +144,10 @@ export function createViteAdapter(
         });
         if (built) {
           console.warn(
-            "[Studio] @hyperframes/producer dist missing; building producer package for local renders...",
+            "[Studio] @smashcut/producer dist missing; building producer package for local renders...",
           );
         }
-        const producerPkg = "@hyperframes/producer";
+        const producerPkg = "@smashcut/producer";
         return await import(/* @vite-ignore */ producerPkg);
       });
     }
@@ -155,10 +155,10 @@ export function createViteAdapter(
   };
 
   return {
-    // The CLI resolves --proxy/--no-proxy against hyperframes.json before it
+    // The CLI resolves --proxy/--no-proxy against smashcut.json before it
     // launches Vite. Direct `bun run dev` keeps the historical default-on
     // behavior when the child environment is absent.
-    autoProxy: resolveViteAutoProxy(process.env.HYPERFRAMES_AUTO_PROXY),
+    autoProxy: resolveViteAutoProxy(process.env.SMASHCUT_AUTO_PROXY),
 
     // fallow-ignore-next-line complexity
     listProjects() {
@@ -232,8 +232,8 @@ export function createViteAdapter(
       if (!bundler) return null;
       let html = await bundler(dir, { runtime: "placeholder", inlineColorGradingLuts: false });
       html = html.replace(
-        'data-hyperframes-preview-runtime="1" src=""',
-        `data-hyperframes-preview-runtime="1" src="${this.runtimeUrl}"`,
+        'data-smashcut-preview-runtime="1" src=""',
+        `data-smashcut-preview-runtime="1" src="${this.runtimeUrl}"`,
       );
       return html;
     },
@@ -248,12 +248,12 @@ export function createViteAdapter(
     },
 
     async lint(html: string, opts?: { filePath?: string }) {
-      const mod = await server.ssrLoadModule("@hyperframes/core/lint");
+      const mod = await server.ssrLoadModule("@smashcut/core/lint");
       return await mod.lintHyperframeHtml(html, opts);
     },
 
     async lintProject(projectDir: string) {
-      const mod = await server.ssrLoadModule("@hyperframes/core/lint");
+      const mod = await server.ssrLoadModule("@smashcut/core/lint");
       return await mod.lintProject(projectDir);
     },
 
@@ -388,7 +388,7 @@ export function createViteAdapter(
           if (!existsSync(manifestPath)) continue;
           try {
             const manifest = JSON.parse(readFileSync(manifestPath, "utf-8")) as RegistryItem;
-            if (manifest.type === "hyperframes:block" || manifest.type === "hyperframes:component")
+            if (manifest.type === "smashcut:block" || manifest.type === "smashcut:component")
               items.push(manifest);
           } catch {
             /* skip malformed manifests */
@@ -427,9 +427,9 @@ export function createViteAdapter(
 
         mkdirSync(dirname(targetPath), { recursive: true });
 
-        if (file.type === "hyperframes:composition") {
+        if (file.type === "smashcut:composition") {
           let content = readFileSync(sourcePath, "utf-8");
-          content = `<!-- hyperframes-registry-item: ${block.name} -->\n${content}`;
+          content = `<!-- smashcut-registry-item: ${block.name} -->\n${content}`;
           writeFileSync(targetPath, content, "utf-8");
         } else {
           copyFileSync(sourcePath, targetPath);

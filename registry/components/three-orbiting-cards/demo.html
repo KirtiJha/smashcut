@@ -24,11 +24,11 @@
         background: #f7f7f8;
         font-family: Inter, system-ui, sans-serif;
       }
-      .hf-advanced-three-orbiting-cards {
+      .sc-advanced-three-orbiting-cards {
         color: #111827;
         font-family: Inter, system-ui, sans-serif;
       }
-      .hf-advanced-three-orbiting-cards {
+      .sc-advanced-three-orbiting-cards {
         position: relative;
         width: 760px;
         height: 430px;
@@ -39,23 +39,23 @@
         /* ponytail: zoom scales the whole card without touching GSAP-animated state */
         zoom: 1.65;
       }
-      .hf-advanced-three-orbiting-cards canvas {
+      .sc-advanced-three-orbiting-cards canvas {
         display: block;
         width: 100%;
         height: 100%;
       }
-      .hf-advanced-three-orbiting-cards .label {
+      .sc-advanced-three-orbiting-cards .label {
         position: absolute;
         left: 28px;
         bottom: 26px;
         color: #fff;
       }
-      .hf-advanced-three-orbiting-cards h3 {
+      .sc-advanced-three-orbiting-cards h3 {
         margin: 0;
         font-size: 34px;
         letter-spacing: -0.05em;
       }
-      .hf-advanced-three-orbiting-cards p {
+      .sc-advanced-three-orbiting-cards p {
         margin: 6px 0 0;
         font-size: 15px;
         color: rgba(255, 255, 255, 0.72);
@@ -71,7 +71,7 @@
       data-height="1080"
       data-duration="5"
     >
-      <div class="hf-advanced-three-orbiting-cards">
+      <div class="sc-advanced-three-orbiting-cards">
         <canvas></canvas>
         <div class="label">
           <h3>Three Orbiting Cards</h3>
@@ -85,7 +85,7 @@
     <script type="module">
       import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.184.0/build/three.module.js";
 
-      const host = document.querySelector(".hf-advanced-three-orbiting-cards");
+      const host = document.querySelector(".sc-advanced-three-orbiting-cards");
       const canvas = host.querySelector("canvas");
       const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
       renderer.setPixelRatio(1);
@@ -136,7 +136,7 @@
       }
       render();
 
-      window.__hfThreeRender_three_orbiting_cards = { state, render };
+      window.__scThreeRender_three_orbiting_cards = { state, render };
 
       const tl = window.gsap.timeline({ paused: true });
       tl.to(state, { progress: 1, duration: 4, ease: "none", onUpdate: render }, 0.5);

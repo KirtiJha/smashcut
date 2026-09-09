@@ -2,11 +2,11 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import { createThreeAdapter } from "./three";
 import { resetSeekDispatchState } from "./seek-dispatch";
 
-const threeWindow = window as Window & { __hfThreeTime?: number };
+const threeWindow = window as Window & { __scThreeTime?: number };
 
 describe("three adapter", () => {
   beforeEach(() => {
-    delete threeWindow.__hfThreeTime;
+    delete threeWindow.__scThreeTime;
     resetSeekDispatchState();
   });
 
@@ -14,18 +14,18 @@ describe("three adapter", () => {
     expect(createThreeAdapter().name).toBe("three");
   });
 
-  it("seek sets __hfThreeTime", () => {
+  it("seek sets __scThreeTime", () => {
     const adapter = createThreeAdapter();
     adapter.seek({ time: 5 });
-    expect(threeWindow.__hfThreeTime).toBe(5);
+    expect(threeWindow.__scThreeTime).toBe(5);
   });
 
-  it("seek dispatches hf-seek custom event", () => {
+  it("seek dispatches sc-seek custom event", () => {
     const adapter = createThreeAdapter();
     const handler = vi.fn();
-    window.addEventListener("hf-seek", handler);
+    window.addEventListener("sc-seek", handler);
     adapter.seek({ time: 3 });
-    window.removeEventListener("hf-seek", handler);
+    window.removeEventListener("sc-seek", handler);
     expect(handler).toHaveBeenCalled();
     const detail = (handler.mock.calls[0][0] as CustomEvent).detail;
     expect(detail.time).toBe(3);
@@ -34,7 +34,7 @@ describe("three adapter", () => {
   it("seek clamps negative time to 0", () => {
     const adapter = createThreeAdapter();
     adapter.seek({ time: -10 });
-    expect(threeWindow.__hfThreeTime).toBe(0);
+    expect(threeWindow.__scThreeTime).toBe(0);
   });
 
   it("pause retains last forced time", () => {
@@ -42,7 +42,7 @@ describe("three adapter", () => {
     adapter.seek({ time: 7 });
     adapter.pause();
     // Internal state preserved — no crash
-    expect(threeWindow.__hfThreeTime).toBe(7);
+    expect(threeWindow.__scThreeTime).toBe(7);
   });
 
   it("play releases forced time", () => {

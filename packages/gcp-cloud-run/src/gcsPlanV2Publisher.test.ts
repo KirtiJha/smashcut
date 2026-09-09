@@ -20,7 +20,7 @@ function makeSource(contents: string): {
   readonly digest: string;
   readonly sizeBytes: number;
 } {
-  const root = mkdtempSync(join(tmpdir(), "hf-gcs-plan-v2-publisher-"));
+  const root = mkdtempSync(join(tmpdir(), "sc-gcs-plan-v2-publisher-"));
   roots.push(root);
   const path = join(root, "artifact.bin");
   writeFileSync(path, contents);

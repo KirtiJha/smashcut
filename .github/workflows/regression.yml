@@ -3,10 +3,10 @@ name: regression
 permissions:
   contents: read
 
-# Suppress hyperframes CLI telemetry from HeyGen's own CI runs.
+# Suppress smashcut CLI telemetry from HeyGen's own CI runs.
 # External users' CI continues to emit telemetry unless they set this themselves.
 env:
-  HYPERFRAMES_NO_TELEMETRY: "1"
+  SMASHCUT_NO_TELEMETRY: "1"
 
 # Graphite can update a branch and its PR base separately for the same head
 # SHA. Keep only the newest expensive regression run for each PR/ref.
@@ -106,7 +106,7 @@ jobs:
           context: .
           file: Dockerfile.test
           load: true
-          tags: hyperframes-producer:test
+          tags: smashcut-producer:test
           cache-from: type=gha,scope=regression-test-image
           # PR matrices can fan out across many stacked branches at once. Let
           # them consume the shared cache, but keep a single writer on main so
@@ -122,7 +122,7 @@ jobs:
             --security-opt seccomp=unconfined \
             --shm-size=4g \
             -v ${{ github.workspace }}/packages/producer/tests:/app/packages/producer/tests \
-            hyperframes-producer:test \
+            smashcut-producer:test \
             --mode=${{ matrix.mode }} \
             ${{ matrix.args }}
 

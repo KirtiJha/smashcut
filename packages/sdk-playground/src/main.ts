@@ -1,24 +1,24 @@
-import { openComposition } from "@hyperframes/sdk";
+import { openComposition } from "@smashcut/sdk";
 import { createFileAdapter } from "./fileAdapter.js";
-import type { Composition, GsapTweenSpec, PreviewAdapter, FindQuery } from "@hyperframes/sdk";
-import { parseGsapScriptAcorn } from "@hyperframes/core/gsap-parser-acorn";
-import type { GsapAnimation } from "@hyperframes/core";
+import type { Composition, GsapTweenSpec, PreviewAdapter, FindQuery } from "@smashcut/sdk";
+import { parseGsapScriptAcorn } from "@smashcut/core/gsap-parser-acorn";
+import type { GsapAnimation } from "@smashcut/core";
 // fallow-ignore-next-line unresolved-imports
 import gsapRaw from "gsap/dist/gsap.min.js?raw";
 
 // ── Demo composition ──────────────────────────────────────────────────────────
 
 const DEMO_HTML = `
-<div data-hf-id="hf-stage" data-hf-root style="width:1280px;height:720px;background:#111827;position:relative;" data-duration="6">
+<div data-sc-id="sc-stage" data-sc-root style="width:1280px;height:720px;background:#111827;position:relative;" data-duration="6">
   <style>.badge{background:#3b82f6;border-radius:6px;}</style>
-  <div data-hf-id="hf-headline" style="position:absolute;top:200px;left:140px;font-size:72px;font-weight:700;color:#f9fafb;font-family:system-ui,sans-serif;">SDK Playground</div>
-  <div data-hf-id="hf-sub" style="position:absolute;top:300px;left:142px;font-size:28px;color:#9ca3af;font-family:system-ui,sans-serif;">@hyperframes/sdk &middot; Phase 3b</div>
-  <div data-hf-id="hf-badge" class="badge" style="position:absolute;top:390px;left:142px;padding:10px 24px;font-size:20px;font-weight:600;color:#fff;font-family:system-ui,sans-serif;">v0.6</div>
+  <div data-sc-id="sc-headline" style="position:absolute;top:200px;left:140px;font-size:72px;font-weight:700;color:#f9fafb;font-family:system-ui,sans-serif;">SDK Playground</div>
+  <div data-sc-id="sc-sub" style="position:absolute;top:300px;left:142px;font-size:28px;color:#9ca3af;font-family:system-ui,sans-serif;">@smashcut/sdk &middot; Phase 3b</div>
+  <div data-sc-id="sc-badge" class="badge" style="position:absolute;top:390px;left:142px;padding:10px 24px;font-size:20px;font-weight:600;color:#fff;font-family:system-ui,sans-serif;">v0.6</div>
   <script>
 var tl = gsap.timeline({ paused: true });
-var headline = document.querySelector("[data-hf-id='hf-headline']");
-var sub = document.querySelector("[data-hf-id='hf-sub']");
-var badge = document.querySelector("[data-hf-id='hf-badge']");
+var headline = document.querySelector("[data-sc-id='sc-headline']");
+var sub = document.querySelector("[data-sc-id='sc-sub']");
+var badge = document.querySelector("[data-sc-id='sc-badge']");
 tl.from(headline, { y: 40, opacity: 0, duration: 0.7, ease: "power3.out" }, 0);
 tl.from(sub, { y: 20, opacity: 0, duration: 0.5, ease: "power3.out" }, 0.2);
 tl.from(badge, { scale: 0.85, opacity: 0, duration: 0.4, ease: "back.out(1.5)" }, 0.4);
@@ -103,9 +103,9 @@ const BRIDGE_SCRIPT = `<script>
   var _drag=null;
   document.addEventListener('mousedown',function(e){
     var el=e.target;
-    while(el&&!el.getAttribute('data-hf-id'))el=el.parentElement;
+    while(el&&!el.getAttribute('data-sc-id'))el=el.parentElement;
     if(!el)return;
-    _drag={id:el.getAttribute('data-hf-id'),el:el,sx:e.clientX,sy:e.clientY,
+    _drag={id:el.getAttribute('data-sc-id'),el:el,sx:e.clientX,sy:e.clientY,
            ox:parseFloat(el.style.left)||0,oy:parseFloat(el.style.top)||0,moved:false};
   },true);
   document.addEventListener('mousemove',function(e){
@@ -127,9 +127,9 @@ const BRIDGE_SCRIPT = `<script>
     _drag=null;
   },true);
   document.addEventListener('click',function(e){
-    // if no hf-id ancestor → deselect
+    // if no sc-id ancestor → deselect
     var el=e.target;
-    while(el&&!el.getAttribute('data-hf-id'))el=el.parentElement;
+    while(el&&!el.getAttribute('data-sc-id'))el=el.parentElement;
     if(!el)parent.postMessage({type:'hf:deselect'},'*');
   },true);
   function tick(){
@@ -143,7 +143,7 @@ const BRIDGE_SCRIPT = `<script>
     if(!e.data)return;
     if(e.data.type==='hf:select'){
       if(_sel){_sel.style.outline='';_sel.style.outlineOffset='';}
-      _sel=e.data.id?document.querySelector('[data-hf-id="'+e.data.id+'"]'):null;
+      _sel=e.data.id?document.querySelector('[data-sc-id="'+e.data.id+'"]'):null;
       if(_sel){_sel.style.outline='2px solid #3b82f6';_sel.style.outlineOffset='1px';}
     }
     if(e.data.type==='hf:seek'){
@@ -176,7 +176,7 @@ const BRIDGE_SCRIPT = `<script>
 function buildSrcdoc(html: string, selId: string | null): string {
   // Baked-in highlight covers the initial render; postMessage updates it live without reload
   const highlight = selId
-    ? `[data-hf-id="${selId}"]{outline:2px solid #3b82f6!important;outline-offset:1px;}`
+    ? `[data-sc-id="${selId}"]{outline:2px solid #3b82f6!important;outline-offset:1px;}`
     : "";
   return `<!DOCTYPE html><html lang="en"><head>
 <meta charset="UTF-8">
@@ -255,7 +255,7 @@ function logEntry(type: string, data: unknown) {
 const TRACK_COLORS = ["#3b82f6", "#8b5cf6", "#f59e0b", "#10b981", "#f87171", "#06b6d4"];
 
 function selectorToHfId(selector: string): string | null {
-  const m = /\[data-hf-id=['"]([^'"]+)['"]\]/.exec(selector);
+  const m = /\[data-sc-id=['"]([^'"]+)['"]\]/.exec(selector);
   if (m) return m[1] ?? null;
   if (/^#/.test(selector.trim())) return selector.trim().slice(1);
   return null;
@@ -386,7 +386,7 @@ function renderElementList() {
   if (!comp) return;
   const list = document.getElementById("element-list")!;
   list.innerHTML = "";
-  const elements = comp.getElements().filter((e) => !e.attributes["data-hf-root"]);
+  const elements = comp.getElements().filter((e) => !e.attributes["data-sc-root"]);
   for (const el of elements) list.appendChild(buildElItem(el));
 }
 
@@ -738,7 +738,7 @@ function buildPreviewSelectSection(): HTMLDivElement {
   const preview = playgroundPreview!;
   const ids = comp!
     .getElements()
-    .filter((e) => !e.attributes["data-hf-root"])
+    .filter((e) => !e.attributes["data-sc-root"])
     .map((e) => e.id);
   const buttons = ids.map((id) =>
     mkBtn(id, "", () => {
@@ -762,10 +762,10 @@ function buildSetStyleSection(): HTMLDivElement {
     logEntry("op", { setStyle: { id: selectedId, color: colorInput.value } });
   });
   const bold = mkBtn("Bold", "", () =>
-    comp!.setStyle(selectedId ?? "hf-headline", { fontWeight: "700" }),
+    comp!.setStyle(selectedId ?? "sc-headline", { fontWeight: "700" }),
   );
   const reset = mkBtn("Reset weight", "", () =>
-    comp!.setStyle(selectedId ?? "hf-headline", { fontWeight: null }),
+    comp!.setStyle(selectedId ?? "sc-headline", { fontWeight: null }),
   );
   return opSection("setStyle", opRow(colorInput, setColor), opRow(bold, reset));
 }
@@ -781,7 +781,7 @@ function buildSetTextSection(): HTMLDivElement {
 }
 
 function buildAddGsapTweenSection(): HTMLDivElement {
-  const target = mkInput("target id", selectedId ?? "hf-badge");
+  const target = mkInput("target id", selectedId ?? "sc-badge");
   target.style.width = "110px";
   const dur = mkNumInput("dur", "0.8");
   const ease = mkInput("ease", "power2.out");
@@ -986,7 +986,7 @@ function buildHistorySection(): HTMLDivElement {
   const canCheck = mkBtn("can(addGsapTween)?", "", () => {
     const r = comp!.can({
       type: "addGsapTween",
-      target: "hf-badge",
+      target: "sc-badge",
       tween: { method: "to", duration: 0.5 },
     });
     logEntry("info", { "can(addGsapTween)": r });

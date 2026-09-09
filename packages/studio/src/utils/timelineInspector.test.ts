@@ -142,7 +142,7 @@ describe("isAudioDomElement / canHideSelections", () => {
   });
 
   it("counts a group bus as audio, the way the single-selection panel does", () => {
-    expect(isAudioDomElement(el("hf-audio-group"))).toBe(true);
+    expect(isAudioDomElement(el("sc-audio-group"))).toBe(true);
   });
 
   // `data-hidden` on audio is what mutes it — preview silences it and the render
@@ -150,6 +150,6 @@ describe("isAudioDomElement / canHideSelections", () => {
   it("refuses to hide a selection holding any audio, and allows a layout one", () => {
     expect(canHideSelections([{ element: el("div") }, { element: el("span") }])).toBe(true);
     expect(canHideSelections([{ element: el("div") }, { element: el("audio") }])).toBe(false);
-    expect(canHideSelections([{ element: el("hf-audio-group") }])).toBe(false);
+    expect(canHideSelections([{ element: el("sc-audio-group") }])).toBe(false);
   });
 });

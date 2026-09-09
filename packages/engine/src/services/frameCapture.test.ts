@@ -146,11 +146,11 @@ describe("isFontResourceError", () => {
 });
 
 describe("formatConsoleDiagnostic", () => {
-  it("surfaces HyperFrames page logs with a dedicated host prefix", () => {
+  it("surfaces SmashCut page logs with a dedicated host prefix", () => {
     expect(
-      formatConsoleDiagnostic("info", "[hyperframes] render runtime fps JSHandle@object", ""),
+      formatConsoleDiagnostic("info", "[smashcut] render runtime fps JSHandle@object", ""),
     ).toEqual({
-      text: "[HyperFrames] render runtime fps JSHandle@object",
+      text: "[SmashCut] render runtime fps JSHandle@object",
       suppressHostLog: false,
     });
   });

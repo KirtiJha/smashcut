@@ -1,5 +1,5 @@
 /**
- * Re-exported from @hyperframes/engine.
+ * Re-exported from @smashcut/engine.
  * @see engine/src/utils/urlDownloader.ts for implementation.
  */
 export {
@@ -9,4 +9,4 @@ export {
   safeDownloadUrlIdentity,
   writeUrlDownloadTelemetry,
   type UrlDownloadTelemetry,
-} from "@hyperframes/engine";
+} from "@smashcut/engine";

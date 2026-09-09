@@ -84,17 +84,17 @@ describe("the worklet processors themselves", () => {
   it("every processor keeps running until it is told to stop, then retires", async () => {
     const processors = await loadProcessors();
     expect([...processors.keys()]).toEqual([
-      "hf-compressor",
-      "hf-limiter",
-      "hf-gate",
-      "hf-bitcrush",
-      "hf-pitchshift",
+      "sc-compressor",
+      "sc-limiter",
+      "sc-gate",
+      "sc-bitcrush",
+      "sc-pitchshift",
     ]);
 
     for (const [name, Cls] of processors) {
       const p = new Cls({ processorOptions: {} });
       expect(p.process(block(), block()), `${name} retired before it was disposed`).toBe(true);
-      p.port.postMessage({ __hfDispose: true });
+      p.port.postMessage({ __scDispose: true });
       expect(p.process(block(), block()), `${name} kept running after dispose`).toBe(false);
       // And it stays retired — a later parameter update must not revive it.
       p.port.postMessage({ mix: 0.5 });
@@ -143,8 +143,8 @@ describe("the worklet processors themselves", () => {
     // signal, plus a head of silence while the ring filled, under a label that
     // reads "Unchanged pitch".
     it("at semitones: 0, mix: 1 passes the input through untouched", async () => {
-      const HfPitchshift = (await loadProcessors()).get("hf-pitchshift");
-      if (!HfPitchshift) throw new Error("hf-pitchshift not registered");
+      const HfPitchshift = (await loadProcessors()).get("sc-pitchshift");
+      if (!HfPitchshift) throw new Error("sc-pitchshift not registered");
       const p = new HfPitchshift({ processorOptions: { semitones: 0, mix: 1 } });
       const input = sine(440, 0.5);
       const output = run(p, input);
@@ -156,8 +156,8 @@ describe("the worklet processors themselves", () => {
     });
 
     it("mix: 0 passes the input through untouched too", async () => {
-      const HfPitchshift = (await loadProcessors()).get("hf-pitchshift");
-      if (!HfPitchshift) throw new Error("hf-pitchshift not registered");
+      const HfPitchshift = (await loadProcessors()).get("sc-pitchshift");
+      if (!HfPitchshift) throw new Error("sc-pitchshift not registered");
       const p = new HfPitchshift({ processorOptions: { semitones: 7, mix: 0 } });
       const input = sine(440, 0.25);
       const output = run(p, input);
@@ -183,8 +183,8 @@ describe("the worklet processors themselves", () => {
     // is ramped instead. A 440 Hz sine steps ~0.057 per sample at its steepest,
     // so anything near the signal's own peak is a splice, not the waveform.
     it("does not click when the shift moves off zero mid-signal", async () => {
-      const HfPitchshift = (await loadProcessors()).get("hf-pitchshift");
-      if (!HfPitchshift) throw new Error("hf-pitchshift not registered");
+      const HfPitchshift = (await loadProcessors()).get("sc-pitchshift");
+      if (!HfPitchshift) throw new Error("sc-pitchshift not registered");
       const p = new HfPitchshift({ processorOptions: { semitones: 0, mix: 1 } });
       run(p, sine(440, 0.3)); // settled dry, ring warm
       p.p = { ...p.p, semitones: 7 };
@@ -193,8 +193,8 @@ describe("the worklet processors themselves", () => {
     });
 
     it("does not click on the way back to zero either", async () => {
-      const HfPitchshift = (await loadProcessors()).get("hf-pitchshift");
-      if (!HfPitchshift) throw new Error("hf-pitchshift not registered");
+      const HfPitchshift = (await loadProcessors()).get("sc-pitchshift");
+      if (!HfPitchshift) throw new Error("sc-pitchshift not registered");
       const p = new HfPitchshift({ processorOptions: { semitones: 7, mix: 1 } });
       run(p, sine(440, 0.3));
       p.p = { ...p.p, semitones: 0 };
@@ -207,8 +207,8 @@ describe("the worklet processors themselves", () => {
     // saved attribute and bypasses at semitones 0; a preview that stayed wet
     // would carry a 50 ms delay the export does not have.
     it("returns to true bypass after being shifted and set back to zero", async () => {
-      const HfPitchshift = (await loadProcessors()).get("hf-pitchshift");
-      if (!HfPitchshift) throw new Error("hf-pitchshift not registered");
+      const HfPitchshift = (await loadProcessors()).get("sc-pitchshift");
+      if (!HfPitchshift) throw new Error("sc-pitchshift not registered");
       const p = new HfPitchshift({ processorOptions: { semitones: 7, mix: 1 } });
       run(p, sine(440, 0.3));
       p.p = { ...p.p, semitones: 0 };
@@ -226,8 +226,8 @@ describe("the worklet processors themselves", () => {
     // A node parked at mix 0 has shifted nothing, so it must not have spent
     // anything that stops the zero-shift bypass engaging later.
     it("is transparent at zero after sitting mixed fully out", async () => {
-      const HfPitchshift = (await loadProcessors()).get("hf-pitchshift");
-      if (!HfPitchshift) throw new Error("hf-pitchshift not registered");
+      const HfPitchshift = (await loadProcessors()).get("sc-pitchshift");
+      if (!HfPitchshift) throw new Error("sc-pitchshift not registered");
       const p = new HfPitchshift({ processorOptions: { semitones: 7, mix: 0 } });
       run(p, sine(440, 0.3));
 
@@ -245,8 +245,8 @@ describe("the worklet processors themselves", () => {
     // used to come out of the head of every clip as silence; it ramps the wet
     // path in instead, which is unshifted audio rather than no audio.
     it("does not open with silence while the grain buffer fills", async () => {
-      const HfPitchshift = (await loadProcessors()).get("hf-pitchshift");
-      if (!HfPitchshift) throw new Error("hf-pitchshift not registered");
+      const HfPitchshift = (await loadProcessors()).get("sc-pitchshift");
+      if (!HfPitchshift) throw new Error("sc-pitchshift not registered");
       const p = new HfPitchshift({ processorOptions: { semitones: 7, mix: 1 } });
       const input = sine(440, 0.5);
       const output = run(p, input);
@@ -258,8 +258,8 @@ describe("the worklet processors themselves", () => {
     });
 
     it("at semitones: 12, doubles the fundamental (one octave up)", async () => {
-      const HfPitchshift = (await loadProcessors()).get("hf-pitchshift");
-      if (!HfPitchshift) throw new Error("hf-pitchshift not registered");
+      const HfPitchshift = (await loadProcessors()).get("sc-pitchshift");
+      if (!HfPitchshift) throw new Error("sc-pitchshift not registered");
       const p = new HfPitchshift({ processorOptions: { semitones: 12, mix: 1 } });
       const input = sine(220, 0.5);
       const output = run(p, input);
@@ -270,8 +270,8 @@ describe("the worklet processors themselves", () => {
     });
 
     it("at semitones: -12, halves the fundamental (one octave down)", async () => {
-      const HfPitchshift = (await loadProcessors()).get("hf-pitchshift");
-      if (!HfPitchshift) throw new Error("hf-pitchshift not registered");
+      const HfPitchshift = (await loadProcessors()).get("sc-pitchshift");
+      if (!HfPitchshift) throw new Error("sc-pitchshift not registered");
       const p = new HfPitchshift({ processorOptions: { semitones: -12, mix: 1 } });
       const input = sine(440, 0.5);
       const output = run(p, input);

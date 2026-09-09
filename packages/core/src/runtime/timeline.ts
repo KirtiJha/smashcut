@@ -21,7 +21,7 @@ function parseNum(value: string | null | undefined): number | null {
 
 function parseElementDurationAttr(element: Element): number | null {
   const publicDuration = element.getAttribute("data-duration");
-  const authoredDuration = element.getAttribute("data-hf-authored-duration");
+  const authoredDuration = element.getAttribute("data-sc-authored-duration");
   const resolved = resolveAuthoredTimingWindow({
     start: 0,
     duration: publicDuration,
@@ -39,7 +39,7 @@ function parseElementEndAttr(element: Element): number | null {
     resolveAuthoredTimingWindow({
       start: 0,
       end: element.getAttribute("data-end"),
-      authoredEnd: element.getAttribute("data-hf-authored-end"),
+      authoredEnd: element.getAttribute("data-sc-authored-end"),
     })?.end ?? null
   );
 }
@@ -104,7 +104,7 @@ function getFirstClassToken(node: Element): string | null {
     className
       .split(/\s+/)
       .map((value) => value.trim())
-      .find((value) => value && value !== "clip" && !value.startsWith("__hf-")) ?? null
+      .find((value) => value && value !== "clip" && !value.startsWith("__sc-")) ?? null
   );
 }
 
@@ -201,7 +201,7 @@ export function collectRuntimeTimelinePayload(params: {
     if (mediaNodes.length === 0) return null;
     let maxWindowEndSeconds = 0;
     for (const mediaNode of mediaNodes) {
-      const start = !mediaNode.hasAttribute("data-hf-auto-start")
+      const start = !mediaNode.hasAttribute("data-sc-auto-start")
         ? Math.max(0, Number(mediaNode.getAttribute("data-start") ?? 0) || 0)
         : startResolver.resolveStartForElement(mediaNode, 0);
       if (!Number.isFinite(start)) continue;
@@ -636,7 +636,7 @@ export function collectRuntimeTimelinePayload(params: {
     : Math.max(1, Math.ceil(safeDuration * Math.max(1, params.canonicalFps)));
   return {
     ...runtimeProtocolMetadata(params.canonicalFps),
-    source: "hf-preview",
+    source: "sc-preview",
     type: "timeline",
     compositionContractVersion: COMPOSITION_CONTRACT_VERSION,
     durationSeconds: shouldEmitNonDeterministicInf ? Number.POSITIVE_INFINITY : safeDuration,

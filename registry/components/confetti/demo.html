@@ -30,11 +30,11 @@
         padding: 52px;
         transform: scale(1.6); /* ponytail: scale wrapper, not GSAP targets */
       }
-      .hf-catalog-confetti {
+      .sc-catalog-confetti {
         color: var(--fg, #111827);
         font-family: var(--font-body, Inter, system-ui, sans-serif);
       }
-      .hf-catalog-confetti {
+      .sc-catalog-confetti {
         position: relative;
         width: 760px;
         height: 428px;
@@ -43,29 +43,29 @@
         background: var(--bg, #080b12);
         box-shadow: 0 28px 80px color-mix(in srgb, var(--bg, #0f172a) 20%, transparent);
       }
-      .hf-catalog-confetti .mesh {
+      .sc-catalog-confetti .mesh {
         position: absolute;
         inset: -22%;
         filter: blur(44px);
         opacity: 0.88;
         background:
           radial-gradient(
-            circle at var(--hf-x1, 20%) var(--hf-y1, 30%),
+            circle at var(--sc-x1, 20%) var(--sc-y1, 30%),
             var(--accent, #60a5fa) 0 18%,
             transparent 32%
           ),
           radial-gradient(
-            circle at var(--hf-x2, 76%) var(--hf-y2, 52%),
+            circle at var(--sc-x2, 76%) var(--sc-y2, 52%),
             var(--accent-2, #f472b6) 0 16%,
             transparent 34%
           ),
           radial-gradient(
-            circle at var(--hf-x3, 46%) var(--hf-y3, 78%),
+            circle at var(--sc-x3, 46%) var(--sc-y3, 78%),
             var(--brand, #34d399) 0 18%,
             transparent 34%
           );
       }
-      .hf-catalog-confetti .card {
+      .sc-catalog-confetti .card {
         position: absolute;
         inset: 74px 92px;
         border: 1px solid color-mix(in srgb, var(--border, #ffffff) 16%, transparent);
@@ -77,7 +77,7 @@
         text-align: center;
         overflow: hidden;
       }
-      .hf-catalog-confetti .spot {
+      .sc-catalog-confetti .spot {
         position: absolute;
         width: 260px;
         height: 260px;
@@ -87,10 +87,10 @@
           color-mix(in srgb, var(--fg, #ffffff) 50%, transparent),
           transparent 65%
         );
-        transform: translate(var(--hf-spot-x, 0px), var(--hf-spot-y, 0px));
+        transform: translate(var(--sc-spot-x, 0px), var(--sc-spot-y, 0px));
         mix-blend-mode: screen;
       }
-      .hf-catalog-confetti .particle {
+      .sc-catalog-confetti .particle {
         position: absolute;
         left: 50%;
         top: 54%;
@@ -98,15 +98,15 @@
         height: 20px;
         border-radius: 3px;
         background: var(--c);
-        transform: translate(var(--hf-px, 0px), var(--hf-py, 0px)) rotate(var(--hf-pr, 0deg));
-        opacity: var(--hf-po, 0);
+        transform: translate(var(--sc-px, 0px), var(--sc-py, 0px)) rotate(var(--sc-pr, 0deg));
+        opacity: var(--sc-po, 0);
       }
-      .hf-catalog-confetti h3 {
+      .sc-catalog-confetti h3 {
         margin: 0;
         font-size: 44px;
         letter-spacing: -0.04em;
       }
-      .hf-catalog-confetti p {
+      .sc-catalog-confetti p {
         margin: 8px 0 0;
         font-size: 15px;
         color: color-mix(in srgb, var(--muted, #ffffff) 70%, transparent);
@@ -123,7 +123,7 @@
       data-duration="5"
     >
       <div class="demo-frame">
-        <div class="hf-catalog-confetti">
+        <div class="sc-catalog-confetti">
           <div class="mesh"></div>
           <div class="card">
             <div class="spot"></div>
@@ -160,43 +160,43 @@
         const tl = gsap.timeline({ paused: true });
         const startTime = 0.5;
         tl.fromTo(
-          ".hf-catalog-confetti .mesh",
+          ".sc-catalog-confetti .mesh",
           {
-            "--hf-x1": "18%",
-            "--hf-y1": "28%",
-            "--hf-x2": "78%",
-            "--hf-y2": "46%",
-            "--hf-x3": "44%",
-            "--hf-y3": "80%",
+            "--sc-x1": "18%",
+            "--sc-y1": "28%",
+            "--sc-x2": "78%",
+            "--sc-y2": "46%",
+            "--sc-x3": "44%",
+            "--sc-y3": "80%",
           },
           {
-            "--hf-x1": "34%",
-            "--hf-y1": "42%",
-            "--hf-x2": "62%",
-            "--hf-y2": "60%",
-            "--hf-x3": "58%",
-            "--hf-y3": "64%",
+            "--sc-x1": "34%",
+            "--sc-y1": "42%",
+            "--sc-x2": "62%",
+            "--sc-y2": "60%",
+            "--sc-x3": "58%",
+            "--sc-y3": "64%",
             duration: 4,
             ease: "sine.inOut",
           },
           startTime,
         );
         tl.fromTo(
-          ".hf-catalog-confetti .spot",
-          { "--hf-spot-x": "-120px", "--hf-spot-y": "-70px" },
-          { "--hf-spot-x": "190px", "--hf-spot-y": "90px", duration: 3, ease: "sine.inOut" },
+          ".sc-catalog-confetti .spot",
+          { "--sc-spot-x": "-120px", "--sc-spot-y": "-70px" },
+          { "--sc-spot-x": "190px", "--sc-spot-y": "90px", duration: 3, ease: "sine.inOut" },
           startTime,
         );
-        const particles_confetti = gsap.utils.toArray(".hf-catalog-confetti .particle");
+        const particles_confetti = gsap.utils.toArray(".sc-catalog-confetti .particle");
         if (particles_confetti.length) {
           tl.fromTo(
             particles_confetti,
-            { "--hf-po": 0, "--hf-px": "0px", "--hf-py": "0px", "--hf-pr": "0deg" },
+            { "--sc-po": 0, "--sc-px": "0px", "--sc-py": "0px", "--sc-pr": "0deg" },
             {
-              "--hf-po": 1,
-              "--hf-px": (i) => Math.cos(i * 0.83) * 250 + "px",
-              "--hf-py": (i) => -120 - Math.sin(i * 0.61) * 120 + "px",
-              "--hf-pr": (i) => 180 + i * 37 + "deg",
+              "--sc-po": 1,
+              "--sc-px": (i) => Math.cos(i * 0.83) * 250 + "px",
+              "--sc-py": (i) => -120 - Math.sin(i * 0.61) * 120 + "px",
+              "--sc-pr": (i) => 180 + i * 37 + "deg",
               duration: 0.8,
               stagger: 0.015,
               ease: "power2.out",

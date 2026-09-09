@@ -3,7 +3,7 @@ import {
   getHfColorGradingCapabilities,
   normalizeHfColorGrading,
   type NormalizedHfColorGradingSecondary,
-} from "@hyperframes/core/color-grading";
+} from "@smashcut/core/color-grading";
 import { Eyedropper, Plus, Trash } from "../../icons/SystemIcons";
 import { FlatSlider } from "./propertyPanelFlatPrimitives";
 import { FlatToggle } from "./propertyPanelFlatToggle";

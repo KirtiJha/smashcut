@@ -1,12 +1,12 @@
 <!--
-  Camera Rig Depth Stack - advanced HyperFrames primitive.
+  Camera Rig Depth Stack - advanced SmashCut primitive.
 
   This is intentionally seekable: drive it from a paused GSAP timeline.
   MotionPath examples require GSAP MotionPathPlugin. Three.js examples expose
   a render(progress) adapter instead of a free-running requestAnimationFrame loop.
 -->
 
-<div class="hf-advanced-camera-rig-depth-stack">
+<div class="sc-advanced-camera-rig-depth-stack">
   <div class="panel">
     <div>
       <h3>Camera Rig Depth Stack</h3>
@@ -16,11 +16,11 @@
 </div>
 
 <style>
-  .hf-advanced-camera-rig-depth-stack {
+  .sc-advanced-camera-rig-depth-stack {
     color: #111827;
     font-family: Inter, system-ui, sans-serif;
   }
-  .hf-advanced-camera-rig-depth-stack {
+  .sc-advanced-camera-rig-depth-stack {
     position: relative;
     width: 760px;
     height: 430px;
@@ -30,27 +30,27 @@
     background: linear-gradient(135deg, #0f172a, #312e81);
     box-shadow: 0 28px 80px rgba(15, 23, 42, 0.2);
   }
-  .hf-advanced-camera-rig-depth-stack .panel {
+  .sc-advanced-camera-rig-depth-stack .panel {
     position: absolute;
     inset: 56px 90px;
     border-radius: 30px;
     background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.52));
     border: 1px solid rgba(255, 255, 255, 0.45);
     backdrop-filter: blur(18px);
-    transform: rotateY(var(--hf-rotate-y, -16deg)) rotateX(var(--hf-rotate-x, 9deg))
-      translateZ(var(--hf-z, 0px));
+    transform: rotateY(var(--sc-rotate-y, -16deg)) rotateX(var(--sc-rotate-x, 9deg))
+      translateZ(var(--sc-z, 0px));
     box-shadow: 0 28px 90px rgba(0, 0, 0, 0.22);
     display: grid;
     place-items: center;
     text-align: center;
   }
-  .hf-advanced-camera-rig-depth-stack h3 {
+  .sc-advanced-camera-rig-depth-stack h3 {
     margin: 0;
     color: #111827;
     font-size: 42px;
     letter-spacing: -0.05em;
   }
-  .hf-advanced-camera-rig-depth-stack p {
+  .sc-advanced-camera-rig-depth-stack p {
     margin: 8px 0 0;
     color: #475569;
   }
@@ -59,5 +59,5 @@
 <!--
   Timeline integration:
   const startTime = 0;
-  tl.fromTo('.hf-advanced-camera-rig-depth-stack .panel', { '--hf-rotate-y': '-20deg', '--hf-rotate-x': '12deg', '--hf-z': '-80px', opacity: 0 }, { '--hf-rotate-y': '10deg', '--hf-rotate-x': '-4deg', '--hf-z': '80px', opacity: 1, duration: 1.2, ease: 'power3.out' }, startTime);
+  tl.fromTo('.sc-advanced-camera-rig-depth-stack .panel', { '--sc-rotate-y': '-20deg', '--sc-rotate-x': '12deg', '--sc-z': '-80px', opacity: 0 }, { '--sc-rotate-y': '10deg', '--sc-rotate-x': '-4deg', '--sc-z': '80px', opacity: 1, duration: 1.2, ease: 'power3.out' }, startTime);
 -->

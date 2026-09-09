@@ -1,5 +1,5 @@
 import { useCallback, useRef } from "react";
-import type { GsapAnimation } from "@hyperframes/core/gsap-parser";
+import type { GsapAnimation } from "@smashcut/core/gsap-parser";
 import type { DomEditSelection } from "../components/editor/domEditing";
 import { usePlayerStore } from "../player";
 import { computeCurrentPercentage } from "./gsapDragCommit";
@@ -236,7 +236,7 @@ export function useGsapSelectionHandlers({
         "add",
         `Add GSAP ${method} animation`,
       );
-      if (selection.element.hasAttribute("data-hf-studio-path-offset")) {
+      if (selection.element.hasAttribute("data-sc-studio-path-offset")) {
         // The reset owns rollback and the position commit already owns user and
         // telemetry reporting. This is only the fire-and-forget UI boundary.
         void landed.then((didLand) => {

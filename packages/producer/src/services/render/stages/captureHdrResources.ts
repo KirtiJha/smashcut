@@ -42,8 +42,8 @@ import {
   runFfmpeg,
   type TimelineExtractionWindow,
   type VideoMetadata,
-} from "@hyperframes/engine";
-import { fpsToFfmpegArg, fpsToNumber } from "@hyperframes/core";
+} from "@smashcut/engine";
+import { fpsToFfmpegArg, fpsToNumber } from "@smashcut/core";
 import type { ProducerLogger } from "../../../logger.js";
 import {
   closeHdrVideoFrameSource,
@@ -135,7 +135,7 @@ export async function probeHdrExtractionDims(args: {
   ].sort((a, b) => a - b);
   for (const seekTime of uniqueStartTimes) {
     await domSession.page.evaluate((t: number) => {
-      if (window.__hf && typeof window.__hf.seek === "function") window.__hf.seek(t);
+      if (window.__sc && typeof window.__sc.seek === "function") window.__sc.seek(t);
     }, seekTime);
     if (domSession.onBeforeCapture) {
       await domSession.onBeforeCapture(domSession.page, seekTime);
@@ -162,7 +162,7 @@ export async function probeHdrExtractionDims(args: {
     const duration = img.end - img.start;
     const retryTime = startTime + Math.min(0.5, duration * 0.1);
     await domSession.page.evaluate((t: number) => {
-      if (window.__hf && typeof window.__hf.seek === "function") window.__hf.seek(t);
+      if (window.__sc && typeof window.__sc.seek === "function") window.__sc.seek(t);
     }, retryTime);
     if (domSession.onBeforeCapture) {
       await domSession.onBeforeCapture(domSession.page, retryTime);

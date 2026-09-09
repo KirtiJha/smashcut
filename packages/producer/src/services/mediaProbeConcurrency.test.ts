@@ -40,8 +40,8 @@ const probeTracker = vi.hoisted(() => {
   };
 });
 
-vi.mock("@hyperframes/engine", async (importOriginal) => {
-  const actual = await importOriginal<typeof import("@hyperframes/engine")>();
+vi.mock("@smashcut/engine", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("@smashcut/engine")>();
   return {
     ...actual,
     analyzeKeyframeIntervals: async () =>
@@ -73,7 +73,7 @@ describe("aggregate media-probe concurrency", () => {
 
   it("caps overlapping compiler advisories and media-type preflight at four probes", async () => {
     probeTracker.reset();
-    projectDir = mkdtempSync(join(tmpdir(), "hf-media-probe-concurrency-"));
+    projectDir = mkdtempSync(join(tmpdir(), "sc-media-probe-concurrency-"));
     const mediaMarkup: string[] = [];
     for (let index = 0; index < 6; index += 1) {
       const src = `video-${index}.asset`;

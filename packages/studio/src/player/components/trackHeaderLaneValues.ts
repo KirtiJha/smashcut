@@ -9,7 +9,7 @@ import {
   classifyPropertyGroup,
   type GsapAnimation,
   type PropertyGroupName,
-} from "@hyperframes/core/gsap-parser";
+} from "@smashcut/core/gsap-parser";
 
 export type LaneValues = Record<string, number | string>;
 

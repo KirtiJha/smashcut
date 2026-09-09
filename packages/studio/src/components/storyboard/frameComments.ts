@@ -1,4 +1,4 @@
-import type { FrameStatus } from "@hyperframes/core/storyboard";
+import type { FrameStatus } from "@smashcut/core/storyboard";
 
 /**
  * Frame comments — the storyboard review's structured feedback channel.
@@ -6,9 +6,9 @@ import type { FrameStatus } from "@hyperframes/core/storyboard";
  * The board's per-frame comment boxes write one batch file on submit; the
  * consuming agent revises exactly the frames named, deletes the file, and
  * re-presents. The file shape is a cross-repo contract — keep it in sync with
- * skills/hyperframes-core/references/storyboard-format.md § Frame comments.
+ * skills/smashcut-core/references/storyboard-format.md § Frame comments.
  */
-export const FRAME_COMMENTS_PATH = ".hyperframes/frame-comments.json";
+export const FRAME_COMMENTS_PATH = ".smashcut/frame-comments.json";
 
 export type FrameCommentsPass = "storyboard" | "sketch" | "final";
 

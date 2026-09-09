@@ -4,7 +4,7 @@ import { execFileSync, execSync } from "node:child_process";
 import { existsSync } from "node:fs";
 import { platform } from "node:os";
 import { dirname } from "node:path";
-import { resolveExtractCacheDir } from "@hyperframes/engine";
+import { resolveExtractCacheDir } from "@smashcut/engine";
 import type { Example } from "./_examples.js";
 import { c } from "../ui/colors.js";
 import { parseToolVersion, runEnvironmentChecks } from "../browser/preflight.js";
@@ -20,8 +20,8 @@ import {
 } from "../telemetry/system.js";
 
 export const examples: Example[] = [
-  ["Check system dependencies", "hyperframes doctor"],
-  ["Output as JSON for CI / agents", "hyperframes doctor --json"],
+  ["Check system dependencies", "smashcut doctor"],
+  ["Output as JSON for CI / agents", "smashcut doctor --json"],
 ];
 
 interface Check {
@@ -69,7 +69,7 @@ function checkVersion(): CheckResult {
     return {
       ok: false,
       detail: `${VERSION} \u2192 ${meta.latestVersion} available`,
-      hint: "Run: hyperframes upgrade",
+      hint: "Run: smashcut upgrade",
     };
   }
   return { ok: true, detail: `${VERSION} (latest)` };
@@ -142,7 +142,7 @@ function checkDisk(): CheckResult {
  * `%TEMP%` default lives on C:, so users with output on a data drive but the
  * OS on a small SSD have hit disk-exhaustion mid-render (field signal
  * `ts=1784219488` · CLI 0.7.58 · 15GB/8-core). Surfacing the effective path
- * + free space at that path lets `hyperframes doctor` catch the mismatch
+ * + free space at that path lets `smashcut doctor` catch the mismatch
  * before the render, and reminds users the relocation knob exists.
  *
  * `statfsSync` requires the path to exist. When the configured cache dir has
@@ -179,7 +179,7 @@ export function checkFramesCache(
       detail: `${dir} · ${suffix}`,
       hint:
         "Low free space at the extract cache location — long renders can exhaust the drive. " +
-        "Relocate via HYPERFRAMES_EXTRACT_CACHE_DIR=<path> or `hyperframes render --frames-cache-dir <path>`.",
+        "Relocate via SMASHCUT_EXTRACT_CACHE_DIR=<path> or `smashcut render --frames-cache-dir <path>`.",
     };
   }
   return { ok: true, detail: `${dir} · ${suffix}` };
@@ -197,7 +197,7 @@ function firstExistingAncestor(path: string, fileExists: (p: string) => boolean)
 }
 
 function sourceLabel(source: "env" | "default"): string {
-  return source === "env" ? "HYPERFRAMES_EXTRACT_CACHE_DIR" : "default";
+  return source === "env" ? "SMASHCUT_EXTRACT_CACHE_DIR" : "default";
 }
 
 function commandExists(command: string): boolean {
@@ -227,7 +227,7 @@ export function checkArchiveExtractor(
   return {
     ok: false,
     detail: "Not found",
-    hint: "Install unzip so HyperFrames can extract its managed Chrome download.",
+    hint: "Install unzip so SmashCut can extract its managed Chrome download.",
   };
 }
 
@@ -386,15 +386,15 @@ export default defineCommand({
       // Exit code intentionally reflects command success, not environment
       // health — `checkVersion` returns ok:false when an npm update is
       // available, which would poison any CI pipeline doing
-      // `hyperframes doctor --json || fail` the next time a new version is
+      // `smashcut doctor --json || fail` the next time a new version is
       // published. Consumers who want a gate can do:
-      //   hyperframes doctor --json | jq -e '.ok' > /dev/null || handle_failure
+      //   smashcut doctor --json | jq -e '.ok' > /dev/null || handle_failure
       console.log(JSON.stringify(buildDoctorReport(outcomes, { redact: true }), null, 2));
       return;
     }
 
     console.log();
-    console.log(c.bold("hyperframes doctor"));
+    console.log(c.bold("smashcut doctor"));
     console.log();
 
     for (const outcome of outcomes) {

@@ -17,7 +17,7 @@ afterEach(() => {
 });
 
 function extractionOutputDir(): string {
-  const dir = mkdtempSync(join(tmpdir(), "hf-extraction-failure-"));
+  const dir = mkdtempSync(join(tmpdir(), "sc-extraction-failure-"));
   tempDirs.push(dir);
   return dir;
 }

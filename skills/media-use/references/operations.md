@@ -16,7 +16,7 @@ ffmpeg -i in.mp4 -ss 00:00:12 -to 00:00:20 -c copy out.mp4   # 0:12–0:20, no r
 ```
 
 In-composition trimming usually needs **no new file**: a clip plays a sub-window
-via `data-media-start` + `data-duration` (see hyperframes-core). Only cut a
+via `data-media-start` + `data-duration` (see smashcut-core). Only cut a
 physical file when exporting/assembling outside the composition.
 
 ## Reframe / crop: change aspect ratio
@@ -51,7 +51,7 @@ a **side-by-side** (local vs HeyGen) is the honest way to let them choose.
 
 | Op                 | Local (free)                                       | HeyGen CLI (quality)        |
 | ------------------ | -------------------------------------------------- | --------------------------- |
-| Background removal | `hyperframes remove-background in.png` (u2net)     | `heygen background-removal` |
+| Background removal | `smashcut remove-background in.png` (u2net)     | `heygen background-removal` |
 | Upscale            | `realesrgan-ncnn-vulkan -i in.png -o out.png -s 4` | n/a                         |
 | Lipsync (dub)      | n/a                                                | `heygen lipsync`            |
 | Translate          | n/a                                                | `heygen video-translate`    |
@@ -112,14 +112,14 @@ engine directly.
 # install once: uv venv ~/.venvs/parakeet && VIRTUAL_ENV=~/.venvs/parakeet uv pip install parakeet-mlx
 node <SKILL_DIR>/scripts/transcribe.mjs --input talk.mp4 --out talk.transcribe.json
 
-# equivalently, the hyperframes CLI has Parakeet built in (auto-detects it, whisper fallback):
-npx hyperframes transcribe talk.mp4 --engine parakeet   # or --engine auto (default)
+# equivalently, the smashcut CLI has Parakeet built in (auto-detects it, whisper fallback):
+npx smashcut transcribe talk.mp4 --engine parakeet   # or --engine auto (default)
 ```
 
 VERIFIED on 24GB: accurate, ~3s (cached) for 8s audio. Parakeet covers English +
 25 European languages. For other languages, or when parakeet-mlx is not
 installed, transcribe.mjs auto-falls-back to whisper.cpp (99 languages) via
-`hyperframes transcribe`. `--engine parakeet|whisper` forces one. (Cohere
+`smashcut transcribe`. `--engine parakeet|whisper` forces one. (Cohere
 Transcribe tops the leaderboard on paper but its mlx-audio quants produced
 garbage and ran 40-70x slower on a Mac in testing, so it is not wired in.)
 
@@ -170,7 +170,7 @@ ffmpeg -i bgm.mp3 -i voice.wav \
   -map "[ducked]" bgm.ducked.wav
 ```
 
-Declare inside compositions. Bake only for assets leaving the hyperframes
+Declare inside compositions. Bake only for assets leaving the smashcut
 pipeline.
 
 ## Publish loudness
@@ -320,6 +320,6 @@ reuse across many scripts, create a reusable **Photo Avatar** once instead
 HEVC/H.265 sources need no conversion for **render** (FFmpeg pre-decodes all
 input video) or for **preview** (auto-proxy transcodes and caches an H.264
 copy on first use, disable with `--no-proxy` or `media.autoProxy: false` in
-hyperframes.json). A manual H.264 proxy via `ffmpeg -i in.mp4 -c:v libx264
+smashcut.json). A manual H.264 proxy via `ffmpeg -i in.mp4 -c:v libx264
 -crf 18 proxy.mp4`, registered with `resolve --from`, remains available for
 edge cases (e.g. auto-proxy disabled, or ffmpeg unavailable at preview time).

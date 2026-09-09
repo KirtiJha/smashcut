@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import type { HfAudioGroup } from "@hyperframes/core/audio-groups";
+import type { HfAudioGroup } from "@smashcut/core/audio-groups";
 import { audioFxSignalPath } from "./audioFxSignalPath";
 
 const group = (over: Partial<HfAudioGroup> = {}): HfAudioGroup => ({
@@ -17,7 +17,7 @@ describe("audioFxSignalPath", () => {
   // ASCII stand-ins in the markdown: "vo-1 and vo-2, together" / "into
   // Voiceover", not "vo-1, vo-2" / "to Voiceover".
   it("names what a group sums, and sends it to the mix", () => {
-    expect(audioFxSignalPath("hf-audio-group", "voiceover", [group()])).toEqual({
+    expect(audioFxSignalPath("sc-audio-group", "voiceover", [group()])).toEqual({
       inLabel: "vo-1 and vo-2, together",
       outLabel: "to mix",
       subject: "group",
@@ -44,7 +44,7 @@ describe("audioFxSignalPath", () => {
   // read as a failure to resolve.
   it("says a memberless group holds nothing yet", () => {
     expect(
-      audioFxSignalPath("hf-audio-group", "empty", [group({ id: "empty", memberIds: [] })]),
+      audioFxSignalPath("sc-audio-group", "empty", [group({ id: "empty", memberIds: [] })]),
     ).toMatchObject({ inLabel: "nothing yet", subject: "group" });
   });
 });

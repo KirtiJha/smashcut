@@ -40,8 +40,8 @@ import {
   runFfmpeg,
   type EngineConfig,
   type EncodeResult,
-} from "@hyperframes/engine";
-import type { Fps } from "@hyperframes/core";
+} from "@smashcut/engine";
+import type { Fps } from "@smashcut/core";
 import type { ProducerLogger } from "../../../logger.js";
 import { formatExportFrameName } from "../../../utils/paths.js";
 import type { ProgressCallback, RenderJob } from "../../renderOrchestrator.js";

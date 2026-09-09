@@ -18,7 +18,7 @@ import {
 } from "./captureCompositionFrame.js";
 
 function tempDir(): string {
-  return mkdtempSync(join(tmpdir(), "hf-capture-frame-test-"));
+  return mkdtempSync(join(tmpdir(), "sc-capture-frame-test-"));
 }
 
 function fakeSeekPage() {
@@ -80,7 +80,7 @@ describe("seekCompositionTimeline", () => {
     const timelineSeek = vi.fn();
     vi.stubGlobal("window", {
       __player: { renderSeek, seek: playerSeek },
-      __hf: { seek: bridgeSeek },
+      __sc: { seek: bridgeSeek },
       __timelines: { main: { seek: timelineSeek } },
     });
 
@@ -97,7 +97,7 @@ describe("seekCompositionTimeline", () => {
     const { page, evaluate } = fakeSeekPage();
     const bridgeSeek = vi.fn();
     const tickerTick = vi.fn();
-    vi.stubGlobal("window", { __hf: { seek: bridgeSeek }, gsap: { ticker: { tick: tickerTick } } });
+    vi.stubGlobal("window", { __sc: { seek: bridgeSeek }, gsap: { ticker: { tick: tickerTick } } });
     return { page, evaluate, bridgeSeek, tickerTick };
   }
 
@@ -181,7 +181,7 @@ describe("seekCompositionTimeline", () => {
     let evaluateCall = 0;
     vi.stubGlobal("window", {
       __player: { renderSeek: vi.fn() },
-      __hfWaitForSeekCompletion: () => gpuWork,
+      __scWaitForSeekCompletion: () => gpuWork,
     });
     const page: CompositionSeekPage = {
       evaluate: vi.fn(async (pageFunction, value, fallback) => {

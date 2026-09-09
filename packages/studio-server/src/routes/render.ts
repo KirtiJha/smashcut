@@ -3,8 +3,8 @@ import { streamSSE } from "hono/streaming";
 import { existsSync, readFileSync, mkdirSync, unlinkSync, readdirSync, statSync } from "node:fs";
 import { join } from "node:path";
 import type { StudioApiAdapter, RenderJobState } from "../types.js";
-import { VALID_CANVAS_RESOLUTIONS, type CanvasResolution } from "@hyperframes/parsers";
-import { formatRenderOutputTimestamp, parseFps } from "@hyperframes/core";
+import { VALID_CANVAS_RESOLUTIONS, type CanvasResolution } from "@smashcut/parsers";
+import { formatRenderOutputTimestamp, parseFps } from "@smashcut/core";
 import { resolveWithinProject } from "../helpers/safePath.js";
 import { isVariablesPayload, VARIABLES_PAYLOAD_ERROR } from "../helpers/variablesPayload.js";
 
@@ -71,7 +71,7 @@ export function registerRenderRoutes(api: Hono, adapter: StudioApiAdapter): void
       // to the install anonymousId. Only an explicit `true` suppresses.
       telemetryOptOut?: boolean;
       // Composition-variable overrides ({variableId: value}), injected as
-      // window.__hfVariables — same channel as `hyperframes render --variables`.
+      // window.__scVariables — same channel as `smashcut render --variables`.
       variables?: Record<string, unknown>;
     };
     const VALID_FORMATS = new Set(["mp4", "webm", "mov"]);

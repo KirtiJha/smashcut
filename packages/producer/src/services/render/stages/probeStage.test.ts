@@ -3,7 +3,7 @@ import { mkdtempSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 
-const workDir = mkdtempSync(join(tmpdir(), "hf-stage-test-"));
+const workDir = mkdtempSync(join(tmpdir(), "sc-stage-test-"));
 afterAll(() => rmSync(workDir, { recursive: true, force: true }));
 import { createHash } from "node:crypto";
 import {
@@ -37,7 +37,7 @@ type MockSession = {
       hfDuration: number;
       gsapLoaded: boolean;
       totalDurationMs: number;
-      __hf: Record<string, never>;
+      __sc: Record<string, never>;
     }>;
   };
   launchCaptureMode: "beginframe" | "screenshot";
@@ -98,7 +98,7 @@ mock.module("../../assetMediaType.js", () => ({
   },
 }));
 
-mock.module("@hyperframes/engine", () => ({
+mock.module("@smashcut/engine", () => ({
   createCaptureSession: async (
     _url: string,
     _dir: string,
@@ -124,7 +124,7 @@ mock.module("@hyperframes/engine", () => ({
           hfDuration: 5,
           gsapLoaded: false,
           totalDurationMs: 5000,
-          __hf: {},
+          __sc: {},
         }),
       },
       launchCaptureMode: (cfg as { forceScreenshot?: boolean }).forceScreenshot
@@ -244,7 +244,7 @@ function makeProbeInput(overrides: {
   };
 
   return {
-    projectDir: "/tmp/hf-probe-test-project",
+    projectDir: "/tmp/sc-probe-test-project",
     workDir: workDir,
     job: {
       id: "probe-test",
@@ -331,17 +331,17 @@ describe("hasScriptedAudioVolumeAutomation", () => {
 
 describe("hasAutoStartVideos", () => {
   it("detects a real auto-start video element", () => {
-    expect(hasAutoStartVideos(`<video src="a.mp4" data-hf-auto-start="">`)).toBe(true);
+    expect(hasAutoStartVideos(`<video src="a.mp4" data-sc-auto-start="">`)).toBe(true);
   });
 
   it("ignores the attribute mentioned in a comment (issue #1938)", () => {
-    expect(hasAutoStartVideos(`<!-- videos get data-hf-auto-start injected --><p>hi</p>`)).toBe(
+    expect(hasAutoStartVideos(`<!-- videos get data-sc-auto-start injected --><p>hi</p>`)).toBe(
       false,
     );
   });
 
   it("ignores the attribute in prose text", () => {
-    expect(hasAutoStartVideos(`<p>the data-hf-auto-start sentinel</p>`)).toBe(false);
+    expect(hasAutoStartVideos(`<p>the data-sc-auto-start sentinel</p>`)).toBe(false);
   });
 
   it("returns false when there is no media", () => {
@@ -512,9 +512,9 @@ describe("runProbeStage — forceScreenshot threading", () => {
       },
     );
     input.compiled.html = `
-      <audio id="longer-inferred" src="short.wav" data-var-src="a" data-hf-inferred-duration></audio>
+      <audio id="longer-inferred" src="short.wav" data-var-src="a" data-sc-inferred-duration></audio>
       <audio id="longer-authored" src="short.wav" data-var-src="b" data-duration="3.836939"></audio>
-      <audio id="shorter-inferred" src="long.wav" data-var-src="c" data-hf-inferred-duration></audio>`;
+      <audio id="shorter-inferred" src="long.wav" data-var-src="c" data-sc-inferred-duration></audio>`;
     input.job.config.variables = { a: "a.wav", b: "b.wav", c: "c.wav" };
 
     await runProbeStage(input);
@@ -961,14 +961,14 @@ describe("runProbeStage — transient browser error retry (#1687)", () => {
 
   it("retries once on a pollHfReady zero-duration timeout (renderReady: false) and succeeds", async () => {
     await runWithTransientInitializeError(
-      "[FrameCapture] Composition has zero duration.\n  Runtime ready: false, __player: true, __hf.seek: true, GSAP timeline: true, data-duration: 53.3s",
+      "[FrameCapture] Composition has zero duration.\n  Runtime ready: false, __player: true, __sc.seek: true, GSAP timeline: true, data-duration: 53.3s",
     );
   });
 
   it("throws immediately on a permanent zero-duration error (renderReady: true — genuine authoring bug)", async () => {
     await expectInitializeFailure({
       message:
-        "[FrameCapture] Composition has zero duration.\n  Runtime ready: true, __player: true, __hf.seek: true, GSAP timeline: false, data-duration: not set",
+        "[FrameCapture] Composition has zero duration.\n  Runtime ready: true, __player: true, __sc.seek: true, GSAP timeline: false, data-duration: not set",
       expectedMessage: "Runtime ready: true",
       expectedAttempts: 1,
     });

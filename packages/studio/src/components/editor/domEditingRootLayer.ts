@@ -51,7 +51,7 @@ export function isCompositionRootLayer(
   computedStyles: Record<string, string>,
 ) {
   if (element.parentElement !== doc.body) return false;
-  if (element.hasAttribute("data-hf-allow-root-edit")) return false;
+  if (element.hasAttribute("data-sc-allow-root-edit")) return false;
   if (isExplicitFullBleedLayer(computedStyles)) return false;
 
   const rootBounds = getCompositionRootBounds(doc);

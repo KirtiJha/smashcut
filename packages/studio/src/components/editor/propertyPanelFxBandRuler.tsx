@@ -16,7 +16,7 @@
  * 2–20 kHz, and a linear ruler would crush six of the seven bands into a corner.
  */
 
-import { audioBandAt, BANDS } from "@hyperframes/core/audio-fx-copy";
+import { audioBandAt, BANDS } from "@smashcut/core/audio-fx-copy";
 
 const LOW = BANDS[0]?.from ?? 20;
 const HIGH = BANDS.at(-1)?.to ?? 20000;
@@ -40,8 +40,8 @@ export function FxBandRuler({ band, at }: FxBandRulerProps) {
   if (!here) return null;
   const [from, to] = band;
   return (
-    <div className="hf-fx-ruler px-1.5 pb-1" data-band={here.name}>
-      <div className="hf-fx-ruler-bar relative flex h-1 w-full overflow-hidden rounded-[1px]">
+    <div className="sc-fx-ruler px-1.5 pb-1" data-band={here.name}>
+      <div className="sc-fx-ruler-bar relative flex h-1 w-full overflow-hidden rounded-[1px]">
         {BANDS.map((range) => {
           // Reachable at all, and where it is now: a module that can only work in
           // the bottom three bands should not look like it could move anywhere.
@@ -52,10 +52,10 @@ export function FxBandRuler({ band, at }: FxBandRulerProps) {
               title={`${range.name} — ${range.says}`}
               className={
                 range.name === here.name
-                  ? "hf-fx-ruler-band bg-panel-accent"
+                  ? "sc-fx-ruler-band bg-panel-accent"
                   : reachable
-                    ? "hf-fx-ruler-band bg-panel-text-4/50"
-                    : "hf-fx-ruler-band bg-panel-text-4/15"
+                    ? "sc-fx-ruler-band bg-panel-text-4/50"
+                    : "sc-fx-ruler-band bg-panel-text-4/15"
               }
               style={{
                 width: `${(positionOf(range.to) - positionOf(range.from)) * 100}%`,
@@ -64,8 +64,8 @@ export function FxBandRuler({ band, at }: FxBandRulerProps) {
           );
         })}
       </div>
-      <p className="hf-fx-ruler-label truncate pt-0.5 text-[9px] text-panel-text-2">
-        <span className="hf-fx-ruler-name text-panel-text-1">{here.name}</span> — {here.says}
+      <p className="sc-fx-ruler-label truncate pt-0.5 text-[9px] text-panel-text-2">
+        <span className="sc-fx-ruler-name text-panel-text-1">{here.name}</span> — {here.says}
       </p>
     </div>
   );

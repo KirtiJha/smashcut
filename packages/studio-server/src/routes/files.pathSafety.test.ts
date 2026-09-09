@@ -22,7 +22,7 @@ afterEach(() => {
 });
 
 function fixture() {
-  const root = mkdtempSync(join(tmpdir(), "hf-file-containment-"));
+  const root = mkdtempSync(join(tmpdir(), "sc-file-containment-"));
   tempDirs.push(root);
   const project = join(root, "project");
   const outside = join(root, "outside");

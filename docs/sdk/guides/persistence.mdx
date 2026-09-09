@@ -6,8 +6,8 @@ description: "Autosave composition edits through pluggable adapters — filesyst
 When you pass a `persist` adapter to `openComposition`, the SDK subscribes to every `change` event and schedules an async write automatically. You never call a save method after each edit — the adapter handles it.
 
 ```typescript
-import { openComposition } from "@hyperframes/sdk";
-import { createFsAdapter } from "@hyperframes/sdk/adapters/fs";
+import { openComposition } from "@smashcut/sdk";
+import { createFsAdapter } from "@smashcut/sdk/adapters/fs";
 
 const adapter = createFsAdapter({ root: "./project" });
 
@@ -16,7 +16,7 @@ const comp = await openComposition(html, {
   persistPath: "composition.html", // default; can be omitted
 });
 
-comp.setText("hf-title", "Draft title");
+comp.setText("sc-title", "Draft title");
 // Autosaved on the next tick — no explicit save call needed.
 ```
 
@@ -62,7 +62,7 @@ The event carries `{ error: { message: string; hint?: string; cause?: unknown } 
 An in-process store — no file I/O, no Node.js required. Use it in unit tests, demos, or browser sessions where you want version history without disk access.
 
 ```typescript
-import { createMemoryAdapter } from "@hyperframes/sdk";
+import { createMemoryAdapter } from "@smashcut/sdk";
 
 const adapter = createMemoryAdapter();
 
@@ -70,9 +70,9 @@ const comp = await openComposition(html, {
   persist: adapter,
 });
 
-comp.setText("hf-title", "v1");
+comp.setText("sc-title", "v1");
 await comp.flush();
-comp.setText("hf-title", "v2");
+comp.setText("sc-title", "v2");
 await comp.flush();
 
 const versions = await adapter.listVersions("composition.html");
@@ -85,14 +85,14 @@ const v1Html = await adapter.loadFrom("composition.html", versions[1].key);
 
 ### `createFsAdapter(opts)` — Node.js local dev
 
-Writes to the filesystem and keeps a rolling version history under `.hf-versions/`. Node.js only — do not use in browser builds.
+Writes to the filesystem and keeps a rolling version history under `.sc-versions/`. Node.js only — do not use in browser builds.
 
 <Note>
-  `createFsAdapter` is imported from the `@hyperframes/sdk/adapters/fs` **subpath**, not the main barrel like `createMemoryAdapter`. The fs adapter pulls in Node's `fs` module, so keeping it on a separate subpath lets browser bundles tree-shake it away — importing it from the root would drag `node:fs` into a browser build.
+  `createFsAdapter` is imported from the `@smashcut/sdk/adapters/fs` **subpath**, not the main barrel like `createMemoryAdapter`. The fs adapter pulls in Node's `fs` module, so keeping it on a separate subpath lets browser bundles tree-shake it away — importing it from the root would drag `node:fs` into a browser build.
 </Note>
 
 ```typescript
-import { createFsAdapter } from "@hyperframes/sdk/adapters/fs";
+import { createFsAdapter } from "@smashcut/sdk/adapters/fs";
 
 const adapter = createFsAdapter({
   root: "./project",   // required — directory for composition files
@@ -101,7 +101,7 @@ const adapter = createFsAdapter({
 ```
 
 <ParamField path="root" type="string">
-  Root directory. The adapter writes `{root}/{persistPath}` and keeps version files under `{root}/.hf-versions/{persistPath}/`.
+  Root directory. The adapter writes `{root}/{persistPath}` and keeps version files under `{root}/.sc-versions/{persistPath}/`.
 </ParamField>
 
 <ParamField path="maxVersions" type="number">
@@ -151,7 +151,7 @@ export interface PersistAdapter {
 **Minimal example — an HTTP / S3-style adapter:**
 
 ```typescript
-import type { PersistAdapter, PersistVersionEntry, PersistErrorEvent } from "@hyperframes/sdk";
+import type { PersistAdapter, PersistVersionEntry, PersistErrorEvent } from "@smashcut/sdk";
 
 export function createHttpAdapter(baseUrl: string): PersistAdapter {
   const errorHandlers: Array<(e: PersistErrorEvent) => void> = [];

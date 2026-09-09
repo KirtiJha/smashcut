@@ -10,8 +10,8 @@ import { RUNTIME_CDN_URL } from "./runtime-url.js";
 export const SHADER_CAPTURE_SCALE_ATTR = "shader-capture-scale";
 export const SHADER_LOADING_ATTR = "shader-loading";
 export const RUNTIME_SRC_ATTR = "runtime-src";
-const SHADER_CAPTURE_SCALE_PARAM = "__hf_shader_capture_scale";
-const SHADER_LOADING_PARAM = "__hf_shader_loading";
+const SHADER_CAPTURE_SCALE_PARAM = "__sc_shader_capture_scale";
+const SHADER_LOADING_PARAM = "__sc_shader_loading";
 
 export const SHADER_LOADING_PHRASES = [
   "Preparing scene transitions",
@@ -115,7 +115,7 @@ function injectShaderOptionsIntoSrcdoc(
   if (loadingMode !== "composition") {
     lines.push(`window.__HF_SHADER_LOADING=${JSON.stringify(loadingMode)};`);
   }
-  const script = `<script data-hyperframes-player-shader-options>${lines.join("")}</script>`;
+  const script = `<script data-smashcut-player-shader-options>${lines.join("")}</script>`;
   if (/<head\b[^>]*>/i.test(html))
     return html.replace(/<head\b[^>]*>/i, (match) => `${match}${script}`);
   if (/<html\b[^>]*>/i.test(html))

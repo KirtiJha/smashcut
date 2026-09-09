@@ -6,7 +6,7 @@
  * Editor position edits (SDK `moveElement`) applied at render time.
  *
  * The SDK's `moveElement` writes `data-x` / `data-y` plus a captured baseline
- * (`data-hf-edit-base-x` / `data-hf-edit-base-y` — the values before the first
+ * (`data-sc-edit-base-x` / `data-sc-edit-base-y` — the values before the first
  * edit). The runtime renders the edit as the DELTA between the two, via the
  * independent CSS `translate` longhand, so it composes additively with any
  * position the composition itself produces (GSAP tweens, `tl.set`, CSS).
@@ -26,9 +26,9 @@
 
 import { emitAnalyticsEvent } from "./analytics";
 
-export const EDIT_BASE_X_ATTR = "data-hf-edit-base-x";
-export const EDIT_BASE_Y_ATTR = "data-hf-edit-base-y";
-export const EDIT_ORIGINAL_TRANSLATE_ATTR = "data-hf-edit-original-translate";
+export const EDIT_BASE_X_ATTR = "data-sc-edit-base-x";
+export const EDIT_BASE_Y_ATTR = "data-sc-edit-base-y";
+export const EDIT_ORIGINAL_TRANSLATE_ATTR = "data-sc-edit-original-translate";
 
 /**
  * Elements a position edit can apply to: HTML elements AND SVG graphics (authored `<text>` labels,
@@ -142,7 +142,7 @@ export function applyPositionEditToElement(el: StylableElement, opts?: { force?:
     // Observable signal for the documented degradation — without it, a
     // fold-loss surfaces to users only as "my edit didn't stick".
     emitAnalyticsEvent("position_edit_fold_skipped", {
-      hfId: el.getAttribute("data-hf-id"),
+      hfId: el.getAttribute("data-sc-id"),
     });
     return;
   }
@@ -221,7 +221,7 @@ export function applyPositionEdits(doc: Document, opts?: { force?: boolean }): n
   return applied;
 }
 
-const SEEK_REAPPLY_WRAPPED = "__hfPositionEditsSeekReapplyWrapped";
+const SEEK_REAPPLY_WRAPPED = "__scPositionEditsSeekReapplyWrapped";
 type SeekFunction = (...args: unknown[]) => unknown;
 const wrappedSeekFunctions = new WeakSet<SeekFunction>();
 const observedSeekProperties = new WeakMap<object, Set<string>>();
@@ -229,7 +229,7 @@ const observedGlobalProperties = new WeakMap<object, Set<string>>();
 
 type SeekWindow = Window &
   typeof globalThis & {
-    __hf?: { seek?: (...args: unknown[]) => unknown };
+    __sc?: { seek?: (...args: unknown[]) => unknown };
     __player?: { renderSeek?: (...args: unknown[]) => unknown };
   };
 
@@ -302,7 +302,7 @@ export function installPositionEditsSeekReapply(win: Window & typeof globalThis)
   };
 
   const observeGlobalContainer = (
-    name: "__hf" | "__player",
+    name: "__sc" | "__player",
     property: "seek" | "renderSeek",
   ): boolean => {
     let globals = observedGlobalProperties.get(target);
@@ -331,7 +331,7 @@ export function installPositionEditsSeekReapply(win: Window & typeof globalThis)
   };
 
   const wrapAll = (): boolean => {
-    const hfObserved = observeGlobalContainer("__hf", "seek");
+    const hfObserved = observeGlobalContainer("__sc", "seek");
     const playerObserved = observeGlobalContainer("__player", "renderSeek");
     return hfObserved && playerObserved;
   };

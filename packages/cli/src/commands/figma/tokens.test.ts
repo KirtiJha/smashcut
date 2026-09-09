@@ -4,11 +4,11 @@ import { mkdtempSync, readFileSync, rmSync, existsSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { runTokensImport } from "./tokens.js";
-import { FigmaClientError, type FigmaClient } from "@hyperframes/core/figma";
+import { FigmaClientError, type FigmaClient } from "@smashcut/core/figma";
 
 let dir = "";
 beforeEach(() => {
-  dir = mkdtempSync(join(tmpdir(), "hf-figma-tokens-"));
+  dir = mkdtempSync(join(tmpdir(), "sc-figma-tokens-"));
 });
 afterEach(() => rmSync(dir, { recursive: true, force: true }));
 

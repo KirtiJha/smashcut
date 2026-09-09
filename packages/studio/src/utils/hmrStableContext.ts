@@ -20,7 +20,7 @@
 
 import { createContext, type Context } from "react";
 
-const REGISTRY = "__hfStudioContexts";
+const REGISTRY = "__scStudioContexts";
 
 type Registry = Map<string, Context<unknown>>;
 

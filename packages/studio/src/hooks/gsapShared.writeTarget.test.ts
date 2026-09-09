@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { parseGsapScript } from "@hyperframes/core/gsap-parser";
-import { addAnimationWithKeyframesToScript } from "@hyperframes/parsers/gsap-writer-acorn";
+import { parseGsapScript } from "@smashcut/core/gsap-parser";
+import { addAnimationWithKeyframesToScript } from "@smashcut/parsers/gsap-writer-acorn";
 import type { DomEditSelection } from "../components/editor/domEditingTypes";
 import { buildStableSelector, getSelectorIndex } from "../components/editor/domEditingDom";
 import { resolveSelectorElementIds, tweenTargetsElement, writeTargetSelector } from "./gsapShared";
@@ -15,14 +15,14 @@ afterEach(() => {
 /**
  * A selection built the way production builds it (getDomLayerPatchTarget), so
  * the class-only case under test is the real one: buildStableSelector hands back
- * a BARE class for an element with no id / hf-id / composition id.
+ * a BARE class for an element with no id / sc-id / composition id.
  */
 function selectionFor(el: HTMLElement): DomEditSelection {
   const selector = buildStableSelector(el);
   return {
     element: el,
     id: el.id || undefined,
-    hfId: el.getAttribute("data-hf-id") || undefined,
+    hfId: el.getAttribute("data-sc-id") || undefined,
     selector,
     selectorIndex: getSelectorIndex(document, el, selector, "index.html", null),
     sourceFile: "index.html",
@@ -85,15 +85,15 @@ describe("writeTargetSelector", () => {
     expect(writeTargetSelector(selectionFor(el))).toBe("#box");
   });
 
-  it("prefers data-hf-id over a generated structural selector", () => {
+  it("prefers data-sc-id over a generated structural selector", () => {
     document.body.innerHTML = `
-      <div id="scene"><div class="group"></div><div class="group" data-hf-id="hf-42"></div></div>
+      <div id="scene"><div class="group"></div><div class="group" data-sc-id="sc-42"></div></div>
     `;
     const el = document.querySelectorAll<HTMLElement>(".group")[1]!;
 
     const written = writeTargetSelector(selectionFor(el));
 
-    expect(written).toBe('[data-hf-id="hf-42"]');
+    expect(written).toBe('[data-sc-id="sc-42"]');
     expect(document.querySelector(written!)).toBe(el);
   });
 
@@ -104,14 +104,14 @@ describe("writeTargetSelector", () => {
     expect(writeTargetSelector(selectionFor(el))).toBe(".header");
   });
 
-  it("hands identity back to a data-hf-id ancestor part way up a deep chain", () => {
+  it("hands identity back to a data-sc-id ancestor part way up a deep chain", () => {
     // Mixed identity: the walk must step past the id-less <section>, stop at the
-    // data-hf-id row, and NOT keep climbing to #outer.
+    // data-sc-id row, and NOT keep climbing to #outer.
     document.body.innerHTML = `
       <div id="outer">
         <header></header>
         <section>
-          <div data-hf-id="mid">
+          <div data-sc-id="mid">
             <div class="cell"></div>
             <div class="cell"></div>
             <div class="cell"></div>
@@ -123,7 +123,7 @@ describe("writeTargetSelector", () => {
 
     const written = writeTargetSelector(selectionFor(el));
 
-    expect(written).toBe('[data-hf-id="mid"] > div:nth-child(3)');
+    expect(written).toBe('[data-sc-id="mid"] > div:nth-child(3)');
     expect(document.querySelectorAll(written!)).toHaveLength(1);
     expect(document.querySelector(written!)).toBe(el);
   });

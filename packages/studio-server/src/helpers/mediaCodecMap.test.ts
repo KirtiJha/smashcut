@@ -66,17 +66,17 @@ function videoHtml(...srcs: string[]): string {
 let dirs: string[] = [];
 
 function tmpProject(): string {
-  const dir = mkdtempSync(join(tmpdir(), "hf-media-codec-map-test-"));
+  const dir = mkdtempSync(join(tmpdir(), "sc-media-codec-map-test-"));
   dirs.push(dir);
   return dir;
 }
 
 beforeEach(() => {
-  process.env.HYPERFRAMES_FFPROBE_PATH = FAKE_FFPROBE_PATH;
+  process.env.SMASHCUT_FFPROBE_PATH = FAKE_FFPROBE_PATH;
 });
 
 afterEach(() => {
-  delete process.env.HYPERFRAMES_FFPROBE_PATH;
+  delete process.env.SMASHCUT_FFPROBE_PATH;
   for (const dir of dirs) rmSync(dir, { recursive: true, force: true });
   dirs = [];
 });
@@ -166,7 +166,7 @@ describe("probeAssetCodec", () => {
     const project = tmpProject();
     const videoPath = join(project, "clip.mp4");
     writeFileSync(videoPath, "fake video bytes");
-    process.env.HYPERFRAMES_FFPROBE_PATH = join(project, "missing-ffprobe");
+    process.env.SMASHCUT_FFPROBE_PATH = join(project, "missing-ffprobe");
 
     await expect(probeAssetCodec(videoPath)).resolves.toBeNull();
   });
@@ -257,7 +257,7 @@ describe("scanProjectMediaCodecMap", () => {
   it("omits an asset from the map (no throw) when ffprobe is unresolvable", async () => {
     const project = tmpProject();
     writeFileSync(join(project, "clip.mp4"), "fake video bytes");
-    process.env.HYPERFRAMES_FFPROBE_PATH = join(project, "missing-ffprobe");
+    process.env.SMASHCUT_FFPROBE_PATH = join(project, "missing-ffprobe");
 
     const map = await scanProjectMediaCodecMap(project, [{ html: videoHtml("clip.mp4") }]);
 

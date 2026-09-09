@@ -1,7 +1,7 @@
 {
-  "name": "@hyperframes/shader-transitions",
+  "name": "@smashcut/shader-transitions",
   "version": "0.8.33",
-  "description": "WebGL shader transitions for HyperFrames compositions",
+  "description": "WebGL shader transitions for SmashCut compositions",
   "repository": {
     "type": "git",
     "url": "https://github.com/heygen-com/hyperframes",

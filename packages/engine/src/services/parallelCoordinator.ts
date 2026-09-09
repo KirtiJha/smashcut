@@ -781,7 +781,7 @@ async function psnrForDiskSample(
           `ffmpeg or the \`psnr\` filter is unavailable — ${detail}. The preflight in ` +
           "initDrawElementOrTransparentBackground normally catches this at bootstrap; if you " +
           "hit this after a successful preflight, ffmpeg was replaced mid-render or " +
-          "HYPERFRAMES_FFMPEG_PATH now points at a different binary.",
+          "SMASHCUT_FFMPEG_PATH now points at a different binary.",
         { cause: err },
       );
     }

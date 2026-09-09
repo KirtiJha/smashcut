@@ -258,11 +258,11 @@
               // Declaration unreadable; the per-variable literal fallbacks below
               // still produce a renderable composition.
             }
-            var hf = window.__hyperframes;
+            var hf = window.__smashcut;
             var overrides =
               hf && typeof hf.getVariables === "function"
                 ? hf.getVariables()
-                : window.__hfVariables;
+                : window.__scVariables;
             if (overrides && typeof overrides === "object") {
               for (var key in overrides) {
                 if (overrides[key] !== undefined) out[key] = overrides[key];

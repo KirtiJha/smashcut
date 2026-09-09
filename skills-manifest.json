@@ -17,35 +17,35 @@
       "hash": "16898c02677d09bc",
       "files": 4
     },
-    "hyperframes": {
+    "smashcut": {
       "hash": "f09636f3307817ab",
       "files": 17
     },
-    "hyperframes-animation": {
+    "smashcut-animation": {
       "hash": "4252b08a4905b5ba",
       "files": 121
     },
-    "hyperframes-audio": {
+    "smashcut-audio": {
       "hash": "84035d8ce2a61fbc",
       "files": 7
     },
-    "hyperframes-cli": {
+    "smashcut-cli": {
       "hash": "1a691d7069bc158e",
       "files": 11
     },
-    "hyperframes-core": {
+    "smashcut-core": {
       "hash": "6921c3b1dbeefb30",
       "files": 20
     },
-    "hyperframes-creative": {
+    "smashcut-creative": {
       "hash": "f3b201ca29eae92a",
       "files": 78
     },
-    "hyperframes-keyframes": {
+    "smashcut-keyframes": {
       "hash": "6bc62531ecea9a52",
       "files": 3
     },
-    "hyperframes-registry": {
+    "smashcut-registry": {
       "hash": "0142a8e09bbe7e2c",
       "files": 12
     },
@@ -69,7 +69,7 @@
       "hash": "71226b200d8adae3",
       "files": 30
     },
-    "remotion-to-hyperframes": {
+    "remotion-to-smashcut": {
       "hash": "79fcf8e9641d126e",
       "files": 70
     },

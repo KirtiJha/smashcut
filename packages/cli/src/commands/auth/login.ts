@@ -1,6 +1,6 @@
 import { failCommand, failUsage } from "../../utils/commandResult.js";
 /**
- * `hyperframes auth login` — sign in to HeyGen.
+ * `smashcut auth login` — sign in to HeyGen.
  *
  * Default: OAuth 2.0 + PKCE via a loopback callback. The CLI opens
  * the user's browser, captures the authorization code on an
@@ -89,7 +89,7 @@ export default defineCommand({
     if (isRemoteOrHeadless()) {
       console.error(
         c.error(
-          "Browser callback login is unavailable in this remote/headless terminal. Run `hyperframes auth login --device`.",
+          "Browser callback login is unavailable in this remote/headless terminal. Run `smashcut auth login --device`.",
         ),
       );
       failUsage();
@@ -436,7 +436,7 @@ async function verifyAndReport(key: string): Promise<UserInfo | null> {
       console.error(
         `${c.warn("HeyGen rejected the API key.")}\n` +
           `  ${c.dim(err.message)}\n` +
-          `Run ${c.accent("hyperframes auth login --api-key")} again with a valid key.`,
+          `Run ${c.accent("smashcut auth login --api-key")} again with a valid key.`,
       );
       return null;
     }

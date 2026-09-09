@@ -9,7 +9,7 @@ import {
   HF_COLOR_GRADING_PALETTES,
   getHfColorGradingCapabilities,
   normalizeHfColorGrading,
-} from "@hyperframes/core/color-grading";
+} from "@smashcut/core/color-grading";
 import {
   activeColorGradingEffectCount,
   FlatEffectsAccessory,

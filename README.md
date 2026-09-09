@@ -2,13 +2,13 @@
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="docs/logo/dark.svg">
     <source media="(prefers-color-scheme: light)" srcset="docs/logo/light.svg">
-    <img alt="HyperFrames" src="docs/logo/light.svg" width="300">
+    <img alt="SmashCut" src="docs/logo/light.svg" width="300">
   </picture>
 </p>
 
 <p align="center">
-  <a href="https://www.npmjs.com/package/hyperframes"><img src="https://img.shields.io/npm/v/hyperframes.svg?style=flat" alt="npm version"></a>
-  <a href="https://www.npmjs.com/package/hyperframes"><img src="https://img.shields.io/npm/dm/hyperframes.svg?style=flat" alt="npm downloads"></a>
+  <a href="https://www.npmjs.com/package/smashcut"><img src="https://img.shields.io/npm/v/smashcut.svg?style=flat" alt="npm version"></a>
+  <a href="https://www.npmjs.com/package/smashcut"><img src="https://img.shields.io/npm/dm/smashcut.svg?style=flat" alt="npm downloads"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-Apache%202.0-blue.svg" alt="License"></a>
   <a href="https://nodejs.org"><img src="https://img.shields.io/badge/node-%3E%3D22-brightgreen" alt="Node.js"></a>
   <a href="https://discord.gg/EbK98HBPdk"><img src="https://img.shields.io/badge/Discord-Join-5865F2?logo=discord&logoColor=white" alt="Discord"></a>
@@ -19,45 +19,45 @@
 <p align="center">
   <a href="https://hyperframes.heygen.com/quickstart">Quickstart</a> |
   <a href="https://hyperframes.heygen.com/showcase">Showcase</a> |
-  <a href="https://www.hyperframes.dev/">Playground</a> |
+  <a href="https://www.smashcut.dev/">Playground</a> |
   <a href="https://hyperframes.heygen.com/catalog/blocks/data-chart">Catalog</a> |
   <a href="https://hyperframes.heygen.com/introduction">Docs</a> |
   <a href="https://discord.gg/EbK98HBPdk">Discord</a>
 </p>
 
 <p align="center">
-  <img src="docs/public/images/hyperframes-logo-motion-1280-trimmed.webp" alt="HyperFrames demo: HTML code on the left transforms into a rendered video on the right" width="800">
+  <img src="docs/public/images/smashcut-logo.svg" alt="SmashCut demo: HTML code on the left transforms into a rendered video on the right" width="800">
 </p>
 
-HyperFrames is an open-source framework for turning HTML, CSS, media, and seekable animations into deterministic MP4 videos. Use it locally with the CLI, from AI coding agents with skills, or as the rendering core behind hosted authoring workflows.
+SmashCut is an open-source framework for turning HTML, CSS, media, and seekable animations into deterministic MP4 videos. Use it locally with the CLI, from AI coding agents with skills, or as the rendering core behind hosted authoring workflows.
 
 ## Quick Start
 
 ### With an AI coding agent
 
-Install the HyperFrames skills, then describe the video you want:
+Install the SmashCut skills, then describe the video you want:
 
 ```bash
 npx skills add heygen-com/hyperframes
 ```
 
-> The picker opens with nothing pre-selected — the **Core Skills** group is all you need: the `/hyperframes` router installs each creation workflow on demand. Agents and non-interactive runs should use `npx hyperframes skills update` instead — it installs exactly the core set, whereas `skills add --all` installs every `SKILL.md` in the repo — the 20 published skills plus six repo-internal ones under `.claude/skills` / `.agents/skills`. For the full published set use `npx hyperframes skills`.
+> The picker opens with nothing pre-selected — the **Core Skills** group is all you need: the `/smashcut` router installs each creation workflow on demand. Agents and non-interactive runs should use `npx smashcut skills update` instead — it installs exactly the core set, whereas `skills add --all` installs every `SKILL.md` in the repo — the 20 published skills plus six repo-internal ones under `.claude/skills` / `.agents/skills`. For the full published set use `npx smashcut skills`.
 >
-> `skills add` resolves the skills.sh registry blob, which can lag `main` by hours. `npx hyperframes skills update` installs from the current `main`, so reach for it when you need the newest copy of a skill.
+> `skills add` resolves the skills.sh registry blob, which can lag `main` by hours. `npx smashcut skills update` installs from the current `main`, so reach for it when you need the newest copy of a skill.
 
 Try a prompt like:
 
-> Using `/hyperframes`, create a 10-second product intro with a fade-in title, a background video, and subtle background music.
+> Using `/smashcut`, create a 10-second product intro with a fade-in title, a background video, and subtle background music.
 
-The skills teach agents the HyperFrames production loop: plan the video, write valid HTML, wire seekable animations, add media, lint, preview, and render. They work with Claude Code, Cursor, Gemini CLI, Codex, and other coding agents that support skills.
+The skills teach agents the SmashCut production loop: plan the video, write valid HTML, wire seekable animations, add media, lint, preview, and render. They work with Claude Code, Cursor, Gemini CLI, Codex, and other coding agents that support skills.
 
 ## Skills
 
-HyperFrames ships 20 skills agents load on demand. Read `/hyperframes` first — it's the router and capability map; it picks a workflow for any "make me a…" request — video, deck, or composition port — and points to the domain skills below.
+SmashCut ships 20 skills agents load on demand. Read `/smashcut` first — it's the router and capability map; it picks a workflow for any "make me a…" request — video, deck, or composition port — and points to the domain skills below.
 
-Default to the **core set** — the router installs each creation workflow on demand. `npx hyperframes skills update` installs exactly that from anywhere; the interactive picker (`npx skills add heygen-com/hyperframes`) lists it as the "Core Skills" group, nothing pre-selected. The picker is interactive-only — a non-interactive or agent run without `--skill` installs all 20. Use `npx skills add heygen-com/hyperframes --all` to install all 20 deliberately (skips the picker), or `npx skills add heygen-com/hyperframes --skill <name>` for just one (bare name, no leading `/`).
+Default to the **core set** — the router installs each creation workflow on demand. `npx smashcut skills update` installs exactly that from anywhere; the interactive picker (`npx skills add heygen-com/hyperframes`) lists it as the "Core Skills" group, nothing pre-selected. The picker is interactive-only — a non-interactive or agent run without `--skill` installs all 20. Use `npx skills add heygen-com/hyperframes --all` to install all 20 deliberately (skips the picker), or `npx skills add heygen-com/hyperframes --skill <name>` for just one (bare name, no leading `/`).
 
-Installs stay lean after that: `npx hyperframes init` keeps the **core set** fresh (the router, the `hyperframes-*` domain skills, and `media-use` — plus whatever is already installed; `/figma` stays on demand) and never expands a partial install; the creation workflows install **on demand** — the router runs `npx hyperframes skills update <workflow>` before entering one. Nothing re-pulls the full set behind your back.
+Installs stay lean after that: `npx smashcut init` keeps the **core set** fresh (the router, the `smashcut-*` domain skills, and `media-use` — plus whatever is already installed; `/figma` stays on demand) and never expands a partial install; the creation workflows install **on demand** — the router runs `npx smashcut skills update <workflow>` before entering one. Nothing re-pulls the full set behind your back.
 
 ### Upload to Codex
 
@@ -67,13 +67,13 @@ Build the upload-ready Codex plugin archive from the committed `HEAD` version of
 bun run package:codex-plugin
 ```
 
-This writes `dist/hyperframes-plugin.zip` with a `hyperframes/` root folder and fails if the archive exceeds Codex's 100 MB upload limit.
+This writes `dist/smashcut-plugin.zip` with a `smashcut/` root folder and fails if the archive exceeds Codex's 100 MB upload limit.
 
 ### Router
 
 | Skill          | Use when                                                                                                                                                                                                                                                                 |
 | -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `/hyperframes` | **Read first** for any request to make / create / edit / animate / render a video, animation, or motion graphic. Capability map for the domain skills, the intent layer that confirms every creation brief up front, and intent router for the creation workflows below. |
+| `/smashcut` | **Read first** for any request to make / create / edit / animate / render a video, animation, or motion graphic. Capability map for the domain skills, the intent layer that confirms every creation brief up front, and intent router for the creation workflows below. |
 
 ### Creation workflows
 
@@ -88,7 +88,7 @@ This writes `dist/hyperframes-plugin.zip` with a `hyperframes/` root folder and 
 | `/music-to-video`          | A **music track** (audio file, video to pull audio from, or one generated from a mood brief) → a **beat-synced** video — lyric, slideshow, or kinetic promo; music drives pacing.                                            |
 | `/slideshow`               | A **presentation / pitch deck / interactive deck** — discrete slides, fragment reveals, branching, hotspot navigation, presenter mode. Output is a navigable deck, not a rendered video.                                     |
 | `/general-video`           | **Anything else** — longer or multi-scene pieces, brand / sizzle reel, title card, static loop, freeform composition. Input- and length-agnostic fallback, and the home of companion mode (co-create with the full toolbox). |
-| `/remotion-to-hyperframes` | **Porting an existing Remotion** (React) composition's source to HyperFrames HTML. One-way migration, not creation.                                                                                                          |
+| `/remotion-to-smashcut` | **Porting an existing Remotion** (React) composition's source to SmashCut HTML. One-way migration, not creation.                                                                                                          |
 
 ### Domain skills (loaded on demand)
 
@@ -96,14 +96,14 @@ Atomic capabilities the creation workflows compose against — pull one when you
 
 | Skill                    | Covers                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
 | ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `/hyperframes-core`      | The composition contract — `data-*` timing attributes, `class="clip"`, tracks, sub-compositions, variables, framework-owned media playback, determinism rules.                                                                                                                                                                                                                                                                                                                       |
-| `/hyperframes-animation` | All animation knowledge — atomic motion rules, scene blueprints, transitions, runtime adapters (GSAP / Lottie / Three.js / Anime.js / CSS / WAAPI / TypeGPU).                                                                                                                                                                                                                                                                                                                        |
-| `/hyperframes-keyframes` | Seek-safe keyframe authoring across runtimes — GSAP timelines, CSS keyframes, Anime.js, WAAPI, FLIP, paths, masks, SVG morph/draw, 3D depth — plus `hyperframes keyframes` diagnostics for rendered motion.                                                                                                                                                                                                                                                                          |
-| `/hyperframes-creative`  | Non-animation creative direction — `frame.md` / `design.md`, palettes, typography, narration, beat planning, audio-reactive visuals, composition patterns.                                                                                                                                                                                                                                                                                                                           |
+| `/smashcut-core`      | The composition contract — `data-*` timing attributes, `class="clip"`, tracks, sub-compositions, variables, framework-owned media playback, determinism rules.                                                                                                                                                                                                                                                                                                                       |
+| `/smashcut-animation` | All animation knowledge — atomic motion rules, scene blueprints, transitions, runtime adapters (GSAP / Lottie / Three.js / Anime.js / CSS / WAAPI / TypeGPU).                                                                                                                                                                                                                                                                                                                        |
+| `/smashcut-keyframes` | Seek-safe keyframe authoring across runtimes — GSAP timelines, CSS keyframes, Anime.js, WAAPI, FLIP, paths, masks, SVG morph/draw, 3D depth — plus `smashcut keyframes` diagnostics for rendered motion.                                                                                                                                                                                                                                                                          |
+| `/smashcut-creative`  | Non-animation creative direction — `frame.md` / `design.md`, palettes, typography, narration, beat planning, audio-reactive visuals, composition patterns.                                                                                                                                                                                                                                                                                                                           |
 | `/media-use`             | The media OS — resolve any media need (BGM, SFX, image, icon, logo, voice, color grade, LUT) into a frozen local file or paste-ready block + ledger record, generate via TTS/music/image models when the catalog misses, transcribe, caption, remove backgrounds, and reuse assets across projects. One shared audio engine + manifest tracking.                                                                                                                                     |
-| `/hyperframes-cli`       | CLI dev loop — `init`, `lint`, `check`, `snapshot`, `preview`, `render`, `publish`, `doctor`, plus HeyGen-hosted cloud rendering (`cloud render`) and AWS Lambda rendering (`lambda deploy / render / progress`).                                                                                                                                                                                                                                                                    |
-| `/hyperframes-audio`     | Mix the audio already placed in a composition — voiceover carve (dip a music bed only in the bands the voice occupies, static or dynamic, level match included), the effect chain (EQ, compressor, limiter, gate, saturation, delay, reverb, chorus, phaser, bitcrush), automation envelopes on volume or any effect parameter, and submix buses (`<hf-audio-group>`) carrying one chain, fader and automation clock for several tracks at once. Sourcing the audio is `/media-use`. |
-| `/hyperframes-registry`  | Install and wire registry blocks and components into compositions via `hyperframes add`. Authoring a new block or component to contribute upstream.                                                                                                                                                                                                                                                                                                                                  |
+| `/smashcut-cli`       | CLI dev loop — `init`, `lint`, `check`, `snapshot`, `preview`, `render`, `publish`, `doctor`, plus HeyGen-hosted cloud rendering (`cloud render`) and AWS Lambda rendering (`lambda deploy / render / progress`).                                                                                                                                                                                                                                                                    |
+| `/smashcut-audio`     | Mix the audio already placed in a composition — voiceover carve (dip a music bed only in the bands the voice occupies, static or dynamic, level match included), the effect chain (EQ, compressor, limiter, gate, saturation, delay, reverb, chorus, phaser, bitcrush), automation envelopes on volume or any effect parameter, and submix buses (`<sc-audio-group>`) carrying one chain, fader and automation clock for several tracks at once. Sourcing the audio is `/media-use`. |
+| `/smashcut-registry`  | Install and wire registry blocks and components into compositions via `smashcut add`. Authoring a new block or component to contribute upstream.                                                                                                                                                                                                                                                                                                                                  |
 | `/figma`                 | Import Figma assets, tokens, components, and storyboard sections → reconstructed motion (frames read as states, not slides) (REST/CLI) plus Motion animations (MCP) and shaders (MCP source / native export) into a composition.                                                                                                                                                                                                                                                     |
 
 For visual design handoff workflows, see the [Claude Design guide](https://hyperframes.heygen.com/guides/claude-design) and [Open Design guide](https://hyperframes.heygen.com/guides/open-design).
@@ -111,10 +111,10 @@ For visual design handoff workflows, see the [Claude Design guide](https://hyper
 ### Manually with the CLI
 
 ```bash
-npx hyperframes init my-video
+npx smashcut init my-video
 cd my-video
-npx hyperframes preview      # preview in browser with live reload
-npx hyperframes render       # render to MP4
+npx smashcut preview      # preview in browser with live reload
+npx smashcut render       # render to MP4
 ```
 
 **Requirements:** Node.js 22+, FFmpeg
@@ -141,57 +141,57 @@ The output is a `DESIGN.md` superset your whole toolchain can read. Atoms stay s
 <table>
   <tr>
     <td width="50%" align="center">
-      <a href="https://www.hyperframes.dev/design/biennale-yellow"><img src="https://static.heygen.ai/hyperframes-oss/docs/images/design-templates/biennale-yellow.png" alt="Biennale Yellow" width="100%"></a>
-      <br><b><a href="https://www.hyperframes.dev/design/biennale-yellow">Biennale Yellow</a></b>
+      <a href="https://www.smashcut.dev/design/biennale-yellow"><img src="https://static.heygen.ai/smashcut-oss/docs/images/design-templates/biennale-yellow.png" alt="Biennale Yellow" width="100%"></a>
+      <br><b><a href="https://www.smashcut.dev/design/biennale-yellow">Biennale Yellow</a></b>
     </td>
     <td width="50%" align="center">
-      <a href="https://www.hyperframes.dev/design/blockframe"><img src="https://static.heygen.ai/hyperframes-oss/docs/images/design-templates/blockframe.png" alt="BlockFrame" width="100%"></a>
-      <br><b><a href="https://www.hyperframes.dev/design/blockframe">BlockFrame</a></b>
-    </td>
-  </tr>
-  <tr>
-    <td width="50%" align="center">
-      <a href="https://www.hyperframes.dev/design/blue-professional"><img src="https://static.heygen.ai/hyperframes-oss/docs/images/design-templates/blue-professional.png" alt="Blue Professional" width="100%"></a>
-      <br><b><a href="https://www.hyperframes.dev/design/blue-professional">Blue Professional</a></b>
-    </td>
-    <td width="50%" align="center">
-      <a href="https://www.hyperframes.dev/design/bold-poster"><img src="https://static.heygen.ai/hyperframes-oss/docs/images/design-templates/bold-poster.png" alt="Bold Poster" width="100%"></a>
-      <br><b><a href="https://www.hyperframes.dev/design/bold-poster">Bold Poster</a></b>
+      <a href="https://www.smashcut.dev/design/blockframe"><img src="https://static.heygen.ai/smashcut-oss/docs/images/design-templates/blockframe.png" alt="BlockFrame" width="100%"></a>
+      <br><b><a href="https://www.smashcut.dev/design/blockframe">BlockFrame</a></b>
     </td>
   </tr>
   <tr>
     <td width="50%" align="center">
-      <a href="https://www.hyperframes.dev/design/broadside"><img src="https://static.heygen.ai/hyperframes-oss/docs/images/design-templates/broadside.png" alt="Broadside" width="100%"></a>
-      <br><b><a href="https://www.hyperframes.dev/design/broadside">Broadside</a></b>
+      <a href="https://www.smashcut.dev/design/blue-professional"><img src="https://static.heygen.ai/smashcut-oss/docs/images/design-templates/blue-professional.png" alt="Blue Professional" width="100%"></a>
+      <br><b><a href="https://www.smashcut.dev/design/blue-professional">Blue Professional</a></b>
     </td>
     <td width="50%" align="center">
-      <a href="https://www.hyperframes.dev/design/capsule"><img src="https://static.heygen.ai/hyperframes-oss/docs/images/design-templates/capsule.png" alt="Capsule" width="100%"></a>
-      <br><b><a href="https://www.hyperframes.dev/design/capsule">Capsule</a></b>
-    </td>
-  </tr>
-  <tr>
-    <td width="50%" align="center">
-      <a href="https://www.hyperframes.dev/design/cartesian"><img src="https://static.heygen.ai/hyperframes-oss/docs/images/design-templates/cartesian.png" alt="Cartesian" width="100%"></a>
-      <br><b><a href="https://www.hyperframes.dev/design/cartesian">Cartesian</a></b>
-    </td>
-    <td width="50%" align="center">
-      <a href="https://www.hyperframes.dev/design/cobalt-grid"><img src="https://static.heygen.ai/hyperframes-oss/docs/images/design-templates/cobalt-grid.png" alt="Cobalt Grid" width="100%"></a>
-      <br><b><a href="https://www.hyperframes.dev/design/cobalt-grid">Cobalt Grid</a></b>
+      <a href="https://www.smashcut.dev/design/bold-poster"><img src="https://static.heygen.ai/smashcut-oss/docs/images/design-templates/bold-poster.png" alt="Bold Poster" width="100%"></a>
+      <br><b><a href="https://www.smashcut.dev/design/bold-poster">Bold Poster</a></b>
     </td>
   </tr>
   <tr>
     <td width="50%" align="center">
-      <a href="https://www.hyperframes.dev/design/coral"><img src="https://static.heygen.ai/hyperframes-oss/docs/images/design-templates/coral.png" alt="Coral" width="100%"></a>
-      <br><b><a href="https://www.hyperframes.dev/design/coral">Coral</a></b>
+      <a href="https://www.smashcut.dev/design/broadside"><img src="https://static.heygen.ai/smashcut-oss/docs/images/design-templates/broadside.png" alt="Broadside" width="100%"></a>
+      <br><b><a href="https://www.smashcut.dev/design/broadside">Broadside</a></b>
     </td>
     <td width="50%" align="center">
-      <a href="https://www.hyperframes.dev/design/creative-mode"><img src="https://static.heygen.ai/hyperframes-oss/docs/images/design-templates/creative-mode.png" alt="Creative Mode" width="100%"></a>
-      <br><b><a href="https://www.hyperframes.dev/design/creative-mode">Creative Mode</a></b>
+      <a href="https://www.smashcut.dev/design/capsule"><img src="https://static.heygen.ai/smashcut-oss/docs/images/design-templates/capsule.png" alt="Capsule" width="100%"></a>
+      <br><b><a href="https://www.smashcut.dev/design/capsule">Capsule</a></b>
+    </td>
+  </tr>
+  <tr>
+    <td width="50%" align="center">
+      <a href="https://www.smashcut.dev/design/cartesian"><img src="https://static.heygen.ai/smashcut-oss/docs/images/design-templates/cartesian.png" alt="Cartesian" width="100%"></a>
+      <br><b><a href="https://www.smashcut.dev/design/cartesian">Cartesian</a></b>
+    </td>
+    <td width="50%" align="center">
+      <a href="https://www.smashcut.dev/design/cobalt-grid"><img src="https://static.heygen.ai/smashcut-oss/docs/images/design-templates/cobalt-grid.png" alt="Cobalt Grid" width="100%"></a>
+      <br><b><a href="https://www.smashcut.dev/design/cobalt-grid">Cobalt Grid</a></b>
+    </td>
+  </tr>
+  <tr>
+    <td width="50%" align="center">
+      <a href="https://www.smashcut.dev/design/coral"><img src="https://static.heygen.ai/smashcut-oss/docs/images/design-templates/coral.png" alt="Coral" width="100%"></a>
+      <br><b><a href="https://www.smashcut.dev/design/coral">Coral</a></b>
+    </td>
+    <td width="50%" align="center">
+      <a href="https://www.smashcut.dev/design/creative-mode"><img src="https://static.heygen.ai/smashcut-oss/docs/images/design-templates/creative-mode.png" alt="Creative Mode" width="100%"></a>
+      <br><b><a href="https://www.smashcut.dev/design/creative-mode">Creative Mode</a></b>
     </td>
   </tr>
 </table>
 
-Browse and remix them all at [hyperframes.dev/design](https://www.hyperframes.dev/design).
+Browse and remix them all at [smashcut.dev/design](https://www.smashcut.dev/design).
 
 ## How It Works
 
@@ -231,9 +231,9 @@ Define a video as HTML. Add data attributes for timing and tracks. Use GSAP, CSS
 
 Preview instantly in the browser. Render locally or in Docker. The renderer seeks each frame in headless Chrome and encodes the result with FFmpeg, so the same input produces the same video.
 
-## HyperFrames Stack
+## SmashCut Stack
 
-HyperFrames is the open-source rendering engine, plus a growing set of tools around HTML-native video creation.
+SmashCut is the open-source rendering engine, plus a growing set of tools around HTML-native video creation.
 
 | Piece                                           | Status              | What it does                                                                                      |
 | ----------------------------------------------- | ------------------- | ------------------------------------------------------------------------------------------------- |
@@ -243,22 +243,22 @@ HyperFrames is the open-source rendering engine, plus a growing set of tools aro
 | Agent skills                                    | Available           | Teach coding agents the video-production patterns that generic web docs miss                      |
 | Studio                                          | Available, evolving | Browser surface for previewing and editing compositions                                           |
 | AWS Lambda rendering                            | Available           | Deploy a distributed render stack and drive renders from your laptop or CI                        |
-| [hyperframes.dev](https://www.hyperframes.dev/) | Available           | Community playground for previewing, iterating, sharing, and rendering HTML-native video projects |
-| [frame.md](https://www.hyperframes.dev/design)  | Available           | Invert your design system for the camera — a DESIGN.md superset an agent can compose video from   |
+| [smashcut.dev](https://www.smashcut.dev/) | Available           | Community playground for previewing, iterating, sharing, and rendering HTML-native video projects |
+| [frame.md](https://www.smashcut.dev/design)  | Available           | Invert your design system for the camera — a DESIGN.md superset an agent can compose video from   |
 
 ## Catalog
 
 Install ready-to-use blocks and components:
 
 ```bash
-npx hyperframes add flash-through-white   # shader transition
-npx hyperframes add instagram-follow      # social overlay
-npx hyperframes add data-chart            # animated chart
+npx smashcut add flash-through-white   # shader transition
+npx smashcut add instagram-follow      # social overlay
+npx smashcut add data-chart            # animated chart
 ```
 
 Browse the catalog at [hyperframes.heygen.com/catalog](https://hyperframes.heygen.com/catalog/blocks/data-chart).
 
-## Why HyperFrames?
+## Why SmashCut?
 
 - **HTML-native:** compositions are HTML files with data attributes. No React requirement, no proprietary timeline format.
 - **Agent-friendly:** agents already write HTML, and the CLI is non-interactive by default.
@@ -267,11 +267,11 @@ Browse the catalog at [hyperframes.heygen.com/catalog](https://hyperframes.heyge
 - **Adapter-based animation:** bring GSAP, CSS animations, Lottie, Three.js, Anime.js, WAAPI, or a custom runtime.
 - **Open source:** Apache 2.0 license, with no per-render fees or commercial-use thresholds.
 
-## HyperFrames vs Remotion
+## SmashCut vs Remotion
 
-HyperFrames is inspired by [Remotion](https://www.remotion.dev). Both tools render video with headless Chrome and FFmpeg. The main difference is the authoring model: Remotion's bet is React components; HyperFrames' bet is plain HTML that humans and agents can both write easily.
+SmashCut is inspired by [Remotion](https://www.remotion.dev). Both tools render video with headless Chrome and FFmpeg. The main difference is the authoring model: Remotion's bet is React components; SmashCut' bet is plain HTML that humans and agents can both write easily.
 
-|                          | **HyperFrames**                       | **Remotion**                            |
+|                          | **SmashCut**                       | **Remotion**                            |
 | ------------------------ | ------------------------------------- | --------------------------------------- |
 | Authoring                | HTML + CSS + seekable animation       | React components                        |
 | Build step               | None; `index.html` plays as-is        | Bundler required                        |
@@ -280,7 +280,7 @@ HyperFrames is inspired by [Remotion](https://www.remotion.dev). Both tools rend
 | Distributed rendering    | Local and AWS Lambda render paths     | Remotion Lambda, mature cloud renderer  |
 | License                  | Apache 2.0                            | Source-available Remotion License       |
 
-Read the full comparison in the [HyperFrames vs Remotion guide](https://hyperframes.heygen.com/guides/hyperframes-vs-remotion).
+Read the full comparison in the [SmashCut vs Remotion guide](https://hyperframes.heygen.com/guides/smashcut-vs-remotion).
 
 ## Documentation
 
@@ -298,22 +298,22 @@ Full documentation: [hyperframes.heygen.com/introduction](https://hyperframes.he
 
 | Package                                                          | Description                                                       |
 | ---------------------------------------------------------------- | ----------------------------------------------------------------- |
-| [`hyperframes`](packages/cli)                                    | CLI for creating, previewing, linting, and rendering compositions |
-| [`@hyperframes/core`](packages/core)                             | Types, parsers, generators, linter, runtime, and frame adapters   |
-| [`@hyperframes/engine`](packages/engine)                         | Seekable page-to-video capture engine using Puppeteer and FFmpeg  |
-| [`@hyperframes/producer`](packages/producer)                     | Full rendering pipeline for capture, encode, and audio mix        |
-| [`@hyperframes/studio`](packages/studio)                         | Browser-based composition editor UI                               |
-| [`@hyperframes/player`](packages/player)                         | Embeddable `<hyperframes-player>` web component                   |
-| [`@hyperframes/shader-transitions`](packages/shader-transitions) | WebGL shader transitions for compositions                         |
-| [`@hyperframes/aws-lambda`](packages/aws-lambda)                 | AWS Lambda SDK and deployment surface for distributed renders     |
+| [`smashcut`](packages/cli)                                    | CLI for creating, previewing, linting, and rendering compositions |
+| [`@smashcut/core`](packages/core)                             | Types, parsers, generators, linter, runtime, and frame adapters   |
+| [`@smashcut/engine`](packages/engine)                         | Seekable page-to-video capture engine using Puppeteer and FFmpeg  |
+| [`@smashcut/producer`](packages/producer)                     | Full rendering pipeline for capture, encode, and audio mix        |
+| [`@smashcut/studio`](packages/studio)                         | Browser-based composition editor UI                               |
+| [`@smashcut/player`](packages/player)                         | Embeddable `<smashcut-player>` web component                   |
+| [`@smashcut/shader-transitions`](packages/shader-transitions) | WebGL shader transitions for compositions                         |
+| [`@smashcut/aws-lambda`](packages/aws-lambda)                 | AWS Lambda SDK and deployment surface for distributed renders     |
 
 ## Community
 
-HyperFrames is used in production at [HeyGen](https://www.heygen.com), with community examples from teams like [tldraw](https://tldraw.com), [TanStack](https://tanstack.com), and others in [ADOPTERS.md](ADOPTERS.md). Open a PR if your team is using HyperFrames.
+SmashCut is used in production at [HeyGen](https://www.heygen.com), with community examples from teams like [tldraw](https://tldraw.com), [TanStack](https://tanstack.com), and others in [ADOPTERS.md](ADOPTERS.md). Open a PR if your team is using SmashCut.
 
 - Questions and ideas: [Discord](https://discord.gg/EbK98HBPdk)
 - Bugs and feature requests: [GitHub Issues](https://github.com/heygen-com/hyperframes/issues)
-- User research: [Book a casual 30-minute conversation with the HyperFrames team](https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ2cSpKoDgmcmRrgekrnrgqmvPT8W6F2Zg6e7MY7IJqaZKwpn_I0NdTHkN390iguMepE_NVg8ezb?gv=true) — no preparation or sales pitch
+- User research: [Book a casual 30-minute conversation with the SmashCut team](https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ2cSpKoDgmcmRrgekrnrgqmvPT8W6F2Zg6e7MY7IJqaZKwpn_I0NdTHkN390iguMepE_NVg8ezb?gv=true) — no preparation or sales pitch
 - Security reports: [SECURITY.md](SECURITY.md)
 - Contributions: [CONTRIBUTING.md](CONTRIBUTING.md)
 

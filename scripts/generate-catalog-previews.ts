@@ -54,7 +54,7 @@ const registryDir = resolve(repoRoot, "registry");
 if (!process.env.PRODUCER_HYPERFRAME_MANIFEST_PATH) {
   process.env.PRODUCER_HYPERFRAME_MANIFEST_PATH = resolve(
     repoRoot,
-    "packages/core/dist/hyperframe.manifest.json",
+    "packages/core/dist/smashcut.manifest.json",
   );
 }
 
@@ -106,7 +106,7 @@ export function discoverItems(
       } else {
         const manifest = JSON.parse(readFileSync(manifestPath, "utf-8"));
         const compFile = manifest.files?.find(
-          (f: { type: string }) => f.type === "hyperframes:composition",
+          (f: { type: string }) => f.type === "smashcut:composition",
         );
         entryFile = compFile?.path ?? `${e.name}.html`;
       }
@@ -210,7 +210,7 @@ function pointHostedAssetsAtCdn(projectDir: string): void {
 
 /** The item's own composition file, when it is where the manifest says it is. */
 function compositionPathOf(projectDir: string, manifest: RegistryItem): string | undefined {
-  const entry = manifest.files?.find((file) => file.type === "hyperframes:composition");
+  const entry = manifest.files?.find((file) => file.type === "smashcut:composition");
   if (entry === undefined) return undefined;
   const entryPath = join(projectDir, entry.path);
   return existsSync(entryPath) ? entryPath : undefined;
@@ -311,7 +311,7 @@ export async function prepareProjectDir(
   await materializeHostedAssets(tmpDir, options.hostedAssets);
   mirrorRegistryTargets(tmpDir);
 
-  // The HyperFrames producer navigates to index.html at the project root.
+  // The SmashCut producer navigates to index.html at the project root.
   // Blocks and component demos are standalone HTML files, not index.html.
   // If the entry file is a standalone HTML (has its own timeline registration),
   // just rename it to index.html. Otherwise create a wrapper.
@@ -391,7 +391,7 @@ export async function prepareProjectDir(
     const bgColor = options.uiFragment ? "#0a0a0a" : isSocialOverlay ? "#1a1a2e" : "#ffffff";
 
     // Mount the mirrored install-layout copy when one exists. Blocks reference
-    // their own assets the way they will after `hyperframes add`
+    // their own assets the way they will after `smashcut add`
     // (`../assets/background.jpeg` from `compositions/`), which only resolves
     // from the target path — the flat source copy at the project root resolves
     // it outside the project and silently renders without the asset.
@@ -407,7 +407,7 @@ export async function prepareProjectDir(
     const staging = options.uiFragment
       ? `\n    [data-composition-src] { inset: 0; display: grid; place-items: center stretch; box-sizing: border-box; padding: ${Math.round(height / 11)}px; }`
       : "";
-    const theme = options.uiFragment ? ' data-hf-theme="dark"' : "";
+    const theme = options.uiFragment ? ' data-sc-theme="dark"' : "";
 
     const wrapper = `<!doctype html>
 <html lang="en">

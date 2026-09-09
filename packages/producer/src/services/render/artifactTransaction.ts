@@ -98,7 +98,7 @@ function createSiblingTransactionDirectory(destination: string): string {
   // mkdtemp reserves the directory atomically and creates it with private
   // permissions. Keeping it beside the destination preserves same-filesystem
   // rename semantics without exposing predictable files in a shared temp dir.
-  return mkdtempSync(join(parent, `.${stem}.hf-transaction-`));
+  return mkdtempSync(join(parent, `.${stem}.sc-transaction-`));
 }
 
 function assertReadableNonEmptyFile(path: string): void {

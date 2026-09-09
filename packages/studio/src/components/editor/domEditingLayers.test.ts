@@ -29,11 +29,11 @@ describe("buildDomEditPatchTarget", () => {
   it("includes hfId when selection has hfId", () => {
     const target = buildDomEditPatchTarget({
       id: undefined,
-      hfId: "hf-abc",
+      hfId: "sc-abc",
       selector: ".foo",
       selectorIndex: 0,
     });
-    expect(target.hfId).toBe("hf-abc");
+    expect(target.hfId).toBe("sc-abc");
   });
 
   it("includes id and selector when hfId absent", () => {
@@ -51,8 +51,8 @@ describe("buildDomEditPatchTarget", () => {
 describe("readHfId", () => {
   it("returns the attribute value when present", () => {
     const el = document.createElement("div");
-    el.setAttribute("data-hf-id", "hf-abc");
-    expect(readHfId(el)).toBe("hf-abc");
+    el.setAttribute("data-sc-id", "sc-abc");
+    expect(readHfId(el)).toBe("sc-abc");
   });
 
   it("returns undefined when attribute is absent", () => {
@@ -62,31 +62,31 @@ describe("readHfId", () => {
 
   it("returns undefined when attribute is empty string", () => {
     const el = document.createElement("div");
-    el.setAttribute("data-hf-id", "");
+    el.setAttribute("data-sc-id", "");
     expect(readHfId(el)).toBeUndefined();
   });
 
   it("returns undefined when attribute is whitespace-only", () => {
     const el = document.createElement("div");
-    el.setAttribute("data-hf-id", "  ");
+    el.setAttribute("data-sc-id", "  ");
     expect(readHfId(el)).toBeUndefined();
   });
 });
 
-describe("resolveDomEditSelection — hfId from data-hf-id", () => {
-  it("populates hfId from the element data-hf-id attribute", async () => {
+describe("resolveDomEditSelection — hfId from data-sc-id", () => {
+  it("populates hfId from the element data-sc-id attribute", async () => {
     const el = document.createElement("div");
     el.id = "hero";
-    el.setAttribute("data-hf-id", "hf-x7k2");
+    el.setAttribute("data-sc-id", "sc-x7k2");
     document.body.appendChild(el);
 
     const selection = await resolveDomEditSelection(el, opts);
     document.body.removeChild(el);
 
-    expect(selection?.hfId).toBe("hf-x7k2");
+    expect(selection?.hfId).toBe("sc-x7k2");
   });
 
-  it("leaves hfId undefined when element has no data-hf-id", async () => {
+  it("leaves hfId undefined when element has no data-sc-id", async () => {
     const el = document.createElement("div");
     el.id = "no-hfid-el";
     document.body.appendChild(el);
@@ -98,16 +98,16 @@ describe("resolveDomEditSelection — hfId from data-hf-id", () => {
   });
 });
 
-describe("resolveDomEditSelection — data-hf-group capture", () => {
-  // <div id="parent"><div data-hf-group="Group 1"><div data-hf-group="Group 2">
+describe("resolveDomEditSelection — data-sc-group capture", () => {
+  // <div id="parent"><div data-sc-group="Group 1"><div data-sc-group="Group 2">
   //   <span id="child"/></div></div></div>
   function buildNestedGroups() {
     const parent = document.createElement("div");
     parent.id = "parent";
     const outer = document.createElement("div");
-    outer.setAttribute("data-hf-group", "Group 1");
+    outer.setAttribute("data-sc-group", "Group 1");
     const inner = document.createElement("div");
-    inner.setAttribute("data-hf-group", "Group 2");
+    inner.setAttribute("data-sc-group", "Group 2");
     const child = document.createElement("span");
     child.id = "child";
     inner.appendChild(child);
@@ -123,7 +123,7 @@ describe("resolveDomEditSelection — data-hf-group capture", () => {
     document.body.removeChild(parent);
 
     expect(selection?.element).toBe(outer);
-    expect(selection?.selector).toBe('[data-hf-group="Group 1"]');
+    expect(selection?.selector).toBe('[data-sc-group="Group 1"]');
   });
 
   it("resolves an explicit agent target without promoting it to the group", async () => {
@@ -141,7 +141,7 @@ describe("resolveDomEditSelection — data-hf-group capture", () => {
     document.body.removeChild(parent);
 
     expect(selection?.element).toBe(inner);
-    expect(selection?.selector).toBe('[data-hf-group="Group 2"]');
+    expect(selection?.selector).toBe('[data-sc-group="Group 2"]');
   });
 
   it("selects the child when drilled all the way into the innermost group", async () => {
@@ -157,7 +157,7 @@ describe("resolveDomEditSelection — data-hf-group capture", () => {
     const root = document.createElement("div");
     root.setAttribute("data-composition-id", "main");
     const group = document.createElement("div");
-    group.setAttribute("data-hf-group", "Group 1");
+    group.setAttribute("data-sc-group", "Group 1");
     const inside = document.createElement("div");
     inside.id = "inside";
     const outside = document.createElement("div");

@@ -44,8 +44,8 @@ Transparency also only *means something* on a design that has empty space to see
 - ✅ `render the promo as MP4; export just the lower-third overlay as transparent WebM` — transparency belongs to the layer meant to sit *over* other footage, not the finished full-frame film
 
 <DocsVideo
-  title="HyperFrames video: Overlay Spotify Preview"
-  src="https://static.heygen.ai/hyperframes-oss/docs/images/prompting/overlay-spotify-preview.mp4#t=0.1"
+  title="SmashCut video: Overlay Spotify Preview"
+  src="https://static.heygen.ai/smashcut-oss/docs/images/prompting/overlay-spotify-preview.mp4#t=0.1"
   portrait
   loop
 />
@@ -92,7 +92,7 @@ Local rendering is the default and the right choice for the whole iteration loop
 
 > Render this on Lambda.
 
-That routes to HyperFrames' AWS Lambda path, which fans the render across many parallel workers. It's the right call for renders that are **too long or too large for one host** — multi-minute videos, 4K masters, or large parallel batches — and it needs AWS credentials configured first. For dev-loop iteration, stay on local `render`; the round-trip is faster than any cloud dispatch. Lambda is SDR-only (no HDR) and bills by compute time; the [AWS Lambda guide](/deploy/aws-lambda) covers setup, cost shape, and the conservative concurrency default.
+That routes to SmashCut' AWS Lambda path, which fans the render across many parallel workers. It's the right call for renders that are **too long or too large for one host** — multi-minute videos, 4K masters, or large parallel batches — and it needs AWS credentials configured first. For dev-loop iteration, stay on local `render`; the round-trip is faster than any cloud dispatch. Lambda is SDR-only (no HDR) and bills by compute time; the [AWS Lambda guide](/deploy/aws-lambda) covers setup, cost shape, and the conservative concurrency default.
 
 - ❌ `set up Lambda so I can preview edits faster` — cloud dispatch adds latency to a fast local loop
 - ✅ `render the final 3-minute 4K cut on Lambda` — the workload that actually justifies fanning out
@@ -132,8 +132,8 @@ This is the clause in the [full capstone prompt](/prompting/capstone#the-prompt-
 > A **seeded confetti burst** fires — mulberry32, **seed 42, each piece holding position for exactly two frames before stepping** (stop-motion feel) — and the VO lands the honest punchline: identical on every render, because determinism is the whole point.
 
 <DocsVideo
-  title="HyperFrames video: Capstone Region Render"
-  src="https://static.heygen.ai/hyperframes-oss/docs/images/prompting/capstone-region-render.mp4#t=0.1"
+  title="SmashCut video: Capstone Region Render"
+  src="https://static.heygen.ai/smashcut-oss/docs/images/prompting/capstone-region-render.mp4#t=0.1"
   loop
 />
 *That clause, rendered — the seeded confetti, identical on every render of this composition.*

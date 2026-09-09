@@ -1,8 +1,8 @@
 import { create } from "zustand";
 import { attachPlayerStoreDevHandle } from "./playerStoreDevHandle";
 import { nextSelectionSet, revealTargetsSelection } from "./playerStoreSelection";
-import type { MusicBeatAnalysis } from "@hyperframes/core/beats";
-import type { GsapAnimation } from "@hyperframes/core/gsap-parser";
+import type { MusicBeatAnalysis } from "@smashcut/core/beats";
+import type { GsapAnimation } from "@smashcut/core/gsap-parser";
 import type { BeatEditState } from "../../utils/beatEditing";
 import type { ClipManifestClip } from "../lib/playbackTypes";
 import {

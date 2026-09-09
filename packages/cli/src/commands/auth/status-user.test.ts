@@ -35,7 +35,7 @@ describe("auth status — persisted user block surface", () => {
   let stdout: string[];
 
   beforeEach(async () => {
-    envFixture = await setupTempAuthEnv("hf-status-");
+    envFixture = await setupTempAuthEnv("sc-status-");
     probeState.apiReject = false;
     probeState.user = { email: "live@example.com" };
     stdout = [];

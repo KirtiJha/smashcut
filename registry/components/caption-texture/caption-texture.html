@@ -9,7 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
     <style>
-      .hf-texture-text {
+      .sc-texture-text {
         color: #fff;
         -webkit-mask-size: var(--mask-size, cover);
         mask-size: var(--mask-size, cover);
@@ -106,8 +106,8 @@
         window.__timelines = window.__timelines || {};
 
         var vars =
-          window.__hyperframes && window.__hyperframes.getVariables
-            ? window.__hyperframes.getVariables()
+          window.__smashcut && window.__smashcut.getVariables
+            ? window.__smashcut.getVariables()
             : {};
         var TEXTURE = vars.texture || "lava";
         var TEXTURE_URL = "compositions/components/" + TEXTURE + ".png";
@@ -134,7 +134,7 @@
           { text: "a", start: 1.25, end: 1.35 },
           { text: "single", start: 1.35, end: 1.65 },
           { text: "frame.", start: 1.65, end: 2.0 },
-          { text: "HyperFrames", start: 2.1, end: 2.65 },
+          { text: "SmashCut", start: 2.1, end: 2.65 },
           { text: "lets", start: 2.65, end: 2.85 },
           { text: "you", start: 2.85, end: 2.95 },
           { text: "write", start: 2.95, end: 3.15 },
@@ -171,7 +171,7 @@
           gsap.set(shadow, { yPercent: -50 });
 
           var wordEl = document.createElement("div");
-          wordEl.className = "hf-texture-text lv-texture-override lv-word";
+          wordEl.className = "sc-texture-text lv-texture-override lv-word";
           wordEl.id = "lv-word-" + wi;
           wordEl.textContent = txt;
           wordEl.style.fontSize = fontSize + "px";

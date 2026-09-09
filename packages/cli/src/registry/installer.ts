@@ -9,7 +9,7 @@
 import { createHash } from "node:crypto";
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { resolve, relative, isAbsolute } from "node:path";
-import type { FileTarget, RegistryItem } from "@hyperframes/core";
+import type { FileTarget, RegistryItem } from "@smashcut/core";
 import { fetchItemFile, DEFAULT_REGISTRY_URL } from "./remote.js";
 import { applyVariableDefaults, type ApplyResult } from "./variableDefaults.js";
 
@@ -48,7 +48,7 @@ export interface InstallResult {
  * the file against the hash we recorded is what tells an untouched file, which
  * is safe to replace, apart from an edited one, which is not.
  */
-const INSTALL_RECORD = "hyperframes.lock.json";
+const INSTALL_RECORD = "smashcut.lock.json";
 
 type InstallRecord = Record<string, string>;
 
@@ -122,23 +122,23 @@ function assertSafeTarget(destDir: string, target: string): void {
 
 /** A component's pasteable markup: the file whose declared defaults `--vars` edits. */
 function isInstalledComponentSnippet(item: RegistryItem, file: FileTarget): boolean {
-  return item.type === "hyperframes:component" && file.target.toLowerCase().endsWith(".html");
+  return item.type === "smashcut:component" && file.target.toLowerCase().endsWith(".html");
 }
 
 function isInstalledRegistryBlockComposition(item: RegistryItem, file: FileTarget): boolean {
   return (
-    item.type === "hyperframes:block" &&
-    file.type === "hyperframes:composition" &&
+    item.type === "smashcut:block" &&
+    file.type === "smashcut:composition" &&
     file.target.toLowerCase().endsWith(".html")
   );
 }
 
 function addRegistryItemMarker(source: string, item: RegistryItem): string {
-  if (/^\s*<!--\s*hyperframes-registry-item:[^>]*-->/i.test(source.slice(0, 512))) {
+  if (/^\s*<!--\s*smashcut-registry-item:[^>]*-->/i.test(source.slice(0, 512))) {
     return source;
   }
 
-  return `<!-- hyperframes-registry-item: ${item.name} -->\n${source}`;
+  return `<!-- smashcut-registry-item: ${item.name} -->\n${source}`;
 }
 
 interface FileOutcome {

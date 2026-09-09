@@ -11,12 +11,12 @@
  * is the point: every bug in this class showed as a correct-looking drop frame
  * followed by the element sliding to whatever got written to disk.
  *
- * The model is calibrated against real `hf-resize-debug` output: the same
+ * The model is calibrated against real `sc-resize-debug` output: the same
  * inputs reproduce the drop rect, the post-commit rect and the rect width the
  * browser reported to three decimal places.
  */
 import { afterEach, describe, expect, it, vi } from "vitest";
-import type { GsapAnimation } from "@hyperframes/core/gsap-parser";
+import type { GsapAnimation } from "@smashcut/core/gsap-parser";
 import type { DomEditSelection } from "../components/editor/domEditingTypes";
 import { usePlayerStore } from "../player/store/playerStore";
 import { tryGsapResizeIntercept } from "./gsapResizeIntercept";
@@ -81,13 +81,13 @@ function createResizeElement(testCase: ResizeCase): HTMLElement {
   const el = document.createElement("div");
   el.id = "clip";
   if (testCase.inlineSized) {
-    el.setAttribute("data-hf-studio-original-width", `${testCase.box.w}px`);
-    el.setAttribute("data-hf-studio-original-height", `${testCase.box.h}px`);
+    el.setAttribute("data-sc-studio-original-width", `${testCase.box.w}px`);
+    el.setAttribute("data-sc-studio-original-height", `${testCase.box.h}px`);
   } else {
-    el.setAttribute("data-hf-studio-original-box-width", `${testCase.box.w}`);
-    el.setAttribute("data-hf-studio-original-box-height", `${testCase.box.h}`);
-    el.setAttribute("data-hf-studio-original-width", "");
-    el.setAttribute("data-hf-studio-original-height", "");
+    el.setAttribute("data-sc-studio-original-box-width", `${testCase.box.w}`);
+    el.setAttribute("data-sc-studio-original-box-height", `${testCase.box.h}`);
+    el.setAttribute("data-sc-studio-original-width", "");
+    el.setAttribute("data-sc-studio-original-height", "");
   }
   return el;
 }
@@ -197,9 +197,9 @@ async function runCase(testCase: ResizeCase) {
   const rotation = testCase.rotation ?? 0;
   const el = createResizeElement(testCase);
   // What the gesture stamps at drag start, and the draft it leaves applied.
-  el.setAttribute("data-hf-drag-gsap-base-x", `${testCase.base.x}`);
-  el.setAttribute("data-hf-drag-gsap-base-y", `${testCase.base.y}`);
-  el.setAttribute("data-hf-studio-box-size", "true");
+  el.setAttribute("data-sc-drag-gsap-base-x", `${testCase.base.x}`);
+  el.setAttribute("data-sc-drag-gsap-base-y", `${testCase.base.y}`);
+  el.setAttribute("data-sc-studio-box-size", "true");
   el.style.width = `${testCase.drop.w}px`;
   el.style.height = `${testCase.drop.h}px`;
   document.body.append(el);

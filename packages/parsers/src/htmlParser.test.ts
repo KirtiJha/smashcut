@@ -220,7 +220,7 @@ describe("parseHtml", () => {
     const html = `
       <html>
       <body>
-        <style data-hf-custom="true">
+        <style data-sc-custom="true">
           .my-class { color: red; }
         </style>
         <div id="stage">
@@ -611,15 +611,15 @@ describe("removeElementFromHtml", () => {
 
   it("cascades DOM and stable ids for every descendant", () => {
     const html = `<!doctype html><html><body>
-      <div id="parent"><div id="box" data-hf-id="hf-box"></div></div>
+      <div id="parent"><div id="box" data-sc-id="sc-box"></div></div>
       <script>const tl = gsap.timeline();
         tl.to("#parent", { x: 10 }); tl.to("#box", { x: 20 });
-        tl.to('[data-hf-id="hf-box"]', { x: 30 });
+        tl.to('[data-sc-id="sc-box"]', { x: 30 });
       </script></body></html>`;
     const updated = removeElementFromHtml(html, "parent");
     expect(updated).not.toContain("#parent");
     expect(updated).not.toContain("#box");
-    expect(updated).not.toContain("hf-box");
+    expect(updated).not.toContain("sc-box");
   });
 
   it("strips ALL gsap tweens for the removed element, not just the first", () => {
@@ -628,18 +628,18 @@ describe("removeElementFromHtml", () => {
     const html = `<!DOCTYPE html>
 <html><body>
   <div id="stage">
-    <div id="box" data-hf-id="box" data-start="0" data-end="5">box</div>
+    <div id="box" data-sc-id="box" data-start="0" data-end="5">box</div>
   </div>
   <script>
     var tl = gsap.timeline({ paused: true });
-    tl.to("[data-hf-id=\\"box\\"]", { x: 100, duration: 1 }, 0);
-    tl.to("[data-hf-id=\\"box\\"]", { x: 200, duration: 1 }, 1);
+    tl.to("[data-sc-id=\\"box\\"]", { x: 100, duration: 1 }, 0);
+    tl.to("[data-sc-id=\\"box\\"]", { x: 200, duration: 1 }, 1);
   </script>
 </body></html>`;
 
     const updated = removeElementFromHtml(html, "box");
 
-    expect(updated).not.toContain('data-hf-id="box"');
+    expect(updated).not.toContain('data-sc-id="box"');
     // Neither tween may survive — the orphaned second tl.to referenced a deleted element.
     expect(updated).not.toContain("x: 100");
     expect(updated).not.toContain("x: 200");
@@ -649,19 +649,19 @@ describe("removeElementFromHtml", () => {
     const html = `<!DOCTYPE html>
 <html><body>
   <div id="stage">
-    <div id="box" data-hf-id="box" data-start="0" data-end="5">box</div>
+    <div id="box" data-sc-id="box" data-start="0" data-end="5">box</div>
   </div>
   <template data-composition-id="sub-comp">
     <script>
       var tl = gsap.timeline({ paused: true });
-      tl.to("[data-hf-id=\\"box\\"]", { x: 100, duration: 1 }, 0);
+      tl.to("[data-sc-id=\\"box\\"]", { x: 100, duration: 1 }, 0);
     </script>
   </template>
 </body></html>`;
 
     const updated = removeElementFromHtml(html, "box");
 
-    expect(updated).not.toContain('data-hf-id="box"');
+    expect(updated).not.toContain('data-sc-id="box"');
     expect(updated).not.toContain("x: 100");
   });
 });

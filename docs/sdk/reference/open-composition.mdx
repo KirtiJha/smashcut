@@ -3,10 +3,10 @@ title: "openComposition"
 description: "Open a composition HTML string for editing. Returns a Composition session."
 ---
 
-`openComposition` is the single entry point for every SDK session. It parses the composition HTML, stamps stable `hf-id` attributes on any elements that lack them, and returns a [`Composition`](/sdk/reference/composition) ready to receive edits.
+`openComposition` is the single entry point for every SDK session. It parses the composition HTML, stamps stable `sc-id` attributes on any elements that lack them, and returns a [`Composition`](/sdk/reference/composition) ready to receive edits.
 
 ```typescript
-import { openComposition } from "@hyperframes/sdk";
+import { openComposition } from "@smashcut/sdk";
 
 const comp = await openComposition(html, opts?);
 ```
@@ -37,7 +37,7 @@ The same function covers three deployment patterns. Which mode you get depends e
 <ParamField path="persist" type="PersistAdapter">
   Storage adapter for autosave. After every committed change the SDK enqueues a write to this adapter. The session fires `persist:error` events instead of throwing on write failures.
 
-  Built-in adapters: `createMemoryAdapter()` (tests/demos) and `createFsAdapter()` (Node.js). Custom adapters implement the `PersistAdapter` interface, exported from `@hyperframes/sdk`. (`createHeadlessAdapter()` is a `PreviewAdapter` for the `preview` field below — not a persist adapter.)
+  Built-in adapters: `createMemoryAdapter()` (tests/demos) and `createFsAdapter()` (Node.js). Custom adapters implement the `PersistAdapter` interface, exported from `@smashcut/sdk`. (`createHeadlessAdapter()` is a `PreviewAdapter` for the `preview` field below — not a persist adapter.)
 
   See the [persistence guide](/sdk/guides/persistence) for adapter selection and configuration.
 </ParamField>
@@ -81,7 +81,7 @@ The same function covers three deployment patterns. Which mode you get depends e
 ### Headless agent edit
 
 ```typescript
-import { openComposition } from "@hyperframes/sdk";
+import { openComposition } from "@smashcut/sdk";
 
 const comp = await openComposition(html);
 
@@ -98,8 +98,8 @@ comp.dispose();
 ### Standalone with filesystem persistence
 
 ```typescript
-import { openComposition } from "@hyperframes/sdk";
-import { createFsAdapter } from "@hyperframes/sdk/adapters/fs";
+import { openComposition } from "@smashcut/sdk";
+import { createFsAdapter } from "@smashcut/sdk/adapters/fs";
 
 const comp = await openComposition(html, {
   persist: createFsAdapter({ root: "./project" }),
@@ -110,7 +110,7 @@ comp.on("persist:error", ({ error }) => {
   console.error("Autosave failed:", error.message);
 });
 
-comp.setText("hf-title", "Launch day");
+comp.setText("sc-title", "Launch day");
 await comp.flush(); // drain any pending write before process exit
 comp.dispose();
 ```
@@ -118,14 +118,14 @@ comp.dispose();
 ### Embedded mode with overrides
 
 ```typescript
-import { ORIGIN_APPLY_PATCHES } from "@hyperframes/sdk";
+import { ORIGIN_APPLY_PATCHES } from "@smashcut/sdk";
 
-import { openComposition } from "@hyperframes/sdk";
+import { openComposition } from "@smashcut/sdk";
 
 // Stored override delta for one customer
 const savedOverrides = {
-  "hf-title.text": "Acme — Q3 Review",
-  "hf-logo.attr.src": "/customers/acme/logo.png",
+  "sc-title.text": "Acme — Q3 Review",
+  "sc-logo.attr.src": "/customers/acme/logo.png",
 };
 
 const comp = await openComposition(baseTemplateHtml, {
@@ -140,7 +140,7 @@ comp.on("patch", ({ patches, inversePatches, origin }) => {
   }
 });
 
-comp.setStyle("hf-title", { color: "#0EA5E9" });
+comp.setStyle("sc-title", { color: "#0EA5E9" });
 
 // Persist the updated delta only — not the full HTML
 const nextOverrides = comp.getOverrides();

@@ -12,7 +12,7 @@ import {
   type SdkResolverMismatch,
 } from "./sdkResolverShadow";
 import type { PatchOperation } from "./sourcePatcher";
-import { openComposition } from "@hyperframes/sdk";
+import { openComposition } from "@smashcut/sdk";
 
 // ─── Telemetry capture ────────────────────────────────────────────────────────
 
@@ -49,7 +49,7 @@ vi.mock("../components/editor/manualEditingAvailability", () => ({
 
 const BASE_HTML = /* html */ `<!DOCTYPE html>
 <html><body>
-  <div data-hf-id="hf-box" style="color: red; width: 100px;" data-name="box">Hello</div>
+  <div data-sc-id="sc-box" style="color: red; width: 100px;" data-name="box">Hello</div>
 </body></html>`;
 
 // Prevents setStyle from applying so the read-back value differs from expected.
@@ -71,7 +71,7 @@ describe("A. Flag gating", () => {
     mockFlags.STUDIO_SDK_RESOLVER_SHADOW_ENABLED = false;
     const session = await openComposition(BASE_HTML);
     const spy = vi.spyOn(session, "getElement");
-    runResolverShadow(session, "hf-box", [
+    runResolverShadow(session, "sc-box", [
       { type: "inline-style", property: "color", value: "blue" },
     ]);
     expect(trackedEvents).toHaveLength(0);
@@ -83,7 +83,7 @@ describe("A. Flag gating", () => {
     // → value_mismatch). A parity edit is silent (see B-parity-silent).
     mockFlags.STUDIO_SDK_RESOLVER_SHADOW_ENABLED = true;
     const session = await makePoisonedStyleSession();
-    runResolverShadow(session, "hf-box", [
+    runResolverShadow(session, "sc-box", [
       { type: "inline-style", property: "color", value: "blue" },
     ]);
     expect(trackedEvents.filter((e) => e.event === "sdk_resolver_shadow")).toHaveLength(1);
@@ -92,7 +92,7 @@ describe("A. Flag gating", () => {
   it("A2b: flag on + parity → emits nothing (divergence-only)", async () => {
     mockFlags.STUDIO_SDK_RESOLVER_SHADOW_ENABLED = true;
     const session = await openComposition(BASE_HTML);
-    runResolverShadow(session, "hf-box", [
+    runResolverShadow(session, "sc-box", [
       { type: "inline-style", property: "color", value: "blue" },
     ]);
     expect(trackedEvents.filter((e) => e.event === "sdk_resolver_shadow")).toHaveLength(0);
@@ -103,8 +103,8 @@ describe("A. Flag gating", () => {
     flushAttemptCounts(); // drain counts left by earlier tests
     const session = await openComposition("<!DOCTYPE html><html><body></body></html>");
     const ops: PatchOperation[] = [{ type: "inline-style", property: "color", value: "blue" }];
-    runResolverShadow(session, "hf-anything", ops);
-    runResolverShadow(session, "hf-other", ops); // repeat edits do not re-emit
+    runResolverShadow(session, "sc-anything", ops);
+    runResolverShadow(session, "sc-other", ops); // repeat edits do not re-emit
     const events = trackedEvents.filter((e) => e.event === "sdk_resolver_shadow");
     // The modeling gap stays VISIBLE (silence would blind the tripwire to the
     // exact class that exposed the template-comp bug) but is distinguishable
@@ -120,11 +120,11 @@ describe("A. Flag gating", () => {
     // (poisoned session) so the flag-on case emits; flag-off must stay silent.
     mockFlags.STUDIO_SDK_RESOLVER_SHADOW_ENABLED = false;
     const session = await makePoisonedStyleSession();
-    runResolverShadow(session, "hf-box", [{ type: "inline-style", property: "color", value: "x" }]);
+    runResolverShadow(session, "sc-box", [{ type: "inline-style", property: "color", value: "x" }]);
     expect(trackedEvents).toHaveLength(0); // cutover off, shadow off → no event
 
     mockFlags.STUDIO_SDK_RESOLVER_SHADOW_ENABLED = true;
-    runResolverShadow(session, "hf-box", [{ type: "inline-style", property: "color", value: "x" }]);
+    runResolverShadow(session, "sc-box", [{ type: "inline-style", property: "color", value: "x" }]);
     expect(trackedEvents.filter((e) => e.event === "sdk_resolver_shadow")).toHaveLength(1); // shadow on regardless
   });
 
@@ -145,7 +145,7 @@ describe("B. Telemetry-only / no side effects", () => {
     mockFlags.STUDIO_SDK_RESOLVER_SHADOW_ENABLED = true;
     const writeProjectFile = vi.fn();
     const session = await openComposition(BASE_HTML);
-    runResolverShadow(session, "hf-box", [
+    runResolverShadow(session, "sc-box", [
       { type: "inline-style", property: "color", value: "blue" },
     ]);
     // writeProjectFile is a deps-level function not in scope here; verify by
@@ -160,26 +160,26 @@ describe("B. Telemetry-only / no side effects", () => {
     // pre-applied and the following sdkCutoverPersist sees before === after and
     // silently falls back to the server path.
     const session = await openComposition(BASE_HTML);
-    expect(session.getElement("hf-box")?.inlineStyles.color).toBe("red");
+    expect(session.getElement("sc-box")?.inlineStyles.color).toBe("red");
 
-    const mismatches = sdkResolverShadowCheck(session, "hf-box", [
+    const mismatches = sdkResolverShadowCheck(session, "sc-box", [
       { type: "inline-style", property: "color", value: "blue" },
     ]);
     expect(mismatches).toHaveLength(0); // SDK applied blue == expected → parity
 
     // …but the session is back to its pre-check state, NOT left on "blue".
-    expect(session.getElement("hf-box")?.inlineStyles.color).toBe("red");
+    expect(session.getElement("sc-box")?.inlineStyles.color).toBe("red");
   });
 
   it("B5b: a real cutover-style serialize diff survives a preceding shadow run", async () => {
     // End-to-end of the bug: shadow runs, THEN a cutover-style before/dispatch/
     // after still produces a diff (proving shadow left no residue).
     const session = await openComposition(BASE_HTML);
-    sdkResolverShadowCheck(session, "hf-box", [
+    sdkResolverShadowCheck(session, "sc-box", [
       { type: "inline-style", property: "color", value: "blue" },
     ]);
     const before = session.serialize();
-    session.dispatch({ type: "setStyle", target: "hf-box", styles: { color: "blue" } });
+    session.dispatch({ type: "setStyle", target: "sc-box", styles: { color: "blue" } });
     const after = session.serialize();
     expect(after).not.toBe(before); // cutover would write, not fall back
   });
@@ -191,7 +191,7 @@ describe("B. Telemetry-only / no side effects", () => {
       throw new Error("sdk exploded");
     };
     const ops: PatchOperation[] = [{ type: "inline-style", property: "color", value: "blue" }];
-    expect(() => runResolverShadow(session, "hf-box", ops)).not.toThrow();
+    expect(() => runResolverShadow(session, "sc-box", ops)).not.toThrow();
     // A dispatch_error mismatch is still emitted (via telemetry)
     const ev = lastShadow();
     expect(ev).toBeDefined();
@@ -204,7 +204,7 @@ describe("B. Telemetry-only / no side effects", () => {
 describe("C. Resolver-parity detection", () => {
   it("C7: match → mismatchCount 0", async () => {
     const session = await openComposition(BASE_HTML);
-    const mismatches = sdkResolverShadowCheck(session, "hf-box", [
+    const mismatches = sdkResolverShadowCheck(session, "sc-box", [
       { type: "inline-style", property: "color", value: "blue" },
     ]);
     expect(mismatches).toHaveLength(0);
@@ -218,19 +218,19 @@ describe("C. Resolver-parity detection", () => {
     >[0];
     const mismatches = sdkResolverShadowCheck(
       session as unknown as Parameters<typeof sdkResolverShadowCheck>[0],
-      "hf-box",
+      "sc-box",
       [{ type: "inline-style", property: "color", value: "red" }],
     );
     expect(mismatches).toHaveLength(1);
     expect(mismatches[0]).toMatchObject<SdkResolverMismatch>({
       kind: "element_not_found",
-      hfId: "hf-box",
+      hfId: "sc-box",
     });
   });
 
   it("C8 inverse: no element_not_found when SDK resolves (server also resolves)", async () => {
     const session = await openComposition(BASE_HTML);
-    const mismatches = sdkResolverShadowCheck(session, "hf-box", [
+    const mismatches = sdkResolverShadowCheck(session, "sc-box", [
       { type: "inline-style", property: "color", value: "blue" },
     ]);
     expect(mismatches.some((m) => m.kind === "element_not_found")).toBe(false);
@@ -238,30 +238,30 @@ describe("C. Resolver-parity detection", () => {
 
   it("C9: value_mismatch when dispatch yields different value than expected", async () => {
     const session = await makePoisonedStyleSession();
-    const mismatches = sdkResolverShadowCheck(session, "hf-box", [
+    const mismatches = sdkResolverShadowCheck(session, "sc-box", [
       { type: "inline-style", property: "color", value: "blue" },
     ]);
     expect(mismatches).toHaveLength(1);
     expect(mismatches[0]).toMatchObject<SdkResolverMismatch>({
       kind: "value_mismatch",
-      hfId: "hf-box",
+      hfId: "sc-box",
       property: "color",
       expected: "blue",
     });
   });
 
   it("C8 runtime-node filter: hfId absent from source → suppressed (not a resolver bug)", () => {
-    // The studio resolved a live-DOM element to an hf-id that the SDK session
+    // The studio resolved a live-DOM element to an sc-id that the SDK session
     // doesn't contain AND that never appears in the on-disk source — it's a
     // node a composition <script> created at runtime (e.g. caption spans). Not
     // a resolver divergence; suppress.
     const session = { getElement: () => null, getElements: () => [] } as unknown as Parameters<
       typeof sdkResolverShadowCheck
     >[0];
-    const source = `<div data-hf-id="hf-static">no runtime id here</div>`;
+    const source = `<div data-sc-id="sc-static">no runtime id here</div>`;
     const mismatches = sdkResolverShadowCheck(
       session,
-      "hf-runtimeonly",
+      "sc-runtimeonly",
       [{ type: "inline-style", property: "color", value: "red" }],
       source,
     );
@@ -272,10 +272,10 @@ describe("C. Resolver-parity detection", () => {
     const session = { getElement: () => null, getElements: () => [] } as unknown as Parameters<
       typeof sdkResolverShadowCheck
     >[0];
-    const source = `<div data-hf-id="hf-realbug">in source, not in SDK session</div>`;
+    const source = `<div data-sc-id="sc-realbug">in source, not in SDK session</div>`;
     const mismatches = sdkResolverShadowCheck(
       session,
-      "hf-realbug",
+      "sc-realbug",
       [{ type: "inline-style", property: "color", value: "red" }],
       source,
     );
@@ -286,33 +286,33 @@ describe("C. Resolver-parity detection", () => {
   it("C8 sourceHfIdCount: emitted element_not_found carries source occurrence count", async () => {
     mockFlags.STUDIO_SDK_RESOLVER_SHADOW_ENABLED = true;
     // One unrelated element so the session isn't "empty" (empty sessions are
-    // skipped as structural modeling gaps) — it just can't resolve hf-dup.
+    // skipped as structural modeling gaps) — it just can't resolve sc-dup.
     const session = {
       getElement: () => null,
-      getElements: () => [{ id: "hf-other" }],
+      getElements: () => [{ id: "sc-other" }],
     } as unknown as Composition;
     // id present twice in source (duplicate-id ambiguity) but absent from session
-    const source = `<div data-hf-id="hf-dup">a</div><div data-hf-id="hf-dup">b</div>`;
+    const source = `<div data-sc-id="sc-dup">a</div><div data-sc-id="sc-dup">b</div>`;
     runResolverShadow(
       session,
-      "hf-dup",
+      "sc-dup",
       [{ type: "inline-style", property: "color", value: "red" }],
       source,
     );
     expect(lastShadow()?.sourceHfIdCount).toBe(2);
   });
 
-  it("C8 sourceLooseMatchOnly: hfId matches source only as plain text, not a data-hf-id attribute", async () => {
+  it("C8 sourceLooseMatchOnly: hfId matches source only as plain text, not a data-sc-id attribute", async () => {
     mockFlags.STUDIO_SDK_RESOLVER_SHADOW_ENABLED = true;
     const session = {
       getElement: () => null,
-      getElements: () => [{ id: "hf-other" }],
+      getElements: () => [{ id: "sc-other" }],
     } as unknown as Composition;
-    // "hf-widget" appears only inside a class name, never as data-hf-id="hf-widget".
-    const source = `<div class="hf-widget-container">no attribute match here</div>`;
+    // "sc-widget" appears only inside a class name, never as data-sc-id="sc-widget".
+    const source = `<div class="sc-widget-container">no attribute match here</div>`;
     runResolverShadow(
       session,
-      "hf-widget",
+      "sc-widget",
       [{ type: "inline-style", property: "color", value: "red" }],
       source,
     );
@@ -325,7 +325,7 @@ describe("C. Resolver-parity detection", () => {
     const session = await openComposition(BASE_HTML);
     // "unknown-op" is not in MAPPED_OP_TYPES, so it must be silently excluded.
     const ops = [{ type: "unknown-op", property: "x", value: "y" }] as unknown as PatchOperation[];
-    const mismatches = sdkResolverShadowCheck(session, "hf-box", ops);
+    const mismatches = sdkResolverShadowCheck(session, "sc-box", ops);
     expect(mismatches).toHaveLength(0);
   });
 });
@@ -337,7 +337,7 @@ describe("D. Redaction", () => {
     mockFlags.STUDIO_SDK_RESOLVER_SHADOW_ENABLED = true;
     const session = await makePoisonedStyleSession();
     const sensitiveValue = "rgba(255, 0, 0, 0.5)";
-    runResolverShadow(session, "hf-box", [
+    runResolverShadow(session, "sc-box", [
       { type: "inline-style", property: "color", value: sensitiveValue },
     ]);
     const ev = lastShadow();
@@ -348,7 +348,7 @@ describe("D. Redaction", () => {
     expect(serialized).not.toContain(sensitiveValue);
     // But the kind and hfId must be present
     expect(serialized).toContain("value_mismatch");
-    expect(serialized).toContain("hf-box");
+    expect(serialized).toContain("sc-box");
   });
 
   it("D11: text-content value is fully redacted (replaced with length marker)", async () => {
@@ -361,7 +361,7 @@ describe("D. Redaction", () => {
       origDispatch(op);
     };
     const secretText = "confidential user content";
-    runResolverShadow(session, "hf-box", [
+    runResolverShadow(session, "sc-box", [
       { type: "text-content", property: "text", value: secretText },
     ]);
     const ev = lastShadow();
@@ -393,7 +393,7 @@ describe("F. recordResolverParity", () => {
   it("emits element_not_found when the SDK cannot resolve the target", async () => {
     mockFlags.STUDIO_SDK_RESOLVER_SHADOW_ENABLED = true;
     const session = await openComposition(BASE_HTML);
-    await recordResolverParity(session, "hf-missing", "setTiming");
+    await recordResolverParity(session, "sc-missing", "setTiming");
     const ev = lastShadow();
     expect(ev?.mismatchCount).toBe(1);
     expect(ev?.opLabel).toBe("setTiming");
@@ -403,7 +403,7 @@ describe("F. recordResolverParity", () => {
   it("emits nothing when the target resolves (parity)", async () => {
     mockFlags.STUDIO_SDK_RESOLVER_SHADOW_ENABLED = true;
     const session = await openComposition(BASE_HTML);
-    await recordResolverParity(session, "hf-box", "removeElement");
+    await recordResolverParity(session, "sc-box", "removeElement");
     expect(trackedEvents.filter((e) => e.event === "sdk_resolver_shadow")).toHaveLength(0);
   });
 
@@ -411,7 +411,7 @@ describe("F. recordResolverParity", () => {
     mockFlags.STUDIO_SDK_RESOLVER_SHADOW_ENABLED = false;
     const session = await openComposition(BASE_HTML);
     const spy = vi.spyOn(session, "getElement");
-    await recordResolverParity(session, "hf-missing", "setTiming");
+    await recordResolverParity(session, "sc-missing", "setTiming");
     expect(trackedEvents).toHaveLength(0);
     expect(spy).not.toHaveBeenCalled();
   });
@@ -419,15 +419,15 @@ describe("F. recordResolverParity", () => {
   it("never mutates the session (read-only resolver check)", async () => {
     mockFlags.STUDIO_SDK_RESOLVER_SHADOW_ENABLED = true;
     const session = await openComposition(BASE_HTML);
-    await recordResolverParity(session, "hf-box", "setTiming");
-    expect(session.getElement("hf-box")?.inlineStyles.color).toBe("red"); // unchanged
+    await recordResolverParity(session, "sc-box", "setTiming");
+    expect(session.getElement("sc-box")?.inlineStyles.color).toBe("red"); // unchanged
   });
 
   it("suppresses the emit when the hfId is absent from source (runtime node)", async () => {
     mockFlags.STUDIO_SDK_RESOLVER_SHADOW_ENABLED = true;
     const session = await openComposition(BASE_HTML);
-    await recordResolverParity(session, "hf-runtime", "setTiming", () =>
-      Promise.resolve('<div data-hf-id="hf-other"></div>'),
+    await recordResolverParity(session, "sc-runtime", "setTiming", () =>
+      Promise.resolve('<div data-sc-id="sc-other"></div>'),
     );
     expect(trackedEvents.filter((e) => e.event === "sdk_resolver_shadow")).toHaveLength(0);
   });
@@ -436,7 +436,7 @@ describe("F. recordResolverParity", () => {
     mockFlags.STUDIO_SDK_RESOLVER_SHADOW_ENABLED = true;
     flushAttemptCounts();
     const session = await openComposition(BASE_HTML);
-    await recordResolverParity(session, "hf-cross", "setTiming", undefined, {
+    await recordResolverParity(session, "sc-cross", "setTiming", undefined, {
       targetPath: "compositions/other.html",
       compositionPath: "index.html",
     });
@@ -447,8 +447,8 @@ describe("F. recordResolverParity", () => {
   it("emits with sourceHfIdCount=1 when the hfId IS in source but missing from the session", async () => {
     mockFlags.STUDIO_SDK_RESOLVER_SHADOW_ENABLED = true;
     const session = await openComposition(BASE_HTML);
-    await recordResolverParity(session, "hf-ghost", "setTiming", () =>
-      Promise.resolve('<div data-hf-id="hf-ghost"></div>'),
+    await recordResolverParity(session, "sc-ghost", "setTiming", () =>
+      Promise.resolve('<div data-sc-id="sc-ghost"></div>'),
     );
     const ev = lastShadow();
     expect(ev?.mismatchCount).toBe(1);
@@ -458,8 +458,8 @@ describe("F. recordResolverParity", () => {
   it("reports sourceHfIdCount=2 for a duplicate-id source (ambiguity)", async () => {
     mockFlags.STUDIO_SDK_RESOLVER_SHADOW_ENABLED = true;
     const session = await openComposition(BASE_HTML);
-    await recordResolverParity(session, "hf-dup", "setTiming", () =>
-      Promise.resolve('<a data-hf-id="hf-dup"></a><b data-hf-id="hf-dup"></b>'),
+    await recordResolverParity(session, "sc-dup", "setTiming", () =>
+      Promise.resolve('<a data-sc-id="sc-dup"></a><b data-sc-id="sc-dup"></b>'),
     );
     expect(lastShadow()?.sourceHfIdCount).toBe(2);
   });
@@ -467,7 +467,7 @@ describe("F. recordResolverParity", () => {
   it("emits without sourceHfIdCount when no reader is supplied (status quo)", async () => {
     mockFlags.STUDIO_SDK_RESOLVER_SHADOW_ENABLED = true;
     const session = await openComposition(BASE_HTML);
-    await recordResolverParity(session, "hf-missing", "setTiming");
+    await recordResolverParity(session, "sc-missing", "setTiming");
     const ev = lastShadow();
     expect(ev?.mismatchCount).toBe(1);
     expect(ev?.sourceHfIdCount).toBeUndefined();
@@ -476,7 +476,7 @@ describe("F. recordResolverParity", () => {
   it("fails open: a readSource error still emits (no suppression), tagged sourceReadFailed", async () => {
     mockFlags.STUDIO_SDK_RESOLVER_SHADOW_ENABLED = true;
     const session = await openComposition(BASE_HTML);
-    await recordResolverParity(session, "hf-missing", "setTiming", () =>
+    await recordResolverParity(session, "sc-missing", "setTiming", () =>
       Promise.reject(new Error("read failed")),
     );
     const ev = lastShadow();
@@ -491,7 +491,7 @@ describe("F. recordResolverParity", () => {
   it("does not tag sourceReadFailed when no reader is supplied", async () => {
     mockFlags.STUDIO_SDK_RESOLVER_SHADOW_ENABLED = true;
     const session = await openComposition(BASE_HTML);
-    await recordResolverParity(session, "hf-missing", "setTiming");
+    await recordResolverParity(session, "sc-missing", "setTiming");
     expect(lastShadow()?.sourceReadFailed).toBeUndefined();
   });
 
@@ -499,8 +499,8 @@ describe("F. recordResolverParity", () => {
     mockFlags.STUDIO_SDK_RESOLVER_SHADOW_ENABLED = true;
     flushAttemptCounts(); // drain any counts left by earlier tests
     const session = await openComposition("<!DOCTYPE html><html><body></body></html>");
-    await recordResolverParity(session, "hf-anything", "setTiming");
-    await recordResolverParity(session, "hf-other", "setTiming"); // no re-emit
+    await recordResolverParity(session, "sc-anything", "setTiming");
+    await recordResolverParity(session, "sc-other", "setTiming"); // no re-emit
     const events = trackedEvents.filter((e) => e.event === "sdk_resolver_shadow");
     expect(events).toHaveLength(1);
     expect(events[0]?.props.sessionEmpty).toBe(true);
@@ -509,12 +509,12 @@ describe("F. recordResolverParity", () => {
     expect(flushAttemptCounts()).toBeNull(); // can't cut over → not in the denominator
   });
 
-  it("tags sourceLooseMatchOnly when hfId matches source only as plain text, not a data-hf-id attribute", async () => {
+  it("tags sourceLooseMatchOnly when hfId matches source only as plain text, not a data-sc-id attribute", async () => {
     mockFlags.STUDIO_SDK_RESOLVER_SHADOW_ENABLED = true;
     const session = await openComposition(BASE_HTML);
-    // "hf-widget" appears only inside a class name, never as data-hf-id="hf-widget".
-    await recordResolverParity(session, "hf-widget", "setTiming", () =>
-      Promise.resolve('<div class="hf-widget-container"></div>'),
+    // "sc-widget" appears only inside a class name, never as data-sc-id="sc-widget".
+    await recordResolverParity(session, "sc-widget", "setTiming", () =>
+      Promise.resolve('<div class="sc-widget-container"></div>'),
     );
     const ev = lastShadow();
     expect(ev?.mismatchCount).toBe(1);
@@ -527,13 +527,13 @@ describe("F. recordResolverParity", () => {
 
 const GSAP_HTML = /* html */ `<!DOCTYPE html>
 <html><body>
-  <div data-hf-id="hf-box" style="color: red">Hello</div>
-  <script>var tl = gsap.timeline({ paused: true }); tl.to("[data-hf-id=\\"hf-box\\"]", { x: 100, duration: 1 }, 0);</script>
+  <div data-sc-id="sc-box" style="color: red">Hello</div>
+  <script>var tl = gsap.timeline({ paused: true }); tl.to("[data-sc-id=\\"sc-box\\"]", { x: 100, duration: 1 }, 0);</script>
 </body></html>`;
 
 const GSAP_UNMATCHED_SELECTOR_HTML = /* html */ `<!DOCTYPE html>
 <html><body>
-  <div data-hf-id="hf-box" style="color: red">Hello</div>
+  <div data-sc-id="sc-box" style="color: red">Hello</div>
   <script>var tl = gsap.timeline({ paused: true }); tl.to("#coral-band", { x: 100, duration: 1 }, 3);</script>
 </body></html>`;
 
@@ -552,7 +552,7 @@ describe("G. recordAnimationResolverParity", () => {
     mockFlags.STUDIO_SDK_RESOLVER_SHADOW_ENABLED = true;
     const session = await openComposition(GSAP_HTML);
     const realId = session.getElements().flatMap((e) => [...e.animationIds])[0] ?? "";
-    expect(realId).not.toBe(""); // fixture has a tween on hf-box
+    expect(realId).not.toBe(""); // fixture has a tween on sc-box
     recordAnimationResolverParity(session, realId, "removeGsapTween");
     expect(trackedEvents.filter((e) => e.event === "sdk_resolver_shadow")).toHaveLength(0);
   });
@@ -587,8 +587,8 @@ describe("G. recordAnimationResolverParity", () => {
   // the ids the OLD (session) script parses to.
   const GSAP_DISK_MOVED_HTML = /* html */ `<!DOCTYPE html>
 <html><body>
-  <div data-hf-id="hf-box" style="color: red">Hello</div>
-  <script>var tl = gsap.timeline({ paused: true }); tl.to("[data-hf-id=\\"hf-box\\"]", { x: 100, duration: 1 }, 3);</script>
+  <div data-sc-id="sc-box" style="color: red">Hello</div>
+  <script>var tl = gsap.timeline({ paused: true }); tl.to("[data-sc-id=\\"sc-box\\"]", { x: 100, duration: 1 }, 3);</script>
 </body></html>`;
 
   it("suppresses the emit when the animationId resolves against the on-disk script (stale session)", async () => {
@@ -686,7 +686,7 @@ describe("G2. runResolverShadow cross-file guard", () => {
     mockFlags.STUDIO_SDK_RESOLVER_SHADOW_ENABLED = true;
     flushAttemptCounts();
     const session = await openComposition(BASE_HTML);
-    runResolverShadow(session, "hf-cross", ops, undefined, {
+    runResolverShadow(session, "sc-cross", ops, undefined, {
       targetPath: "compositions/sample-vote-count.html",
       compositionPath: "templates/document-card.html",
     });
@@ -697,7 +697,7 @@ describe("G2. runResolverShadow cross-file guard", () => {
   it("still emits for a same-file divergence", async () => {
     mockFlags.STUDIO_SDK_RESOLVER_SHADOW_ENABLED = true;
     const session = await openComposition(BASE_HTML);
-    runResolverShadow(session, "hf-missing", ops, undefined, {
+    runResolverShadow(session, "sc-missing", ops, undefined, {
       targetPath: "index.html",
       compositionPath: "index.html",
     });
@@ -707,7 +707,7 @@ describe("G2. runResolverShadow cross-file guard", () => {
   it("runs normally when paths are not supplied (status quo)", async () => {
     mockFlags.STUDIO_SDK_RESOLVER_SHADOW_ENABLED = true;
     const session = await openComposition(BASE_HTML);
-    runResolverShadow(session, "hf-missing", ops);
+    runResolverShadow(session, "sc-missing", ops);
     expect(trackedEvents.filter((e) => e.event === "sdk_resolver_shadow")).toHaveLength(1);
   });
 });
@@ -715,40 +715,40 @@ describe("G2. runResolverShadow cross-file guard", () => {
 // ─── H. Inlined sub-composition: bare leaf id resolves (regression) ───────────
 
 // PostHog showed ~445 false `element_not_found` events, all on a bare leaf id
-// (hf-0ytc / #subscribe-btn) inside an inlined sub-composition. The studio reads
-// the bare data-hf-id off the DOM and the cutover dispatch resolves it via
+// (sc-0ytc / #subscribe-btn) inside an inlined sub-composition. The studio reads
+// the bare data-sc-id off the DOM and the cutover dispatch resolves it via
 // resolveScoped (which locates the leaf inside the host subtree). But the shadow
 // resolved via Composition.getElement, which is canonical-only for a bare id and
 // returns null for a scoped element — so it flagged a divergence the real
 // dispatch path would not hit. The shadow now mirrors dispatch via resolveSnapshot.
 describe("H. inlined sub-composition leaf", () => {
   // host carries data-composition-file → new scope; leaf's scopedId is
-  // "hf-host/hf-leaf" but its raw data-hf-id (what the studio reads) is bare.
+  // "sc-host/sc-leaf" but its raw data-sc-id (what the studio reads) is bare.
   const INLINED_HTML = /* html */ `<!DOCTYPE html>
 <html><body>
-  <div data-hf-id="hf-root" data-hf-root>
-    <div data-hf-id="hf-host" data-composition-file="sub.html">
-      <div data-hf-id="hf-leaf" style="color: red">Subscribe</div>
+  <div data-sc-id="sc-root" data-sc-root>
+    <div data-sc-id="sc-host" data-composition-file="sub.html">
+      <div data-sc-id="sc-leaf" style="color: red">Subscribe</div>
     </div>
   </div>
 </body></html>`;
 
   it("getElement(bareLeaf) is null (canonical-only) — the trap the shadow used to hit", async () => {
     const session = await openComposition(INLINED_HTML);
-    expect(session.getElement("hf-leaf")).toBeNull();
-    expect(session.getElement("hf-host/hf-leaf")).not.toBeNull();
+    expect(session.getElement("sc-leaf")).toBeNull();
+    expect(session.getElement("sc-host/sc-leaf")).not.toBeNull();
   });
 
   it("recordResolverParity emits NOTHING for a bare leaf inside a sub-comp", async () => {
     mockFlags.STUDIO_SDK_RESOLVER_SHADOW_ENABLED = true;
     const session = await openComposition(INLINED_HTML);
-    await recordResolverParity(session, "hf-leaf", "setTiming");
+    await recordResolverParity(session, "sc-leaf", "setTiming");
     expect(trackedEvents.filter((e) => e.event === "sdk_resolver_shadow")).toHaveLength(0);
   });
 
   it("sdkResolverShadowCheck does not flag element_not_found for a bare leaf in a sub-comp", async () => {
     const session = await openComposition(INLINED_HTML);
-    const mismatches = sdkResolverShadowCheck(session, "hf-leaf", [
+    const mismatches = sdkResolverShadowCheck(session, "sc-leaf", [
       { type: "inline-style", property: "color", value: "blue" },
     ]);
     expect(mismatches.some((m) => m.kind === "element_not_found")).toBe(false);
@@ -801,7 +801,7 @@ describe("I. attempt counting inside the three emit functions", () => {
   it("runResolverShadow counts an attempt on the parity (silent) path", async () => {
     mockFlags.STUDIO_SDK_RESOLVER_SHADOW_ENABLED = true;
     const session = await openComposition(BASE_HTML);
-    runResolverShadow(session, "hf-box", [
+    runResolverShadow(session, "sc-box", [
       { type: "inline-style", property: "color", value: "blue" },
     ]);
     expect(flushAttemptCounts()).toEqual({ "dom-edit": 1 });
@@ -811,7 +811,7 @@ describe("I. attempt counting inside the three emit functions", () => {
   it("runResolverShadow counts an attempt on the divergence (emits) path too", async () => {
     mockFlags.STUDIO_SDK_RESOLVER_SHADOW_ENABLED = true;
     const session = await openComposition(BASE_HTML);
-    runResolverShadow(session, "hf-missing", [
+    runResolverShadow(session, "sc-missing", [
       { type: "inline-style", property: "color", value: "blue" },
     ]);
     expect(flushAttemptCounts()).toEqual({ "dom-edit": 1 });
@@ -821,14 +821,14 @@ describe("I. attempt counting inside the three emit functions", () => {
   it("recordResolverParity counts an attempt on the parity (silent) path", async () => {
     mockFlags.STUDIO_SDK_RESOLVER_SHADOW_ENABLED = true;
     const session = await openComposition(BASE_HTML);
-    await recordResolverParity(session, "hf-box", "setTiming");
+    await recordResolverParity(session, "sc-box", "setTiming");
     expect(flushAttemptCounts()).toEqual({ setTiming: 1 });
   });
 
   it("recordResolverParity counts an attempt on the divergence (emits) path too", async () => {
     mockFlags.STUDIO_SDK_RESOLVER_SHADOW_ENABLED = true;
     const session = await openComposition(BASE_HTML);
-    await recordResolverParity(session, "hf-missing", "setTiming");
+    await recordResolverParity(session, "sc-missing", "setTiming");
     expect(flushAttemptCounts()).toEqual({ setTiming: 1 });
   });
 
@@ -836,7 +836,7 @@ describe("I. attempt counting inside the three emit functions", () => {
     mockFlags.STUDIO_SDK_RESOLVER_SHADOW_ENABLED = true;
     const session = await openComposition(GSAP_HTML);
     const realId = session.getElements().flatMap((e) => [...e.animationIds])[0] ?? "";
-    expect(realId).not.toBe(""); // fixture has a tween on hf-box, see block G above
+    expect(realId).not.toBe(""); // fixture has a tween on sc-box, see block G above
     recordAnimationResolverParity(session, realId, "removeGsapTween");
     expect(flushAttemptCounts()).toEqual({ removeGsapTween: 1 });
     expect(trackedEvents.filter((e) => e.event === "sdk_resolver_shadow")).toHaveLength(0);
@@ -853,8 +853,8 @@ describe("I. attempt counting inside the three emit functions", () => {
   it("counts accumulate across multiple different chokepoints in one rollup", async () => {
     mockFlags.STUDIO_SDK_RESOLVER_SHADOW_ENABLED = true;
     const session = await openComposition(BASE_HTML);
-    await recordResolverParity(session, "hf-box", "setTiming");
-    await recordResolverParity(session, "hf-box", "setTiming");
+    await recordResolverParity(session, "sc-box", "setTiming");
+    await recordResolverParity(session, "sc-box", "setTiming");
     recordAnimationResolverParity(session, "no-such-anim", "setGsapTween");
     expect(flushAttemptCounts()).toEqual({ setTiming: 2, setGsapTween: 1 });
   });
@@ -862,10 +862,10 @@ describe("I. attempt counting inside the three emit functions", () => {
   it("does not count an attempt when the flag is off", async () => {
     mockFlags.STUDIO_SDK_RESOLVER_SHADOW_ENABLED = false;
     const session = await openComposition(BASE_HTML);
-    runResolverShadow(session, "hf-box", [
+    runResolverShadow(session, "sc-box", [
       { type: "inline-style", property: "color", value: "blue" },
     ]);
-    await recordResolverParity(session, "hf-box", "setTiming");
+    await recordResolverParity(session, "sc-box", "setTiming");
     recordAnimationResolverParity(session, "no-such-anim", "setGsapTween");
     expect(flushAttemptCounts()).toBeNull();
   });
@@ -893,7 +893,7 @@ describe("I. production rollup wiring", () => {
   it("emits a sdk_resolver_shadow_attempt rollup event every 5 minutes after the first attempt", async () => {
     mockFlags.STUDIO_SDK_RESOLVER_SHADOW_ENABLED = true;
     const session = await openComposition(BASE_HTML);
-    await recordResolverParity(session, "hf-box", "setTiming");
+    await recordResolverParity(session, "sc-box", "setTiming");
     vi.advanceTimersByTime(5 * 60_000);
     const rollups = trackedEvents.filter((e) => e.event === "sdk_resolver_shadow_attempt");
     expect(rollups).toHaveLength(1);
@@ -903,7 +903,7 @@ describe("I. production rollup wiring", () => {
   it("flushes a rollup and forces a beacon delivery on visibilitychange -> hidden", async () => {
     mockFlags.STUDIO_SDK_RESOLVER_SHADOW_ENABLED = true;
     const session = await openComposition(BASE_HTML);
-    await recordResolverParity(session, "hf-box", "setTiming");
+    await recordResolverParity(session, "sc-box", "setTiming");
     Object.defineProperty(document, "visibilityState", { value: "hidden", configurable: true });
     document.dispatchEvent(new Event("visibilitychange"));
     const rollups = trackedEvents.filter((e) => e.event === "sdk_resolver_shadow_attempt");
@@ -917,9 +917,9 @@ describe("I. production rollup wiring", () => {
   it("does not register a duplicate visibilitychange listener after a scheduling reset", async () => {
     mockFlags.STUDIO_SDK_RESOLVER_SHADOW_ENABLED = true;
     const session = await openComposition(BASE_HTML);
-    await recordResolverParity(session, "hf-box", "setTiming");
+    await recordResolverParity(session, "sc-box", "setTiming");
     __resetAttemptSchedulingForTests();
-    await recordResolverParity(session, "hf-box", "setTiming"); // re-arms scheduling, incl. listener
+    await recordResolverParity(session, "sc-box", "setTiming"); // re-arms scheduling, incl. listener
     Object.defineProperty(document, "visibilityState", { value: "hidden", configurable: true });
     document.dispatchEvent(new Event("visibilitychange"));
     // If the reset had leaked the old listener, this would fire twice.

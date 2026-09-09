@@ -1,5 +1,5 @@
 import { useState } from "react";
-import type { HfColorCurvePoint, HfHueCurvePoint } from "@hyperframes/core/color-grading";
+import type { HfColorCurvePoint, HfHueCurvePoint } from "@smashcut/core/color-grading";
 import { RotateCcw } from "../../icons/SystemIcons";
 import {
   CurveGraph,

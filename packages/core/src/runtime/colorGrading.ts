@@ -273,14 +273,14 @@ type WindowWithColorGrading = Window & {
   __player?: {
     getTime?: () => number;
   };
-  __hf?: {
+  __sc?: {
     colorGrading?: RuntimeColorGradingApi;
   };
-  __hyperframes?: {
+  __smashcut?: {
     getVariables?: () => Partial<Record<string, unknown>>;
   };
-  __hfVariables?: Record<string, unknown>;
-  __hfVariablesByComp?: Record<string, Record<string, unknown>>;
+  __scVariables?: Record<string, unknown>;
+  __scVariablesByComp?: Record<string, Record<string, unknown>>;
 };
 
 interface RuntimeLutTexture {
@@ -298,8 +298,8 @@ type LutCacheEntry =
   | { state: "error"; message: string };
 
 const LUT_CACHE = new Map<string, LutCacheEntry>();
-const COLOR_GRADING_CANVAS_ATTR = "data-hf-color-grading-canvas";
-const COLOR_GRADING_CANVAS_CLASS = "__hf_color_grading_canvas__";
+const COLOR_GRADING_CANVAS_ATTR = "data-sc-color-grading-canvas";
+const COLOR_GRADING_CANVAS_CLASS = "__sc_color_grading_canvas__";
 
 /** Captures authored media opacity before animation or grading can mutate it. */
 export function installAuthoredOpacityCapture(): void {
@@ -2424,7 +2424,7 @@ function resolveTarget(
     }
   }
   if (target.hfId) {
-    const byHfId = document.querySelector(`[data-hf-id="${CSS.escape(target.hfId)}"]`);
+    const byHfId = document.querySelector(`[data-sc-id="${CSS.escape(target.hfId)}"]`);
     if (byHfId && isColorGradingMediaElement(byHfId)) return byHfId;
   }
   if (target.id) {
@@ -3465,9 +3465,9 @@ function attachCanvas(
   else canvas.removeAttribute("id");
   canvas.className = COLOR_GRADING_CANVAS_CLASS;
   canvas.setAttribute(COLOR_GRADING_CANVAS_ATTR, "true");
-  canvas.setAttribute("data-hyperframes-ignore", "");
-  canvas.setAttribute("data-hyperframes-picker-ignore", "");
-  canvas.setAttribute("data-hf-ignore", "");
+  canvas.setAttribute("data-smashcut-ignore", "");
+  canvas.setAttribute("data-smashcut-picker-ignore", "");
+  canvas.setAttribute("data-sc-ignore", "");
   canvas.setAttribute("aria-hidden", "true");
   canvas.style.pointerEvents = "none";
   canvas.style.display = "none";
@@ -3827,8 +3827,8 @@ export function createColorGradingRuntime(): RuntimeColorGradingApi {
     destroy,
   };
   const win = window as WindowWithColorGrading;
-  win.__hf = win.__hf || {};
-  win.__hf.colorGrading = api;
+  win.__sc = win.__sc || {};
+  win.__sc.colorGrading = api;
   refresh();
   return api;
 }

@@ -1,5 +1,5 @@
 <!--
-  Perspective Marquee - typography primitive for HyperFrames.
+  Perspective Marquee - typography primitive for SmashCut.
 
   Paste the markup and CSS into a composition. Drive the timeline integration
   from a paused GSAP timeline so renders remain deterministic.
@@ -28,7 +28,7 @@
 -->
 
 <div
-  class="hf-catalog-perspective-marquee"
+  class="sc-catalog-perspective-marquee"
   data-composition-variables='[
     { "id": "tilt", "type": "enum", "role": "style", "label": "Tilt", "description": "How far the marquee plane leans back toward the horizon.", "default": "standard", "options": [{ "value": "flat", "label": "Flat" }, { "value": "standard", "label": "Standard" }, { "value": "steep", "label": "Steep" }] },
     { "id": "travel", "type": "enum", "role": "motion", "label": "Travel", "description": "Scales the offset the timeline drives, so the strip covers a shorter or longer run in the same time.", "default": "standard", "options": [{ "value": "short", "label": "Short" }, { "value": "standard", "label": "Standard" }, { "value": "long", "label": "Long" }] },
@@ -43,29 +43,29 @@
 </div>
 
 <style>
-  .hf-catalog-perspective-marquee {
+  .sc-catalog-perspective-marquee {
     color: #18181b;
     font-family: Inter, system-ui, sans-serif;
     font-weight: 900;
     letter-spacing: -0.04em;
   }
-  .hf-catalog-perspective-marquee {
+  .sc-catalog-perspective-marquee {
     width: 720px;
     perspective: 900px;
     overflow: hidden;
-    transform: rotateX(var(--hf-marquee-tilt, 18deg));
+    transform: rotateX(var(--sc-marquee-tilt, 18deg));
   }
-  .hf-catalog-perspective-marquee div {
+  .sc-catalog-perspective-marquee div {
     display: inline-flex;
     gap: 22px;
     white-space: nowrap;
-    transform: translateX(calc(var(--hf-marquee-x, 0px) * var(--hf-marquee-reach, 1)));
+    transform: translateX(calc(var(--sc-marquee-x, 0px) * var(--sc-marquee-reach, 1)));
   }
-  .hf-catalog-perspective-marquee span {
+  .sc-catalog-perspective-marquee span {
     padding: 12px 18px;
     border-radius: 999px;
-    background: var(--hf-marquee-pill-bg, #18181b);
-    color: var(--hf-marquee-pill-fg, #fff);
+    background: var(--sc-marquee-pill-bg, #18181b);
+    color: var(--sc-marquee-pill-fg, #fff);
     font-size: 28px;
     box-shadow: 0 18px 44px rgba(24, 24, 27, 0.18);
   }
@@ -76,8 +76,8 @@
     "use strict";
 
     var vars =
-      window.__hyperframes && window.__hyperframes.getVariables
-        ? window.__hyperframes.getVariables()
+      window.__smashcut && window.__smashcut.getVariables
+        ? window.__smashcut.getVariables()
         : {};
 
     // Unrecognised overrides return to their declared defaults.
@@ -110,12 +110,12 @@
     var tone = tones[pick(tones, vars.tone, "ink")];
     var words = parseWords(vars.words);
 
-    var roots = document.querySelectorAll(".hf-catalog-perspective-marquee");
+    var roots = document.querySelectorAll(".sc-catalog-perspective-marquee");
     for (var i = 0; i < roots.length; i += 1) {
-      roots[i].style.setProperty("--hf-marquee-tilt", tilt);
-      roots[i].style.setProperty("--hf-marquee-reach", String(reach));
-      roots[i].style.setProperty("--hf-marquee-pill-bg", tone.bg);
-      roots[i].style.setProperty("--hf-marquee-pill-fg", tone.fg);
+      roots[i].style.setProperty("--sc-marquee-tilt", tilt);
+      roots[i].style.setProperty("--sc-marquee-reach", String(reach));
+      roots[i].style.setProperty("--sc-marquee-pill-bg", tone.bg);
+      roots[i].style.setProperty("--sc-marquee-pill-fg", tone.fg);
 
       var strip = roots[i].querySelector("div");
       if (!strip) continue;
@@ -132,5 +132,5 @@
 
 <!--
   Timeline integration:
-  tl.fromTo('.hf-catalog-perspective-marquee div', { '--hf-marquee-x': '0px' }, { '--hf-marquee-x': '-360px', duration: 4.5, ease: 'none' }, startTime);
+  tl.fromTo('.sc-catalog-perspective-marquee div', { '--sc-marquee-x': '0px' }, { '--sc-marquee-x': '-360px', duration: 4.5, ease: 'none' }, startTime);
 -->

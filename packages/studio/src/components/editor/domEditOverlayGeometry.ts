@@ -533,7 +533,7 @@ export function groupAwareOverlayRect(
   el: HTMLElement,
 ): OverlayRect | null {
   const rect = toOverlayRect(overlayEl, iframe, el);
-  if (!rect || !el.hasAttribute("data-hf-group")) return rect;
+  if (!rect || !el.hasAttribute("data-sc-group")) return rect;
   // Union the MEMBERS' rendered rects — where the content actually is — not the
   // wrapper's own box. The wrapper is invisible and its box can sit apart from the
   // members once they've been moved/transformed, which would otherwise drag the
@@ -557,7 +557,7 @@ export function orientedGroupAwareOverlayRect(
   iframe: HTMLIFrameElement,
   el: HTMLElement,
 ): OverlayRect | null {
-  return el.hasAttribute("data-hf-group")
+  return el.hasAttribute("data-sc-group")
     ? groupAwareOverlayRect(overlayEl, iframe, el)
     : orientedOverlayRect(overlayEl, iframe, el);
 }

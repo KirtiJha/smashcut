@@ -10,7 +10,7 @@ import {
 } from "./contactSheet.js";
 
 function tempDir(): string {
-  return mkdtempSync(join(tmpdir(), "hf-contact-sheet-test-"));
+  return mkdtempSync(join(tmpdir(), "sc-contact-sheet-test-"));
 }
 
 describe("createContactSheet", () => {

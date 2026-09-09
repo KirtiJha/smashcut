@@ -15,7 +15,7 @@ import {
 
 let dir = "";
 beforeEach(() => {
-  dir = mkdtempSync(join(tmpdir(), "hf-bindings-"));
+  dir = mkdtempSync(join(tmpdir(), "sc-bindings-"));
 });
 afterEach(() => rmSync(dir, { recursive: true, force: true }));
 

@@ -14,10 +14,10 @@ function usageOf(
   registryItems?: RegistryItemRecord[],
   entry = "index.html",
 ): CatalogUsage {
-  const dir = mkdtempSync(join(tmpdir(), "hf-catalog-test-"));
+  const dir = mkdtempSync(join(tmpdir(), "sc-catalog-test-"));
   try {
     writeFileSync(
-      join(dir, "hyperframes.json"),
+      join(dir, "smashcut.json"),
       JSON.stringify({
         registry: "https://example.test",
         ...(registryItems ? { registryItems } : {}),
@@ -34,11 +34,11 @@ function usageOf(
   }
 }
 
-/** Same as {@link usageOf}, but writes `hyperframes.json` verbatim. */
+/** Same as {@link usageOf}, but writes `smashcut.json` verbatim. */
 function usageOfRawConfig(configText: string | null): CatalogUsage {
-  const dir = mkdtempSync(join(tmpdir(), "hf-catalog-test-"));
+  const dir = mkdtempSync(join(tmpdir(), "sc-catalog-test-"));
   try {
-    if (configText !== null) writeFileSync(join(dir, "hyperframes.json"), configText);
+    if (configText !== null) writeFileSync(join(dir, "smashcut.json"), configText);
     writeFileSync(join(dir, "index.html"), entryDoc());
     return summarizeCatalogUsage(dir, join(dir, "index.html"));
   } finally {
@@ -70,7 +70,7 @@ function subCompDoc(id: string, ...srcs: string[]): string {
 
 const BLOCK = (name: string): RegistryItemRecord => ({
   name,
-  type: "hyperframes:block",
+  type: "smashcut:block",
   target: `compositions/${name}.html`,
 });
 
@@ -153,7 +153,7 @@ describe("summarizeCatalogUsage", () => {
       usageOf({ "index.html": entryDoc() }, [
         {
           name: "film-grain",
-          type: "hyperframes:component",
+          type: "smashcut:component",
           target: "compositions/components/film-grain.html",
         },
       ]),
@@ -163,7 +163,7 @@ describe("summarizeCatalogUsage", () => {
   it("drops a manifest name that is not a safe slug rather than sending it", () => {
     expect(
       usageOf({ "index.html": entryDoc() }, [
-        { name: "/Users/someone/secret", type: "hyperframes:block", target: "compositions/x.html" },
+        { name: "/Users/someone/secret", type: "smashcut:block", target: "compositions/x.html" },
         BLOCK("fine"),
       ]).installed,
     ).toEqual(["fine"]);
@@ -172,7 +172,7 @@ describe("summarizeCatalogUsage", () => {
   it("never matches a manifest target that escapes the project directory", () => {
     expect(
       usageOf({ "index.html": entryDoc("compositions/kept.html") }, [
-        { name: "escaping", type: "hyperframes:block", target: "../outside.html" },
+        { name: "escaping", type: "smashcut:block", target: "../outside.html" },
       ]).usedBlocks,
     ).toEqual([]);
   });

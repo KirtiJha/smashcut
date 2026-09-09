@@ -1,5 +1,5 @@
 /**
- * `hyperframes auth` — credential management for HeyGen.
+ * `smashcut auth` — credential management for HeyGen.
  *
  * Subverbs:
  *   - `login`   sign in via API key (OAuth coming next)
@@ -16,17 +16,17 @@ import type { Example } from "./_examples.js";
 import { c } from "../ui/colors.js";
 
 export const examples: Example[] = [
-  ["Sign in via browser (OAuth)", "hyperframes auth login"],
-  ["Sign in from SSH/headless terminal", "hyperframes auth login --device"],
-  ["Save an API key (interactive)", "hyperframes auth login --api-key"],
-  ["Save an API key from stdin", "echo $HEYGEN_API_KEY | hyperframes auth login --api-key"],
-  ["Check who you're signed in as", "hyperframes auth status"],
-  ["Force-refresh the OAuth access token", "hyperframes auth refresh"],
-  ["Sign out", "hyperframes auth logout"],
+  ["Sign in via browser (OAuth)", "smashcut auth login"],
+  ["Sign in from SSH/headless terminal", "smashcut auth login --device"],
+  ["Save an API key (interactive)", "smashcut auth login --api-key"],
+  ["Save an API key from stdin", "echo $HEYGEN_API_KEY | smashcut auth login --api-key"],
+  ["Check who you're signed in as", "smashcut auth status"],
+  ["Force-refresh the OAuth access token", "smashcut auth refresh"],
+  ["Sign out", "smashcut auth logout"],
 ];
 
 const HELP = `
-${c.bold("hyperframes auth")} ${c.dim("<subcommand> [args]")}
+${c.bold("smashcut auth")} ${c.dim("<subcommand> [args]")}
 
 Manage HeyGen credentials. Credentials live in
 ${c.accent("~/.heygen/credentials")} and are shared with heygen-cli.
@@ -39,11 +39,11 @@ ${c.bold("SUBCOMMANDS:")}
 
 ${c.bold("ENV VARS:")}
   ${c.accent("HEYGEN_API_KEY")}              Override the stored credential.
-  ${c.accent("HYPERFRAMES_API_KEY")}         Alias for HEYGEN_API_KEY.
+  ${c.accent("SMASHCUT_API_KEY")}         Alias for HEYGEN_API_KEY.
   ${c.accent("HEYGEN_API_URL")}              Override the API base URL (default https://api.heygen.com).
   ${c.accent("HEYGEN_CONFIG_DIR")}           Override the credentials directory (default ~/.heygen).
-  ${c.accent("HYPERFRAMES_OAUTH_CLIENT_ID")} Override the OAuth client_id (for dev/test).
-  ${c.accent("HYPERFRAMES_OAUTH_DEVICE_URL")} Override the RFC 8628 device endpoint (for dev/test).
+  ${c.accent("SMASHCUT_OAUTH_CLIENT_ID")} Override the OAuth client_id (for dev/test).
+  ${c.accent("SMASHCUT_OAUTH_DEVICE_URL")} Override the RFC 8628 device endpoint (for dev/test).
 `;
 
 export default defineCommand({

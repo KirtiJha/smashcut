@@ -10,7 +10,7 @@ import {
 describe("Studio runtime protocol", () => {
   it("versions every control message and declares rational fps", () => {
     expect(createRuntimeControlMessage("seek", { timeSeconds: 1.25 }, 60)).toEqual({
-      source: "hf-parent",
+      source: "sc-parent",
       type: "control",
       action: "seek",
       protocolVersion: 1,
@@ -36,7 +36,7 @@ describe("Studio runtime protocol", () => {
   });
 
   it("preserves legacy 30fps messages and rejects unknown majors", () => {
-    expect(inspectStudioRuntimeMessage({ source: "hf-preview" })).toEqual({
+    expect(inspectStudioRuntimeMessage({ source: "sc-preview" })).toEqual({
       status: "legacy",
       fps: 30,
     });

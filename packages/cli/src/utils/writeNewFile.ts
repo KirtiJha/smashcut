@@ -3,7 +3,7 @@ import { dirname, join } from "node:path";
 
 /** Publish complete content without replacing or following an existing destination entry. */
 export function writeNewFileSync(filePath: string, content: string): void {
-  const stagingDir = mkdtempSync(join(dirname(filePath), ".hf-create-"));
+  const stagingDir = mkdtempSync(join(dirname(filePath), ".sc-create-"));
   try {
     const stagedPath = join(stagingDir, "content");
     writeFileSync(stagedPath, content, { encoding: "utf-8", flag: "wx" });

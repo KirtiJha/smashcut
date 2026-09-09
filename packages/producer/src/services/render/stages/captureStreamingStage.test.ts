@@ -4,7 +4,7 @@ import { mkdtempSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 
-const fixtureRoot = mkdtempSync(join(tmpdir(), "hf-stage-test-"));
+const fixtureRoot = mkdtempSync(join(tmpdir(), "sc-stage-test-"));
 const framesDir = join(fixtureRoot, "frames");
 afterAll(() => rmSync(fixtureRoot, { recursive: true, force: true }));
 import { getCaptureStageBrowserConsole } from "../captureStageError.js";
@@ -36,7 +36,7 @@ const browserConsoleBuffer = ["[FrameCapture:ERROR] page.goto failed"];
 const closeCaptureSession = mock(async () => {});
 class DrawElementVerificationError extends Error {}
 
-mock.module("@hyperframes/engine", () => ({
+mock.module("@smashcut/engine", () => ({
   calculateOptimalWorkers: () => 1,
   convertTransfer: () => {},
   captureFrame: async () => {},
@@ -140,7 +140,7 @@ mock.module("@hyperframes/engine", () => ({
   writeCapturedFrame: async () => {},
 }));
 
-mock.module("@hyperframes/core", () => ({
+mock.module("@smashcut/core", () => ({
   CANVAS_DIMENSIONS: {},
   checkOutputResolutionCompatibility: () => ({ ok: true }),
   fpsToNumber: () => 30,
@@ -197,9 +197,9 @@ function createInput(cfg: MinimalEngineConfig) {
       close: () => {},
       addPreHeadScript: () => {},
     },
-    workDir: "/tmp/hf-test-work",
+    workDir: "/tmp/sc-test-work",
     framesDir: framesDir,
-    videoOnlyPath: "/tmp/hf-test-video-only.mp4",
+    videoOnlyPath: "/tmp/sc-test-video-only.mp4",
     job: {
       id: "streaming-config-test",
       config: { fps: { num: 30, den: 1 }, quality: "draft" },
@@ -489,7 +489,7 @@ describe("runCaptureStage", () => {
     failInitializeSession = false;
     failPrepareCaptureSessionForReuse = true;
     closeCaptureSession.mockClear();
-    const { createCaptureSession } = await import("@hyperframes/engine");
+    const { createCaptureSession } = await import("@smashcut/engine");
     const { runCaptureStage } = await import("./captureStage.js");
     const cfg = { forceScreenshot: false, ffmpegStreamingTimeout: 3_600_000 };
     const probeSession = await createCaptureSession(
@@ -604,10 +604,10 @@ describe("runCaptureHdrStage", () => {
           info: () => {},
           debug: () => {},
         },
-        projectDir: "/tmp/hf-test-project",
-        compiledDir: "/tmp/hf-test-compiled",
+        projectDir: "/tmp/sc-test-project",
+        compiledDir: "/tmp/sc-test-compiled",
         framesDir: framesDir,
-        videoOnlyPath: "/tmp/hf-test-video-only.mp4",
+        videoOnlyPath: "/tmp/sc-test-video-only.mp4",
         width: 1920,
         height: 1080,
         totalFrames: 1,

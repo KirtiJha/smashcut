@@ -123,7 +123,7 @@ function renderRow(elements: readonly TimelineElement[], selectedKey?: string): 
 
 /** Every drawn envelope as `row @ left`, which is the whole claim under test. */
 function mountRow(elements: readonly TimelineElement[], selectedKey?: string) {
-  return [...renderRow(elements, selectedKey).querySelectorAll<HTMLElement>(".hf-automation-lane")]
+  return [...renderRow(elements, selectedKey).querySelectorAll<HTMLElement>(".sc-automation-lane")]
     .map((lane) => `${lane.style.top} @ ${lane.querySelector("svg")?.style.left}`)
     .sort();
 }
@@ -159,7 +159,7 @@ describe("TimelineAutomationLaneSlot shared rows", () => {
     // its siblings' envelopes — handles appeared only on the final clip, and
     // only on rows that a single clip happened to own.
     const host = renderRow([narration1, narration2]);
-    const bands = [...host.querySelectorAll<HTMLElement>(".hf-automation-lane")];
+    const bands = [...host.querySelectorAll<HTMLElement>(".sc-automation-lane")];
     expect(bands.length).toBeGreaterThan(1);
     for (const band of bands) {
       expect(band.className).toContain("pointer-events-none");

@@ -9,12 +9,12 @@ import { InstallCommand } from "/snippets/install-command.jsx";
   className="w-full aspect-video rounded-xl border-0 bg-zinc-100 dark:bg-zinc-800"
   title="three-orbiting-cards preview"
   loading="lazy"
-  srcDoc={`<!doctype html><html><head><meta charset="utf-8"><style>html,body{margin:0;height:100%;overflow:hidden;background:transparent}hyperframes-player{display:block;width:100%;height:100%}</style><script src="https://cdn.jsdelivr.net/npm/@hyperframes/player@latest/dist/hyperframes-player.global.js"><\/script></head><body><script>fetch("/public/catalog/components/three-orbiting-cards.json").then(function(r){return r.json()}).then(function(d){var p=document.createElement("hyperframes-player");p.setAttribute("srcdoc",d.html);p.setAttribute("controls","");p.setAttribute("autoplay","");p.setAttribute("loop","");p.setAttribute("muted","");p.setAttribute("poster","https://static.heygen.ai/hyperframes-oss/docs/images/catalog/components/three-orbiting-cards.png");document.body.appendChild(p)});<\/script></body></html>`}
+  srcDoc={`<!doctype html><html><head><meta charset="utf-8"><style>html,body{margin:0;height:100%;overflow:hidden;background:transparent}smashcut-player{display:block;width:100%;height:100%}</style><script src="https://cdn.jsdelivr.net/npm/@smashcut/player@latest/dist/smashcut-player.global.js"><\/script></head><body><script>fetch("/public/catalog/components/three-orbiting-cards.json").then(function(r){return r.json()}).then(function(d){var p=document.createElement("smashcut-player");p.setAttribute("srcdoc",d.html);p.setAttribute("controls","");p.setAttribute("autoplay","");p.setAttribute("loop","");p.setAttribute("muted","");p.setAttribute("poster","https://static.heygen.ai/smashcut-oss/docs/images/catalog/components/three-orbiting-cards.png");document.body.appendChild(p)});<\/script></body></html>`}
 />
 
 ## Install
 
-<InstallCommand command="npx hyperframes add three-orbiting-cards" item="three-orbiting-cards" />
+<InstallCommand command="npx smashcut add three-orbiting-cards" item="three-orbiting-cards" />
 
 That writes one file: `compositions/components/three-orbiting-cards.html`.
 
@@ -24,14 +24,14 @@ That writes one file: `compositions/components/three-orbiting-cards.html`.
 
 ```html
 <!--
-  Three Orbiting Cards - advanced HyperFrames primitive.
+  Three Orbiting Cards - advanced SmashCut primitive.
 
   This is intentionally seekable: drive it from a paused GSAP timeline.
   MotionPath examples require GSAP MotionPathPlugin. Three.js examples expose
   a render(progress) adapter instead of a free-running requestAnimationFrame loop.
 -->
 
-<div class="hf-advanced-three-orbiting-cards">
+<div class="sc-advanced-three-orbiting-cards">
   <canvas></canvas>
   <div class="label">
     <h3>Three Orbiting Cards</h3>
@@ -42,11 +42,11 @@ That writes one file: `compositions/components/three-orbiting-cards.html`.
 </div>
 
 <style>
-  .hf-advanced-three-orbiting-cards {
+  .sc-advanced-three-orbiting-cards {
     color: #111827;
     font-family: Inter, system-ui, sans-serif;
   }
-  .hf-advanced-three-orbiting-cards {
+  .sc-advanced-three-orbiting-cards {
     position: relative;
     width: 760px;
     height: 430px;
@@ -55,23 +55,23 @@ That writes one file: `compositions/components/three-orbiting-cards.html`.
     background: #050816;
     box-shadow: 0 28px 80px rgba(15, 23, 42, 0.2);
   }
-  .hf-advanced-three-orbiting-cards canvas {
+  .sc-advanced-three-orbiting-cards canvas {
     display: block;
     width: 100%;
     height: 100%;
   }
-  .hf-advanced-three-orbiting-cards .label {
+  .sc-advanced-three-orbiting-cards .label {
     position: absolute;
     left: 28px;
     bottom: 26px;
     color: #fff;
   }
-  .hf-advanced-three-orbiting-cards h3 {
+  .sc-advanced-three-orbiting-cards h3 {
     margin: 0;
     font-size: 34px;
     letter-spacing: -0.05em;
   }
-  .hf-advanced-three-orbiting-cards p {
+  .sc-advanced-three-orbiting-cards p {
     margin: 6px 0 0;
     color: rgba(255, 255, 255, 0.62);
   }
@@ -80,14 +80,14 @@ That writes one file: `compositions/components/three-orbiting-cards.html`.
 <!--
   Timeline integration:
   const startTime = 0;
-  if (window.__hfThreeRender_three_orbiting_cards) { tl.to(window.__hfThreeRender_three_orbiting_cards.state, { progress: 1, duration: 4, ease: 'none', onUpdate: window.__hfThreeRender_three_orbiting_cards.render }, startTime); }
+  if (window.__scThreeRender_three_orbiting_cards) { tl.to(window.__scThreeRender_three_orbiting_cards.state, { progress: 1, duration: 4, ease: 'none', onUpdate: window.__scThreeRender_three_orbiting_cards.render }, startTime); }
 -->
 
 <!-- Optional Three.js adapter for demos. In production, copy this once and dispose renderer resources when the host composition is removed. -->
 <script type="module">
   import * as THREE from "https://cdn.jsdelivr.net/npm/three@0.184.0/build/three.module.js";
 
-  const host = document.querySelector(".hf-advanced-three-orbiting-cards");
+  const host = document.querySelector(".sc-advanced-three-orbiting-cards");
   const canvas = host.querySelector("canvas");
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
   renderer.setPixelRatio(1);
@@ -138,7 +138,7 @@ That writes one file: `compositions/components/three-orbiting-cards.html`.
   }
   render();
 
-  window.__hfThreeRender_three_orbiting_cards = { state, render };
+  window.__scThreeRender_three_orbiting_cards = { state, render };
 </script>
 ```
 
@@ -150,7 +150,7 @@ Open `compositions/components/three-orbiting-cards.html` and paste its contents 
 
 {/* hf:generated-footer */}
 
-Tagged `video-primitive` `three-js` `webgl` `hyperframes-native`.
+Tagged `video-primitive` `three-js` `webgl` `smashcut-native`.
 
 ## Related topics
 

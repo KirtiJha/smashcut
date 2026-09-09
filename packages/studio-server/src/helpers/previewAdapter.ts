@@ -5,7 +5,7 @@ import {
   STUDIO_HEIGHT_PROP,
   STUDIO_MANUAL_EDIT_GESTURE_ATTR,
 } from "./draftMarkers.js";
-import { readClipTiming } from "@hyperframes/core/composition-contract";
+import { readClipTiming } from "@smashcut/core/composition-contract";
 
 export type DraftPayload =
   | { type: "move"; hfId: string; dx: number; dy: number }
@@ -40,13 +40,13 @@ export function createPreviewAdapter(
   let gesture: GestureState | null = null;
 
   function findById(hfId: string): HTMLElement | null {
-    // CSS.escape is available in browsers; hf-ids are always hf-[a-z0-9]+ so
+    // CSS.escape is available in browsers; sc-ids are always hf-[a-z0-9]+ so
     // no escaping is strictly needed, but be safe in non-browser environments.
     const escaped =
       typeof CSS !== "undefined" && typeof CSS.escape === "function"
         ? CSS.escape(hfId)
         : hfId.replace(/([^\w-])/g, "\\$1");
-    return doc.querySelector(`[data-hf-id="${escaped}"]`) as HTMLElement | null;
+    return doc.querySelector(`[data-sc-id="${escaped}"]`) as HTMLElement | null;
   }
 
   function isVisible(el: Element): boolean {
@@ -82,11 +82,11 @@ export function createPreviewAdapter(
 
       let el: Element | null = hit;
       while (el && el !== doc.body) {
-        if (el.hasAttribute("data-hf-id")) {
+        if (el.hasAttribute("data-sc-id")) {
           return isVisible(el) ? (el as HTMLElement) : null;
         }
-        // data-hf-root without data-hf-id = outermost stage root — stop
-        if (el.hasAttribute("data-hf-root")) return null;
+        // data-sc-root without data-sc-id = outermost stage root — stop
+        if (el.hasAttribute("data-sc-root")) return null;
         el = el.parentElement;
       }
       return null;
@@ -163,8 +163,8 @@ export function createPreviewAdapter(
       };
 
       const result: Record<string, { start?: number; end?: number }> = {};
-      for (const el of doc.querySelectorAll("[data-hf-id]")) {
-        const hfId = el.getAttribute("data-hf-id");
+      for (const el of doc.querySelectorAll("[data-sc-id]")) {
+        const hfId = el.getAttribute("data-sc-id");
         if (!hfId) continue;
         const timing = resolveTiming(el);
         result[hfId] = {

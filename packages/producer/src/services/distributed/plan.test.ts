@@ -19,7 +19,7 @@ import { afterAll, beforeAll, describe, expect, it } from "bun:test";
 import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { applyConcreteGpuScreenshotClamp, buildChromeArgs } from "@hyperframes/engine";
+import { applyConcreteGpuScreenshotClamp, buildChromeArgs } from "@smashcut/engine";
 import { recomputePlanHashFromPlanDir } from "../render/stages/freezePlan.js";
 import { RenderQualityError } from "../renderOrchestrator.js";
 import { CURRENT_PLAN_PROTOCOL } from "./planProtocol.js";
@@ -52,7 +52,7 @@ let projectDir: string;
 let runRoot: string;
 
 beforeAll(() => {
-  runRoot = mkdtempSync(join(tmpdir(), "hf-plan-test-"));
+  runRoot = mkdtempSync(join(tmpdir(), "sc-plan-test-"));
   projectDir = join(runRoot, "project");
   mkdirSync(projectDir, { recursive: true });
   writeFileSync(join(projectDir, "index.html"), FIXTURE_HTML, "utf-8");

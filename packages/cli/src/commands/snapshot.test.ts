@@ -98,7 +98,7 @@ describe("transparent snapshot capture", () => {
 
 describe("snapshot lint preflight", () => {
   async function runEntryMismatch(candidate: string): Promise<string> {
-    const project = mkdtempSync(join(tmpdir(), "hf-snapshot-entry-mismatch-"));
+    const project = mkdtempSync(join(tmpdir(), "sc-snapshot-entry-mismatch-"));
     const candidatePath = join(project, candidate);
     mkdirSync(dirname(candidatePath), { recursive: true });
     writeFileSync(
@@ -133,14 +133,14 @@ describe("snapshot lint preflight", () => {
     const output = await runEntryMismatch("compositions/card.html");
 
     expect(output).toContain("compositions/card.html");
-    expect(output).not.toContain("hyperframes snapshot <project>/compositions");
+    expect(output).not.toContain("smashcut snapshot <project>/compositions");
     expect(output).toContain("snapshot accepts project directories, not individual HTML files");
   });
 
   it("suggests the reported index.html directory with the re-rooting caveat", async () => {
     const output = await runEntryMismatch("compositions/index.html");
 
-    expect(output).toContain("hyperframes snapshot <project>/compositions");
+    expect(output).toContain("smashcut snapshot <project>/compositions");
     expect(output).toContain("assets are self-contained under that directory");
   });
 });

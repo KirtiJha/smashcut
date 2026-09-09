@@ -57,7 +57,7 @@
         font-size: 42px;
         line-height: 1.18;
       }
-      .hf-soft-blur-in {
+      .sc-soft-blur-in {
         opacity: 0;
         transform: translate3d(0, 28px, 0);
         filter: blur(18px);
@@ -79,9 +79,9 @@
   ]'
     >
       <div class="wrap">
-        <div class="eyebrow hf-soft-blur-in">Motion Primitive</div>
-        <div class="title hf-soft-blur-in">Soft blur reveals that feel cinematic.</div>
-        <div class="copy hf-soft-blur-in">
+        <div class="eyebrow sc-soft-blur-in">Motion Primitive</div>
+        <div class="title sc-soft-blur-in">Soft blur reveals that feel cinematic.</div>
+        <div class="copy sc-soft-blur-in">
           Use it for titles, labels, stats, and scene intros without adding a framework.
         </div>
       </div>
@@ -90,8 +90,8 @@
           "use strict";
 
           var vars =
-            window.__hyperframes && window.__hyperframes.getVariables
-              ? window.__hyperframes.getVariables()
+            window.__smashcut && window.__smashcut.getVariables
+              ? window.__smashcut.getVariables()
               : {};
 
           // Unrecognised overrides return to their declared defaults.
@@ -110,14 +110,14 @@
           // Set on the root so every element carrying the class inherits the values,
           // whether it exists yet or not.
           var root = document.documentElement;
-          root.style.setProperty("--hf-soft-blur-y", distance * direction + "px");
-          root.style.setProperty("--hf-soft-blur-radius", blur + "px");
+          root.style.setProperty("--sc-soft-blur-y", distance * direction + "px");
+          root.style.setProperty("--sc-soft-blur-radius", blur + "px");
         })();
       </script>
       <script>
         const tl = gsap.timeline({ paused: true });
         tl.to(
-          ".hf-soft-blur-in",
+          ".sc-soft-blur-in",
           {
             opacity: 1,
             y: 0,
@@ -139,10 +139,10 @@
     { "id": "blur", "type": "enum", "role": "style", "label": "Blur", "description": "Starting blur radius, from a light haze to a full smear.", "default": "standard", "options": [{ "value": "soft", "label": "Soft" }, { "value": "standard", "label": "Standard" }, { "value": "heavy", "label": "Heavy" }] }
   ]'
     >
-      .hf-soft-blur-in {
+      .sc-soft-blur-in {
         opacity: 0;
-        transform: translate3d(0, var(--hf-soft-blur-y, 28px), 0);
-        filter: blur(var(--hf-soft-blur-radius, 18px));
+        transform: translate3d(0, var(--sc-soft-blur-y, 28px), 0);
+        filter: blur(var(--sc-soft-blur-radius, 18px));
         will-change: transform, opacity, filter;
       }
     </style>

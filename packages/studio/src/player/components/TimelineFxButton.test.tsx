@@ -2,7 +2,7 @@
 import React, { act } from "react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { createRoot } from "react-dom/client";
-import { serializeAudioFxChain } from "@hyperframes/core/audio-fx";
+import { serializeAudioFxChain } from "@smashcut/core/audio-fx";
 import { TimelineFxButton } from "./TimelineFxButton.js";
 
 (globalThis as unknown as { IS_REACT_ACT_ENVIRONMENT: boolean }).IS_REACT_ACT_ENVIRONMENT = true;
@@ -86,10 +86,10 @@ describe("TimelineFxButton", () => {
       />,
     );
     act(() => byTextButton(host, "FX")?.click());
-    const preset = document.querySelector<HTMLButtonElement>(".hf-fx-preset-item");
+    const preset = document.querySelector<HTMLButtonElement>(".sc-fx-preset-item");
     act(() => preset?.dispatchEvent(new MouseEvent("mouseover", { bubbles: true })));
     expect(onSetMutedLive).toHaveBeenLastCalledWith(false);
-    const shelf = document.querySelector(".hf-fx-preset-menu");
+    const shelf = document.querySelector(".sc-fx-preset-menu");
     act(() => shelf?.dispatchEvent(new MouseEvent("mouseout", { bubbles: true })));
     expect(onSetMutedLive).toHaveBeenLastCalledWith(true);
   });
@@ -107,7 +107,7 @@ describe("TimelineFxButton", () => {
       />,
     );
     act(() => byTextButton(host, "FX")?.click());
-    const preset = document.querySelector<HTMLButtonElement>(".hf-fx-preset-item");
+    const preset = document.querySelector<HTMLButtonElement>(".sc-fx-preset-item");
     act(() => preset?.dispatchEvent(new MouseEvent("mouseover", { bubbles: true })));
     expect(onSetMutedLive).not.toHaveBeenCalled();
   });
@@ -135,7 +135,7 @@ describe("TimelineFxButton", () => {
     }
     const host = mount(<Harness />);
     act(() => byTextButton(host, "FX")?.click());
-    const items = Array.from(document.querySelectorAll<HTMLButtonElement>(".hf-fx-preset-item"));
+    const items = Array.from(document.querySelectorAll<HTMLButtonElement>(".sc-fx-preset-item"));
     const [hovered, clicked] = [items[0], items[1]];
     act(() => hovered?.dispatchEvent(new MouseEvent("mouseover", { bubbles: true })));
     act(() => clicked?.click());

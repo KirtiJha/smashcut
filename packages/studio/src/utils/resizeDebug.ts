@@ -1,5 +1,5 @@
-// Resize/gesture diagnostics — grep [hf-resize]. Off by default; opt in per
-// session with `localStorage.setItem("hf-resize-debug", "1")` (then reload).
+// Resize/gesture diagnostics — grep [sc-resize]. Off by default; opt in per
+// session with `localStorage.setItem("sc-resize-debug", "1")` (then reload).
 // Granular per-move/per-gesture tracing for resize investigation.
 import { makeStudioDebugLogger } from "./studioDebug";
 

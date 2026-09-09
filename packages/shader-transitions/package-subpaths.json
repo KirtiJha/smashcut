@@ -1,5 +1,5 @@
 {
-  "package": "@hyperframes/shader-transitions",
+  "package": "@smashcut/shader-transitions",
   "subpaths": {
     ".": {
       "source": "./src/index.ts",

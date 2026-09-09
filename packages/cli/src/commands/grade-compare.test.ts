@@ -2,7 +2,7 @@ import { readFileSync, writeFileSync } from "node:fs";
 import { mkdtempSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { basename, join } from "node:path";
-import { HF_COLOR_GRADING_ATTR, serializeHfColorGrading } from "@hyperframes/core";
+import { HF_COLOR_GRADING_ATTR, serializeHfColorGrading } from "@smashcut/core";
 import { describe, expect, it, vi } from "vitest";
 import {
   buildGradeCompareHtml,
@@ -17,7 +17,7 @@ import {
 } from "./grade-compare.js";
 
 function tempDir(): string {
-  return mkdtempSync(join(tmpdir(), "hf-grade-compare-test-"));
+  return mkdtempSync(join(tmpdir(), "sc-grade-compare-test-"));
 }
 
 function validCubeLut(): string {

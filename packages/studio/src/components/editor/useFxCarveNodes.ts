@@ -12,7 +12,7 @@ import {
   mintAudioFxNodeId,
   type HfAudioFxChain,
   type HfAudioFxNode,
-} from "@hyperframes/core/audio-fx";
+} from "@smashcut/core/audio-fx";
 import {
   analyseCarveBands,
   analyseCarveDuck,
@@ -20,8 +20,8 @@ import {
   carveBandsToChain,
   carveProfile,
   mixCarveSources,
-} from "@hyperframes/core/audio-carve";
-import { fxAutomationTarget, type HfAutomationLane } from "@hyperframes/core/audio-automation";
+} from "@smashcut/core/audio-carve";
+import { fxAutomationTarget, type HfAutomationLane } from "@smashcut/core/audio-automation";
 import { clipStart } from "./propertyPanelAudioFxGroupUtils.js";
 
 /** Decode rate every carve measurement shares — see `measureCarve`. */

@@ -16,7 +16,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 ```html offset-path-traveler.html
 <!doctype html>
 <!--
-  offset-path-traveler: HyperFrames video primitive (product demo / path travel)
+  offset-path-traveler: SmashCut video primitive (product demo / path travel)
 
   One traveler follows an authored SVG path and rotates to its tangent. The
   traveler wrapper is the content slot; the default slot content is a chip.
@@ -186,8 +186,8 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
             var traveler = root.querySelector(".opt-traveler-slot");
             var label = root.querySelector(".opt-label");
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             var DEFAULT_PATH =
@@ -307,7 +307,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 
 ## Install
 
-<InstallCommand command="npx hyperframes add offset-path-traveler" item="offset-path-traveler" />
+<InstallCommand command="npx smashcut add offset-path-traveler" item="offset-path-traveler" />
 
 That writes one file: `compositions/components/offset-path-traveler.html`.
 
@@ -347,7 +347,7 @@ defaults, so this behaves exactly like the preview above until you change one:
 ```html
 <!doctype html>
 <!--
-  offset-path-traveler: HyperFrames video primitive (product demo / path travel)
+  offset-path-traveler: SmashCut video primitive (product demo / path travel)
 
   One traveler follows an authored SVG path and rotates to its tangent. The
   traveler wrapper is the content slot; the default slot content is a chip.
@@ -517,8 +517,8 @@ defaults, so this behaves exactly like the preview above until you change one:
             var traveler = root.querySelector(".opt-traveler-slot");
             var label = root.querySelector(".opt-label");
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             var DEFAULT_PATH =

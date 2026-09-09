@@ -22,7 +22,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
   Mount contract: MOUNTABLE SUB-COMPOSITION. The runtime clones only <template>
   contents; #root fills the host box (inset: 0, container-type: size), and the
   file registers one paused timeline under the literal "zoom-through-transition"
-  key. Variables come from window.__hyperframes.getVariables().
+  key. Variables come from window.__smashcut.getVariables().
 
   This file owns its motion. It previously shipped as a fragment whose only
   executable timeline lived in demo.html, so an installed copy rendered the
@@ -81,25 +81,25 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
             background: #111827;
           }
 
-          .hf-catalog-zoom-through-transition {
-            --hf-accent: var(--accent, rgba(255, 255, 255, 0.28));
-            --hf-l1: rgba(255, 255, 255, 0.72);
-            --hf-l3: rgba(255, 255, 255, 0.18);
-            --hf-l4: rgba(255, 255, 255, 0.08);
-            --hf-hair: rgba(255, 255, 255, 0.14);
-            --hf-ink: #111827;
-            --hf-muted: #6b7280;
-            --hf-surface: #ffffff;
-            color: var(--hf-ink);
+          .sc-catalog-zoom-through-transition {
+            --sc-accent: var(--accent, rgba(255, 255, 255, 0.28));
+            --sc-l1: rgba(255, 255, 255, 0.72);
+            --sc-l3: rgba(255, 255, 255, 0.18);
+            --sc-l4: rgba(255, 255, 255, 0.08);
+            --sc-hair: rgba(255, 255, 255, 0.14);
+            --sc-ink: #111827;
+            --sc-muted: #6b7280;
+            --sc-surface: #ffffff;
+            color: var(--sc-ink);
             font-family: Inter, system-ui, sans-serif;
           }
-          .hf-catalog-zoom-through-transition {
+          .sc-catalog-zoom-through-transition {
             position: absolute;
             inset: 0;
             overflow: hidden;
             background: #111827;
           }
-          .hf-catalog-zoom-through-transition .scene {
+          .sc-catalog-zoom-through-transition .scene {
             position: absolute;
             inset: 0;
             display: grid;
@@ -109,63 +109,63 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
             letter-spacing: -0.05em;
             color: #fff;
           }
-          .hf-catalog-zoom-through-transition .from {
+          .sc-catalog-zoom-through-transition .from {
             background:
               repeating-linear-gradient(
                 90deg,
                 rgba(255, 255, 255, 0.04) 0 1px,
                 transparent 1px 4px
               ),
-              var(--hf-l4);
+              var(--sc-l4);
             transform: translate(
-                calc(var(--hf-from-x, 0px) * var(--hf-depth, 1)),
-                calc(var(--hf-from-y, 0px) * var(--hf-depth, 1))
+                calc(var(--sc-from-x, 0px) * var(--sc-depth, 1)),
+                calc(var(--sc-from-y, 0px) * var(--sc-depth, 1))
               )
-              scale(var(--hf-from-scale, 1));
-            filter: blur(calc(var(--hf-from-blur, 0px) * var(--hf-depth, 1)));
+              scale(var(--sc-from-scale, 1));
+            filter: blur(calc(var(--sc-from-blur, 0px) * var(--sc-depth, 1)));
           }
-          .hf-catalog-zoom-through-transition .to {
+          .sc-catalog-zoom-through-transition .to {
             background:
               repeating-linear-gradient(
                 90deg,
                 rgba(255, 255, 255, 0.05) 0 1px,
                 transparent 1px 4px
               ),
-              var(--hf-l3);
-            box-shadow: inset 0 0 0 2px var(--hf-accent);
+              var(--sc-l3);
+            box-shadow: inset 0 0 0 2px var(--sc-accent);
             transform: translate(
-                calc(var(--hf-to-x, 0px) * var(--hf-depth, 1)),
-                calc(var(--hf-to-y, 0px) * var(--hf-depth, 1))
+                calc(var(--sc-to-x, 0px) * var(--sc-depth, 1)),
+                calc(var(--sc-to-y, 0px) * var(--sc-depth, 1))
               )
-              scale(var(--hf-to-scale, 1));
+              scale(var(--sc-to-scale, 1));
             clip-path: inset(
-              var(--hf-clip-top, 0%) var(--hf-clip-right, 100%) var(--hf-clip-bottom, 0%)
-                var(--hf-clip-left, 0%)
+              var(--sc-clip-top, 0%) var(--sc-clip-right, 100%) var(--sc-clip-bottom, 0%)
+                var(--sc-clip-left, 0%)
             );
           }
-          .hf-catalog-zoom-through-transition .fx {
+          .sc-catalog-zoom-through-transition .fx {
             position: absolute;
             inset: 0;
             background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.75), transparent);
             mix-blend-mode: screen;
-            transform: translateX(var(--hf-fx-x, -110%));
+            transform: translateX(var(--sc-fx-x, -110%));
           }
-          .hf-catalog-zoom-through-transition .rgb {
+          .sc-catalog-zoom-through-transition .rgb {
             position: absolute;
             inset: 0;
             pointer-events: none;
-            opacity: var(--hf-rgb-opacity, 0);
+            opacity: var(--sc-rgb-opacity, 0);
             background: linear-gradient(
               90deg,
               rgba(239, 68, 68, 0.35),
               transparent,
               rgba(34, 211, 238, 0.35)
             );
-            transform: translateX(var(--hf-rgb-x, 0px));
+            transform: translateX(var(--sc-rgb-x, 0px));
           }
         </style>
 
-        <div class="hf-catalog-zoom-through-transition">
+        <div class="sc-catalog-zoom-through-transition">
           >
           <div class="scene from">Before</div>
           <div class="scene to">Zoom Through Transition</div>
@@ -179,8 +179,8 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
             "use strict";
 
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             // Unrecognised overrides return to their declared defaults.
@@ -207,12 +207,12 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
             var fromLabel = label(vars["from-label"]);
             var toLabel = label(vars["to-label"]);
 
-            var roots = document.querySelectorAll(".hf-catalog-zoom-through-transition");
+            var roots = document.querySelectorAll(".sc-catalog-zoom-through-transition");
             var mountRoot = document.getElementById("root");
             for (var i = 0; i < roots.length; i += 1) {
               var root = roots[i];
-              root.style.setProperty("--hf-depth", String(depth));
-              root.style.setProperty("--hf-accent", accent);
+              root.style.setProperty("--sc-depth", String(depth));
+              root.style.setProperty("--sc-accent", accent);
 
               var fromScene = root.querySelector(".from");
               var toScene = root.querySelector(".to");
@@ -230,7 +230,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
             // this composition's own id so the runtime seeks it frame by frame.
             if (!mountRoot || !window.gsap) return;
 
-            var SELF = ".hf-catalog-zoom-through-transition";
+            var SELF = ".sc-catalog-zoom-through-transition";
             var duration = Math.max(0.001, parseFloat(mountRoot.dataset.duration || "3"));
             // The push reads as a transition only with a beat of the outgoing scene
             // before it. Clamped so the wipe always lands inside the duration.
@@ -241,11 +241,11 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 
             tl.fromTo(
               SELF + " .to",
-              { "--hf-clip-right": "100%", "--hf-to-x": "60px", "--hf-to-scale": 1.04 },
+              { "--sc-clip-right": "100%", "--sc-to-x": "60px", "--sc-to-scale": 1.04 },
               {
-                "--hf-clip-right": "0%",
-                "--hf-to-x": "0px",
-                "--hf-to-scale": 1,
+                "--sc-clip-right": "0%",
+                "--sc-to-x": "0px",
+                "--sc-to-scale": 1,
                 duration: PUSH,
                 ease: "power3.inOut",
               },
@@ -253,11 +253,11 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
             );
             tl.fromTo(
               SELF + " .from",
-              { "--hf-from-x": "0px", "--hf-from-scale": 1, "--hf-from-blur": "0px" },
+              { "--sc-from-x": "0px", "--sc-from-scale": 1, "--sc-from-blur": "0px" },
               {
-                "--hf-from-x": "-70px",
-                "--hf-from-scale": 0.96,
-                "--hf-from-blur": "5px",
+                "--sc-from-x": "-70px",
+                "--sc-from-scale": 0.96,
+                "--sc-from-blur": "5px",
                 duration: PUSH,
                 ease: "power3.inOut",
               },
@@ -265,18 +265,18 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
             );
             tl.fromTo(
               SELF + " .fx",
-              { "--hf-fx-x": "-110%" },
-              { "--hf-fx-x": "110%", duration: 0.58, ease: "power2.inOut" },
+              { "--sc-fx-x": "-110%" },
+              { "--sc-fx-x": "110%", duration: 0.58, ease: "power2.inOut" },
               START + 0.18,
             );
             // repeat/yoyo resolves from absolute time on every seek, so the strobe is
             // reproducible at any frame rather than accumulated across ticks.
             tl.fromTo(
               SELF + " .rgb",
-              { "--hf-rgb-opacity": 0, "--hf-rgb-x": "-16px" },
+              { "--sc-rgb-opacity": 0, "--sc-rgb-x": "-16px" },
               {
-                "--hf-rgb-opacity": 1,
-                "--hf-rgb-x": "16px",
+                "--sc-rgb-opacity": 1,
+                "--sc-rgb-x": "16px",
                 repeat: 3,
                 yoyo: true,
                 duration: 0.07,
@@ -304,7 +304,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 
 ## Install
 
-<InstallCommand command="npx hyperframes add zoom-through-transition" item="zoom-through-transition" />
+<InstallCommand command="npx smashcut add zoom-through-transition" item="zoom-through-transition" />
 
 That writes one file: `compositions/components/zoom-through-transition.html`.
 
@@ -344,7 +344,7 @@ defaults, so this behaves exactly like the preview above until you change one:
   Mount contract: MOUNTABLE SUB-COMPOSITION. The runtime clones only <template>
   contents; #root fills the host box (inset: 0, container-type: size), and the
   file registers one paused timeline under the literal "zoom-through-transition"
-  key. Variables come from window.__hyperframes.getVariables().
+  key. Variables come from window.__smashcut.getVariables().
 
   This file owns its motion. It previously shipped as a fragment whose only
   executable timeline lived in demo.html, so an installed copy rendered the
@@ -403,25 +403,25 @@ defaults, so this behaves exactly like the preview above until you change one:
             background: #111827;
           }
 
-          .hf-catalog-zoom-through-transition {
-            --hf-accent: var(--accent, rgba(255, 255, 255, 0.28));
-            --hf-l1: rgba(255, 255, 255, 0.72);
-            --hf-l3: rgba(255, 255, 255, 0.18);
-            --hf-l4: rgba(255, 255, 255, 0.08);
-            --hf-hair: rgba(255, 255, 255, 0.14);
-            --hf-ink: #111827;
-            --hf-muted: #6b7280;
-            --hf-surface: #ffffff;
-            color: var(--hf-ink);
+          .sc-catalog-zoom-through-transition {
+            --sc-accent: var(--accent, rgba(255, 255, 255, 0.28));
+            --sc-l1: rgba(255, 255, 255, 0.72);
+            --sc-l3: rgba(255, 255, 255, 0.18);
+            --sc-l4: rgba(255, 255, 255, 0.08);
+            --sc-hair: rgba(255, 255, 255, 0.14);
+            --sc-ink: #111827;
+            --sc-muted: #6b7280;
+            --sc-surface: #ffffff;
+            color: var(--sc-ink);
             font-family: Inter, system-ui, sans-serif;
           }
-          .hf-catalog-zoom-through-transition {
+          .sc-catalog-zoom-through-transition {
             position: absolute;
             inset: 0;
             overflow: hidden;
             background: #111827;
           }
-          .hf-catalog-zoom-through-transition .scene {
+          .sc-catalog-zoom-through-transition .scene {
             position: absolute;
             inset: 0;
             display: grid;
@@ -431,63 +431,63 @@ defaults, so this behaves exactly like the preview above until you change one:
             letter-spacing: -0.05em;
             color: #fff;
           }
-          .hf-catalog-zoom-through-transition .from {
+          .sc-catalog-zoom-through-transition .from {
             background:
               repeating-linear-gradient(
                 90deg,
                 rgba(255, 255, 255, 0.04) 0 1px,
                 transparent 1px 4px
               ),
-              var(--hf-l4);
+              var(--sc-l4);
             transform: translate(
-                calc(var(--hf-from-x, 0px) * var(--hf-depth, 1)),
-                calc(var(--hf-from-y, 0px) * var(--hf-depth, 1))
+                calc(var(--sc-from-x, 0px) * var(--sc-depth, 1)),
+                calc(var(--sc-from-y, 0px) * var(--sc-depth, 1))
               )
-              scale(var(--hf-from-scale, 1));
-            filter: blur(calc(var(--hf-from-blur, 0px) * var(--hf-depth, 1)));
+              scale(var(--sc-from-scale, 1));
+            filter: blur(calc(var(--sc-from-blur, 0px) * var(--sc-depth, 1)));
           }
-          .hf-catalog-zoom-through-transition .to {
+          .sc-catalog-zoom-through-transition .to {
             background:
               repeating-linear-gradient(
                 90deg,
                 rgba(255, 255, 255, 0.05) 0 1px,
                 transparent 1px 4px
               ),
-              var(--hf-l3);
-            box-shadow: inset 0 0 0 2px var(--hf-accent);
+              var(--sc-l3);
+            box-shadow: inset 0 0 0 2px var(--sc-accent);
             transform: translate(
-                calc(var(--hf-to-x, 0px) * var(--hf-depth, 1)),
-                calc(var(--hf-to-y, 0px) * var(--hf-depth, 1))
+                calc(var(--sc-to-x, 0px) * var(--sc-depth, 1)),
+                calc(var(--sc-to-y, 0px) * var(--sc-depth, 1))
               )
-              scale(var(--hf-to-scale, 1));
+              scale(var(--sc-to-scale, 1));
             clip-path: inset(
-              var(--hf-clip-top, 0%) var(--hf-clip-right, 100%) var(--hf-clip-bottom, 0%)
-                var(--hf-clip-left, 0%)
+              var(--sc-clip-top, 0%) var(--sc-clip-right, 100%) var(--sc-clip-bottom, 0%)
+                var(--sc-clip-left, 0%)
             );
           }
-          .hf-catalog-zoom-through-transition .fx {
+          .sc-catalog-zoom-through-transition .fx {
             position: absolute;
             inset: 0;
             background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.75), transparent);
             mix-blend-mode: screen;
-            transform: translateX(var(--hf-fx-x, -110%));
+            transform: translateX(var(--sc-fx-x, -110%));
           }
-          .hf-catalog-zoom-through-transition .rgb {
+          .sc-catalog-zoom-through-transition .rgb {
             position: absolute;
             inset: 0;
             pointer-events: none;
-            opacity: var(--hf-rgb-opacity, 0);
+            opacity: var(--sc-rgb-opacity, 0);
             background: linear-gradient(
               90deg,
               rgba(239, 68, 68, 0.35),
               transparent,
               rgba(34, 211, 238, 0.35)
             );
-            transform: translateX(var(--hf-rgb-x, 0px));
+            transform: translateX(var(--sc-rgb-x, 0px));
           }
         </style>
 
-        <div class="hf-catalog-zoom-through-transition">
+        <div class="sc-catalog-zoom-through-transition">
           >
           <div class="scene from">Before</div>
           <div class="scene to">Zoom Through Transition</div>
@@ -501,8 +501,8 @@ defaults, so this behaves exactly like the preview above until you change one:
             "use strict";
 
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             // Unrecognised overrides return to their declared defaults.
@@ -529,12 +529,12 @@ defaults, so this behaves exactly like the preview above until you change one:
             var fromLabel = label(vars["from-label"]);
             var toLabel = label(vars["to-label"]);
 
-            var roots = document.querySelectorAll(".hf-catalog-zoom-through-transition");
+            var roots = document.querySelectorAll(".sc-catalog-zoom-through-transition");
             var mountRoot = document.getElementById("root");
             for (var i = 0; i < roots.length; i += 1) {
               var root = roots[i];
-              root.style.setProperty("--hf-depth", String(depth));
-              root.style.setProperty("--hf-accent", accent);
+              root.style.setProperty("--sc-depth", String(depth));
+              root.style.setProperty("--sc-accent", accent);
 
               var fromScene = root.querySelector(".from");
               var toScene = root.querySelector(".to");
@@ -552,7 +552,7 @@ defaults, so this behaves exactly like the preview above until you change one:
             // this composition's own id so the runtime seeks it frame by frame.
             if (!mountRoot || !window.gsap) return;
 
-            var SELF = ".hf-catalog-zoom-through-transition";
+            var SELF = ".sc-catalog-zoom-through-transition";
             var duration = Math.max(0.001, parseFloat(mountRoot.dataset.duration || "3"));
             // The push reads as a transition only with a beat of the outgoing scene
             // before it. Clamped so the wipe always lands inside the duration.
@@ -563,11 +563,11 @@ defaults, so this behaves exactly like the preview above until you change one:
 
             tl.fromTo(
               SELF + " .to",
-              { "--hf-clip-right": "100%", "--hf-to-x": "60px", "--hf-to-scale": 1.04 },
+              { "--sc-clip-right": "100%", "--sc-to-x": "60px", "--sc-to-scale": 1.04 },
               {
-                "--hf-clip-right": "0%",
-                "--hf-to-x": "0px",
-                "--hf-to-scale": 1,
+                "--sc-clip-right": "0%",
+                "--sc-to-x": "0px",
+                "--sc-to-scale": 1,
                 duration: PUSH,
                 ease: "power3.inOut",
               },
@@ -575,11 +575,11 @@ defaults, so this behaves exactly like the preview above until you change one:
             );
             tl.fromTo(
               SELF + " .from",
-              { "--hf-from-x": "0px", "--hf-from-scale": 1, "--hf-from-blur": "0px" },
+              { "--sc-from-x": "0px", "--sc-from-scale": 1, "--sc-from-blur": "0px" },
               {
-                "--hf-from-x": "-70px",
-                "--hf-from-scale": 0.96,
-                "--hf-from-blur": "5px",
+                "--sc-from-x": "-70px",
+                "--sc-from-scale": 0.96,
+                "--sc-from-blur": "5px",
                 duration: PUSH,
                 ease: "power3.inOut",
               },
@@ -587,18 +587,18 @@ defaults, so this behaves exactly like the preview above until you change one:
             );
             tl.fromTo(
               SELF + " .fx",
-              { "--hf-fx-x": "-110%" },
-              { "--hf-fx-x": "110%", duration: 0.58, ease: "power2.inOut" },
+              { "--sc-fx-x": "-110%" },
+              { "--sc-fx-x": "110%", duration: 0.58, ease: "power2.inOut" },
               START + 0.18,
             );
             // repeat/yoyo resolves from absolute time on every seek, so the strobe is
             // reproducible at any frame rather than accumulated across ticks.
             tl.fromTo(
               SELF + " .rgb",
-              { "--hf-rgb-opacity": 0, "--hf-rgb-x": "-16px" },
+              { "--sc-rgb-opacity": 0, "--sc-rgb-x": "-16px" },
               {
-                "--hf-rgb-opacity": 1,
-                "--hf-rgb-x": "16px",
+                "--sc-rgb-opacity": 1,
+                "--sc-rgb-x": "16px",
                 repeat: 3,
                 yoyo: true,
                 duration: 0.07,

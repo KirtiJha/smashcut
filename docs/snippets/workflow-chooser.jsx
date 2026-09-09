@@ -8,7 +8,7 @@
 export const WorkflowChooser = () => {
   // Keep data inside the component. Mintlify compiles only the named export and
   // drops module-level constants from snippet files.
-  const CDN = "https://static.heygen.ai/hyperframes-oss/docs/images/showcase";
+  const CDN = "https://static.heygen.ai/smashcut-oss/docs/images/showcase";
   const routes = [
     {
       title: "Show a product or website",
@@ -56,8 +56,8 @@ export const WorkflowChooser = () => {
       title: "Build a presentation",
       bring: "Bring an outline, pitch, report, or existing deck.",
       href: "/guides/slideshow",
-      video: "https://static.heygen.ai/hyperframes-oss/docs/images/showcase/wfv2-slideshow-v4.mp4",
-      poster: "https://static.heygen.ai/hyperframes-oss/docs/images/showcase/wfv2-slideshow.jpg",
+      video: "https://static.heygen.ai/smashcut-oss/docs/images/showcase/wfv2-slideshow-v4.mp4",
+      poster: "https://static.heygen.ai/smashcut-oss/docs/images/showcase/wfv2-slideshow.jpg",
     },
     {
       title: "Direct a custom video",
@@ -69,7 +69,7 @@ export const WorkflowChooser = () => {
     {
       title: "Port a Remotion composition",
       bring: "Bring an existing Remotion project. One-way migration, not a new build.",
-      href: "/guides/hyperframes-vs-remotion",
+      href: "/guides/smashcut-vs-remotion",
     },
   ];
 
@@ -107,13 +107,13 @@ export const WorkflowChooser = () => {
   }, [reducedMotion]);
 
   return (
-    <div className="hf-workflow-routes" ref={gridRef}>
+    <div className="sc-workflow-routes" ref={gridRef}>
       {routes.map((route) => (
         <a
           key={route.href}
           href={route.href}
           aria-label={`${route.title}. ${route.bring}`}
-          className="hf-workflow-route"
+          className="sc-workflow-route"
         >
           {/* A route without a preview renders no <video> at all. An empty
               video element draws a black rectangle, which reads as a broken
@@ -130,11 +130,11 @@ export const WorkflowChooser = () => {
               aria-hidden="true"
             />
           ) : (
-            <span className="hf-workflow-route-noclip" aria-hidden="true" />
+            <span className="sc-workflow-route-noclip" aria-hidden="true" />
           )}
           <span>
-            <span className="hf-workflow-route-title">{route.title}</span>
-            <span className="hf-workflow-route-copy">{route.bring}</span>
+            <span className="sc-workflow-route-title">{route.title}</span>
+            <span className="sc-workflow-route-copy">{route.bring}</span>
           </span>
         </a>
       ))}

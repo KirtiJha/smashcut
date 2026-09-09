@@ -1,12 +1,12 @@
 ---
-title: "How a HyperFrames project works"
+title: "How a SmashCut project works"
 sidebarTitle: "Project model"
-description: "Understand the editable files, compositions, timing, and tools behind a HyperFrames video."
+description: "Understand the editable files, compositions, timing, and tools behind a SmashCut video."
 ---
 
-A HyperFrames project is a folder your agent can create and you can keep
+A SmashCut project is a folder your agent can create and you can keep
 editing. Its HTML is the video: it describes the scenes, timing, motion, media,
-and reusable parts that HyperFrames plays or renders.
+and reusable parts that SmashCut plays or renders.
 
 One folder of HTML is the whole video. Every tool below reads and writes those
 same files — there is no export step between them and no second version of the
@@ -37,8 +37,8 @@ video. They work with the same project files.
 <div style={{ maxWidth: "42rem", margin: "1.5rem auto" }}>
   <Frame caption="The same editable project open in Studio, with its source, canvas, controls, and timeline.">
     <img
-      src="https://static.heygen.ai/hyperframes-oss/docs/images/studio/overview-v1.jpg"
-      alt="A HyperFrames project open in Studio with the source tree, canvas, controls, and timeline"
+      src="https://static.heygen.ai/smashcut-oss/docs/images/studio/overview-v1.jpg"
+      alt="A SmashCut project open in Studio with the source tree, canvas, controls, and timeline"
     />
   </Frame>
 </div>
@@ -57,7 +57,7 @@ project/
 ├── SCRIPT.md             locked narration, when the video has it
 ├── frame.md              visual direction, when the project needs one
 ├── index.html            the main composition
-├── hyperframes.json      project settings
+├── smashcut.json      project settings
 ├── compositions/         scenes and reusable visual parts
 ├── assets/               images, video, audio, and fonts
 └── renders/              finished files
@@ -147,7 +147,7 @@ project looks right, run the checks, render it, and watch the exported file.
 
 ## Why rendering can repeat the same moment
 
-HyperFrames seeks the composition to an exact time, captures the frame, and
+SmashCut seeks the composition to an exact time, captures the frame, and
 advances. Media and audio follow the same timeline.
 
 For the same source, media, and settings, an exact timestamp should resolve to

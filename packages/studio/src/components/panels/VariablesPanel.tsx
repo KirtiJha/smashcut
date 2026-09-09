@@ -4,7 +4,7 @@ import type {
   CompositionVariable,
   VariableUsageReport,
   VariableValidationIssue,
-} from "@hyperframes/sdk";
+} from "@smashcut/sdk";
 import type { EditHistoryKind } from "../../utils/editHistory";
 import type { PublishSdkSession } from "../../utils/sdkCutover";
 import { useStudioPlaybackContext, useStudioShellContext } from "../../contexts/StudioContext";
@@ -24,7 +24,7 @@ import {
 import { PreviewValueControl } from "./VariablesValueControls";
 import { copyTextToClipboard } from "../../utils/clipboard";
 import { resolveMasterCompositionPath } from "../../utils/studioUrlState";
-import { isScalarVariableValue as isScalar } from "@hyperframes/core/variables";
+import { isScalarVariableValue as isScalar } from "@smashcut/core/variables";
 
 /** POSIX single-quote escaping so the copied command survives quotes in values. */
 function shellSingleQuote(value: string): string {
@@ -213,7 +213,7 @@ function HandoffFooter({
   onCopy: (text: string, what: string) => void;
 }) {
   const json = JSON.stringify(effectiveValues);
-  const command = `npx hyperframes render ${shellSingleQuote(compPath)} --variables ${shellSingleQuote(json)}`;
+  const command = `npx smashcut render ${shellSingleQuote(compPath)} --variables ${shellSingleQuote(json)}`;
   return (
     <div className="space-y-1.5 rounded-lg border border-neutral-800/70 bg-neutral-900/40 p-2">
       <p className="text-[9px] font-medium uppercase tracking-wider text-neutral-500">

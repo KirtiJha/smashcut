@@ -5,36 +5,36 @@ description: "CSS luminance masks that cut holes through letterforms - 66 pre-bu
 
 import { InstallCommand } from "/snippets/install-command.jsx";
 
-<div className="hf-texture-preview-panel">
-  <div className="hf-texture-preview-card" style={{ "--mask-url": "url('https://static.heygen.ai/hyperframes-oss/docs/images/catalog/components/texture-mask-text/masks/brick.png')" }}>
-    <div className="hf-texture-preview-label">Brick</div>
-    <div className="hf-texture-preview-shadow"><div className="hf-texture-preview-word">BRICK</div></div>
+<div className="sc-texture-preview-panel">
+  <div className="sc-texture-preview-card" style={{ "--mask-url": "url('https://static.heygen.ai/smashcut-oss/docs/images/catalog/components/texture-mask-text/masks/brick.png')" }}>
+    <div className="sc-texture-preview-label">Brick</div>
+    <div className="sc-texture-preview-shadow"><div className="sc-texture-preview-word">BRICK</div></div>
   </div>
-  <div className="hf-texture-preview-card" style={{ "--mask-url": "url('https://static.heygen.ai/hyperframes-oss/docs/images/catalog/components/texture-mask-text/masks/rock.png')" }}>
-    <div className="hf-texture-preview-label">Rock</div>
-    <div className="hf-texture-preview-shadow"><div className="hf-texture-preview-word">ROCK</div></div>
+  <div className="sc-texture-preview-card" style={{ "--mask-url": "url('https://static.heygen.ai/smashcut-oss/docs/images/catalog/components/texture-mask-text/masks/rock.png')" }}>
+    <div className="sc-texture-preview-label">Rock</div>
+    <div className="sc-texture-preview-shadow"><div className="sc-texture-preview-word">ROCK</div></div>
   </div>
-  <div className="hf-texture-preview-card" style={{ "--mask-url": "url('https://static.heygen.ai/hyperframes-oss/docs/images/catalog/components/texture-mask-text/masks/ground-103.png')" }}>
-    <div className="hf-texture-preview-label">Ground 103</div>
-    <div className="hf-texture-preview-shadow"><div className="hf-texture-preview-word">GROUND</div></div>
+  <div className="sc-texture-preview-card" style={{ "--mask-url": "url('https://static.heygen.ai/smashcut-oss/docs/images/catalog/components/texture-mask-text/masks/ground-103.png')" }}>
+    <div className="sc-texture-preview-label">Ground 103</div>
+    <div className="sc-texture-preview-shadow"><div className="sc-texture-preview-word">GROUND</div></div>
   </div>
-  <div className="hf-texture-preview-card" style={{ "--mask-url": "url('https://static.heygen.ai/hyperframes-oss/docs/images/catalog/components/texture-mask-text/masks/wood.png')" }}>
-    <div className="hf-texture-preview-label">Wood</div>
-    <div className="hf-texture-preview-shadow"><div className="hf-texture-preview-word">WOOD</div></div>
+  <div className="sc-texture-preview-card" style={{ "--mask-url": "url('https://static.heygen.ai/smashcut-oss/docs/images/catalog/components/texture-mask-text/masks/wood.png')" }}>
+    <div className="sc-texture-preview-label">Wood</div>
+    <div className="sc-texture-preview-shadow"><div className="sc-texture-preview-word">WOOD</div></div>
   </div>
-  <div className="hf-texture-preview-card" style={{ "--mask-url": "url('https://static.heygen.ai/hyperframes-oss/docs/images/catalog/components/texture-mask-text/masks/metal.png')" }}>
-    <div className="hf-texture-preview-label">Metal</div>
-    <div className="hf-texture-preview-shadow"><div className="hf-texture-preview-word">METAL</div></div>
+  <div className="sc-texture-preview-card" style={{ "--mask-url": "url('https://static.heygen.ai/smashcut-oss/docs/images/catalog/components/texture-mask-text/masks/metal.png')" }}>
+    <div className="sc-texture-preview-label">Metal</div>
+    <div className="sc-texture-preview-shadow"><div className="sc-texture-preview-word">METAL</div></div>
   </div>
-  <div className="hf-texture-preview-card" style={{ "--mask-url": "url('https://static.heygen.ai/hyperframes-oss/docs/images/catalog/components/texture-mask-text/masks/lava.png')" }}>
-    <div className="hf-texture-preview-label">Lava</div>
-    <div className="hf-texture-preview-shadow"><div className="hf-texture-preview-word">LAVA</div></div>
+  <div className="sc-texture-preview-card" style={{ "--mask-url": "url('https://static.heygen.ai/smashcut-oss/docs/images/catalog/components/texture-mask-text/masks/lava.png')" }}>
+    <div className="sc-texture-preview-label">Lava</div>
+    <div className="sc-texture-preview-shadow"><div className="sc-texture-preview-word">LAVA</div></div>
   </div>
 </div>
 
 ## Install
 
-<InstallCommand command="npx hyperframes add texture-mask-text" item="texture-mask-text" />
+<InstallCommand command="npx smashcut add texture-mask-text" item="texture-mask-text" />
 
 That writes `compositions/components/texture-mask-text/texture-mask-text.html`, plus 66 supporting files under `assets/texture-mask-text/masks/`.
 
@@ -46,7 +46,7 @@ That writes `compositions/components/texture-mask-text/texture-mask-text.html`, 
 <!--
   Texture Mask Text - CSS luminance masks that cut holes through letterforms.
 
-  Usage: add class="hf-texture-text hf-texture-{name}" to any text element.
+  Usage: add class="sc-texture-text sc-texture-{name}" to any text element.
   Paste the real style element near the bottom of this file into your composition's HTML once.
   Texture PNGs install to assets/texture-mask-text/masks; these CSS classes
   reference them with project-root URLs so the CSS block can be pasted
@@ -54,82 +54,82 @@ That writes `compositions/components/texture-mask-text/texture-mask-text.html`, 
 
   Available textures (66 total):
     Masonry:
-      hf-texture-brick                - mortar line patterns
-      hf-texture-bricks-104           - ambientCG Bricks104
-      hf-texture-bricks-102           - ambientCG Bricks102
-      hf-texture-bricks-101           - ambientCG Bricks101
-      hf-texture-bricks-075-a         - ambientCG Bricks075A
-      hf-texture-concrete             - streaked channel cuts
-      hf-texture-concrete-034         - ambientCG Concrete034
-      hf-texture-concrete-047-a       - ambientCG Concrete047A
-      hf-texture-concrete-046         - ambientCG Concrete046
-      hf-texture-concrete-042-a       - ambientCG Concrete042A
-      hf-texture-plaster-001          - ambientCG Plaster001
-      hf-texture-painted-plaster-017  - ambientCG PaintedPlaster017
+      sc-texture-brick                - mortar line patterns
+      sc-texture-bricks-104           - ambientCG Bricks104
+      sc-texture-bricks-102           - ambientCG Bricks102
+      sc-texture-bricks-101           - ambientCG Bricks101
+      sc-texture-bricks-075-a         - ambientCG Bricks075A
+      sc-texture-concrete             - streaked channel cuts
+      sc-texture-concrete-034         - ambientCG Concrete034
+      sc-texture-concrete-047-a       - ambientCG Concrete047A
+      sc-texture-concrete-046         - ambientCG Concrete046
+      sc-texture-concrete-042-a       - ambientCG Concrete042A
+      sc-texture-plaster-001          - ambientCG Plaster001
+      sc-texture-painted-plaster-017  - ambientCG PaintedPlaster017
 
     Stone:
-      hf-texture-rock                 - sharp hard cutouts
-      hf-texture-rock-063             - ambientCG Rock063
-      hf-texture-rock-058             - ambientCG Rock058
-      hf-texture-onyx                 - flowing marble veins
-      hf-texture-marble-012           - ambientCG Marble012
-      hf-texture-marble-016           - ambientCG Marble016
-      hf-texture-travertine-009       - ambientCG Travertine009
-      hf-texture-paving-stones-150    - ambientCG PavingStones150
-      hf-texture-paving-stones-138    - ambientCG PavingStones138
-      hf-texture-tiles-138            - ambientCG Tiles138
+      sc-texture-rock                 - sharp hard cutouts
+      sc-texture-rock-063             - ambientCG Rock063
+      sc-texture-rock-058             - ambientCG Rock058
+      sc-texture-onyx                 - flowing marble veins
+      sc-texture-marble-012           - ambientCG Marble012
+      sc-texture-marble-016           - ambientCG Marble016
+      sc-texture-travertine-009       - ambientCG Travertine009
+      sc-texture-paving-stones-150    - ambientCG PavingStones150
+      sc-texture-paving-stones-138    - ambientCG PavingStones138
+      sc-texture-tiles-138            - ambientCG Tiles138
 
     Ground / road:
-      hf-texture-ground-103           - ambientCG Ground103
-      hf-texture-ground-037           - ambientCG Ground037
-      hf-texture-ground-054           - ambientCG Ground054
-      hf-texture-ground-104           - ambientCG Ground104
-      hf-texture-ground-068           - ambientCG Ground068
-      hf-texture-ground-080           - ambientCG Ground080
-      hf-texture-road-012-a           - ambientCG Road012A
-      hf-texture-road-008-a           - ambientCG Road008A
-      hf-texture-road-007             - ambientCG Road007
-      hf-texture-road-013-a           - ambientCG Road013A
-      hf-texture-road-012-b           - ambientCG Road012B
-      hf-texture-road-009-c           - ambientCG Road009C
-      hf-texture-asphalt-031          - ambientCG Asphalt031
+      sc-texture-ground-103           - ambientCG Ground103
+      sc-texture-ground-037           - ambientCG Ground037
+      sc-texture-ground-054           - ambientCG Ground054
+      sc-texture-ground-104           - ambientCG Ground104
+      sc-texture-ground-068           - ambientCG Ground068
+      sc-texture-ground-080           - ambientCG Ground080
+      sc-texture-road-012-a           - ambientCG Road012A
+      sc-texture-road-008-a           - ambientCG Road008A
+      sc-texture-road-007             - ambientCG Road007
+      sc-texture-road-013-a           - ambientCG Road013A
+      sc-texture-road-012-b           - ambientCG Road012B
+      sc-texture-road-009-c           - ambientCG Road009C
+      sc-texture-asphalt-031          - ambientCG Asphalt031
 
     Wood:
-      hf-texture-wood                 - horizontal grain slices
-      hf-texture-wood-094             - ambientCG Wood094
-      hf-texture-wood-092             - ambientCG Wood092
-      hf-texture-wood-051             - ambientCG Wood051
-      hf-texture-wood-066             - ambientCG Wood066
-      hf-texture-wood-049             - ambientCG Wood049
-      hf-texture-wood-058             - ambientCG Wood058
-      hf-texture-wood-floor-051       - ambientCG WoodFloor051
-      hf-texture-wood-floor-064       - ambientCG WoodFloor064
-      hf-texture-wood-floor-070       - ambientCG WoodFloor070
-      hf-texture-bark-014             - ambientCG Bark014
+      sc-texture-wood                 - horizontal grain slices
+      sc-texture-wood-094             - ambientCG Wood094
+      sc-texture-wood-092             - ambientCG Wood092
+      sc-texture-wood-051             - ambientCG Wood051
+      sc-texture-wood-066             - ambientCG Wood066
+      sc-texture-wood-049             - ambientCG Wood049
+      sc-texture-wood-058             - ambientCG Wood058
+      sc-texture-wood-floor-051       - ambientCG WoodFloor051
+      sc-texture-wood-floor-064       - ambientCG WoodFloor064
+      sc-texture-wood-floor-070       - ambientCG WoodFloor070
+      sc-texture-bark-014             - ambientCG Bark014
 
     Metal:
-      hf-texture-metal                - rust and pit erosion
-      hf-texture-metal-049-a          - ambientCG Metal049A
-      hf-texture-metal-055-a          - ambientCG Metal055A
-      hf-texture-metal-046-b          - ambientCG Metal046B
-      hf-texture-metal-061-b          - ambientCG Metal061B
-      hf-texture-metal-048-a          - ambientCG Metal048A
-      hf-texture-metal-032            - ambientCG Metal032
-      hf-texture-metal-041-a          - ambientCG Metal041A
-      hf-texture-metal-038            - ambientCG Metal038
-      hf-texture-diamond-plate-009    - ambientCG DiamondPlate009
+      sc-texture-metal                - rust and pit erosion
+      sc-texture-metal-049-a          - ambientCG Metal049A
+      sc-texture-metal-055-a          - ambientCG Metal055A
+      sc-texture-metal-046-b          - ambientCG Metal046B
+      sc-texture-metal-061-b          - ambientCG Metal061B
+      sc-texture-metal-048-a          - ambientCG Metal048A
+      sc-texture-metal-032            - ambientCG Metal032
+      sc-texture-metal-041-a          - ambientCG Metal041A
+      sc-texture-metal-038            - ambientCG Metal038
+      sc-texture-diamond-plate-009    - ambientCG DiamondPlate009
 
     Organic / soft:
-      hf-texture-lava                 - smooth organic erosion
-      hf-texture-grass-005            - ambientCG Grass005
-      hf-texture-grass-001            - ambientCG Grass001
-      hf-texture-grass-004            - ambientCG Grass004
-      hf-texture-carpet               - fine repeating weave
-      hf-texture-fabric-083           - ambientCG Fabric083
-      hf-texture-snow                 - soft patchy dissolve
-      hf-texture-snow-015             - ambientCG Snow015
-      hf-texture-leather-037          - ambientCG Leather037
-      hf-texture-fabric-080           - ambientCG Fabric080
+      sc-texture-lava                 - smooth organic erosion
+      sc-texture-grass-005            - ambientCG Grass005
+      sc-texture-grass-001            - ambientCG Grass001
+      sc-texture-grass-004            - ambientCG Grass004
+      sc-texture-carpet               - fine repeating weave
+      sc-texture-fabric-083           - ambientCG Fabric083
+      sc-texture-snow                 - soft patchy dissolve
+      sc-texture-snow-015             - ambientCG Snow015
+      sc-texture-leather-037          - ambientCG Leather037
+      sc-texture-fabric-080           - ambientCG Fabric080
 
   Custom properties:
     --mask-size       cover     CSS mask-size
@@ -137,16 +137,16 @@ That writes `compositions/components/texture-mask-text/texture-mask-text.html`, 
     --mask-contrast   1         filter contrast to sharpen/soften edges
 
   Custom texture (set mask-image directly, not via custom property):
-    <div class="hf-texture-text" style="-webkit-mask-image: url('my-texture.png'); mask-image: url('my-texture.png')">TEXT</div>
+    <div class="sc-texture-text" style="-webkit-mask-image: url('my-texture.png'); mask-image: url('my-texture.png')">TEXT</div>
 
   Drop shadow (follows masked contour, not bounding box):
     <div style="filter: drop-shadow(2px 3px 4px rgba(0,0,0,0.3))">
-      <div class="hf-texture-text hf-texture-lava">TEXT</div>
+      <div class="sc-texture-text sc-texture-lava">TEXT</div>
     </div>
 -->
 
 <style>
-  .hf-texture-text {
+  .sc-texture-text {
     color: #fff;
     -webkit-mask-size: var(--mask-size, cover);
     mask-size: var(--mask-size, cover);
@@ -157,267 +157,267 @@ That writes `compositions/components/texture-mask-text/texture-mask-text.html`, 
     filter: contrast(var(--mask-contrast, 1));
   }
 
-  .hf-texture-lava {
+  .sc-texture-lava {
     -webkit-mask-image: url("/assets/texture-mask-text/masks/lava.png");
     mask-image: url("/assets/texture-mask-text/masks/lava.png");
   }
-  .hf-texture-rock {
+  .sc-texture-rock {
     -webkit-mask-image: url("/assets/texture-mask-text/masks/rock.png");
     mask-image: url("/assets/texture-mask-text/masks/rock.png");
   }
-  .hf-texture-concrete {
+  .sc-texture-concrete {
     -webkit-mask-image: url("/assets/texture-mask-text/masks/concrete.png");
     mask-image: url("/assets/texture-mask-text/masks/concrete.png");
   }
-  .hf-texture-brick {
+  .sc-texture-brick {
     -webkit-mask-image: url("/assets/texture-mask-text/masks/brick.png");
     mask-image: url("/assets/texture-mask-text/masks/brick.png");
   }
-  .hf-texture-wood {
+  .sc-texture-wood {
     -webkit-mask-image: url("/assets/texture-mask-text/masks/wood.png");
     mask-image: url("/assets/texture-mask-text/masks/wood.png");
   }
-  .hf-texture-onyx {
+  .sc-texture-onyx {
     -webkit-mask-image: url("/assets/texture-mask-text/masks/onyx.png");
     mask-image: url("/assets/texture-mask-text/masks/onyx.png");
   }
-  .hf-texture-carpet {
+  .sc-texture-carpet {
     -webkit-mask-image: url("/assets/texture-mask-text/masks/carpet.png");
     mask-image: url("/assets/texture-mask-text/masks/carpet.png");
   }
-  .hf-texture-metal {
+  .sc-texture-metal {
     -webkit-mask-image: url("/assets/texture-mask-text/masks/metal.png");
     mask-image: url("/assets/texture-mask-text/masks/metal.png");
   }
-  .hf-texture-snow {
+  .sc-texture-snow {
     -webkit-mask-image: url("/assets/texture-mask-text/masks/snow.png");
     mask-image: url("/assets/texture-mask-text/masks/snow.png");
   }
-  .hf-texture-bricks-104 {
+  .sc-texture-bricks-104 {
     -webkit-mask-image: url("/assets/texture-mask-text/masks/bricks-104.png");
     mask-image: url("/assets/texture-mask-text/masks/bricks-104.png");
   }
-  .hf-texture-ground-103 {
+  .sc-texture-ground-103 {
     -webkit-mask-image: url("/assets/texture-mask-text/masks/ground-103.png");
     mask-image: url("/assets/texture-mask-text/masks/ground-103.png");
   }
-  .hf-texture-grass-005 {
+  .sc-texture-grass-005 {
     -webkit-mask-image: url("/assets/texture-mask-text/masks/grass-005.png");
     mask-image: url("/assets/texture-mask-text/masks/grass-005.png");
   }
-  .hf-texture-rock-063 {
+  .sc-texture-rock-063 {
     -webkit-mask-image: url("/assets/texture-mask-text/masks/rock-063.png");
     mask-image: url("/assets/texture-mask-text/masks/rock-063.png");
   }
-  .hf-texture-wood-094 {
+  .sc-texture-wood-094 {
     -webkit-mask-image: url("/assets/texture-mask-text/masks/wood-094.png");
     mask-image: url("/assets/texture-mask-text/masks/wood-094.png");
   }
-  .hf-texture-road-012-a {
+  .sc-texture-road-012-a {
     -webkit-mask-image: url("/assets/texture-mask-text/masks/road-012-a.png");
     mask-image: url("/assets/texture-mask-text/masks/road-012-a.png");
   }
-  .hf-texture-wood-092 {
+  .sc-texture-wood-092 {
     -webkit-mask-image: url("/assets/texture-mask-text/masks/wood-092.png");
     mask-image: url("/assets/texture-mask-text/masks/wood-092.png");
   }
-  .hf-texture-metal-049-a {
+  .sc-texture-metal-049-a {
     -webkit-mask-image: url("/assets/texture-mask-text/masks/metal-049-a.png");
     mask-image: url("/assets/texture-mask-text/masks/metal-049-a.png");
   }
-  .hf-texture-wood-floor-051 {
+  .sc-texture-wood-floor-051 {
     -webkit-mask-image: url("/assets/texture-mask-text/masks/wood-floor-051.png");
     mask-image: url("/assets/texture-mask-text/masks/wood-floor-051.png");
   }
-  .hf-texture-paving-stones-150 {
+  .sc-texture-paving-stones-150 {
     -webkit-mask-image: url("/assets/texture-mask-text/masks/paving-stones-150.png");
     mask-image: url("/assets/texture-mask-text/masks/paving-stones-150.png");
   }
-  .hf-texture-road-008-a {
+  .sc-texture-road-008-a {
     -webkit-mask-image: url("/assets/texture-mask-text/masks/road-008-a.png");
     mask-image: url("/assets/texture-mask-text/masks/road-008-a.png");
   }
-  .hf-texture-road-007 {
+  .sc-texture-road-007 {
     -webkit-mask-image: url("/assets/texture-mask-text/masks/road-007.png");
     mask-image: url("/assets/texture-mask-text/masks/road-007.png");
   }
-  .hf-texture-metal-055-a {
+  .sc-texture-metal-055-a {
     -webkit-mask-image: url("/assets/texture-mask-text/masks/metal-055-a.png");
     mask-image: url("/assets/texture-mask-text/masks/metal-055-a.png");
   }
-  .hf-texture-concrete-034 {
+  .sc-texture-concrete-034 {
     -webkit-mask-image: url("/assets/texture-mask-text/masks/concrete-034.png");
     mask-image: url("/assets/texture-mask-text/masks/concrete-034.png");
   }
-  .hf-texture-grass-001 {
+  .sc-texture-grass-001 {
     -webkit-mask-image: url("/assets/texture-mask-text/masks/grass-001.png");
     mask-image: url("/assets/texture-mask-text/masks/grass-001.png");
   }
-  .hf-texture-wood-051 {
+  .sc-texture-wood-051 {
     -webkit-mask-image: url("/assets/texture-mask-text/masks/wood-051.png");
     mask-image: url("/assets/texture-mask-text/masks/wood-051.png");
   }
-  .hf-texture-asphalt-031 {
+  .sc-texture-asphalt-031 {
     -webkit-mask-image: url("/assets/texture-mask-text/masks/asphalt-031.png");
     mask-image: url("/assets/texture-mask-text/masks/asphalt-031.png");
   }
-  .hf-texture-wood-floor-064 {
+  .sc-texture-wood-floor-064 {
     -webkit-mask-image: url("/assets/texture-mask-text/masks/wood-floor-064.png");
     mask-image: url("/assets/texture-mask-text/masks/wood-floor-064.png");
   }
-  .hf-texture-concrete-047-a {
+  .sc-texture-concrete-047-a {
     -webkit-mask-image: url("/assets/texture-mask-text/masks/concrete-047-a.png");
     mask-image: url("/assets/texture-mask-text/masks/concrete-047-a.png");
   }
-  .hf-texture-metal-046-b {
+  .sc-texture-metal-046-b {
     -webkit-mask-image: url("/assets/texture-mask-text/masks/metal-046-b.png");
     mask-image: url("/assets/texture-mask-text/masks/metal-046-b.png");
   }
-  .hf-texture-grass-004 {
+  .sc-texture-grass-004 {
     -webkit-mask-image: url("/assets/texture-mask-text/masks/grass-004.png");
     mask-image: url("/assets/texture-mask-text/masks/grass-004.png");
   }
-  .hf-texture-marble-012 {
+  .sc-texture-marble-012 {
     -webkit-mask-image: url("/assets/texture-mask-text/masks/marble-012.png");
     mask-image: url("/assets/texture-mask-text/masks/marble-012.png");
   }
-  .hf-texture-ground-037 {
+  .sc-texture-ground-037 {
     -webkit-mask-image: url("/assets/texture-mask-text/masks/ground-037.png");
     mask-image: url("/assets/texture-mask-text/masks/ground-037.png");
   }
-  .hf-texture-tiles-138 {
+  .sc-texture-tiles-138 {
     -webkit-mask-image: url("/assets/texture-mask-text/masks/tiles-138.png");
     mask-image: url("/assets/texture-mask-text/masks/tiles-138.png");
   }
-  .hf-texture-wood-066 {
+  .sc-texture-wood-066 {
     -webkit-mask-image: url("/assets/texture-mask-text/masks/wood-066.png");
     mask-image: url("/assets/texture-mask-text/masks/wood-066.png");
   }
-  .hf-texture-concrete-046 {
+  .sc-texture-concrete-046 {
     -webkit-mask-image: url("/assets/texture-mask-text/masks/concrete-046.png");
     mask-image: url("/assets/texture-mask-text/masks/concrete-046.png");
   }
-  .hf-texture-wood-049 {
+  .sc-texture-wood-049 {
     -webkit-mask-image: url("/assets/texture-mask-text/masks/wood-049.png");
     mask-image: url("/assets/texture-mask-text/masks/wood-049.png");
   }
-  .hf-texture-road-013-a {
+  .sc-texture-road-013-a {
     -webkit-mask-image: url("/assets/texture-mask-text/masks/road-013-a.png");
     mask-image: url("/assets/texture-mask-text/masks/road-013-a.png");
   }
-  .hf-texture-plaster-001 {
+  .sc-texture-plaster-001 {
     -webkit-mask-image: url("/assets/texture-mask-text/masks/plaster-001.png");
     mask-image: url("/assets/texture-mask-text/masks/plaster-001.png");
   }
-  .hf-texture-snow-015 {
+  .sc-texture-snow-015 {
     -webkit-mask-image: url("/assets/texture-mask-text/masks/snow-015.png");
     mask-image: url("/assets/texture-mask-text/masks/snow-015.png");
   }
-  .hf-texture-road-012-b {
+  .sc-texture-road-012-b {
     -webkit-mask-image: url("/assets/texture-mask-text/masks/road-012-b.png");
     mask-image: url("/assets/texture-mask-text/masks/road-012-b.png");
   }
-  .hf-texture-concrete-042-a {
+  .sc-texture-concrete-042-a {
     -webkit-mask-image: url("/assets/texture-mask-text/masks/concrete-042-a.png");
     mask-image: url("/assets/texture-mask-text/masks/concrete-042-a.png");
   }
-  .hf-texture-bricks-102 {
+  .sc-texture-bricks-102 {
     -webkit-mask-image: url("/assets/texture-mask-text/masks/bricks-102.png");
     mask-image: url("/assets/texture-mask-text/masks/bricks-102.png");
   }
-  .hf-texture-rock-058 {
+  .sc-texture-rock-058 {
     -webkit-mask-image: url("/assets/texture-mask-text/masks/rock-058.png");
     mask-image: url("/assets/texture-mask-text/masks/rock-058.png");
   }
-  .hf-texture-wood-floor-070 {
+  .sc-texture-wood-floor-070 {
     -webkit-mask-image: url("/assets/texture-mask-text/masks/wood-floor-070.png");
     mask-image: url("/assets/texture-mask-text/masks/wood-floor-070.png");
   }
-  .hf-texture-bricks-101 {
+  .sc-texture-bricks-101 {
     -webkit-mask-image: url("/assets/texture-mask-text/masks/bricks-101.png");
     mask-image: url("/assets/texture-mask-text/masks/bricks-101.png");
   }
-  .hf-texture-travertine-009 {
+  .sc-texture-travertine-009 {
     -webkit-mask-image: url("/assets/texture-mask-text/masks/travertine-009.png");
     mask-image: url("/assets/texture-mask-text/masks/travertine-009.png");
   }
-  .hf-texture-ground-054 {
+  .sc-texture-ground-054 {
     -webkit-mask-image: url("/assets/texture-mask-text/masks/ground-054.png");
     mask-image: url("/assets/texture-mask-text/masks/ground-054.png");
   }
-  .hf-texture-wood-058 {
+  .sc-texture-wood-058 {
     -webkit-mask-image: url("/assets/texture-mask-text/masks/wood-058.png");
     mask-image: url("/assets/texture-mask-text/masks/wood-058.png");
   }
-  .hf-texture-ground-104 {
+  .sc-texture-ground-104 {
     -webkit-mask-image: url("/assets/texture-mask-text/masks/ground-104.png");
     mask-image: url("/assets/texture-mask-text/masks/ground-104.png");
   }
-  .hf-texture-painted-plaster-017 {
+  .sc-texture-painted-plaster-017 {
     -webkit-mask-image: url("/assets/texture-mask-text/masks/painted-plaster-017.png");
     mask-image: url("/assets/texture-mask-text/masks/painted-plaster-017.png");
   }
-  .hf-texture-paving-stones-138 {
+  .sc-texture-paving-stones-138 {
     -webkit-mask-image: url("/assets/texture-mask-text/masks/paving-stones-138.png");
     mask-image: url("/assets/texture-mask-text/masks/paving-stones-138.png");
   }
-  .hf-texture-ground-068 {
+  .sc-texture-ground-068 {
     -webkit-mask-image: url("/assets/texture-mask-text/masks/ground-068.png");
     mask-image: url("/assets/texture-mask-text/masks/ground-068.png");
   }
-  .hf-texture-bricks-075-a {
+  .sc-texture-bricks-075-a {
     -webkit-mask-image: url("/assets/texture-mask-text/masks/bricks-075-a.png");
     mask-image: url("/assets/texture-mask-text/masks/bricks-075-a.png");
   }
-  .hf-texture-ground-080 {
+  .sc-texture-ground-080 {
     -webkit-mask-image: url("/assets/texture-mask-text/masks/ground-080.png");
     mask-image: url("/assets/texture-mask-text/masks/ground-080.png");
   }
-  .hf-texture-road-009-c {
+  .sc-texture-road-009-c {
     -webkit-mask-image: url("/assets/texture-mask-text/masks/road-009-c.png");
     mask-image: url("/assets/texture-mask-text/masks/road-009-c.png");
   }
-  .hf-texture-bark-014 {
+  .sc-texture-bark-014 {
     -webkit-mask-image: url("/assets/texture-mask-text/masks/bark-014.png");
     mask-image: url("/assets/texture-mask-text/masks/bark-014.png");
   }
-  .hf-texture-marble-016 {
+  .sc-texture-marble-016 {
     -webkit-mask-image: url("/assets/texture-mask-text/masks/marble-016.png");
     mask-image: url("/assets/texture-mask-text/masks/marble-016.png");
   }
-  .hf-texture-fabric-083 {
+  .sc-texture-fabric-083 {
     -webkit-mask-image: url("/assets/texture-mask-text/masks/fabric-083.png");
     mask-image: url("/assets/texture-mask-text/masks/fabric-083.png");
   }
-  .hf-texture-metal-061-b {
+  .sc-texture-metal-061-b {
     -webkit-mask-image: url("/assets/texture-mask-text/masks/metal-061-b.png");
     mask-image: url("/assets/texture-mask-text/masks/metal-061-b.png");
   }
-  .hf-texture-metal-048-a {
+  .sc-texture-metal-048-a {
     -webkit-mask-image: url("/assets/texture-mask-text/masks/metal-048-a.png");
     mask-image: url("/assets/texture-mask-text/masks/metal-048-a.png");
   }
-  .hf-texture-metal-032 {
+  .sc-texture-metal-032 {
     -webkit-mask-image: url("/assets/texture-mask-text/masks/metal-032.png");
     mask-image: url("/assets/texture-mask-text/masks/metal-032.png");
   }
-  .hf-texture-metal-041-a {
+  .sc-texture-metal-041-a {
     -webkit-mask-image: url("/assets/texture-mask-text/masks/metal-041-a.png");
     mask-image: url("/assets/texture-mask-text/masks/metal-041-a.png");
   }
-  .hf-texture-metal-038 {
+  .sc-texture-metal-038 {
     -webkit-mask-image: url("/assets/texture-mask-text/masks/metal-038.png");
     mask-image: url("/assets/texture-mask-text/masks/metal-038.png");
   }
-  .hf-texture-diamond-plate-009 {
+  .sc-texture-diamond-plate-009 {
     -webkit-mask-image: url("/assets/texture-mask-text/masks/diamond-plate-009.png");
     mask-image: url("/assets/texture-mask-text/masks/diamond-plate-009.png");
   }
-  .hf-texture-leather-037 {
+  .sc-texture-leather-037 {
     -webkit-mask-image: url("/assets/texture-mask-text/masks/leather-037.png");
     mask-image: url("/assets/texture-mask-text/masks/leather-037.png");
   }
-  .hf-texture-fabric-080 {
+  .sc-texture-fabric-080 {
     -webkit-mask-image: url("/assets/texture-mask-text/masks/fabric-080.png");
     mask-image: url("/assets/texture-mask-text/masks/fabric-080.png");
   }
@@ -434,44 +434,44 @@ Paste this to your coding agent:
 Use the Texture Mask Text catalog component.
 
 1. From the project root, run:
-   npx hyperframes add texture-mask-text
+   npx smashcut add texture-mask-text
 2. That command creates this installed snippet:
    compositions/components/texture-mask-text/texture-mask-text.html
 3. Open that file and paste the real <style> block
    near the bottom into the composition once. That CSS defines
-   hf-texture-text and every hf-texture-* class.
+   sc-texture-text and every sc-texture-* class.
 4. Apply this class to the target text:
-   class="hf-texture-text hf-texture-brick"
-5. For another material, copy one hf-texture-* class
+   class="sc-texture-text sc-texture-brick"
+5. For another material, copy one sc-texture-* class
    from the Texture Examples cards.
 6. This is the proper way to apply drop shadow
    to textured text: wrap the text and put
    filter on the wrapper, not on the text.
    Use this markup:
    <div style="filter: drop-shadow(1px 2px 1px rgba(0,0,0,0.48))">
-     <div class="hf-texture-text hf-texture-brick">TEXT</div>
+     <div class="sc-texture-text sc-texture-brick">TEXT</div>
    </div>
 ```
 
-Swap `hf-texture-brick` for the class on any texture card below. Every texture also needs the base class `hf-texture-text`.
+Swap `sc-texture-brick` for the class on any texture card below. Every texture also needs the base class `sc-texture-text`.
 
 ## Make the texture move
 
 Move the mask position on the text element. Keep the drop shadow on a wrapper so it follows the textured contour.
 
-<div className="hf-texture-animate-demo" style={{ "--mask-url": "url('https://static.heygen.ai/hyperframes-oss/docs/images/catalog/components/texture-mask-text/masks/lava.png')" }}>
-  <div className="hf-texture-animate-meta">
-    <div className="hf-texture-animate-label">Animated mask position</div>
-    <code className="hf-texture-animate-class">hf-texture-text hf-texture-lava</code>
+<div className="sc-texture-animate-demo" style={{ "--mask-url": "url('https://static.heygen.ai/smashcut-oss/docs/images/catalog/components/texture-mask-text/masks/lava.png')" }}>
+  <div className="sc-texture-animate-meta">
+    <div className="sc-texture-animate-label">Animated mask position</div>
+    <code className="sc-texture-animate-class">sc-texture-text sc-texture-lava</code>
   </div>
-  <div className="hf-texture-animate-shadow">
-    <div className="hf-texture-animate-word">MOTION</div>
+  <div className="sc-texture-animate-shadow">
+    <div className="sc-texture-animate-word">MOTION</div>
   </div>
 </div>
 
 ```html
 <div class="texture-shadow">
-  <div class="hf-texture-text hf-texture-lava animated-texture">MOTION</div>
+  <div class="sc-texture-text sc-texture-lava animated-texture">MOTION</div>
 </div>
 ```
 
@@ -496,364 +496,364 @@ window.__timelines["my-composition"] = tl;
 
 ## Every texture
 
-<div className="hf-texture-example-groups">
+<div className="sc-texture-example-groups">
   <div>
-    <h3 className="hf-texture-example-title">Masonry</h3>
-    <div className="hf-texture-example-grid">
-      <div className="hf-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/hyperframes-oss/docs/images/catalog/components/texture-mask-text/masks/brick.png')" }}>
-        <div className="hf-texture-example-meta"><div className="hf-texture-example-label">Brick</div><code className="hf-texture-example-class">hf-texture-brick</code></div>
-        <div className="hf-texture-example-shadow"><div className="hf-texture-example-word">BRICK</div></div>
-        <div className="hf-texture-example-usage">Use <code>hf-texture-text hf-texture-brick</code></div>
+    <h3 className="sc-texture-example-title">Masonry</h3>
+    <div className="sc-texture-example-grid">
+      <div className="sc-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/smashcut-oss/docs/images/catalog/components/texture-mask-text/masks/brick.png')" }}>
+        <div className="sc-texture-example-meta"><div className="sc-texture-example-label">Brick</div><code className="sc-texture-example-class">sc-texture-brick</code></div>
+        <div className="sc-texture-example-shadow"><div className="sc-texture-example-word">BRICK</div></div>
+        <div className="sc-texture-example-usage">Use <code>sc-texture-text sc-texture-brick</code></div>
       </div>
-      <div className="hf-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/hyperframes-oss/docs/images/catalog/components/texture-mask-text/masks/bricks-104.png')" }}>
-        <div className="hf-texture-example-meta"><div className="hf-texture-example-label">Bricks 104</div><code className="hf-texture-example-class">hf-texture-bricks-104</code></div>
-        <div className="hf-texture-example-shadow"><div className="hf-texture-example-word">BRICK</div></div>
-        <div className="hf-texture-example-usage">Use <code>hf-texture-text hf-texture-bricks-104</code></div>
+      <div className="sc-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/smashcut-oss/docs/images/catalog/components/texture-mask-text/masks/bricks-104.png')" }}>
+        <div className="sc-texture-example-meta"><div className="sc-texture-example-label">Bricks 104</div><code className="sc-texture-example-class">sc-texture-bricks-104</code></div>
+        <div className="sc-texture-example-shadow"><div className="sc-texture-example-word">BRICK</div></div>
+        <div className="sc-texture-example-usage">Use <code>sc-texture-text sc-texture-bricks-104</code></div>
       </div>
-      <div className="hf-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/hyperframes-oss/docs/images/catalog/components/texture-mask-text/masks/bricks-102.png')" }}>
-        <div className="hf-texture-example-meta"><div className="hf-texture-example-label">Bricks 102</div><code className="hf-texture-example-class">hf-texture-bricks-102</code></div>
-        <div className="hf-texture-example-shadow"><div className="hf-texture-example-word">BRICK</div></div>
-        <div className="hf-texture-example-usage">Use <code>hf-texture-text hf-texture-bricks-102</code></div>
+      <div className="sc-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/smashcut-oss/docs/images/catalog/components/texture-mask-text/masks/bricks-102.png')" }}>
+        <div className="sc-texture-example-meta"><div className="sc-texture-example-label">Bricks 102</div><code className="sc-texture-example-class">sc-texture-bricks-102</code></div>
+        <div className="sc-texture-example-shadow"><div className="sc-texture-example-word">BRICK</div></div>
+        <div className="sc-texture-example-usage">Use <code>sc-texture-text sc-texture-bricks-102</code></div>
       </div>
-      <div className="hf-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/hyperframes-oss/docs/images/catalog/components/texture-mask-text/masks/bricks-101.png')" }}>
-        <div className="hf-texture-example-meta"><div className="hf-texture-example-label">Bricks 101</div><code className="hf-texture-example-class">hf-texture-bricks-101</code></div>
-        <div className="hf-texture-example-shadow"><div className="hf-texture-example-word">BRICK</div></div>
-        <div className="hf-texture-example-usage">Use <code>hf-texture-text hf-texture-bricks-101</code></div>
+      <div className="sc-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/smashcut-oss/docs/images/catalog/components/texture-mask-text/masks/bricks-101.png')" }}>
+        <div className="sc-texture-example-meta"><div className="sc-texture-example-label">Bricks 101</div><code className="sc-texture-example-class">sc-texture-bricks-101</code></div>
+        <div className="sc-texture-example-shadow"><div className="sc-texture-example-word">BRICK</div></div>
+        <div className="sc-texture-example-usage">Use <code>sc-texture-text sc-texture-bricks-101</code></div>
       </div>
-      <div className="hf-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/hyperframes-oss/docs/images/catalog/components/texture-mask-text/masks/bricks-075-a.png')" }}>
-        <div className="hf-texture-example-meta"><div className="hf-texture-example-label">Bricks 075 A</div><code className="hf-texture-example-class">hf-texture-bricks-075-a</code></div>
-        <div className="hf-texture-example-shadow"><div className="hf-texture-example-word">BRICK</div></div>
-        <div className="hf-texture-example-usage">Use <code>hf-texture-text hf-texture-bricks-075-a</code></div>
+      <div className="sc-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/smashcut-oss/docs/images/catalog/components/texture-mask-text/masks/bricks-075-a.png')" }}>
+        <div className="sc-texture-example-meta"><div className="sc-texture-example-label">Bricks 075 A</div><code className="sc-texture-example-class">sc-texture-bricks-075-a</code></div>
+        <div className="sc-texture-example-shadow"><div className="sc-texture-example-word">BRICK</div></div>
+        <div className="sc-texture-example-usage">Use <code>sc-texture-text sc-texture-bricks-075-a</code></div>
       </div>
-      <div className="hf-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/hyperframes-oss/docs/images/catalog/components/texture-mask-text/masks/concrete.png')" }}>
-        <div className="hf-texture-example-meta"><div className="hf-texture-example-label">Concrete</div><code className="hf-texture-example-class">hf-texture-concrete</code></div>
-        <div className="hf-texture-example-shadow"><div className="hf-texture-example-word">CONCRETE</div></div>
-        <div className="hf-texture-example-usage">Use <code>hf-texture-text hf-texture-concrete</code></div>
+      <div className="sc-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/smashcut-oss/docs/images/catalog/components/texture-mask-text/masks/concrete.png')" }}>
+        <div className="sc-texture-example-meta"><div className="sc-texture-example-label">Concrete</div><code className="sc-texture-example-class">sc-texture-concrete</code></div>
+        <div className="sc-texture-example-shadow"><div className="sc-texture-example-word">CONCRETE</div></div>
+        <div className="sc-texture-example-usage">Use <code>sc-texture-text sc-texture-concrete</code></div>
       </div>
-      <div className="hf-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/hyperframes-oss/docs/images/catalog/components/texture-mask-text/masks/concrete-034.png')" }}>
-        <div className="hf-texture-example-meta"><div className="hf-texture-example-label">Concrete 034</div><code className="hf-texture-example-class">hf-texture-concrete-034</code></div>
-        <div className="hf-texture-example-shadow"><div className="hf-texture-example-word">CONCRETE</div></div>
-        <div className="hf-texture-example-usage">Use <code>hf-texture-text hf-texture-concrete-034</code></div>
+      <div className="sc-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/smashcut-oss/docs/images/catalog/components/texture-mask-text/masks/concrete-034.png')" }}>
+        <div className="sc-texture-example-meta"><div className="sc-texture-example-label">Concrete 034</div><code className="sc-texture-example-class">sc-texture-concrete-034</code></div>
+        <div className="sc-texture-example-shadow"><div className="sc-texture-example-word">CONCRETE</div></div>
+        <div className="sc-texture-example-usage">Use <code>sc-texture-text sc-texture-concrete-034</code></div>
       </div>
-      <div className="hf-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/hyperframes-oss/docs/images/catalog/components/texture-mask-text/masks/concrete-047-a.png')" }}>
-        <div className="hf-texture-example-meta"><div className="hf-texture-example-label">Concrete 047 A</div><code className="hf-texture-example-class">hf-texture-concrete-047-a</code></div>
-        <div className="hf-texture-example-shadow"><div className="hf-texture-example-word">CONCRETE</div></div>
-        <div className="hf-texture-example-usage">Use <code>hf-texture-text hf-texture-concrete-047-a</code></div>
+      <div className="sc-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/smashcut-oss/docs/images/catalog/components/texture-mask-text/masks/concrete-047-a.png')" }}>
+        <div className="sc-texture-example-meta"><div className="sc-texture-example-label">Concrete 047 A</div><code className="sc-texture-example-class">sc-texture-concrete-047-a</code></div>
+        <div className="sc-texture-example-shadow"><div className="sc-texture-example-word">CONCRETE</div></div>
+        <div className="sc-texture-example-usage">Use <code>sc-texture-text sc-texture-concrete-047-a</code></div>
       </div>
-      <div className="hf-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/hyperframes-oss/docs/images/catalog/components/texture-mask-text/masks/concrete-046.png')" }}>
-        <div className="hf-texture-example-meta"><div className="hf-texture-example-label">Concrete 046</div><code className="hf-texture-example-class">hf-texture-concrete-046</code></div>
-        <div className="hf-texture-example-shadow"><div className="hf-texture-example-word">CONCRETE</div></div>
-        <div className="hf-texture-example-usage">Use <code>hf-texture-text hf-texture-concrete-046</code></div>
+      <div className="sc-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/smashcut-oss/docs/images/catalog/components/texture-mask-text/masks/concrete-046.png')" }}>
+        <div className="sc-texture-example-meta"><div className="sc-texture-example-label">Concrete 046</div><code className="sc-texture-example-class">sc-texture-concrete-046</code></div>
+        <div className="sc-texture-example-shadow"><div className="sc-texture-example-word">CONCRETE</div></div>
+        <div className="sc-texture-example-usage">Use <code>sc-texture-text sc-texture-concrete-046</code></div>
       </div>
-      <div className="hf-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/hyperframes-oss/docs/images/catalog/components/texture-mask-text/masks/concrete-042-a.png')" }}>
-        <div className="hf-texture-example-meta"><div className="hf-texture-example-label">Concrete 042 A</div><code className="hf-texture-example-class">hf-texture-concrete-042-a</code></div>
-        <div className="hf-texture-example-shadow"><div className="hf-texture-example-word">CONCRETE</div></div>
-        <div className="hf-texture-example-usage">Use <code>hf-texture-text hf-texture-concrete-042-a</code></div>
+      <div className="sc-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/smashcut-oss/docs/images/catalog/components/texture-mask-text/masks/concrete-042-a.png')" }}>
+        <div className="sc-texture-example-meta"><div className="sc-texture-example-label">Concrete 042 A</div><code className="sc-texture-example-class">sc-texture-concrete-042-a</code></div>
+        <div className="sc-texture-example-shadow"><div className="sc-texture-example-word">CONCRETE</div></div>
+        <div className="sc-texture-example-usage">Use <code>sc-texture-text sc-texture-concrete-042-a</code></div>
       </div>
-      <div className="hf-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/hyperframes-oss/docs/images/catalog/components/texture-mask-text/masks/plaster-001.png')" }}>
-        <div className="hf-texture-example-meta"><div className="hf-texture-example-label">Plaster 001</div><code className="hf-texture-example-class">hf-texture-plaster-001</code></div>
-        <div className="hf-texture-example-shadow"><div className="hf-texture-example-word">PLASTER</div></div>
-        <div className="hf-texture-example-usage">Use <code>hf-texture-text hf-texture-plaster-001</code></div>
+      <div className="sc-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/smashcut-oss/docs/images/catalog/components/texture-mask-text/masks/plaster-001.png')" }}>
+        <div className="sc-texture-example-meta"><div className="sc-texture-example-label">Plaster 001</div><code className="sc-texture-example-class">sc-texture-plaster-001</code></div>
+        <div className="sc-texture-example-shadow"><div className="sc-texture-example-word">PLASTER</div></div>
+        <div className="sc-texture-example-usage">Use <code>sc-texture-text sc-texture-plaster-001</code></div>
       </div>
-      <div className="hf-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/hyperframes-oss/docs/images/catalog/components/texture-mask-text/masks/painted-plaster-017.png')" }}>
-        <div className="hf-texture-example-meta"><div className="hf-texture-example-label">Painted Plaster 017</div><code className="hf-texture-example-class">hf-texture-painted-plaster-017</code></div>
-        <div className="hf-texture-example-shadow"><div className="hf-texture-example-word">PLASTER</div></div>
-        <div className="hf-texture-example-usage">Use <code>hf-texture-text hf-texture-painted-plaster-017</code></div>
+      <div className="sc-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/smashcut-oss/docs/images/catalog/components/texture-mask-text/masks/painted-plaster-017.png')" }}>
+        <div className="sc-texture-example-meta"><div className="sc-texture-example-label">Painted Plaster 017</div><code className="sc-texture-example-class">sc-texture-painted-plaster-017</code></div>
+        <div className="sc-texture-example-shadow"><div className="sc-texture-example-word">PLASTER</div></div>
+        <div className="sc-texture-example-usage">Use <code>sc-texture-text sc-texture-painted-plaster-017</code></div>
       </div>
     </div>
   </div>
   <div>
-    <h3 className="hf-texture-example-title">Stone</h3>
-    <div className="hf-texture-example-grid">
-      <div className="hf-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/hyperframes-oss/docs/images/catalog/components/texture-mask-text/masks/rock.png')" }}>
-        <div className="hf-texture-example-meta"><div className="hf-texture-example-label">Rock</div><code className="hf-texture-example-class">hf-texture-rock</code></div>
-        <div className="hf-texture-example-shadow"><div className="hf-texture-example-word">ROCK</div></div>
-        <div className="hf-texture-example-usage">Use <code>hf-texture-text hf-texture-rock</code></div>
+    <h3 className="sc-texture-example-title">Stone</h3>
+    <div className="sc-texture-example-grid">
+      <div className="sc-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/smashcut-oss/docs/images/catalog/components/texture-mask-text/masks/rock.png')" }}>
+        <div className="sc-texture-example-meta"><div className="sc-texture-example-label">Rock</div><code className="sc-texture-example-class">sc-texture-rock</code></div>
+        <div className="sc-texture-example-shadow"><div className="sc-texture-example-word">ROCK</div></div>
+        <div className="sc-texture-example-usage">Use <code>sc-texture-text sc-texture-rock</code></div>
       </div>
-      <div className="hf-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/hyperframes-oss/docs/images/catalog/components/texture-mask-text/masks/rock-063.png')" }}>
-        <div className="hf-texture-example-meta"><div className="hf-texture-example-label">Rock 063</div><code className="hf-texture-example-class">hf-texture-rock-063</code></div>
-        <div className="hf-texture-example-shadow"><div className="hf-texture-example-word">ROCK</div></div>
-        <div className="hf-texture-example-usage">Use <code>hf-texture-text hf-texture-rock-063</code></div>
+      <div className="sc-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/smashcut-oss/docs/images/catalog/components/texture-mask-text/masks/rock-063.png')" }}>
+        <div className="sc-texture-example-meta"><div className="sc-texture-example-label">Rock 063</div><code className="sc-texture-example-class">sc-texture-rock-063</code></div>
+        <div className="sc-texture-example-shadow"><div className="sc-texture-example-word">ROCK</div></div>
+        <div className="sc-texture-example-usage">Use <code>sc-texture-text sc-texture-rock-063</code></div>
       </div>
-      <div className="hf-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/hyperframes-oss/docs/images/catalog/components/texture-mask-text/masks/rock-058.png')" }}>
-        <div className="hf-texture-example-meta"><div className="hf-texture-example-label">Rock 058</div><code className="hf-texture-example-class">hf-texture-rock-058</code></div>
-        <div className="hf-texture-example-shadow"><div className="hf-texture-example-word">ROCK</div></div>
-        <div className="hf-texture-example-usage">Use <code>hf-texture-text hf-texture-rock-058</code></div>
+      <div className="sc-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/smashcut-oss/docs/images/catalog/components/texture-mask-text/masks/rock-058.png')" }}>
+        <div className="sc-texture-example-meta"><div className="sc-texture-example-label">Rock 058</div><code className="sc-texture-example-class">sc-texture-rock-058</code></div>
+        <div className="sc-texture-example-shadow"><div className="sc-texture-example-word">ROCK</div></div>
+        <div className="sc-texture-example-usage">Use <code>sc-texture-text sc-texture-rock-058</code></div>
       </div>
-      <div className="hf-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/hyperframes-oss/docs/images/catalog/components/texture-mask-text/masks/onyx.png')" }}>
-        <div className="hf-texture-example-meta"><div className="hf-texture-example-label">Onyx</div><code className="hf-texture-example-class">hf-texture-onyx</code></div>
-        <div className="hf-texture-example-shadow"><div className="hf-texture-example-word">ONYX</div></div>
-        <div className="hf-texture-example-usage">Use <code>hf-texture-text hf-texture-onyx</code></div>
+      <div className="sc-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/smashcut-oss/docs/images/catalog/components/texture-mask-text/masks/onyx.png')" }}>
+        <div className="sc-texture-example-meta"><div className="sc-texture-example-label">Onyx</div><code className="sc-texture-example-class">sc-texture-onyx</code></div>
+        <div className="sc-texture-example-shadow"><div className="sc-texture-example-word">ONYX</div></div>
+        <div className="sc-texture-example-usage">Use <code>sc-texture-text sc-texture-onyx</code></div>
       </div>
-      <div className="hf-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/hyperframes-oss/docs/images/catalog/components/texture-mask-text/masks/marble-012.png')" }}>
-        <div className="hf-texture-example-meta"><div className="hf-texture-example-label">Marble 012</div><code className="hf-texture-example-class">hf-texture-marble-012</code></div>
-        <div className="hf-texture-example-shadow"><div className="hf-texture-example-word">MARBLE</div></div>
-        <div className="hf-texture-example-usage">Use <code>hf-texture-text hf-texture-marble-012</code></div>
+      <div className="sc-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/smashcut-oss/docs/images/catalog/components/texture-mask-text/masks/marble-012.png')" }}>
+        <div className="sc-texture-example-meta"><div className="sc-texture-example-label">Marble 012</div><code className="sc-texture-example-class">sc-texture-marble-012</code></div>
+        <div className="sc-texture-example-shadow"><div className="sc-texture-example-word">MARBLE</div></div>
+        <div className="sc-texture-example-usage">Use <code>sc-texture-text sc-texture-marble-012</code></div>
       </div>
-      <div className="hf-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/hyperframes-oss/docs/images/catalog/components/texture-mask-text/masks/marble-016.png')" }}>
-        <div className="hf-texture-example-meta"><div className="hf-texture-example-label">Marble 016</div><code className="hf-texture-example-class">hf-texture-marble-016</code></div>
-        <div className="hf-texture-example-shadow"><div className="hf-texture-example-word">MARBLE</div></div>
-        <div className="hf-texture-example-usage">Use <code>hf-texture-text hf-texture-marble-016</code></div>
+      <div className="sc-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/smashcut-oss/docs/images/catalog/components/texture-mask-text/masks/marble-016.png')" }}>
+        <div className="sc-texture-example-meta"><div className="sc-texture-example-label">Marble 016</div><code className="sc-texture-example-class">sc-texture-marble-016</code></div>
+        <div className="sc-texture-example-shadow"><div className="sc-texture-example-word">MARBLE</div></div>
+        <div className="sc-texture-example-usage">Use <code>sc-texture-text sc-texture-marble-016</code></div>
       </div>
-      <div className="hf-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/hyperframes-oss/docs/images/catalog/components/texture-mask-text/masks/travertine-009.png')" }}>
-        <div className="hf-texture-example-meta"><div className="hf-texture-example-label">Travertine 009</div><code className="hf-texture-example-class">hf-texture-travertine-009</code></div>
-        <div className="hf-texture-example-shadow"><div className="hf-texture-example-word">STONE</div></div>
-        <div className="hf-texture-example-usage">Use <code>hf-texture-text hf-texture-travertine-009</code></div>
+      <div className="sc-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/smashcut-oss/docs/images/catalog/components/texture-mask-text/masks/travertine-009.png')" }}>
+        <div className="sc-texture-example-meta"><div className="sc-texture-example-label">Travertine 009</div><code className="sc-texture-example-class">sc-texture-travertine-009</code></div>
+        <div className="sc-texture-example-shadow"><div className="sc-texture-example-word">STONE</div></div>
+        <div className="sc-texture-example-usage">Use <code>sc-texture-text sc-texture-travertine-009</code></div>
       </div>
-      <div className="hf-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/hyperframes-oss/docs/images/catalog/components/texture-mask-text/masks/paving-stones-150.png')" }}>
-        <div className="hf-texture-example-meta"><div className="hf-texture-example-label">Paving Stones 150</div><code className="hf-texture-example-class">hf-texture-paving-stones-150</code></div>
-        <div className="hf-texture-example-shadow"><div className="hf-texture-example-word">STONE</div></div>
-        <div className="hf-texture-example-usage">Use <code>hf-texture-text hf-texture-paving-stones-150</code></div>
+      <div className="sc-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/smashcut-oss/docs/images/catalog/components/texture-mask-text/masks/paving-stones-150.png')" }}>
+        <div className="sc-texture-example-meta"><div className="sc-texture-example-label">Paving Stones 150</div><code className="sc-texture-example-class">sc-texture-paving-stones-150</code></div>
+        <div className="sc-texture-example-shadow"><div className="sc-texture-example-word">STONE</div></div>
+        <div className="sc-texture-example-usage">Use <code>sc-texture-text sc-texture-paving-stones-150</code></div>
       </div>
-      <div className="hf-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/hyperframes-oss/docs/images/catalog/components/texture-mask-text/masks/paving-stones-138.png')" }}>
-        <div className="hf-texture-example-meta"><div className="hf-texture-example-label">Paving Stones 138</div><code className="hf-texture-example-class">hf-texture-paving-stones-138</code></div>
-        <div className="hf-texture-example-shadow"><div className="hf-texture-example-word">STONE</div></div>
-        <div className="hf-texture-example-usage">Use <code>hf-texture-text hf-texture-paving-stones-138</code></div>
+      <div className="sc-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/smashcut-oss/docs/images/catalog/components/texture-mask-text/masks/paving-stones-138.png')" }}>
+        <div className="sc-texture-example-meta"><div className="sc-texture-example-label">Paving Stones 138</div><code className="sc-texture-example-class">sc-texture-paving-stones-138</code></div>
+        <div className="sc-texture-example-shadow"><div className="sc-texture-example-word">STONE</div></div>
+        <div className="sc-texture-example-usage">Use <code>sc-texture-text sc-texture-paving-stones-138</code></div>
       </div>
-      <div className="hf-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/hyperframes-oss/docs/images/catalog/components/texture-mask-text/masks/tiles-138.png')" }}>
-        <div className="hf-texture-example-meta"><div className="hf-texture-example-label">Tiles 138</div><code className="hf-texture-example-class">hf-texture-tiles-138</code></div>
-        <div className="hf-texture-example-shadow"><div className="hf-texture-example-word">TILE</div></div>
-        <div className="hf-texture-example-usage">Use <code>hf-texture-text hf-texture-tiles-138</code></div>
-      </div>
-    </div>
-  </div>
-  <div>
-    <h3 className="hf-texture-example-title">Ground / Road</h3>
-    <div className="hf-texture-example-grid">
-      <div className="hf-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/hyperframes-oss/docs/images/catalog/components/texture-mask-text/masks/ground-103.png')" }}>
-        <div className="hf-texture-example-meta"><div className="hf-texture-example-label">Ground 103</div><code className="hf-texture-example-class">hf-texture-ground-103</code></div>
-        <div className="hf-texture-example-shadow"><div className="hf-texture-example-word">GROUND</div></div>
-        <div className="hf-texture-example-usage">Use <code>hf-texture-text hf-texture-ground-103</code></div>
-      </div>
-      <div className="hf-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/hyperframes-oss/docs/images/catalog/components/texture-mask-text/masks/ground-037.png')" }}>
-        <div className="hf-texture-example-meta"><div className="hf-texture-example-label">Ground 037</div><code className="hf-texture-example-class">hf-texture-ground-037</code></div>
-        <div className="hf-texture-example-shadow"><div className="hf-texture-example-word">GROUND</div></div>
-        <div className="hf-texture-example-usage">Use <code>hf-texture-text hf-texture-ground-037</code></div>
-      </div>
-      <div className="hf-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/hyperframes-oss/docs/images/catalog/components/texture-mask-text/masks/ground-054.png')" }}>
-        <div className="hf-texture-example-meta"><div className="hf-texture-example-label">Ground 054</div><code className="hf-texture-example-class">hf-texture-ground-054</code></div>
-        <div className="hf-texture-example-shadow"><div className="hf-texture-example-word">GROUND</div></div>
-        <div className="hf-texture-example-usage">Use <code>hf-texture-text hf-texture-ground-054</code></div>
-      </div>
-      <div className="hf-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/hyperframes-oss/docs/images/catalog/components/texture-mask-text/masks/ground-104.png')" }}>
-        <div className="hf-texture-example-meta"><div className="hf-texture-example-label">Ground 104</div><code className="hf-texture-example-class">hf-texture-ground-104</code></div>
-        <div className="hf-texture-example-shadow"><div className="hf-texture-example-word">GROUND</div></div>
-        <div className="hf-texture-example-usage">Use <code>hf-texture-text hf-texture-ground-104</code></div>
-      </div>
-      <div className="hf-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/hyperframes-oss/docs/images/catalog/components/texture-mask-text/masks/ground-068.png')" }}>
-        <div className="hf-texture-example-meta"><div className="hf-texture-example-label">Ground 068</div><code className="hf-texture-example-class">hf-texture-ground-068</code></div>
-        <div className="hf-texture-example-shadow"><div className="hf-texture-example-word">GROUND</div></div>
-        <div className="hf-texture-example-usage">Use <code>hf-texture-text hf-texture-ground-068</code></div>
-      </div>
-      <div className="hf-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/hyperframes-oss/docs/images/catalog/components/texture-mask-text/masks/ground-080.png')" }}>
-        <div className="hf-texture-example-meta"><div className="hf-texture-example-label">Ground 080</div><code className="hf-texture-example-class">hf-texture-ground-080</code></div>
-        <div className="hf-texture-example-shadow"><div className="hf-texture-example-word">GROUND</div></div>
-        <div className="hf-texture-example-usage">Use <code>hf-texture-text hf-texture-ground-080</code></div>
-      </div>
-      <div className="hf-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/hyperframes-oss/docs/images/catalog/components/texture-mask-text/masks/road-012-a.png')" }}>
-        <div className="hf-texture-example-meta"><div className="hf-texture-example-label">Road 012 A</div><code className="hf-texture-example-class">hf-texture-road-012-a</code></div>
-        <div className="hf-texture-example-shadow"><div className="hf-texture-example-word">ROAD</div></div>
-        <div className="hf-texture-example-usage">Use <code>hf-texture-text hf-texture-road-012-a</code></div>
-      </div>
-      <div className="hf-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/hyperframes-oss/docs/images/catalog/components/texture-mask-text/masks/road-008-a.png')" }}>
-        <div className="hf-texture-example-meta"><div className="hf-texture-example-label">Road 008 A</div><code className="hf-texture-example-class">hf-texture-road-008-a</code></div>
-        <div className="hf-texture-example-shadow"><div className="hf-texture-example-word">ROAD</div></div>
-        <div className="hf-texture-example-usage">Use <code>hf-texture-text hf-texture-road-008-a</code></div>
-      </div>
-      <div className="hf-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/hyperframes-oss/docs/images/catalog/components/texture-mask-text/masks/road-007.png')" }}>
-        <div className="hf-texture-example-meta"><div className="hf-texture-example-label">Road 007</div><code className="hf-texture-example-class">hf-texture-road-007</code></div>
-        <div className="hf-texture-example-shadow"><div className="hf-texture-example-word">ROAD</div></div>
-        <div className="hf-texture-example-usage">Use <code>hf-texture-text hf-texture-road-007</code></div>
-      </div>
-      <div className="hf-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/hyperframes-oss/docs/images/catalog/components/texture-mask-text/masks/road-013-a.png')" }}>
-        <div className="hf-texture-example-meta"><div className="hf-texture-example-label">Road 013 A</div><code className="hf-texture-example-class">hf-texture-road-013-a</code></div>
-        <div className="hf-texture-example-shadow"><div className="hf-texture-example-word">ROAD</div></div>
-        <div className="hf-texture-example-usage">Use <code>hf-texture-text hf-texture-road-013-a</code></div>
-      </div>
-      <div className="hf-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/hyperframes-oss/docs/images/catalog/components/texture-mask-text/masks/road-012-b.png')" }}>
-        <div className="hf-texture-example-meta"><div className="hf-texture-example-label">Road 012 B</div><code className="hf-texture-example-class">hf-texture-road-012-b</code></div>
-        <div className="hf-texture-example-shadow"><div className="hf-texture-example-word">ROAD</div></div>
-        <div className="hf-texture-example-usage">Use <code>hf-texture-text hf-texture-road-012-b</code></div>
-      </div>
-      <div className="hf-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/hyperframes-oss/docs/images/catalog/components/texture-mask-text/masks/road-009-c.png')" }}>
-        <div className="hf-texture-example-meta"><div className="hf-texture-example-label">Road 009 C</div><code className="hf-texture-example-class">hf-texture-road-009-c</code></div>
-        <div className="hf-texture-example-shadow"><div className="hf-texture-example-word">ROAD</div></div>
-        <div className="hf-texture-example-usage">Use <code>hf-texture-text hf-texture-road-009-c</code></div>
-      </div>
-      <div className="hf-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/hyperframes-oss/docs/images/catalog/components/texture-mask-text/masks/asphalt-031.png')" }}>
-        <div className="hf-texture-example-meta"><div className="hf-texture-example-label">Asphalt 031</div><code className="hf-texture-example-class">hf-texture-asphalt-031</code></div>
-        <div className="hf-texture-example-shadow"><div className="hf-texture-example-word">ASPHALT</div></div>
-        <div className="hf-texture-example-usage">Use <code>hf-texture-text hf-texture-asphalt-031</code></div>
+      <div className="sc-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/smashcut-oss/docs/images/catalog/components/texture-mask-text/masks/tiles-138.png')" }}>
+        <div className="sc-texture-example-meta"><div className="sc-texture-example-label">Tiles 138</div><code className="sc-texture-example-class">sc-texture-tiles-138</code></div>
+        <div className="sc-texture-example-shadow"><div className="sc-texture-example-word">TILE</div></div>
+        <div className="sc-texture-example-usage">Use <code>sc-texture-text sc-texture-tiles-138</code></div>
       </div>
     </div>
   </div>
   <div>
-    <h3 className="hf-texture-example-title">Wood</h3>
-    <div className="hf-texture-example-grid">
-      <div className="hf-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/hyperframes-oss/docs/images/catalog/components/texture-mask-text/masks/wood.png')" }}>
-        <div className="hf-texture-example-meta"><div className="hf-texture-example-label">Wood</div><code className="hf-texture-example-class">hf-texture-wood</code></div>
-        <div className="hf-texture-example-shadow"><div className="hf-texture-example-word">WOOD</div></div>
-        <div className="hf-texture-example-usage">Use <code>hf-texture-text hf-texture-wood</code></div>
+    <h3 className="sc-texture-example-title">Ground / Road</h3>
+    <div className="sc-texture-example-grid">
+      <div className="sc-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/smashcut-oss/docs/images/catalog/components/texture-mask-text/masks/ground-103.png')" }}>
+        <div className="sc-texture-example-meta"><div className="sc-texture-example-label">Ground 103</div><code className="sc-texture-example-class">sc-texture-ground-103</code></div>
+        <div className="sc-texture-example-shadow"><div className="sc-texture-example-word">GROUND</div></div>
+        <div className="sc-texture-example-usage">Use <code>sc-texture-text sc-texture-ground-103</code></div>
       </div>
-      <div className="hf-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/hyperframes-oss/docs/images/catalog/components/texture-mask-text/masks/wood-094.png')" }}>
-        <div className="hf-texture-example-meta"><div className="hf-texture-example-label">Wood 094</div><code className="hf-texture-example-class">hf-texture-wood-094</code></div>
-        <div className="hf-texture-example-shadow"><div className="hf-texture-example-word">WOOD</div></div>
-        <div className="hf-texture-example-usage">Use <code>hf-texture-text hf-texture-wood-094</code></div>
+      <div className="sc-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/smashcut-oss/docs/images/catalog/components/texture-mask-text/masks/ground-037.png')" }}>
+        <div className="sc-texture-example-meta"><div className="sc-texture-example-label">Ground 037</div><code className="sc-texture-example-class">sc-texture-ground-037</code></div>
+        <div className="sc-texture-example-shadow"><div className="sc-texture-example-word">GROUND</div></div>
+        <div className="sc-texture-example-usage">Use <code>sc-texture-text sc-texture-ground-037</code></div>
       </div>
-      <div className="hf-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/hyperframes-oss/docs/images/catalog/components/texture-mask-text/masks/wood-092.png')" }}>
-        <div className="hf-texture-example-meta"><div className="hf-texture-example-label">Wood 092</div><code className="hf-texture-example-class">hf-texture-wood-092</code></div>
-        <div className="hf-texture-example-shadow"><div className="hf-texture-example-word">WOOD</div></div>
-        <div className="hf-texture-example-usage">Use <code>hf-texture-text hf-texture-wood-092</code></div>
+      <div className="sc-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/smashcut-oss/docs/images/catalog/components/texture-mask-text/masks/ground-054.png')" }}>
+        <div className="sc-texture-example-meta"><div className="sc-texture-example-label">Ground 054</div><code className="sc-texture-example-class">sc-texture-ground-054</code></div>
+        <div className="sc-texture-example-shadow"><div className="sc-texture-example-word">GROUND</div></div>
+        <div className="sc-texture-example-usage">Use <code>sc-texture-text sc-texture-ground-054</code></div>
       </div>
-      <div className="hf-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/hyperframes-oss/docs/images/catalog/components/texture-mask-text/masks/wood-051.png')" }}>
-        <div className="hf-texture-example-meta"><div className="hf-texture-example-label">Wood 051</div><code className="hf-texture-example-class">hf-texture-wood-051</code></div>
-        <div className="hf-texture-example-shadow"><div className="hf-texture-example-word">WOOD</div></div>
-        <div className="hf-texture-example-usage">Use <code>hf-texture-text hf-texture-wood-051</code></div>
+      <div className="sc-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/smashcut-oss/docs/images/catalog/components/texture-mask-text/masks/ground-104.png')" }}>
+        <div className="sc-texture-example-meta"><div className="sc-texture-example-label">Ground 104</div><code className="sc-texture-example-class">sc-texture-ground-104</code></div>
+        <div className="sc-texture-example-shadow"><div className="sc-texture-example-word">GROUND</div></div>
+        <div className="sc-texture-example-usage">Use <code>sc-texture-text sc-texture-ground-104</code></div>
       </div>
-      <div className="hf-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/hyperframes-oss/docs/images/catalog/components/texture-mask-text/masks/wood-066.png')" }}>
-        <div className="hf-texture-example-meta"><div className="hf-texture-example-label">Wood 066</div><code className="hf-texture-example-class">hf-texture-wood-066</code></div>
-        <div className="hf-texture-example-shadow"><div className="hf-texture-example-word">WOOD</div></div>
-        <div className="hf-texture-example-usage">Use <code>hf-texture-text hf-texture-wood-066</code></div>
+      <div className="sc-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/smashcut-oss/docs/images/catalog/components/texture-mask-text/masks/ground-068.png')" }}>
+        <div className="sc-texture-example-meta"><div className="sc-texture-example-label">Ground 068</div><code className="sc-texture-example-class">sc-texture-ground-068</code></div>
+        <div className="sc-texture-example-shadow"><div className="sc-texture-example-word">GROUND</div></div>
+        <div className="sc-texture-example-usage">Use <code>sc-texture-text sc-texture-ground-068</code></div>
       </div>
-      <div className="hf-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/hyperframes-oss/docs/images/catalog/components/texture-mask-text/masks/wood-049.png')" }}>
-        <div className="hf-texture-example-meta"><div className="hf-texture-example-label">Wood 049</div><code className="hf-texture-example-class">hf-texture-wood-049</code></div>
-        <div className="hf-texture-example-shadow"><div className="hf-texture-example-word">WOOD</div></div>
-        <div className="hf-texture-example-usage">Use <code>hf-texture-text hf-texture-wood-049</code></div>
+      <div className="sc-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/smashcut-oss/docs/images/catalog/components/texture-mask-text/masks/ground-080.png')" }}>
+        <div className="sc-texture-example-meta"><div className="sc-texture-example-label">Ground 080</div><code className="sc-texture-example-class">sc-texture-ground-080</code></div>
+        <div className="sc-texture-example-shadow"><div className="sc-texture-example-word">GROUND</div></div>
+        <div className="sc-texture-example-usage">Use <code>sc-texture-text sc-texture-ground-080</code></div>
       </div>
-      <div className="hf-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/hyperframes-oss/docs/images/catalog/components/texture-mask-text/masks/wood-058.png')" }}>
-        <div className="hf-texture-example-meta"><div className="hf-texture-example-label">Wood 058</div><code className="hf-texture-example-class">hf-texture-wood-058</code></div>
-        <div className="hf-texture-example-shadow"><div className="hf-texture-example-word">WOOD</div></div>
-        <div className="hf-texture-example-usage">Use <code>hf-texture-text hf-texture-wood-058</code></div>
+      <div className="sc-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/smashcut-oss/docs/images/catalog/components/texture-mask-text/masks/road-012-a.png')" }}>
+        <div className="sc-texture-example-meta"><div className="sc-texture-example-label">Road 012 A</div><code className="sc-texture-example-class">sc-texture-road-012-a</code></div>
+        <div className="sc-texture-example-shadow"><div className="sc-texture-example-word">ROAD</div></div>
+        <div className="sc-texture-example-usage">Use <code>sc-texture-text sc-texture-road-012-a</code></div>
       </div>
-      <div className="hf-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/hyperframes-oss/docs/images/catalog/components/texture-mask-text/masks/wood-floor-051.png')" }}>
-        <div className="hf-texture-example-meta"><div className="hf-texture-example-label">Wood Floor 051</div><code className="hf-texture-example-class">hf-texture-wood-floor-051</code></div>
-        <div className="hf-texture-example-shadow"><div className="hf-texture-example-word">FLOOR</div></div>
-        <div className="hf-texture-example-usage">Use <code>hf-texture-text hf-texture-wood-floor-051</code></div>
+      <div className="sc-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/smashcut-oss/docs/images/catalog/components/texture-mask-text/masks/road-008-a.png')" }}>
+        <div className="sc-texture-example-meta"><div className="sc-texture-example-label">Road 008 A</div><code className="sc-texture-example-class">sc-texture-road-008-a</code></div>
+        <div className="sc-texture-example-shadow"><div className="sc-texture-example-word">ROAD</div></div>
+        <div className="sc-texture-example-usage">Use <code>sc-texture-text sc-texture-road-008-a</code></div>
       </div>
-      <div className="hf-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/hyperframes-oss/docs/images/catalog/components/texture-mask-text/masks/wood-floor-064.png')" }}>
-        <div className="hf-texture-example-meta"><div className="hf-texture-example-label">Wood Floor 064</div><code className="hf-texture-example-class">hf-texture-wood-floor-064</code></div>
-        <div className="hf-texture-example-shadow"><div className="hf-texture-example-word">FLOOR</div></div>
-        <div className="hf-texture-example-usage">Use <code>hf-texture-text hf-texture-wood-floor-064</code></div>
+      <div className="sc-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/smashcut-oss/docs/images/catalog/components/texture-mask-text/masks/road-007.png')" }}>
+        <div className="sc-texture-example-meta"><div className="sc-texture-example-label">Road 007</div><code className="sc-texture-example-class">sc-texture-road-007</code></div>
+        <div className="sc-texture-example-shadow"><div className="sc-texture-example-word">ROAD</div></div>
+        <div className="sc-texture-example-usage">Use <code>sc-texture-text sc-texture-road-007</code></div>
       </div>
-      <div className="hf-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/hyperframes-oss/docs/images/catalog/components/texture-mask-text/masks/wood-floor-070.png')" }}>
-        <div className="hf-texture-example-meta"><div className="hf-texture-example-label">Wood Floor 070</div><code className="hf-texture-example-class">hf-texture-wood-floor-070</code></div>
-        <div className="hf-texture-example-shadow"><div className="hf-texture-example-word">FLOOR</div></div>
-        <div className="hf-texture-example-usage">Use <code>hf-texture-text hf-texture-wood-floor-070</code></div>
+      <div className="sc-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/smashcut-oss/docs/images/catalog/components/texture-mask-text/masks/road-013-a.png')" }}>
+        <div className="sc-texture-example-meta"><div className="sc-texture-example-label">Road 013 A</div><code className="sc-texture-example-class">sc-texture-road-013-a</code></div>
+        <div className="sc-texture-example-shadow"><div className="sc-texture-example-word">ROAD</div></div>
+        <div className="sc-texture-example-usage">Use <code>sc-texture-text sc-texture-road-013-a</code></div>
       </div>
-      <div className="hf-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/hyperframes-oss/docs/images/catalog/components/texture-mask-text/masks/bark-014.png')" }}>
-        <div className="hf-texture-example-meta"><div className="hf-texture-example-label">Bark 014</div><code className="hf-texture-example-class">hf-texture-bark-014</code></div>
-        <div className="hf-texture-example-shadow"><div className="hf-texture-example-word">BARK</div></div>
-        <div className="hf-texture-example-usage">Use <code>hf-texture-text hf-texture-bark-014</code></div>
+      <div className="sc-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/smashcut-oss/docs/images/catalog/components/texture-mask-text/masks/road-012-b.png')" }}>
+        <div className="sc-texture-example-meta"><div className="sc-texture-example-label">Road 012 B</div><code className="sc-texture-example-class">sc-texture-road-012-b</code></div>
+        <div className="sc-texture-example-shadow"><div className="sc-texture-example-word">ROAD</div></div>
+        <div className="sc-texture-example-usage">Use <code>sc-texture-text sc-texture-road-012-b</code></div>
       </div>
-    </div>
-  </div>
-  <div>
-    <h3 className="hf-texture-example-title">Metal</h3>
-    <div className="hf-texture-example-grid">
-      <div className="hf-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/hyperframes-oss/docs/images/catalog/components/texture-mask-text/masks/metal.png')" }}>
-        <div className="hf-texture-example-meta"><div className="hf-texture-example-label">Metal</div><code className="hf-texture-example-class">hf-texture-metal</code></div>
-        <div className="hf-texture-example-shadow"><div className="hf-texture-example-word">METAL</div></div>
-        <div className="hf-texture-example-usage">Use <code>hf-texture-text hf-texture-metal</code></div>
+      <div className="sc-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/smashcut-oss/docs/images/catalog/components/texture-mask-text/masks/road-009-c.png')" }}>
+        <div className="sc-texture-example-meta"><div className="sc-texture-example-label">Road 009 C</div><code className="sc-texture-example-class">sc-texture-road-009-c</code></div>
+        <div className="sc-texture-example-shadow"><div className="sc-texture-example-word">ROAD</div></div>
+        <div className="sc-texture-example-usage">Use <code>sc-texture-text sc-texture-road-009-c</code></div>
       </div>
-      <div className="hf-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/hyperframes-oss/docs/images/catalog/components/texture-mask-text/masks/metal-049-a.png')" }}>
-        <div className="hf-texture-example-meta"><div className="hf-texture-example-label">Metal 049 A</div><code className="hf-texture-example-class">hf-texture-metal-049-a</code></div>
-        <div className="hf-texture-example-shadow"><div className="hf-texture-example-word">METAL</div></div>
-        <div className="hf-texture-example-usage">Use <code>hf-texture-text hf-texture-metal-049-a</code></div>
-      </div>
-      <div className="hf-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/hyperframes-oss/docs/images/catalog/components/texture-mask-text/masks/metal-055-a.png')" }}>
-        <div className="hf-texture-example-meta"><div className="hf-texture-example-label">Metal 055 A</div><code className="hf-texture-example-class">hf-texture-metal-055-a</code></div>
-        <div className="hf-texture-example-shadow"><div className="hf-texture-example-word">METAL</div></div>
-        <div className="hf-texture-example-usage">Use <code>hf-texture-text hf-texture-metal-055-a</code></div>
-      </div>
-      <div className="hf-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/hyperframes-oss/docs/images/catalog/components/texture-mask-text/masks/metal-046-b.png')" }}>
-        <div className="hf-texture-example-meta"><div className="hf-texture-example-label">Metal 046 B</div><code className="hf-texture-example-class">hf-texture-metal-046-b</code></div>
-        <div className="hf-texture-example-shadow"><div className="hf-texture-example-word">METAL</div></div>
-        <div className="hf-texture-example-usage">Use <code>hf-texture-text hf-texture-metal-046-b</code></div>
-      </div>
-      <div className="hf-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/hyperframes-oss/docs/images/catalog/components/texture-mask-text/masks/metal-061-b.png')" }}>
-        <div className="hf-texture-example-meta"><div className="hf-texture-example-label">Metal 061 B</div><code className="hf-texture-example-class">hf-texture-metal-061-b</code></div>
-        <div className="hf-texture-example-shadow"><div className="hf-texture-example-word">METAL</div></div>
-        <div className="hf-texture-example-usage">Use <code>hf-texture-text hf-texture-metal-061-b</code></div>
-      </div>
-      <div className="hf-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/hyperframes-oss/docs/images/catalog/components/texture-mask-text/masks/metal-048-a.png')" }}>
-        <div className="hf-texture-example-meta"><div className="hf-texture-example-label">Metal 048 A</div><code className="hf-texture-example-class">hf-texture-metal-048-a</code></div>
-        <div className="hf-texture-example-shadow"><div className="hf-texture-example-word">METAL</div></div>
-        <div className="hf-texture-example-usage">Use <code>hf-texture-text hf-texture-metal-048-a</code></div>
-      </div>
-      <div className="hf-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/hyperframes-oss/docs/images/catalog/components/texture-mask-text/masks/metal-032.png')" }}>
-        <div className="hf-texture-example-meta"><div className="hf-texture-example-label">Metal 032</div><code className="hf-texture-example-class">hf-texture-metal-032</code></div>
-        <div className="hf-texture-example-shadow"><div className="hf-texture-example-word">METAL</div></div>
-        <div className="hf-texture-example-usage">Use <code>hf-texture-text hf-texture-metal-032</code></div>
-      </div>
-      <div className="hf-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/hyperframes-oss/docs/images/catalog/components/texture-mask-text/masks/metal-041-a.png')" }}>
-        <div className="hf-texture-example-meta"><div className="hf-texture-example-label">Metal 041 A</div><code className="hf-texture-example-class">hf-texture-metal-041-a</code></div>
-        <div className="hf-texture-example-shadow"><div className="hf-texture-example-word">METAL</div></div>
-        <div className="hf-texture-example-usage">Use <code>hf-texture-text hf-texture-metal-041-a</code></div>
-      </div>
-      <div className="hf-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/hyperframes-oss/docs/images/catalog/components/texture-mask-text/masks/metal-038.png')" }}>
-        <div className="hf-texture-example-meta"><div className="hf-texture-example-label">Metal 038</div><code className="hf-texture-example-class">hf-texture-metal-038</code></div>
-        <div className="hf-texture-example-shadow"><div className="hf-texture-example-word">METAL</div></div>
-        <div className="hf-texture-example-usage">Use <code>hf-texture-text hf-texture-metal-038</code></div>
-      </div>
-      <div className="hf-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/hyperframes-oss/docs/images/catalog/components/texture-mask-text/masks/diamond-plate-009.png')" }}>
-        <div className="hf-texture-example-meta"><div className="hf-texture-example-label">Diamond Plate 009</div><code className="hf-texture-example-class">hf-texture-diamond-plate-009</code></div>
-        <div className="hf-texture-example-shadow"><div className="hf-texture-example-word">PLATE</div></div>
-        <div className="hf-texture-example-usage">Use <code>hf-texture-text hf-texture-diamond-plate-009</code></div>
+      <div className="sc-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/smashcut-oss/docs/images/catalog/components/texture-mask-text/masks/asphalt-031.png')" }}>
+        <div className="sc-texture-example-meta"><div className="sc-texture-example-label">Asphalt 031</div><code className="sc-texture-example-class">sc-texture-asphalt-031</code></div>
+        <div className="sc-texture-example-shadow"><div className="sc-texture-example-word">ASPHALT</div></div>
+        <div className="sc-texture-example-usage">Use <code>sc-texture-text sc-texture-asphalt-031</code></div>
       </div>
     </div>
   </div>
   <div>
-    <h3 className="hf-texture-example-title">Organic / Soft</h3>
-    <div className="hf-texture-example-grid">
-      <div className="hf-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/hyperframes-oss/docs/images/catalog/components/texture-mask-text/masks/lava.png')" }}>
-        <div className="hf-texture-example-meta"><div className="hf-texture-example-label">Lava</div><code className="hf-texture-example-class">hf-texture-lava</code></div>
-        <div className="hf-texture-example-shadow"><div className="hf-texture-example-word">LAVA</div></div>
-        <div className="hf-texture-example-usage">Use <code>hf-texture-text hf-texture-lava</code></div>
+    <h3 className="sc-texture-example-title">Wood</h3>
+    <div className="sc-texture-example-grid">
+      <div className="sc-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/smashcut-oss/docs/images/catalog/components/texture-mask-text/masks/wood.png')" }}>
+        <div className="sc-texture-example-meta"><div className="sc-texture-example-label">Wood</div><code className="sc-texture-example-class">sc-texture-wood</code></div>
+        <div className="sc-texture-example-shadow"><div className="sc-texture-example-word">WOOD</div></div>
+        <div className="sc-texture-example-usage">Use <code>sc-texture-text sc-texture-wood</code></div>
       </div>
-      <div className="hf-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/hyperframes-oss/docs/images/catalog/components/texture-mask-text/masks/grass-005.png')" }}>
-        <div className="hf-texture-example-meta"><div className="hf-texture-example-label">Grass 005</div><code className="hf-texture-example-class">hf-texture-grass-005</code></div>
-        <div className="hf-texture-example-shadow"><div className="hf-texture-example-word">GRASS</div></div>
-        <div className="hf-texture-example-usage">Use <code>hf-texture-text hf-texture-grass-005</code></div>
+      <div className="sc-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/smashcut-oss/docs/images/catalog/components/texture-mask-text/masks/wood-094.png')" }}>
+        <div className="sc-texture-example-meta"><div className="sc-texture-example-label">Wood 094</div><code className="sc-texture-example-class">sc-texture-wood-094</code></div>
+        <div className="sc-texture-example-shadow"><div className="sc-texture-example-word">WOOD</div></div>
+        <div className="sc-texture-example-usage">Use <code>sc-texture-text sc-texture-wood-094</code></div>
       </div>
-      <div className="hf-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/hyperframes-oss/docs/images/catalog/components/texture-mask-text/masks/grass-001.png')" }}>
-        <div className="hf-texture-example-meta"><div className="hf-texture-example-label">Grass 001</div><code className="hf-texture-example-class">hf-texture-grass-001</code></div>
-        <div className="hf-texture-example-shadow"><div className="hf-texture-example-word">GRASS</div></div>
-        <div className="hf-texture-example-usage">Use <code>hf-texture-text hf-texture-grass-001</code></div>
+      <div className="sc-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/smashcut-oss/docs/images/catalog/components/texture-mask-text/masks/wood-092.png')" }}>
+        <div className="sc-texture-example-meta"><div className="sc-texture-example-label">Wood 092</div><code className="sc-texture-example-class">sc-texture-wood-092</code></div>
+        <div className="sc-texture-example-shadow"><div className="sc-texture-example-word">WOOD</div></div>
+        <div className="sc-texture-example-usage">Use <code>sc-texture-text sc-texture-wood-092</code></div>
       </div>
-      <div className="hf-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/hyperframes-oss/docs/images/catalog/components/texture-mask-text/masks/grass-004.png')" }}>
-        <div className="hf-texture-example-meta"><div className="hf-texture-example-label">Grass 004</div><code className="hf-texture-example-class">hf-texture-grass-004</code></div>
-        <div className="hf-texture-example-shadow"><div className="hf-texture-example-word">GRASS</div></div>
-        <div className="hf-texture-example-usage">Use <code>hf-texture-text hf-texture-grass-004</code></div>
+      <div className="sc-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/smashcut-oss/docs/images/catalog/components/texture-mask-text/masks/wood-051.png')" }}>
+        <div className="sc-texture-example-meta"><div className="sc-texture-example-label">Wood 051</div><code className="sc-texture-example-class">sc-texture-wood-051</code></div>
+        <div className="sc-texture-example-shadow"><div className="sc-texture-example-word">WOOD</div></div>
+        <div className="sc-texture-example-usage">Use <code>sc-texture-text sc-texture-wood-051</code></div>
       </div>
-      <div className="hf-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/hyperframes-oss/docs/images/catalog/components/texture-mask-text/masks/carpet.png')" }}>
-        <div className="hf-texture-example-meta"><div className="hf-texture-example-label">Carpet</div><code className="hf-texture-example-class">hf-texture-carpet</code></div>
-        <div className="hf-texture-example-shadow"><div className="hf-texture-example-word">WOVEN</div></div>
-        <div className="hf-texture-example-usage">Use <code>hf-texture-text hf-texture-carpet</code></div>
+      <div className="sc-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/smashcut-oss/docs/images/catalog/components/texture-mask-text/masks/wood-066.png')" }}>
+        <div className="sc-texture-example-meta"><div className="sc-texture-example-label">Wood 066</div><code className="sc-texture-example-class">sc-texture-wood-066</code></div>
+        <div className="sc-texture-example-shadow"><div className="sc-texture-example-word">WOOD</div></div>
+        <div className="sc-texture-example-usage">Use <code>sc-texture-text sc-texture-wood-066</code></div>
       </div>
-      <div className="hf-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/hyperframes-oss/docs/images/catalog/components/texture-mask-text/masks/fabric-083.png')" }}>
-        <div className="hf-texture-example-meta"><div className="hf-texture-example-label">Fabric 083</div><code className="hf-texture-example-class">hf-texture-fabric-083</code></div>
-        <div className="hf-texture-example-shadow"><div className="hf-texture-example-word">FABRIC</div></div>
-        <div className="hf-texture-example-usage">Use <code>hf-texture-text hf-texture-fabric-083</code></div>
+      <div className="sc-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/smashcut-oss/docs/images/catalog/components/texture-mask-text/masks/wood-049.png')" }}>
+        <div className="sc-texture-example-meta"><div className="sc-texture-example-label">Wood 049</div><code className="sc-texture-example-class">sc-texture-wood-049</code></div>
+        <div className="sc-texture-example-shadow"><div className="sc-texture-example-word">WOOD</div></div>
+        <div className="sc-texture-example-usage">Use <code>sc-texture-text sc-texture-wood-049</code></div>
       </div>
-      <div className="hf-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/hyperframes-oss/docs/images/catalog/components/texture-mask-text/masks/snow.png')" }}>
-        <div className="hf-texture-example-meta"><div className="hf-texture-example-label">Snow</div><code className="hf-texture-example-class">hf-texture-snow</code></div>
-        <div className="hf-texture-example-shadow"><div className="hf-texture-example-word">SNOW</div></div>
-        <div className="hf-texture-example-usage">Use <code>hf-texture-text hf-texture-snow</code></div>
+      <div className="sc-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/smashcut-oss/docs/images/catalog/components/texture-mask-text/masks/wood-058.png')" }}>
+        <div className="sc-texture-example-meta"><div className="sc-texture-example-label">Wood 058</div><code className="sc-texture-example-class">sc-texture-wood-058</code></div>
+        <div className="sc-texture-example-shadow"><div className="sc-texture-example-word">WOOD</div></div>
+        <div className="sc-texture-example-usage">Use <code>sc-texture-text sc-texture-wood-058</code></div>
       </div>
-      <div className="hf-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/hyperframes-oss/docs/images/catalog/components/texture-mask-text/masks/snow-015.png')" }}>
-        <div className="hf-texture-example-meta"><div className="hf-texture-example-label">Snow 015</div><code className="hf-texture-example-class">hf-texture-snow-015</code></div>
-        <div className="hf-texture-example-shadow"><div className="hf-texture-example-word">SNOW</div></div>
-        <div className="hf-texture-example-usage">Use <code>hf-texture-text hf-texture-snow-015</code></div>
+      <div className="sc-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/smashcut-oss/docs/images/catalog/components/texture-mask-text/masks/wood-floor-051.png')" }}>
+        <div className="sc-texture-example-meta"><div className="sc-texture-example-label">Wood Floor 051</div><code className="sc-texture-example-class">sc-texture-wood-floor-051</code></div>
+        <div className="sc-texture-example-shadow"><div className="sc-texture-example-word">FLOOR</div></div>
+        <div className="sc-texture-example-usage">Use <code>sc-texture-text sc-texture-wood-floor-051</code></div>
       </div>
-      <div className="hf-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/hyperframes-oss/docs/images/catalog/components/texture-mask-text/masks/leather-037.png')" }}>
-        <div className="hf-texture-example-meta"><div className="hf-texture-example-label">Leather 037</div><code className="hf-texture-example-class">hf-texture-leather-037</code></div>
-        <div className="hf-texture-example-shadow"><div className="hf-texture-example-word">LEATHER</div></div>
-        <div className="hf-texture-example-usage">Use <code>hf-texture-text hf-texture-leather-037</code></div>
+      <div className="sc-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/smashcut-oss/docs/images/catalog/components/texture-mask-text/masks/wood-floor-064.png')" }}>
+        <div className="sc-texture-example-meta"><div className="sc-texture-example-label">Wood Floor 064</div><code className="sc-texture-example-class">sc-texture-wood-floor-064</code></div>
+        <div className="sc-texture-example-shadow"><div className="sc-texture-example-word">FLOOR</div></div>
+        <div className="sc-texture-example-usage">Use <code>sc-texture-text sc-texture-wood-floor-064</code></div>
       </div>
-      <div className="hf-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/hyperframes-oss/docs/images/catalog/components/texture-mask-text/masks/fabric-080.png')" }}>
-        <div className="hf-texture-example-meta"><div className="hf-texture-example-label">Fabric 080</div><code className="hf-texture-example-class">hf-texture-fabric-080</code></div>
-        <div className="hf-texture-example-shadow"><div className="hf-texture-example-word">FABRIC</div></div>
-        <div className="hf-texture-example-usage">Use <code>hf-texture-text hf-texture-fabric-080</code></div>
+      <div className="sc-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/smashcut-oss/docs/images/catalog/components/texture-mask-text/masks/wood-floor-070.png')" }}>
+        <div className="sc-texture-example-meta"><div className="sc-texture-example-label">Wood Floor 070</div><code className="sc-texture-example-class">sc-texture-wood-floor-070</code></div>
+        <div className="sc-texture-example-shadow"><div className="sc-texture-example-word">FLOOR</div></div>
+        <div className="sc-texture-example-usage">Use <code>sc-texture-text sc-texture-wood-floor-070</code></div>
+      </div>
+      <div className="sc-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/smashcut-oss/docs/images/catalog/components/texture-mask-text/masks/bark-014.png')" }}>
+        <div className="sc-texture-example-meta"><div className="sc-texture-example-label">Bark 014</div><code className="sc-texture-example-class">sc-texture-bark-014</code></div>
+        <div className="sc-texture-example-shadow"><div className="sc-texture-example-word">BARK</div></div>
+        <div className="sc-texture-example-usage">Use <code>sc-texture-text sc-texture-bark-014</code></div>
+      </div>
+    </div>
+  </div>
+  <div>
+    <h3 className="sc-texture-example-title">Metal</h3>
+    <div className="sc-texture-example-grid">
+      <div className="sc-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/smashcut-oss/docs/images/catalog/components/texture-mask-text/masks/metal.png')" }}>
+        <div className="sc-texture-example-meta"><div className="sc-texture-example-label">Metal</div><code className="sc-texture-example-class">sc-texture-metal</code></div>
+        <div className="sc-texture-example-shadow"><div className="sc-texture-example-word">METAL</div></div>
+        <div className="sc-texture-example-usage">Use <code>sc-texture-text sc-texture-metal</code></div>
+      </div>
+      <div className="sc-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/smashcut-oss/docs/images/catalog/components/texture-mask-text/masks/metal-049-a.png')" }}>
+        <div className="sc-texture-example-meta"><div className="sc-texture-example-label">Metal 049 A</div><code className="sc-texture-example-class">sc-texture-metal-049-a</code></div>
+        <div className="sc-texture-example-shadow"><div className="sc-texture-example-word">METAL</div></div>
+        <div className="sc-texture-example-usage">Use <code>sc-texture-text sc-texture-metal-049-a</code></div>
+      </div>
+      <div className="sc-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/smashcut-oss/docs/images/catalog/components/texture-mask-text/masks/metal-055-a.png')" }}>
+        <div className="sc-texture-example-meta"><div className="sc-texture-example-label">Metal 055 A</div><code className="sc-texture-example-class">sc-texture-metal-055-a</code></div>
+        <div className="sc-texture-example-shadow"><div className="sc-texture-example-word">METAL</div></div>
+        <div className="sc-texture-example-usage">Use <code>sc-texture-text sc-texture-metal-055-a</code></div>
+      </div>
+      <div className="sc-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/smashcut-oss/docs/images/catalog/components/texture-mask-text/masks/metal-046-b.png')" }}>
+        <div className="sc-texture-example-meta"><div className="sc-texture-example-label">Metal 046 B</div><code className="sc-texture-example-class">sc-texture-metal-046-b</code></div>
+        <div className="sc-texture-example-shadow"><div className="sc-texture-example-word">METAL</div></div>
+        <div className="sc-texture-example-usage">Use <code>sc-texture-text sc-texture-metal-046-b</code></div>
+      </div>
+      <div className="sc-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/smashcut-oss/docs/images/catalog/components/texture-mask-text/masks/metal-061-b.png')" }}>
+        <div className="sc-texture-example-meta"><div className="sc-texture-example-label">Metal 061 B</div><code className="sc-texture-example-class">sc-texture-metal-061-b</code></div>
+        <div className="sc-texture-example-shadow"><div className="sc-texture-example-word">METAL</div></div>
+        <div className="sc-texture-example-usage">Use <code>sc-texture-text sc-texture-metal-061-b</code></div>
+      </div>
+      <div className="sc-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/smashcut-oss/docs/images/catalog/components/texture-mask-text/masks/metal-048-a.png')" }}>
+        <div className="sc-texture-example-meta"><div className="sc-texture-example-label">Metal 048 A</div><code className="sc-texture-example-class">sc-texture-metal-048-a</code></div>
+        <div className="sc-texture-example-shadow"><div className="sc-texture-example-word">METAL</div></div>
+        <div className="sc-texture-example-usage">Use <code>sc-texture-text sc-texture-metal-048-a</code></div>
+      </div>
+      <div className="sc-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/smashcut-oss/docs/images/catalog/components/texture-mask-text/masks/metal-032.png')" }}>
+        <div className="sc-texture-example-meta"><div className="sc-texture-example-label">Metal 032</div><code className="sc-texture-example-class">sc-texture-metal-032</code></div>
+        <div className="sc-texture-example-shadow"><div className="sc-texture-example-word">METAL</div></div>
+        <div className="sc-texture-example-usage">Use <code>sc-texture-text sc-texture-metal-032</code></div>
+      </div>
+      <div className="sc-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/smashcut-oss/docs/images/catalog/components/texture-mask-text/masks/metal-041-a.png')" }}>
+        <div className="sc-texture-example-meta"><div className="sc-texture-example-label">Metal 041 A</div><code className="sc-texture-example-class">sc-texture-metal-041-a</code></div>
+        <div className="sc-texture-example-shadow"><div className="sc-texture-example-word">METAL</div></div>
+        <div className="sc-texture-example-usage">Use <code>sc-texture-text sc-texture-metal-041-a</code></div>
+      </div>
+      <div className="sc-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/smashcut-oss/docs/images/catalog/components/texture-mask-text/masks/metal-038.png')" }}>
+        <div className="sc-texture-example-meta"><div className="sc-texture-example-label">Metal 038</div><code className="sc-texture-example-class">sc-texture-metal-038</code></div>
+        <div className="sc-texture-example-shadow"><div className="sc-texture-example-word">METAL</div></div>
+        <div className="sc-texture-example-usage">Use <code>sc-texture-text sc-texture-metal-038</code></div>
+      </div>
+      <div className="sc-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/smashcut-oss/docs/images/catalog/components/texture-mask-text/masks/diamond-plate-009.png')" }}>
+        <div className="sc-texture-example-meta"><div className="sc-texture-example-label">Diamond Plate 009</div><code className="sc-texture-example-class">sc-texture-diamond-plate-009</code></div>
+        <div className="sc-texture-example-shadow"><div className="sc-texture-example-word">PLATE</div></div>
+        <div className="sc-texture-example-usage">Use <code>sc-texture-text sc-texture-diamond-plate-009</code></div>
+      </div>
+    </div>
+  </div>
+  <div>
+    <h3 className="sc-texture-example-title">Organic / Soft</h3>
+    <div className="sc-texture-example-grid">
+      <div className="sc-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/smashcut-oss/docs/images/catalog/components/texture-mask-text/masks/lava.png')" }}>
+        <div className="sc-texture-example-meta"><div className="sc-texture-example-label">Lava</div><code className="sc-texture-example-class">sc-texture-lava</code></div>
+        <div className="sc-texture-example-shadow"><div className="sc-texture-example-word">LAVA</div></div>
+        <div className="sc-texture-example-usage">Use <code>sc-texture-text sc-texture-lava</code></div>
+      </div>
+      <div className="sc-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/smashcut-oss/docs/images/catalog/components/texture-mask-text/masks/grass-005.png')" }}>
+        <div className="sc-texture-example-meta"><div className="sc-texture-example-label">Grass 005</div><code className="sc-texture-example-class">sc-texture-grass-005</code></div>
+        <div className="sc-texture-example-shadow"><div className="sc-texture-example-word">GRASS</div></div>
+        <div className="sc-texture-example-usage">Use <code>sc-texture-text sc-texture-grass-005</code></div>
+      </div>
+      <div className="sc-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/smashcut-oss/docs/images/catalog/components/texture-mask-text/masks/grass-001.png')" }}>
+        <div className="sc-texture-example-meta"><div className="sc-texture-example-label">Grass 001</div><code className="sc-texture-example-class">sc-texture-grass-001</code></div>
+        <div className="sc-texture-example-shadow"><div className="sc-texture-example-word">GRASS</div></div>
+        <div className="sc-texture-example-usage">Use <code>sc-texture-text sc-texture-grass-001</code></div>
+      </div>
+      <div className="sc-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/smashcut-oss/docs/images/catalog/components/texture-mask-text/masks/grass-004.png')" }}>
+        <div className="sc-texture-example-meta"><div className="sc-texture-example-label">Grass 004</div><code className="sc-texture-example-class">sc-texture-grass-004</code></div>
+        <div className="sc-texture-example-shadow"><div className="sc-texture-example-word">GRASS</div></div>
+        <div className="sc-texture-example-usage">Use <code>sc-texture-text sc-texture-grass-004</code></div>
+      </div>
+      <div className="sc-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/smashcut-oss/docs/images/catalog/components/texture-mask-text/masks/carpet.png')" }}>
+        <div className="sc-texture-example-meta"><div className="sc-texture-example-label">Carpet</div><code className="sc-texture-example-class">sc-texture-carpet</code></div>
+        <div className="sc-texture-example-shadow"><div className="sc-texture-example-word">WOVEN</div></div>
+        <div className="sc-texture-example-usage">Use <code>sc-texture-text sc-texture-carpet</code></div>
+      </div>
+      <div className="sc-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/smashcut-oss/docs/images/catalog/components/texture-mask-text/masks/fabric-083.png')" }}>
+        <div className="sc-texture-example-meta"><div className="sc-texture-example-label">Fabric 083</div><code className="sc-texture-example-class">sc-texture-fabric-083</code></div>
+        <div className="sc-texture-example-shadow"><div className="sc-texture-example-word">FABRIC</div></div>
+        <div className="sc-texture-example-usage">Use <code>sc-texture-text sc-texture-fabric-083</code></div>
+      </div>
+      <div className="sc-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/smashcut-oss/docs/images/catalog/components/texture-mask-text/masks/snow.png')" }}>
+        <div className="sc-texture-example-meta"><div className="sc-texture-example-label">Snow</div><code className="sc-texture-example-class">sc-texture-snow</code></div>
+        <div className="sc-texture-example-shadow"><div className="sc-texture-example-word">SNOW</div></div>
+        <div className="sc-texture-example-usage">Use <code>sc-texture-text sc-texture-snow</code></div>
+      </div>
+      <div className="sc-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/smashcut-oss/docs/images/catalog/components/texture-mask-text/masks/snow-015.png')" }}>
+        <div className="sc-texture-example-meta"><div className="sc-texture-example-label">Snow 015</div><code className="sc-texture-example-class">sc-texture-snow-015</code></div>
+        <div className="sc-texture-example-shadow"><div className="sc-texture-example-word">SNOW</div></div>
+        <div className="sc-texture-example-usage">Use <code>sc-texture-text sc-texture-snow-015</code></div>
+      </div>
+      <div className="sc-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/smashcut-oss/docs/images/catalog/components/texture-mask-text/masks/leather-037.png')" }}>
+        <div className="sc-texture-example-meta"><div className="sc-texture-example-label">Leather 037</div><code className="sc-texture-example-class">sc-texture-leather-037</code></div>
+        <div className="sc-texture-example-shadow"><div className="sc-texture-example-word">LEATHER</div></div>
+        <div className="sc-texture-example-usage">Use <code>sc-texture-text sc-texture-leather-037</code></div>
+      </div>
+      <div className="sc-texture-example-card" style={{ "--mask-url": "url('https://static.heygen.ai/smashcut-oss/docs/images/catalog/components/texture-mask-text/masks/fabric-080.png')" }}>
+        <div className="sc-texture-example-meta"><div className="sc-texture-example-label">Fabric 080</div><code className="sc-texture-example-class">sc-texture-fabric-080</code></div>
+        <div className="sc-texture-example-shadow"><div className="sc-texture-example-word">FABRIC</div></div>
+        <div className="sc-texture-example-usage">Use <code>sc-texture-text sc-texture-fabric-080</code></div>
       </div>
     </div>
   </div>
@@ -861,7 +861,7 @@ window.__timelines["my-composition"] = tl;
 
 ## Usage
 
-After `npx hyperframes add texture-mask-text`, the installed snippet lives at `compositions/components/texture-mask-text/texture-mask-text.html` inside your current HyperFrames project. Open that file and paste the real `<style>` element near the bottom into your composition once; it defines `hf-texture-text` and every `hf-texture-*` class used by the examples above. Keep the installed texture PNGs in `assets/texture-mask-text/masks/`; the CSS references them with project-root URLs.
+After `npx smashcut add texture-mask-text`, the installed snippet lives at `compositions/components/texture-mask-text/texture-mask-text.html` inside your current SmashCut project. Open that file and paste the real `<style>` element near the bottom into your composition once; it defines `sc-texture-text` and every `sc-texture-*` class used by the examples above. Keep the installed texture PNGs in `assets/texture-mask-text/masks/`; the CSS references them with project-root URLs.
 
 {/* hf:generated-footer */}
 

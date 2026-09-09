@@ -34,12 +34,12 @@
       data-height="720"
     >
       <!-- Regression: this full-bleed background video element carries only a
-           Studio-style data-hf-id and NO real id. Before the fix, the render
+           Studio-style data-sc-id and NO real id. Before the fix, the render
            pipeline could not match its injected frames (keyed on the empty
            el.id), so the footage rendered as a blank white/grey wash. The
            baseline must show the testsrc2 footage, not a flat fill. -->
       <video
-        data-hf-id="hf-bgvideo01"
+        data-sc-id="sc-bgvideo01"
         class="clip"
         src="clip.mp4"
         muted

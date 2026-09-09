@@ -8,7 +8,7 @@ import { captureScrollScreenshots } from "./screenshotCapture.js";
 
 describe("captureScrollScreenshots degradation", () => {
   it("rethrows protocol evaluate timeouts for the caller warning path", async () => {
-    const dir = mkdtempSync(join(tmpdir(), "hf-scroll-degrade-"));
+    const dir = mkdtempSync(join(tmpdir(), "sc-scroll-degrade-"));
     const page = {
       evaluate: vi.fn(async () => {
         throw new TimeoutError(

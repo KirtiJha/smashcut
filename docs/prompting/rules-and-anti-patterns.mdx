@@ -57,7 +57,7 @@ Two more ways an SVG "line draws itself" effect (animated `strokeDasharray` / `s
 
 ## Layout waivers, and the one that bites
 
-`hyperframes check` flags a text block covered by another element as `text_occluded`, and
+`smashcut check` flags a text block covered by another element as `text_occluded`, and
 two attributes waive it: `data-layout-allow-overlap` for intentional layering, and
 `data-layout-allow-occlusion` for something deliberately painted over type. Both are
 legitimate — a caption designed to sit behind a matted subject needs one.
@@ -94,9 +94,9 @@ Each one causes friction or wrong output for a specific engine reason — with t
 - ❌ `render in 4K 60fps` (for a social clip)
 - ✅ say nothing — or `4K` only when the delivery target actually needs it
 
-**Don't skip the slash command.** Without `/hyperframes`, the agent guesses at HTML video conventions instead of loading the framework's actual rules.
+**Don't skip the slash command.** Without `/smashcut`, the agent guesses at HTML video conventions instead of loading the framework's actual rules.
 - ❌ `make me a video of...`
-- ✅ `/hyperframes make me a video of...`
+- ✅ `/smashcut make me a video of...`
 
 **Don't paste raw error logs.** `check` localizes the problem first (lint, then a browser gate); a bare log makes the agent re-derive what the tool already knows.
 - ❌ pasting 200 lines of console output

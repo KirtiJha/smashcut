@@ -7,7 +7,7 @@ import assert from "node:assert/strict";
 const repoRoot = resolve(import.meta.dirname, "..");
 // Any element, not just the <div> this started as: a payload that moved to a
 // <script type="application/json"> to survive the formatter must stay guarded.
-const PAYLOAD = /<(\w+)[^>]*\sdata-hf-primitive-data[^>]*>([\s\S]*?)<\/\1>/g;
+const PAYLOAD = /<(\w+)[^>]*\sdata-sc-primitive-data[^>]*>([\s\S]*?)<\/\1>/g;
 
 describe("registry primitive payloads", () => {
   it("stay parseable JSON in the shipped source", () => {

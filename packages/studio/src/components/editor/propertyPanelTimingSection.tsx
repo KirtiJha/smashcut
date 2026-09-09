@@ -1,4 +1,4 @@
-import type { GsapAnimation } from "@hyperframes/core/gsap-parser";
+import type { GsapAnimation } from "@smashcut/core/gsap-parser";
 import { Clock } from "../../icons/SystemIcons";
 import type { DomEditSelection } from "./domEditing";
 import { formatTimingValue, RESPONSIVE_GRID } from "./propertyPanelHelpers";
@@ -42,7 +42,7 @@ export function TimingSection({
   const explicitStart = Number.parseFloat(element.dataAttributes.start ?? "0") || 0;
   const explicitDuration =
     Number.parseFloat(
-      element.dataAttributes.duration ?? element.dataAttributes["hf-authored-duration"] ?? "0",
+      element.dataAttributes.duration ?? element.dataAttributes["sc-authored-duration"] ?? "0",
     ) || 0;
 
   // No authored clip timing → infer the range from the element's animations.

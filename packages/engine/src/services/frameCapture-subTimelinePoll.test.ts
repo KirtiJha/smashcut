@@ -21,13 +21,13 @@ describe("pollSubCompositionTimelines fail-fast", () => {
     const page = makeMockPage(() => true);
     const outcome = await pollSubCompositionTimelines(page, 1_000, 10);
     expect(outcome).toBe("ready");
-    // Second evaluate is the __hfForceTimelineRebind call.
+    // Second evaluate is the __scForceTimelineRebind call.
     expect((page.evaluate as ReturnType<typeof vi.fn>).mock.calls.length).toBe(2);
   });
 
   it("bails after the grace window when a script resource failed to load", async () => {
     const page = makeMockPage((expr) =>
-      expr.includes("__hfForceTimelineRebind") ? undefined : false,
+      expr.includes("__scForceTimelineRebind") ? undefined : false,
     );
     const started = Date.now();
     const outcome = await pollSubCompositionTimelines(
@@ -50,7 +50,7 @@ describe("pollSubCompositionTimelines fail-fast", () => {
   it("keeps waiting through the grace window when failures appear but timelines register late", async () => {
     let calls = 0;
     const page = makeMockPage((expr) => {
-      if (expr.includes("__hfForceTimelineRebind")) return undefined;
+      if (expr.includes("__scForceTimelineRebind")) return undefined;
       calls++;
       return calls >= 3; // registers on the 3rd poll tick, inside the grace window
     });

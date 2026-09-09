@@ -24,55 +24,55 @@ describe("assignMediaRenderIds", () => {
     // once both are inlined into one render document.
     expect(stamp('<video id="clip" src="a.mp4"><video id="clip" src="a.mp4">')).toEqual([
       "clip",
-      "clip__hf2",
+      "clip__sc2",
     ]);
   });
 
   it("disambiguates per-file auto-ids, which collide without any authored id", () => {
     // The timing compiler numbers unnamed media per file, so two bare <video>s
-    // in two scenes both arrive as `hf-video-0`.
-    expect(stamp('<video id="hf-video-0" src="a.mp4"><video id="hf-video-0" src="b.mp4">')).toEqual(
-      ["hf-video-0", "hf-video-0__hf2"],
+    // in two scenes both arrive as `sc-video-0`.
+    expect(stamp('<video id="sc-video-0" src="a.mp4"><video id="sc-video-0" src="b.mp4">')).toEqual(
+      ["sc-video-0", "sc-video-0__sc2"],
     );
   });
 
   it("keeps disambiguating past the first collision", () => {
     const html = '<video id="c" src="a.mp4"><video id="c" src="a.mp4"><video id="c" src="a.mp4">';
-    expect(stamp(html)).toEqual(["c", "c__hf2", "c__hf3"]);
+    expect(stamp(html)).toEqual(["c", "c__sc2", "c__sc3"]);
   });
 
   it("separates ids across tag types", () => {
     expect(
       stamp('<video id="m" src="a.mp4"><audio id="m" src="a.mp3"><img id="m" src="a.png">'),
-    ).toEqual(["m", "m__hf2", "m__hf3"]);
+    ).toEqual(["m", "m__sc2", "m__sc3"]);
   });
 
   it("does not renumber elements that already carry a render id", () => {
     const { document } = parseHTML(
       `<video id="clip" ${MEDIA_RENDER_ID_ATTR}="clip" src="a.mp4">` +
-        `<video id="clip" ${MEDIA_RENDER_ID_ATTR}="clip__hf2" src="a.mp4">`,
+        `<video id="clip" ${MEDIA_RENDER_ID_ATTR}="clip__sc2" src="a.mp4">`,
     );
     assignMediaRenderIds(document as unknown as Parameters<typeof assignMediaRenderIds>[0]);
     expect(
       Array.from(document.querySelectorAll("video")).map((el) =>
         el.getAttribute(MEDIA_RENDER_ID_ATTR),
       ),
-    ).toEqual(["clip", "clip__hf2"]);
+    ).toEqual(["clip", "clip__sc2"]);
   });
 
   it("does not claim an id that a later element already holds as its render id", () => {
-    // Re-running over a partially stamped document must not hand `clip__hf2`
+    // Re-running over a partially stamped document must not hand `clip__sc2`
     // to the first element and collide with the element already holding it.
     const { document } = parseHTML(
-      `<video id="clip__hf2" src="a.mp4">` +
-        `<video id="clip" ${MEDIA_RENDER_ID_ATTR}="clip__hf2" src="a.mp4">`,
+      `<video id="clip__sc2" src="a.mp4">` +
+        `<video id="clip" ${MEDIA_RENDER_ID_ATTR}="clip__sc2" src="a.mp4">`,
     );
     assignMediaRenderIds(document as unknown as Parameters<typeof assignMediaRenderIds>[0]);
     const ids = Array.from(document.querySelectorAll("video")).map((el) =>
       el.getAttribute(MEDIA_RENDER_ID_ATTR),
     );
     expect(new Set(ids).size).toBe(2);
-    expect(ids[1]).toBe("clip__hf2");
+    expect(ids[1]).toBe("clip__sc2");
   });
 
   it("stamps empty-src media with colliding author ids", () => {
@@ -87,7 +87,7 @@ describe("assignMediaRenderIds", () => {
       Array.from(document.querySelectorAll("video")).map((el) =>
         el.getAttribute(MEDIA_RENDER_ID_ATTR),
       ),
-    ).toEqual(["clip", "clip__hf2"]);
+    ).toEqual(["clip", "clip__sc2"]);
   });
 
   it("stamps a video with no source attribute at all", () => {
@@ -109,7 +109,7 @@ describe("assignMediaRenderIds", () => {
       Array.from(document.querySelectorAll("video")).map((el) =>
         el.getAttribute(MEDIA_RENDER_ID_ATTR),
       ),
-    ).toEqual(["clip", "clip__hf2"]);
+    ).toEqual(["clip", "clip__sc2"]);
   });
 
   it("stamps <audio> with a <source> child too", () => {
@@ -135,11 +135,11 @@ describe("audio group render ids", () => {
   const doc = (html: string) => parseHTML(`<html><body>${html}</body></html>`).document;
   const TWICE = `
     <div data-composition-id="bedcomp">
-      <hf-audio-group id="bed" data-volume="0.5"></hf-audio-group>
+      <sc-audio-group id="bed" data-volume="0.5"></sc-audio-group>
       <audio id="m1" src="a.wav" data-audio-group="bed"></audio>
     </div>
     <div data-composition-id="bedcomp">
-      <hf-audio-group id="bed" data-volume="0.5"></hf-audio-group>
+      <sc-audio-group id="bed" data-volume="0.5"></sc-audio-group>
       <audio id="m1" src="a.wav" data-audio-group="bed"></audio>
     </div>`;
 
@@ -147,22 +147,22 @@ describe("audio group render ids", () => {
     const d = doc(TWICE);
     assignMediaRenderIds(d);
 
-    const buses = [...d.querySelectorAll("hf-audio-group")];
+    const buses = [...d.querySelectorAll("sc-audio-group")];
     const members = [...d.querySelectorAll("audio")];
-    expect(buses.map((b) => b.getAttribute(MEDIA_RENDER_ID_ATTR))).toEqual(["bed", "bed__hf2"]);
+    expect(buses.map((b) => b.getAttribute(MEDIA_RENDER_ID_ATTR))).toEqual(["bed", "bed__sc2"]);
     // Member N belongs to bus N — the whole point. Cross-paired, one instance's
     // fader and chain would land on the other instance's audio.
     expect(members.map((m) => m.getAttribute(AUDIO_GROUP_RENDER_ID_ATTR))).toEqual([
       "bed",
-      "bed__hf2",
+      "bed__sc2",
     ]);
   });
 
   it("leaves a single-instance bus keyed by its own id", () => {
-    const d = doc(`<hf-audio-group id="vo"></hf-audio-group>
+    const d = doc(`<sc-audio-group id="vo"></sc-audio-group>
       <audio id="a" src="a.wav" data-audio-group="vo"></audio>`);
     assignMediaRenderIds(d);
-    expect(d.querySelector("hf-audio-group")?.getAttribute(MEDIA_RENDER_ID_ATTR)).toBe("vo");
+    expect(d.querySelector("sc-audio-group")?.getAttribute(MEDIA_RENDER_ID_ATTR)).toBe("vo");
     expect(d.querySelector("audio")?.getAttribute(AUDIO_GROUP_RENDER_ID_ATTR)).toBe("vo");
   });
 
@@ -177,19 +177,19 @@ describe("audio group render ids", () => {
   it("does not bind a root member to a same-named bus in a nested composition", () => {
     const d = doc(`<div data-composition-id="root">
       <div data-composition-id="child">
-        <hf-audio-group id="bed"></hf-audio-group>
+        <sc-audio-group id="bed"></sc-audio-group>
         <audio id="child-member" src="child.wav" data-audio-group="bed"></audio>
       </div>
       <audio id="root-member" src="root.wav" data-audio-group="bed"></audio>
-      <hf-audio-group id="bed"></hf-audio-group>
+      <sc-audio-group id="bed"></sc-audio-group>
     </div>`);
     assignMediaRenderIds(d);
 
-    const buses = [...d.querySelectorAll("hf-audio-group")];
-    expect(buses.map((bus) => bus.getAttribute(MEDIA_RENDER_ID_ATTR))).toEqual(["bed", "bed__hf2"]);
+    const buses = [...d.querySelectorAll("sc-audio-group")];
+    expect(buses.map((bus) => bus.getAttribute(MEDIA_RENDER_ID_ATTR))).toEqual(["bed", "bed__sc2"]);
     expect(d.getElementById("child-member")?.getAttribute(AUDIO_GROUP_RENDER_ID_ATTR)).toBe("bed");
     expect(d.getElementById("root-member")?.getAttribute(AUDIO_GROUP_RENDER_ID_ATTR)).toBe(
-      "bed__hf2",
+      "bed__sc2",
     );
   });
 });

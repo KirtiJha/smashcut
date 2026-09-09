@@ -143,7 +143,7 @@
   </head>
   <body>
     <div
-      data-hf-id="hf-ikc-root"
+      data-sc-id="sc-ikc-root"
       id="root"
       data-composition-id="intro-kinetic-cascade"
       data-width="1920"
@@ -152,7 +152,7 @@
       data-duration="7"
       data-root="true"
     >
-      <div data-hf-id="hf-ikc-stage" id="stage"></div>
+      <div data-sc-id="sc-ikc-stage" id="stage"></div>
 
       <script>
         (function () {
@@ -177,8 +177,8 @@
           var vars = Object.assign(
             {},
             defaults,
-            window.__hyperframes && window.__hyperframes.getVariables
-              ? window.__hyperframes.getVariables()
+            window.__smashcut && window.__smashcut.getVariables
+              ? window.__smashcut.getVariables()
               : {},
           );
 

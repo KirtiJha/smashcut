@@ -13,7 +13,7 @@ describe("warnOnDimensionMismatch", () => {
   let originalWarn: typeof console.warn;
 
   beforeEach(() => {
-    dir = mkdtempSync(join(tmpdir(), "hf-dim-mismatch-"));
+    dir = mkdtempSync(join(tmpdir(), "sc-dim-mismatch-"));
     originalWarn = console.warn;
     warnSpy = vi.fn();
     console.warn = warnSpy as unknown as typeof console.warn;

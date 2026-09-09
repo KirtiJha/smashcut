@@ -3,7 +3,7 @@
  * Centralises duplicated interfaces, constants, and small utilities
  * to reduce drift risk.
  */
-import type { GsapAnimation } from "@hyperframes/core/gsap-parser";
+import type { GsapAnimation } from "@smashcut/core/gsap-parser";
 import type { DomEditSelection } from "../components/editor/domEditingTypes";
 import {
   absoluteToPercentage,
@@ -203,7 +203,7 @@ export function matchesExactlyOne(doc: Document, selector: string, element: Elem
 /**
  * A structural address for an element that carries no identity of its own:
  * `:nth-child` steps up to the nearest ancestor that IS uniquely addressable
- * (an id or a data-hf-id). This is the `selector` + `selectorIndex` pair the
+ * (an id or a data-sc-id). This is the `selector` + `selectorIndex` pair the
  * selection already carries, resolved through the live DOM the index was
  * counted in — an index can't be spelled in CSS, but the element's position can.
  */
@@ -214,13 +214,13 @@ function structuralSelector(element: Element): string | null {
   for (let node: Element | null = element; node; node = node.parentElement) {
     if (node !== element) {
       const id = node instanceof HTMLElement ? node.id : "";
-      const hfId = node.getAttribute("data-hf-id");
+      const hfId = node.getAttribute("data-sc-id");
       if (id) {
         parts.unshift(idSelector(id));
         break;
       }
       if (hfId) {
-        parts.unshift(attributeSelector("data-hf-id", hfId));
+        parts.unshift(attributeSelector("data-sc-id", hfId));
         break;
       }
     }
@@ -260,7 +260,7 @@ function structuralSelector(element: Element): string | null {
  */
 export function writeTargetSelector(selection: DomEditSelection): string | null {
   if (selection.id) return idSelector(selection.id);
-  if (selection.hfId) return attributeSelector("data-hf-id", selection.hfId);
+  if (selection.hfId) return attributeSelector("data-sc-id", selection.hfId);
   const element = selection.element;
   const doc = element?.ownerDocument;
   if (element && doc) {

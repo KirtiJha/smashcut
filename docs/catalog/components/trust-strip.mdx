@@ -16,7 +16,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 ```html trust-strip.html
 <!doctype html>
 <!--
-  trust-strip: HyperFrames video primitive (proof & stats / trust)
+  trust-strip: SmashCut video primitive (proof & stats / trust)
 
   A monochrome trust row: N text wordmarks set in wide-tracked uppercase mono,
   a single centered row with wide gaps, no boxes, no borders. Marks fade in
@@ -135,8 +135,8 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
             var root = document.getElementById("root");
             var strip = root.querySelector(".ts-strip");
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             var marks = String(vars.marks == null ? "" : vars.marks)
@@ -246,7 +246,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 
 ## Install
 
-<InstallCommand command="npx hyperframes add trust-strip" item="trust-strip" />
+<InstallCommand command="npx smashcut add trust-strip" item="trust-strip" />
 
 That writes one file: `compositions/components/trust-strip.html`.
 
@@ -288,7 +288,7 @@ defaults, so this behaves exactly like the preview above until you change one:
 ```html
 <!doctype html>
 <!--
-  trust-strip: HyperFrames video primitive (proof & stats / trust)
+  trust-strip: SmashCut video primitive (proof & stats / trust)
 
   A monochrome trust row: N text wordmarks set in wide-tracked uppercase mono,
   a single centered row with wide gaps, no boxes, no borders. Marks fade in
@@ -407,8 +407,8 @@ defaults, so this behaves exactly like the preview above until you change one:
             var root = document.getElementById("root");
             var strip = root.querySelector(".ts-strip");
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             var marks = String(vars.marks == null ? "" : vars.marks)

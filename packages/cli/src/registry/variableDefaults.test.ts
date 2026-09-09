@@ -4,7 +4,7 @@ import { applyVariableDefaults } from "./variableDefaults.js";
 
 /** The shape the registry actually ships: single-quoted attribute, JSON inside. */
 const COMPONENT = `<div
-  data-hf-ui-root
+  data-sc-ui-root
   data-composition-variables='[
     { "id": "size", "type": "number", "role": "style", "label": "Size", "default": 52, "min": 24, "max": 120 },
     { "id": "tone", "type": "enum", "role": "style", "label": "Tone", "default": "strong", "options": [{ "value": "strong", "label": "Strong" }, { "value": "muted", "label": "Muted" }, { "value": "accent", "label": "Accent" }] }

@@ -16,7 +16,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 ```html soft-blob-touch.html
 <!doctype html>
 <!--
-  soft-blob-touch: HyperFrames video primitive (product demo / material)
+  soft-blob-touch: SmashCut video primitive (product demo / material)
 
   A granular soft blob idles with slow internal drift; a scripted touch dot
   decel-arrives at a caller-positioned point; the blob deforms toward it
@@ -160,8 +160,8 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
             var canvas = root.querySelector(".sbt-canvas");
             var touchDot = root.querySelector(".sbt-touch");
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             function num(value, fallback, min, max) {
@@ -535,7 +535,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 
 ## Install
 
-<InstallCommand command="npx hyperframes add soft-blob-touch" item="soft-blob-touch" />
+<InstallCommand command="npx smashcut add soft-blob-touch" item="soft-blob-touch" />
 
 That writes one file: `compositions/components/soft-blob-touch.html`.
 
@@ -578,7 +578,7 @@ defaults, so this behaves exactly like the preview above until you change one:
 ```html
 <!doctype html>
 <!--
-  soft-blob-touch: HyperFrames video primitive (product demo / material)
+  soft-blob-touch: SmashCut video primitive (product demo / material)
 
   A granular soft blob idles with slow internal drift; a scripted touch dot
   decel-arrives at a caller-positioned point; the blob deforms toward it
@@ -722,8 +722,8 @@ defaults, so this behaves exactly like the preview above until you change one:
             var canvas = root.querySelector(".sbt-canvas");
             var touchDot = root.querySelector(".sbt-touch");
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             function num(value, fallback, min, max) {

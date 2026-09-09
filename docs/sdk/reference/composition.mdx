@@ -6,8 +6,8 @@ description: "The main editing surface returned by openComposition — query, mu
 `Composition` is the object returned by [`openComposition`](/sdk/reference/open-composition). Every SDK edit goes through this interface. Typed methods are convenience wrappers over `dispatch()`; all validation runs in `dispatch()` regardless of which entry point you use.
 
 ```typescript
-import { openComposition } from "@hyperframes/sdk";
-import type { Composition } from "@hyperframes/sdk";
+import { openComposition } from "@smashcut/sdk";
+import type { Composition } from "@smashcut/sdk";
 
 const comp: Composition = await openComposition(html);
 ```
@@ -29,8 +29,8 @@ setStyle(id: HfId, styles: Record<string, string | null>): void
 Apply inline CSS styles to one element. Use camelCase property names (matching `CSSStyleDeclaration`). Pass `null` as a value to remove that property.
 
 ```typescript
-comp.setStyle("hf-title", { color: "#FFD60A", fontSize: "96px" });
-comp.setStyle("hf-card", { borderRadius: null }); // removes border-radius
+comp.setStyle("sc-title", { color: "#FFD60A", fontSize: "96px" });
+comp.setStyle("sc-card", { borderRadius: null }); // removes border-radius
 ```
 
 ### `setText`
@@ -42,7 +42,7 @@ setText(id: HfId, value: string): void
 Replace the display text of an element. Targets the element's direct text content, not all descendant text.
 
 ```typescript
-comp.setText("hf-headline", "Product launch — June 2026");
+comp.setText("sc-headline", "Product launch — June 2026");
 ```
 
 ### `setAttribute`
@@ -54,8 +54,8 @@ setAttribute(id: HfId, name: string, value: string | null): void
 Set or remove an HTML attribute. Pass `null` to remove the attribute entirely.
 
 ```typescript
-comp.setAttribute("hf-logo", "src", "/assets/logo-v2.png");
-comp.setAttribute("hf-video", "autoplay", null); // removes autoplay
+comp.setAttribute("sc-logo", "src", "/assets/logo-v2.png");
+comp.setAttribute("sc-video", "autoplay", null); // removes autoplay
 ```
 
 ### `setTiming`
@@ -67,8 +67,8 @@ setTiming(id: HfId, timing: { start?: number; duration?: number; trackIndex?: nu
 Update the `data-start`, `data-duration`, and/or `data-track-index` attributes of one element. All fields are optional; omitted fields are left unchanged.
 
 ```typescript
-comp.setTiming("hf-title", { start: 0.5, duration: 2.5 });
-comp.setTiming("hf-cta", { trackIndex: 1 });
+comp.setTiming("sc-title", { start: 0.5, duration: 2.5 });
+comp.setTiming("sc-cta", { trackIndex: 1 });
 ```
 
 ### `removeElement`
@@ -80,7 +80,7 @@ removeElement(id: HfId): void
 Remove an element and all its descendants from the composition. The inverse is an `addElement` of the removed subtree, so `undo()` restores it exactly.
 
 ```typescript
-comp.removeElement("hf-old-badge");
+comp.removeElement("sc-old-badge");
 ```
 
 ### `addElement`
@@ -89,10 +89,10 @@ comp.removeElement("hf-old-badge");
 addElement(parent: HfId | null, index: number, html: string): HfId
 ```
 
-Insert an HTML fragment as a child of `parent` at zero-based sibling `index`. Pass `null` for `parent` to insert at the document body root. The fragment must be single-root and must not contain `<script>` tags. Returns the minted `hf-id` of the inserted root element.
+Insert an HTML fragment as a child of `parent` at zero-based sibling `index`. Pass `null` for `parent` to insert at the document body root. The fragment must be single-root and must not contain `<script>` tags. Returns the minted `sc-id` of the inserted root element.
 
 ```typescript
-const newId = comp.addElement("hf-scene", 0, '<div class="clip">New clip</div>');
+const newId = comp.addElement("sc-scene", 0, '<div class="clip">New clip</div>');
 comp.setText(newId, "Inserted clip");
 ```
 
@@ -234,9 +234,9 @@ Apply a sparse timing map in one batch. All entries are dispatched inside a sing
 
 ```typescript
 comp.setElementTiming({
-  "hf-title":   { start: 0,   duration: 2   },
-  "hf-caption": { start: 1.5, duration: 1.5 },
-  "hf-cta":     { start: 3,   duration: 2   },
+  "sc-title":   { start: 0,   duration: 2   },
+  "sc-caption": { start: 1.5, duration: 1.5 },
+  "sc-cta":     { start: 3,   duration: 2   },
 });
 ```
 
@@ -249,7 +249,7 @@ setHold(id: HfId, hold: ElasticHold): void
 Set an elastic hold window — a `{ start, end, fill }` range that either freezes or loops the element during a pause in the timeline.
 
 ```typescript
-comp.setHold("hf-hero", { start: 2, end: 5, fill: "freeze" });
+comp.setHold("sc-hero", { start: 2, end: 5, fill: "freeze" });
 ```
 
 ### `addGsapTween`
@@ -261,7 +261,7 @@ addGsapTween(target: HfId, tween: GsapTweenSpec): string
 Add a GSAP tween to the composition's timeline targeting the given element. Returns the newly assigned `animationId`.
 
 ```typescript
-const animId = comp.addGsapTween("hf-title", {
+const animId = comp.addGsapTween("sc-title", {
   method: "from",
   position: 0,
   duration: 0.6,
@@ -310,7 +310,7 @@ Add a new keyframed tween for `targetSelector` at the given timeline position an
 
 ```typescript
 const animId = comp.addWithKeyframes(
-  "#hf-logo",
+  "#sc-logo",
   0.5,
   1.2,
   [
@@ -339,7 +339,7 @@ Atomically remove an existing tween and add a replacement keyframed tween. Retur
 ```typescript
 const newId = comp.replaceWithKeyframes(
   oldAnimId,
-  "#hf-card",
+  "#sc-card",
   1.0,
   0.8,
   [
@@ -359,7 +359,7 @@ redo(): void
 Step backward or forward through the undo history. No-ops when history is disabled (`history: false` in options) or in embedded mode.
 
 ```typescript
-comp.setText("hf-title", "Draft");
+comp.setText("sc-title", "Draft");
 comp.undo(); // reverts to original text
 comp.redo(); // re-applies "Draft"
 ```
@@ -396,7 +396,7 @@ const images = elements.filter((el) => el.tag === "img");
 ```
 
 <Note>
-  For elements inside inlined sub-compositions, use `scopedId` (e.g. `"hf-host/hf-leaf"`) as the dispatch target, not `id`. Top-level elements have `scopedId === id`.
+  For elements inside inlined sub-compositions, use `scopedId` (e.g. `"sc-host/sc-leaf"`) as the dispatch target, not `id`. Top-level elements have `scopedId === id`.
 </Note>
 
 ### `getRootElements`
@@ -420,7 +420,7 @@ getElement(id: HfId): ElementSnapshot | null
 Return the snapshot for one element by ID. Accepts both bare IDs (top-level elements) and scoped IDs (sub-composition elements). Returns `null` if no element matches.
 
 ```typescript
-const el = comp.getElement("hf-title");
+const el = comp.getElement("sc-title");
 if (el) {
   console.log(el.tag, el.inlineStyles);
 }
@@ -440,7 +440,7 @@ Search elements by structured query. Returns an array of `scopedId` strings for 
 | `text` | `string` | Substring match against the element's `text` field. |
 | `name` | `string` | Exact match against `data-name` attribute. |
 | `track` | `number` | Exact track index (`data-track-index`). |
-| `composition` | `string` | Filter to elements inside a specific sub-composition host by its `hf-id`. |
+| `composition` | `string` | Filter to elements inside a specific sub-composition host by its `sc-id`. |
 
 ```typescript
 const headlineIds = comp.find({ name: "headline" });
@@ -487,7 +487,7 @@ element(id: HfId): ElementHandle
 Return a curried `ElementHandle` for a single element. The handle stores only the ID string, so there is no stale-reference hazard if the DOM changes between calls.
 
 ```typescript
-const title = comp.element("hf-title");
+const title = comp.element("sc-title");
 title.setText("Hello");
 title.setStyle({ fontWeight: "700" });
 ```
@@ -498,7 +498,7 @@ title.setStyle({ fontWeight: "700" });
 getSelection(): string[]
 ```
 
-Return a copy of the current selection as an array of `hf-id` strings. Returns `[]` when nothing is selected.
+Return a copy of the current selection as an array of `sc-id` strings. Returns `[]` when nothing is selected.
 
 ```typescript
 const ids = comp.getSelection();
@@ -514,7 +514,7 @@ setSelection(ids: string[]): void
 Replace the current selection. Fires `selectionchange`. Pass `[]` to clear the selection. Duplicate IDs are deduplicated automatically.
 
 ```typescript
-comp.setSelection(["hf-title", "hf-subtitle"]);
+comp.setSelection(["sc-title", "sc-subtitle"]);
 comp.setSelection([]); // clear
 ```
 
@@ -531,8 +531,8 @@ dispatch(op: EditOp, opts?: { origin?: unknown }): void
 Apply a data-shaped edit operation. All typed methods call this internally. Use `dispatch` when you need to apply op types that do not have a typed wrapper, when you are building automation that constructs ops programmatically, or when you need to set a custom `origin`.
 
 ```typescript
-comp.dispatch({ type: "setStyle", target: "hf-card", styles: { borderRadius: "24px" } });
-comp.dispatch({ type: "reorderElements", entries: [{ target: "hf-bg", zIndex: 0 }] });
+comp.dispatch({ type: "setStyle", target: "sc-card", styles: { borderRadius: "24px" } });
+comp.dispatch({ type: "reorderElements", entries: [{ target: "sc-bg", zIndex: 0 }] });
 comp.dispatch({ type: "setCompositionMetadata", width: 1920, height: 1080, duration: 30 });
 ```
 
@@ -541,7 +541,7 @@ For the full op catalog see [Edit operations](/sdk/reference/edit-operations).
 You can also target multiple elements with a single `dispatch` by passing an array to `target`:
 
 ```typescript
-comp.dispatch({ type: "setText", target: ["hf-title", "hf-subtitle"], value: "Coming soon" });
+comp.dispatch({ type: "setText", target: ["sc-title", "sc-subtitle"], value: "Coming soon" });
 ```
 
 ### `batch`
@@ -554,9 +554,9 @@ Coalesce multiple dispatches into one undo entry and one `patch` event. If the c
 
 ```typescript
 comp.batch(() => {
-  comp.setText("hf-title", "Version 2");
-  comp.setStyle("hf-title", { color: "#22C55E" });
-  comp.setTiming("hf-title", { start: 1, duration: 3 });
+  comp.setText("sc-title", "Version 2");
+  comp.setStyle("sc-title", { color: "#22C55E" });
+  comp.setTiming("sc-title", { start: 1, duration: 3 });
 });
 ```
 
@@ -628,7 +628,7 @@ comp.on("selectionchange", (ids) => {
 Fires after every committed change with a `PatchEvent` containing RFC 6902 forward and inverse patches, the `origin`, and semantic `opTypes`. Use this to mirror edits into a host history stack, collaboration layer, or audit log.
 
 ```typescript
-import { ORIGIN_APPLY_PATCHES } from "@hyperframes/sdk";
+import { ORIGIN_APPLY_PATCHES } from "@smashcut/sdk";
 
 comp.on("patch", ({ patches, inversePatches, origin, opTypes }) => {
   if (origin !== ORIGIN_APPLY_PATCHES) {
@@ -716,7 +716,7 @@ flush(): Promise<void>
 Drain the persist queue. Resolves when any pending write has been committed to the adapter. No-op when no persist adapter was provided. Call this before process exit or navigation away to avoid losing queued writes.
 
 ```typescript
-comp.setText("hf-title", "Final title");
+comp.setText("sc-title", "Final title");
 await comp.flush();
 comp.dispose();
 ```

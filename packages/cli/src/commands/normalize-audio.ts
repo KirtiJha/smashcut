@@ -2,8 +2,8 @@ import { execFile } from "node:child_process";
 import { existsSync, readFileSync, renameSync, writeFileSync } from "node:fs";
 import { isAbsolute, relative, resolve } from "node:path";
 import { promisify } from "node:util";
-import { formatAudioGain, MAX_AUDIO_GAIN_DB } from "@hyperframes/core/audio-gain";
-import { findFfBinary } from "@hyperframes/parsers/ff-binaries";
+import { formatAudioGain, MAX_AUDIO_GAIN_DB } from "@smashcut/core/audio-gain";
+import { findFfBinary } from "@smashcut/parsers/ff-binaries";
 import { defineCommand } from "citty";
 import { c } from "../ui/colors.js";
 import { resolveProject } from "../utils/project.js";
@@ -478,7 +478,7 @@ async function measuredPlan(
 
 /** Never leave a half-written composition behind if the process dies mid-write. */
 function writeAtomically(path: string, contents: string): void {
-  const temporary = `${path}.hf-normalize-${process.pid}.tmp`;
+  const temporary = `${path}.sc-normalize-${process.pid}.tmp`;
   writeFileSync(temporary, contents);
   renameSync(temporary, path);
 }
@@ -542,11 +542,11 @@ function printHumanResult(result: NormalizeAudioResult): void {
 export const examples: Example[] = [
   [
     "Measure two authored clips and preview the matching gain",
-    "hyperframes normalize-audio --reference target-audio --target user-audio",
+    "smashcut normalize-audio --reference target-audio --target user-audio",
   ],
   [
     "Persist the measured gain into index.html",
-    "hyperframes normalize-audio --reference target-audio --target user-audio --write",
+    "smashcut normalize-audio --reference target-audio --target user-audio --write",
   ],
 ];
 

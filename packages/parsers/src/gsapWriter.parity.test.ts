@@ -210,7 +210,7 @@ describe("parity: dedupePositionWritesInScript (recast vs acorn)", () => {
 
 // Array-form keyframes (`keyframes: [{x,y}, …]`, no explicit %) used to no-op on
 // removal in BOTH writers — the object-form path couldn't see the array, so the
-// keyframe survived while downstream hold-sync stranded an `hf-hold`.
+// keyframe survived while downstream hold-sync stranded an `sc-hold`.
 describe("removeKeyframeFromScript: array-form keyframes (recast + acorn parity)", () => {
   const arrayScript = `
     const tl = gsap.timeline({ paused: true });

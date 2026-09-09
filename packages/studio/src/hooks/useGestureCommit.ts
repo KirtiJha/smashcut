@@ -9,10 +9,10 @@ import { fitEasesFromVelocity } from "../utils/velocityEaseFitter";
 import { smoothGestureKeyframes } from "../utils/gestureSmoother";
 import { usePlayerStore } from "../player";
 import type { DomEditSelection } from "../components/editor/domEditing";
-import type { GsapAnimation } from "@hyperframes/core/gsap-parser";
+import type { GsapAnimation } from "@smashcut/core/gsap-parser";
 import type { CommitMutationOptions } from "./gsapScriptCommitTypes";
 import { roundTo3 } from "../utils/rounding";
-import { classifyPropertyGroup } from "@hyperframes/core/gsap-parser";
+import { classifyPropertyGroup } from "@smashcut/core/gsap-parser";
 import { isInstantHold, idSelector, writeTargetSelector, tweenTargetsElement } from "./gsapShared";
 
 type RecordedKeyframe = {

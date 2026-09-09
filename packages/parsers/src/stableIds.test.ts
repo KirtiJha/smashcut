@@ -6,7 +6,7 @@
  * These tests define what "stable hf- id" means BEFORE R1 implements it.
  * They are intentionally red until R1 lands.
  *
- * Currently failing (spec): tests 1, 2, 3 — parser assigns `element-N` not `hf-xxxx`.
+ * Currently failing (spec): tests 1, 2, 3 — parser assigns `element-N` not `sc-xxxx`.
  * Currently passing (baseline): tests 4, 5, 6, 7 — these already hold and must not regress.
  *
  * Scope: id assignment and stability only. Round-trip fidelity is T1 territory.
@@ -56,18 +56,18 @@ describe("T2 — stable element ids (spec for R1)", () => {
     expect(baseAlpha).toBeDefined();
     expect(extendedAlpha).toBeDefined();
     // With counter-based ids: base AlphaEl = element-1, extended AlphaEl = element-2 — FAILS.
-    // With hf- stable ids: both = same hf-xxxx — PASSES (R1 target).
+    // With hf- stable ids: both = same sc-xxxx — PASSES (R1 target).
     expect(extendedAlpha?.id).toBe(baseAlpha?.id);
   });
 
   // --- Baseline (already pass, must not regress) ---
 
-  it("existing data-hf-id is pinned and becomes the clip id (never re-minted)", () => {
+  it("existing data-sc-id is pinned and becomes the clip id (never re-minted)", () => {
     const html = `<html><body><div id="stage">
-      <div data-hf-id="hf-anch" data-start="0" data-end="5" data-name="Title"><div>Hi</div></div>
+      <div data-sc-id="sc-anch" data-start="0" data-end="5" data-name="Title"><div>Hi</div></div>
     </div></body></html>`;
     const { elements } = parseHtml(html);
-    expect(elements.some((e) => e.id === "hf-anch")).toBe(true);
+    expect(elements.some((e) => e.id === "sc-anch")).toBe(true);
   });
 
   it("ids are deterministic: same input produces same ids on re-parse", () => {
@@ -114,5 +114,5 @@ describe("T2 — stable element ids (spec for R1)", () => {
     expect(roundIds).toEqual(origIds);
   });
 
-  it.todo("sub-composition instances get scoped ids (compositionId/hf-x) — requires SDK session");
+  it.todo("sub-composition instances get scoped ids (compositionId/sc-x) — requires SDK session");
 });

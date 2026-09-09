@@ -55,15 +55,15 @@ describe("syncStoredAutomationFromPreview", () => {
     expect(usePlayerStore.getState().elements[0]?.automation).toBeUndefined();
   });
 
-  it("finds the node by data-hf-id when the dom id does not match", () => {
-    // Studio stamps hf-ids; an element discovered under a suffixed dom id still has
+  it("finds the node by data-sc-id when the dom id does not match", () => {
+    // Studio stamps sc-ids; an element discovered under a suffixed dom id still has
     // to resolve, or the sync silently skips it.
     const doc = document.implementation.createHTMLDocument("preview");
     const audio = doc.createElement("audio");
-    audio.setAttribute("data-hf-id", "hf-snao");
+    audio.setAttribute("data-sc-id", "sc-snao");
     audio.setAttribute("data-automation", RESTORED);
     doc.body.append(audio);
-    usePlayerStore.setState({ elements: [el({ domId: "bgm-2", hfId: "hf-snao" })] });
+    usePlayerStore.setState({ elements: [el({ domId: "bgm-2", hfId: "sc-snao" })] });
     syncStoredAutomationFromPreview(doc);
     expect(usePlayerStore.getState().elements[0]?.automation).toBe(RESTORED);
   });
@@ -90,7 +90,7 @@ describe("syncStoredAutomationFromPreview", () => {
     const groupAutomation =
       '{"version":1,"lanes":[{"target":"fx.n1.gain","points":[{"t":0,"v":0}]}]}';
     const doc = document.implementation.createHTMLDocument("preview");
-    const group = doc.createElement("hf-audio-group");
+    const group = doc.createElement("sc-audio-group");
     group.id = "voiceover";
     group.setAttribute("data-fx-chain", chain);
     group.setAttribute("data-automation", groupAutomation);

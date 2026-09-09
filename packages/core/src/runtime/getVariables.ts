@@ -2,18 +2,18 @@
  * Reads the resolved variables for the current composition.
  *
  * Top-level path: declared defaults from `<html data-composition-variables="...">`
- * merged with `window.__hfVariables` (set at render time by the engine when
- * the user passes `hyperframes render --variables '<json>'`).
+ * merged with `window.__scVariables` (set at render time by the engine when
+ * the user passes `smashcut render --variables '<json>'`).
  *
  * Sub-comp path (per-instance scoping): when called inside a sub-composition
  * script wrapped by `compositionScoping.ts`, the wrapper shadows
- * `__hyperframes.getVariables` with a scoped variant that returns the
- * pre-merged values from `window.__hfVariablesByComp[compositionId]`. The
+ * `__smashcut.getVariables` with a scoped variant that returns the
+ * pre-merged values from `window.__scVariablesByComp[compositionId]`. The
  * loader populates that table before running scripts, layering the host
  * element's `data-variable-values` over the sub-comp's declared defaults.
  *
  * Returns `Partial<T>` because not every declared variable is guaranteed to
- * have a default, and not every key in `__hfVariables` is guaranteed to be
+ * have a default, and not every key in `__scVariables` is guaranteed to be
  * declared. Callers are expected to destructure with their own fallbacks
  * where strictness matters:
  *
@@ -160,7 +160,7 @@ export function warnUnknownEnumValues(
 
     const fallback = "default" in entry ? JSON.stringify(entry.default) : "the composition default";
     console.warn(
-      `[hyperframes] runtime_unknown_enum_value: ${move} variable "${found.id}" got ${JSON.stringify(found.value)}, which is not a declared option (${found.allowed.join(", ")}). Rendering ${fallback} instead.`,
+      `[smashcut] runtime_unknown_enum_value: ${move} variable "${found.id}" got ${JSON.stringify(found.value)}, which is not a declared option (${found.allowed.join(", ")}). Rendering ${fallback} instead.`,
     );
   }
 }
@@ -185,7 +185,7 @@ export function readDeclaredDefaults(root: Element | null): Record<string, unkno
   return out;
 }
 
-const APPLIED_VARS_ATTR = "data-hf-css-vars";
+const APPLIED_VARS_ATTR = "data-sc-css-vars";
 
 function hasInlineStyle(target: Element): target is Element & ElementCSSInlineStyle {
   return "style" in target && typeof (target as HTMLElement).style?.setProperty === "function";
@@ -249,7 +249,7 @@ export function clearAppliedCssVariables(target: Element): void {
  * (stylesheet `:root` rule, compile-time emission, hand-written inline) wins
  * over the declared default, preserving pre-existing conventions where a
  * variable id coincides with an authored custom property. Render-time
- * overrides (`--variables` → `window.__hfVariables`) always win — that's
+ * overrides (`--variables` → `window.__scVariables`) always win — that's
  * explicit user intent.
  */
 export function injectCompositionCssVariables(doc: Document): void {
@@ -314,10 +314,10 @@ export function parseHostVariableValues(host: Element): Record<string, unknown> 
   return parsed as Record<string, unknown>;
 }
 
-/** Render-time variable overrides (`hyperframes render --variables`). */
+/** Render-time variable overrides (`smashcut render --variables`). */
 export function readRenderOverrides(): Record<string, unknown> {
   if (typeof window === "undefined") return {};
-  const raw = (window as Window & { __hfVariables?: unknown }).__hfVariables;
+  const raw = (window as Window & { __scVariables?: unknown }).__scVariables;
   if (!raw || typeof raw !== "object" || Array.isArray(raw)) return {};
   return raw as Record<string, unknown>;
 }

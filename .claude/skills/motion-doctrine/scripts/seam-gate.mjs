@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// seam-gate.mjs — numeric Seam Gate verifier for HyperFrames films (motion-doctrine).
+// seam-gate.mjs — numeric Seam Gate verifier for SmashCut films (motion-doctrine).
 // Zero npm dependencies: drives chrome-headless-shell over raw CDP (node >= 22).
 //
 //   verify  node seam-gate.mjs verify --ledger ledger.json --project <dir> [--json]
@@ -75,7 +75,7 @@ async function ensureServer() {
     // launcher would exit 0 before the server is up and detach it out of our process group.
     const cmd = flag(
       "server-cmd",
-      `npx --yes hyperframes preview --foreground --no-open --port ${port}`,
+      `npx --yes smashcut preview --foreground --no-open --port ${port}`,
     );
     const child = spawn("sh", ["-c", cmd.replace(/\{port\}/g, String(port))], {
       cwd: project,
@@ -299,13 +299,13 @@ const HARNESS = `window.__seamGate = {
   sample(t, sels){ this.seek(t); const o = {}; for (const s of sels) o[s] = this.read(s); return o; },
   pathOf(el){
     if (el.id) return "#" + CSS.escape(el.id);
-    const hf = el.getAttribute && el.getAttribute("data-hf-id");
-    if (hf) return '[data-hf-id="' + hf + '"]';
+    const hf = el.getAttribute && el.getAttribute("data-sc-id");
+    if (hf) return '[data-sc-id="' + hf + '"]';
     let p = [], n = el, depth = 0;
     while (n && n.nodeType === 1 && depth < 5) {
       if (n.id) { p.unshift("#" + CSS.escape(n.id)); break; }
-      const h2 = n.getAttribute("data-hf-id");
-      if (h2) { p.unshift('[data-hf-id="' + h2 + '"]'); break; }
+      const h2 = n.getAttribute("data-sc-id");
+      if (h2) { p.unshift('[data-sc-id="' + h2 + '"]'); break; }
       const kids = n.parentElement ? [...n.parentElement.children] : [n];
       p.unshift(n.tagName.toLowerCase() + ":nth-child(" + (kids.indexOf(n) + 1) + ")");
       n = n.parentElement; depth++;

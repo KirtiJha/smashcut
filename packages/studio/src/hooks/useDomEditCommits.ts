@@ -1,5 +1,5 @@
 import { useCallback, useRef } from "react";
-import { findUnsafeDomPatchValues } from "@hyperframes/core/studio-api/finite-mutation";
+import { findUnsafeDomPatchValues } from "@smashcut/core/studio-api/finite-mutation";
 import { FONT_EXT } from "../utils/mediaTypes";
 
 import { trackStudioEvent } from "../utils/studioTelemetry";

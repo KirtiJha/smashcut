@@ -16,7 +16,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 ```html press-ripple.html
 <!doctype html>
 <!--
-  press-ripple: HyperFrames video primitive (product demo / payoff)
+  press-ripple: SmashCut video primitive (product demo / payoff)
 
   A cursor decel-arrives from off-stage (power2.out, it arrives, never passes
   through), lands a few px off-center on a caller-positioned target zone, the
@@ -225,8 +225,8 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
             var cursorPath = root.querySelector(".pr-cursor-path");
 
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             function num(value, fallback, min, max) {
@@ -393,7 +393,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 
 ## Install
 
-<InstallCommand command="npx hyperframes add press-ripple" item="press-ripple" />
+<InstallCommand command="npx smashcut add press-ripple" item="press-ripple" />
 
 That writes one file: `compositions/components/press-ripple.html`.
 
@@ -437,7 +437,7 @@ defaults, so this behaves exactly like the preview above until you change one:
 ```html
 <!doctype html>
 <!--
-  press-ripple: HyperFrames video primitive (product demo / payoff)
+  press-ripple: SmashCut video primitive (product demo / payoff)
 
   A cursor decel-arrives from off-stage (power2.out, it arrives, never passes
   through), lands a few px off-center on a caller-positioned target zone, the
@@ -646,8 +646,8 @@ defaults, so this behaves exactly like the preview above until you change one:
             var cursorPath = root.querySelector(".pr-cursor-path");
 
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             function num(value, fallback, min, max) {

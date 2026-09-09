@@ -10,13 +10,13 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
   previewSrc="/public/catalog/components/native-notification-pop.json"
   compositionId="native-notification-pop"
   compositionSrc="compositions/components/native-notification-pop.html"
-  variables={[{"id":"title","type":"string","role":"content","label":"Title","description":"The notification title line.","default":"Render complete"},{"id":"body","type":"string","role":"content","label":"Body","description":"One body line. Long lines truncate with an ellipsis.","default":"launch-cut.mp4 is ready to preview"},{"id":"app_label","type":"string","role":"content","label":"App label","description":"Small-caps app name row beside the app dot.","default":"HyperFrames"},{"id":"os","type":"enum","role":"style","label":"OS","description":"Banner geometry and placement: wide centered iOS or compact top-right macOS.","default":"ios","options":[{"value":"ios","label":"iOS"},{"value":"macos","label":"macOS"}]},{"id":"at","type":"number","role":"timing","label":"Drop start","description":"Seconds after mount start when the banner drops in.","default":0.3,"min":0,"max":8,"step":0.05,"unit":"s"},{"id":"accent","type":"enum","role":"style","label":"Accent","description":"App dot color.","default":"green","options":[{"value":"green","label":"Green"},{"value":"blue","label":"Blue"},{"value":"violet","label":"Violet"}]},{"id":"exit","type":"enum","role":"timing","label":"Exit","description":"None holds the banner; up tucks it back off the top; fade fades it in place.","default":"none","options":[{"value":"none","label":"None"},{"value":"fade","label":"Fade"},{"value":"up","label":"Up"}]}]}
+  variables={[{"id":"title","type":"string","role":"content","label":"Title","description":"The notification title line.","default":"Render complete"},{"id":"body","type":"string","role":"content","label":"Body","description":"One body line. Long lines truncate with an ellipsis.","default":"launch-cut.mp4 is ready to preview"},{"id":"app_label","type":"string","role":"content","label":"App label","description":"Small-caps app name row beside the app dot.","default":"SmashCut"},{"id":"os","type":"enum","role":"style","label":"OS","description":"Banner geometry and placement: wide centered iOS or compact top-right macOS.","default":"ios","options":[{"value":"ios","label":"iOS"},{"value":"macos","label":"macOS"}]},{"id":"at","type":"number","role":"timing","label":"Drop start","description":"Seconds after mount start when the banner drops in.","default":0.3,"min":0,"max":8,"step":0.05,"unit":"s"},{"id":"accent","type":"enum","role":"style","label":"Accent","description":"App dot color.","default":"green","options":[{"value":"green","label":"Green"},{"value":"blue","label":"Blue"},{"value":"violet","label":"Violet"}]},{"id":"exit","type":"enum","role":"timing","label":"Exit","description":"None holds the banner; up tucks it back off the top; fade fades it in place.","default":"none","options":[{"value":"none","label":"None"},{"value":"fade","label":"Fade"},{"value":"up","label":"Up"}]}]}
 >
 
 ```html native-notification-pop.html
 <!doctype html>
 <!--
-  native-notification-pop: HyperFrames video primitive (product-demo / overlay)
+  native-notification-pop: SmashCut video primitive (product-demo / overlay)
 
   One system-faithful notification banner drops in over ANY scene: fast
   arrival, soft overshoot, settled mass. The os enum picks the chrome
@@ -50,7 +50,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
   Variables (declared in data-composition-variables below):
     - title (string): the notification title line.
     - body (string): one body line. Long lines truncate with an ellipsis.
-    - app_label (string, default "HyperFrames"): small-caps app name row.
+    - app_label (string, default "SmashCut"): small-caps app name row.
     - os (ios | macos, default ios): banner geometry and placement.
     - at (number, seconds, default 0.3): when the drop starts, relative to
       mount start. Clamped so the spring settles before any exit.
@@ -74,7 +74,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
   <template> contents; #root fills the host box (inset: 0, container-type:
   size), has no data-width/data-height, and registers one paused timeline
   under the literal "native-notification-pop" key. Variables come from
-  window.__hyperframes.getVariables().
+  window.__smashcut.getVariables().
 -->
 <html
   lang="en"
@@ -83,7 +83,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
   data-composition-variables='[
     { "id": "title", "type": "string", "role": "content", "label": "Title", "description": "The notification title line.", "default": "Render complete" },
     { "id": "body", "type": "string", "role": "content", "label": "Body", "description": "One body line. Long lines truncate with an ellipsis.", "default": "launch-cut.mp4 is ready to preview" },
-    { "id": "app_label", "type": "string", "role": "content", "label": "App label", "description": "Small-caps app name row beside the app dot.", "default": "HyperFrames" },
+    { "id": "app_label", "type": "string", "role": "content", "label": "App label", "description": "Small-caps app name row beside the app dot.", "default": "SmashCut" },
     { "id": "os", "type": "enum", "role": "style", "label": "OS", "description": "Banner geometry and placement: wide centered iOS or compact top-right macOS.", "default": "ios", "options": [{ "value": "ios", "label": "iOS" }, { "value": "macos", "label": "macOS" }] },
     { "id": "at", "type": "number", "role": "timing", "label": "Drop start", "description": "Seconds after mount start when the banner drops in.", "default": 0.3, "min": 0, "max": 8, "step": 0.05, "unit": "s" },
     { "id": "accent", "type": "enum", "role": "style", "label": "Accent", "description": "App dot color.", "default": "green", "options": [{ "value": "green", "label": "Green" }, { "value": "blue", "label": "Blue" }, { "value": "violet", "label": "Violet" }] },
@@ -342,13 +342,13 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
             var banner = root.querySelector(".nnp-banner");
 
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             var title = vars.title == null ? "Render complete" : String(vars.title);
             var body = vars.body == null ? "launch-cut.mp4 is ready to preview" : String(vars.body);
-            var appLabel = vars.app_label == null ? "HyperFrames" : String(vars.app_label);
+            var appLabel = vars.app_label == null ? "SmashCut" : String(vars.app_label);
             var os = vars.os === "macos" ? "macos" : "ios";
             var rawAt = vars.at == null ? 0.3 : Number(vars.at);
             var at = Number.isFinite(rawAt) ? Math.max(0, Math.min(8, rawAt)) : 0.3;
@@ -476,7 +476,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 
 ## Install
 
-<InstallCommand command="npx hyperframes add native-notification-pop" item="native-notification-pop" />
+<InstallCommand command="npx smashcut add native-notification-pop" item="native-notification-pop" />
 
 That writes one file: `compositions/components/native-notification-pop.html`.
 
@@ -496,7 +496,7 @@ want to change on the element:
 | --- | --- | --- | --- |
 | `title` | `Render complete` | string | The notification title line. |
 | `body` | `launch-cut.mp4 is ready to preview` | string | One body line. Long lines truncate with an ellipsis. |
-| `app_label` | `HyperFrames` | string | Small-caps app name row beside the app dot. |
+| `app_label` | `SmashCut` | string | Small-caps app name row beside the app dot. |
 | `os` | `ios` | `ios`, `macos` | Banner geometry and placement: wide centered iOS or compact top-right macOS. |
 | `at` | `0.3` | 0s to 8s, step 0.05s | Seconds after mount start when the banner drops in. |
 | `accent` | `green` | `green`, `blue`, `violet` | App dot color. |
@@ -509,7 +509,7 @@ defaults, so this behaves exactly like the preview above until you change one:
 <div
   data-composition-id="native-notification-pop"
   data-composition-src="compositions/components/native-notification-pop.html"
-  data-variable-values='{"title":"Render complete","body":"launch-cut.mp4 is ready to preview","app_label":"HyperFrames","os":"ios","at":0.3,"accent":"green","exit":"none"}'
+  data-variable-values='{"title":"Render complete","body":"launch-cut.mp4 is ready to preview","app_label":"SmashCut","os":"ios","at":0.3,"accent":"green","exit":"none"}'
 ></div>
 ```
 
@@ -520,7 +520,7 @@ defaults, so this behaves exactly like the preview above until you change one:
 ```html
 <!doctype html>
 <!--
-  native-notification-pop: HyperFrames video primitive (product-demo / overlay)
+  native-notification-pop: SmashCut video primitive (product-demo / overlay)
 
   One system-faithful notification banner drops in over ANY scene: fast
   arrival, soft overshoot, settled mass. The os enum picks the chrome
@@ -554,7 +554,7 @@ defaults, so this behaves exactly like the preview above until you change one:
   Variables (declared in data-composition-variables below):
     - title (string): the notification title line.
     - body (string): one body line. Long lines truncate with an ellipsis.
-    - app_label (string, default "HyperFrames"): small-caps app name row.
+    - app_label (string, default "SmashCut"): small-caps app name row.
     - os (ios | macos, default ios): banner geometry and placement.
     - at (number, seconds, default 0.3): when the drop starts, relative to
       mount start. Clamped so the spring settles before any exit.
@@ -578,7 +578,7 @@ defaults, so this behaves exactly like the preview above until you change one:
   <template> contents; #root fills the host box (inset: 0, container-type:
   size), has no data-width/data-height, and registers one paused timeline
   under the literal "native-notification-pop" key. Variables come from
-  window.__hyperframes.getVariables().
+  window.__smashcut.getVariables().
 -->
 <html
   lang="en"
@@ -587,7 +587,7 @@ defaults, so this behaves exactly like the preview above until you change one:
   data-composition-variables='[
     { "id": "title", "type": "string", "role": "content", "label": "Title", "description": "The notification title line.", "default": "Render complete" },
     { "id": "body", "type": "string", "role": "content", "label": "Body", "description": "One body line. Long lines truncate with an ellipsis.", "default": "launch-cut.mp4 is ready to preview" },
-    { "id": "app_label", "type": "string", "role": "content", "label": "App label", "description": "Small-caps app name row beside the app dot.", "default": "HyperFrames" },
+    { "id": "app_label", "type": "string", "role": "content", "label": "App label", "description": "Small-caps app name row beside the app dot.", "default": "SmashCut" },
     { "id": "os", "type": "enum", "role": "style", "label": "OS", "description": "Banner geometry and placement: wide centered iOS or compact top-right macOS.", "default": "ios", "options": [{ "value": "ios", "label": "iOS" }, { "value": "macos", "label": "macOS" }] },
     { "id": "at", "type": "number", "role": "timing", "label": "Drop start", "description": "Seconds after mount start when the banner drops in.", "default": 0.3, "min": 0, "max": 8, "step": 0.05, "unit": "s" },
     { "id": "accent", "type": "enum", "role": "style", "label": "Accent", "description": "App dot color.", "default": "green", "options": [{ "value": "green", "label": "Green" }, { "value": "blue", "label": "Blue" }, { "value": "violet", "label": "Violet" }] },
@@ -846,13 +846,13 @@ defaults, so this behaves exactly like the preview above until you change one:
             var banner = root.querySelector(".nnp-banner");
 
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             var title = vars.title == null ? "Render complete" : String(vars.title);
             var body = vars.body == null ? "launch-cut.mp4 is ready to preview" : String(vars.body);
-            var appLabel = vars.app_label == null ? "HyperFrames" : String(vars.app_label);
+            var appLabel = vars.app_label == null ? "SmashCut" : String(vars.app_label);
             var os = vars.os === "macos" ? "macos" : "ios";
             var rawAt = vars.at == null ? 0.3 : Number(vars.at);
             var at = Number.isFinite(rawAt) ? Math.max(0, Math.min(8, rawAt)) : 0.3;

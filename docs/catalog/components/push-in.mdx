@@ -16,7 +16,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 ```html push-in.html
 <!doctype html>
 <!--
-  push-in: HyperFrames video primitive (camera / holdable / emphasize)
+  push-in: SmashCut video primitive (camera / holdable / emphasize)
 
   Concept: a centered headline stays composed while the full stage makes one
   slow camera push. The intensity variable owns the final scale, and a soft
@@ -145,8 +145,8 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
             var camera = root.querySelector(".pi-camera");
             var headline = root.querySelector(".pi-headline");
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             var text = vars.text == null ? "Focus" : String(vars.text);
@@ -198,7 +198,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 
 ## Install
 
-<InstallCommand command="npx hyperframes add push-in" item="push-in" />
+<InstallCommand command="npx smashcut add push-in" item="push-in" />
 
 That writes one file: `compositions/components/push-in.html`.
 
@@ -237,7 +237,7 @@ defaults, so this behaves exactly like the preview above until you change one:
 ```html
 <!doctype html>
 <!--
-  push-in: HyperFrames video primitive (camera / holdable / emphasize)
+  push-in: SmashCut video primitive (camera / holdable / emphasize)
 
   Concept: a centered headline stays composed while the full stage makes one
   slow camera push. The intensity variable owns the final scale, and a soft
@@ -366,8 +366,8 @@ defaults, so this behaves exactly like the preview above until you change one:
             var camera = root.querySelector(".pi-camera");
             var headline = root.querySelector(".pi-headline");
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             var text = vars.text == null ? "Focus" : String(vars.text);

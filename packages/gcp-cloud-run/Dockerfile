@@ -1,21 +1,21 @@
-# HyperFrames distributed render — Cloud Run image.
+# SmashCut distributed render — Cloud Run image.
 #
 # One container image, three roles (plan / renderChunk / assemble). Cloud
 # Workflows POSTs a JSON body with an `Action` field; `dist/server.js`
-# dispatches to the matching `@hyperframes/producer/distributed` primitive.
+# dispatches to the matching `@smashcut/producer/distributed` primitive.
 #
 # Build context is the REPOSITORY ROOT (not this package dir) because the
-# package depends on the `@hyperframes/producer` workspace and renders with
+# package depends on the `@smashcut/producer` workspace and renders with
 # the same chrome-headless-shell + fonts + ffmpeg the production renderer
-# uses. The example smoke script and `hyperframes cloudrun deploy` both
+# uses. The example smoke script and `smashcut cloudrun deploy` both
 # build with the repo root as context:
 #
 #   docker build -f packages/gcp-cloud-run/Dockerfile -t <image> .
 #
-# NOTE: this Dockerfile only builds from a full hyperframes monorepo checkout
+# NOTE: this Dockerfile only builds from a full smashcut monorepo checkout
 # — it COPYs sibling workspace packages (core/engine/producer). It is NOT
 # buildable from the published npm tarball alone; install the repo (or use
-# `hyperframes cloudrun deploy`, which builds from your checkout via Cloud
+# `smashcut cloudrun deploy`, which builds from your checkout via Cloud
 # Build) to produce the image.
 #
 # Unlike the AWS Lambda adapter there is no ZIP-size ceiling and no runtime
@@ -67,7 +67,7 @@ RUN npx --yes @puppeteer/browsers install chrome-headless-shell@148.0.7778.167 \
 
 # The chromium.ts resolver reads this first; pointing the engine straight at
 # the symlinked binary avoids the runtime cache scan.
-ENV HYPERFRAMES_CHROME_PATH=/opt/chrome/chrome-headless-shell
+ENV SMASHCUT_CHROME_PATH=/opt/chrome/chrome-headless-shell
 ENV PRODUCER_HEADLESS_SHELL_PATH=/opt/chrome/chrome-headless-shell
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
 ENV CONTAINER=true
@@ -107,10 +107,10 @@ RUN bun install --frozen-lockfile
 # hard-coded profile.
 COPY packages/engine/ packages/engine/
 COPY packages/aws-lambda/scripts/probe-beginframe.ts packages/aws-lambda/scripts/probe-beginframe.ts
-RUN bun -e 'import { buildChromeArgs } from "./packages/engine/src/services/browserManager.ts"; await Bun.write("/tmp/hf-gcp-chrome-args.json", JSON.stringify(buildChromeArgs({ width: 800, height: 600, captureMode: "beginframe", platform: "linux" }, { browserGpuMode: "software" })))' \
+RUN bun -e 'import { buildChromeArgs } from "./packages/engine/src/services/browserManager.ts"; await Bun.write("/tmp/sc-gcp-chrome-args.json", JSON.stringify(buildChromeArgs({ width: 800, height: 600, captureMode: "beginframe", platform: "linux" }, { browserGpuMode: "software" })))' \
     && bun packages/aws-lambda/scripts/probe-beginframe.ts \
       --executable-path /opt/chrome/chrome-headless-shell \
-      --launch-args-json /tmp/hf-gcp-chrome-args.json
+      --launch-args-json /tmp/sc-gcp-chrome-args.json
 
 # CI targets `beginframe-contract` directly, so pin/probe changes do not need
 # the full monorepo build merely to verify browser capability. The deployable
@@ -136,7 +136,7 @@ RUN bun run --cwd packages/parsers build \
     && bun run --cwd packages/lint build \
     && bun run --cwd packages/studio-server build \
     && bun run --cwd packages/core build \
-    && bun run --cwd packages/core build:hyperframes-runtime:modular \
+    && bun run --cwd packages/core build:smashcut-runtime:modular \
     && bun run --cwd packages/sdk build \
     && bun run --cwd packages/sdk-playground build \
     && bun run --cwd packages/engine build \
@@ -149,7 +149,7 @@ ENV PORT=8080
 EXPOSE 8080
 
 WORKDIR /app/packages/gcp-cloud-run
-# Run under bun, not node. The repo is bun-native and `@hyperframes/producer`'s
+# Run under bun, not node. The repo is bun-native and `@smashcut/producer`'s
 # bundled `distributed.js` relies on a `require` being available at runtime
 # (its esbuild interop shim); bun provides one in ESM, bare `node` does not.
 CMD ["bun", "dist/server.js"]

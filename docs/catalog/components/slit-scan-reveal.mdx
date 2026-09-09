@@ -16,7 +16,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 ```html slit-scan-reveal.html
 <!doctype html>
 <!--
-  slit-scan-reveal: HyperFrames video primitive (time)
+  slit-scan-reveal: SmashCut video primitive (time)
 
   The frame's rows sample the subject at offset times. The subject is an
   authored token mark (an accent-ringed disc with an orbit dot) whose
@@ -141,8 +141,8 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
             var stage = root.querySelector(".ssr-stage");
             var canvas = root.querySelector(".ssr-canvas");
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             var axis = vars.axis === "cols" ? "cols" : "rows";
@@ -352,7 +352,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 
 ## Install
 
-<InstallCommand command="npx hyperframes add slit-scan-reveal" item="slit-scan-reveal" />
+<InstallCommand command="npx smashcut add slit-scan-reveal" item="slit-scan-reveal" />
 
 That writes one file: `compositions/components/slit-scan-reveal.html`.
 
@@ -394,7 +394,7 @@ defaults, so this behaves exactly like the preview above until you change one:
 ```html
 <!doctype html>
 <!--
-  slit-scan-reveal: HyperFrames video primitive (time)
+  slit-scan-reveal: SmashCut video primitive (time)
 
   The frame's rows sample the subject at offset times. The subject is an
   authored token mark (an accent-ringed disc with an orbit dot) whose
@@ -519,8 +519,8 @@ defaults, so this behaves exactly like the preview above until you change one:
             var stage = root.querySelector(".ssr-stage");
             var canvas = root.querySelector(".ssr-canvas");
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             var axis = vars.axis === "cols" ? "cols" : "rows";

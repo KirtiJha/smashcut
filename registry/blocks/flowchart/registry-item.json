@@ -1,7 +1,7 @@
 {
   "$schema": "https://hyperframes.heygen.com/schema/registry-item.json",
   "name": "flowchart",
-  "type": "hyperframes:block",
+  "type": "smashcut:block",
   "title": "Flowchart",
   "description": "Animated decision tree with SVG connectors, sticky-note nodes, cursor interaction, and typing correction",
   "tags": ["diagram", "flowchart", "interactive"],
@@ -14,11 +14,11 @@
     {
       "path": "flowchart.html",
       "target": "compositions/flowchart.html",
-      "type": "hyperframes:composition"
+      "type": "smashcut:composition"
     }
   ],
   "preview": {
-    "video": "https://static.heygen.ai/hyperframes-oss/docs/images/catalog/blocks/flowchart.mp4",
-    "poster": "https://static.heygen.ai/hyperframes-oss/docs/images/catalog/blocks/flowchart.png"
+    "video": "https://static.heygen.ai/smashcut-oss/docs/images/catalog/blocks/flowchart.mp4",
+    "poster": "https://static.heygen.ai/smashcut-oss/docs/images/catalog/blocks/flowchart.png"
   }
 }

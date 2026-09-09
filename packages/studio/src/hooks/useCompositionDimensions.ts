@@ -14,7 +14,7 @@ function isStageSizeMessage(value: unknown): value is Record<string, unknown> {
   if (typeof value !== "object") return false;
   if (value === null) return false;
   const message = value as Record<string, unknown>;
-  return message.source === "hf-preview" && message.type === "stage-size";
+  return message.source === "sc-preview" && message.type === "stage-size";
 }
 
 function readPositiveNumber(value: unknown): number | null {

@@ -37,9 +37,9 @@ export interface ProbeResult {
 }
 
 const PROBE_HTML = `<!doctype html>
-<html><head><meta charset="utf-8"><title>hf-beginframe-probe</title>
+<html><head><meta charset="utf-8"><title>sc-beginframe-probe</title>
 <style>html,body{margin:0;background:#173;color:#fff;font:48px/1 sans-serif;display:flex;align-items:center;justify-content:center;height:100vh}</style>
-</head><body><div id="x">hf-beginframe-probe</div></body></html>`;
+</head><body><div id="x">sc-beginframe-probe</div></body></html>`;
 const SCREENSHOT_ATTEMPTS = 10;
 const PROBE_OPERATION_TIMEOUT_MS = 5000;
 const PROBE_CLEANUP_TIMEOUT_MS = 250;
@@ -204,7 +204,7 @@ export async function probe(options: ProbeOptions = {}): Promise<ProbeResult> {
     // Chrome-side issue. `mkdtempSync` (vs `tmpdir() + Date.now()`) gives
     // an unguessable directory name so two concurrent probes on the same
     // host don't collide and CodeQL's insecure-tempfile rule clears.
-    tmpHtmlDir = mkdtempSync(join(tmpdir(), "hf-beginframe-"));
+    tmpHtmlDir = mkdtempSync(join(tmpdir(), "sc-beginframe-"));
     const htmlPath = join(tmpHtmlDir, "probe.html");
     await fs.writeFile(htmlPath, PROBE_HTML, "utf-8");
 
@@ -212,7 +212,7 @@ export async function probe(options: ProbeOptions = {}): Promise<ProbeResult> {
     // the args the engine's `browserManager` passes when `captureMode !==
     // "screenshot"`. Without the surface-synchronization + threaded-disable
     // flags, Chrome's compositor returns `hasDamage: false` and skips the
-    // screenshot — the same observation pinned in the hyperframes memory
+    // screenshot — the same observation pinned in the smashcut memory
     // ("Chrome's beginFrame with `screenshot` param always reports
     // hasDamage=true").
     const beginFrameFlags = [

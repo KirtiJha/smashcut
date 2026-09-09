@@ -1,4 +1,4 @@
-# HyperFrame Schema Compliance Review
+# SmashCut Schema Compliance Review
 
 ## Executive Summary
 

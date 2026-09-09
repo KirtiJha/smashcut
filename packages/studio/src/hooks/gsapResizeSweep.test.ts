@@ -19,8 +19,8 @@
  * a person noticing weeks later.
  */
 import { afterEach, expect, it, vi } from "vitest";
-import { classifyTweenPropertyGroup } from "@hyperframes/core/gsap-parser";
-import type { GsapAnimation } from "@hyperframes/core/gsap-parser";
+import { classifyTweenPropertyGroup } from "@smashcut/core/gsap-parser";
+import type { GsapAnimation } from "@smashcut/core/gsap-parser";
 import type { DomEditSelection } from "../components/editor/domEditingTypes";
 import { usePlayerStore } from "../player/store/playerStore";
 import { tryGsapResizeIntercept } from "./gsapResizeIntercept";
@@ -180,8 +180,8 @@ it(`sweeps ${CASES.length} animated shapes without a stale id or a mixed tween`,
     document.body.innerHTML = "";
     const el = document.createElement("div");
     el.id = "el";
-    el.setAttribute("data-hf-studio-original-box-width", "630");
-    el.setAttribute("data-hf-studio-original-box-height", "408");
+    el.setAttribute("data-sc-studio-original-box-width", "630");
+    el.setAttribute("data-sc-studio-original-box-height", "408");
     document.body.append(el);
     usePlayerStore.setState({ currentTime: 0, activeKeyframePct: null });
 
@@ -249,8 +249,8 @@ it.each(PLAYHEADS)("at t=%s edits the tween under the playhead (%s)", async (tim
   document.body.innerHTML = "";
   const el = document.createElement("div");
   el.id = "el";
-  el.setAttribute("data-hf-studio-original-box-width", "630");
-  el.setAttribute("data-hf-studio-original-box-height", "408");
+  el.setAttribute("data-sc-studio-original-box-width", "630");
+  el.setAttribute("data-sc-studio-original-box-height", "408");
   document.body.append(el);
   usePlayerStore.setState({ currentTime: time, activeKeyframePct: null });
 

@@ -2,7 +2,7 @@ import type { RuntimeDeterministicAdapter } from "../types";
 import { swallow } from "../diagnostics";
 
 /**
- * Lottie adapter for HyperFrames
+ * Lottie adapter for SmashCut
  *
  * Supports lottie-web and @lottiefiles/dotlottie-web.
  *
@@ -21,8 +21,8 @@ import { swallow } from "../diagnostics";
  *     path: 'animation.json',
  *   });
  *   // Register so the adapter can seek it:
- *   window.__hfLottie = window.__hfLottie || [];
- *   window.__hfLottie.push(anim);
+ *   window.__scLottie = window.__scLottie || [];
+ *   window.__scLottie.push(anim);
  * </script>
  * ```
  *
@@ -36,8 +36,8 @@ import { swallow } from "../diagnostics";
  *     src: 'animation.lottie',
  *     autoplay: false,
  *   });
- *   window.__hfLottie = window.__hfLottie || [];
- *   window.__hfLottie.push(player);
+ *   window.__scLottie = window.__scLottie || [];
+ *   window.__scLottie.push(player);
  * </script>
  * ```
  *
@@ -61,14 +61,14 @@ export function createLottieAdapter(): RuntimeDeterministicAdapter {
         if (lottieGlobal && typeof lottieGlobal.getRegisteredAnimations === "function") {
           const registered = lottieGlobal.getRegisteredAnimations();
           if (Array.isArray(registered) && registered.length > 0) {
-            const existing = (window as LottieWindow).__hfLottie ?? [];
+            const existing = (window as LottieWindow).__scLottie ?? [];
             const existingSet = new Set(existing);
             for (const anim of registered) {
               if (!existingSet.has(anim)) {
                 existing.push(anim);
               }
             }
-            (window as LottieWindow).__hfLottie = existing;
+            (window as LottieWindow).__scLottie = existing;
           }
         }
       } catch (err) {
@@ -79,7 +79,7 @@ export function createLottieAdapter(): RuntimeDeterministicAdapter {
 
     seek: (ctx) => {
       const time = Math.max(0, Number(ctx.time) || 0);
-      const instances = (window as LottieWindow).__hfLottie;
+      const instances = (window as LottieWindow).__scLottie;
       if (!instances || instances.length === 0) return;
 
       for (const anim of instances) {
@@ -118,7 +118,7 @@ export function createLottieAdapter(): RuntimeDeterministicAdapter {
     },
 
     pause: () => {
-      const instances = (window as LottieWindow).__hfLottie;
+      const instances = (window as LottieWindow).__scLottie;
       if (!instances || instances.length === 0) return;
 
       for (const anim of instances) {
@@ -136,12 +136,12 @@ export function createLottieAdapter(): RuntimeDeterministicAdapter {
     },
 
     revert: () => {
-      // Don't clear __hfLottie — the animation objects are owned by the composition.
+      // Don't clear __scLottie — the animation objects are owned by the composition.
       // Just let them be garbage collected naturally.
     },
 
     getInferredDurationSeconds: () => {
-      const instances = (window as LottieWindow).__hfLottie;
+      const instances = (window as LottieWindow).__scLottie;
       if (!instances || instances.length === 0) return null;
       let maxSeconds = 0;
       let sawAny = false;
@@ -245,5 +245,5 @@ interface DotLottiePlayer {
 interface LottieWindow extends Window {
   lottie?: LottieWebGlobal;
   /** Compositions register their Lottie animation instances here for the adapter to seek. */
-  __hfLottie?: Array<LottieWebAnimation | DotLottiePlayer>;
+  __scLottie?: Array<LottieWebAnimation | DotLottiePlayer>;
 }

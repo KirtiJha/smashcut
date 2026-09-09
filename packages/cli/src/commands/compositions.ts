@@ -1,12 +1,12 @@
 import { defineCommand } from "citty";
-import { parseNumeric, parseStartExpression } from "@hyperframes/core";
+import { parseNumeric, parseStartExpression } from "@smashcut/core";
 import type { Example } from "./_examples.js";
 import { existsSync, readFileSync } from "node:fs";
 import { resolve, dirname } from "node:path";
 
 export const examples: Example[] = [
-  ["List compositions in the current project", "hyperframes compositions"],
-  ["Output as JSON", "hyperframes compositions --json"],
+  ["List compositions in the current project", "smashcut compositions"],
+  ["Output as JSON", "smashcut compositions --json"],
 ];
 import { c } from "../ui/colors.js";
 import { ensureDOMParser } from "../utils/dom.js";

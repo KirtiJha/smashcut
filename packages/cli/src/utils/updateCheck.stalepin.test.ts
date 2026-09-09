@@ -28,13 +28,13 @@ describe("printStalePinNotice", () => {
   beforeEach(() => {
     store = { latestVersion: "0.7.55" };
     writes = [];
-    dir = mkdtempSync(join(tmpdir(), "hf-pin-"));
+    dir = mkdtempSync(join(tmpdir(), "sc-pin-"));
     process.stderr.write = ((s: unknown) => {
       writes.push(String(s));
       return true;
     }) as typeof process.stderr.write;
     delete process.env.CI;
-    delete process.env.HYPERFRAMES_NO_UPDATE_CHECK;
+    delete process.env.SMASHCUT_NO_UPDATE_CHECK;
   });
   afterEach(() => {
     process.stderr.write = origWrite;
@@ -44,7 +44,7 @@ describe("printStalePinNotice", () => {
   it("warns once when the project pins an older version", () => {
     writeFileSync(
       join(dir, "package.json"),
-      JSON.stringify({ scripts: { render: "npx --yes hyperframes@0.7.48 render" } }),
+      JSON.stringify({ scripts: { render: "npx --yes smashcut@0.7.48 render" } }),
     );
     printStalePinNotice(dir);
     printStalePinNotice(dir); // throttled — second call silent
@@ -56,7 +56,7 @@ describe("printStalePinNotice", () => {
   it("silent when project pin is current", () => {
     writeFileSync(
       join(dir, "package.json"),
-      JSON.stringify({ scripts: { render: "npx --yes hyperframes@0.7.55 render" } }),
+      JSON.stringify({ scripts: { render: "npx --yes smashcut@0.7.55 render" } }),
     );
     printStalePinNotice(dir);
     expect(writes.join("")).toBe("");
@@ -66,7 +66,7 @@ describe("printStalePinNotice", () => {
     process.env.CI = "true";
     writeFileSync(
       join(dir, "package.json"),
-      JSON.stringify({ scripts: { render: "npx --yes hyperframes@0.7.48 render" } }),
+      JSON.stringify({ scripts: { render: "npx --yes smashcut@0.7.48 render" } }),
     );
     printStalePinNotice(dir);
     expect(writes.join("")).toBe("");

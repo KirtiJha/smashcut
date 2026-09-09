@@ -26,7 +26,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
   ]'
 >
   <!--
-    Device Frame Stage, a HyperFrames video primitive.
+    Device Frame Stage, a SmashCut video primitive.
 
     Concept: a phone or tablet mockup treated as a physical scene prop, not a
     screenshot border. It stages arbitrary reconstructed UI in a screen slot,
@@ -34,8 +34,8 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
     frame serves the screen (device-frame-spec's governing law): no spinning
     hardware reveal, glare sweep, or camera-lens tour, ever.
 
-    This file is a mountable HyperFrames sub-composition (see
-    skills/hyperframes-core/references/sub-compositions.md): a host
+    This file is a mountable SmashCut sub-composition (see
+    skills/smashcut-core/references/sub-compositions.md): a host
     composition embeds it via a clip carrying data-composition-src, a
     matching data-composition-id, and its own data-start / data-duration /
     data-track-index / data-width / data-height. Everything the render needs
@@ -47,7 +47,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
     the reference mount.
 
     Compiled from: fixture + mobile mechanics inventory #1 + device-frame-spec.md
-    (~/dev/hyperframes-corpus-data/mobile/device-frame-spec.md), the
+    (~/dev/smashcut-corpus-data/mobile/device-frame-spec.md), the
     authoritative geometry / material / entry-law source for this primitive.
 
     Use when: a scene needs to stage mobile or tablet UI as a physical
@@ -330,7 +330,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
               },
             );
           } catch (error) {}
-          var vars = Object.assign({}, declared, window.__hfVariables || {});
+          var vars = Object.assign({}, declared, window.__scVariables || {});
 
           var device = vars.device === "tablet" ? "tablet" : "phone";
           var cutout = vars.cutout === "island" || vars.cutout === "notch" ? vars.cutout : "none";
@@ -486,7 +486,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 
 ## Install
 
-<InstallCommand command="npx hyperframes add device-frame-stage" item="device-frame-stage" />
+<InstallCommand command="npx smashcut add device-frame-stage" item="device-frame-stage" />
 
 That writes one file: `compositions/components/device-frame-stage.html`.
 
@@ -536,7 +536,7 @@ defaults, so this behaves exactly like the preview above until you change one:
   ]'
 >
   <!--
-    Device Frame Stage, a HyperFrames video primitive.
+    Device Frame Stage, a SmashCut video primitive.
 
     Concept: a phone or tablet mockup treated as a physical scene prop, not a
     screenshot border. It stages arbitrary reconstructed UI in a screen slot,
@@ -544,8 +544,8 @@ defaults, so this behaves exactly like the preview above until you change one:
     frame serves the screen (device-frame-spec's governing law): no spinning
     hardware reveal, glare sweep, or camera-lens tour, ever.
 
-    This file is a mountable HyperFrames sub-composition (see
-    skills/hyperframes-core/references/sub-compositions.md): a host
+    This file is a mountable SmashCut sub-composition (see
+    skills/smashcut-core/references/sub-compositions.md): a host
     composition embeds it via a clip carrying data-composition-src, a
     matching data-composition-id, and its own data-start / data-duration /
     data-track-index / data-width / data-height. Everything the render needs
@@ -557,7 +557,7 @@ defaults, so this behaves exactly like the preview above until you change one:
     the reference mount.
 
     Compiled from: fixture + mobile mechanics inventory #1 + device-frame-spec.md
-    (~/dev/hyperframes-corpus-data/mobile/device-frame-spec.md), the
+    (~/dev/smashcut-corpus-data/mobile/device-frame-spec.md), the
     authoritative geometry / material / entry-law source for this primitive.
 
     Use when: a scene needs to stage mobile or tablet UI as a physical
@@ -840,7 +840,7 @@ defaults, so this behaves exactly like the preview above until you change one:
               },
             );
           } catch (error) {}
-          var vars = Object.assign({}, declared, window.__hfVariables || {});
+          var vars = Object.assign({}, declared, window.__scVariables || {});
 
           var device = vars.device === "tablet" ? "tablet" : "phone";
           var cutout = vars.cutout === "island" || vars.cutout === "notch" ? vars.cutout : "none";

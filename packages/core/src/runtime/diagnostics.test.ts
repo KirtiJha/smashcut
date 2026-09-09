@@ -3,9 +3,9 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { swallow } from "./diagnostics";
 
 interface HFTestWindow {
-  __hfDebug?: boolean;
-  __HYPERFRAMES_DEBUG?: boolean;
-  __hf?: {
+  __scDebug?: boolean;
+  __SMASHCUT_DEBUG?: boolean;
+  __sc?: {
     onSwallowed?: (e: { label: string; error: unknown }) => void;
   };
 }
@@ -15,17 +15,17 @@ describe("swallow", () => {
   const originalDebug = console.debug;
 
   beforeEach(() => {
-    delete w.__hfDebug;
-    delete w.__HYPERFRAMES_DEBUG;
-    delete w.__hf;
+    delete w.__scDebug;
+    delete w.__SMASHCUT_DEBUG;
+    delete w.__sc;
     console.debug = vi.fn();
   });
 
   afterEach(() => {
     console.debug = originalDebug;
-    delete w.__hfDebug;
-    delete w.__HYPERFRAMES_DEBUG;
-    delete w.__hf;
+    delete w.__scDebug;
+    delete w.__SMASHCUT_DEBUG;
+    delete w.__sc;
   });
 
   it("is silent by default — no console output, no handler call", () => {
@@ -33,32 +33,32 @@ describe("swallow", () => {
     expect(console.debug).not.toHaveBeenCalled();
   });
 
-  it("logs to console.debug when window.__hfDebug is true", () => {
-    w.__hfDebug = true;
+  it("logs to console.debug when window.__scDebug is true", () => {
+    w.__scDebug = true;
     const err = new Error("boom");
     swallow("test.debug", err);
-    expect(console.debug).toHaveBeenCalledWith("[hyperframes] test.debug swallowed:", err);
+    expect(console.debug).toHaveBeenCalledWith("[smashcut] test.debug swallowed:", err);
   });
 
-  it("also honors window.__HYPERFRAMES_DEBUG (legacy flag)", () => {
-    w.__HYPERFRAMES_DEBUG = true;
+  it("also honors window.__SMASHCUT_DEBUG (legacy flag)", () => {
+    w.__SMASHCUT_DEBUG = true;
     swallow("test.legacy", "string-error");
     expect(console.debug).toHaveBeenCalledWith(
-      "[hyperframes] test.legacy swallowed:",
+      "[smashcut] test.legacy swallowed:",
       "string-error",
     );
   });
 
-  it("dispatches to window.__hf.onSwallowed when installed", () => {
+  it("dispatches to window.__sc.onSwallowed when installed", () => {
     const handler = vi.fn();
-    w.__hf = { onSwallowed: handler };
+    w.__sc = { onSwallowed: handler };
     const err = new Error("from handler");
     swallow("test.handler", err);
     expect(handler).toHaveBeenCalledWith({ label: "test.handler", error: err });
   });
 
   it("does not propagate errors from the user-installed handler", () => {
-    w.__hf = {
+    w.__sc = {
       onSwallowed: () => {
         throw new Error("handler exploded");
       },
@@ -67,9 +67,9 @@ describe("swallow", () => {
   });
 
   it("can run with both handler AND debug flag set", () => {
-    w.__hfDebug = true;
+    w.__scDebug = true;
     const handler = vi.fn();
-    w.__hf = { onSwallowed: handler };
+    w.__sc = { onSwallowed: handler };
     swallow("test.both", "err");
     expect(handler).toHaveBeenCalled();
     expect(console.debug).toHaveBeenCalled();

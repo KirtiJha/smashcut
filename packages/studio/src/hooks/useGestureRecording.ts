@@ -67,8 +67,8 @@ function readBasePosition(element: HTMLElement, iframeEl: HTMLIFrameElement): Ba
 
   // Path-offset CSS vars live on the element regardless of whether
   // translate is currently var-based or "none" (GSAP-baked).
-  const cssOffX = Number.parseFloat(element.style.getPropertyValue("--hf-studio-offset-x")) || 0;
-  const cssOffY = Number.parseFloat(element.style.getPropertyValue("--hf-studio-offset-y")) || 0;
+  const cssOffX = Number.parseFloat(element.style.getPropertyValue("--sc-studio-offset-x")) || 0;
+  const cssOffY = Number.parseFloat(element.style.getPropertyValue("--sc-studio-offset-y")) || 0;
   const translateVal = element.style.translate ?? "";
   if (translateVal.includes("var(")) {
     baseX += cssOffX;
@@ -136,7 +136,7 @@ function recordSample(r: RecordingRefs, time: number, properties: Record<string,
   // Record the FULL position the live preview shows (element centered on the
   // pointer, with any manual path offset folded into basePosition). Do NOT
   // subtract the path offset: when this gesture commits as a position tween the
-  // server strips the element's --hf-studio-offset (the tween owns position — see
+  // server strips the element's --sc-studio-offset (the tween owns position — see
   // stripStudioEditsFromTarget in studio-api), so the keyframes must already
   // include it. Subtracting it made the committed gesture play shoved off by the
   // offset (the offset was removed twice).
@@ -263,8 +263,8 @@ function releaseRuntimePreview(r: RecordingRefs): void {
     /* runtime gone */
   }
   if (r.cssVarOffset.x || r.cssVarOffset.y) {
-    element.style.setProperty("--hf-studio-offset-x", `${r.cssVarOffset.x}px`);
-    element.style.setProperty("--hf-studio-offset-y", `${r.cssVarOffset.y}px`);
+    element.style.setProperty("--sc-studio-offset-x", `${r.cssVarOffset.x}px`);
+    element.style.setProperty("--sc-studio-offset-y", `${r.cssVarOffset.y}px`);
   }
   r.runtime = null;
 }
@@ -329,8 +329,8 @@ export function useGestureRecording() {
       // Clear the optimistic path offset only while a live runtime owns the
       // preview. releaseRuntimePreview restores it on every exit path.
       if (r.runtime && (base.cssOffX || base.cssOffY)) {
-        element.style.setProperty("--hf-studio-offset-x", "0px");
-        element.style.setProperty("--hf-studio-offset-y", "0px");
+        element.style.setProperty("--sc-studio-offset-x", "0px");
+        element.style.setProperty("--sc-studio-offset-y", "0px");
       }
 
       // --- Phase 5: Attach event listeners ---

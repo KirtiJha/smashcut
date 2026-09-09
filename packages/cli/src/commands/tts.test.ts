@@ -17,7 +17,7 @@ describe("tts command", () => {
   let dir: string;
 
   beforeEach(() => {
-    dir = mkdtempSync(join(tmpdir(), "hf-tts-command-test-"));
+    dir = mkdtempSync(join(tmpdir(), "sc-tts-command-test-"));
     synthesizeMock.mockClear();
     vi.spyOn(console, "log").mockImplementation(() => {});
   });

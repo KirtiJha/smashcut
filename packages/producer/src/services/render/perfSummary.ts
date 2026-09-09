@@ -4,13 +4,13 @@
  */
 
 import { arch, cpus, platform, totalmem } from "node:os";
-import { fpsToNumber } from "@hyperframes/core";
+import { fpsToNumber } from "@smashcut/core";
 import type {
   CapturePerfSummary,
   StaticVerificationOutcome,
   SubTimelineWaitOutcome,
   WorkerSizing,
-} from "@hyperframes/engine";
+} from "@smashcut/engine";
 import type { CaptureCalibrationSample, CaptureCostEstimate } from "./captureCost.js";
 import type {
   CaptureAttemptSummary,

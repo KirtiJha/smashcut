@@ -16,13 +16,13 @@ function makeDoc(html: string): Document {
 }
 
 describe("buildMissingCompositionElements — hfId (R7)", () => {
-  it("harvests hfId from data-hf-id on composition host elements", () => {
+  it("harvests hfId from data-sc-id on composition host elements", () => {
     const doc = makeDoc(`
       <div data-composition-id="root">
         <div
           data-composition-id="scene-a"
           data-composition-src="scenes/a.html"
-          data-hf-id="hf-scene1"
+          data-sc-id="sc-scene1"
           data-start="0"
           data-duration="5"
         ></div>
@@ -33,10 +33,10 @@ describe("buildMissingCompositionElements — hfId (R7)", () => {
     const entry = missing[0];
 
     expect(entry).toBeDefined();
-    expect(entry?.hfId).toBe("hf-scene1");
+    expect(entry?.hfId).toBe("sc-scene1");
   });
 
-  it("leaves hfId undefined when element has no data-hf-id", () => {
+  it("leaves hfId undefined when element has no data-sc-id", () => {
     const doc = makeDoc(`
       <div data-composition-id="root">
         <div

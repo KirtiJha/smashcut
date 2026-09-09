@@ -5,7 +5,7 @@
  * the values on that mount as `data-variable-values` and two mounts of the same
  * block can differ. A component has no mount element: it is markup you paste
  * into a host composition, and it reads its values through
- * `__hyperframes.getVariables()`, which merges the declared defaults of every
+ * `__smashcut.getVariables()`, which merges the declared defaults of every
  * `[data-composition-variables]` element in the document with render-time
  * overrides.
  *
@@ -16,7 +16,7 @@
  * silently discarded for every component in the catalog.
  */
 
-import { isCompositionVariable, type CompositionVariable } from "@hyperframes/core/variables";
+import { isCompositionVariable, type CompositionVariable } from "@smashcut/core/variables";
 
 export interface ApplyResult {
   /** The source with defaults rewritten. Unchanged when nothing applied. */

@@ -8,7 +8,7 @@ import { readEffectiveZIndex } from "./canvasContextMenuZOrder";
 /** The lifted paint order — far above any authored z. Only the RENDERER sees
  *  it: every studio z reader is reveal-transparent (readLayerRevealPriorZ). */
 export const LAYER_REVEAL_LIFT_Z = "2147483000";
-export const LAYER_REVEAL_PENDING_COMMIT_ATTR = "data-hf-studio-reveal-pending-commit";
+export const LAYER_REVEAL_PENDING_COMMIT_ATTR = "data-sc-studio-reveal-pending-commit";
 
 interface RevealedNode {
   element: HTMLElement;

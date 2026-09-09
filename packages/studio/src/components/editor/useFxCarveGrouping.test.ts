@@ -17,7 +17,7 @@ function candidatesFor(doc: Document, bedId: string) {
 }
 
 const GROUPED_VOICES = `
-  <hf-audio-group id="voiceover" data-label="Voiceover"></hf-audio-group>
+  <sc-audio-group id="voiceover" data-label="Voiceover"></sc-audio-group>
   <audio id="vo-1" data-audio-group="voiceover"></audio>
   <audio id="vo-2" data-audio-group="voiceover"></audio>
   <audio id="music-bed"></audio>
@@ -42,7 +42,7 @@ describe("collectCarveCandidates", () => {
   it("still offers a group the bed has nothing to do with", () => {
     const doc = previewDoc(`
       ${GROUPED_VOICES}
-      <hf-audio-group id="sfx" data-label="SFX"></hf-audio-group>
+      <sc-audio-group id="sfx" data-label="SFX"></sc-audio-group>
       <audio id="sfx-click" data-audio-group="sfx"></audio>
     `);
     expect(candidatesFor(doc, "music-bed")).toEqual(["voiceover", "sfx"]);
@@ -96,10 +96,10 @@ describe("carveBedRoles", () => {
   // without being asked.
   it("never makes a bus a bed, however it is labelled", () => {
     expect(
-      roles(`<hf-audio-group id="music" data-label="Music bed"></hf-audio-group>`, "music"),
+      roles(`<sc-audio-group id="music" data-label="Music bed"></sc-audio-group>`, "music"),
     ).toEqual({ couldBeBed: false, autoBed: false });
     expect(
-      roles(`<hf-audio-group id="sfx" data-label="Sound FX"></hf-audio-group>`, "sfx"),
+      roles(`<sc-audio-group id="sfx" data-label="Sound FX"></sc-audio-group>`, "sfx"),
     ).toEqual({ couldBeBed: false, autoBed: false });
   });
 

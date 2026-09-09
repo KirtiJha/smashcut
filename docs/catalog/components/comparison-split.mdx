@@ -16,7 +16,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 ```html comparison-split.html
 <!doctype html>
 <!--
-  comparison-split: HyperFrames video primitive (ui-props / holdable / compare)
+  comparison-split: SmashCut video primitive (ui-props / holdable / compare)
 
   Concept: two full-bleed treatments share one frame. The muted before panel
   stays fully visible as the base, while the vivid after panel wipes over it
@@ -61,7 +61,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
   the cqw/cqh container, and has no data-width or data-height. The composition
   id is the hardcoded literal "comparison-split" because mount flattening
   strips data-composition-id from the live root. Variables come from
-  window.__hyperframes.getVariables(), which merges declared defaults with
+  window.__smashcut.getVariables(), which merges declared defaults with
   per-instance host overrides.
 -->
 <html
@@ -384,8 +384,8 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
             // EDIT ZONE: declarations above and registry metadata change
             // together. This API owns defaults plus per-instance overrides.
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             var rawSplit = vars.split == null ? 50 : Number(vars.split);
@@ -469,7 +469,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 
 ## Install
 
-<InstallCommand command="npx hyperframes add comparison-split" item="comparison-split" />
+<InstallCommand command="npx smashcut add comparison-split" item="comparison-split" />
 
 That writes one file: `compositions/components/comparison-split.html`.
 
@@ -510,7 +510,7 @@ defaults, so this behaves exactly like the preview above until you change one:
 ```html
 <!doctype html>
 <!--
-  comparison-split: HyperFrames video primitive (ui-props / holdable / compare)
+  comparison-split: SmashCut video primitive (ui-props / holdable / compare)
 
   Concept: two full-bleed treatments share one frame. The muted before panel
   stays fully visible as the base, while the vivid after panel wipes over it
@@ -555,7 +555,7 @@ defaults, so this behaves exactly like the preview above until you change one:
   the cqw/cqh container, and has no data-width or data-height. The composition
   id is the hardcoded literal "comparison-split" because mount flattening
   strips data-composition-id from the live root. Variables come from
-  window.__hyperframes.getVariables(), which merges declared defaults with
+  window.__smashcut.getVariables(), which merges declared defaults with
   per-instance host overrides.
 -->
 <html
@@ -878,8 +878,8 @@ defaults, so this behaves exactly like the preview above until you change one:
             // EDIT ZONE: declarations above and registry metadata change
             // together. This API owns defaults plus per-instance overrides.
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             var rawSplit = vars.split == null ? 50 : Number(vars.split);

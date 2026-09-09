@@ -7,7 +7,7 @@ import {
   type HfColorGradingActiveEffectKey,
   type HfColorGradingTarget,
   type NormalizedHfColorGrading,
-} from "@hyperframes/core/color-grading";
+} from "@smashcut/core/color-grading";
 
 export interface ColorGradingPresetPreviews {
   status: "idle" | "loading" | "ready" | "unavailable";
@@ -58,10 +58,10 @@ function readRuntime(
   try {
     const runtime = (
       iframe?.contentWindow as
-        | (Window & { __hf?: { colorGrading?: Partial<RuntimeColorGradingPreview> } })
+        | (Window & { __sc?: { colorGrading?: Partial<RuntimeColorGradingPreview> } })
         | null
         | undefined
-    )?.__hf?.colorGrading;
+    )?.__sc?.colorGrading;
     return runtime?.renderPreviews
       ? {
           renderPreviews: runtime.renderPreviews,
@@ -219,7 +219,7 @@ export function useColorGradingPreviews({
     const onMessage = (event: MessageEvent) => {
       if (event.source !== iframe.contentWindow) return;
       const data = event.data as { source?: unknown; type?: unknown } | null;
-      if (data?.source === "hf-preview" && data.type === "ready") void attempt();
+      if (data?.source === "sc-preview" && data.type === "ready") void attempt();
     };
     iframe.addEventListener("load", attempt);
     window.addEventListener("message", onMessage);

@@ -1,4 +1,4 @@
-// Run the shared beat detection (@hyperframes/core/beats) in a headless Chrome
+// Run the shared beat detection (@smashcut/core/beats) in a headless Chrome
 // so results match the Studio exactly — same Web Audio decode + same
 // bpm-detective. Used by the `beats` CLI command to write the beat file before
 // the Studio is ever opened.
@@ -32,13 +32,13 @@ function findPrebuiltBundle(): string | null {
 
 async function buildFromCoreSource(): Promise<string> {
   const esbuild = await import("esbuild");
-  const coreRoot = dirname(require.resolve("@hyperframes/core/package.json"));
+  const coreRoot = dirname(require.resolve("@smashcut/core/package.json"));
   const entry = join(coreRoot, "src/beats/beatDetection.ts");
   const result = await esbuild.build({
     stdin: {
       contents:
         `import { analyzeMusicFromBuffer } from ${JSON.stringify(entry)};\n` +
-        `globalThis.__hfAnalyze = analyzeMusicFromBuffer;`,
+        `globalThis.__scAnalyze = analyzeMusicFromBuffer;`,
       resolveDir: coreRoot,
       loader: "ts",
     },
@@ -85,14 +85,14 @@ function inPageAnalyze(data: string) {
   const win = window as unknown as {
     AudioContext: typeof AudioContext;
     webkitAudioContext?: typeof AudioContext;
-    __hfAnalyze?: (buffer: AudioBuffer) => Promise<HeadlessBeatResult>;
+    __scAnalyze?: (buffer: AudioBuffer) => Promise<HeadlessBeatResult>;
   };
-  if (typeof win.__hfAnalyze !== "function") throw new Error("beat analyzer not loaded");
+  if (typeof win.__scAnalyze !== "function") throw new Error("beat analyzer not loaded");
   const ctx = new (win.AudioContext || win.webkitAudioContext!)();
   return (
     ctx
       .decodeAudioData(bytes.buffer)
-      .then((buf) => win.__hfAnalyze!(buf))
+      .then((buf) => win.__scAnalyze!(buf))
       // analyzeMusicFromBuffer also returns the decoded PCM (channelData) + sampleRate;
       // project to only the fields we need so page.evaluate doesn't serialize an
       // ~8-million-element Float32Array back across the CDP boundary.

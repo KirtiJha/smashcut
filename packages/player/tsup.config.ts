@@ -5,17 +5,17 @@ const packageVersion = JSON.parse(readFileSync(new URL("./package.json", import.
   .version as string;
 
 export default defineConfig({
-  entry: ["src/hyperframes-player.ts", "src/slideshow/hyperframes-slideshow.ts"],
+  entry: ["src/smashcut-player.ts", "src/slideshow/smashcut-slideshow.ts"],
   format: ["esm", "cjs", "iife"],
-  globalName: "HyperframesPlayer",
-  noExternal: ["@hyperframes/core"],
+  globalName: "SmashcutPlayer",
+  noExternal: ["@smashcut/core"],
   dts: true,
   clean: true,
   minify: true,
   sourcemap: true,
   define: {
-    __HYPERFRAMES_RUNTIME_CDN_URL__: JSON.stringify(
-      `https://cdn.jsdelivr.net/npm/@hyperframes/core@${packageVersion}/dist/hyperframe.runtime.iife.js`,
+    __SMASHCUT_RUNTIME_CDN_URL__: JSON.stringify(
+      `https://cdn.jsdelivr.net/npm/@smashcut/core@${packageVersion}/dist/smashcut.runtime.iife.js`,
     ),
   },
 });

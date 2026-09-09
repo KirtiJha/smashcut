@@ -16,7 +16,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 ```html ascii-render-pass.html
 <!doctype html>
 <!--
-  ascii-render-pass: HyperFrames video primitive (Wave M experiment, texture)
+  ascii-render-pass: SmashCut video primitive (Wave M experiment, texture)
 
   A slotted scene renders as live ASCII: the source is rasterized ONCE at
   mount to an offscreen canvas, its luminance grid is sampled per cell, and
@@ -147,8 +147,8 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
             var stage = root.querySelector(".arp-stage");
             var canvas = root.querySelector(".arp-canvas");
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             function num(value, fallback, min, max) {
@@ -505,7 +505,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 
 ## Install
 
-<InstallCommand command="npx hyperframes add ascii-render-pass" item="ascii-render-pass" />
+<InstallCommand command="npx smashcut add ascii-render-pass" item="ascii-render-pass" />
 
 That writes one file: `compositions/components/ascii-render-pass.html`.
 
@@ -547,7 +547,7 @@ defaults, so this behaves exactly like the preview above until you change one:
 ```html
 <!doctype html>
 <!--
-  ascii-render-pass: HyperFrames video primitive (Wave M experiment, texture)
+  ascii-render-pass: SmashCut video primitive (Wave M experiment, texture)
 
   A slotted scene renders as live ASCII: the source is rasterized ONCE at
   mount to an offscreen canvas, its luminance grid is sampled per cell, and
@@ -678,8 +678,8 @@ defaults, so this behaves exactly like the preview above until you change one:
             var stage = root.querySelector(".arp-stage");
             var canvas = root.querySelector(".arp-canvas");
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             function num(value, fallback, min, max) {

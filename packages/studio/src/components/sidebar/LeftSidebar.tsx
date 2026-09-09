@@ -22,7 +22,7 @@ export interface LeftSidebarHandle {
   getTab: () => SidebarTab;
 }
 
-const STORAGE_KEY = "hf-studio-sidebar-tab";
+const STORAGE_KEY = "sc-studio-sidebar-tab";
 
 const SIDEBAR_TABS: Array<{ id: SidebarTab; label: string; tooltip: string }> = [
   { id: "code", label: "Code", tooltip: "Source code editor" },

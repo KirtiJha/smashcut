@@ -1,12 +1,12 @@
 /**
  * Low-level GSAP runtime property readers shared by gsapRuntimeBridge and gsapDragCommit.
  */
-import type { GsapAnimation } from "@hyperframes/core/gsap-parser";
-import { classifyPropertyGroup, type PropertyGroupName } from "@hyperframes/core/gsap-parser";
+import type { GsapAnimation } from "@smashcut/core/gsap-parser";
+import { classifyPropertyGroup, type PropertyGroupName } from "@smashcut/core/gsap-parser";
 import {
   COLOR_GRADING_SOURCE_HIDDEN_ATTR,
   HF_COLOR_GRADING_CANVAS_ID_PREFIX,
-} from "@hyperframes/core/color-grading";
+} from "@smashcut/core/color-grading";
 import { getIframeGsap, queryIframeElement, type IframeGsap } from "./gsapShared";
 import { roundTo3 } from "../utils/rounding";
 

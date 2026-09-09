@@ -9,7 +9,7 @@ import { withMeta } from "../utils/updateCheck.js";
 import {
   checkSkills,
   FALLBACK_CORE_SKILLS,
-  hyperframesSkillNames,
+  smashcutSkillNames,
   isCoreSkill,
   presentSkills,
   pruneOrphanedLockEntries,
@@ -23,11 +23,11 @@ import { trackSkillsInstallSkipped } from "../telemetry/events.js";
 import type { Example } from "./_examples.js";
 
 export const examples: Example[] = [
-  ["Install all HyperFrames skills", "hyperframes skills"],
-  ["Check whether installed skills are up to date", "hyperframes skills check"],
-  ["Check, machine-readable (for agents / CI)", "hyperframes skills check --json"],
-  ["Update the core set + everything already installed", "hyperframes skills update"],
-  ["Also install one workflow (on-demand install)", "hyperframes skills update pr-to-video"],
+  ["Install all SmashCut skills", "smashcut skills"],
+  ["Check whether installed skills are up to date", "smashcut skills check"],
+  ["Check, machine-readable (for agents / CI)", "smashcut skills check --json"],
+  ["Update the core set + everything already installed", "smashcut skills update"],
+  ["Also install one workflow (on-demand install)", "smashcut skills update pr-to-video"],
 ];
 
 function hasNpx(): boolean {
@@ -164,9 +164,9 @@ function runSkillsRemove(names: string[], opts: { global: boolean }): Promise<vo
 // freshness comes from --full-depth (see GLOBAL_INSTALL_ARGS_TAIL), which clones the
 // repo at latest `main`; the URL just names what to clone. Our freshness check
 // resolves "latest" straight from GitHub too, so install and check agree.
-const SOURCES = [{ name: "HyperFrames", url: "https://github.com/heygen-com/hyperframes" }];
+const SOURCES = [{ name: "SmashCut", url: "https://github.com/heygen-com/hyperframes" }];
 
-// Fan HyperFrames' own skills out to every other installed agent. Scope by the
+// Fan SmashCut' own skills out to every other installed agent. Scope by the
 // lock's source attribution (the same definition prune uses) — NOT by listing
 // ~/.claude/skills, which is shared with the user's other Claude skills (gstack,
 // personal, company). No-op when nothing is attributed or the global store is
@@ -174,7 +174,7 @@ const SOURCES = [{ name: "HyperFrames", url: "https://github.com/heygen-com/hype
 // mirror failure must not fail the install.
 function mirrorToInstalledAgents(): void {
   try {
-    const names = hyperframesSkillNames({ scope: "global" });
+    const names = smashcutSkillNames({ scope: "global" });
     if (names.length === 0) return;
     const { mirrored, skipped } = mirrorGlobalSkills({ skills: names });
     const n = mirrored.length;
@@ -326,7 +326,7 @@ export async function updateSkills(
   opts: {
     requested?: readonly string[];
     refreshInstalled?: boolean;
-    /** Every skill the manifest publishes (bare `hyperframes skills`). */
+    /** Every skill the manifest publishes (bare `smashcut skills`). */
     all?: boolean;
     strict?: boolean;
     cwd?: string;
@@ -340,7 +340,7 @@ export async function updateSkills(
     // `canonical: true` — target selection must match what `skills add`
     // actually installs from (the canonical published repo), never a local
     // checkout's `skills-manifest.json`. Without this, running from inside a
-    // stale hyperframes checkout could resolve "latest" from that stale local
+    // stale smashcut checkout could resolve "latest" from that stale local
     // file, which may still list a skill that's since been retired/renamed
     // upstream. `isCoreSkill` would then force it into `targets`/`toInstall`,
     // `skills add` would correctly (and silently) decline to install a skill
@@ -369,7 +369,7 @@ export async function updateSkills(
       // reinstate the 26-skill sweep this path exists to avoid.
       clack.log.warn(
         c.warn(
-          "Can't resolve the published skill set (manifest unreachable) — installing the pinned core set only. Re-run `hyperframes skills` online for the full set.",
+          "Can't resolve the published skill set (manifest unreachable) — installing the pinned core set only. Re-run `smashcut skills` online for the full set.",
         ),
       );
     }
@@ -517,12 +517,12 @@ function printSkillSection(
 function renderCheck(result: SkillsCheckResult): void {
   const { summary } = result;
   console.log();
-  console.log(c.bold("hyperframes skills"));
+  console.log(c.bold("smashcut skills"));
   console.log();
 
   if (!result.location) {
-    console.log(`  ${c.dim("No HyperFrames skills found in the usual locations.")}`);
-    console.log(`  ${c.accent("Install: npx hyperframes skills")}`);
+    console.log(`  ${c.dim("No SmashCut skills found in the usual locations.")}`);
+    console.log(`  ${c.accent("Install: npx smashcut skills")}`);
     console.log();
     return;
   }
@@ -578,7 +578,7 @@ function renderCheck(result: SkillsCheckResult): void {
 
   console.log();
   if (result.updateAvailable) {
-    console.log(`  ${c.accent("Update: npx hyperframes skills update")}`);
+    console.log(`  ${c.accent("Update: npx smashcut skills update")}`);
   } else {
     console.log(`  ${c.success("◇")}  ${c.success("Installed skills are up to date")}`);
   }
@@ -610,7 +610,7 @@ const checkCommand = defineCommand({
     invalidateSkillsCache();
 
     // Exit non-zero when installed skills are stale, so agents and CI can gate:
-    //   hyperframes skills check || npx hyperframes skills update
+    //   smashcut skills check || npx smashcut skills update
     if (result.updateAvailable) setCommandExitCode(1);
   },
 });
@@ -678,7 +678,7 @@ const updateCommand = defineCommand({
   meta: {
     name: "update",
     description:
-      "Update the core set plus every installed HyperFrames skill to the latest, and remove any no longer published. Pass skill names to also install those (how workflow skills install on demand) — without names it never expands a partial install",
+      "Update the core set plus every installed SmashCut skill to the latest, and remove any no longer published. Pass skill names to also install those (how workflow skills install on demand) — without names it never expands a partial install",
   },
   // Mirror `check`'s flags: the prune step runs the same removed-detection, so it
   // must respect the same overrides. Without these, `update`'s internal
@@ -701,10 +701,10 @@ const updateCommand = defineCommand({
     const dir = args.dir;
     const source = args.source;
 
-    // Positional skill names (e.g. `hyperframes skills update pr-to-video`) are
+    // Positional skill names (e.g. `smashcut skills update pr-to-video`) are
     // the ONLY way update expands an install: each named skill is guaranteed
     // present and current. This is the router's trigger-time step — the
-    // /hyperframes router runs it after picking a workflow, before reading the
+    // /smashcut router runs it after picking a workflow, before reading the
     // workflow's skill.
     const { requested, rejected } = requestedNamesFrom(args._ ?? []);
     if (rejected.length) {
@@ -720,17 +720,17 @@ const updateCommand = defineCommand({
     // on demand, when their workflow is
     // triggered. This is where `init` and the stale-skills nudge both lead;
     // pulling the complete skill set here is exactly what users complained
-    // about. Explicit full set: `hyperframes skills` or `npx skills add
+    // about. Explicit full set: `smashcut skills` or `npx skills add
     // heygen-com/hyperframes --all`.
     //
     // Note: the upstream `skills add` CLI has no `--dir` flag (it installs into
     // the resolved agent dirs), so `--dir` here scopes only the *prune* detection
     // below, not the install. `--source` likewise drives where the prune's
     // "latest" manifest comes from; the install always targets the canonical
-    // HyperFrames repo so `update` reliably refreshes the published skills.
+    // SmashCut repo so `update` reliably refreshes the published skills.
     //
     // strict: this is the documented recovery path for the agent/CI contract
-    // `hyperframes skills check || hyperframes skills update`, and the router's
+    // `smashcut skills check || smashcut skills update`, and the router's
     // trigger-time guarantee. If the install fails (no npx, `skills add` exits
     // non-zero, a named skill still absent afterwards) it must exit non-zero
     // too — otherwise the `||` chain passes while nothing actually changed.
@@ -759,7 +759,7 @@ const updateCommand = defineCommand({
       // uses it (see updateSkills) — and more urgently, because this branch
       // DELETES. Without it, resolveLatestManifest takes the findRepoManifest
       // shortcut: any `skills-manifest.json` within 16 parent dirs of cwd
-      // becomes "latest". HyperFrames' own repo manifest declares
+      // becomes "latest". SmashCut' own repo manifest declares
       // `source: heygen-com/hyperframes`, so a checkout (or any project
       // carrying a copy) matches attribution and every published skill absent
       // from that local file is deleted globally as "no longer published".
@@ -801,7 +801,7 @@ const updateCommand = defineCommand({
 export default defineCommand({
   meta: {
     name: "skills",
-    description: "Install, check, and update HyperFrames skills for AI coding tools",
+    description: "Install, check, and update SmashCut skills for AI coding tools",
   },
   subCommands: {
     check: checkCommand,
@@ -810,8 +810,8 @@ export default defineCommand({
   args: {},
   async run({ args }) {
     // citty runs this parent handler even when a subcommand matches; guard on
-    // the positional so bare `hyperframes skills` installs, while
-    // `hyperframes skills check|update` does not also re-install.
+    // the positional so bare `smashcut skills` installs, while
+    // `smashcut skills check|update` does not also re-install.
     if (!args._?.[0]) {
       await updateSkills({ all: true });
       // Same as updateSkills: a full install supersedes the background

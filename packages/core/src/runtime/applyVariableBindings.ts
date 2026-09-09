@@ -18,7 +18,7 @@
  *   of only the persisted default.
  *
  * Values resolve against the element's owning composition — the same scope
- * chain the color-grading runtime uses: `__hfVariablesByComp[compId]` for
+ * chain the color-grading runtime uses: `__scVariablesByComp[compId]` for
  * inlined sub-compositions, then the top-level merged `getVariables()`.
  *
  * Applied at init AND re-applied after the composition loader inlines
@@ -31,7 +31,7 @@ import { readVariablesForElement } from "./variableScope";
 import {
   isScalarVariableValue as isScalar,
   isSafeMediaUrl,
-} from "@hyperframes/parsers/composition";
+} from "@smashcut/parsers/composition";
 
 // data-var-src only rebinds media `src` on media elements. A user-controlled
 // variable value assigned to a src is an XSS surface on tags whose src executes
@@ -123,7 +123,7 @@ function setOwnTextPreservingChildren(el: Element, text: string): void {
  */
 function findTopRoot(doc: Document): Element | null {
   return (
-    doc.querySelector("[data-hf-root]") ??
+    doc.querySelector("[data-sc-root]") ??
     doc.getElementById("stage") ??
     doc.body?.firstElementChild ??
     doc.body
@@ -161,14 +161,14 @@ export function applyVariableBindings(doc: Document): void {
     // src on <iframe>/<script>/<embed> is a code-execution sink, not a media ref.
     if (!VAR_SRC_TAGS.has(el.tagName.toLowerCase())) {
       console.warn(
-        `[hyperframes] Ignoring data-var-src on <${el.tagName.toLowerCase()}>: variable-bound src is only allowed on ${Array.from(VAR_SRC_TAGS).join("/")}.`,
+        `[smashcut] Ignoring data-var-src on <${el.tagName.toLowerCase()}>: variable-bound src is only allowed on ${Array.from(VAR_SRC_TAGS).join("/")}.`,
       );
       continue;
     }
     const url = resolveUrl(valuesForElement(el, cache)[id]);
     if (url === null) continue;
     if (!isSafeMediaUrl(url)) {
-      console.warn(`[hyperframes] Ignoring data-var-src="${id}": unsafe URL protocol.`);
+      console.warn(`[smashcut] Ignoring data-var-src="${id}": unsafe URL protocol.`);
       continue;
     }
     el.setAttribute("src", url);

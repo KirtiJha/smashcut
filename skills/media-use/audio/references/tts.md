@@ -1,12 +1,12 @@
 # Text To Speech
 
-`npx hyperframes tts` synthesizes locally with Kokoro. It does not accept a
+`npx smashcut tts` synthesizes locally with Kokoro. It does not accept a
 `--provider` or `--words` flag. For HeyGen audio plus word timestamps, use the
 bundled `heygen-tts.mjs` script below.
 
-> **Run the Preflight first — no credential is not a green light to silently use the local voice.** Before generating a voiceover, complete the sign-in **Preflight** (see `../SKILL.md` → Preflight): run `npx hyperframes auth status`, recommend signing in, and **STOP for the user's choice** (sign in for HeyGen voices, or continue offline with local Kokoro). This applies to a one-off "generate a voiceover" request just as much as inside a full workflow.
+> **Run the Preflight first — no credential is not a green light to silently use the local voice.** Before generating a voiceover, complete the sign-in **Preflight** (see `../SKILL.md` → Preflight): run `npx smashcut auth status`, recommend signing in, and **STOP for the user's choice** (sign in for HeyGen voices, or continue offline with local Kokoro). This applies to a one-off "generate a voiceover" request just as much as inside a full workflow.
 
-## Narrating a HyperFrames docs video
+## Narrating a SmashCut docs video
 
 Anything that will sit on hyperframes.heygen.com uses one narrator, so the site
 does not sound like two products.
@@ -44,33 +44,33 @@ Use another voice only for a documented reason, and write the reason down.
 
 ```bash
 # Local Kokoro CLI
-npx hyperframes tts "Welcome to HyperFrames" -o narration.wav
+npx smashcut tts "Welcome to SmashCut" -o narration.wav
 ```
 
 ## Self-contained HeyGen (no CLI) — `scripts/heygen-tts.mjs`
 
-The published `hyperframes tts` CLI synthesizes locally with Kokoro only. When you
+The published `smashcut tts` CLI synthesizes locally with Kokoro only. When you
 want HeyGen specifically — best quality **plus** word timestamps in one call — use
 the skill's bundled script, which calls the HeyGen v3 REST API directly and needs
 no CLI provider plumbing:
 
 The script resolves a HeyGen credential the same way the CLI does — first source
-wins: `$HEYGEN_API_KEY` → `$HYPERFRAMES_API_KEY` → a project `.env` (auto-loaded,
+wins: `$HEYGEN_API_KEY` → `$SMASHCUT_API_KEY` → a project `.env` (auto-loaded,
 walks up ≤5 dirs) → `~/.heygen/credentials` (shared with heygen-cli;
 `$HEYGEN_CONFIG_DIR` overrides the dir). An OAuth login is sent as
 `Authorization: Bearer`; an API key as `X-Api-Key`; both include
 `X-HeyGen-Source: cli`. OAuth CLI users can consume the web-plan free allowance
 (10 min/month) before paid usage; API keys follow normal API billing. If the
 only credential is an expired OAuth token it stops with a hint to run
-`npx hyperframes auth refresh`.
+`npx smashcut auth refresh`.
 
 ```bash
-# Only needed if you haven't run `npx hyperframes auth login`:
+# Only needed if you haven't run `npx smashcut auth login`:
 export HEYGEN_API_KEY=...   # or put it in a project .env
 
 # Synthesize + capture word timestamps in one call (skips a Whisper pass)
 node skills/media-use/audio/scripts/heygen-tts.mjs \
-  "Welcome to HyperFrames." -o narration.wav --words narration.words.json
+  "Welcome to SmashCut." -o narration.wav --words narration.words.json
 
 node skills/media-use/audio/scripts/heygen-tts.mjs ./script.txt -o narration.wav
 node skills/media-use/audio/scripts/heygen-tts.mjs --list   # public starfish voices
@@ -110,7 +110,7 @@ Default `af_heart`. Curated picks:
 | Documentation     | `bf_emma`, `bm_george` |
 | Casual / social   | `af_heart`, `af_sky`   |
 
-Run `npx hyperframes tts --list` for the bundled set.
+Run `npx smashcut tts --list` for the bundled set.
 
 ## Multilingual (Kokoro voice prefix → language)
 
@@ -129,8 +129,8 @@ The first letter of a Kokoro voice ID picks the phonemizer language; `--lang` ov
 | `z`    | Mandarin             |
 
 ```bash
-npx hyperframes tts "La reunión empieza a las nueve" --voice ef_dora
-npx hyperframes tts "Today is a nice day" --voice af_heart
+npx smashcut tts "La reunión empieza a las nueve" --voice ef_dora
+npx smashcut tts "Today is a nice day" --voice af_heart
 ```
 
 Valid `--lang` codes (only needed to override the voice's auto-detected language): `en-us`, `en-gb`, `es`, `fr-fr`, `hi`, `it`, `pt-br`, `ja`, `zh`.
@@ -144,7 +144,7 @@ Non-English phonemization requires `espeak-ng` system-wide (`brew install espeak
 - `1.1-1.2` — intros, transitions, upbeat content
 - `1.5+` — rarely appropriate, test carefully
 
-The `hyperframes tts` command honors `--speed` for Kokoro. Provider-specific
+The `smashcut tts` command honors `--speed` for Kokoro. Provider-specific
 helpers document their own pacing controls.
 
 ## Long scripts
@@ -162,4 +162,4 @@ When `--words <path>` is passed to a HeyGen call, the file is written in the sam
 ]
 ```
 
-For ElevenLabs / Kokoro, run `npx hyperframes transcribe narration.wav --model small.en` to get the same shape.
+For ElevenLabs / Kokoro, run `npx smashcut transcribe narration.wav --model small.en` to get the same shape.

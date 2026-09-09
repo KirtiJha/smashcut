@@ -67,7 +67,7 @@ let pngPlanReady = false;
 let mp4PlanReady = false;
 
 beforeAll(async () => {
-  runRoot = mkdtempSync(join(tmpdir(), "hf-cross-worker-test-"));
+  runRoot = mkdtempSync(join(tmpdir(), "sc-cross-worker-test-"));
   projectDir = join(runRoot, "project");
   mkdirSync(projectDir, { recursive: true });
   writeFileSync(join(projectDir, "index.html"), FIXTURE_HTML, "utf-8");

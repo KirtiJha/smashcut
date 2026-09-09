@@ -1,7 +1,7 @@
 {
-  "name": "@hyperframes/player",
+  "name": "@smashcut/player",
   "version": "0.8.33",
-  "description": "Embeddable web component for HyperFrames compositions",
+  "description": "Embeddable web component for SmashCut compositions",
   "repository": {
     "type": "git",
     "url": "https://github.com/heygen-com/hyperframes",
@@ -11,20 +11,20 @@
     "dist"
   ],
   "type": "module",
-  "main": "./dist/hyperframes-player.js",
-  "types": "./dist/hyperframes-player.d.ts",
+  "main": "./dist/smashcut-player.js",
+  "types": "./dist/smashcut-player.d.ts",
   "exports": {
     ".": {
-      "types": "./dist/hyperframes-player.d.ts",
-      "script": "./dist/hyperframes-player.global.js",
-      "import": "./dist/hyperframes-player.js",
-      "require": "./dist/hyperframes-player.cjs"
+      "types": "./dist/smashcut-player.d.ts",
+      "script": "./dist/smashcut-player.global.js",
+      "import": "./dist/smashcut-player.js",
+      "require": "./dist/smashcut-player.cjs"
     },
     "./slideshow": {
-      "types": "./dist/slideshow/hyperframes-slideshow.d.ts",
-      "script": "./dist/slideshow/hyperframes-slideshow.global.js",
-      "import": "./dist/slideshow/hyperframes-slideshow.js",
-      "require": "./dist/slideshow/hyperframes-slideshow.cjs"
+      "types": "./dist/slideshow/smashcut-slideshow.d.ts",
+      "script": "./dist/slideshow/smashcut-slideshow.global.js",
+      "import": "./dist/slideshow/smashcut-slideshow.js",
+      "require": "./dist/slideshow/smashcut-slideshow.cjs"
     }
   },
   "scripts": {
@@ -35,7 +35,7 @@
     "perf": "bun run tests/perf/index.ts"
   },
   "dependencies": {
-    "@hyperframes/core": "workspace:*"
+    "@smashcut/core": "workspace:*"
   },
   "devDependencies": {
     "@types/bun": "^1.1.0",

@@ -174,10 +174,10 @@ describe("resolveGroupSourceFile", () => {
     doc.body.innerHTML = `
       <div id="voices-host" data-composition-id="voices-host" data-composition-file="compositions/voices.html">
         <section id="voices-root" data-composition-id="voices">
-          <hf-audio-group id="voiceover"></hf-audio-group>
+          <sc-audio-group id="voiceover"></sc-audio-group>
         </section>
       </div>
-      <hf-audio-group id="root-group"></hf-audio-group>
+      <sc-audio-group id="root-group"></sc-audio-group>
     `;
     return doc;
   }
@@ -199,6 +199,6 @@ describe("resolveGroupSourceFile", () => {
 
   it("is safe on a detached or missing element", () => {
     expect(resolveGroupSourceFile(null)).toBeUndefined();
-    expect(resolveGroupSourceFile(document.createElement("hf-audio-group"))).toBeUndefined();
+    expect(resolveGroupSourceFile(document.createElement("sc-audio-group"))).toBeUndefined();
   });
 });

@@ -13,17 +13,17 @@
  * remembering to sync, which is what a single sink prevents.
  */
 
-import { HF_AUDIO_AUTOMATION_ATTR } from "@hyperframes/core/audio-automation";
-import { HF_AUDIO_FX_ATTR } from "@hyperframes/core/audio-fx";
+import { HF_AUDIO_AUTOMATION_ATTR } from "@smashcut/core/audio-automation";
+import { HF_AUDIO_FX_ATTR } from "@smashcut/core/audio-fx";
 import { usePlayerStore, type TimelineElement } from "../store/playerStore";
 import { groupInfoFor } from "./timelineGroupInfo";
 
-/** The preview node an element stands for, by dom id and then by `data-hf-id`. */
+/** The preview node an element stands for, by dom id and then by `data-sc-id`. */
 function previewNodeFor(doc: Document, element: TimelineElement): Element | null {
   const domId = element.domId ?? element.id;
   const byId = domId ? doc.getElementById(domId) : null;
   if (byId) return byId;
-  return element.hfId ? doc.querySelector(`[data-hf-id="${element.hfId}"]`) : null;
+  return element.hfId ? doc.querySelector(`[data-sc-id="${element.hfId}"]`) : null;
 }
 
 /**

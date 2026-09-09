@@ -168,7 +168,7 @@ function createV1Plan(
 
 describe("Plan v2 manifest", () => {
   it("is deterministic without changing the manifest or result wire shapes", () => {
-    const root = tempPath("hf-plan-v2-determinism-");
+    const root = tempPath("sc-plan-v2-determinism-");
     const v1 = createV1Plan(root, { audio: true });
     const first = createPlanV2FromExecutionPlan(v1, join(root, "v2-a"));
     const second = createPlanV2FromExecutionPlan(v1, join(root, "v2-b"));
@@ -217,7 +217,7 @@ describe("Plan v2 manifest", () => {
   });
 
   it("keeps legacy conversion names as byte-identical compatibility aliases", async () => {
-    const root = tempPath("hf-plan-v2-compat-aliases-");
+    const root = tempPath("sc-plan-v2-compat-aliases-");
     const executionPlanDir = createV1Plan(root, { audio: true });
     const canonical = createPlanV2FromExecutionPlan(executionPlanDir, join(root, "canonical"));
     const compatibility = createPlanV2FromV1(executionPlanDir, join(root, "compatibility"));
@@ -231,7 +231,7 @@ describe("Plan v2 manifest", () => {
   });
 
   it("accepts and materializes the same bounded timing produced for v1", () => {
-    const root = tempPath("hf-plan-v2-open-ended-video-");
+    const root = tempPath("sc-plan-v2-open-ended-video-");
     const v1 = createV1Plan(root, { video: true });
     const videosPath = join(v1, "meta", "videos.json");
     const fixture = JSON.parse(readFileSync(videosPath, "utf-8")) as PlanVideosJson;
@@ -255,7 +255,7 @@ describe("Plan v2 manifest", () => {
   });
 
   it("rejects a stale v1 source hash before content-addressing its bytes", () => {
-    const root = tempPath("hf-plan-v2-source-hash-");
+    const root = tempPath("sc-plan-v2-source-hash-");
     const v1 = createV1Plan(root);
     writeFileSync(join(v1, "compiled", "index.html"), "<html>tampered after freeze</html>");
     const destination = join(root, "v2");
@@ -278,7 +278,7 @@ describe("Plan v2 manifest", () => {
 
   it("rejects symlinks instead of silently omitting them from the manifest", () => {
     if (process.platform === "win32") return;
-    const root = tempPath("hf-plan-v2-symlink-");
+    const root = tempPath("sc-plan-v2-symlink-");
     const v1 = createV1Plan(root);
     symlinkSync(join(v1, "compiled", "asset.txt"), join(v1, "compiled", "linked-asset.txt"));
     refreshV1PlanHash(v1);
@@ -289,7 +289,7 @@ describe("Plan v2 manifest", () => {
   });
 
   it("rejects zero-based extracted-frame filenames before dependency selection", () => {
-    const root = tempPath("hf-plan-v2-zero-based-frame-");
+    const root = tempPath("sc-plan-v2-zero-based-frame-");
     const v1 = createV1Plan(root, { video: true });
     writeFileSync(join(v1, "video-frames", "hero", "frame_00000.jpg"), "zero based");
     refreshV1PlanHash(v1);
@@ -300,16 +300,16 @@ describe("Plan v2 manifest", () => {
   });
 
   it("omits the extraction-cache completion sentinel from exact frame dependencies", () => {
-    const root = tempPath("hf-plan-v2-extraction-sentinel-");
+    const root = tempPath("sc-plan-v2-extraction-sentinel-");
     const v1 = createV1Plan(root, { video: true });
-    writeFileSync(join(v1, "video-frames", "hero", ".hf-complete"), "");
+    writeFileSync(join(v1, "video-frames", "hero", ".sc-complete"), "");
     refreshV1PlanHash(v1);
 
     const result = createPlanV2FromV1(v1, join(root, "v2"));
     const manifest = readPlanV2Manifest(result.planDir);
 
     expect(result.limitations.videoDependencyMode).toBe("exact-rendered-frames");
-    expect(manifest.artifacts.some((artifact) => artifact.path.endsWith("/.hf-complete"))).toBe(
+    expect(manifest.artifacts.some((artifact) => artifact.path.endsWith("/.sc-complete"))).toBe(
       false,
     );
     expect(manifest.artifacts.some((artifact) => artifact.path.endsWith("/frame_00001.jpg"))).toBe(
@@ -318,16 +318,16 @@ describe("Plan v2 manifest", () => {
   });
 
   it("omits the extraction-cache completion sentinel from the full-source fallback", () => {
-    const root = tempPath("hf-plan-v2-full-source-extraction-sentinel-");
+    const root = tempPath("sc-plan-v2-full-source-extraction-sentinel-");
     const v1 = createV1Plan(root, { video: true, omitVideoMetadata: true });
-    writeFileSync(join(v1, "video-frames", "hero", ".hf-complete"), "");
+    writeFileSync(join(v1, "video-frames", "hero", ".sc-complete"), "");
     refreshV1PlanHash(v1);
 
     const result = createPlanV2FromV1(v1, join(root, "v2"));
     const manifest = readPlanV2Manifest(result.planDir);
 
     expect(result.limitations.videoDependencyMode).toBe("full-source-pack");
-    expect(manifest.artifacts.some((artifact) => artifact.path.endsWith("/.hf-complete"))).toBe(
+    expect(manifest.artifacts.some((artifact) => artifact.path.endsWith("/.sc-complete"))).toBe(
       false,
     );
     expect(manifest.artifacts.some((artifact) => artifact.path.endsWith("/frame_00003.jpg"))).toBe(
@@ -336,17 +336,17 @@ describe("Plan v2 manifest", () => {
   });
 
   it("keeps non-canonical completion-marker paths over-included in full-source mode", () => {
-    const root = tempPath("hf-plan-v2-nested-extraction-sentinel-");
+    const root = tempPath("sc-plan-v2-nested-extraction-sentinel-");
     const v1 = createV1Plan(root, { video: true, omitVideoMetadata: true });
     const nestedDir = join(v1, "video-frames", "hero", "nested");
     mkdirSync(nestedDir);
-    writeFileSync(join(nestedDir, ".hf-complete"), "unknown future artifact");
+    writeFileSync(join(nestedDir, ".sc-complete"), "unknown future artifact");
     refreshV1PlanHash(v1);
 
     const result = createPlanV2FromV1(v1, join(root, "v2"));
     const manifest = readPlanV2Manifest(result.planDir);
     const nestedMarker = manifest.artifacts.find(
-      (artifact) => artifact.path === "video-frames/hero/nested/.hf-complete",
+      (artifact) => artifact.path === "video-frames/hero/nested/.sc-complete",
     );
 
     expect(result.limitations.videoDependencyMode).toBe("full-source-pack");
@@ -359,10 +359,10 @@ describe("Plan v2 manifest", () => {
       it(`rejects a ${malformedSentinel} extraction sentinel in ${dependencyMode} mode`, () => {
         if (malformedSentinel === "symlink" && process.platform === "win32") return;
         const root = tempPath(
-          `hf-plan-v2-malformed-extraction-sentinel-${dependencyMode}-${malformedSentinel}-`,
+          `sc-plan-v2-malformed-extraction-sentinel-${dependencyMode}-${malformedSentinel}-`,
         );
         const v1 = createV1Plan(root, { video: true, omitVideoMetadata });
-        const sentinelPath = join(v1, "video-frames", "hero", ".hf-complete");
+        const sentinelPath = join(v1, "video-frames", "hero", ".sc-complete");
         if (malformedSentinel === "symlink") {
           symlinkSync(join(v1, "compiled", "asset.txt"), sentinelPath);
         } else if (malformedSentinel === "directory") {
@@ -374,14 +374,14 @@ describe("Plan v2 manifest", () => {
         refreshV1PlanHash(v1);
 
         expect(() => createPlanV2FromV1(v1, join(root, "v2"))).toThrow(
-          ".hf-complete must be a zero-byte regular file",
+          ".sc-complete must be a zero-byte regular file",
         );
       });
     }
   }
 
   it("selects audio only for the assembler", () => {
-    const root = tempPath("hf-plan-v2-targets-");
+    const root = tempPath("sc-plan-v2-targets-");
     const result = createPlanV2FromV1(createV1Plan(root, { audio: true }), join(root, "v2"));
     const manifest = readPlanV2Manifest(result.planDir);
     const chunk = listPlanV2ArtifactsForTarget(manifest, { role: "chunk", chunkIndex: 0 });
@@ -394,7 +394,7 @@ describe("Plan v2 manifest", () => {
   });
 
   it("uses the runtime frame lookup to select exact video frames per chunk", () => {
-    const root = tempPath("hf-plan-v2-video-reachability-");
+    const root = tempPath("sc-plan-v2-video-reachability-");
     const result = createPlanV2FromV1(createV1Plan(root, { video: true }), join(root, "v2"));
     const manifest = readPlanV2Manifest(result.planDir);
     const chunk0 = listPlanV2ArtifactsForTarget(manifest, { role: "chunk", chunkIndex: 0 });
@@ -410,7 +410,7 @@ describe("Plan v2 manifest", () => {
   });
 
   it("materializes empty video directories for chunks where the video is inactive", () => {
-    const root = tempPath("hf-plan-v2-inactive-video-directory-");
+    const root = tempPath("sc-plan-v2-inactive-video-directory-");
     const v1 = createV1Plan(root, {
       video: true,
       videoStart: 1 / 30,
@@ -461,7 +461,7 @@ describe("Plan v2 manifest", () => {
 
   for (const testCase of partialColorSpaceCases) {
     it(`preserves ${testCase.name} video color metadata`, () => {
-      const root = tempPath(`hf-plan-v2-${testCase.name}-color-`);
+      const root = tempPath(`sc-plan-v2-${testCase.name}-color-`);
       const result = createPlanV2FromV1(
         createV1Plan(root, { video: true, videoColorSpace: testCase.colorSpace }),
         join(root, "v2"),
@@ -484,7 +484,7 @@ describe("Plan v2 manifest", () => {
   }
 
   it("preserves null video color metadata", () => {
-    const root = tempPath("hf-plan-v2-null-color-");
+    const root = tempPath("sc-plan-v2-null-color-");
     expect(() =>
       createPlanV2FromV1(
         createV1Plan(root, { video: true, videoColorSpace: null }),
@@ -504,7 +504,7 @@ describe("Plan v2 manifest", () => {
   for (const component of colorComponents) {
     for (const invalid of invalidColorValues) {
       it(`rejects a ${invalid.name} ${component} color component`, () => {
-        const root = tempPath(`hf-plan-v2-invalid-${component}-${invalid.name}-`);
+        const root = tempPath(`sc-plan-v2-invalid-${component}-${invalid.name}-`);
         const colorSpace: Record<string, unknown> = {
           colorTransfer: "bt709",
           colorPrimaries: "bt709",
@@ -545,7 +545,7 @@ describe("Plan v2 manifest", () => {
 
   for (const testCase of unrelatedEmptyStringCases) {
     it(`continues to reject an empty ${testCase.name}`, () => {
-      const root = tempPath(`hf-plan-v2-empty-${testCase.name.replaceAll(" ", "-")}-`);
+      const root = tempPath(`sc-plan-v2-empty-${testCase.name.replaceAll(" ", "-")}-`);
       const v1 = createV1Plan(root, { video: true, ...testCase.options });
 
       expect(() => createPlanV2FromV1(v1, join(root, "v2"))).toThrow(
@@ -555,7 +555,7 @@ describe("Plan v2 manifest", () => {
   }
 
   it("rejects an extracted video identifier that escapes the video-frame root", () => {
-    const root = tempPath("hf-plan-v2-unsafe-video-id-");
+    const root = tempPath("sc-plan-v2-unsafe-video-id-");
     const v1 = createV1Plan(root, { video: true, videoId: "../escape" });
 
     expect(() => createPlanV2FromV1(v1, join(root, "v2"))).toThrow(
@@ -564,7 +564,7 @@ describe("Plan v2 manifest", () => {
   });
 
   it("falls back to the full source frame pack when video metadata is absent", () => {
-    const root = tempPath("hf-plan-v2-video-fallback-");
+    const root = tempPath("sc-plan-v2-video-fallback-");
     const result = createPlanV2FromV1(
       createV1Plan(root, { video: true, omitVideoMetadata: true }),
       join(root, "v2"),
@@ -582,7 +582,7 @@ describe("Plan v2 manifest", () => {
   });
 
   it("rejects malformed v1 video and chunk metadata at the JSON boundary", () => {
-    const videosRoot = tempPath("hf-plan-v2-malformed-videos-");
+    const videosRoot = tempPath("sc-plan-v2-malformed-videos-");
     const videosPlan = createV1Plan(videosRoot, { video: true });
     const videosPath = join(videosPlan, "meta", "videos.json");
     const videosJson = JSON.parse(readFileSync(videosPath, "utf-8")) as {
@@ -595,7 +595,7 @@ describe("Plan v2 manifest", () => {
       /videos\[0\]\.hasAudio must be boolean/,
     );
 
-    const chunksRoot = tempPath("hf-plan-v2-malformed-chunks-");
+    const chunksRoot = tempPath("sc-plan-v2-malformed-chunks-");
     const chunksPlan = createV1Plan(chunksRoot, { video: true });
     writeFileSync(
       join(chunksPlan, "meta", "chunks.json"),
@@ -609,13 +609,13 @@ describe("Plan v2 manifest", () => {
   });
 
   it("rejects a fractional v1 fps contract that v2 cannot represent", () => {
-    const root = tempPath("hf-plan-v2-fps-den-");
+    const root = tempPath("sc-plan-v2-fps-den-");
     const v1 = createV1Plan(root, { fpsDen: 1001 });
     expect(() => createPlanV2FromV1(v1, join(root, "v2"))).toThrow("dimensions.fpsDen must be 1");
   });
 
   it("materializes and revalidates strict chunk and assembler subsets", () => {
-    const root = tempPath("hf-plan-v2-materialize-");
+    const root = tempPath("sc-plan-v2-materialize-");
     const result = createPlanV2FromV1(createV1Plan(root, { audio: true }), join(root, "v2"));
     const chunkDir = join(root, "chunk");
     const assemblerDir = join(root, "assembler");
@@ -648,7 +648,7 @@ describe("Plan v2 manifest", () => {
   });
 
   it("uses v2 subset integrity instead of the whole-v1 plan hash", async () => {
-    const root = tempPath("hf-plan-v2-subset-hash-");
+    const root = tempPath("sc-plan-v2-subset-hash-");
     const result = createPlanV2FromV1(createV1Plan(root, { audio: true }), join(root, "v2"));
     const chunkDir = join(root, "chunk");
     materializePlanV2Target(result.planDir, { role: "chunk", chunkIndex: 0 }, chunkDir);
@@ -672,7 +672,7 @@ describe("Plan v2 manifest", () => {
   });
 
   it("rejects missing and corrupted blobs before publishing a destination", () => {
-    const root = tempPath("hf-plan-v2-corrupt-");
+    const root = tempPath("sc-plan-v2-corrupt-");
     const result = createPlanV2FromV1(createV1Plan(root), join(root, "v2"));
     const manifest = readPlanV2Manifest(result.planDir);
     const artifact = listPlanV2ArtifactsForTarget(manifest, {
@@ -696,7 +696,7 @@ describe("Plan v2 manifest", () => {
   });
 
   it("rejects manifest and post-materialization tampering", () => {
-    const root = tempPath("hf-plan-v2-tamper-");
+    const root = tempPath("sc-plan-v2-tamper-");
     const result = createPlanV2FromV1(createV1Plan(root), join(root, "v2"));
     const chunkDir = join(root, "chunk");
     materializePlanV2Target(result.planDir, { role: "chunk", chunkIndex: 0 }, chunkDir);
@@ -722,7 +722,7 @@ describe("Plan v2 manifest", () => {
   });
 
   it("rejects a missing content-addressed artifact", () => {
-    const root = tempPath("hf-plan-v2-missing-");
+    const root = tempPath("sc-plan-v2-missing-");
     const result = createPlanV2FromV1(createV1Plan(root), join(root, "v2"));
     const manifest = readPlanV2Manifest(result.planDir);
     const artifact = manifest.artifacts[0]!;
@@ -746,7 +746,7 @@ describe("Plan v2 manifest", () => {
 
 describe("Plan v2 artifact publisher", () => {
   it("publishes the manifest last and hard-links local immutable blobs", async () => {
-    const root = tempPath("hf-plan-v2-publisher-");
+    const root = tempPath("sc-plan-v2-publisher-");
     const v1 = createV1Plan(root, { audio: true });
     const destination = join(root, "v2");
     const publisher = new LocalPlanV2ArtifactPublisher(destination);
@@ -768,7 +768,7 @@ describe("Plan v2 artifact publisher", () => {
   });
 
   it("falls back to an atomic copy when hard-linking is unavailable", async () => {
-    const root = tempPath("hf-plan-v2-publisher-copy-");
+    const root = tempPath("sc-plan-v2-publisher-copy-");
     const v1 = createV1Plan(root);
     const destination = join(root, "v2");
     const publisher = new LocalPlanV2ArtifactPublisher(destination, {
@@ -798,7 +798,7 @@ describe("Plan v2 artifact publisher", () => {
   });
 
   it("produces byte-identical local CAS output through both publication paths", async () => {
-    const root = tempPath("hf-plan-v2-publisher-parity-");
+    const root = tempPath("sc-plan-v2-publisher-parity-");
     const v1 = createV1Plan(root, { audio: true });
     const directDir = join(root, "direct");
     const publishedDir = join(root, "published");
@@ -818,7 +818,7 @@ describe("Plan v2 artifact publisher", () => {
   });
 
   it("supports a remote publisher contract with no shared destination filesystem", async () => {
-    const root = tempPath("hf-plan-v2-remote-publisher-");
+    const root = tempPath("sc-plan-v2-remote-publisher-");
     const v1 = createV1Plan(root, { audio: true });
     const blobs = new Map<string, Buffer>();
     let committedManifest: string | undefined;
@@ -841,7 +841,7 @@ describe("Plan v2 artifact publisher", () => {
   });
 
   it("rejects malformed digests before constructing a local CAS path", async () => {
-    const root = tempPath("hf-plan-v2-publisher-digest-");
+    const root = tempPath("sc-plan-v2-publisher-digest-");
     const sourcePath = join(root, "source");
     writeFileSync(sourcePath, "bytes");
     const publisher = new LocalPlanV2ArtifactPublisher(join(root, "v2"));
@@ -853,7 +853,7 @@ describe("Plan v2 artifact publisher", () => {
   });
 
   it("refuses to commit a manifest until every referenced blob is durable", async () => {
-    const root = tempPath("hf-plan-v2-publisher-incomplete-");
+    const root = tempPath("sc-plan-v2-publisher-incomplete-");
     const publisher = new LocalPlanV2ArtifactPublisher(join(root, "v2"));
     const digest = "a".repeat(64);
 
@@ -864,7 +864,7 @@ describe("Plan v2 artifact publisher", () => {
   });
 
   it("aborts without committing a manifest when a blob publish fails", async () => {
-    const root = tempPath("hf-plan-v2-publisher-failure-");
+    const root = tempPath("sc-plan-v2-publisher-failure-");
     const calls: string[] = [];
     const publisher: PlanV2ArtifactPublisher = {
       async putBlob(blob) {
@@ -889,7 +889,7 @@ describe("Plan v2 artifact publisher", () => {
 
 describe("Plan v2 hash schema", () => {
   it("does not reuse a raw artifact digest as its manifest hash", () => {
-    const root = tempPath("hf-plan-v2-hash-");
+    const root = tempPath("sc-plan-v2-hash-");
     const result = createPlanV2FromV1(createV1Plan(root), join(root, "v2"));
     const manifest = readPlanV2Manifest(result.planDir);
     expect(manifest.artifacts.some((artifact) => artifact.sha256 === result.planHash)).toBe(false);

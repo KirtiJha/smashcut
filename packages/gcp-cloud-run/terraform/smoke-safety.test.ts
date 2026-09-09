@@ -21,12 +21,12 @@ describe("GCP smoke ownership and protocol safety", () => {
   it("derives a length-safe owner prefix and isolates Terraform state", () => {
     expect(smoke).toContain('OWNER_HASH="$(printf');
     expect(smoke).toContain("RUN_NONCE=");
-    expect(smoke).toContain('STACK_NAME="hf-smoke-$OWNER_HASH"');
+    expect(smoke).toContain('STACK_NAME="sc-smoke-$OWNER_HASH"');
     expect(smoke).toContain('TF_WORK_DIR="$ARTIFACT_DIR/terraform"');
     expect(smoke).toContain('TF_DATA_DIR="$ARTIFACT_DIR/terraform-data"');
     expect(smoke).toContain("export TF_DATA_DIR");
     expect(smoke).toContain('-var "project_name=$STACK_NAME"');
-    expect(smoke).toContain('[ "$STACK_NAME" != "hyperframes" ]');
+    expect(smoke).toContain('[ "$STACK_NAME" != "smashcut" ]');
   });
 
   it("tracks owned registry resources and verifies stack deletion", () => {

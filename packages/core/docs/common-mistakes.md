@@ -1,6 +1,6 @@
 # Common Mistakes
 
-Pitfalls that break HyperFrames compositions that can't be caught by the linter.
+Pitfalls that break SmashCut compositions that can't be caught by the linter.
 
 > **Linter:** Run `lintHyperframeHtml()` on your composition to catch most issues automatically. The linter detects: missing timeline registration, unmuted video, nested video in timed elements, missing `class="clip"`, deprecated attribute names (`data-layer`, `data-end`), and missing dimensions. See `core/src/lint/` for the full rule list.
 

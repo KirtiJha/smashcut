@@ -25,7 +25,7 @@ const POSTHOG_API_KEY = "phc_zjjbX0PnWxERXrMHhkEJWj9A9BhGVLRReICgsfTMmpx";
 
 /** Legacy opt-out key predating `telemetry/config.ts`. Still honoured so
  *  anyone already opted out is never quietly re-enabled. */
-const LEGACY_OPT_OUT_KEY = "hf-studio-telemetry-opt-out";
+const LEGACY_OPT_OUT_KEY = "sc-studio-telemetry-opt-out";
 
 function isLegacyOptedOut(): boolean {
   try {
@@ -43,14 +43,14 @@ function isApiKeyConfigured(): boolean {
   return POSTHOG_API_KEY.startsWith("phc_");
 }
 
-// VITE_HYPERFRAMES_NO_TELEMETRY mirrors the CLI's HYPERFRAMES_NO_TELEMETRY=1
+// VITE_SMASHCUT_NO_TELEMETRY mirrors the CLI's SMASHCUT_NO_TELEMETRY=1
 // opt-out so HeyGen's own dev/CI builds can suppress telemetry from the studio
 // bundle the same way. Vite injects it at build time. Match the CLI's
 // affirmative privacy-control spellings.
 // `import.meta.env` may be undefined in non-Vite bundlers (Next.js Turbopack).
 function isBuildTimeOptOut(): boolean {
   try {
-    const v = import.meta.env.VITE_HYPERFRAMES_NO_TELEMETRY as string | undefined;
+    const v = import.meta.env.VITE_SMASHCUT_NO_TELEMETRY as string | undefined;
     return v !== undefined && ["1", "true", "yes", "on"].includes(v.trim().toLowerCase());
   } catch {
     return false;
@@ -58,7 +58,7 @@ function isBuildTimeOptOut(): boolean {
 }
 
 // `import.meta.env.DEV` is true under `vite dev` / `vite preview`. Auto-suppress
-// so developers running `hyperframes preview` don't pollute production telemetry.
+// so developers running `smashcut preview` don't pollute production telemetry.
 function isViteDevMode(): boolean {
   try {
     return import.meta.env.DEV === true;

@@ -169,7 +169,7 @@ describe("initSandboxRuntimeModular", () => {
 
     window.dispatchEvent(
       new MessageEvent("message", {
-        data: { source: "hf-parent", type: "control", action: "set-volume", volume: 1 },
+        data: { source: "sc-parent", type: "control", action: "set-volume", volume: 1 },
       }),
     );
 
@@ -179,7 +179,7 @@ describe("initSandboxRuntimeModular", () => {
   });
 
   afterEach(() => {
-    window.__hfRuntimeTeardown?.();
+    window.__scRuntimeTeardown?.();
     resetRuntimeDataForTests();
     document.body.innerHTML = "";
     window.__timelines = {} as Record<string, RuntimeTimelineLike>;
@@ -187,9 +187,9 @@ describe("initSandboxRuntimeModular", () => {
     delete window.__playerReady;
     delete window.__renderReady;
     delete (window as { __HF_EXPORT_RENDER_SEEK_CONFIG?: unknown }).__HF_EXPORT_RENDER_SEEK_CONFIG;
-    delete window.__hfTimelinesBuilding;
+    delete window.__scTimelinesBuilding;
     delete (window as { THREE?: unknown }).THREE;
-    delete (window as { __hfAutoNoopRegistered?: boolean }).__hfAutoNoopRegistered;
+    delete (window as { __scAutoNoopRegistered?: boolean }).__scAutoNoopRegistered;
     delete window.gsap;
     vi.restoreAllMocks();
     vi.useRealTimers();
@@ -239,7 +239,7 @@ describe("initSandboxRuntimeModular", () => {
     window.addEventListener("error", onError);
     window.dispatchEvent(
       new MessageEvent("message", {
-        data: { source: "hf-parent", type: "control", action: "set-volume", volume: 1 },
+        data: { source: "sc-parent", type: "control", action: "set-volume", volume: 1 },
       }),
     );
     window.removeEventListener("error", onError);
@@ -249,12 +249,12 @@ describe("initSandboxRuntimeModular", () => {
   /**
    * The runtime stamps `data-start`/`data-duration` on every id'd child of the
    * composition root so a blank canvas still shows selectable rows. An
-   * `<hf-audio-group>` is a mixer BUS, not a clip: stamping it put it in
+   * `<sc-audio-group>` is a mixer BUS, not a clip: stamping it put it in
    * `__clipManifest` as a full-duration element, which the studio drew as an
    * ordinary clip row above the real group header — draggable, trimmable, and
    * deletable, and deleting it takes the bus (so the group's FX rack) with it.
    */
-  it("does not stamp timing onto an <hf-audio-group> bus", () => {
+  it("does not stamp timing onto an <sc-audio-group> bus", () => {
     const root = document.createElement("div");
     root.setAttribute("data-composition-id", "main");
     root.setAttribute("data-root", "true");
@@ -264,7 +264,7 @@ describe("initSandboxRuntimeModular", () => {
     root.setAttribute("data-height", "1080");
     document.body.appendChild(root);
 
-    const bus = document.createElement("hf-audio-group");
+    const bus = document.createElement("sc-audio-group");
     bus.id = "voiceover";
     bus.setAttribute("data-label", "Voiceover");
     root.appendChild(bus);
@@ -516,7 +516,7 @@ describe("initSandboxRuntimeModular", () => {
     const child = document.createElement("div");
     child.setAttribute("data-composition-id", "slide-1");
     child.setAttribute("data-start", "0");
-    child.setAttribute("data-hf-authored-duration", "14");
+    child.setAttribute("data-sc-authored-duration", "14");
     root.appendChild(child);
 
     window.__timelines = {
@@ -549,13 +549,13 @@ describe("initSandboxRuntimeModular", () => {
     const onSeek = (event: Event) => {
       times.push((event as CustomEvent<{ time: number }>).detail.time);
     };
-    window.addEventListener("hf-seek", onSeek);
+    window.addEventListener("sc-seek", onSeek);
 
     initSandboxRuntimeModular();
     window.__player?.renderSeek(4);
     await vi.advanceTimersByTimeAsync(TYPEGPU_PRESENT_HEARTBEAT_MS);
 
-    window.removeEventListener("hf-seek", onSeek);
+    window.removeEventListener("sc-seek", onSeek);
     expect(times).toEqual([0, 4, 4]);
   });
 
@@ -587,7 +587,7 @@ describe("initSandboxRuntimeModular", () => {
 
     expect(timeline.time()).toBeCloseTo(1 / 60, 6);
     expect(infoSpy).toHaveBeenCalledWith(
-      "[hyperframes] render runtime fps",
+      "[smashcut] render runtime fps",
       expect.objectContaining({
         canonicalFps: 60,
         source: "render-options",
@@ -727,7 +727,7 @@ describe("initSandboxRuntimeModular", () => {
     initSandboxRuntimeModular();
 
     // Screenshot and drawElement both call the engine's shared
-    // prepareFrameForCapture -> window.__hf.seek path before reading pixels.
+    // prepareFrameForCapture -> window.__sc.seek path before reading pixels.
     // Lock the visibility state at that common pre-capture boundary; the
     // unavailable private project is still required for buffer/encode proof.
     for (const { host, child, tailFrame } of seams) {
@@ -763,7 +763,7 @@ describe("initSandboxRuntimeModular", () => {
     initSandboxRuntimeModular();
 
     expect(infoSpy).toHaveBeenCalledWith(
-      "[hyperframes] render runtime fps",
+      "[smashcut] render runtime fps",
       expect.objectContaining({
         canonicalFps: 60,
         source: "unknown",
@@ -859,7 +859,7 @@ describe("initSandboxRuntimeModular", () => {
     const child = document.createElement("div");
     child.setAttribute("data-composition-id", "slide-1");
     child.setAttribute("data-start", "0");
-    child.setAttribute("data-hf-authored-duration", "2");
+    child.setAttribute("data-sc-authored-duration", "2");
     root.appendChild(child);
 
     window.__timelines = {
@@ -978,7 +978,7 @@ describe("initSandboxRuntimeModular", () => {
     );
     expect(injectedLink).not.toBeNull();
 
-    window.__hfRuntimeTeardown?.();
+    window.__scRuntimeTeardown?.();
 
     expect(injectedLink?.isConnected).toBe(false);
   });
@@ -1029,21 +1029,21 @@ describe("initSandboxRuntimeModular", () => {
     slide1.id = "slide-1";
     slide1.setAttribute("data-composition-id", "slide-1");
     slide1.setAttribute("data-start", "0");
-    slide1.setAttribute("data-hf-authored-duration", "14");
+    slide1.setAttribute("data-sc-authored-duration", "14");
     root.appendChild(slide1);
 
     const slide2 = document.createElement("div");
     slide2.id = "slide-2";
     slide2.setAttribute("data-composition-id", "slide-2");
     slide2.setAttribute("data-start", "slide-1");
-    slide2.setAttribute("data-hf-authored-duration", "12");
+    slide2.setAttribute("data-sc-authored-duration", "12");
     root.appendChild(slide2);
 
     const slide3 = document.createElement("div");
     slide3.id = "slide-3";
     slide3.setAttribute("data-composition-id", "slide-3");
     slide3.setAttribute("data-start", "slide-2");
-    slide3.setAttribute("data-hf-authored-duration", "16");
+    slide3.setAttribute("data-sc-authored-duration", "16");
     root.appendChild(slide3);
 
     window.__timelines = {
@@ -1148,7 +1148,7 @@ describe("initSandboxRuntimeModular", () => {
 
     const warned = warnSpy.mock.calls.map((c) => String(c[0])).join("\n");
     expect(window.__player?.getDuration()).toBe(0);
-    expect(warned).toContain("[hyperframes]");
+    expect(warned).toContain("[smashcut]");
     expect(warned).toContain("Root timeline not bound");
     expect(warned).toContain("wrong-key-a");
     expect(warned).toContain("wrong-key-b");
@@ -1329,7 +1329,7 @@ describe("initSandboxRuntimeModular", () => {
 
     initSandboxRuntimeModular();
 
-    expect(window.__hfResolveMediaStartSeconds?.(video)).toBe(6);
+    expect(window.__scResolveMediaStartSeconds?.(video)).toBe(6);
     window.__player?.renderSeek(5.5);
     expect(video.style.visibility).toBe("hidden");
     window.__player?.renderSeek(6.5);
@@ -1363,7 +1363,7 @@ describe("initSandboxRuntimeModular", () => {
 
     initSandboxRuntimeModular();
 
-    expect(window.__hfResolveMediaStartSeconds?.(video)).toBe(4);
+    expect(window.__scResolveMediaStartSeconds?.(video)).toBe(4);
     window.__player?.renderSeek(2.5);
     expect(video.style.visibility).toBe("hidden");
     window.__player?.renderSeek(4.5);
@@ -1404,7 +1404,7 @@ describe("initSandboxRuntimeModular", () => {
       window.__player?.renderSeek(globalTime);
       expect(video.style.visibility, `global ${globalTime}s`).toBe("visible");
     }
-    expect(window.__hfResolveMediaStartSeconds?.(video)).toBeCloseTo(39.233);
+    expect(window.__scResolveMediaStartSeconds?.(video)).toBeCloseTo(39.233);
   });
 
   it("uses the canonical resolver for reference starts, auto-start media, and inline hosts", () => {
@@ -1427,7 +1427,7 @@ describe("initSandboxRuntimeModular", () => {
     root.appendChild(inlineHost);
 
     const video = document.createElement("video");
-    video.setAttribute("data-hf-auto-start", "true");
+    video.setAttribute("data-sc-auto-start", "true");
     video.setAttribute("data-duration", "2");
     inlineHost.appendChild(video);
 
@@ -1438,7 +1438,7 @@ describe("initSandboxRuntimeModular", () => {
 
     initSandboxRuntimeModular();
 
-    expect(window.__hfResolveMediaStartSeconds?.(video)).toBe(3);
+    expect(window.__scResolveMediaStartSeconds?.(video)).toBe(3);
   });
 
   it("updates visibility for timed elements inside nested compositions", () => {
@@ -2157,7 +2157,7 @@ describe("initSandboxRuntimeModular", () => {
     // pip-wired video: data-start is authored in global time (same value as host)
     const pipVideo = document.createElement("video");
     pipVideo.setAttribute("data-start", "45.40");
-    pipVideo.setAttribute("data-hf-media-start-basis", "global");
+    pipVideo.setAttribute("data-sc-media-start-basis", "global");
     pipVideo.setAttribute("data-duration", "7.06");
     Object.defineProperty(pipVideo, "paused", { value: true, configurable: true });
     Object.defineProperty(pipVideo, "readyState", { value: 0, configurable: true });
@@ -2176,7 +2176,7 @@ describe("initSandboxRuntimeModular", () => {
 
     initSandboxRuntimeModular();
 
-    expect(window.__hfResolveMediaStartSeconds?.(pipVideo)).toBeCloseTo(45.4);
+    expect(window.__scResolveMediaStartSeconds?.(pipVideo)).toBeCloseTo(45.4);
 
     const player = (
       window as Window & {
@@ -2218,7 +2218,7 @@ describe("initSandboxRuntimeModular", () => {
 
     const video = document.createElement("video");
     video.setAttribute("data-start", "0");
-    video.setAttribute("data-hf-auto-start", "");
+    video.setAttribute("data-sc-auto-start", "");
     video.setAttribute("data-duration", "5");
     Object.defineProperty(video, "paused", { value: true, configurable: true });
     Object.defineProperty(video, "readyState", { value: 0, configurable: true });
@@ -2441,7 +2441,7 @@ describe("initSandboxRuntimeModular", () => {
 
       // The render/producer capture protocol has claimed the timeline and is
       // now driving frames deterministically (mirrors the engine's
-      // window.__hf.seek(t) -> player.renderSeek(t) bridge).
+      // window.__sc.seek(t) -> player.renderSeek(t) bridge).
       window.__player?.renderSeek(0);
 
       // Let the runtime's own deferred re-bind attempt (init.ts's
@@ -2551,7 +2551,7 @@ describe("initSandboxRuntimeModular", () => {
     window.__timelines = {
       main: timeline,
     };
-    window.__hfTimelinesBuilding = true;
+    window.__scTimelinesBuilding = true;
 
     initSandboxRuntimeModular();
 
@@ -2560,8 +2560,8 @@ describe("initSandboxRuntimeModular", () => {
     expect(window.__player?.getDuration()).toBe(0);
 
     timelineDuration = 10;
-    window.__hfTimelinesBuilding = false;
-    window.dispatchEvent(new CustomEvent("hf-timelines-built"));
+    window.__scTimelinesBuilding = false;
+    window.dispatchEvent(new CustomEvent("sc-timelines-built"));
 
     expect(window.__renderReady).toBe(true);
     expect(window.__player?.getDuration()).toBe(10);
@@ -2580,18 +2580,18 @@ describe("initSandboxRuntimeModular", () => {
     const timeline = createMockTimeline(0);
     timeline.duration = () => timelineDuration;
     window.__timelines = { main: timeline };
-    window.__hfTimelinesBuilding = false;
+    window.__scTimelinesBuilding = false;
 
     initSandboxRuntimeModular();
     expect(window.__renderReady).toBe(true);
 
-    window.__hfTimelinesBuilding = true;
+    window.__scTimelinesBuilding = true;
     await new Promise((resolve) => setTimeout(resolve, 0));
     expect(window.__renderReady).toBe(false);
 
     timelineDuration = 10;
-    window.__hfTimelinesBuilding = false;
-    window.dispatchEvent(new CustomEvent("hf-timelines-built"));
+    window.__scTimelinesBuilding = false;
+    window.dispatchEvent(new CustomEvent("sc-timelines-built"));
 
     expect(window.__renderReady).toBe(true);
     expect(window.__player?.getDuration()).toBe(10);
@@ -2751,7 +2751,7 @@ describe("initSandboxRuntimeModular", () => {
     root.setAttribute("data-height", "1080");
     document.body.appendChild(root);
 
-    (window as Window & { __hfLottie?: unknown[] }).__hfLottie = [
+    (window as Window & { __scLottie?: unknown[] }).__scLottie = [
       { play: () => {}, pause: () => {}, totalFrames: 150, frameRate: 30 },
     ];
 
@@ -2762,7 +2762,7 @@ describe("initSandboxRuntimeModular", () => {
     expect(window.__renderReady).toBe(true);
     expect(window.__player?.getDuration()).toBe(5);
 
-    delete (window as Window & { __hfLottie?: unknown[] }).__hfLottie;
+    delete (window as Window & { __scLottie?: unknown[] }).__scLottie;
   });
 
   it("regression: a GSAP timeline's duration is unaffected by adapter duration inference", () => {
@@ -2843,11 +2843,11 @@ describe("initSandboxRuntimeModular", () => {
       if (typeof message !== "object" || message === null) return;
       const payload = message as Record<string, unknown>;
       outbound.push(payload);
-      if (payload.source !== "hf-preview" || payload.type !== "ready") return;
+      if (payload.source !== "sc-preview" || payload.type !== "ready") return;
       window.dispatchEvent(
         new MessageEvent("message", {
           data: {
-            source: "hf-parent",
+            source: "sc-parent",
             type: "control",
             action: "seek",
             timeSeconds: 2,
@@ -2857,7 +2857,7 @@ describe("initSandboxRuntimeModular", () => {
       window.dispatchEvent(
         new MessageEvent("message", {
           data: {
-            source: "hf-parent",
+            source: "sc-parent",
             type: "control",
             action: "set-playback-rate",
             playbackRate: 2,
@@ -2902,7 +2902,7 @@ describe("initSandboxRuntimeModular", () => {
     if (clipExpired) clipExpired.style.visibility = "visible";
     if (clipFuture) clipFuture.style.visibility = "visible";
 
-    window.__hfForceTimelineRebind?.();
+    window.__scForceTimelineRebind?.();
 
     expect(clipExpired?.style.visibility).toBe("hidden");
     expect(clipFuture?.style.visibility).toBe("hidden");
@@ -3049,7 +3049,7 @@ describe("initSandboxRuntimeModular", () => {
 
     window.dispatchEvent(
       new MessageEvent("message", {
-        data: { source: "hf-parent", type: "control", action: "set-muted", muted: false },
+        data: { source: "sc-parent", type: "control", action: "set-muted", muted: false },
       }),
     );
 
@@ -3058,7 +3058,7 @@ describe("initSandboxRuntimeModular", () => {
 
     window.dispatchEvent(
       new MessageEvent("message", {
-        data: { source: "hf-parent", type: "control", action: "set-muted", muted: true },
+        data: { source: "sc-parent", type: "control", action: "set-muted", muted: true },
       }),
     );
 
@@ -3067,7 +3067,7 @@ describe("initSandboxRuntimeModular", () => {
 
     window.dispatchEvent(
       new MessageEvent("message", {
-        data: { source: "hf-parent", type: "control", action: "set-muted", muted: false },
+        data: { source: "sc-parent", type: "control", action: "set-muted", muted: false },
       }),
     );
 
@@ -3101,7 +3101,7 @@ describe("initSandboxRuntimeModular", () => {
     window.dispatchEvent(
       new MessageEvent("message", {
         data: {
-          source: "hf-parent",
+          source: "sc-parent",
           type: "control",
           action: "set-media-output-muted",
           muted: false,
@@ -3149,7 +3149,7 @@ describe("initSandboxRuntimeModular", () => {
     window.dispatchEvent(
       new MessageEvent("message", {
         data: {
-          source: "hf-parent",
+          source: "sc-parent",
           type: "control",
           action: "set-native-media-sync-disabled",
           disabled: true,
@@ -3180,7 +3180,7 @@ describe("initSandboxRuntimeModular", () => {
 
     document.body.innerHTML = `
       <div data-composition-id="root" data-duration="5" data-width="1920" data-height="1080">
-        <div id="dragged" data-hf-studio-manual-edit-gesture="tok-1"></div>
+        <div id="dragged" data-sc-studio-manual-edit-gesture="tok-1"></div>
       </div>
     `;
     window.__timelines = { root: tl };
@@ -3208,7 +3208,7 @@ describe("initSandboxRuntimeModular", () => {
     player?.pause();
 
     // (3) Paused + marker cleared (drop/cancel) → one reconciliation seek runs.
-    document.getElementById("dragged")?.removeAttribute("data-hf-studio-manual-edit-gesture");
+    document.getElementById("dragged")?.removeAttribute("data-sc-studio-manual-edit-gesture");
     const beforeResume = seekTimes.length;
     raf.step(16);
     expect(seekTimes.length).toBeGreaterThan(beforeResume);
@@ -3264,7 +3264,7 @@ describe("initSandboxRuntimeModular", () => {
       (replacementTotalTime as Function).call(replacement, time, ...rest);
     }) as RuntimeTimelineLike["totalTime"];
     window.__timelines = { root: replacement };
-    window.__hfForceTimelineRebind?.();
+    window.__scForceTimelineRebind?.();
     raf.step(16);
     expect(replacementSeekTimes.length).toBeGreaterThan(0);
     const afterReplacementFrame = replacementSeekTimes.length;
@@ -3290,8 +3290,8 @@ describe("initSandboxRuntimeModular", () => {
     initSandboxRuntimeModular();
 
     const runtime = (
-      window as Window & { __hf?: { colorGrading?: { redrawAnimated: () => number } } }
-    ).__hf?.colorGrading;
+      window as Window & { __sc?: { colorGrading?: { redrawAnimated: () => number } } }
+    ).__sc?.colorGrading;
     if (!runtime) throw new Error("Expected color grading runtime");
     const redrawAnimated = vi.spyOn(runtime, "redrawAnimated");
 
@@ -3332,7 +3332,7 @@ describe("initSandboxRuntimeModular", () => {
   // onto ID'd / GSAP-targeted *flow* children (a <header>/<footer> in a column)
   // so the design panel can discover them — those must NOT be force-absolutized,
   // or the layout collapses (footer shrink-wraps, `space-between` clusters). The
-  // marker `data-hf-autostamped` distinguishes them; these tests pin both halves.
+  // marker `data-sc-autostamped` distinguishes them; these tests pin both halves.
   describe("applyClipLayout: runtime-stamped clips stay in document flow", () => {
     const makeRoot = () => {
       const root = document.createElement("div");
@@ -3396,7 +3396,7 @@ describe("initSandboxRuntimeModular", () => {
       const root = makeRoot();
       const footer = document.createElement("footer");
       footer.setAttribute("data-start", "0");
-      footer.setAttribute("data-hf-autostamped", "1"); // stamped flow child, not an overlay clip
+      footer.setAttribute("data-sc-autostamped", "1"); // stamped flow child, not an overlay clip
       root.appendChild(footer);
       overrideComputed(footer, {
         position: "static",
@@ -3562,7 +3562,7 @@ describe("initSandboxRuntimeModular", () => {
     });
 
     it("reports the bypass at media discovery, without anyone calling play()", () => {
-      // `hyperframes check` seeks, it never plays. A diagnostic raised only
+      // `smashcut check` seeks, it never plays. A diagnostic raised only
       // from the schedule path would be invisible to the one gate whose job is
       // to surface this.
       mountAudio("https://cdn.example.com/track.mp3", { "data-fx-chain": "[]" });

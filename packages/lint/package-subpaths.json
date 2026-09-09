@@ -1,5 +1,5 @@
 {
-  "package": "@hyperframes/lint",
+  "package": "@smashcut/lint",
   "localNodeRuntime": true,
   "subpaths": {
     ".": {

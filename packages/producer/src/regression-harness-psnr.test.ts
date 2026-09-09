@@ -70,7 +70,7 @@ function ffmpeg(args: string[]): void {
 }
 
 beforeAll(() => {
-  workDir = mkdtempSync(join(tmpdir(), "hf-psnr-test-"));
+  workDir = mkdtempSync(join(tmpdir(), "sc-psnr-test-"));
   referenceVideo = join(workDir, "reference.mp4");
   degradedVideo = join(workDir, "degraded.mp4");
 

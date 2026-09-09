@@ -78,8 +78,8 @@ import {
   setRuntimeDataErrorReporter,
 } from "./runtimeData";
 
-const AUTHORED_DURATION_ATTR = "data-hf-authored-duration";
-const AUTHORED_END_ATTR = "data-hf-authored-end";
+const AUTHORED_DURATION_ATTR = "data-sc-authored-duration";
+const AUTHORED_END_ATTR = "data-sc-authored-end";
 
 /**
  * A `window.__timelines` entry is authored content and may be a PARTIAL
@@ -149,7 +149,7 @@ export function initSandboxRuntimeModular(): void {
   initRuntimeAnalytics(postRuntimeMessage as (payload: unknown) => void);
   setRuntimeDataErrorReporter((channel, requestId, error) => {
     postRuntimeMessage({
-      source: "hf-preview",
+      source: "sc-preview",
       type: "runtime-data-error",
       channel,
       requestId,
@@ -161,7 +161,7 @@ export function initSandboxRuntimeModular(): void {
       reconcileTimelineAfterRuntimeData();
     } catch (error) {
       postRuntimeMessage({
-        source: "hf-preview",
+        source: "sc-preview",
         type: "runtime-data-error",
         channel,
         requestId,
@@ -170,7 +170,7 @@ export function initSandboxRuntimeModular(): void {
       return;
     }
     postRuntimeMessage({
-      source: "hf-preview",
+      source: "sc-preview",
       type: "runtime-data-applied",
       channel,
       requestId,
@@ -186,7 +186,7 @@ export function initSandboxRuntimeModular(): void {
   // custom props) — values are fixed for the page's lifetime, so applying
   // once at init keeps renders deterministic and seeks safe.
   applyVariableBindings(document);
-  // `<hf-audio-group>` is metadata, so it must not occupy a box — see
+  // `<sc-audio-group>` is metadata, so it must not occupy a box — see
   // ensureAudioGroupInertStyle. Injected here, before timelines bind, so no
   // captured frame ever sees the group as a layout item.
   ensureAudioGroupInertStyle(document);
@@ -194,7 +194,7 @@ export function initSandboxRuntimeModular(): void {
   state.canonicalFps = exportRenderFps.fps ?? state.canonicalFps;
   setRuntimeProtocolFps(state.canonicalFps);
   if (window.__HF_EXPORT_RENDER_SEEK_CONFIG) {
-    console.info("[hyperframes] render runtime fps", {
+    console.info("[smashcut] render runtime fps", {
       canonicalFps: state.canonicalFps,
       source: exportRenderFps.source,
       rawFpsSource: exportRenderFps.rawFpsSource,
@@ -218,9 +218,9 @@ export function initSandboxRuntimeModular(): void {
     reportedRuntimeIssues.add(key);
     emitAnalyticsEvent(event, properties);
   };
-  if (typeof window.__hfRuntimeTeardown === "function") {
+  if (typeof window.__scRuntimeTeardown === "function") {
     try {
-      window.__hfRuntimeTeardown();
+      window.__scRuntimeTeardown();
     } catch (err) {
       // keep runtime resilient across reinits
       swallow("runtime.init.site1", err);
@@ -236,7 +236,7 @@ export function initSandboxRuntimeModular(): void {
   void webAudio.init().then((ok) => {
     webAudioReady = ok;
   });
-  window.__hf = window.__hf || {};
+  window.__sc = window.__sc || {};
   /** Hidden by an ancestor, or by the BUS this clip belongs to. The bus is
    *  never an ancestor — membership is on the member's `data-audio-group` — so
    *  `closest()` alone could not see a muted group, which the render drops. */
@@ -249,11 +249,11 @@ export function initSandboxRuntimeModular(): void {
   // overlay stop tracking the pointer. Idempotent + best-effort.
   const ensureAutoMarkerNoop = (): void => {
     const g = window.gsap as { registerPlugin?: (plugin: unknown) => void } | undefined;
-    const w = window as Window & { __hfAutoNoopRegistered?: boolean };
-    if (!g?.registerPlugin || w.__hfAutoNoopRegistered) return;
+    const w = window as Window & { __scAutoNoopRegistered?: boolean };
+    if (!g?.registerPlugin || w.__scAutoNoopRegistered) return;
     try {
       g.registerPlugin({ name: "_auto", init: () => false });
-      w.__hfAutoNoopRegistered = true;
+      w.__scAutoNoopRegistered = true;
     } catch (err) {
       reportRuntimeIssueOnce("auto_marker_install_failed", "auto_marker_install_failed", {
         reason: "threw",
@@ -365,7 +365,7 @@ export function initSandboxRuntimeModular(): void {
     }
     postedDiagnosticKeys.add(key);
     postRuntimeMessage({
-      source: "hf-preview",
+      source: "sc-preview",
       type: "diagnostic",
       code,
       details,
@@ -561,7 +561,7 @@ export function initSandboxRuntimeModular(): void {
       // `justify-content: space-between` clusters in the top-left. Leave them in
       // flow so the preview matches the rendered video, which never stamps
       // (production renders run as the top-level page, not in an iframe).
-      if (el.hasAttribute("data-hf-autostamped")) continue;
+      if (el.hasAttribute("data-sc-autostamped")) continue;
       const hasLegacyAnchoredDefaults =
         (el.style.top === "0px" || el.style.top === "0") &&
         (el.style.left === "0px" || el.style.left === "0") &&
@@ -688,7 +688,7 @@ export function initSandboxRuntimeModular(): void {
     const inheritedStart = context.inheritedStart ?? 0;
     const authoredStart = parseNumeric(element.getAttribute("data-start"));
     if (
-      element.hasAttribute("data-hf-auto-start") ||
+      element.hasAttribute("data-sc-auto-start") ||
       authoredStart == null ||
       inheritedStart <= 0
     ) {
@@ -702,10 +702,10 @@ export function initSandboxRuntimeModular(): void {
     });
   };
 
-  window.__hfResolveMediaStartSeconds = resolveAbsoluteMediaStartSeconds;
+  window.__scResolveMediaStartSeconds = resolveAbsoluteMediaStartSeconds;
   runtimeCleanupCallbacks.push(() => {
-    if (window.__hfResolveMediaStartSeconds === resolveAbsoluteMediaStartSeconds) {
-      delete window.__hfResolveMediaStartSeconds;
+    if (window.__scResolveMediaStartSeconds === resolveAbsoluteMediaStartSeconds) {
+      delete window.__scResolveMediaStartSeconds;
     }
   });
 
@@ -1237,7 +1237,7 @@ export function initSandboxRuntimeModular(): void {
       // If the authored composition schedule meaningfully exceeds the captured
       // GSAP timeline, extend the timeline in-place with a zero-duration no-op
       // tween. Studio previews can inline only part of the timeline registry
-      // while preserving the full host schedule in data-hf-authored-duration.
+      // while preserving the full host schedule in data-sc-authored-duration.
       const rootDeclaredDur = parseStrictFiniteTimingNumber(
         rootCompositionNode?.getAttribute("data-duration"),
       );
@@ -1448,10 +1448,10 @@ export function initSandboxRuntimeModular(): void {
       // reapplyPositionEditsAfterSeek to un-bake it. Call the apply hook
       // directly here as well, since the wrapper may not be installed yet
       // during initial rebind (timing race on first load / soft reload).
-      const applyFn = (window as unknown as Record<string, unknown>).__hfStudioManualEditsApply;
+      const applyFn = (window as unknown as Record<string, unknown>).__scStudioManualEditsApply;
       if (typeof applyFn === "function") applyFn();
 
-      // SDK moveElement edits (data-hf-edit-base-x/y markers) render as a
+      // SDK moveElement edits (data-sc-edit-base-x/y markers) render as a
       // CSS translate delta. Must run after the timeline is bound so GSAP has
       // already parsed the elements — a translate present at first parse gets
       // folded into the cached transform and lost per-axis on seek.
@@ -1459,14 +1459,14 @@ export function initSandboxRuntimeModular(): void {
     }
     if (resolution.diagnostics) {
       postRuntimeMessage({
-        source: "hf-preview",
+        source: "sc-preview",
         type: "diagnostic",
         code: resolution.diagnostics.code,
         details: resolution.diagnostics.details,
       });
     }
     postRuntimeMessage({
-      source: "hf-preview",
+      source: "sc-preview",
       type: "diagnostic",
       code: "timeline_bound",
       details: {
@@ -1490,7 +1490,7 @@ export function initSandboxRuntimeModular(): void {
       // scene container we auto-stamp below (e.g. an opacity-crossfaded scene)
       // must NOT suppress its own animated children — otherwise those children
       // never become timeline clips and that scene can't inline-expand.
-      // A bus is not a clip. `<hf-audio-group>` carries a group's label, fader,
+      // A bus is not a clip. `<sc-audio-group>` carries a group's label, fader,
       // mute and FX chain and has no timing of its own, so stamping it put it in
       // `__clipManifest` as a full-duration element — which the studio drew as an
       // ordinary clip row above the real group header. That row was draggable,
@@ -1525,7 +1525,7 @@ export function initSandboxRuntimeModular(): void {
               target.setAttribute("data-duration", dur);
               // Mark as runtime-stamped so applyClipLayout leaves it in document
               // flow instead of treating it as an authored overlay clip.
-              target.setAttribute("data-hf-autostamped", "1");
+              target.setAttribute("data-sc-autostamped", "1");
             }
           }
         } catch {
@@ -1550,7 +1550,7 @@ export function initSandboxRuntimeModular(): void {
           el.setAttribute("data-duration", dur);
           // Mark as runtime-stamped so applyClipLayout leaves it in document
           // flow instead of treating it as an authored overlay clip.
-          el.setAttribute("data-hf-autostamped", "1");
+          el.setAttribute("data-sc-autostamped", "1");
         }
       }
     }
@@ -1593,7 +1593,7 @@ export function initSandboxRuntimeModular(): void {
     // polling tick happens to post the rebuilt timeline.
     postTimeline();
   };
-  (window as Window & { __hfForceTimelineRebind?: () => void }).__hfForceTimelineRebind =
+  (window as Window & { __scForceTimelineRebind?: () => void }).__scForceTimelineRebind =
     reconcileTimeline;
 
   const emitRootStageLayoutDiagnostics = () => {
@@ -1660,7 +1660,7 @@ export function initSandboxRuntimeModular(): void {
       }
       const classified = classifyRuntimeScriptFailure(normalized);
       postRuntimeMessage({
-        source: "hf-preview",
+        source: "sc-preview",
         type: "diagnostic",
         code: classified.code,
         details: {
@@ -1682,7 +1682,7 @@ export function initSandboxRuntimeModular(): void {
       }
       const classified = classifyRuntimeScriptFailure(normalized);
       postRuntimeMessage({
-        source: "hf-preview",
+        source: "sc-preview",
         type: "diagnostic",
         code: `${classified.code}_unhandled_rejection`,
         details: {
@@ -1794,7 +1794,7 @@ export function initSandboxRuntimeModular(): void {
       swallow("runtime.init.site7", err);
     }
     postRuntimeMessage({
-      source: "hf-preview",
+      source: "sc-preview",
       type: "diagnostic",
       code: "timeline_loop_guard_rebind",
       details: {
@@ -1869,7 +1869,7 @@ export function initSandboxRuntimeModular(): void {
       if (rebindTimelineFromResolution(resolution, "manual")) {
         metadataRebindApplied = true;
         postRuntimeMessage({
-          source: "hf-preview",
+          source: "sc-preview",
           type: "diagnostic",
           code: "timeline_rebind_after_media_metadata",
           details: {
@@ -1947,7 +1947,7 @@ export function initSandboxRuntimeModular(): void {
       mediaEl.addEventListener("loadedmetadata", scheduleMetadataDurationHydration);
       mediaEl.addEventListener("durationchange", scheduleMetadataDurationHydration);
       // Web Audio eligibility, reported at DISCOVERY rather than only at
-      // schedule time. `hyperframes check` seeks, it never calls play(), so a
+      // schedule time. `smashcut check` seeks, it never calls play(), so a
       // diagnostic raised from the transport would be invisible to the one
       // gate whose job is to surface exactly this class of silent failure.
       // Bound twice on purpose: now, for a `src`/committed-`currentSrc`
@@ -2065,7 +2065,7 @@ export function initSandboxRuntimeModular(): void {
   const nodeAffectsAudio = (node: HTMLElement): boolean =>
     node.matches("audio[data-start]") || node.querySelector("audio[data-start]") !== null;
 
-  // An `<hf-audio-group>` carries no `data-start`, so it is never among
+  // An `<sc-audio-group>` carries no `data-start`, so it is never among
   // `visibilityNodes` above — group mute needs its own small diff pass.
   // Preview-side only (render reads the group's `data-hidden` directly at
   // export time, per B4); this just keeps the live WebAudio group bus in
@@ -2221,7 +2221,7 @@ export function initSandboxRuntimeModular(): void {
         onAutoplayBlocked: () => {
           if (state.mediaAutoplayBlockedPosted) return;
           state.mediaAutoplayBlockedPosted = true;
-          postRuntimeMessage({ source: "hf-preview", type: "media-autoplay-blocked" });
+          postRuntimeMessage({ source: "sc-preview", type: "media-autoplay-blocked" });
         },
       });
     }
@@ -2243,7 +2243,7 @@ export function initSandboxRuntimeModular(): void {
     state.bridgeLastPostedMuted = state.bridgeMuted;
     state.bridgeLastPostedAt = now;
     postRuntimeMessage({
-      source: "hf-preview",
+      source: "sc-preview",
       type: "state",
       frame,
       isPlaying: state.isPlaying,
@@ -2277,7 +2277,7 @@ export function initSandboxRuntimeModular(): void {
       const width = w ? parseInt(w, 10) : 0;
       const height = h ? parseInt(h, 10) : 0;
       if (width > 0 && height > 0) {
-        postRuntimeMessage({ source: "hf-preview", type: "stage-size", width, height });
+        postRuntimeMessage({ source: "sc-preview", type: "stage-size", width, height });
       }
     }
     bindRootTimelineIfAvailable();
@@ -2434,7 +2434,7 @@ export function initSandboxRuntimeModular(): void {
         details: Record<string, string | number | boolean | null | string[]>;
       }) => {
         postRuntimeMessage({
-          source: "hf-preview",
+          source: "sc-preview",
           type: "diagnostic",
           code,
           details,
@@ -2686,16 +2686,16 @@ export function initSandboxRuntimeModular(): void {
   patchWebGLVideoTextureCompat();
   // Lets the engine re-render GPU compositions after it injects decoded video
   // frames, so video-textured WebGL/WebGPU scenes sample the correct frame.
-  window.__hfReseekGpu = (time: number) => {
+  window.__scReseekGpu = (time: number) => {
     const t = Math.max(0, Number(time) || 0);
-    window.__hfThreeTime = t;
-    window.__hfTypegpuTime = t;
+    window.__scThreeTime = t;
+    window.__scTypegpuTime = t;
     forceDispatchSeekEvent(t);
   };
-  window.__hfWaitForSeekCompletion = waitForSeekCompletion;
+  window.__scWaitForSeekCompletion = waitForSeekCompletion;
   runtimeCleanupCallbacks.push(() => {
-    if (window.__hfWaitForSeekCompletion === waitForSeekCompletion) {
-      delete window.__hfWaitForSeekCompletion;
+    if (window.__scWaitForSeekCompletion === waitForSeekCompletion) {
+      delete window.__scWaitForSeekCompletion;
     }
   });
   installRuntimeErrorDiagnostics();
@@ -2739,7 +2739,7 @@ export function initSandboxRuntimeModular(): void {
         );
         // eslint-disable-next-line no-console -- loud author-facing warning; this render would otherwise freeze at t=0
         console.warn(
-          `[hyperframes] Root timeline not bound — render will freeze at t=0. ` +
+          `[smashcut] Root timeline not bound — render will freeze at t=0. ` +
             (rootCompositionId
               ? `Root data-composition-id is "${rootCompositionId}" but window.__timelines has no such key. `
               : `Root composition element has no data-composition-id. `) +
@@ -2760,16 +2760,16 @@ export function initSandboxRuntimeModular(): void {
   const waitForTimelinesBuilt = () => {
     if (timelinesBuiltListener) return;
     const onTimelinesBuilt = () => {
-      window.removeEventListener("hf-timelines-built", onTimelinesBuilt);
+      window.removeEventListener("sc-timelines-built", onTimelinesBuilt);
       timelinesBuiltListener = null;
       maybePublishRenderReady();
     };
     timelinesBuiltListener = onTimelinesBuilt;
-    window.addEventListener("hf-timelines-built", onTimelinesBuilt);
+    window.addEventListener("sc-timelines-built", onTimelinesBuilt);
   };
   registerRuntimeCleanup(() => {
     if (!timelinesBuiltListener) return;
-    window.removeEventListener("hf-timelines-built", timelinesBuiltListener);
+    window.removeEventListener("sc-timelines-built", timelinesBuiltListener);
     timelinesBuiltListener = null;
   });
 
@@ -2778,7 +2778,7 @@ export function initSandboxRuntimeModular(): void {
       window.__renderReady = false;
       return;
     }
-    if (window.__hfTimelinesBuilding) {
+    if (window.__scTimelinesBuilding) {
       window.__renderReady = false;
       waitForTimelinesBuilt();
       return;
@@ -2798,7 +2798,7 @@ export function initSandboxRuntimeModular(): void {
 
   // When the GSAP tween-batching interceptor (HF_EARLY_STUB, fileServer.ts) is
   // active, composition scripts queue tl.to() calls instead of executing them
-  // synchronously. Wait for the "hf-timelines-built" event before the first
+  // synchronously. Wait for the "sc-timelines-built" event before the first
   // binding attempt so the transport clock receives the finished timeline
   // duration instead of permanently publishing duration=0.
   maybePublishRenderReady();
@@ -3161,7 +3161,7 @@ export function initSandboxRuntimeModular(): void {
         colorGrading.redrawAnimated();
       }
 
-      // Looping is handled at the player layer (<hyperframes-player>),
+      // Looping is handled at the player layer (<smashcut-player>),
       // not the runtime. The clock pauses at duration; GSAP's repeat:-1
       // is bypassed because we drive tl.totalTime(t) directly. The
       // parent observes isPlaying=false at end and re-issues seek(0)+play()
@@ -3554,11 +3554,11 @@ export function initSandboxRuntimeModular(): void {
     state.injectedCompScripts = [];
     state.capturedTimeline = null;
     reconcileTimelineAfterRuntimeData = () => undefined;
-    if (window.__hfRuntimeTeardown === teardown) {
-      window.__hfRuntimeTeardown = null;
+    if (window.__scRuntimeTeardown === teardown) {
+      window.__scRuntimeTeardown = null;
     }
   };
-  window.__hfRuntimeTeardown = teardown;
+  window.__scRuntimeTeardown = teardown;
   state.beforeUnloadHandler = teardown;
   window.addEventListener("beforeunload", state.beforeUnloadHandler);
 }

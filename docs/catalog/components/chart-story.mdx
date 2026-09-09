@@ -16,7 +16,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 ```html chart-story.html
 <!doctype html>
 <!--
-  chart-story: HyperFrames video primitive (proof and stats / prove)
+  chart-story: SmashCut video primitive (proof and stats / prove)
 
   One chart builds from data in reading order and lands the exact supplied
   values. Bars grow staggered from the baseline, a line draws left to right
@@ -149,8 +149,8 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
             var root = document.getElementById("root");
             var stage = root.querySelector(".cs-stage");
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             var typeOptions = { bars: 1, line: 1, donut: 1, progress: 1 };
@@ -759,7 +759,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 
 ## Install
 
-<InstallCommand command="npx hyperframes add chart-story" item="chart-story" />
+<InstallCommand command="npx smashcut add chart-story" item="chart-story" />
 
 That writes one file: `compositions/components/chart-story.html`.
 
@@ -803,7 +803,7 @@ defaults, so this behaves exactly like the preview above until you change one:
 ```html
 <!doctype html>
 <!--
-  chart-story: HyperFrames video primitive (proof and stats / prove)
+  chart-story: SmashCut video primitive (proof and stats / prove)
 
   One chart builds from data in reading order and lands the exact supplied
   values. Bars grow staggered from the baseline, a line draws left to right
@@ -936,8 +936,8 @@ defaults, so this behaves exactly like the preview above until you change one:
             var root = document.getElementById("root");
             var stage = root.querySelector(".cs-stage");
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             var typeOptions = { bars: 1, line: 1, donut: 1, progress: 1 };

@@ -16,7 +16,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 ```html drift-hold.html
 <!doctype html>
 <!--
-  drift-hold: HyperFrames video primitive (camera / ambient / hold)
+  drift-hold: SmashCut video primitive (camera / ambient / hold)
 
   Concept: a centered content card never becomes fully static. Sub-degree
   rotation, restrained scale breathing, and a soft light sweep each follow
@@ -156,8 +156,8 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
             var sweep = root.querySelector(".dh-sweep");
             var label = root.querySelector(".dh-label");
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             var text = vars.text == null ? "Always alive" : String(vars.text);
@@ -212,7 +212,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 
 ## Install
 
-<InstallCommand command="npx hyperframes add drift-hold" item="drift-hold" />
+<InstallCommand command="npx smashcut add drift-hold" item="drift-hold" />
 
 That writes one file: `compositions/components/drift-hold.html`.
 
@@ -251,7 +251,7 @@ defaults, so this behaves exactly like the preview above until you change one:
 ```html
 <!doctype html>
 <!--
-  drift-hold: HyperFrames video primitive (camera / ambient / hold)
+  drift-hold: SmashCut video primitive (camera / ambient / hold)
 
   Concept: a centered content card never becomes fully static. Sub-degree
   rotation, restrained scale breathing, and a soft light sweep each follow
@@ -391,8 +391,8 @@ defaults, so this behaves exactly like the preview above until you change one:
             var sweep = root.querySelector(".dh-sweep");
             var label = root.querySelector(".dh-label");
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             var text = vars.text == null ? "Always alive" : String(vars.text);

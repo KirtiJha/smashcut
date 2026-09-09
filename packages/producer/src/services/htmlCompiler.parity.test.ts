@@ -7,7 +7,7 @@ import {
   bundleToSingleHtml,
   extractCompiledHtmlParityContract,
   injectScriptsIntoHtml,
-} from "@hyperframes/core/compiler";
+} from "@smashcut/core/compiler";
 // Deep import: the mount path is not part of core's published export map (it is
 // bundled into the runtime IIFE, not imported by consumers). Same shape as
 // engine/src/services/videoFrameExtractor.test.ts reaching into core's runtime.
@@ -31,13 +31,13 @@ afterEach(() => {
   for (const dir of tempDirs.splice(0)) rmSync(dir, { recursive: true, force: true });
   document.head.innerHTML = "";
   document.body.innerHTML = "";
-  delete (window as Window & { __hfVariablesByComp?: unknown }).__hfVariablesByComp;
+  delete (window as Window & { __scVariablesByComp?: unknown }).__scVariablesByComp;
   delete (window as Window & { __timelines?: unknown }).__timelines;
   vi.restoreAllMocks();
 });
 
 function project(files: Record<string, string>): string {
-  const dir = mkdtempSync(join(tmpdir(), "hf-compiler-parity-"));
+  const dir = mkdtempSync(join(tmpdir(), "sc-compiler-parity-"));
   tempDirs.push(dir);
   for (const [relative, content] of Object.entries(files)) {
     const path = join(dir, relative);

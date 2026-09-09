@@ -30,8 +30,8 @@ import {
   rewriteInlineStyleAssetUrls,
   type ResolvedDuration,
   type UnresolvedElement,
-} from "@hyperframes/core";
-import { MAX_AUDIO_GAIN } from "@hyperframes/core/audio-gain";
+} from "@smashcut/core";
+import { MAX_AUDIO_GAIN } from "@smashcut/core/audio-gain";
 import {
   assignBundledRuntimeCompositionIds,
   assignMediaRenderIds,
@@ -42,12 +42,12 @@ import {
   emitRootCompositionVariableStyles,
   readDeclaredDefaults,
   parseHostVariableValues,
-} from "@hyperframes/core/compiler";
+} from "@smashcut/core/compiler";
 import {
   checkSubCompositionUsability,
   type ParsableDocumentLike,
-} from "@hyperframes/parsers/sub-composition-validity";
-import { isUnresolvedAssetPlaceholder } from "@hyperframes/parsers/asset-resolution";
+} from "@smashcut/parsers/sub-composition-validity";
+import { isUnresolvedAssetPlaceholder } from "@smashcut/parsers/asset-resolution";
 import { extractMediaMetadata, extractAudioMetadata } from "../utils/ffprobe.js";
 import { isPathInside, toExternalAssetKey } from "../utils/paths.js";
 import { collectRenderMedia } from "./renderMediaCollector.js";
@@ -61,7 +61,7 @@ import {
   assertMediaPayload,
   NotMediaPayloadError,
   probeMediaProfile,
-} from "@hyperframes/engine";
+} from "@smashcut/engine";
 import {
   downloadToTemp,
   fetchPublicHttpsText,
@@ -75,8 +75,8 @@ import {
   normalizeSystemFontPrimaryFamilies,
 } from "./deterministicFonts.js";
 import { prepareAnimatedGifInputs } from "./animatedGifPrep.js";
-import { createStudioPositionSeekReapplyScript } from "@hyperframes/studio-server/manual-edits-render-script";
-import { getPositionEditsRenderScript } from "@hyperframes/core/runtime/position-edits-render";
+import { createStudioPositionSeekReapplyScript } from "@smashcut/studio-server/manual-edits-render-script";
+import { getPositionEditsRenderScript } from "@smashcut/core/runtime/position-edits-render";
 import { defaultLogger, type ProducerLogger } from "../logger.js";
 import { assertAssetMediaTypeProfile } from "./assetMediaType.js";
 import { withMediaProbeSlot } from "../utils/mediaProbeConcurrency.js";
@@ -107,7 +107,7 @@ export interface CompiledComposition {
   hasAncestorBackgroundImage: boolean;
 }
 
-const INFERRED_MEDIA_DURATION_ATTR = "data-hf-inferred-duration";
+const INFERRED_MEDIA_DURATION_ATTR = "data-sc-inferred-duration";
 
 /** Adapts linkedom's `parseHTML` to the `checkSubCompositionUsability` contract. */
 function parseSubCompHtmlForValidity(html: string): ParsableDocumentLike {
@@ -115,7 +115,7 @@ function parseSubCompHtmlForValidity(html: string): ParsableDocumentLike {
 }
 
 export function injectSdkPositionEditsRenderScript(html: string): string {
-  if (!html.includes("data-hf-edit-base-x") && !html.includes("data-hf-edit-base-y")) {
+  if (!html.includes("data-sc-edit-base-x") && !html.includes("data-sc-edit-base-y")) {
     return html;
   }
   const scriptBody = getPositionEditsRenderScript().replace(/<\/script/gi, "<\\/script");
@@ -172,7 +172,7 @@ class EmptyCompositionError extends Error {
  * `html` (including nested sub-compositions) and verify each resolves to a
  * usable file — exists, non-empty, parses to HTML with renderable content.
  * Uses the same `checkSubCompositionUsability` helper the tolerant inliner
- * and `hyperframes lint` use, so all three agree on what counts as usable.
+ * and `smashcut lint` use, so all three agree on what counts as usable.
  *
  * Throws {@link EmptyCompositionError} naming every offending file at once
  * (not just the first one hit) if any reference is unusable. Call this
@@ -194,7 +194,7 @@ function assertSubCompositionsUsable(
   for (const el of hosts) {
     const srcPath = el.getAttribute("data-composition-src");
     if (!srcPath) continue;
-    if (isUnresolvedAssetPlaceholder(srcPath)) continue; // __UPPER__ placeholder or unresolved templating token — not a real reference (shared with lint via @hyperframes/parsers)
+    if (isUnresolvedAssetPlaceholder(srcPath)) continue; // __UPPER__ placeholder or unresolved templating token — not a real reference (shared with lint via @smashcut/parsers)
 
     const filePath = resolve(projectDir, srcPath);
     // Circular reference guard. parseSubCompositions (below) silently
@@ -404,7 +404,7 @@ export function detectAncestorBackgroundImage(html: string): boolean {
 }
 
 const SHADER_TRANSITION_USAGE_PATTERN =
-  /\b(?:(?:window|globalThis)\s*\.\s*)?HyperShader\s*\.\s*init\s*\(|\b__hf\s*\.\s*transitions\s*=/;
+  /\b(?:(?:window|globalThis)\s*\.\s*)?HyperShader\s*\.\s*init\s*\(|\b__sc\s*\.\s*transitions\s*=/;
 
 export function detectShaderTransitionUsage(html: string): boolean {
   let scriptMatch: RegExpExecArray | null;
@@ -818,7 +818,7 @@ class ProducerHostIdentityMap extends Map<Element, BundledHostCompositionIdentit
     // variables key are fixed before any content is processed.
     const authoredCompositionId =
       (
-        host.getAttribute("data-hf-original-composition-id") ||
+        host.getAttribute("data-sc-original-composition-id") ||
         host.getAttribute("data-composition-id") ||
         ""
       ).trim() || null;
@@ -832,7 +832,7 @@ class ProducerHostIdentityMap extends Map<Element, BundledHostCompositionIdentit
     let runtimeCompositionId: string;
     do {
       instanceIndex += 1;
-      runtimeCompositionId = `${authoredCompositionId}__hf${instanceIndex}`;
+      runtimeCompositionId = `${authoredCompositionId}__sc${instanceIndex}`;
     } while (
       Array.from(this.#document.querySelectorAll("[data-composition-id]")).some(
         (element) =>
@@ -841,7 +841,7 @@ class ProducerHostIdentityMap extends Map<Element, BundledHostCompositionIdentit
     );
     this.#lateInstanceByCompositionId.set(authoredCompositionId, instanceIndex);
 
-    host.setAttribute("data-hf-original-composition-id", authoredCompositionId);
+    host.setAttribute("data-sc-original-composition-id", authoredCompositionId);
     host.setAttribute("data-composition-id", runtimeCompositionId);
     const identity = { authoredCompositionId, runtimeCompositionId };
     this.set(host, identity);
@@ -927,7 +927,7 @@ function coalesceHeadStylesAndBodyScripts(html: string): string {
 
 /**
  * Inline sub-composition HTML into the main document using the shared
- * inlining logic from @hyperframes/core. This wrapper handles the
+ * inlining logic from @smashcut/core. This wrapper handles the
  * producer-specific concerns: parsing HTML via linkedom, resolving
  * compositions from the pre-compiled map or disk, and setting explicit
  * pixel dimensions on host elements for headless rendering.
@@ -962,8 +962,8 @@ function inlineSubCompositions(
   // map above. When the same sub-composition (same authored
   // data-composition-id) is mounted more than once — the reusable-template
   // pattern from issue #2064 — each host is rewritten to a unique runtime id
-  // (`card__hf1`, `card__hf2`). Without this, every instance shares one
-  // `__hfVariablesByComp` key and one scope selector: the last mount's
+  // (`card__sc1`, `card__sc2`). Without this, every instance shares one
+  // `__scVariablesByComp` key and one scope selector: the last mount's
   // data-variable-values clobbers the earlier ones and all-but-one instance
   // renders blank. #2066 fixed the single-instance case but left this
   // divergence (snapshot/preview correct, render wrong).
@@ -1079,7 +1079,7 @@ function inlineSubCompositions(
 
   // Append collected inline scripts to <body>. The per-instance variables
   // table MUST be written before the sub-comp scripts run — their scoped
-  // getVariables() reads window.__hfVariablesByComp[compId]. htmlBundler
+  // getVariables() reads window.__scVariablesByComp[compId]. htmlBundler
   // (preview/snapshot) prepends this; the render path emitted only the CSS
   // custom properties (below) and dropped the JS table, so getVariables()
   // returned {} during render and parametrized sub-comps shipped blank/default
@@ -1149,12 +1149,12 @@ function injectTextRenderingRule(html: string): string {
   const head = document.querySelector("head");
   if (!head) return html;
 
-  if (document.querySelector("style[data-hyperframes-text-rendering]")) {
+  if (document.querySelector("style[data-smashcut-text-rendering]")) {
     return html;
   }
 
   const styleEl = document.createElement("style");
-  styleEl.setAttribute("data-hyperframes-text-rendering", "true");
+  styleEl.setAttribute("data-smashcut-text-rendering", "true");
   styleEl.textContent = "html,body,*{text-rendering:geometricPrecision}";
   head.insertBefore(styleEl, head.firstChild);
 
@@ -1433,7 +1433,7 @@ export async function localizeRemoteMediaSources(
  *
  * This bites agent-pipeline-generated compositions (astral / daphne /
  * hyperion `multi-v2` outputs) which render directly without going through
- * `hyperframes publish`'s archive-time localize step.
+ * `smashcut publish`'s archive-time localize step.
  */
 /** @internal exported for unit testing only */
 export async function localizeRemoteImageSources(
@@ -1846,7 +1846,7 @@ export interface CompileForRenderOptions {
    * Render-time variable overrides (`--variables`). Layered over declared
    * defaults in the compile-time CSS custom-property stylesheet so eval-time
    * reads (GSAP .from immediateRender) see the overridden value — the
-   * `window.__hfVariables` injection covers script reads, not var() in CSS.
+   * `window.__scVariables` injection covers script reads, not var() in CSS.
    */
   variables?: Record<string, unknown>;
 }
@@ -1993,10 +1993,10 @@ export async function compileForRender(
   // re-asserts the CSS custom property var() form after each seek so dragged
   // positions survive frame-by-frame rendering without a JSON sidecar.
   const HF_POSITION_ATTRS = [
-    'data-hf-studio-path-offset="true"',
-    'data-hf-studio-box-size="true"',
-    'data-hf-studio-rotation="true"',
-    'data-hf-studio-motion="',
+    'data-sc-studio-path-offset="true"',
+    'data-sc-studio-box-size="true"',
+    'data-sc-studio-rotation="true"',
+    'data-sc-studio-motion="',
   ];
   const hasPositionEdits = HF_POSITION_ATTRS.some((attr) => assembledHtml.includes(attr));
   const htmlWithPositionScript = hasPositionEdits
@@ -2079,7 +2079,7 @@ export async function compileForRender(
   // Read the media list off the inlined document rather than merging the
   // per-file lists. Merging deduplicated by element id, which is only unique
   // within one composition file: two scenes declaring `<video id="clip">` — or
-  // two bare `<video>`s, both auto-numbered `hf-video-0` — collapsed into one
+  // two bare `<video>`s, both auto-numbered `sc-video-0` — collapsed into one
   // entry and injected frames onto whichever element came first. See #3340.
   const { videos, audios, images } = collectRenderMedia(html);
 
@@ -2151,7 +2151,7 @@ export async function compileForRender(
  * This catches videos/audios whose `src` is set dynamically via JS
  * (e.g. `document.getElementById("pip-video").src = URL`), which the
  * static regex parsers miss because the HTML has `src=""`. Clips are keyed
- * by `data-hf-render-id` when present — author ids collide across inlined
+ * by `data-sc-render-id` when present — author ids collide across inlined
  * scenes, and this snapshot is the only identity those empty-src elements get.
  */
 export interface BrowserMediaElement {
@@ -2198,7 +2198,7 @@ export async function discoverMediaFromBrowser(page: Page): Promise<BrowserMedia
     const autoImageIds = new Map<Element, string>();
     let autoImageId = 0;
     document.querySelectorAll("img[src]").forEach((image) => {
-      if (!image.id) autoImageIds.set(image, `hf-img-${autoImageId++}`);
+      if (!image.id) autoImageIds.set(image, `sc-img-${autoImageId++}`);
     });
 
     const mediaEls = new Set<Element>(
@@ -2223,7 +2223,7 @@ export async function discoverMediaFromBrowser(page: Page): Promise<BrowserMedia
       // and lives or dies on this snapshot — keying by author id collapses
       // colliding scenes onto one clip (residual of #3340).
       const id =
-        htmlEl.getAttribute("data-hf-render-id") ||
+        htmlEl.getAttribute("data-sc-render-id") ||
         htmlEl.id ||
         (isImage ? autoImageIds.get(htmlEl) : undefined);
       if (!id) return;
@@ -2233,7 +2233,7 @@ export async function discoverMediaFromBrowser(page: Page): Promise<BrowserMedia
       const start = parseFloat(htmlEl.getAttribute("data-start") || "0");
       const endRaw = htmlEl.getAttribute("data-end");
       const durationRaw = htmlEl.getAttribute("data-duration");
-      const durationInferred = htmlEl.hasAttribute("data-hf-inferred-duration");
+      const durationInferred = htmlEl.hasAttribute("data-sc-inferred-duration");
       const intrinsicDuration = isImage
         ? 0
         : (htmlEl as HTMLVideoElement | HTMLAudioElement).duration;
@@ -2298,7 +2298,7 @@ export async function discoverAudioVolumeAutomationFromTimeline(
   const rawWindows = await page.evaluate((ids: string[]) => {
     return ids.flatMap((id) => {
       const el =
-        window.__hfMediaEl?.(id) ??
+        window.__scMediaEl?.(id) ??
         document.getElementById(id) ??
         document.getElementById(id.replace(/-audio$/, ""));
       if (!(el instanceof HTMLAudioElement) && !(el instanceof HTMLVideoElement)) return [];
@@ -2389,7 +2389,7 @@ export async function discoverAudioVolumeAutomationFromTimeline(
 
       for (const { id, start, end } of clips) {
         const el =
-          window.__hfMediaEl?.(id) ??
+          window.__scMediaEl?.(id) ??
           document.getElementById(id) ??
           document.getElementById(id.replace(/-audio$/, ""));
         if (!(el instanceof HTMLAudioElement) && !(el instanceof HTMLVideoElement)) continue;
@@ -2460,7 +2460,7 @@ export interface VideoVisibilityWindow {
 
 /**
  * Seek the GSAP timeline to discover when each video's parent scene is visible.
- * Only processes videos with the data-hf-auto-start sentinel (auto-injected timing).
+ * Only processes videos with the data-sc-auto-start sentinel (auto-injected timing).
  */
 export async function discoverVideoVisibilityFromTimeline(
   page: Page,
@@ -2470,7 +2470,7 @@ export async function discoverVideoVisibilityFromTimeline(
 
   return page.evaluate((duration: number) => {
     const results: { videoId: string; visibleStart: number; visibleEnd: number }[] = [];
-    const videos = document.querySelectorAll("video[data-hf-auto-start]");
+    const videos = document.querySelectorAll("video[data-sc-auto-start]");
     if (videos.length === 0) return results;
 
     const timelines = (window as unknown as { __timelines?: Record<string, unknown> }).__timelines;
@@ -2508,7 +2508,7 @@ export async function discoverVideoVisibilityFromTimeline(
       lastVisible: number | null;
     }[] = [];
     for (const videoEl of videos) {
-      const id = videoEl.getAttribute?.("data-hf-render-id") || videoEl.id;
+      const id = videoEl.getAttribute?.("data-sc-render-id") || videoEl.id;
       if (!id) continue;
       entries.push({
         id,

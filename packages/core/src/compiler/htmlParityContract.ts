@@ -112,11 +112,11 @@ function resources(document: Document): HtmlParityResource[] {
     for (const attribute of ["src", "href", "poster"] as const) {
       const value = element.getAttribute(attribute)?.trim();
       if (!value) continue;
-      if (element.tagName.toLowerCase() === "script" && /hyperframes|runtime/i.test(value))
+      if (element.tagName.toLowerCase() === "script" && /smashcut|runtime/i.test(value))
         continue;
       resources.push({
         identity:
-          element.getAttribute("data-hf-id") ??
+          element.getAttribute("data-sc-id") ??
           element.getAttribute("id") ??
           `${element.tagName.toLowerCase()}[${index}]`,
         attribute,
@@ -136,7 +136,7 @@ export function extractCompiledHtmlParityContract(html: string): CompiledHtmlPar
     const resolved = timing(element);
     return {
       id: element.getAttribute("data-composition-id") ?? "",
-      originalId: element.getAttribute("data-hf-original-composition-id"),
+      originalId: element.getAttribute("data-sc-original-composition-id"),
       ...resolved,
       width: finiteAttribute(element, "data-width"),
       height: finiteAttribute(element, "data-height"),
@@ -151,7 +151,7 @@ export function extractCompiledHtmlParityContract(html: string): CompiledHtmlPar
     .filter((element) => !element.hasAttribute("data-composition-id"))
     .map((element, index) => ({
       identity:
-        element.getAttribute("data-hf-id") ??
+        element.getAttribute("data-sc-id") ??
         element.getAttribute("id") ??
         `${element.tagName.toLowerCase()}[${index}]`,
       ...timing(element),
@@ -162,7 +162,7 @@ export function extractCompiledHtmlParityContract(html: string): CompiledHtmlPar
     authoredStyleSignatures: styleSignatures(document),
     parityFontFamilies: parityFontFamilies(html),
     resources: resources(document),
-    runtimeBootstrap: /__hyperframes|data-hyperframes-(?:preview-)?runtime/i.test(html),
-    variableBootstrap: /__hfVariables(?:ByComp)?/.test(html),
+    runtimeBootstrap: /__smashcut|data-smashcut-(?:preview-)?runtime/i.test(html),
+    variableBootstrap: /__scVariables(?:ByComp)?/.test(html),
   };
 }

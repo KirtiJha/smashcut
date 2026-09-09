@@ -20,18 +20,18 @@ body {
   overflow: hidden;
 }
 
-.hf-color-grading-number::-webkit-outer-spin-button,
-.hf-color-grading-number::-webkit-inner-spin-button {
+.sc-color-grading-number::-webkit-outer-spin-button,
+.sc-color-grading-number::-webkit-inner-spin-button {
   margin: 0;
   appearance: none;
 }
 
-.hf-color-grading-number {
+.sc-color-grading-number {
   -moz-appearance: textfield;
   appearance: textfield;
 }
 
-.hf-color-grading-range {
+.sc-color-grading-range {
   height: 1.5rem;
   cursor: default;
   -webkit-appearance: none;
@@ -39,18 +39,18 @@ body {
   background: transparent;
 }
 
-.hf-color-grading-range:disabled {
+.sc-color-grading-range:disabled {
   cursor: not-allowed;
   opacity: 0.5;
 }
 
-.hf-color-grading-range::-webkit-slider-runnable-track {
+.sc-color-grading-range::-webkit-slider-runnable-track {
   height: 1.25rem;
   border: 0;
   background: transparent;
 }
 
-.hf-color-grading-range::-webkit-slider-thumb {
+.sc-color-grading-range::-webkit-slider-thumb {
   width: 0.625rem;
   height: 1rem;
   margin-top: 0.125rem;
@@ -65,13 +65,13 @@ body {
   cursor: default;
 }
 
-.hf-color-grading-range::-moz-range-track {
+.sc-color-grading-range::-moz-range-track {
   height: 1.25rem;
   border: 0;
   background: transparent;
 }
 
-.hf-color-grading-range::-moz-range-thumb {
+.sc-color-grading-range::-moz-range-thumb {
   width: 0.625rem;
   height: 1rem;
   border: 0;
@@ -83,41 +83,41 @@ body {
   cursor: default;
 }
 
-.hf-color-grading-range:focus-visible {
+.sc-color-grading-range:focus-visible {
   outline: none;
 }
 
-.hf-color-grading-range:focus-visible::-webkit-slider-thumb {
+.sc-color-grading-range:focus-visible::-webkit-slider-thumb {
   box-shadow:
     0 0 0 2px #0c0c0e,
     0 0 0 4px rgba(60, 230, 172, 0.22),
     0 1px 4px rgba(0, 0, 0, 0.55);
 }
 
-.hf-color-grading-range:focus-visible::-moz-range-thumb {
+.sc-color-grading-range:focus-visible::-moz-range-thumb {
   box-shadow:
     0 0 0 2px #0c0c0e,
     0 0 0 4px rgba(60, 230, 172, 0.22),
     0 1px 4px rgba(0, 0, 0, 0.55);
 }
 
-.hf-preview-volume-range {
+.sc-preview-volume-range {
   height: 1.5rem;
   cursor: pointer;
   appearance: none;
   background: transparent;
 }
 
-.hf-preview-volume-range:disabled {
+.sc-preview-volume-range:disabled {
   opacity: 0.3;
 }
 
-.hf-preview-volume-range::-webkit-slider-runnable-track {
+.sc-preview-volume-range::-webkit-slider-runnable-track {
   height: 2px;
   background: transparent;
 }
 
-.hf-preview-volume-range::-webkit-slider-thumb {
+.sc-preview-volume-range::-webkit-slider-thumb {
   width: 0.5rem;
   height: 0.5rem;
   margin-top: -3px;
@@ -131,18 +131,18 @@ body {
   cursor: grab;
 }
 
-.hf-preview-volume-range::-webkit-slider-thumb:active {
+.sc-preview-volume-range::-webkit-slider-thumb:active {
   cursor: grabbing;
 }
 
-.hf-preview-volume-range::-moz-range-track,
-.hf-preview-volume-range::-moz-range-progress {
+.sc-preview-volume-range::-moz-range-track,
+.sc-preview-volume-range::-moz-range-progress {
   height: 2px;
   border: 0;
   background: transparent;
 }
 
-.hf-preview-volume-range::-moz-range-thumb {
+.sc-preview-volume-range::-moz-range-thumb {
   width: 0.5rem;
   height: 0.5rem;
   border: 0;
@@ -154,16 +154,16 @@ body {
   cursor: grab;
 }
 
-.hf-preview-volume-range::-moz-range-thumb:active {
+.sc-preview-volume-range::-moz-range-thumb:active {
   cursor: grabbing;
 }
 
-.hf-preview-volume-range:focus-visible {
+.sc-preview-volume-range:focus-visible {
   outline: none;
 }
 
-.hf-preview-volume-range:focus-visible::-webkit-slider-thumb,
-.hf-preview-volume-range:focus-visible::-moz-range-thumb {
+.sc-preview-volume-range:focus-visible::-webkit-slider-thumb,
+.sc-preview-volume-range:focus-visible::-moz-range-thumb {
   box-shadow:
     0 0 0 2px #0a0a0a,
     0 0 0 4px rgba(60, 230, 172, 0.4),
@@ -336,10 +336,10 @@ body {
 }
 
 /*
- * HyperFrames brand loader. Shared by preview overlays that need a calm,
+ * SmashCut brand loader. Shared by preview overlays that need a calm,
  * branded loading state instead of a generic spinner.
  */
-.hf-loader {
+.sc-loader {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -355,7 +355,7 @@ body {
   -webkit-user-drag: none;
 }
 
-.hf-frame {
+.sc-frame {
   display: grid;
   place-items: center;
   width: 100%;
@@ -365,7 +365,7 @@ body {
   background: rgba(0, 0, 0, 0.52);
 }
 
-.hf-loader-mark-frame {
+.sc-loader-mark-frame {
   display: grid;
   place-items: center;
   overflow: visible;
@@ -375,7 +375,7 @@ body {
   -webkit-user-drag: none;
 }
 
-.hf-loader-mark {
+.sc-loader-mark {
   display: block;
   overflow: visible;
   filter: drop-shadow(0 0 7px rgba(79, 219, 94, 0.2));
@@ -384,7 +384,7 @@ body {
   -webkit-user-drag: none;
 }
 
-.hf-loader-title {
+.sc-loader-title {
   font-family:
     Inter,
     -apple-system,
@@ -394,18 +394,18 @@ body {
   font-size: 1rem;
   font-weight: 600;
   letter-spacing: 0;
-  color: var(--hf-heading, #f4f4f5);
+  color: var(--sc-heading, #f4f4f5);
   max-width: 100%;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-.hf-loader-detail {
+.sc-loader-detail {
   max-width: 32rem;
   min-height: 2.5rem;
   overflow: hidden;
-  color: var(--hf-text-secondary, rgba(244, 244, 245, 0.68));
+  color: var(--sc-text-secondary, rgba(244, 244, 245, 0.68));
   font-family:
     Inter,
     -apple-system,
@@ -416,20 +416,20 @@ body {
   line-height: 1.6;
 }
 
-.hf-loader-mono {
+.sc-loader-mono {
   width: min(36rem, 100%);
   min-height: 1.5rem;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  color: var(--hf-text-tertiary, rgba(244, 244, 245, 0.46));
+  color: var(--sc-text-tertiary, rgba(244, 244, 245, 0.46));
   font-family: "IBM Plex Mono", "SF Mono", "Fira Code", monospace;
   font-size: 0.75rem;
   letter-spacing: 0;
   font-variant-numeric: tabular-nums;
 }
 
-.hf-loader-progress {
+.sc-loader-progress {
   width: min(18rem, 72vw);
   height: 0.375rem;
   overflow: hidden;
@@ -437,7 +437,7 @@ body {
   background: rgba(255, 255, 255, 0.1);
 }
 
-@keyframes hf-thumb-fade {
+@keyframes sc-thumb-fade {
   from {
     opacity: 0;
   }
@@ -446,7 +446,7 @@ body {
   }
 }
 
-.hf-loader-progress__fill {
+.sc-loader-progress__fill {
   width: 100%;
   height: 100%;
   transform: scaleX(0);
@@ -457,7 +457,7 @@ body {
 }
 
 /* Toast enter/exit (StudioToast) */
-@keyframes hf-toast-in {
+@keyframes sc-toast-in {
   from {
     opacity: 0;
     transform: translateY(8px);
@@ -468,7 +468,7 @@ body {
   }
 }
 
-@keyframes hf-toast-out {
+@keyframes sc-toast-out {
   from {
     opacity: 1;
     transform: translateY(0);
@@ -479,26 +479,26 @@ body {
   }
 }
 
-.hf-toast-enter {
-  animation: hf-toast-in 160ms ease-out;
+.sc-toast-enter {
+  animation: sc-toast-in 160ms ease-out;
 }
 
-.hf-toast-exit {
-  animation: hf-toast-out 160ms ease-in forwards;
+.sc-toast-exit {
+  animation: sc-toast-out 160ms ease-in forwards;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .hf-toast-enter,
-  .hf-toast-exit {
+  .sc-toast-enter,
+  .sc-toast-exit {
     animation: none;
   }
-  .hf-toast-exit {
+  .sc-toast-exit {
     opacity: 0;
   }
 }
 
 /* Overlay/backdrop entrance — the heaviest visual changes shouldn't pop in */
-@keyframes hf-backdrop-in {
+@keyframes sc-backdrop-in {
   from {
     opacity: 0;
   }
@@ -507,18 +507,18 @@ body {
   }
 }
 
-.hf-backdrop-in {
-  animation: hf-backdrop-in 150ms ease-out;
+.sc-backdrop-in {
+  animation: sc-backdrop-in 150ms ease-out;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .hf-backdrop-in {
+  .sc-backdrop-in {
     animation: none;
   }
 }
 
 /* Flat inspector group header/body entrance (FlatGroupHeader) */
-@keyframes hf-flat-group-in {
+@keyframes sc-flat-group-in {
   from {
     opacity: 0;
     transform: translateY(-4px);
@@ -529,12 +529,12 @@ body {
   }
 }
 
-.hf-flat-group-enter {
-  animation: hf-flat-group-in 120ms ease-out;
+.sc-flat-group-enter {
+  animation: sc-flat-group-in 120ms ease-out;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .hf-flat-group-enter {
+  .sc-flat-group-enter {
     animation: none;
   }
 }
@@ -546,26 +546,26 @@ body {
  * happens to be resting there. The bars are that feedback: they run only while a
  * preset is actually sounding, so they are a readout of the audio rather than a
  * hover decoration. */
-.hf-fx-preset-item {
+.sc-fx-preset-item {
   position: relative;
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  .hf-fx-preset-item {
+  .sc-fx-preset-item {
     transition:
       background-color 120ms ease,
       color 120ms ease;
   }
 }
 
-.hf-fx-preset-item:hover,
-.hf-fx-preset-item:focus-visible {
+.sc-fx-preset-item:hover,
+.sc-fx-preset-item:focus-visible {
   /* The accent at low alpha rather than a grey: the row is lit by the thing that
      is playing, and it should read as the same event as the bars. */
   background-color: rgba(60, 230, 172, 0.12);
 }
 
-.hf-fx-preset-wave {
+.sc-fx-preset-wave {
   position: absolute;
   top: 50%;
   right: 0.5rem;
@@ -579,12 +579,12 @@ body {
   pointer-events: none;
 }
 
-.hf-fx-preset-item:hover .hf-fx-preset-wave,
-.hf-fx-preset-item:focus-visible .hf-fx-preset-wave {
+.sc-fx-preset-item:hover .sc-fx-preset-wave,
+.sc-fx-preset-item:focus-visible .sc-fx-preset-wave {
   opacity: 1;
 }
 
-.hf-fx-preset-wave span {
+.sc-fx-preset-wave span {
   width: 2px;
   height: 100%;
   border-radius: 1px;
@@ -594,18 +594,18 @@ body {
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  .hf-fx-preset-wave span {
-    animation: hf-fx-preset-wave 900ms ease-in-out infinite;
+  .sc-fx-preset-wave span {
+    animation: sc-fx-preset-wave 900ms ease-in-out infinite;
   }
   /* Staggered so it reads as a waveform travelling rather than four bars
      pumping in unison, which reads as a loading spinner. */
-  .hf-fx-preset-wave span:nth-child(2) {
+  .sc-fx-preset-wave span:nth-child(2) {
     animation-delay: 150ms;
   }
-  .hf-fx-preset-wave span:nth-child(3) {
+  .sc-fx-preset-wave span:nth-child(3) {
     animation-delay: 300ms;
   }
-  .hf-fx-preset-wave span:nth-child(4) {
+  .sc-fx-preset-wave span:nth-child(4) {
     animation-delay: 450ms;
   }
 }
@@ -613,23 +613,23 @@ body {
 /* Still visible without motion — it is telling the author something is
    playing, and that fact does not go away because the bars hold still. */
 @media (prefers-reduced-motion: reduce) {
-  .hf-fx-preset-wave span {
+  .sc-fx-preset-wave span {
     transform: scaleY(0.7);
   }
 }
 
 /* Receipt-driven WebMCP Topology Lens. Every animation is one-shot Studio
    chrome; none of these nodes enter the composition iframe or rendered output. */
-.hf-topology-contour {
+.sc-topology-contour {
   border: 1px solid rgba(60, 230, 172, 0.62);
   box-shadow:
     0 0 0 1px rgba(6, 227, 250, 0.08),
     inset 0 0 18px rgba(60, 230, 172, 0.035);
 }
 
-.hf-topology-field::before,
-.hf-topology-contour::before,
-.hf-topology-target::before {
+.sc-topology-field::before,
+.sc-topology-contour::before,
+.sc-topology-target::before {
   content: attr(data-topology-node);
   position: absolute;
   top: 2px;
@@ -650,7 +650,7 @@ body {
   text-transform: lowercase;
 }
 
-.hf-topology-field {
+.sc-topology-field {
   z-index: 0;
   border: 1px solid rgba(60, 230, 172, 0.28);
   background: linear-gradient(
@@ -662,14 +662,14 @@ body {
   box-shadow: inset 0 0 28px rgba(60, 230, 172, 0.05);
 }
 
-.hf-topology-target {
+.sc-topology-target {
   border: 1px solid rgba(60, 230, 172, 0.82);
   box-shadow:
     0 0 0 1px rgba(60, 230, 172, 0.14),
     0 0 18px rgba(6, 227, 250, 0.09);
 }
 
-.hf-topology-scan {
+.sc-topology-scan {
   background: linear-gradient(
     90deg,
     transparent,
@@ -679,49 +679,49 @@ body {
   clip-path: polygon(0 0, 100% 0, 72% 100%, 0 100%);
 }
 
-.hf-topology-seal {
+.sc-topology-seal {
   filter: drop-shadow(0 0 6px rgba(60, 230, 172, 0.36));
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  .hf-topology-contour {
-    animation: hf-topology-reveal 176ms cubic-bezier(0.77, 0, 0.175, 1) both;
+  .sc-topology-contour {
+    animation: sc-topology-reveal 176ms cubic-bezier(0.77, 0, 0.175, 1) both;
   }
 
-  .hf-topology-field[data-topology-phase="acquiring"] {
-    animation: hf-topology-reveal 240ms cubic-bezier(0.77, 0, 0.175, 1) both;
+  .sc-topology-field[data-topology-phase="acquiring"] {
+    animation: sc-topology-reveal 240ms cubic-bezier(0.77, 0, 0.175, 1) both;
   }
 
-  .hf-topology-scan {
-    animation: hf-topology-scan 224ms cubic-bezier(0.77, 0, 0.175, 1) both;
+  .sc-topology-scan {
+    animation: sc-topology-scan 224ms cubic-bezier(0.77, 0, 0.175, 1) both;
   }
 
-  .hf-topology-target[data-topology-phase="acquiring"] {
-    animation: hf-topology-localize 224ms cubic-bezier(0.23, 1, 0.32, 1) 72ms both;
+  .sc-topology-target[data-topology-phase="acquiring"] {
+    animation: sc-topology-localize 224ms cubic-bezier(0.23, 1, 0.32, 1) 72ms both;
   }
 
-  .hf-topology-target[data-topology-phase="localizing"] {
-    animation: hf-topology-localize 176ms cubic-bezier(0.23, 1, 0.32, 1) both;
+  .sc-topology-target[data-topology-phase="localizing"] {
+    animation: sc-topology-localize 176ms cubic-bezier(0.23, 1, 0.32, 1) both;
   }
 
-  .hf-topology-target[data-topology-phase="sealing"] {
-    animation: hf-topology-localize 144ms cubic-bezier(0.23, 1, 0.32, 1) both;
+  .sc-topology-target[data-topology-phase="sealing"] {
+    animation: sc-topology-localize 144ms cubic-bezier(0.23, 1, 0.32, 1) both;
   }
 
-  .hf-topology-seal {
-    animation: hf-topology-seal 224ms cubic-bezier(0.23, 1, 0.32, 1) both;
+  .sc-topology-seal {
+    animation: sc-topology-seal 224ms cubic-bezier(0.23, 1, 0.32, 1) both;
   }
 
-  .hf-topology-seal path:first-of-type {
-    animation: hf-topology-seal-left 224ms cubic-bezier(0.23, 1, 0.32, 1) both;
+  .sc-topology-seal path:first-of-type {
+    animation: sc-topology-seal-left 224ms cubic-bezier(0.23, 1, 0.32, 1) both;
   }
 
-  .hf-topology-seal path:nth-of-type(2) {
-    animation: hf-topology-seal-right 224ms cubic-bezier(0.23, 1, 0.32, 1) both;
+  .sc-topology-seal path:nth-of-type(2) {
+    animation: sc-topology-seal-right 224ms cubic-bezier(0.23, 1, 0.32, 1) both;
   }
 }
 
-@keyframes hf-topology-reveal {
+@keyframes sc-topology-reveal {
   from {
     opacity: 0;
     clip-path: inset(0 100% 0 0);
@@ -732,7 +732,7 @@ body {
   }
 }
 
-@keyframes hf-topology-scan {
+@keyframes sc-topology-scan {
   from {
     opacity: 0;
     transform: translate3d(-100%, 0, 0);
@@ -746,7 +746,7 @@ body {
   }
 }
 
-@keyframes hf-topology-localize {
+@keyframes sc-topology-localize {
   from {
     opacity: 0;
     transform: scaleX(0.76);
@@ -757,7 +757,7 @@ body {
   }
 }
 
-@keyframes hf-topology-seal {
+@keyframes sc-topology-seal {
   from {
     opacity: 0;
     transform: scale(0.88);
@@ -768,7 +768,7 @@ body {
   }
 }
 
-@keyframes hf-topology-seal-left {
+@keyframes sc-topology-seal-left {
   from {
     transform: translate3d(-9px, 0, 0);
   }
@@ -777,7 +777,7 @@ body {
   }
 }
 
-@keyframes hf-topology-seal-right {
+@keyframes sc-topology-seal-right {
   from {
     transform: translate3d(9px, 0, 0);
   }
@@ -787,17 +787,17 @@ body {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .hf-topology-contour,
-  .hf-topology-field,
-  .hf-topology-target,
-  .hf-topology-seal,
-  .hf-topology-seal path {
+  .sc-topology-contour,
+  .sc-topology-field,
+  .sc-topology-target,
+  .sc-topology-seal,
+  .sc-topology-seal path {
     animation: none;
     transform: none;
   }
 }
 
-@keyframes hf-fx-preset-wave {
+@keyframes sc-fx-preset-wave {
   0%,
   100% {
     transform: scaleY(0.25);

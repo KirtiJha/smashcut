@@ -1,6 +1,6 @@
 // @vitest-environment happy-dom
 import { afterEach, expect, it, vi } from "vitest";
-import type { GsapAnimation } from "@hyperframes/core/gsap-parser";
+import type { GsapAnimation } from "@smashcut/core/gsap-parser";
 import type { DomEditSelection } from "../components/editor/domEditingTypes";
 import { usePlayerStore } from "../player/store/playerStore";
 import { computeCurrentPercentage } from "./gsapDragCommit";
@@ -21,12 +21,12 @@ afterEach(() => {
 function makeGradedElement(): HTMLElement {
   const el = document.createElement("img");
   el.id = "clip";
-  el.setAttribute("data-hf-studio-original-width", "640");
-  el.setAttribute("data-hf-studio-original-height", "360");
+  el.setAttribute("data-sc-studio-original-width", "640");
+  el.setAttribute("data-sc-studio-original-height", "360");
   // Grading contract: source hidden, canvas carries effective opacity.
-  el.setAttribute("data-hf-color-grading-source-hidden", "");
+  el.setAttribute("data-sc-color-grading-source-hidden", "");
   const canvas = document.createElement("canvas");
-  canvas.id = "__hf_color_grading_clip";
+  canvas.id = "__sc_color_grading_clip";
   canvas.style.opacity = "0.98";
   document.body.append(el, canvas);
   return el;
@@ -299,8 +299,8 @@ it("scales from the element's real box, not a hardcoded fallback", async () => {
   el.id = "clip";
   // Sized by a stylesheet, so it carries no inline width, and the draft
   // recorded the box it measured instead.
-  el.setAttribute("data-hf-studio-original-box-width", "630");
-  el.setAttribute("data-hf-studio-original-box-height", "252");
+  el.setAttribute("data-sc-studio-original-box-width", "630");
+  el.setAttribute("data-sc-studio-original-box-height", "252");
   document.body.append(el);
   const selection = { id: "clip", selector: "#clip", element: el } as DomEditSelection;
   const commitMutation = vi.fn();
@@ -344,8 +344,8 @@ it("scales from the element's real box, not a hardcoded fallback", async () => {
 it("does not mix the scale shorthand into a tween that speaks longhands", async () => {
   const el = document.createElement("div");
   el.id = "clip";
-  el.setAttribute("data-hf-studio-original-box-width", "630");
-  el.setAttribute("data-hf-studio-original-box-height", "252");
+  el.setAttribute("data-sc-studio-original-box-width", "630");
+  el.setAttribute("data-sc-studio-original-box-height", "252");
   document.body.append(el);
   const selection = { id: "clip", selector: "#clip", element: el } as DomEditSelection;
   const longhandTween = {
@@ -403,16 +403,16 @@ it("does not move a statically positioned element when a scale resize lands", as
   document.body.innerHTML = "";
   const el = document.createElement("div");
   el.id = "clip";
-  el.setAttribute("data-hf-studio-original-box-width", "630");
-  el.setAttribute("data-hf-studio-original-box-height", "252");
+  el.setAttribute("data-sc-studio-original-box-width", "630");
+  el.setAttribute("data-sc-studio-original-box-height", "252");
   // The gesture's base pose — where the commit puts the element back, since a
   // scale resize never persists the drag translation.
-  el.setAttribute("data-hf-drag-gsap-base-x", "432");
-  el.setAttribute("data-hf-drag-gsap-base-y", "173");
+  el.setAttribute("data-sc-drag-gsap-base-x", "432");
+  el.setAttribute("data-sc-drag-gsap-base-y", "173");
   // The draft the gesture left applied: a smaller box at the dragged position.
-  el.setAttribute("data-hf-studio-box-size", "true");
-  el.setAttribute("data-hf-studio-original-width", "");
-  el.setAttribute("data-hf-studio-original-height", "");
+  el.setAttribute("data-sc-studio-box-size", "true");
+  el.setAttribute("data-sc-studio-original-width", "");
+  el.setAttribute("data-sc-studio-original-height", "");
   el.style.width = "320px";
   el.style.height = "128px";
   document.body.append(el);

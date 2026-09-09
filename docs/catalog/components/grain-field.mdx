@@ -16,7 +16,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 ```html grain-field.html
 <!doctype html>
 <!--
-  grain-field: HyperFrames video primitive (backgrounds / ambient)
+  grain-field: SmashCut video primitive (backgrounds / ambient)
 
   Concept: a fixed repeated dot field drifts slowly across a deep,
   accent-tinted luminance wash. The dots stay intentionally legible at
@@ -133,8 +133,8 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
             var root = document.getElementById("root");
             var field = root.querySelector(".gf-field");
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             // Invalid enum overrides return to their declared defaults.
@@ -190,7 +190,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 
 ## Install
 
-<InstallCommand command="npx hyperframes add grain-field" item="grain-field" />
+<InstallCommand command="npx smashcut add grain-field" item="grain-field" />
 
 That writes one file: `compositions/components/grain-field.html`.
 
@@ -229,7 +229,7 @@ defaults, so this behaves exactly like the preview above until you change one:
 ```html
 <!doctype html>
 <!--
-  grain-field: HyperFrames video primitive (backgrounds / ambient)
+  grain-field: SmashCut video primitive (backgrounds / ambient)
 
   Concept: a fixed repeated dot field drifts slowly across a deep,
   accent-tinted luminance wash. The dots stay intentionally legible at
@@ -346,8 +346,8 @@ defaults, so this behaves exactly like the preview above until you change one:
             var root = document.getElementById("root");
             var field = root.querySelector(".gf-field");
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             // Invalid enum overrides return to their declared defaults.

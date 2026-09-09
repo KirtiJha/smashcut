@@ -1,18 +1,18 @@
 {
   "$schema": "https://hyperframes.heygen.com/schema/registry-item.json",
   "name": "keyframe-scrub-stack",
-  "type": "hyperframes:component",
+  "type": "smashcut:component",
   "title": "Keyframe Scrub Stack",
   "description": "A keyframe-sequenced stack of cards with offset timing and easing presets.",
-  "tags": ["advanced-motion", "anime-inspired", "hyperframes-native"],
+  "tags": ["advanced-motion", "anime-inspired", "smashcut-native"],
   "files": [
     {
       "path": "keyframe-scrub-stack.html",
       "target": "compositions/components/keyframe-scrub-stack.html",
-      "type": "hyperframes:snippet"
+      "type": "smashcut:snippet"
     }
   ],
   "preview": {
-    "poster": "https://static.heygen.ai/hyperframes-oss/docs/images/catalog/components/keyframe-scrub-stack.png"
+    "poster": "https://static.heygen.ai/smashcut-oss/docs/images/catalog/components/keyframe-scrub-stack.png"
   }
 }

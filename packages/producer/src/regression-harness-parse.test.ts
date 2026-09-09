@@ -58,9 +58,9 @@ describe("parseArgs() — --exclude-tags", () => {
 
 describe("regression temporary roots", () => {
   it("isolates repeated suite runs and preserves the old predictable directory", () => {
-    const parent = mkdtempSync(join(tmpdir(), "hf-root-test-"));
+    const parent = mkdtempSync(join(tmpdir(), "sc-root-test-"));
     try {
-      const legacy = join(parent, "hyperframes-tests", "same-suite");
+      const legacy = join(parent, "smashcut-tests", "same-suite");
       mkdirSync(legacy, { recursive: true });
       const sentinel = join(legacy, "keep.txt");
       writeFileSync(sentinel, "unrelated data");

@@ -50,7 +50,7 @@ export function createRuntimeStartTimeResolver(params: {
       start: 0,
       duration: element.getAttribute("data-duration"),
       authoredDuration: includeAuthoredTimingAttrs
-        ? element.getAttribute("data-hf-authored-duration")
+        ? element.getAttribute("data-sc-authored-duration")
         : null,
     });
     if (durationTiming?.duration != null && durationTiming.duration > 0) {
@@ -62,7 +62,7 @@ export function createRuntimeStartTimeResolver(params: {
         start,
         end: element.getAttribute("data-end"),
         authoredEnd: includeAuthoredTimingAttrs
-          ? element.getAttribute("data-hf-authored-end")
+          ? element.getAttribute("data-sc-authored-end")
           : null,
       });
       if (endTiming?.duration != null && endTiming.duration > 0) {

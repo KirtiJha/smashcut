@@ -11,8 +11,8 @@ import type {
   HfAudioFxNode,
   HfAudioFxParam,
   HfAudioFxParamValues,
-} from "@hyperframes/core/audio-fx";
-import { getAudioFxPreset } from "@hyperframes/core/audio-fx-presets";
+} from "@smashcut/core/audio-fx";
+import { getAudioFxPreset } from "@smashcut/core/audio-fx-presets";
 import { FxParamRow } from "./propertyPanelFxControls.js";
 import { fxPresetBackground, fxPresetStyle } from "./propertyPanelFxPresetStyle.js";
 import { FxNodeRow } from "./propertyPanelFxNodeRow.js";
@@ -132,7 +132,7 @@ export function FxPresetRun({
 
   return (
     <div
-      className="hf-fx-preset-run space-y-1 rounded-[4px] border border-l-2 border-dashed border-panel-border-input p-1"
+      className="sc-fx-preset-run space-y-1 rounded-[4px] border border-l-2 border-dashed border-panel-border-input p-1"
       data-fx-preset={run.preset}
       data-collapsed={collapsed ? "" : undefined}
       // The bracket's edge carries the preset's own colour, the way a module's
@@ -144,10 +144,10 @@ export function FxPresetRun({
         ...(background ? { backgroundColor: background } : {}),
       }}
     >
-      <div className="hf-fx-preset-run-head flex min-h-6 items-center gap-1 px-0.5">
+      <div className="sc-fx-preset-run-head flex min-h-6 items-center gap-1 px-0.5">
         <button
           type="button"
-          className={`hf-fx-preset-run-label min-w-0 flex-1 truncate text-left leading-tight hover:opacity-80 ${style.type}`}
+          className={`sc-fx-preset-run-label min-w-0 flex-1 truncate text-left leading-tight hover:opacity-80 ${style.type}`}
           // The face and the colour are data, not classes: a Tailwind class
           // cannot name a font stack the config does not know, and adding eight
           // to the config to style one panel would put them in every
@@ -162,14 +162,14 @@ export function FxPresetRun({
           }
           onClick={onToggleCollapse}
         >
-          <span className="hf-fx-preset-run-caret pr-1 font-mono opacity-60" aria-hidden="true">
+          <span className="sc-fx-preset-run-caret pr-1 font-mono opacity-60" aria-hidden="true">
             {collapsed ? "▸" : "▾"}
           </span>
           {preset.label}
           {/* Collapsed, the count is what says the preset is still a chain
               rather than one opaque effect. */}
           {collapsed ? (
-            <span className="hf-fx-preset-run-count pl-1.5 font-mono text-[9px] opacity-60">
+            <span className="sc-fx-preset-run-count pl-1.5 font-mono text-[9px] opacity-60">
               {run.items.length}
             </span>
           ) : null}
@@ -179,7 +179,7 @@ export function FxPresetRun({
             they arrived at, and the switch is how they get back out of it. */}
         <button
           type="button"
-          className="hf-fx-preset-run-toggle rounded-[3px] border border-panel-border-input px-1.5 py-0.5 font-mono text-[9px] text-panel-text-2 hover:text-panel-text-0 disabled:opacity-40"
+          className="sc-fx-preset-run-toggle rounded-[3px] border border-panel-border-input px-1.5 py-0.5 font-mono text-[9px] text-panel-text-2 hover:text-panel-text-0 disabled:opacity-40"
           aria-pressed={runOn}
           title={runOn ? `Switch ${preset.label} off` : `Switch ${preset.label} back on`}
           disabled={disabled}
@@ -189,7 +189,7 @@ export function FxPresetRun({
         </button>
         <button
           type="button"
-          className="hf-fx-preset-run-remove px-1 font-mono text-[11px] text-panel-text-2 hover:text-red-400 disabled:opacity-40"
+          className="sc-fx-preset-run-remove px-1 font-mono text-[11px] text-panel-text-2 hover:text-red-400 disabled:opacity-40"
           title={`Remove ${preset.label}`}
           disabled={disabled}
           onClick={onRemoveRun}

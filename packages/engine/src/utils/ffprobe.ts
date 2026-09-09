@@ -4,7 +4,7 @@ import { createReadStream, readFileSync, statSync } from "fs";
 import * as zlib from "node:zlib";
 import { StringDecoder } from "node:string_decoder";
 import { basename } from "path";
-import { redactTelemetryString } from "@hyperframes/core";
+import { redactTelemetryString } from "@smashcut/core";
 import { FFPROBE_PATH_ENV, getFfprobeBinary } from "./ffmpegBinaries.js";
 import { ManagedChildProcess } from "./managedChildProcess.js";
 import { trackChildProcess } from "./processTracker.js";

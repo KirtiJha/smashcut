@@ -6,7 +6,7 @@ import { useCallback, useMemo, useRef, useState } from "react";
 import type { TimelineElement } from "../player";
 import { usePlayerStore } from "../player";
 import { addBlockToProject } from "../utils/blockInstaller";
-import type { BlockParam } from "@hyperframes/core/registry";
+import type { BlockParam } from "@smashcut/core/registry";
 import type { EditHistoryKind } from "../utils/editHistory";
 import type { RightPanelTab } from "../utils/studioHelpers";
 import type { MediaOverlayPlacement } from "../components/editor/propertyPanelTypes";
@@ -120,7 +120,7 @@ export function useBlockHandlers({
           }),
         );
         if (result === null) return;
-        const params = result?.block.type === "hyperframes:block" ? result.block.params : undefined;
+        const params = result?.block.type === "smashcut:block" ? result.block.params : undefined;
         if (params?.length) {
           setActiveBlockParams({
             blockName: result!.block.name,

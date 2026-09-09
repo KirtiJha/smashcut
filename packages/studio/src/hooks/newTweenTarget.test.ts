@@ -10,8 +10,8 @@
  * cache and the lanes.
  */
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { parseGsapScript } from "@hyperframes/core/gsap-parser";
-import type { GsapAnimation } from "@hyperframes/core/gsap-parser";
+import { parseGsapScript } from "@smashcut/core/gsap-parser";
+import type { GsapAnimation } from "@smashcut/core/gsap-parser";
 import type { DomEditSelection } from "../components/editor/domEditingTypes";
 import { buildStableSelector, getSelectorIndex } from "../components/editor/domEditingDom";
 import { resolveSelectorElementIds } from "./gsapShared";
@@ -35,7 +35,7 @@ function selectionFor(el: HTMLElement): DomEditSelection {
   return {
     element: el,
     id: el.id || undefined,
-    hfId: el.getAttribute("data-hf-id") || undefined,
+    hfId: el.getAttribute("data-sc-id") || undefined,
     selector,
     selectorIndex: getSelectorIndex(document, el, selector, "index.html", null),
     sourceFile: "index.html",

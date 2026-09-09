@@ -16,7 +16,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 ```html cursor-glyph-trail.html
 <!doctype html>
 <!--
-  cursor-glyph-trail: HyperFrames video primitive (product demo / trails)
+  cursor-glyph-trail: SmashCut video primitive (product demo / trails)
 
   An actor (default: a cursor dot) travels an authored path and deposits
   small dithered glyphs at its past positions. Each glyph pops in where the
@@ -182,8 +182,8 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
             var field = root.querySelector(".cgt-field");
             var actor = root.querySelector(".cgt-actor");
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             // Arc-length spacing (percent-of-stage units). Fixed spacing
@@ -410,7 +410,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 
 ## Install
 
-<InstallCommand command="npx hyperframes add cursor-glyph-trail" item="cursor-glyph-trail" />
+<InstallCommand command="npx smashcut add cursor-glyph-trail" item="cursor-glyph-trail" />
 
 That writes one file: `compositions/components/cursor-glyph-trail.html`.
 
@@ -453,7 +453,7 @@ defaults, so this behaves exactly like the preview above until you change one:
 ```html
 <!doctype html>
 <!--
-  cursor-glyph-trail: HyperFrames video primitive (product demo / trails)
+  cursor-glyph-trail: SmashCut video primitive (product demo / trails)
 
   An actor (default: a cursor dot) travels an authored path and deposits
   small dithered glyphs at its past positions. Each glyph pops in where the
@@ -619,8 +619,8 @@ defaults, so this behaves exactly like the preview above until you change one:
             var field = root.querySelector(".cgt-field");
             var actor = root.querySelector(".cgt-actor");
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             // Arc-length spacing (percent-of-stage units). Fixed spacing

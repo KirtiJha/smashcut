@@ -16,7 +16,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 ```html variable-font-flex.html
 <!doctype html>
 <!--
-  variable-font-flex: HyperFrames video primitive (type / Wave M experiment M5)
+  variable-font-flex: SmashCut video primitive (type / Wave M experiment M5)
 
   A word lands while its variable-font axes flex: each character rises from
   hairline-condensed to black-wide (weight 120 to 840, width 40 to 128) with
@@ -170,8 +170,8 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
             var stage = root.querySelector(".vff-stage");
             var word = root.querySelector(".vff-word");
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             var text = vars.text == null || vars.text === "" ? "FLEX" : String(vars.text);
@@ -324,7 +324,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 
 ## Install
 
-<InstallCommand command="npx hyperframes add variable-font-flex" item="variable-font-flex" />
+<InstallCommand command="npx smashcut add variable-font-flex" item="variable-font-flex" />
 
 That writes one file: `compositions/components/variable-font-flex.html`.
 
@@ -366,7 +366,7 @@ defaults, so this behaves exactly like the preview above until you change one:
 ```html
 <!doctype html>
 <!--
-  variable-font-flex: HyperFrames video primitive (type / Wave M experiment M5)
+  variable-font-flex: SmashCut video primitive (type / Wave M experiment M5)
 
   A word lands while its variable-font axes flex: each character rises from
   hairline-condensed to black-wide (weight 120 to 840, width 40 to 128) with
@@ -520,8 +520,8 @@ defaults, so this behaves exactly like the preview above until you change one:
             var stage = root.querySelector(".vff-stage");
             var word = root.querySelector(".vff-word");
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             var text = vars.text == null || vars.text === "" ? "FLEX" : String(vars.text);

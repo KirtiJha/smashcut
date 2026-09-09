@@ -1,6 +1,6 @@
 <!doctype html>
 <!--
-  testimonial-card: HyperFrames video primitive (ui-props / holdable / prove)
+  testimonial-card: SmashCut video primitive (ui-props / holdable / prove)
 
   Concept: a token-themed testimonial card proves a claim in one clean reveal.
   The rating and quote rise into reading position first, then the avatar,
@@ -239,8 +239,8 @@
             var ratingValueEl = root.querySelector(".tc-rating-value");
             var attributionItems = root.querySelectorAll(".tc-attribution-item");
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             /* INVARIANT: getVariables() is the sole owner of content. Missing

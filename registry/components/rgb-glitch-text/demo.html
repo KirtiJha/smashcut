@@ -32,35 +32,35 @@
         zoom: 0.28;
       }
       /* ponytail: scale-up via font-size — GSAP only touches CSS vars, not transform */
-      .hf-catalog-rgb-glitch-text {
+      .sc-catalog-rgb-glitch-text {
         color: #fafafa;
         font-family: Inter, system-ui, sans-serif;
         font-weight: 900;
         letter-spacing: -0.04em;
       }
-      .hf-catalog-rgb-glitch-text {
+      .sc-catalog-rgb-glitch-text {
         position: relative;
         width: 1120px;
         height: 200px;
         font-size: 192px;
         line-height: 1;
       }
-      .hf-catalog-rgb-glitch-text span,
-      .hf-catalog-rgb-glitch-text strong {
+      .sc-catalog-rgb-glitch-text span,
+      .sc-catalog-rgb-glitch-text strong {
         position: absolute;
         inset: 0;
       }
-      .hf-catalog-rgb-glitch-text span:first-child {
+      .sc-catalog-rgb-glitch-text span:first-child {
         color: #ef4444;
         mix-blend-mode: screen;
-        transform: translateX(var(--hf-glitch-red, 0px));
+        transform: translateX(var(--sc-glitch-red, 0px));
       }
-      .hf-catalog-rgb-glitch-text span:nth-child(2) {
+      .sc-catalog-rgb-glitch-text span:nth-child(2) {
         color: #22d3ee;
         mix-blend-mode: screen;
-        transform: translateX(var(--hf-glitch-blue, 0px));
+        transform: translateX(var(--sc-glitch-blue, 0px));
       }
-      .hf-catalog-rgb-glitch-text strong {
+      .sc-catalog-rgb-glitch-text strong {
         color: #fafafa;
       }
       .demo-label {
@@ -83,7 +83,7 @@
     >
       <div class="demo-frame">
         <div
-          class="hf-catalog-rgb-glitch-text"
+          class="sc-catalog-rgb-glitch-text"
           data-composition-variables='[
     { "id": "text", "type": "string", "role": "content", "label": "Text", "description": "The word shown on all three stacked copies.", "default": "GLITCH", "maxLength": 24 },
     { "id": "intensity", "type": "enum", "role": "motion", "label": "Intensity", "description": "Scales the red and cyan offsets the timeline drives, so the split reads as a hairline or a hard tear.", "default": "standard", "options": [{ "value": "subtle", "label": "Subtle" }, { "value": "standard", "label": "Standard" }, { "value": "extreme", "label": "Extreme" }] },
@@ -99,8 +99,8 @@
           "use strict";
 
           var vars =
-            window.__hyperframes && window.__hyperframes.getVariables
-              ? window.__hyperframes.getVariables()
+            window.__smashcut && window.__smashcut.getVariables
+              ? window.__smashcut.getVariables()
               : {};
 
           // Unrecognised overrides return to their declared defaults.
@@ -120,10 +120,10 @@
           var text =
             typeof vars.text === "string" && vars.text.trim() !== "" ? vars.text.trim() : "GLITCH";
 
-          var roots = document.querySelectorAll(".hf-catalog-rgb-glitch-text");
+          var roots = document.querySelectorAll(".sc-catalog-rgb-glitch-text");
           for (var i = 0; i < roots.length; i += 1) {
-            roots[i].style.setProperty("--hf-glitch-reach", String(reach));
-            roots[i].style.setProperty("--hf-glitch-ink", tone);
+            roots[i].style.setProperty("--sc-glitch-reach", String(reach));
+            roots[i].style.setProperty("--sc-glitch-ink", tone);
             var copies = roots[i].querySelectorAll("span, strong");
             for (var j = 0; j < copies.length; j += 1) {
               copies[j].textContent = text;
@@ -134,12 +134,12 @@
       <script>
         const tl = gsap.timeline({ paused: true });
         const startTime = 0.5;
-        tl.to(".hf-catalog-rgb-glitch-text", { opacity: 1, duration: 0.01 }, startTime);
+        tl.to(".sc-catalog-rgb-glitch-text", { opacity: 1, duration: 0.01 }, startTime);
         tl.to(
-          ".hf-catalog-rgb-glitch-text",
+          ".sc-catalog-rgb-glitch-text",
           {
-            "--hf-glitch-red": "-20px",
-            "--hf-glitch-blue": "20px",
+            "--sc-glitch-red": "-20px",
+            "--sc-glitch-blue": "20px",
             duration: 0.06,
             repeat: 5,
             yoyo: true,
@@ -153,34 +153,34 @@
       </script>
     </div>
     <style>
-      .hf-catalog-rgb-glitch-text {
-        color: var(--hf-glitch-ink, #18181b);
+      .sc-catalog-rgb-glitch-text {
+        color: var(--sc-glitch-ink, #18181b);
         font-family: Inter, system-ui, sans-serif;
         font-weight: 900;
         letter-spacing: -0.04em;
       }
-      .hf-catalog-rgb-glitch-text {
+      .sc-catalog-rgb-glitch-text {
         position: relative;
         width: 420px;
         height: 82px;
         font-size: 72px;
         line-height: 1;
       }
-      .hf-catalog-rgb-glitch-text span,
-      .hf-catalog-rgb-glitch-text strong {
+      .sc-catalog-rgb-glitch-text span,
+      .sc-catalog-rgb-glitch-text strong {
         position: absolute;
         inset: 0;
       }
-      .hf-catalog-rgb-glitch-text span:first-child {
+      .sc-catalog-rgb-glitch-text span:first-child {
         color: #ef4444;
-        transform: translateX(calc(var(--hf-glitch-red, 0px) * var(--hf-glitch-reach, 1)));
+        transform: translateX(calc(var(--sc-glitch-red, 0px) * var(--sc-glitch-reach, 1)));
       }
-      .hf-catalog-rgb-glitch-text span:nth-child(2) {
+      .sc-catalog-rgb-glitch-text span:nth-child(2) {
         color: #22d3ee;
-        transform: translateX(calc(var(--hf-glitch-blue, 0px) * var(--hf-glitch-reach, 1)));
+        transform: translateX(calc(var(--sc-glitch-blue, 0px) * var(--sc-glitch-reach, 1)));
       }
-      .hf-catalog-rgb-glitch-text strong {
-        color: var(--hf-glitch-ink, #18181b);
+      .sc-catalog-rgb-glitch-text strong {
+        color: var(--sc-glitch-ink, #18181b);
       }
     </style>
   </body>

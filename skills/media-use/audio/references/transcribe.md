@@ -3,12 +3,12 @@
 Create normalized word-level timestamps. **Always specify `--model` explicitly** — the CLI default is `small.en`, which silently translates non-English audio into English.
 
 ```bash
-npx hyperframes transcribe audio.mp3  --model small.en             # known English
-npx hyperframes transcribe video.mp4  --model small --language es  # known Spanish
-npx hyperframes transcribe audio.mp3  --model small                # unknown language (auto-detect)
-npx hyperframes transcribe subtitles.srt                           # import existing
-npx hyperframes transcribe subtitles.vtt
-npx hyperframes transcribe openai-response.json
+npx smashcut transcribe audio.mp3  --model small.en             # known English
+npx smashcut transcribe video.mp4  --model small --language es  # known Spanish
+npx smashcut transcribe audio.mp3  --model small                # unknown language (auto-detect)
+npx smashcut transcribe subtitles.srt                           # import existing
+npx smashcut transcribe subtitles.vtt
+npx smashcut transcribe openai-response.json
 ```
 
 ## Language Rule (Non-Negotiable)

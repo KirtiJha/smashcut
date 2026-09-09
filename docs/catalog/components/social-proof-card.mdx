@@ -10,13 +10,13 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
   previewSrc="/public/catalog/components/social-proof-card.json"
   compositionId="social-proof-card"
   compositionSrc="compositions/components/social-proof-card.html"
-  variables={[{"id":"brand","type":"string","role":"content","label":"Brand","description":"Wordmark at the top of the card.","default":"HyperFrames"},{"id":"proof","type":"string","role":"content","label":"Proof line","description":"Social-proof line under the stars.","default":"12,000+ creators"},{"id":"cta","type":"string","role":"content","label":"CTA","description":"Label on the closing capsule.","default":"Start rendering free"},{"id":"f1","type":"string","role":"content","label":"Feature 1","description":"First feature, | breaks the line.","default":"Write|plain HTML"},{"id":"f2","type":"string","role":"content","label":"Feature 2","description":"Second feature, | breaks the line.","default":"Render|pixel-perfect"},{"id":"f3","type":"string","role":"content","label":"Feature 3","description":"Third feature, | breaks the line.","default":"Own|every line"}]}
+  variables={[{"id":"brand","type":"string","role":"content","label":"Brand","description":"Wordmark at the top of the card.","default":"SmashCut"},{"id":"proof","type":"string","role":"content","label":"Proof line","description":"Social-proof line under the stars.","default":"12,000+ creators"},{"id":"cta","type":"string","role":"content","label":"CTA","description":"Label on the closing capsule.","default":"Start rendering free"},{"id":"f1","type":"string","role":"content","label":"Feature 1","description":"First feature, | breaks the line.","default":"Write|plain HTML"},{"id":"f2","type":"string","role":"content","label":"Feature 2","description":"Second feature, | breaks the line.","default":"Render|pixel-perfect"},{"id":"f3","type":"string","role":"content","label":"Feature 3","description":"Third feature, | breaks the line.","default":"Own|every line"}]}
 >
 
 ```html social-proof-card.html
 <!doctype html>
 <!--
-  social-proof-card: HyperFrames motion primitive (scene)
+  social-proof-card: SmashCut motion primitive (scene)
 
   The app-store close, measured from reference ad footage: wordmark, five
   stars, a proof line, three feature icons, a CTA capsule - built in a quiet
@@ -32,7 +32,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
   lang="en"
   data-composition-id="social-proof-card"
   data-composition-duration="4"
-  data-composition-variables='[{"id": "brand", "type": "string", "role": "content", "label": "Brand", "description": "Wordmark at the top of the card.", "default": "HyperFrames"}, {"id": "proof", "type": "string", "role": "content", "label": "Proof line", "description": "Social-proof line under the stars.", "default": "12,000+ creators"}, {"id": "cta", "type": "string", "role": "content", "label": "CTA", "description": "Label on the closing capsule.", "default": "Start rendering free"}, {"id": "f1", "type": "string", "role": "content", "label": "Feature 1", "description": "First feature, | breaks the line.", "default": "Write|plain HTML"}, {"id": "f2", "type": "string", "role": "content", "label": "Feature 2", "description": "Second feature, | breaks the line.", "default": "Render|pixel-perfect"}, {"id": "f3", "type": "string", "role": "content", "label": "Feature 3", "description": "Third feature, | breaks the line.", "default": "Own|every line"}]'
+  data-composition-variables='[{"id": "brand", "type": "string", "role": "content", "label": "Brand", "description": "Wordmark at the top of the card.", "default": "SmashCut"}, {"id": "proof", "type": "string", "role": "content", "label": "Proof line", "description": "Social-proof line under the stars.", "default": "12,000+ creators"}, {"id": "cta", "type": "string", "role": "content", "label": "CTA", "description": "Label on the closing capsule.", "default": "Start rendering free"}, {"id": "f1", "type": "string", "role": "content", "label": "Feature 1", "description": "First feature, | breaks the line.", "default": "Write|plain HTML"}, {"id": "f2", "type": "string", "role": "content", "label": "Feature 2", "description": "Second feature, | breaks the line.", "default": "Render|pixel-perfect"}, {"id": "f3", "type": "string", "role": "content", "label": "Feature 3", "description": "Third feature, | breaks the line.", "default": "Own|every line"}]'
 >
   <head>
     <meta charset="UTF-8" />
@@ -132,7 +132,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
           }
         </style>
         <div class="spc-stage">
-          <div class="spc-brand" id="spc-brand">HyperFrames</div>
+          <div class="spc-brand" id="spc-brand">SmashCut</div>
           <div class="spc-stars" id="spc-stars"></div>
           <div class="spc-proof" id="spc-proof">12,000+ creators</div>
           <div class="spc-feats" id="spc-feats"></div>
@@ -144,8 +144,8 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
             "use strict";
             var compositionId = "social-proof-card";
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
             function text(v, fb, mx) {
               if (typeof v !== "string") return fb;
@@ -153,7 +153,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
               if (!t) return fb;
               return t.length > mx ? t.slice(0, mx) : t;
             }
-            document.getElementById("spc-brand").textContent = text(vars.brand, "HyperFrames", 26);
+            document.getElementById("spc-brand").textContent = text(vars.brand, "SmashCut", 26);
             document.getElementById("spc-proof").textContent = text(
               vars.proof,
               "12,000+ creators",
@@ -250,7 +250,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 
 ## Install
 
-<InstallCommand command="npx hyperframes add social-proof-card" item="social-proof-card" />
+<InstallCommand command="npx smashcut add social-proof-card" item="social-proof-card" />
 
 That writes one file: `compositions/components/social-proof-card.html`.
 
@@ -268,7 +268,7 @@ want to change on the element:
 
 | Variable | Default | Accepts | What it does |
 | --- | --- | --- | --- |
-| `brand` | `HyperFrames` | string | Wordmark at the top of the card. |
+| `brand` | `SmashCut` | string | Wordmark at the top of the card. |
 | `proof` | `12,000+ creators` | string | Social-proof line under the stars. |
 | `cta` | `Start rendering free` | string | Label on the closing capsule. |
 | `f1` | `Write|plain HTML` | string | First feature, | breaks the line. |
@@ -282,7 +282,7 @@ defaults, so this behaves exactly like the preview above until you change one:
 <div
   data-composition-id="social-proof-card"
   data-composition-src="compositions/components/social-proof-card.html"
-  data-variable-values='{"brand":"HyperFrames","proof":"12,000+ creators","cta":"Start rendering free","f1":"Write|plain HTML","f2":"Render|pixel-perfect","f3":"Own|every line"}'
+  data-variable-values='{"brand":"SmashCut","proof":"12,000+ creators","cta":"Start rendering free","f1":"Write|plain HTML","f2":"Render|pixel-perfect","f3":"Own|every line"}'
 ></div>
 ```
 
@@ -293,7 +293,7 @@ defaults, so this behaves exactly like the preview above until you change one:
 ```html
 <!doctype html>
 <!--
-  social-proof-card: HyperFrames motion primitive (scene)
+  social-proof-card: SmashCut motion primitive (scene)
 
   The app-store close, measured from reference ad footage: wordmark, five
   stars, a proof line, three feature icons, a CTA capsule - built in a quiet
@@ -309,7 +309,7 @@ defaults, so this behaves exactly like the preview above until you change one:
   lang="en"
   data-composition-id="social-proof-card"
   data-composition-duration="4"
-  data-composition-variables='[{"id": "brand", "type": "string", "role": "content", "label": "Brand", "description": "Wordmark at the top of the card.", "default": "HyperFrames"}, {"id": "proof", "type": "string", "role": "content", "label": "Proof line", "description": "Social-proof line under the stars.", "default": "12,000+ creators"}, {"id": "cta", "type": "string", "role": "content", "label": "CTA", "description": "Label on the closing capsule.", "default": "Start rendering free"}, {"id": "f1", "type": "string", "role": "content", "label": "Feature 1", "description": "First feature, | breaks the line.", "default": "Write|plain HTML"}, {"id": "f2", "type": "string", "role": "content", "label": "Feature 2", "description": "Second feature, | breaks the line.", "default": "Render|pixel-perfect"}, {"id": "f3", "type": "string", "role": "content", "label": "Feature 3", "description": "Third feature, | breaks the line.", "default": "Own|every line"}]'
+  data-composition-variables='[{"id": "brand", "type": "string", "role": "content", "label": "Brand", "description": "Wordmark at the top of the card.", "default": "SmashCut"}, {"id": "proof", "type": "string", "role": "content", "label": "Proof line", "description": "Social-proof line under the stars.", "default": "12,000+ creators"}, {"id": "cta", "type": "string", "role": "content", "label": "CTA", "description": "Label on the closing capsule.", "default": "Start rendering free"}, {"id": "f1", "type": "string", "role": "content", "label": "Feature 1", "description": "First feature, | breaks the line.", "default": "Write|plain HTML"}, {"id": "f2", "type": "string", "role": "content", "label": "Feature 2", "description": "Second feature, | breaks the line.", "default": "Render|pixel-perfect"}, {"id": "f3", "type": "string", "role": "content", "label": "Feature 3", "description": "Third feature, | breaks the line.", "default": "Own|every line"}]'
 >
   <head>
     <meta charset="UTF-8" />
@@ -409,7 +409,7 @@ defaults, so this behaves exactly like the preview above until you change one:
           }
         </style>
         <div class="spc-stage">
-          <div class="spc-brand" id="spc-brand">HyperFrames</div>
+          <div class="spc-brand" id="spc-brand">SmashCut</div>
           <div class="spc-stars" id="spc-stars"></div>
           <div class="spc-proof" id="spc-proof">12,000+ creators</div>
           <div class="spc-feats" id="spc-feats"></div>
@@ -421,8 +421,8 @@ defaults, so this behaves exactly like the preview above until you change one:
             "use strict";
             var compositionId = "social-proof-card";
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
             function text(v, fb, mx) {
               if (typeof v !== "string") return fb;
@@ -430,7 +430,7 @@ defaults, so this behaves exactly like the preview above until you change one:
               if (!t) return fb;
               return t.length > mx ? t.slice(0, mx) : t;
             }
-            document.getElementById("spc-brand").textContent = text(vars.brand, "HyperFrames", 26);
+            document.getElementById("spc-brand").textContent = text(vars.brand, "SmashCut", 26);
             document.getElementById("spc-proof").textContent = text(
               vars.proof,
               "12,000+ creators",

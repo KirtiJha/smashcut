@@ -1,4 +1,4 @@
-# HyperFrame Schema Compliance Review
+# SmashCut Schema Compliance Review
 
 ## Executive Summary
 
@@ -8,7 +8,7 @@
 
 ## Critical Issues
 
-None. All files now comply with the HyperFrame schema.
+None. All files now comply with the SmashCut schema.
 
 ## Compliance Checklist
 

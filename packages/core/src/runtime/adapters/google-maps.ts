@@ -9,7 +9,7 @@ export function createGoogleMapsAdapter() {
     name: "google-maps",
     getInstances: () => {
       if (typeof window === "undefined") return [];
-      const arr = (window as { __hfGoogleMaps?: GoogleMapLike[] }).__hfGoogleMaps;
+      const arr = (window as { __scGoogleMaps?: GoogleMapLike[] }).__scGoogleMaps;
       return Array.isArray(arr) ? arr : [];
     },
     waitFor: (m) =>

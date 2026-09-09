@@ -212,7 +212,7 @@ describe("audioFx section", () => {
 });
 
 describe("audio has timing but no animation; a bus has neither", () => {
-  // Nothing on an `<audio>` element or an `<hf-audio-group>` bus has a
+  // Nothing on an `<audio>` element or an `<sc-audio-group>` bus has a
   // transform, an opacity or a box, so a tween on one moves nothing. The panel
   // showed its GSAP editor for both anyway, because it gated that on the
   // handlers being wired rather than on the element being animatable.

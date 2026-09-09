@@ -1,5 +1,5 @@
 import { useEffect, useMemo, type MutableRefObject } from "react";
-import { SLIDESHOW_ISLAND_TYPE, slideshowIslandRegex } from "@hyperframes/core/slideshow";
+import { SLIDESHOW_ISLAND_TYPE, slideshowIslandRegex } from "@smashcut/core/slideshow";
 import type { SceneInfo } from "../components/panels/SlideshowPanel";
 import type { IframeWindow } from "../player/lib/playbackTypes";
 import type { RightPanelTab } from "../utils/studioHelpers";

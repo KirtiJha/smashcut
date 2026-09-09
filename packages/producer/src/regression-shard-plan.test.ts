@@ -66,7 +66,7 @@ describe("shard planner fixture discovery", () => {
     // stop running while every other invariant still passed.
     const schedule = readSchedule();
     const victim = Object.keys(schedule.timings ?? {})[0] as string;
-    const tainted = join(mkdtempSync(join(tmpdir(), "hf-shard-schedule-")), "shard-schedule.json");
+    const tainted = join(mkdtempSync(join(tmpdir(), "sc-shard-schedule-")), "shard-schedule.json");
     writeFileSync(
       tainted,
       JSON.stringify({
@@ -100,7 +100,7 @@ describe("shard planner fixture discovery", () => {
 
   it("rejects a distributed fixture that is not scheduled", () => {
     const schedule = readSchedule();
-    const tainted = join(mkdtempSync(join(tmpdir(), "hf-shard-schedule-")), "shard-schedule.json");
+    const tainted = join(mkdtempSync(join(tmpdir(), "sc-shard-schedule-")), "shard-schedule.json");
     writeFileSync(
       tainted,
       JSON.stringify({

@@ -30,13 +30,13 @@ describe("removeElementFromHtml", () => {
 
   it("removes tweens for both DOM ids and stable ids throughout the deleted subtree", () => {
     const html = `<!doctype html><html><body>
-      <div id="parent"><div id="box" data-hf-id="hf-box"><span id="leaf"></span></div></div>
+      <div id="parent"><div id="box" data-sc-id="sc-box"><span id="leaf"></span></div></div>
       <div id="keep"></div>
       <script>
         const tl = gsap.timeline({ paused: true });
         tl.to("#parent", { x: 10 });
         tl.to("#box", { x: 20 });
-        tl.to('[data-hf-id="hf-box"]', { x: 30 });
+        tl.to('[data-sc-id="sc-box"]', { x: 30 });
         tl.to("#leaf", { x: 40 });
         tl.to("#box", { x: 50 });
         tl.to("#keep", { x: 60 });
@@ -44,32 +44,32 @@ describe("removeElementFromHtml", () => {
     const updated = removeElementFromHtml(html, { id: "parent" });
     expect(updated).not.toContain("#parent");
     expect(updated).not.toContain("#box");
-    expect(updated).not.toContain("hf-box");
+    expect(updated).not.toContain("sc-box");
     expect(updated).not.toContain("#leaf");
     expect(updated).toContain('tl.to("#keep", { x: 60 })');
   });
 
   it("cascades a stable-id deletion into nested composition template scripts", () => {
-    const html = `<div id="box" data-hf-id="hf-box"></div>
+    const html = `<div id="box" data-sc-id="sc-box"></div>
       <template data-composition-id="outer"><template data-composition-id="inner">
         <script>const tl = gsap.timeline(); tl.to("#box", { x: 10 });</script>
       </template></template>`;
-    const updated = removeElementFromHtml(html, { hfId: "hf-box" });
+    const updated = removeElementFromHtml(html, { hfId: "sc-box" });
     expect(updated).not.toContain("#box");
     expect(updated).not.toContain('id="box"');
   });
 
   it("retains shared selectors used by a surviving composition instance", () => {
-    const html = `<div data-hf-id="remove"><span id="box" data-hf-id="hf-box"></span></div>
-      <template data-composition-id="keep"><div id="box" data-hf-id="hf-box"></div>
+    const html = `<div data-sc-id="remove"><span id="box" data-sc-id="sc-box"></span></div>
+      <template data-composition-id="keep"><div id="box" data-sc-id="sc-box"></div>
         <script>const tl = gsap.timeline();
-          tl.to("#box", { x: 10 }); tl.to('[data-hf-id="hf-box"]', { x: 20 });
+          tl.to("#box", { x: 10 }); tl.to('[data-sc-id="sc-box"]', { x: 20 });
         </script>
       </template>`;
     const updated = removeElementFromHtml(html, { hfId: "remove" });
-    expect(updated).not.toContain('data-hf-id="remove"');
+    expect(updated).not.toContain('data-sc-id="remove"');
     expect(updated).toContain('tl.to("#box", { x: 10 })');
-    expect(updated).toContain(`tl.to('[data-hf-id="hf-box"]', { x: 20 })`);
+    expect(updated).toContain(`tl.to('[data-sc-id="sc-box"]', { x: 20 })`);
   });
 
   it("does not strip scripts when the requested element is absent", () => {
@@ -89,7 +89,7 @@ describe("patchElementInHtml", () => {
 <div id="root" data-composition-id="main">
   <div class="layer" data-composition-id="overlay" data-composition-src="compositions/overlay.html">
     <div class="chrome">
-      <span class="brand">HyperFrames</span>
+      <span class="brand">SmashCut</span>
     </div>
   </div>
   <div id="hero" class="hero-heading" style="font-size: 48px">Hello World</div>
@@ -126,28 +126,28 @@ describe("patchElementInHtml", () => {
 
   it("patches data attribute", () => {
     const { html: result } = patchElementInHtml(FIXTURE, { id: "hero" }, [
-      { type: "attribute", property: "hf-studio-path-offset", value: "true" },
+      { type: "attribute", property: "sc-studio-path-offset", value: "true" },
     ]);
 
-    expect(result).toContain('data-hf-studio-path-offset="true"');
+    expect(result).toContain('data-sc-studio-path-offset="true"');
   });
 
   it("does not double data- prefix when property already has it", () => {
     const { html: result } = patchElementInHtml(FIXTURE, { id: "hero" }, [
-      { type: "attribute", property: "data-hf-studio-path-offset", value: "true" },
+      { type: "attribute", property: "data-sc-studio-path-offset", value: "true" },
     ]);
 
-    expect(result).toContain('data-hf-studio-path-offset="true"');
-    expect(result).not.toContain("data-data-hf-studio-path-offset");
+    expect(result).toContain('data-sc-studio-path-offset="true"');
+    expect(result).not.toContain("data-data-sc-studio-path-offset");
   });
 
   it("does not double data- prefix for any studio attribute", () => {
     const attrs = [
-      "data-hf-studio-path-offset",
-      "data-hf-studio-original-translate",
-      "data-hf-studio-original-inline-translate",
-      "data-hf-studio-box-size",
-      "data-hf-studio-rotation",
+      "data-sc-studio-path-offset",
+      "data-sc-studio-original-translate",
+      "data-sc-studio-original-inline-translate",
+      "data-sc-studio-box-size",
+      "data-sc-studio-rotation",
     ];
     for (const attr of attrs) {
       const { html: result } = patchElementInHtml(FIXTURE, { id: "hero" }, [
@@ -160,14 +160,14 @@ describe("patchElementInHtml", () => {
 
   it("removes attribute with data- prefix already present", () => {
     const { html: withAttr } = patchElementInHtml(FIXTURE, { id: "hero" }, [
-      { type: "attribute", property: "data-hf-studio-path-offset", value: "true" },
+      { type: "attribute", property: "data-sc-studio-path-offset", value: "true" },
     ]);
-    expect(withAttr).toContain('data-hf-studio-path-offset="true"');
+    expect(withAttr).toContain('data-sc-studio-path-offset="true"');
 
     const { html: removed } = patchElementInHtml(withAttr, { id: "hero" }, [
-      { type: "attribute", property: "data-hf-studio-path-offset", value: null },
+      { type: "attribute", property: "data-sc-studio-path-offset", value: null },
     ]);
-    expect(removed).not.toContain("hf-studio-path-offset");
+    expect(removed).not.toContain("sc-studio-path-offset");
   });
 
   it("patches html attribute", () => {
@@ -188,7 +188,7 @@ describe("patchElementInHtml", () => {
   });
 
   it("applies child-scoped inline style without changing the parent style", () => {
-    const source = `<div data-hf-id="parent" style="color: red"><span class="line">A</span><span class="line">B</span></div>`;
+    const source = `<div data-sc-id="parent" style="color: red"><span class="line">A</span><span class="line">B</span></div>`;
     const { html: result, matched } = patchElementInHtml(source, { hfId: "parent" }, [
       {
         type: "inline-style",
@@ -201,7 +201,7 @@ describe("patchElementInHtml", () => {
 
     expect(matched).toBe(true);
     const { document } = parseHTML(result);
-    const parent = document.querySelector('[data-hf-id="parent"]');
+    const parent = document.querySelector('[data-sc-id="parent"]');
     const children = Array.from(document.querySelectorAll(".line"));
     expect(parent?.getAttribute("style")).toContain("color: red");
     expect(children[0]?.getAttribute("style")).toBeNull();
@@ -209,7 +209,7 @@ describe("patchElementInHtml", () => {
   });
 
   it("applies child-scoped text content to the child only", () => {
-    const source = `<div data-hf-id="parent"><span class="line">A</span><span class="line">B</span></div>`;
+    const source = `<div data-sc-id="parent"><span class="line">A</span><span class="line">B</span></div>`;
     const { html: result, matched } = patchElementInHtml(source, { hfId: "parent" }, [
       {
         type: "text-content",
@@ -228,7 +228,7 @@ describe("patchElementInHtml", () => {
   });
 
   it("rejects the whole batch when a child-scoped operation cannot resolve", () => {
-    const source = `<div data-hf-id="parent"><span class="line">A</span><span class="line">B</span></div>`;
+    const source = `<div data-sc-id="parent"><span class="line">A</span><span class="line">B</span></div>`;
     const result = patchElementInHtml(source, { hfId: "parent" }, [
       {
         type: "inline-style",
@@ -254,12 +254,12 @@ describe("patchElementInHtml", () => {
     const { html: result } = patchElementInHtml(FIXTURE, { id: "hero" }, [
       { type: "inline-style", property: "color", value: "blue" },
       { type: "inline-style", property: "font-size", value: "96px" },
-      { type: "attribute", property: "hf-studio-path-offset", value: "true" },
+      { type: "attribute", property: "sc-studio-path-offset", value: "true" },
     ]);
 
     expect(result).toMatch(/color:\s*blue/);
     expect(result).toMatch(/font-size:\s*96px/);
-    expect(result).toContain('data-hf-studio-path-offset="true"');
+    expect(result).toContain('data-sc-studio-path-offset="true"');
   });
 
   it("finds element by composition-id selector", () => {
@@ -426,7 +426,7 @@ describe("probeElementInSource", () => {
 <div id="root" data-composition-id="main">
   <div class="layer" data-composition-id="overlay" data-composition-src="compositions/overlay.html">
     <div class="chrome">
-      <span class="brand">HyperFrames</span>
+      <span class="brand">SmashCut</span>
     </div>
   </div>
   <div id="hero" class="hero-heading" style="font-size: 48px">Hello World</div>
@@ -486,54 +486,54 @@ describe("probeElementInSource", () => {
   });
 });
 
-// T7 — data-hf-id targeting (spec for R1).
-// R1 adds `hfId?: string` to SourceMutationTarget and a `[data-hf-id="…"]` branch
+// T7 — data-sc-id targeting (spec for R1).
+// R1 adds `hfId?: string` to SourceMutationTarget and a `[data-sc-id="…"]` branch
 // in findTargetElement (sourceMutation.ts:34). Convert from it.todo in the R1 PR.
 // Covers the same surface as T3 (Studio sourcePatcher) — Core sourceMutation supports
 // all patch types (inline-style, attribute, text-content) via patchElementInHtml.
-describe("T7 — data-hf-id targeting (spec for R1)", () => {
-  it("updates inline style by data-hf-id when no HTML id attribute is present", () => {
-    const source = `<h1 data-hf-id="hf-x7k2" style="color: red">Hello</h1>`;
-    const { html, matched } = patchElementInHtml(source, { hfId: "hf-x7k2" }, [
+describe("T7 — data-sc-id targeting (spec for R1)", () => {
+  it("updates inline style by data-sc-id when no HTML id attribute is present", () => {
+    const source = `<h1 data-sc-id="sc-x7k2" style="color: red">Hello</h1>`;
+    const { html, matched } = patchElementInHtml(source, { hfId: "sc-x7k2" }, [
       { type: "inline-style", property: "color", value: "blue" },
     ]);
     expect(matched).toBe(true);
     expect(html).toMatch(/color:\s*blue/);
-    expect(html).toContain('data-hf-id="hf-x7k2"');
+    expect(html).toContain('data-sc-id="sc-x7k2"');
   });
 
-  it("updates text content by data-hf-id", () => {
-    const source = `<p data-hf-id="hf-a1b2">Old text</p>`;
-    const { html, matched } = patchElementInHtml(source, { hfId: "hf-a1b2" }, [
+  it("updates text content by data-sc-id", () => {
+    const source = `<p data-sc-id="sc-a1b2">Old text</p>`;
+    const { html, matched } = patchElementInHtml(source, { hfId: "sc-a1b2" }, [
       { type: "text-content", property: "", value: "New text" },
     ]);
     expect(matched).toBe(true);
     expect(html).toContain("New text");
   });
 
-  it("updates attribute by data-hf-id", () => {
-    const source = `<div data-hf-id="hf-c3d4" data-start="0"></div>`;
-    const { html, matched } = patchElementInHtml(source, { hfId: "hf-c3d4" }, [
+  it("updates attribute by data-sc-id", () => {
+    const source = `<div data-sc-id="sc-c3d4" data-start="0"></div>`;
+    const { html, matched } = patchElementInHtml(source, { hfId: "sc-c3d4" }, [
       { type: "attribute", property: "start", value: "2.5" },
     ]);
     expect(matched).toBe(true);
     expect(html).toContain('data-start="2.5"');
   });
 
-  it("data-hf-id attribute survives the patch (can be targeted again)", () => {
-    const source = `<h1 data-hf-id="hf-x7k2" style="color: red">Hello</h1>`;
-    const { html } = patchElementInHtml(source, { hfId: "hf-x7k2" }, [
+  it("data-sc-id attribute survives the patch (can be targeted again)", () => {
+    const source = `<h1 data-sc-id="sc-x7k2" style="color: red">Hello</h1>`;
+    const { html } = patchElementInHtml(source, { hfId: "sc-x7k2" }, [
       { type: "inline-style", property: "color", value: "blue" },
     ]);
-    expect(html).toContain('data-hf-id="hf-x7k2"');
+    expect(html).toContain('data-sc-id="sc-x7k2"');
   });
 
-  it("resolves a data-hf-id inside a NESTED template (matches SDK deep resolution)", () => {
+  it("resolves a data-sc-id inside a NESTED template (matches SDK deep resolution)", () => {
     // ensureHfIds and the SDK descend nested composition templates, so ids
     // exist at any template depth; the server-side patch path must resolve
     // them too or those ops silently no-op while the SDK reports parity.
-    const source = `<template data-composition-id="a"><div>x</div><template data-composition-id="b"><p data-hf-id="hf-deep" data-start="0">deep</p></template></template>`;
-    const { html, matched } = patchElementInHtml(source, { hfId: "hf-deep" }, [
+    const source = `<template data-composition-id="a"><div>x</div><template data-composition-id="b"><p data-sc-id="sc-deep" data-start="0">deep</p></template></template>`;
+    const { html, matched } = patchElementInHtml(source, { hfId: "sc-deep" }, [
       { type: "attribute", property: "start", value: "2.5" },
     ]);
     expect(matched).toBe(true);
@@ -544,7 +544,7 @@ describe("T7 — data-hf-id targeting (spec for R1)", () => {
     const source = `<h1 class="headline" style="color: red">Hello</h1>`;
     const { html, matched } = patchElementInHtml(
       source,
-      { hfId: "hf-missing", selector: ".headline" },
+      { hfId: "sc-missing", selector: ".headline" },
       [{ type: "inline-style", property: "color", value: "blue" }],
     );
     expect(matched).toBe(true);
@@ -568,27 +568,27 @@ describe("T7 — data-hf-id targeting (spec for R1)", () => {
   });
 
   // The Studio edit path targets by id/selector (it never sends hfId). Once a
-  // persisted data-hf-id exists in source, those edits must NOT strip it — else
+  // persisted data-sc-id exists in source, those edits must NOT strip it — else
   // the stable handle is destroyed by the next edit. This is the preservation
   // guarantee the write-back design depends on.
-  it("preserves an existing data-hf-id when the element is patched by id", () => {
-    const source = `<h1 id="hero" data-hf-id="hf-x7k2" style="color: red">Hello</h1>`;
+  it("preserves an existing data-sc-id when the element is patched by id", () => {
+    const source = `<h1 id="hero" data-sc-id="sc-x7k2" style="color: red">Hello</h1>`;
     const { html, matched } = patchElementInHtml(source, { id: "hero" }, [
       { type: "inline-style", property: "color", value: "blue" },
     ]);
     expect(matched).toBe(true);
     expect(html).toMatch(/color:\s*blue/);
-    expect(html).toContain('data-hf-id="hf-x7k2"');
+    expect(html).toContain('data-sc-id="sc-x7k2"');
   });
 
-  it("preserves an existing data-hf-id when the element is patched by selector", () => {
-    const source = `<p class="body" data-hf-id="hf-a1b2">Old</p>`;
+  it("preserves an existing data-sc-id when the element is patched by selector", () => {
+    const source = `<p class="body" data-sc-id="sc-a1b2">Old</p>`;
     const { html, matched } = patchElementInHtml(source, { selector: ".body" }, [
       { type: "text-content", property: "textContent", value: "New" },
     ]);
     expect(matched).toBe(true);
     expect(html).toContain("New");
-    expect(html).toContain('data-hf-id="hf-a1b2"');
+    expect(html).toContain('data-sc-id="sc-a1b2"');
   });
 });
 
@@ -603,34 +603,34 @@ describe("T7 — data-hf-id targeting (spec for R1)", () => {
  */
 describe("patchElementInHtml stamps the ids a rich-text patch introduces", () => {
   it("gives each new span its id in the same write", () => {
-    const source = '<div data-hf-id="hf-a" id="t">plain</div>';
+    const source = '<div data-sc-id="sc-a" id="t">plain</div>';
     const { html, matched } = patchElementInHtml(source, { id: "t" }, [
       { type: "rich-text", property: "", value: 'a<span style="color: red">b</span>c' },
     ]);
 
     expect(matched).toBe(true);
     expect(html).toContain("color: red");
-    expect((html.match(/data-hf-id=/g) ?? []).length).toBe(2);
+    expect((html.match(/data-sc-id=/g) ?? []).length).toBe(2);
   });
 
   it("leaves an id a rich-text patch carried in alone", () => {
-    const source = '<div data-hf-id="hf-a" id="t">plain</div>';
+    const source = '<div data-sc-id="sc-a" id="t">plain</div>';
     const { html } = patchElementInHtml(source, { id: "t" }, [
-      { type: "rich-text", property: "", value: '<span data-hf-id="hf-keep">b</span>' },
+      { type: "rich-text", property: "", value: '<span data-sc-id="sc-keep">b</span>' },
     ]);
 
-    expect(html).toContain('data-hf-id="hf-keep"');
+    expect(html).toContain('data-sc-id="sc-keep"');
   });
 
   it("does not collide with an id inside a composition template", () => {
-    const source = `<!doctype html><html><body><template data-composition-id="nested"><p data-hf-id="hf-3x72">nested</p></template><h1 id="title">plain</h1></body></html>`;
+    const source = `<!doctype html><html><body><template data-composition-id="nested"><p data-sc-id="sc-3x72">nested</p></template><h1 id="title">plain</h1></body></html>`;
     const { html } = patchElementInHtml(source, { id: "title" }, [
       { type: "rich-text", property: "", value: '<span style="color: red">b</span>' },
     ]);
 
-    expect(html.match(/data-hf-id="hf-3x72"/g)).toHaveLength(1);
-    const introducedId = /<span[^>]*data-hf-id="([^"]+)"/.exec(html)?.[1];
+    expect(html.match(/data-sc-id="sc-3x72"/g)).toHaveLength(1);
+    const introducedId = /<span[^>]*data-sc-id="([^"]+)"/.exec(html)?.[1];
     expect(introducedId).toBeDefined();
-    expect(introducedId).not.toBe("hf-3x72");
+    expect(introducedId).not.toBe("sc-3x72");
   });
 });

@@ -4,8 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>FlowDesk Pitch — Slideshow Demo</title>
-    <script src="../../../packages/player/dist/hyperframes-player.global.js"></script>
-    <script src="../../../packages/player/dist/slideshow/hyperframes-slideshow.global.js"></script>
+    <script src="../../../packages/player/dist/smashcut-player.global.js"></script>
+    <script src="../../../packages/player/dist/slideshow/smashcut-slideshow.global.js"></script>
     <style>
       *,
       *::before,
@@ -25,20 +25,20 @@
   </head>
   <body>
     <!--
-      NOTE: The <script type="application/hyperframes-slideshow+json"> island
+      NOTE: The <script type="application/smashcut-slideshow+json"> island
       below is a COPY of the island inside index.html. This duplication is a
-      current workaround: <hyperframes-slideshow> reads the island from its OWN
-      innerHTML (not from the composition loaded by <hyperframes-player>). In a
+      current workaround: <smashcut-slideshow> reads the island from its OWN
+      innerHTML (not from the composition loaded by <smashcut-player>). In a
       future version the component should read the island from the composition
       directly. Keep this copy in sync with the one in index.html.
     -->
-    <hyperframes-slideshow tabindex="0" style="display: block; position: relative; width: 100vw; height: 100vh">
-      <hyperframes-player
+    <smashcut-slideshow tabindex="0" style="display: block; position: relative; width: 100vw; height: 100vh">
+      <smashcut-player
         style="position: absolute; inset: 0"
         src="index.html"
-      ></hyperframes-player>
+      ></smashcut-player>
 
-      <script type="application/hyperframes-slideshow+json">
+      <script type="application/smashcut-slideshow+json">
         {
           "slides": [
             {
@@ -102,6 +102,6 @@
           ]
         }
       </script>
-    </hyperframes-slideshow>
+    </smashcut-slideshow>
   </body>
 </html>

@@ -13,27 +13,27 @@ afterEach(() => {
 });
 
 function createProjectDir(): string {
-  const projectDir = mkdtempSync(join(tmpdir(), "hf-safe-path-"));
+  const projectDir = mkdtempSync(join(tmpdir(), "sc-safe-path-"));
   tempDirs.push(projectDir);
   return projectDir;
 }
 
 describe("walkDir", () => {
-  it("hides internal HyperFrames backup files from project listings", () => {
+  it("hides internal SmashCut backup files from project listings", () => {
     const projectDir = createProjectDir();
-    mkdirSync(join(projectDir, ".hyperframes", "backup"), { recursive: true });
-    mkdirSync(join(projectDir, ".hyperframes", "examples"), { recursive: true });
+    mkdirSync(join(projectDir, ".smashcut", "backup"), { recursive: true });
+    mkdirSync(join(projectDir, ".smashcut", "examples"), { recursive: true });
     mkdirSync(join(projectDir, ".cache", "examples"), { recursive: true });
     mkdirSync(join(projectDir, "compositions"), { recursive: true });
-    writeFileSync(join(projectDir, ".hyperframes", "backup", "snapshot.html"), "backup");
-    writeFileSync(join(projectDir, ".hyperframes", "examples", "preset.html"), "preset");
+    writeFileSync(join(projectDir, ".smashcut", "backup", "snapshot.html"), "backup");
+    writeFileSync(join(projectDir, ".smashcut", "examples", "preset.html"), "preset");
     writeFileSync(join(projectDir, ".cache", "examples", "preset.html"), "preset");
     writeFileSync(join(projectDir, "compositions", "scene.html"), "scene");
 
     const files = walkDir(projectDir);
     expect(files).toContain(".cache/examples/preset.html");
-    expect(files).toContain(".hyperframes/examples/preset.html");
+    expect(files).toContain(".smashcut/examples/preset.html");
     expect(files).toContain("compositions/scene.html");
-    expect(files).not.toContain(".hyperframes/backup/snapshot.html");
+    expect(files).not.toContain(".smashcut/backup/snapshot.html");
   });
 });

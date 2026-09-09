@@ -8,7 +8,7 @@ import {
   SCRIPT_FILENAME,
   STORYBOARD_FILENAME,
   type StoryboardFrame,
-} from "@hyperframes/core/storyboard";
+} from "@smashcut/core/storyboard";
 
 /** A frame enriched with disk-resolution info the Studio needs to render tiles. */
 interface ResolvedStoryboardFrame extends StoryboardFrame {

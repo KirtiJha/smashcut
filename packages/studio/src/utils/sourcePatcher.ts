@@ -274,7 +274,7 @@ function findTagByClass(html: string, target: PatchTarget): TagMatch | null {
 
 export function findTagByTarget(html: string, target: PatchTarget): TagMatch | null {
   if (target.hfId) {
-    const result = execDataAttrPattern(html, "data-hf-id", target.hfId);
+    const result = execDataAttrPattern(html, "data-sc-id", target.hfId);
     if (result) return result;
   }
 

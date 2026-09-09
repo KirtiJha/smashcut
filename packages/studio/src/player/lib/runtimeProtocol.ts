@@ -2,10 +2,10 @@ import {
   inspectRuntimeProtocol,
   runtimeProtocolMetadata,
   type RuntimeProtocolInspection,
-} from "@hyperframes/core/runtime/protocol";
+} from "@smashcut/core/runtime/protocol";
 
 export type RuntimeControlMessage = {
-  source: "hf-parent";
+  source: "sc-parent";
   type: "control";
   action: string;
 } & ReturnType<typeof runtimeProtocolMetadata> &
@@ -18,7 +18,7 @@ export function createRuntimeControlMessage(
 ): RuntimeControlMessage {
   return {
     ...payload,
-    source: "hf-parent",
+    source: "sc-parent",
     type: "control",
     action,
     ...runtimeProtocolMetadata(fps),

@@ -4,23 +4,23 @@ import { defineConfig } from "vitest/config";
 export default defineConfig({
   resolve: {
     alias: [
-      // Resolve the bare @hyperframes/core entry to TypeScript source, not built
+      // Resolve the bare @smashcut/core entry to TypeScript source, not built
       // dist. The published dist intentionally omits runtime/entry.ts, so the
       // dist build of loadHyperframeRuntimeSource() returns null — which makes
       // studioServer.test.ts's runtime-source equality assertion diverge. Tests
-      // run under bun against source; subpath imports (@hyperframes/core/*) keep
+      // run under bun against source; subpath imports (@smashcut/core/*) keep
       // resolving via the package's export conditions.
       {
-        find: /^@hyperframes\/core$/,
+        find: /^@smashcut\/core$/,
         replacement: resolve(__dirname, "../core/src/index.ts"),
       },
       // Same reason the tsup build aliases this specifier to source: the CLI
       // bundles the producer rather than depending on it at runtime, so its
       // dist is not built for the test job. Without the alias, vite's import
-      // analysis resolves studioServer.ts's `import("@hyperframes/producer")`
+      // analysis resolves studioServer.ts's `import("@smashcut/producer")`
       // against an unbuilt package and the whole suite fails to collect.
       {
-        find: /^@hyperframes\/producer$/,
+        find: /^@smashcut\/producer$/,
         replacement: resolve(__dirname, "../producer/src/index.ts"),
       },
     ],
@@ -29,7 +29,7 @@ export default defineConfig({
     include: ["src/**/*.test.ts"],
     // Many CLI tests cold-import a heavy command module graph via dynamic
     // `import()` (e.g. render.js, auth/status.js, telemetry/system.js). Under
-    // the full parallel monorepo run (`bun run --filter '!@hyperframes/producer'
+    // the full parallel monorepo run (`bun run --filter '!@smashcut/producer'
     // test`) that cold load contends for CPU and routinely blows vitest's 5s
     // default test timeout / 10s hook timeout on CI runners — a recurring
     // flake that has failed unrelated PRs (see PRs #1843, #1850). These

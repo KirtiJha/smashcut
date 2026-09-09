@@ -3,7 +3,7 @@
 import type { TimelineElement } from "../store/playerStore";
 import type { TimelineMoveOperation } from "../../hooks/timelineMoveAdapter";
 import type { BlockedTimelineEditIntent } from "./timelineEditing";
-import type { PropertyGroupName } from "@hyperframes/core/gsap-parser";
+import type { PropertyGroupName } from "@smashcut/core/gsap-parser";
 import type { TimelineKeyframeTarget } from "./timelineKeyframeIdentity";
 
 export interface TimelinePropertyGroupKeyframeToggle {

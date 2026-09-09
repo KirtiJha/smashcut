@@ -42,16 +42,16 @@ describe("affectsProjectSignature", () => {
     expect(affects(".thumbnails")).toBe(false);
   });
 
-  it("accepts the two manifest files the signature reads back out of .hyperframes", () => {
+  it("accepts the two manifest files the signature reads back out of .smashcut", () => {
     // The reload watcher's exclusion set is character-identical to the walk's but
-    // drops all of .hyperframes/. Filtering with it would stop a motion-state save
+    // drops all of .smashcut/. Filtering with it would stop a motion-state save
     // from ever invalidating — the same stale-ETag bug in a new place.
-    expect(affects(".hyperframes/studio-motion.json")).toBe(true);
-    expect(affects(".hyperframes/studio-manual-edits.json")).toBe(true);
+    expect(affects(".smashcut/studio-motion.json")).toBe(true);
+    expect(affects(".smashcut/studio-manual-edits.json")).toBe(true);
   });
 
-  it("rejects everything else inside .hyperframes", () => {
-    expect(affects(".hyperframes/cache/blob.bin")).toBe(false);
+  it("rejects everything else inside .smashcut", () => {
+    expect(affects(".smashcut/cache/blob.bin")).toBe(false);
   });
 
   it("rejects a path outside the project", () => {
@@ -62,7 +62,7 @@ describe("affectsProjectSignature", () => {
 
 describe("createProjectSignature", () => {
   it("changes after same-size content is written with the original mtime restored", () => {
-    const project = mkdtempSync(resolve(tmpdir(), "hf-signature-"));
+    const project = mkdtempSync(resolve(tmpdir(), "sc-signature-"));
     temporaryProjects.push(project);
     const file = resolve(project, "index.html");
     const descriptor = openSync(file, "w+");

@@ -118,7 +118,7 @@ describe("runAtomicCutTransaction", () => {
       "/api/projects/launch%2Fdemo/file-mutations/split-batch",
     ]);
     const splitRequest = requests.find((request) => request.url.includes("split-batch"));
-    const writeToken = new Headers(splitRequest?.headers).get("X-Hyperframes-Write-Token");
+    const writeToken = new Headers(splitRequest?.headers).get("X-Smashcut-Write-Token");
     expect(writeToken).toMatch(/^cut:/);
     expect(consumeStudioWriteToken(writeToken)).toBe(true);
     expect(writeProjectFile).not.toHaveBeenCalled();

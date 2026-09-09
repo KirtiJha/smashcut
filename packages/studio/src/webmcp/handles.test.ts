@@ -15,7 +15,7 @@ function timelineElement(overrides: Partial<TimelineElement>): TimelineElement {
 }
 
 describe("mintElementHandle", () => {
-  it("prefers data-hf-id, the stable patch target", () => {
+  it("prefers data-sc-id, the stable patch target", () => {
     const handle = mintElementHandle(
       timelineElementAddress(
         timelineElement({ hfId: "abc123", domId: "headline", selector: ".title" }),
@@ -172,7 +172,7 @@ describe("parseElementHandle", () => {
 describe("resolveElementHandle", () => {
   it("round-trips every handle scheme a read can mint", () => {
     const doc = previewDoc(
-      `<div id="headline" data-hf-id="abc123">A</div>
+      `<div id="headline" data-sc-id="abc123">A</div>
        <div class="card">first</div>
        <div class="card">second</div>`,
     );

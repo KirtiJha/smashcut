@@ -25,7 +25,7 @@ afterEach(() => {
 });
 
 function createAdapter(): StudioApiAdapter {
-  const projectDir = mkdtempSync(join(tmpdir(), "hf-thumbnail-test-"));
+  const projectDir = mkdtempSync(join(tmpdir(), "sc-thumbnail-test-"));
   tempProjectDirs.push(projectDir);
 
   return {
@@ -284,7 +284,7 @@ describe("registerThumbnailRoutes", () => {
 
     const indexPath = join(project.dir, "index.html");
     writeFileSync(indexPath, `<div data-composition-id="main" data-width="640" data-height="360">`);
-    const manualEditsDir = join(project.dir, ".hyperframes");
+    const manualEditsDir = join(project.dir, ".smashcut");
     mkdirSync(manualEditsDir, { recursive: true });
     const manualEditsPath = join(manualEditsDir, "studio-manual-edits.json");
     writeFileSync(manualEditsPath, `{"version":1,"edits":[]}`);
@@ -422,7 +422,7 @@ describe("registerThumbnailRoutes", () => {
 
     const indexPath = join(project.dir, "index.html");
     writeFileSync(indexPath, `<div data-composition-id="main" data-width="640" data-height="360">`);
-    const motionDir = join(project.dir, ".hyperframes");
+    const motionDir = join(project.dir, ".smashcut");
     mkdirSync(motionDir, { recursive: true });
     const motionPath = join(motionDir, "studio-motion.json");
     writeFileSync(motionPath, `{"version":1,"motions":[]}`);
@@ -438,7 +438,7 @@ describe("registerThumbnailRoutes", () => {
   });
 
   it("prunes expired and over-budget files without touching protected work", () => {
-    const cacheDir = mkdtempSync(join(tmpdir(), "hf-thumbnail-cache-test-"));
+    const cacheDir = mkdtempSync(join(tmpdir(), "sc-thumbnail-cache-test-"));
     tempProjectDirs.push(cacheDir);
     const expiredPath = join(cacheDir, "expired.jpg");
     const protectedPath = join(cacheDir, "protected.jpg");

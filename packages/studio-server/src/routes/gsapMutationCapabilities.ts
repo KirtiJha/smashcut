@@ -64,15 +64,15 @@ export const GSAP_MUTATION_CAPABILITIES = {
 } as const satisfies Record<GsapMutationType, GsapMutationCapability>;
 
 const GSAP_WRITER_MIGRATION = Object.freeze({
-  flag: "HYPERFRAMES_GSAP_WRITER",
+  flag: "SMASHCUT_GSAP_WRITER",
   owner: "studio-foundations",
   deadline: "2026-09-30",
   graduationCriteria:
     "Every operation has differential parity, the Acorn path imports no Recast runtime, and canary divergence is zero for the agreed soak window.",
 });
 
-export function resolveGsapWriter(env: { HYPERFRAMES_GSAP_WRITER?: string }): "recast" | "acorn" {
-  const configured = env.HYPERFRAMES_GSAP_WRITER ?? "recast";
+export function resolveGsapWriter(env: { SMASHCUT_GSAP_WRITER?: string }): "recast" | "acorn" {
+  const configured = env.SMASHCUT_GSAP_WRITER ?? "recast";
   if (configured === "recast" || configured === "acorn") return configured;
   throw new Error(`Invalid ${GSAP_WRITER_MIGRATION.flag}=${configured}; expected recast or acorn`);
 }

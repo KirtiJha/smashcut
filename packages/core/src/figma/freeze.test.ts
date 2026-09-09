@@ -7,7 +7,7 @@ import { exceedsFreezeCap, freezeBytes, MAX_FREEZE_BYTES } from "./freeze";
 
 const dirs: string[] = [];
 function scratch(): string {
-  const d = mkdtempSync(join(tmpdir(), "hf-freeze-"));
+  const d = mkdtempSync(join(tmpdir(), "sc-freeze-"));
   dirs.push(d);
   return d;
 }

@@ -56,7 +56,7 @@ describe("isPathInside", () => {
   it("handles Windows paths under the parent directory", () => {
     expect(
       isPathInside(
-        win32.resolve("C:\\compiled\\__hyperframes_video_frames\\video\\frame_000001.jpg"),
+        win32.resolve("C:\\compiled\\__smashcut_video_frames\\video\\frame_000001.jpg"),
         win32.resolve("C:\\compiled"),
         { pathModule: win32 },
       ),
@@ -65,36 +65,36 @@ describe("isPathInside", () => {
 });
 
 describe("toExternalAssetKey", () => {
-  it("prefixes with hf-ext/ and keeps a Unix absolute path", () => {
+  it("prefixes with sc-ext/ and keeps a Unix absolute path", () => {
     expect(toExternalAssetKey("/Users/miguel/assets/segment.wav")).toBe(
-      "hf-ext/Users/miguel/assets/segment.wav",
+      "sc-ext/Users/miguel/assets/segment.wav",
     );
   });
 
   it("converts Windows drive-letter paths to a colonless, slash-delimited key", () => {
-    // GH #321: `D:\coder\reactGin\hyperframes\reading\assets\segment_001.wav`
-    // used to become `hf-ext/D:\coder\...`, which makes the downstream
+    // GH #321: `D:\coder\reactGin\smashcut\reading\assets\segment_001.wav`
+    // used to become `sc-ext/D:\coder\...`, which makes the downstream
     // `path.join(compileDir, key)` absolute on Windows (drive letter wins).
     expect(
-      toExternalAssetKey("D:\\coder\\reactGin\\hyperframes\\reading\\assets\\segment_001.wav"),
-    ).toBe("hf-ext/D/coder/reactGin/hyperframes/reading/assets/segment_001.wav");
+      toExternalAssetKey("D:\\coder\\reactGin\\smashcut\\reading\\assets\\segment_001.wav"),
+    ).toBe("sc-ext/D/coder/reactGin/smashcut/reading/assets/segment_001.wav");
   });
 
   it("handles Windows paths with forward slashes (mixed separators)", () => {
     expect(toExternalAssetKey("C:/Users/Alice/Downloads/clip.mp4")).toBe(
-      "hf-ext/C/Users/Alice/Downloads/clip.mp4",
+      "sc-ext/C/Users/Alice/Downloads/clip.mp4",
     );
   });
 
   it("lowercases / uppercases drive letters faithfully (we don't munge)", () => {
-    expect(toExternalAssetKey("e:\\data\\a.wav")).toBe("hf-ext/e/data/a.wav");
-    expect(toExternalAssetKey("Z:\\data\\a.wav")).toBe("hf-ext/Z/data/a.wav");
+    expect(toExternalAssetKey("e:\\data\\a.wav")).toBe("sc-ext/e/data/a.wav");
+    expect(toExternalAssetKey("Z:\\data\\a.wav")).toBe("sc-ext/Z/data/a.wav");
   });
 
-  it("is truly idempotent — double-wrap short-circuits on the hf-ext/ prefix", () => {
+  it("is truly idempotent — double-wrap short-circuits on the sc-ext/ prefix", () => {
     // Earlier revision of this test claimed "idempotent" but actually
-    // produced `hf-ext/hf-ext/...` — a silent doubling. The short-circuit
-    // on the hf-ext/ prefix makes the helper exactly idempotent now, so
+    // produced `sc-ext/sc-ext/...` — a silent doubling. The short-circuit
+    // on the sc-ext/ prefix makes the helper exactly idempotent now, so
     // the invariant test matches the label.
     const once = toExternalAssetKey("/foo/bar.mp3");
     const twice = toExternalAssetKey(once);
@@ -103,19 +103,19 @@ describe("toExternalAssetKey", () => {
 
   it("strips the Windows extended-length prefix (\\\\?\\)", () => {
     expect(toExternalAssetKey("\\\\?\\D:\\very\\long\\path\\clip.mp4")).toBe(
-      "hf-ext/D/very/long/path/clip.mp4",
+      "sc-ext/D/very/long/path/clip.mp4",
     );
   });
 
   it("collapses UNC paths to unc/<server>/<share>/... so cross-server names can't collide", () => {
     expect(toExternalAssetKey("\\\\server\\share\\file.wav")).toBe(
-      "hf-ext/unc/server/share/file.wav",
+      "sc-ext/unc/server/share/file.wav",
     );
   });
 
   it("handles UNC extended-length form (\\\\?\\UNC\\server\\...)", () => {
     expect(toExternalAssetKey("\\\\?\\UNC\\server\\share\\file.wav")).toBe(
-      "hf-ext/unc/server/share/file.wav",
+      "sc-ext/unc/server/share/file.wav",
     );
   });
 
@@ -124,7 +124,7 @@ describe("toExternalAssetKey", () => {
     // absolute path with an extra slash. The sanitiser now preserves the
     // host/share boundary instead of collapsing it, matching the actual
     // meaning of the input on the platform that produces these paths.
-    expect(toExternalAssetKey("//foo/bar.mp3")).toBe("hf-ext/unc/foo/bar.mp3");
+    expect(toExternalAssetKey("//foo/bar.mp3")).toBe("sc-ext/unc/foo/bar.mp3");
   });
 
   it("produces a key that path.join(compileDir, key) keeps inside compileDir", () => {

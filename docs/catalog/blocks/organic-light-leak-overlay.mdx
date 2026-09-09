@@ -9,12 +9,12 @@ import { InstallCommand } from "/snippets/install-command.jsx";
   className="w-full aspect-video rounded-xl border-0 bg-zinc-100 dark:bg-zinc-800"
   title="organic-light-leak-overlay preview"
   loading="lazy"
-  srcDoc={`<!doctype html><html><head><meta charset="utf-8"><style>html,body{margin:0;height:100%;overflow:hidden;background:transparent}hyperframes-player{display:block;width:100%;height:100%}</style><script src="https://cdn.jsdelivr.net/npm/@hyperframes/player@latest/dist/hyperframes-player.global.js"><\/script></head><body><script>fetch("/public/catalog/blocks/organic-light-leak-overlay.json").then(function(r){return r.json()}).then(function(d){var p=document.createElement("hyperframes-player");p.setAttribute("srcdoc",d.html);p.setAttribute("controls","");p.setAttribute("autoplay","");p.setAttribute("loop","");p.setAttribute("muted","");p.setAttribute("poster","https://static.heygen.ai/hyperframes-oss/docs/images/catalog/blocks/organic-light-leak-overlay.png");document.body.appendChild(p)});<\/script></body></html>`}
+  srcDoc={`<!doctype html><html><head><meta charset="utf-8"><style>html,body{margin:0;height:100%;overflow:hidden;background:transparent}smashcut-player{display:block;width:100%;height:100%}</style><script src="https://cdn.jsdelivr.net/npm/@smashcut/player@latest/dist/smashcut-player.global.js"><\/script></head><body><script>fetch("/public/catalog/blocks/organic-light-leak-overlay.json").then(function(r){return r.json()}).then(function(d){var p=document.createElement("smashcut-player");p.setAttribute("srcdoc",d.html);p.setAttribute("controls","");p.setAttribute("autoplay","");p.setAttribute("loop","");p.setAttribute("muted","");p.setAttribute("poster","https://static.heygen.ai/smashcut-oss/docs/images/catalog/blocks/organic-light-leak-overlay.png");document.body.appendChild(p)});<\/script></body></html>`}
 />
 
 ## Install
 
-<InstallCommand command="npx hyperframes add organic-light-leak-overlay" item="organic-light-leak-overlay" />
+<InstallCommand command="npx smashcut add organic-light-leak-overlay" item="organic-light-leak-overlay" />
 
 That writes one file: `compositions/organic-light-leak-overlay.html`.
 
@@ -63,7 +63,7 @@ Move it in time with `data-start`. Put it on a different timeline row with
         background: transparent;
       }
 
-      #hf-light-leak {
+      #sc-light-leak {
         position: absolute;
         inset: -16%;
         opacity: 0;
@@ -72,20 +72,20 @@ Move it in time with `data-start`. Put it on a different timeline row with
         mix-blend-mode: screen;
       }
 
-      #hf-light-leak .hf-leak-layer {
+      #sc-light-leak .sc-leak-layer {
         position: absolute;
         inset: -20%;
         will-change: opacity, transform;
       }
 
-      #hf-light-leak .hf-leak-amber {
+      #sc-light-leak .sc-leak-amber {
         background:
           radial-gradient(ellipse 52% 110% at 10% 58%, rgb(255 241 197 / 92%), transparent 45%),
           radial-gradient(ellipse 72% 120% at 24% 54%, rgb(255 126 57 / 78%), transparent 66%);
         filter: blur(2.8vmin);
       }
 
-      #hf-light-leak .hf-leak-red {
+      #sc-light-leak .sc-leak-red {
         background: radial-gradient(
           ellipse 58% 105% at 78% 34%,
           rgb(255 79 61 / 72%),
@@ -95,7 +95,7 @@ Move it in time with `data-start`. Put it on a different timeline row with
         filter: blur(4vmin);
       }
 
-      #hf-light-leak .hf-leak-gold {
+      #sc-light-leak .sc-leak-gold {
         background: linear-gradient(
           104deg,
           transparent 24%,
@@ -117,17 +117,17 @@ Move it in time with `data-start`. Put it on a different timeline row with
       data-width="1920"
       data-height="1080"
     >
-      <div id="hf-light-leak" aria-hidden="true">
-        <div class="hf-leak-layer hf-leak-amber"></div>
-        <div class="hf-leak-layer hf-leak-red"></div>
-        <div class="hf-leak-layer hf-leak-gold"></div>
+      <div id="sc-light-leak" aria-hidden="true">
+        <div class="sc-leak-layer sc-leak-amber"></div>
+        <div class="sc-leak-layer sc-leak-red"></div>
+        <div class="sc-leak-layer sc-leak-gold"></div>
       </div>
     </div>
 
     <script>
       window.__timelines = window.__timelines || {};
 
-      var leak = document.getElementById("hf-light-leak");
+      var leak = document.getElementById("sc-light-leak");
       var host = leak && leak.closest("[data-composition-id]");
       if (!host) throw new Error("Organic Light Leak could not find its composition host");
 
@@ -145,19 +145,19 @@ Move it in time with `data-start`. Put it on a different timeline row with
       tl.to(leak, { opacity: 0.46, duration: duration * 0.2, ease: "sine.inOut" }, duration * 0.42);
       tl.to(leak, { opacity: 0, duration: duration * 0.26, ease: "sine.in" }, duration * 0.68);
       tl.fromTo(
-        ".hf-leak-amber",
+        ".sc-leak-amber",
         { xPercent: -20, scale: 0.92, rotation: -4 },
         { xPercent: 18, scale: 1.1, rotation: 2, duration: duration, ease: "sine.inOut" },
         0,
       );
       tl.fromTo(
-        ".hf-leak-red",
+        ".sc-leak-red",
         { xPercent: 20, yPercent: -8, scale: 1.08 },
         { xPercent: -16, yPercent: 8, scale: 0.94, duration: duration, ease: "sine.inOut" },
         0,
       );
       tl.fromTo(
-        ".hf-leak-gold",
+        ".sc-leak-gold",
         { xPercent: -28, rotation: -6 },
         { xPercent: 24, rotation: 4, duration: duration, ease: "sine.inOut" },
         0,

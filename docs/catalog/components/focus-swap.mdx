@@ -16,7 +16,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 ```html focus-swap.html
 <!doctype html>
 <!--
-  focus-swap: HyperFrames video primitive (ui-props / holdable / demonstrate)
+  focus-swap: SmashCut video primitive (ui-props / holdable / demonstrate)
 
   Concept: attention moves between two side-by-side cards. The card losing
   focus recedes to 0.92 scale, softens, and dims while the other card advances
@@ -235,8 +235,8 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
             var cardA = root.querySelector('[data-focus-card="a"]');
             var cardB = root.querySelector('[data-focus-card="b"]');
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             // INVARIANT: focus is the only owner of which card advances and
@@ -301,7 +301,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 
 ## Install
 
-<InstallCommand command="npx hyperframes add focus-swap" item="focus-swap" />
+<InstallCommand command="npx smashcut add focus-swap" item="focus-swap" />
 
 That writes one file: `compositions/components/focus-swap.html`.
 
@@ -341,7 +341,7 @@ defaults, so this behaves exactly like the preview above until you change one:
 ```html
 <!doctype html>
 <!--
-  focus-swap: HyperFrames video primitive (ui-props / holdable / demonstrate)
+  focus-swap: SmashCut video primitive (ui-props / holdable / demonstrate)
 
   Concept: attention moves between two side-by-side cards. The card losing
   focus recedes to 0.92 scale, softens, and dims while the other card advances
@@ -560,8 +560,8 @@ defaults, so this behaves exactly like the preview above until you change one:
             var cardA = root.querySelector('[data-focus-card="a"]');
             var cardB = root.querySelector('[data-focus-card="b"]');
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             // INVARIANT: focus is the only owner of which card advances and

@@ -1,17 +1,17 @@
 ---
-title: "@hyperframes/engine"
+title: "@smashcut/engine"
 description: "Low-level, seekable frame capture and encoding primitives."
 ---
 
-`@hyperframes/engine` is the low-level layer beneath the
-[Producer](/packages/producer). It opens a page that implements the HyperFrames
+`@smashcut/engine` is the low-level layer beneath the
+[Producer](/packages/producer). It opens a page that implements the SmashCut
 seek protocol, seeks to an exact time, and captures the resulting frame.
 
 Most integrations should use the CLI or Producer. Use the Engine only when you
 need to own frame capture, encoding, media extraction, or browser management.
 
 ```bash
-npm install @hyperframes/engine
+npm install @smashcut/engine
 ```
 
 ## Why it is different from screen recording
@@ -27,7 +27,7 @@ reproducibility matters.
 
 ## Capture frames
 
-The page at `serverUrl` must expose `window.__hf` with a `duration` and a
+The page at `serverUrl` must expose `window.__sc` with a `duration` and a
 deterministic `seek(time)` function.
 
 ```ts
@@ -37,7 +37,7 @@ import {
   createCaptureSession,
   getCompositionDuration,
   initializeSession,
-} from "@hyperframes/engine";
+} from "@smashcut/engine";
 
 const fps = { num: 30, den: 1 };
 const session = await createCaptureSession(
@@ -85,10 +85,10 @@ return result objects, and teardown helpers avoid masking the original failure.
 ## Related topics
 
 <CardGroup cols={2}>
-  <Card title="@hyperframes/producer" icon="video" href="/packages/producer">
+  <Card title="@smashcut/producer" icon="video" href="/packages/producer">
     Get a finished video without assembling the pipeline yourself.
   </Card>
   <Card title="Deterministic rendering" icon="repeat" href="/concepts/determinism">
-    Understand what HyperFrames controls and what the environment still affects.
+    Understand what SmashCut controls and what the environment still affects.
   </Card>
 </CardGroup>

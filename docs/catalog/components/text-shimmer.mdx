@@ -16,7 +16,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 ```html text-shimmer.html
 <!doctype html>
 <!--
-  text-shimmer: HyperFrames video primitive (text effects / drift / emphasize)
+  text-shimmer: SmashCut video primitive (text effects / drift / emphasize)
 
   Concept: a headline remains fixed while one narrow specular band crosses
   its glyphs. The text is clean before and after the pass. There is no
@@ -138,8 +138,8 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
             var root = document.getElementById("root");
             var headline = root.querySelector(".ts-headline");
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             var text = vars.text == null ? "Effortless" : String(vars.text);
@@ -198,7 +198,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 
 ## Install
 
-<InstallCommand command="npx hyperframes add text-shimmer" item="text-shimmer" />
+<InstallCommand command="npx smashcut add text-shimmer" item="text-shimmer" />
 
 That writes one file: `compositions/components/text-shimmer.html`.
 
@@ -238,7 +238,7 @@ defaults, so this behaves exactly like the preview above until you change one:
 ```html
 <!doctype html>
 <!--
-  text-shimmer: HyperFrames video primitive (text effects / drift / emphasize)
+  text-shimmer: SmashCut video primitive (text effects / drift / emphasize)
 
   Concept: a headline remains fixed while one narrow specular band crosses
   its glyphs. The text is clean before and after the pass. There is no
@@ -360,8 +360,8 @@ defaults, so this behaves exactly like the preview above until you change one:
             var root = document.getElementById("root");
             var headline = root.querySelector(".ts-headline");
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             var text = vars.text == null ? "Effortless" : String(vars.text);

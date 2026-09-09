@@ -23,8 +23,8 @@ before spending time on small visual details.
 Run the checks in Studio, ask your agent to run them, or use:
 
 ```bash
-npx hyperframes lint
-npx hyperframes check
+npx smashcut lint
+npx smashcut check
 ```
 
 `lint` catches composition-structure mistakes. `check` runs lint plus browser,
@@ -40,12 +40,12 @@ All three paths render the same source.
 ### Ask the agent
 
 ```text
-Run the HyperFrames checks, fix any failures, and show me the final preview.
+Run the SmashCut checks, fix any failures, and show me the final preview.
 When I approve it, render an MP4 to renders/final.mp4.
 ```
 
 Use the agent when a failed check may require a source change or when you want
-one person to manage the complete finish. HyperFrames creation workflows wait
+one person to manage the complete finish. SmashCut creation workflows wait
 for render approval after the final preview.
 
 ### Use Studio
@@ -57,8 +57,8 @@ download.
 <div style={{ maxWidth: "42rem", margin: "1.5rem auto" }}>
   <Frame caption="Studio checking and rendering the same project shown in its editor.">
     <video
-      src="https://static.heygen.ai/hyperframes-oss/docs/images/showcase/studio-check-render-loop-v2.mp4"
-      poster="https://static.heygen.ai/hyperframes-oss/docs/images/showcase/studio-check-render-loop-v2.jpg"
+      src="https://static.heygen.ai/smashcut-oss/docs/images/showcase/studio-check-render-loop-v2.mp4"
+      poster="https://static.heygen.ai/smashcut-oss/docs/images/showcase/studio-check-render-loop-v2.jpg"
       autoPlay
       muted
       loop
@@ -70,12 +70,12 @@ download.
 ### Use the CLI
 
 ```bash
-npx hyperframes render --output renders/final.mp4
+npx smashcut render --output renders/final.mp4
 ```
 
 Use the CLI for a direct local render, a script, CI, or a repeatable batch. The
 installed version remains authoritative: run
-`npx hyperframes render --help` for every available option.
+`npx smashcut render --help` for every available option.
 
 ## 4. Choose what the destination needs
 
@@ -121,7 +121,7 @@ is correct.
 Publish the project when a browser link is more useful than a file:
 
 ```bash
-npx hyperframes publish
+npx smashcut publish
 ```
 
 The command uploads the project and returns a stable URL. An anonymous first
@@ -137,9 +137,9 @@ timing, facts, or final approval.
 Keep the first exact error and run:
 
 ```bash
-npx hyperframes doctor
-npx hyperframes lint
-npx hyperframes check
+npx smashcut doctor
+npx smashcut lint
+npx smashcut check
 ```
 
 Use [Troubleshooting](/guides/troubleshooting) for project and render failures,

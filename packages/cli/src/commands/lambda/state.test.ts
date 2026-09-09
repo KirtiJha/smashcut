@@ -14,7 +14,7 @@ import {
 let workdir: string;
 
 beforeEach(() => {
-  workdir = mkdtempSync(join(tmpdir(), "hf-lambda-cli-state-"));
+  workdir = mkdtempSync(join(tmpdir(), "sc-lambda-cli-state-"));
 });
 
 afterEach(() => {
@@ -26,7 +26,7 @@ const sample: StackOutputs = {
   region: "us-east-1",
   bucketName: "bucket-x",
   stateMachineArn: "arn:aws:states:us-east-1:1234:stateMachine:hf",
-  functionName: "hf-render",
+  functionName: "sc-render",
   lambdaMemoryMb: 10240,
   deployedAt: "2026-05-16T00:00:00Z",
 };

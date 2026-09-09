@@ -250,7 +250,7 @@
     -->
 
     <!-- ── JSON island (source of truth for slide order, fragments, hotspots) ── -->
-    <script type="application/hyperframes-slideshow+json">
+    <script type="application/smashcut-slideshow+json">
       {
         "slides": [
           {
@@ -790,7 +790,7 @@
         }
 
         // Expose so the player / slideshow component can drive it directly
-        window.__hfSetTime = updateVisibility;
+        window.__scSetTime = updateVisibility;
 
         // Show the first slide immediately on load so the deck isn't blank
         updateVisibility(0);
@@ -809,7 +809,7 @@
     </script>
 
     <!-- ── Bootstrap postMessage for slideshow component ─────
-         Sends the timeline manifest so <hyperframes-slideshow>
+         Sends the timeline manifest so <smashcut-slideshow>
          can discover all scenes (main + branch) without relying
          on the engine's full runtime injection.
     ──────────────────────────────────────────────────────── -->
@@ -831,7 +831,7 @@
 
         function postTimeline() {
           parent.postMessage({
-            source: "hf-preview",
+            source: "sc-preview",
             type: "timeline",
             durationInFrames: totalFrames,
             scenes: scenes

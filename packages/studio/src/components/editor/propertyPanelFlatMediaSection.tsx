@@ -20,7 +20,7 @@ import {
   formatAudioGain,
   audioGainToFaderPosition,
   audioGainToText,
-} from "@hyperframes/core/audio-gain";
+} from "@smashcut/core/audio-gain";
 
 // fallow-ignore-next-line complexity
 export function FlatMediaSection({
@@ -217,7 +217,7 @@ export function FlatMediaSection({
               here would be overwritten by the envelope on the next tick. The
               toggle beside it carries the tooltip. */}
           <div
-            className="hf-volume-row flex items-center gap-1"
+            className="sc-volume-row flex items-center gap-1"
             data-volume-automated={volumeAutomated ? "" : undefined}
           >
             <div className="min-w-0 flex-1">

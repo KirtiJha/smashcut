@@ -2,7 +2,7 @@ import { afterEach, describe, expect, it } from "vitest";
 import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { loadHyperframeRuntimeSource } from "@hyperframes/core";
+import { loadHyperframeRuntimeSource } from "@smashcut/core";
 import { loadRuntimeSource } from "./runtimeSource.js";
 import { findFFmpeg, findFFprobe } from "../browser/ffmpeg.js";
 import { createStudioServer, type StudioServer } from "./studioServer.js";
@@ -14,7 +14,7 @@ const dirs: string[] = [];
 let server: StudioServer | undefined;
 
 function tmpProject(): string {
-  const dir = mkdtempSync(join(tmpdir(), "hf-studio-server-test-"));
+  const dir = mkdtempSync(join(tmpdir(), "sc-studio-server-test-"));
   dirs.push(dir);
   return dir;
 }
@@ -22,8 +22,8 @@ function tmpProject(): string {
 afterEach(() => {
   server?.watcher.close();
   server = undefined;
-  delete process.env.HYPERFRAMES_FFMPEG_PATH;
-  delete process.env.HYPERFRAMES_FFPROBE_PATH;
+  delete process.env.SMASHCUT_FFMPEG_PATH;
+  delete process.env.SMASHCUT_FFPROBE_PATH;
   for (const dir of dirs.splice(0)) rmSync(dir, { recursive: true, force: true });
 });
 
@@ -44,10 +44,10 @@ describe("Studio thumbnail GPU capture plumbing", () => {
 });
 
 describe("createStudioServer autoProxy plumbing", () => {
-  it("hyperframes.json media.autoProxy=false flows through to the adapter", () => {
+  it("smashcut.json media.autoProxy=false flows through to the adapter", () => {
     const projectDir = tmpProject();
     writeFileSync(
-      join(projectDir, "hyperframes.json"),
+      join(projectDir, "smashcut.json"),
       JSON.stringify({ media: { autoProxy: false } }),
     );
 
@@ -64,7 +64,7 @@ describe("createStudioServer autoProxy plumbing", () => {
   it("an explicit option (the preview command's resolved --proxy flag) wins over config", () => {
     const projectDir = tmpProject();
     writeFileSync(
-      join(projectDir, "hyperframes.json"),
+      join(projectDir, "smashcut.json"),
       JSON.stringify({ media: { autoProxy: false } }),
     );
 
@@ -77,7 +77,7 @@ describe("createStudioServer autoProxy plumbing", () => {
     const projectDir = tmpProject();
     server = createStudioServer({ projectDir, browserGpuMode: "software" });
 
-    const response = await server.app.request("/__hyperframes_config");
+    const response = await server.app.request("/__smashcut_config");
 
     expect(response.status).toBe(200);
     await expect(response.json()).resolves.toMatchObject({ browserGpuMode: "software" });
@@ -148,7 +148,7 @@ describe("FFmpeg environment endpoint", () => {
   it("reports the cause and a pasteable command when FFmpeg is unusable", async () => {
     // A configured-but-missing override is the one "no FFmpeg" state a test can
     // force on a machine that does have FFmpeg installed.
-    process.env.HYPERFRAMES_FFMPEG_PATH = join(tmpdir(), "hf-missing-ffmpeg");
+    process.env.SMASHCUT_FFMPEG_PATH = join(tmpdir(), "sc-missing-ffmpeg");
     server = createStudioServer({ projectDir: tmpProject() });
 
     const res = await server.app.request("/api/environment/ffmpeg");

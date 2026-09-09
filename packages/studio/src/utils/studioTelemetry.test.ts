@@ -47,7 +47,7 @@ describe("studioTelemetry — shared opt-out and canary properties", () => {
   }
 
   // Every control the shared policy enforces — documented key, legacy key,
-  // navigator.doNotTrack, VITE_HYPERFRAMES_NO_TELEMETRY, Vite dev mode, API
+  // navigator.doNotTrack, VITE_SMASHCUT_NO_TELEMETRY, Vite dev mode, API
   // key eligibility. Before the policy was shared this transport honoured
   // only the legacy key, so all of the others still emitted `studio:*`.
   it("sends nothing when the shared policy refuses", async () => {

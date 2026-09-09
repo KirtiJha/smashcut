@@ -1,7 +1,7 @@
 import type { LintContext, HyperframeLintFinding, OpenTag } from "../context";
 import { readAttr, readDecodedAttr, stripJsComments, truncateSnippet, isMediaTag } from "../utils";
-import { validateColorGradingContract } from "@hyperframes/parsers/color-grading-contract";
-import { extractMediaSrcMutations } from "@hyperframes/parsers";
+import { validateColorGradingContract } from "@smashcut/parsers/color-grading-contract";
+import { extractMediaSrcMutations } from "@smashcut/parsers";
 import { parseHTML } from "linkedom";
 
 /**
@@ -146,7 +146,7 @@ function findNestedMediaStartBasisFindings(ctx: LintContext): HyperframeLintFind
     const rawStart = readAttr(tag.raw, "data-start");
     const start = rawStart == null || rawStart.trim() === "" ? NaN : Number(rawStart);
     if (!Number.isFinite(start) || start <= 0) continue;
-    const basis = readAttr(tag.raw, "data-hf-media-start-basis");
+    const basis = readAttr(tag.raw, "data-sc-media-start-basis");
     if (basis === "local" || basis === "global") continue;
     const elementId = readAttr(tag.raw, "id") || undefined;
     findings.push({
@@ -154,7 +154,7 @@ function findNestedMediaStartBasisFindings(ctx: LintContext): HyperframeLintFind
       severity: "warning",
       message: `<${tag.name}${elementId ? ` id="${elementId}"` : ""}> has data-start="${rawStart}" inside a sub-composition. Nested media timing is local to its composition by default; a nonzero value can be confused with a legacy root-global timestamp.`,
       elementId,
-      fixHint: `Keep data-start="${rawStart}" if it is composition-local. If this is a legacy root-global timestamp, add data-hf-media-start-basis="global"; otherwise convert it to local time by subtracting the host start.`,
+      fixHint: `Keep data-start="${rawStart}" if it is composition-local. If this is a legacy root-global timestamp, add data-sc-media-start-basis="global"; otherwise convert it to local time by subtracting the host start.`,
       snippet: truncateSnippet(tag.raw),
     });
   }
@@ -318,7 +318,7 @@ function findImperativeMediaControlFindings(ctx: LintContext): HyperframeLintFin
         findings.push({
           code: "imperative_media_control",
           severity: "error",
-          message: `Inline <script> imperatively controls managed media via ${kind}. HyperFrames must own media play/pause/seek to keep preview, timeline, and renders deterministic.`,
+          message: `Inline <script> imperatively controls managed media via ${kind}. SmashCut must own media play/pause/seek to keep preview, timeline, and renders deterministic.`,
           elementId: elementId || undefined,
           fixHint:
             "Remove imperative media play/pause/currentTime/muted control. Express timing with data-start/data-duration and media offsets like data-media-start or data-playback-start instead.",
@@ -344,7 +344,7 @@ function findImperativeMediaControlFindings(ctx: LintContext): HyperframeLintFin
           findings.push({
             code: "imperative_media_control",
             severity: "error",
-            message: `Inline <script> imperatively controls managed media via ${kind}. HyperFrames must own media play/pause/seek to keep preview, timeline, and renders deterministic.`,
+            message: `Inline <script> imperatively controls managed media via ${kind}. SmashCut must own media play/pause/seek to keep preview, timeline, and renders deterministic.`,
             elementId,
             fixHint:
               "Remove imperative media play/pause/currentTime/muted control. Express timing with data-start/data-duration and media offsets like data-media-start or data-playback-start instead.",
@@ -682,7 +682,7 @@ export const mediaRules: Array<(ctx: LintContext) => HyperframeLintFinding[]> = 
         findings.push({
           code: "media_missing_data_start",
           severity: "error",
-          message: `<${tag.name}${hasId ? ` id="${hasId}"` : ""}> has src but no data-start. HyperFrames cannot own playback for untimed media, so preview and render behavior can diverge.`,
+          message: `<${tag.name}${hasId ? ` id="${hasId}"` : ""}> has src but no data-start. SmashCut cannot own playback for untimed media, so preview and render behavior can diverge.`,
           elementId: hasId || undefined,
           fixHint: `Add data-start="0" (or the intended start time) and data-duration if the clip should stop before the source ends.`,
           snippet: truncateSnippet(tag.raw),
@@ -922,7 +922,7 @@ function findVolumeDoubleAutomationFindings(ctx: LintContext): HyperframeLintFin
  */
 function findCarveUngroupedSourcesFindings(ctx: LintContext): HyperframeLintFinding[] {
   const groupIds = new Set(
-    ctx.tags.filter((tag) => tag.name === "hf-audio-group").map((tag) => readAttr(tag.raw, "id")),
+    ctx.tags.filter((tag) => tag.name === "sc-audio-group").map((tag) => readAttr(tag.raw, "id")),
   );
 
   const findings: HyperframeLintFinding[] = [];
@@ -967,7 +967,7 @@ const AUDIO_GROUP_TIMING_ATTRS = ["data-start", "data-duration", "data-track-ind
  * A bus nobody joined does nothing, silently.
  *
  * `resolveAudioGroups` builds groups from the MEMBERS (`audio[data-audio-group]`)
- * and only then looks for a matching `<hf-audio-group>` element, so a bus whose
+ * and only then looks for a matching `<sc-audio-group>` element, so a bus whose
  * id no clip names is dropped entirely — its fader, FX chain and automation
  * never reach preview or render, and nothing says so. One typo is enough:
  * `data-audio-group="voiceovr"` against `id="voiceover"` loses the authored bus
@@ -995,7 +995,7 @@ function findAudioGroupNoMembersFindings(ctx: LintContext): HyperframeLintFindin
   );
   const declaredGroupIds = new Set(
     ctx.tags
-      .filter((tag) => tag.name === "hf-audio-group")
+      .filter((tag) => tag.name === "sc-audio-group")
       .map((tag) => readAttr(tag.raw, "id"))
       .filter((id): id is string => Boolean(id)),
   );
@@ -1003,7 +1003,7 @@ function findAudioGroupNoMembersFindings(ctx: LintContext): HyperframeLintFindin
 
   const findings: HyperframeLintFinding[] = [];
   for (const tag of ctx.tags) {
-    if (tag.name !== "hf-audio-group") continue;
+    if (tag.name !== "sc-audio-group") continue;
     // A bus with no id cannot be joined at all — a different mistake, and
     // `resolveAudioGroups` skips it when building its element map.
     const elementId = readAttr(tag.raw, "id");
@@ -1050,7 +1050,7 @@ function findAudioGroupNoMembersFindings(ctx: LintContext): HyperframeLintFindin
 function findAudioGroupTimingAttrFindings(ctx: LintContext): HyperframeLintFinding[] {
   const findings: HyperframeLintFinding[] = [];
   for (const tag of ctx.tags) {
-    if (tag.name !== "hf-audio-group") continue;
+    if (tag.name !== "sc-audio-group") continue;
     const present = AUDIO_GROUP_TIMING_ATTRS.filter((attr) => hasAttrName(tag.raw, attr));
     if (present.length === 0) continue;
     const elementId = readAttr(tag.raw, "id") || undefined;
@@ -1082,7 +1082,7 @@ function findAudioGroupTimingAttrFindings(ctx: LintContext): HyperframeLintFindi
 function findAudioGroupCarveAttrFindings(ctx: LintContext): HyperframeLintFinding[] {
   const findings: HyperframeLintFinding[] = [];
   for (const tag of ctx.tags) {
-    if (tag.name !== "hf-audio-group") continue;
+    if (tag.name !== "sc-audio-group") continue;
     if (!hasAttrName(tag.raw, "data-fx-carve")) continue;
     const elementId = readAttr(tag.raw, "id") || undefined;
     findings.push({

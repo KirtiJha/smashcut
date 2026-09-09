@@ -1,7 +1,7 @@
 {
-  "name": "@hyperframes/aws-lambda",
+  "name": "@smashcut/aws-lambda",
   "version": "0.8.33",
-  "description": "AWS Lambda adapter for HyperFrames distributed rendering — handler, client-side SDK, and CDK construct.",
+  "description": "AWS Lambda adapter for SmashCut distributed rendering — handler, client-side SDK, and CDK construct.",
   "repository": {
     "type": "git",
     "url": "https://github.com/heygen-com/hyperframes",
@@ -63,7 +63,7 @@
     "build": "node build.mjs",
     "build:zip": "tsx scripts/build-zip.ts",
     "probe:beginframe": "tsx scripts/probe-beginframe.ts",
-    "probe:beginframe:docker": "docker build -f scripts/probe-beginframe.dockerfile -t hyperframes-lambda-probe:local ../.. && docker run --rm hyperframes-lambda-probe:local",
+    "probe:beginframe:docker": "docker build -f scripts/probe-beginframe.dockerfile -t smashcut-lambda-probe:local ../.. && docker run --rm smashcut-lambda-probe:local",
     "test": "bun test",
     "typecheck": "tsc --noEmit",
     "verify:zip-size": "tsx scripts/verify-zip-size.ts"
@@ -71,7 +71,7 @@
   "dependencies": {
     "@aws-sdk/client-s3": "^3.700.0",
     "@aws-sdk/client-sfn": "^3.700.0",
-    "@hyperframes/producer": "workspace:^",
+    "@smashcut/producer": "workspace:^",
     "@sparticuz/chromium": "148.0.0",
     "ffmpeg-static": "^5.2.0",
     "ffprobe-static": "^3.1.0",

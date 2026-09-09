@@ -660,7 +660,7 @@ describe("trackCliError", () => {
     trackCliError({
       error_name: "Error",
       error_message: "ENOENT: open '/Users/alice/project/index.html'",
-      stack_trace: "Error: boom\n    at /Users/alice/.cache/hyperframes/chrome/headless",
+      stack_trace: "Error: boom\n    at /Users/alice/.cache/smashcut/chrome/headless",
       command: "info",
       kind: "command_error",
     });

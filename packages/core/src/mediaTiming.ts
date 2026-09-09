@@ -1,4 +1,4 @@
-export const MEDIA_START_BASIS_ATTR = "data-hf-media-start-basis";
+export const MEDIA_START_BASIS_ATTR = "data-sc-media-start-basis";
 
 export type MediaStartBasis = "local" | "global";
 

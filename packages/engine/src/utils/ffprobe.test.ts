@@ -220,7 +220,7 @@ describe("probeMediaProfile", () => {
   });
 
   it("deduplicates probes within one cancellation scope without sharing across scopes", async () => {
-    const fixtureDir = mkdtempSync(resolve(tmpdir(), "hf-media-probe-cache-"));
+    const fixtureDir = mkdtempSync(resolve(tmpdir(), "sc-media-probe-cache-"));
     const fixturePath = resolve(fixtureDir, "asset");
     writeFileSync(fixturePath, "cache identity only");
     const outcome = {
@@ -251,7 +251,7 @@ describe("probeMediaProfile", () => {
   });
 
   it("bounds the process-scoped probe cache", async () => {
-    const fixtureDir = mkdtempSync(resolve(tmpdir(), "hf-media-probe-lru-"));
+    const fixtureDir = mkdtempSync(resolve(tmpdir(), "sc-media-probe-lru-"));
     const fixturePaths = Array.from({ length: 129 }, (_, index) =>
       resolve(fixtureDir, `asset-${index}`),
     );
@@ -278,7 +278,7 @@ describe("probeMediaProfile", () => {
   });
 
   it("classifies extensionless AVIF from its ISO-BMFF brand instead of the generic mov demuxer", async () => {
-    const fixtureDir = mkdtempSync(resolve(tmpdir(), "hf-avif-profile-"));
+    const fixtureDir = mkdtempSync(resolve(tmpdir(), "sc-avif-profile-"));
     const fixturePath = resolve(fixtureDir, "asset");
     const ftyp = Buffer.alloc(24);
     ftyp.writeUInt32BE(24, 0);
@@ -340,7 +340,7 @@ describe("probeMediaProfile", () => {
     async () => {
       vi.resetModules();
       vi.doUnmock("child_process");
-      const fixtureDir = mkdtempSync(resolve(tmpdir(), "hf-truncated-png-profile-"));
+      const fixtureDir = mkdtempSync(resolve(tmpdir(), "sc-truncated-png-profile-"));
       const fixturePath = resolve(fixtureDir, "asset");
       const ihdr = pngChunk("IHDR", [0, 0, 0, 1, 0, 0, 0, 1, 16, 2, 0, 0, 0]);
       writeFileSync(fixturePath, buildPngWithChunks([ihdr]));
@@ -366,7 +366,7 @@ describe("probeMediaProfile", () => {
       process.nextTick(() => proc.emit("spawn"));
       return proc;
     };
-    const fixtureDir = mkdtempSync(resolve(tmpdir(), "hf-aborted-png-profile-"));
+    const fixtureDir = mkdtempSync(resolve(tmpdir(), "sc-aborted-png-profile-"));
     const fixturePath = resolve(fixtureDir, "asset");
     writeFileSync(fixturePath, buildMinimalPng());
     vi.resetModules();
@@ -448,7 +448,7 @@ function createSpawnSpy(outcomes: SpawnOutcome[]): {
 }
 
 describe("ffprobe missing-binary fallback", () => {
-  const originalFfprobePath = process.env.HYPERFRAMES_FFPROBE_PATH;
+  const originalFfprobePath = process.env.SMASHCUT_FFPROBE_PATH;
   const originalPath = process.env.PATH;
 
   function hidePathBinaries(): void {
@@ -458,14 +458,14 @@ describe("ffprobe missing-binary fallback", () => {
   afterEach(() => {
     vi.resetModules();
     vi.doUnmock("child_process");
-    if (originalFfprobePath === undefined) delete process.env.HYPERFRAMES_FFPROBE_PATH;
-    else process.env.HYPERFRAMES_FFPROBE_PATH = originalFfprobePath;
+    if (originalFfprobePath === undefined) delete process.env.SMASHCUT_FFPROBE_PATH;
+    else process.env.SMASHCUT_FFPROBE_PATH = originalFfprobePath;
     if (originalPath === undefined) delete process.env.PATH;
     else process.env.PATH = originalPath;
   });
 
-  it("spawns the configured absolute FFprobe path when HYPERFRAMES_FFPROBE_PATH is set", async () => {
-    process.env.HYPERFRAMES_FFPROBE_PATH = "/tools/ffprobe.exe";
+  it("spawns the configured absolute FFprobe path when SMASHCUT_FFPROBE_PATH is set", async () => {
+    process.env.SMASHCUT_FFPROBE_PATH = "/tools/ffprobe.exe";
     const successfulStderr = "recoverable diagnostic on a successful probe";
     const { spawn, calls } = createSpawnSpy([
       {
@@ -491,7 +491,7 @@ describe("ffprobe missing-binary fallback", () => {
   });
 
   it("does not accept an incomplete PNG through the missing-binary fallback", async () => {
-    const fixtureDir = mkdtempSync(resolve(tmpdir(), "hf-truncated-png-fallback-"));
+    const fixtureDir = mkdtempSync(resolve(tmpdir(), "sc-truncated-png-fallback-"));
     const fixturePath = resolve(fixtureDir, "asset");
     const ihdr = pngChunk("IHDR", [0, 0, 0, 1, 0, 0, 0, 1, 16, 2, 0, 0, 0]);
     writeFileSync(fixturePath, buildPngWithChunks([ihdr]));
@@ -692,7 +692,7 @@ describe("ffprobe missing-binary fallback", () => {
     });
   });
 
-  // Regression: newer libavformat builds (and the output of `hyperframes
+  // Regression: newer libavformat builds (and the output of `smashcut
   // remove-background` itself) write the VP9-alpha sidecar tag as
   // `ALPHA_MODE` (uppercase). The lowercase-only check classified those
   // files as having no alpha, the producer extracted them as JPGs, and

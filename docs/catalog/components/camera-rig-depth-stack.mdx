@@ -9,12 +9,12 @@ import { InstallCommand } from "/snippets/install-command.jsx";
   className="w-full aspect-video rounded-xl border-0 bg-zinc-100 dark:bg-zinc-800"
   title="camera-rig-depth-stack preview"
   loading="lazy"
-  srcDoc={`<!doctype html><html><head><meta charset="utf-8"><style>html,body{margin:0;height:100%;overflow:hidden;background:transparent}hyperframes-player{display:block;width:100%;height:100%}</style><script src="https://cdn.jsdelivr.net/npm/@hyperframes/player@latest/dist/hyperframes-player.global.js"><\/script></head><body><script>fetch("/public/catalog/components/camera-rig-depth-stack.json").then(function(r){return r.json()}).then(function(d){var p=document.createElement("hyperframes-player");p.setAttribute("srcdoc",d.html);p.setAttribute("controls","");p.setAttribute("autoplay","");p.setAttribute("loop","");p.setAttribute("muted","");p.setAttribute("poster","https://static.heygen.ai/hyperframes-oss/docs/images/catalog/components/camera-rig-depth-stack.png");document.body.appendChild(p)});<\/script></body></html>`}
+  srcDoc={`<!doctype html><html><head><meta charset="utf-8"><style>html,body{margin:0;height:100%;overflow:hidden;background:transparent}smashcut-player{display:block;width:100%;height:100%}</style><script src="https://cdn.jsdelivr.net/npm/@smashcut/player@latest/dist/smashcut-player.global.js"><\/script></head><body><script>fetch("/public/catalog/components/camera-rig-depth-stack.json").then(function(r){return r.json()}).then(function(d){var p=document.createElement("smashcut-player");p.setAttribute("srcdoc",d.html);p.setAttribute("controls","");p.setAttribute("autoplay","");p.setAttribute("loop","");p.setAttribute("muted","");p.setAttribute("poster","https://static.heygen.ai/smashcut-oss/docs/images/catalog/components/camera-rig-depth-stack.png");document.body.appendChild(p)});<\/script></body></html>`}
 />
 
 ## Install
 
-<InstallCommand command="npx hyperframes add camera-rig-depth-stack" item="camera-rig-depth-stack" />
+<InstallCommand command="npx smashcut add camera-rig-depth-stack" item="camera-rig-depth-stack" />
 
 That writes one file: `compositions/components/camera-rig-depth-stack.html`.
 
@@ -24,14 +24,14 @@ That writes one file: `compositions/components/camera-rig-depth-stack.html`.
 
 ```html
 <!--
-  Camera Rig Depth Stack - advanced HyperFrames primitive.
+  Camera Rig Depth Stack - advanced SmashCut primitive.
 
   This is intentionally seekable: drive it from a paused GSAP timeline.
   MotionPath examples require GSAP MotionPathPlugin. Three.js examples expose
   a render(progress) adapter instead of a free-running requestAnimationFrame loop.
 -->
 
-<div class="hf-advanced-camera-rig-depth-stack">
+<div class="sc-advanced-camera-rig-depth-stack">
   <div class="panel">
     <div>
       <h3>Camera Rig Depth Stack</h3>
@@ -41,11 +41,11 @@ That writes one file: `compositions/components/camera-rig-depth-stack.html`.
 </div>
 
 <style>
-  .hf-advanced-camera-rig-depth-stack {
+  .sc-advanced-camera-rig-depth-stack {
     color: #111827;
     font-family: Inter, system-ui, sans-serif;
   }
-  .hf-advanced-camera-rig-depth-stack {
+  .sc-advanced-camera-rig-depth-stack {
     position: relative;
     width: 760px;
     height: 430px;
@@ -55,27 +55,27 @@ That writes one file: `compositions/components/camera-rig-depth-stack.html`.
     background: linear-gradient(135deg, #0f172a, #312e81);
     box-shadow: 0 28px 80px rgba(15, 23, 42, 0.2);
   }
-  .hf-advanced-camera-rig-depth-stack .panel {
+  .sc-advanced-camera-rig-depth-stack .panel {
     position: absolute;
     inset: 56px 90px;
     border-radius: 30px;
     background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.52));
     border: 1px solid rgba(255, 255, 255, 0.45);
     backdrop-filter: blur(18px);
-    transform: rotateY(var(--hf-rotate-y, -16deg)) rotateX(var(--hf-rotate-x, 9deg))
-      translateZ(var(--hf-z, 0px));
+    transform: rotateY(var(--sc-rotate-y, -16deg)) rotateX(var(--sc-rotate-x, 9deg))
+      translateZ(var(--sc-z, 0px));
     box-shadow: 0 28px 90px rgba(0, 0, 0, 0.22);
     display: grid;
     place-items: center;
     text-align: center;
   }
-  .hf-advanced-camera-rig-depth-stack h3 {
+  .sc-advanced-camera-rig-depth-stack h3 {
     margin: 0;
     color: #111827;
     font-size: 42px;
     letter-spacing: -0.05em;
   }
-  .hf-advanced-camera-rig-depth-stack p {
+  .sc-advanced-camera-rig-depth-stack p {
     margin: 8px 0 0;
     color: #475569;
   }
@@ -84,7 +84,7 @@ That writes one file: `compositions/components/camera-rig-depth-stack.html`.
 <!--
   Timeline integration:
   const startTime = 0;
-  tl.fromTo('.hf-advanced-camera-rig-depth-stack .panel', { '--hf-rotate-y': '-20deg', '--hf-rotate-x': '12deg', '--hf-z': '-80px', opacity: 0 }, { '--hf-rotate-y': '10deg', '--hf-rotate-x': '-4deg', '--hf-z': '80px', opacity: 1, duration: 1.2, ease: 'power3.out' }, startTime);
+  tl.fromTo('.sc-advanced-camera-rig-depth-stack .panel', { '--sc-rotate-y': '-20deg', '--sc-rotate-x': '12deg', '--sc-z': '-80px', opacity: 0 }, { '--sc-rotate-y': '10deg', '--sc-rotate-x': '-4deg', '--sc-z': '80px', opacity: 1, duration: 1.2, ease: 'power3.out' }, startTime);
 -->
 ```
 
@@ -96,7 +96,7 @@ Open `compositions/components/camera-rig-depth-stack.html` and paste its content
 
 {/* hf:generated-footer */}
 
-Tagged `advanced-motion` `hyperframes-native`.
+Tagged `advanced-motion` `smashcut-native`.
 
 ## Related topics
 

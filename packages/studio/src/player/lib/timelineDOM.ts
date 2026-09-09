@@ -10,8 +10,8 @@
 
 import type { TimelineElement } from "../store/playerStore";
 import type { ClipManifestClip } from "./playbackTypes";
-import { resolveCssStackingContextId } from "@hyperframes/core/runtime/stacking-context";
-import { readClipTiming } from "@hyperframes/core/composition-contract";
+import { resolveCssStackingContextId } from "@smashcut/core/runtime/stacking-context";
+import { readClipTiming } from "@smashcut/core/composition-contract";
 import { groupInfoFor } from "./timelineGroupInfo";
 import {
   resolveMediaElement,
@@ -91,7 +91,7 @@ export function createTimelineElementFromManifestClip(params: {
   let hfId: string | undefined;
   if (hostEl) {
     domId = hostEl.id || undefined;
-    hfId = hostEl.getAttribute("data-hf-id") || undefined;
+    hfId = hostEl.getAttribute("data-sc-id") || undefined;
     selector = getTimelineElementSelector(hostEl);
     selectorIndex =
       doc && selector ? getTimelineElementSelectorIndex(doc, hostEl, selector) : undefined;
@@ -179,7 +179,7 @@ export function createTimelineElementFromManifestClip(params: {
     }
     if (hostEl) {
       entry.domId = hostEl.id || undefined;
-      entry.hfId = hostEl.getAttribute("data-hf-id") || undefined;
+      entry.hfId = hostEl.getAttribute("data-sc-id") || undefined;
       entry.selector = getTimelineElementSelector(hostEl);
       entry.selectorIndex =
         doc && entry.selector
@@ -240,7 +240,7 @@ export function createImplicitTimelineLayersFromDOM(
 
     layers.push({
       domId: child.id || undefined,
-      hfId: child.getAttribute("data-hf-id") || undefined,
+      hfId: child.getAttribute("data-sc-id") || undefined,
       zIndex: readTimelineElementZIndex(child),
       duration: rootDuration,
       id: identity.id,
@@ -325,7 +325,7 @@ export function parseTimelineFromDOM(doc: Document, rootDuration: number): Timel
       duration: dur,
       track,
       domId: el.id || undefined,
-      hfId: el.getAttribute("data-hf-id") || undefined,
+      hfId: el.getAttribute("data-sc-id") || undefined,
       selector,
       selectorIndex,
       sourceFile,

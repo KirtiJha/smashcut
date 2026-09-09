@@ -16,8 +16,8 @@ import {
   serializeAutomation,
   type HfAutomation,
   type HfAutomationLane,
-} from "@hyperframes/core/audio-automation";
-import type { HfAudioFxChain } from "@hyperframes/core/audio-fx";
+} from "@smashcut/core/audio-automation";
+import type { HfAudioFxChain } from "@smashcut/core/audio-fx";
 import {
   useDomEditActionsContextOptional,
   useDomEditSelectionContextOptional,

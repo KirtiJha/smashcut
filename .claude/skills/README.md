@@ -1,7 +1,7 @@
 # Project-local Claude Code skills
 
 Skills in this directory are auto-discovered by Claude Code when the
-`hyperframes` repo is opened as the working directory. They are NOT part of
+`smashcut` repo is opened as the working directory. They are NOT part of
 the marketplace-distributed plugin (that set lives under `skills/` and is
 manifested by `.claude-plugin/`). Two separate namespaces, on purpose:
 
@@ -9,7 +9,7 @@ manifested by `.claude-plugin/`). Two separate namespaces, on purpose:
   changelog videos, doctrine-heavy authoring flows). Claude Code's
   project-local skill dir.
 - `skills/` — **marketplace-distributable**, installed into other projects
-  via `npx hyperframes skills` or `npx skills add heygen-com/hyperframes`.
+  via `npx smashcut skills` or `npx skills add heygen-com/hyperframes`.
 
 ## Weekly changelog video
 
@@ -31,15 +31,15 @@ Weekly usage:
    generated markdown. The agent will present its script + visualization
    plan for review before rendering.
 3. Accept, and the agent produces `weekly-changelog-<range>.mp4` gated by
-   `hyperframes check` (0 errors) + `seam-gate verify` (0 fail/warn).
+   `smashcut check` (0 errors) + `seam-gate verify` (0 fail/warn).
 
-TTS uses the tracked `skills/hyperframes-media/scripts/heygen-tts.mjs`
+TTS uses the tracked `skills/smashcut-media/scripts/heygen-tts.mjs`
 (no extra install needed). Runtime dependencies you need on PATH:
 
 - Node ≥ 22
 - HeyGen CLI ≥ 0.3.0, authenticated via `heygen auth login --oauth`
 - `ffmpeg` (for VO wav conversion + frame QA)
-- A headless Chrome for HyperFrames rendering (`hyperframes doctor` will
+- A headless Chrome for SmashCut rendering (`smashcut doctor` will
   point out the exact ask if it's missing)
 
 The parallel set at `.agents/skills/` is a byte-identical copy so Codex

@@ -2,15 +2,15 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { join, win32 } from "node:path";
 import { tmpdir } from "node:os";
-import type { CaptureOptions, EngineConfig, ExtractedFrames } from "@hyperframes/engine";
-import { DEFAULT_CONFIG, executeParallelCapture, mergeWorkerFrames } from "@hyperframes/engine";
+import type { CaptureOptions, EngineConfig, ExtractedFrames } from "@smashcut/engine";
+import { DEFAULT_CONFIG, executeParallelCapture, mergeWorkerFrames } from "@smashcut/engine";
 import type { CompiledComposition } from "./htmlCompiler.js";
 
 // Replace only the two engine functions the adaptive-retry loop uses to touch
 // disk; everything else (distributeFrames, types, etc.) stays real so the loop
 // runs for real against a temp framesDir.
-vi.mock("@hyperframes/engine", async (importOriginal) => {
-  const actual = await importOriginal<typeof import("@hyperframes/engine")>();
+vi.mock("@smashcut/engine", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("@smashcut/engine")>();
   return { ...actual, executeParallelCapture: vi.fn(), mergeWorkerFrames: vi.fn() };
 });
 
@@ -75,7 +75,7 @@ describe("resolveRenderWorkDirPrefix", () => {
     const outputPath = win32.join("C:\\deep", "nested".repeat(30), "renders", "final.mp4");
 
     expect(resolveRenderWorkDirPrefix(outputPath, "long-render-job-id", "win32", "C:/Temp")).toBe(
-      join("C:/Temp", "hf-render-"),
+      join("C:/Temp", "sc-render-"),
     );
   });
 });
@@ -213,8 +213,8 @@ describe("executeDiskCaptureWithAdaptiveRetry — zero-progress bail (integratio
     vi.mocked(executeParallelCapture).mockResolvedValue([]);
     vi.mocked(mergeWorkerFrames).mockResolvedValue(undefined);
 
-    const workDir = mkdtempSync(join(tmpdir(), "hf-retry-work-"));
-    const framesDir = mkdtempSync(join(tmpdir(), "hf-retry-frames-"));
+    const workDir = mkdtempSync(join(tmpdir(), "sc-retry-work-"));
+    const framesDir = mkdtempSync(join(tmpdir(), "sc-retry-frames-"));
     const log = makeLog();
     try {
       await expect(
@@ -263,8 +263,8 @@ describe("executeDiskCaptureWithAdaptiveRetry — transient Target-closed single
   });
 
   it("retries ONCE at the same worker count on a transient Target closed with zero progress", async () => {
-    const workDir = mkdtempSync(join(tmpdir(), "hf-transient-work-"));
-    const framesDir = mkdtempSync(join(tmpdir(), "hf-transient-frames-"));
+    const workDir = mkdtempSync(join(tmpdir(), "sc-transient-work-"));
+    const framesDir = mkdtempSync(join(tmpdir(), "sc-transient-frames-"));
     const log = makeLog();
     let call = 0;
     // First attempt: the tab dies before any frame is captured (frame 0) — zero
@@ -313,8 +313,8 @@ describe("executeDiskCaptureWithAdaptiveRetry — transient Target-closed single
   });
 
   it("retries Network.enable startup timeout once with fewer workers and zero progress", async () => {
-    const workDir = mkdtempSync(join(tmpdir(), "hf-transient-work-"));
-    const framesDir = mkdtempSync(join(tmpdir(), "hf-transient-frames-"));
+    const workDir = mkdtempSync(join(tmpdir(), "sc-transient-work-"));
+    const framesDir = mkdtempSync(join(tmpdir(), "sc-transient-frames-"));
     const log = makeLog();
     let call = 0;
     vi.mocked(executeParallelCapture).mockImplementation(async () => {
@@ -359,8 +359,8 @@ describe("executeDiskCaptureWithAdaptiveRetry — transient Target-closed single
   it.each(["Target closed", "Network.enable timed out"])(
     "does NOT retry %s after cancellation",
     async (message) => {
-      const workDir = mkdtempSync(join(tmpdir(), "hf-transient-abort-work-"));
-      const framesDir = mkdtempSync(join(tmpdir(), "hf-transient-abort-frames-"));
+      const workDir = mkdtempSync(join(tmpdir(), "sc-transient-abort-work-"));
+      const framesDir = mkdtempSync(join(tmpdir(), "sc-transient-abort-frames-"));
       const log = makeLog();
       const controller = new AbortController();
       // Cancellation tears the browser down, surfacing as a transient-looking
@@ -406,8 +406,8 @@ describe("executeDiskCaptureWithAdaptiveRetry — transient Target-closed single
   it.each(["Session closed", "Network.enable timed out"])(
     "bounds repeated %s failures",
     async (message) => {
-      const workDir = mkdtempSync(join(tmpdir(), "hf-transient2-work-"));
-      const framesDir = mkdtempSync(join(tmpdir(), "hf-transient2-frames-"));
+      const workDir = mkdtempSync(join(tmpdir(), "sc-transient2-work-"));
+      const framesDir = mkdtempSync(join(tmpdir(), "sc-transient2-frames-"));
       const log = makeLog();
       vi.mocked(executeParallelCapture).mockRejectedValue(new Error(message));
       vi.mocked(mergeWorkerFrames).mockResolvedValue(undefined);
@@ -560,36 +560,36 @@ describe("createCompiledFrameSrcResolver", () => {
     const resolver = createCompiledFrameSrcResolver("/tmp/hf job/compiled");
 
     expect(
-      resolver("/tmp/hf job/compiled/__hyperframes_video_frames/video 1/frame_00001.jpg"),
-    ).toBe("/__hyperframes_video_frames/video%201/frame_00001.jpg");
+      resolver("/tmp/hf job/compiled/__smashcut_video_frames/video 1/frame_00001.jpg"),
+    ).toBe("/__smashcut_video_frames/video%201/frame_00001.jpg");
   });
 
   it("returns null for paths outside compiledDir", () => {
-    const resolver = createCompiledFrameSrcResolver("/tmp/hf-job/compiled");
+    const resolver = createCompiledFrameSrcResolver("/tmp/sc-job/compiled");
 
-    expect(resolver("/tmp/hf-job/video-frames/frame_00001.jpg")).toBeNull();
+    expect(resolver("/tmp/sc-job/video-frames/frame_00001.jpg")).toBeNull();
   });
 
   it("resolves symlinked cache frames when materialized under compiledDir", () => {
-    const resolver = createCompiledFrameSrcResolver("/tmp/hf-job/compiled");
+    const resolver = createCompiledFrameSrcResolver("/tmp/sc-job/compiled");
 
-    expect(resolver("/tmp/hf-job/compiled/__hyperframes_video_frames/vid1/frame_00001.jpg")).toBe(
-      "/__hyperframes_video_frames/vid1/frame_00001.jpg",
+    expect(resolver("/tmp/sc-job/compiled/__smashcut_video_frames/vid1/frame_00001.jpg")).toBe(
+      "/__smashcut_video_frames/vid1/frame_00001.jpg",
     );
 
     expect(resolver("/tmp/cache/abc123/frame_00001.jpg")).toBeNull();
   });
 
   it("encodes reserved characters in frame path segments", () => {
-    const resolver = createCompiledFrameSrcResolver("/tmp/hf-job/compiled");
+    const resolver = createCompiledFrameSrcResolver("/tmp/sc-job/compiled");
 
     expect(
-      resolver("/tmp/hf-job/compiled/__hyperframes_video_frames/video#1/frame_00001.jpg"),
-    ).toBe("/__hyperframes_video_frames/video%231/frame_00001.jpg");
+      resolver("/tmp/sc-job/compiled/__smashcut_video_frames/video#1/frame_00001.jpg"),
+    ).toBe("/__smashcut_video_frames/video%231/frame_00001.jpg");
 
     expect(
-      resolver("/tmp/hf-job/compiled/__hyperframes_video_frames/video?q=1/frame_00001.jpg"),
-    ).toBe("/__hyperframes_video_frames/video%3Fq%3D1/frame_00001.jpg");
+      resolver("/tmp/sc-job/compiled/__smashcut_video_frames/video?q=1/frame_00001.jpg"),
+    ).toBe("/__smashcut_video_frames/video%3Fq%3D1/frame_00001.jpg");
   });
 });
 
@@ -607,7 +607,7 @@ describe("materializeExtractedFramesForCompiledDir", () => {
 
   it("leaves Windows frame paths already under compiledDir unchanged", () => {
     const compiledDir = win32.resolve("C:\\compiled");
-    const outputDir = win32.join(compiledDir, "__hyperframes_video_frames", "video-1");
+    const outputDir = win32.join(compiledDir, "__smashcut_video_frames", "video-1");
     const framePath = win32.join(outputDir, "frame_000001.jpg");
     const extracted = createExtractedFrames(outputDir, framePath);
 
@@ -656,7 +656,7 @@ describe("materializeExtractedFramesForCompiledDir", () => {
       },
     });
 
-    const linkPath = win32.join(compiledDir, "__hyperframes_video_frames", "video-1");
+    const linkPath = win32.join(compiledDir, "__smashcut_video_frames", "video-1");
     expect(extracted.outputDir).toBe(linkPath);
     expect(extracted.framePaths.get(0)).toBe(win32.join(linkPath, "frame_000001.jpg"));
     expect(extracted.framePaths.get(0)).not.toContain(outputDir);
@@ -690,7 +690,7 @@ describe("materializeExtractedFramesForCompiledDir", () => {
       materializeSymlinks: true,
     });
 
-    const linkPath = win32.join(compiledDir, "__hyperframes_video_frames", "video-1");
+    const linkPath = win32.join(compiledDir, "__smashcut_video_frames", "video-1");
     expect(extracted.outputDir).toBe(linkPath);
     expect(extracted.framePaths.get(0)).toBe(win32.join(linkPath, "frame_000001.jpg"));
     expect(copies).toEqual([{ src: outputDir, dest: linkPath, recursive: true }]);
@@ -724,7 +724,7 @@ describe("materializeExtractedFramesForCompiledDir", () => {
       },
     });
 
-    const linkPath = win32.join(compiledDir, "__hyperframes_video_frames", "video-1");
+    const linkPath = win32.join(compiledDir, "__smashcut_video_frames", "video-1");
     expect(copies).toEqual([{ src: outputDir, dest: linkPath, recursive: true }]);
     expect(extracted.outputDir).toBe(linkPath);
     expect(extracted.framePaths.get(0)).toBe(win32.join(linkPath, "frame_000001.jpg"));
@@ -766,7 +766,7 @@ describe("materializeExtractedFramesForCompiledDir", () => {
     const outputDir = win32.resolve("D:\\cache\\abc123");
     const framePath = win32.join(outputDir, "frame_000001.jpg");
     const extracted = createExtractedFrames(outputDir, framePath);
-    const linkPath = win32.join(compiledDir, "__hyperframes_video_frames", "video-1");
+    const linkPath = win32.join(compiledDir, "__smashcut_video_frames", "video-1");
     const removed: string[] = [];
     const symlinks: Array<{ target: string; path: string }> = [];
     let symlinkCalls = 0;
@@ -828,7 +828,7 @@ describe("materializeExtractedFramesForCompiledDir", () => {
       },
     });
 
-    const linkPath = win32.join(compiledDir, "__hyperframes_video_frames", "video-1");
+    const linkPath = win32.join(compiledDir, "__smashcut_video_frames", "video-1");
     expect(copies).toEqual([{ src: outputDir, dest: linkPath, recursive: true }]);
     expect(extracted.framePaths.get(0)).toBe(win32.join(linkPath, "frame_000001.jpg"));
   });
@@ -843,7 +843,7 @@ describe("materializeExtractedFramesForCompiledDir", () => {
     const outputDir = win32.resolve("D:\\cache\\abc123");
     const framePath = win32.join(outputDir, "frame_000001.jpg");
     const extracted = createExtractedFrames(outputDir, framePath);
-    const linkPath = win32.join(compiledDir, "__hyperframes_video_frames", "video-1");
+    const linkPath = win32.join(compiledDir, "__smashcut_video_frames", "video-1");
     const removed: string[] = [];
     const copies: Array<{ src: string; dest: string }> = [];
     let cpCalls = 0;
@@ -895,21 +895,21 @@ describe("writeCompiledArtifacts — external assets on Windows drive-letter pat
   });
 
   function makeWorkDir(): string {
-    const d = mkdtempSync(join(tmpdir(), "hf-orch-"));
+    const d = mkdtempSync(join(tmpdir(), "sc-orch-"));
     tempDirs.push(d);
     return d;
   }
 
   it("copies an external asset with a Windows-style drive-letter key into compileDir", () => {
     const workDir = makeWorkDir();
-    const sourceDir = mkdtempSync(join(tmpdir(), "hf-src-"));
+    const sourceDir = mkdtempSync(join(tmpdir(), "sc-src-"));
     tempDirs.push(sourceDir);
     const srcFile = join(sourceDir, "segment.wav");
     writeFileSync(srcFile, "fake wav bytes");
 
     const windowsStyleInput = "D:\\coder\\assets\\segment.wav";
     const key = toExternalAssetKey(windowsStyleInput);
-    expect(key).toBe("hf-ext/D/coder/assets/segment.wav");
+    expect(key).toBe("sc-ext/D/coder/assets/segment.wav");
 
     const externalAssets = new Map<string, string>([[key, srcFile]]);
     const compiled = {
@@ -937,16 +937,16 @@ describe("writeCompiledArtifacts — external assets on Windows drive-letter pat
   });
 
   it("rejects a maliciously crafted key that tries to escape compileDir", () => {
-    const sandboxRoot = mkdtempSync(join(tmpdir(), "hf-orch-root-"));
+    const sandboxRoot = mkdtempSync(join(tmpdir(), "sc-orch-root-"));
     tempDirs.push(sandboxRoot);
     const workDir = join(sandboxRoot, "work", "inner");
     mkdirSync(workDir, { recursive: true });
-    const sourceDir = mkdtempSync(join(tmpdir(), "hf-src-"));
+    const sourceDir = mkdtempSync(join(tmpdir(), "sc-src-"));
     tempDirs.push(sourceDir);
     const srcFile = join(sourceDir, "evil.wav");
     writeFileSync(srcFile, "should never be copied");
 
-    const externalAssets = new Map<string, string>([["hf-ext/../../etc/passwd", srcFile]]);
+    const externalAssets = new Map<string, string>([["sc-ext/../../etc/passwd", srcFile]]);
     const compiled = {
       html: "<!doctype html>",
       subCompositions: new Map<string, string>(),
@@ -1504,7 +1504,7 @@ describe("adaptive missing-frame retry helpers", () => {
   });
 
   function makeFramesDir(): string {
-    const d = mkdtempSync(join(tmpdir(), "hf-missing-frames-"));
+    const d = mkdtempSync(join(tmpdir(), "sc-missing-frames-"));
     tempDirs.push(d);
     return d;
   }

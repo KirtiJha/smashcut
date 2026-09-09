@@ -190,8 +190,8 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
             var flash = root.querySelector(".tt-flash");
             var headline = root.querySelector(".tt-headline");
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             var defaultOptions = ["faster", "smarter", "together", "everywhere"];
@@ -341,7 +341,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 
 ## Install
 
-<InstallCommand command="npx hyperframes add ticker-takeover" item="ticker-takeover" />
+<InstallCommand command="npx smashcut add ticker-takeover" item="ticker-takeover" />
 
 That writes one file: `compositions/components/ticker-takeover.html`.
 
@@ -555,8 +555,8 @@ defaults, so this behaves exactly like the preview above until you change one:
             var flash = root.querySelector(".tt-flash");
             var headline = root.querySelector(".tt-headline");
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             var defaultOptions = ["faster", "smarter", "together", "everywhere"];

@@ -3,17 +3,17 @@ import { defineCommand } from "citty";
 import type { Example } from "./_examples.js";
 
 export const examples: Example[] = [
-  ["Add a block to the current project", "hyperframes add claude-code-window"],
-  ["Add a component effect", "hyperframes add shader-wipe"],
-  ["Add all HTML-in-Canvas blocks", "hyperframes add html-in-canvas"],
-  ["Add all caption blocks", "hyperframes add captions"],
-  ["Target a specific project directory", "hyperframes add shader-wipe --dir ./my-video"],
-  ["Skip the clipboard copy (CI/headless)", "hyperframes add shader-wipe --no-clipboard"],
+  ["Add a block to the current project", "smashcut add claude-code-window"],
+  ["Add a component effect", "smashcut add shader-wipe"],
+  ["Add all HTML-in-Canvas blocks", "smashcut add html-in-canvas"],
+  ["Add all caption blocks", "smashcut add captions"],
+  ["Target a specific project directory", "smashcut add shader-wipe --dir ./my-video"],
+  ["Skip the clipboard copy (CI/headless)", "smashcut add shader-wipe --no-clipboard"],
 ];
 
 import { existsSync } from "node:fs";
 import { resolve, relative } from "node:path";
-import { ITEM_TYPE_DIRS, type RegistryItem } from "@hyperframes/core";
+import { ITEM_TYPE_DIRS, type RegistryItem } from "@smashcut/core";
 import { c } from "../ui/colors.js";
 import { DEFAULT_REGISTRY_URL, installItem, resolveItemsByTag } from "../registry/index.js";
 import { resolveItemWithDependencies } from "../registry/resolver.js";
@@ -34,7 +34,7 @@ import { trackRegistryItemAdded } from "../telemetry/events.js";
 // ── Target-path resolution ──────────────────────────────────────────────────
 // `registry-item.json` files specify `target` paths relative to the project
 // root. For blocks and components we override the default path with the
-// user's `hyperframes.json#paths` so a project can reshape its layout
+// user's `smashcut.json#paths` so a project can reshape its layout
 // without editing every item's manifest.
 
 export function remapTarget(
@@ -42,14 +42,14 @@ export function remapTarget(
   originalTarget: string,
   paths: { blocks: string; components: string },
 ): string {
-  if (item.type === "hyperframes:block") {
+  if (item.type === "smashcut:block") {
     // Anchored to the default target prefix from DEFAULT_PROJECT_CONFIG.paths.blocks.
     // Targets that don't start with "compositions/" pass through unchanged.
     // Strip trailing slashes to prevent double-slash in output.
     const blocksDir = paths.blocks.replace(/\/+$/, "");
     return originalTarget.replace(/^compositions\//, `${blocksDir}/`);
   }
-  if (item.type === "hyperframes:component") {
+  if (item.type === "smashcut:component") {
     // Anchored to the default target prefix from DEFAULT_PROJECT_CONFIG.paths.components.
     const componentsDir = paths.components.replace(/\/+$/, "");
     return originalTarget.replace(/^compositions\/components\//, `${componentsDir}/`);
@@ -90,8 +90,8 @@ function variableValuesAttribute(values: Record<string, unknown> | null): string
  */
 function primaryInstalledTarget(item: RegistryItem): string {
   const primary =
-    item.files.find((f) => f.type === "hyperframes:snippet") ??
-    item.files.find((f) => f.type === "hyperframes:composition") ??
+    item.files.find((f) => f.type === "smashcut:snippet") ??
+    item.files.find((f) => f.type === "smashcut:composition") ??
     item.files[0];
   return primary?.target ?? "";
 }
@@ -101,7 +101,7 @@ export function buildSnippet(
   relativeTarget: string,
   values: Record<string, unknown> | null = null,
 ): string {
-  if (item.type === "hyperframes:block") {
+  if (item.type === "smashcut:block") {
     // data-start omitted — adjust to your timeline position after pasting.
     const dims =
       "dimensions" in item && item.dimensions
@@ -110,7 +110,7 @@ export function buildSnippet(
     const vars = variableValuesAttribute(values);
     return `<div data-composition-src="${relativeTarget}" data-duration="${item.duration}"${dims}${vars}></div>`;
   }
-  if (item.type === "hyperframes:component") {
+  if (item.type === "smashcut:component") {
     return `<!-- paste from ${relativeTarget} into your composition -->`;
   }
   return "";
@@ -254,13 +254,13 @@ export function describeInstallFailure(err: unknown, registry?: string): string 
     /fetch failed|ENOTFOUND|ECONNRESET|ECONNREFUSED|ETIMEDOUT|EAI_AGAIN|socket hang up|aborted/i;
   if (!transport.test(`${message} ${cause}`)) return `Install failed: ${message}`;
 
-  // Name the registry first. A project that set `registry` in hyperframes.json
+  // Name the registry first. A project that set `registry` in smashcut.json
   // points at a private host, and when that host is down the failure has
   // nothing to do with the user's connection -- telling them to check their
   // network sends them to debug the one thing that is working.
   const custom =
     registry && !registry.startsWith(DEFAULT_REGISTRY_URL)
-      ? `\n  This project's hyperframes.json sets registry to ${registry}, so that is the host ` +
+      ? `\n  This project's smashcut.json sets registry to ${registry}, so that is the host ` +
         "being contacted, not the public registry. If it is down or private, that is the failure."
       : "";
   return (
@@ -296,9 +296,9 @@ export async function runAdd(opts: RunAddArgs): Promise<RunAddResult> {
   // so the final element is the item the user asked for.
   const item = resolved[resolved.length - 1]!;
 
-  if (item.type === "hyperframes:example") {
+  if (item.type === "smashcut:example") {
     throw new AddError(
-      `"${item.name}" is an example — use \`hyperframes init <dir> --example ${item.name}\` instead.`,
+      `"${item.name}" is an example — use \`smashcut init <dir> --example ${item.name}\` instead.`,
       "example-type",
     );
   }

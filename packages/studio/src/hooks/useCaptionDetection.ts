@@ -131,7 +131,7 @@ export function useCaptionDetection({
 
     const handleMessage = (e: MessageEvent) => {
       const data = e.data;
-      if (data?.source === "hf-preview" && (data?.type === "state" || data?.type === "timeline")) {
+      if (data?.source === "sc-preview" && (data?.type === "state" || data?.type === "timeline")) {
         if (!acceptStudioRuntimeMessage(data)) return;
         tryActivateCaptions();
       }

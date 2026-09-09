@@ -1,7 +1,7 @@
 /**
- * Embedded studio server for `hyperframes preview` outside the monorepo.
+ * Embedded studio server for `smashcut preview` outside the monorepo.
  *
- * Uses the shared studio API module from @hyperframes/core/studio-api,
+ * Uses the shared studio API module from @smashcut/core/studio-api,
  * providing a CLI-specific adapter for single-project, in-process rendering.
  */
 
@@ -43,11 +43,11 @@ import {
   type ResolvedProject,
   type RenderJobState,
   type BackgroundRemovalRender,
-} from "@hyperframes/studio-server";
+} from "@smashcut/studio-server";
 import { resolveAutoProxy } from "../utils/projectConfig.js";
-import { getElementScreenshotClip } from "@hyperframes/studio-server/screenshot-clip";
-import type { ScreenshotClip } from "@hyperframes/studio-server/screenshot-clip";
-import type { RenderJob } from "@hyperframes/producer";
+import { getElementScreenshotClip } from "@smashcut/studio-server/screenshot-clip";
+import type { ScreenshotClip } from "@smashcut/studio-server/screenshot-clip";
+import type { RenderJob } from "@smashcut/producer";
 import { seekCompositionTimeline } from "../capture/captureCompositionFrame.js";
 import {
   assertWebGpuRequirement,
@@ -57,12 +57,12 @@ import {
   type ResolvedBrowserGpuMode,
 } from "../browser/gpuPolicy.js";
 
-const STUDIO_MANUAL_EDITS_PATH = ".hyperframes/studio-manual-edits.json";
+const STUDIO_MANUAL_EDITS_PATH = ".smashcut/studio-manual-edits.json";
 const REMOTE_GIF_IMG_SRC_RE =
   /<img\b[^>]*?\bsrc\s*=\s*["'](https?:\/\/[^"']+\.gif(?:[?#][^"']*)?)["'][^>]*>/gi;
 
 async function loadStudioProducer() {
-  if (!isDevMode()) return await import("@hyperframes/producer");
+  if (!isDevMode()) return await import("@smashcut/producer");
   // The producer's SOURCE uses the TS convention of `.js` specifiers naming
   // `.ts` files, which bun resolves and Node does not. Node 22 strips TS types
   // natively, so a Node-hosted dev server boots fine and only dies here, as
@@ -116,9 +116,9 @@ export function resolveStudioBundle(): StudioBundleResolution {
 }
 
 function resolveRuntimePath(): string {
-  const builtPath = resolve(__dirname, "hyperframe-runtime.js");
+  const builtPath = resolve(__dirname, "smashcut-runtime.js");
   if (existsSync(builtPath)) return builtPath;
-  const iifePath = resolve(__dirname, "hyperframe.runtime.iife.js");
+  const iifePath = resolve(__dirname, "smashcut.runtime.iife.js");
   if (existsSync(iifePath)) return iifePath;
   const devPath = resolve(
     __dirname,
@@ -127,7 +127,7 @@ function resolveRuntimePath(): string {
     "..",
     "core",
     "dist",
-    "hyperframe.runtime.iife.js",
+    "smashcut.runtime.iife.js",
   );
   if (existsSync(devPath)) return devPath;
   return builtPath;
@@ -159,8 +159,8 @@ async function reapplyStudioManualEditsToThumbnailPage(
   page: import("puppeteer-core").Page,
 ): Promise<void> {
   await page.evaluate(() => {
-    const apply = (window as Window & { __hfStudioManualEditsApply?: () => number })
-      .__hfStudioManualEditsApply;
+    const apply = (window as Window & { __scStudioManualEditsApply?: () => number })
+      .__scStudioManualEditsApply;
     if (typeof apply === "function") apply();
   });
 }
@@ -200,7 +200,7 @@ async function downloadRemoteGifImageSources(
 // Uses the engine's browser pool so the thumbnail browser and render workers
 // share a single Chrome process instead of running two independent ones.
 
-let _thumbnailBrowserLease: import("@hyperframes/engine").BrowserLease | null = null;
+let _thumbnailBrowserLease: import("@smashcut/engine").BrowserLease | null = null;
 let _thumbnailBrowserInitializing: Promise<ThumbnailBrowserSession | null> | null = null;
 let _thumbnailBrowserModes: {
   requested: BrowserGpuMode;
@@ -235,7 +235,7 @@ async function getThumbnailBrowser(
   _thumbnailBrowserInitializing = (async () => {
     try {
       const { ensureBrowser } = await import("../browser/manager.js");
-      const { acquireBrowser, buildChromeArgs } = await import("@hyperframes/engine");
+      const { acquireBrowser, buildChromeArgs } = await import("@smashcut/engine");
       let executablePath: string | undefined;
 
       try {
@@ -296,7 +296,7 @@ export interface StudioServerOptions {
   /**
    * Auto-transcode browser-hostile video codecs to a cached H.264 preview
    * proxy. The preview command passes its resolved `--proxy`/`--no-proxy` +
-   * `hyperframes.json` value; when omitted, the project's `media.autoProxy`
+   * `smashcut.json` value; when omitted, the project's `media.autoProxy`
    * config (default true) applies.
    */
   autoProxy?: boolean | undefined;
@@ -383,7 +383,7 @@ export function createStudioServer(options: StudioServerOptions): StudioServer {
 
   const adapter: PreviewApiAdapter = {
     // Explicit option wins (preview's resolved --proxy/--no-proxy + config);
-    // otherwise honor the project's hyperframes.json media.autoProxy so every
+    // otherwise honor the project's smashcut.json media.autoProxy so every
     // createStudioServer caller (e.g. the background preview child) gets the
     // configured behavior without its own plumbing.
     autoProxy: options.autoProxy ?? resolveAutoProxy(projectDir, undefined),
@@ -394,7 +394,7 @@ export function createStudioServer(options: StudioServerOptions): StudioServer {
 
     async bundle(dir: string): Promise<string | null> {
       try {
-        const { bundleToSingleHtml } = await import("@hyperframes/core/compiler");
+        const { bundleToSingleHtml } = await import("@smashcut/core/compiler");
         // Studio dev server: ask the bundler for an empty `src=""` placeholder so
         // we can point it at our hot-reloadable local runtime endpoint. Inlining
         // ~150 KB of runtime body on every preview render would defeat browser
@@ -404,8 +404,8 @@ export function createStudioServer(options: StudioServerOptions): StudioServer {
           inlineColorGradingLuts: false,
         });
         html = html.replace(
-          'data-hyperframes-preview-runtime="1" src=""',
-          'data-hyperframes-preview-runtime="1" src="/api/runtime.js"',
+          'data-smashcut-preview-runtime="1" src=""',
+          'data-smashcut-preview-runtime="1" src="/api/runtime.js"',
         );
         return html;
       } catch (err) {
@@ -421,13 +421,13 @@ export function createStudioServer(options: StudioServerOptions): StudioServer {
         await import("../../../producer/src/services/animatedGifPrep.js");
       const { downloadToTemp, writeUrlDownloadTelemetry } =
         await import("../../../producer/src/utils/urlDownloader.js");
-      const gifOutputDir = join(project.dir, ".hyperframes", "prepared-assets", "gif");
-      const gifDownloadDir = join(project.dir, ".hyperframes", "prepared-assets", "downloads");
+      const gifOutputDir = join(project.dir, ".smashcut", "prepared-assets", "gif");
+      const gifDownloadDir = join(project.dir, ".smashcut", "prepared-assets", "downloads");
       const prepared = await prepareAnimatedGifInputs(html, {
         projectDir: project.dir,
         downloadDir: gifDownloadDir,
         outputDir: gifOutputDir,
-        outputSrcPrefix: ".hyperframes/prepared-assets/gif",
+        outputSrcPrefix: ".smashcut/prepared-assets/gif",
         cacheDir: gifOutputDir,
         sourceAssets: await downloadRemoteGifImageSources(html, gifDownloadDir, (url, destDir) =>
           downloadToTemp(url, destDir, undefined, undefined, undefined, {
@@ -445,12 +445,12 @@ export function createStudioServer(options: StudioServerOptions): StudioServer {
     },
 
     async lint(html: string, opts?: { filePath?: string }) {
-      const { lintHyperframeHtml } = await import("@hyperframes/lint");
+      const { lintHyperframeHtml } = await import("@smashcut/lint");
       return await lintHyperframeHtml(html, opts);
     },
 
     async lintProject(dir: string) {
-      const { lintProject } = await import("@hyperframes/lint");
+      const { lintProject } = await import("@smashcut/lint");
       return await lintProject(dir);
     },
 
@@ -543,7 +543,7 @@ export function createStudioServer(options: StudioServerOptions): StudioServer {
             JSON.stringify({ status: "complete", durationMs: Date.now() - startTime }),
           );
           // Refreshed HERE, not just at render start: a render can run for
-          // minutes, and `hyperframes telemetry disable` during one must be
+          // minutes, and `smashcut telemetry disable` during one must be
           // honoured by the event that reports it. Studio never polls
           // /api/telemetry-identity, so this process would otherwise keep its
           // startup-cached posture for the life of the preview server.
@@ -672,7 +672,7 @@ export function createStudioServer(options: StudioServerOptions): StudioServer {
       const { listRegistryItems, loadAllItems } = await import("../registry/resolver.js");
       const entries = await listRegistryItems();
       const blockAndComponentEntries = entries.filter(
-        (e) => e.type === "hyperframes:block" || e.type === "hyperframes:component",
+        (e) => e.type === "smashcut:block" || e.type === "smashcut:component",
       );
       return loadAllItems(blockAndComponentEntries);
     },
@@ -685,10 +685,10 @@ export function createStudioServer(options: StudioServerOptions): StudioServer {
       // block that depends on other registry items installs completely.
       const items = await resolveItemWithDependencies(opts.blockName);
       // Compatibility-gate the whole set before writing anything (same gate as
-      // `hyperframes add`), so an incompatible block or dep aborts cleanly.
+      // `smashcut add`), so an incompatible block or dep aborts cleanly.
       const warnings = gateRegistryItemsCompatibility(items);
       for (const warning of warnings) {
-        process.stderr.write(`hyperframes:registry ${warning}\n`);
+        process.stderr.write(`smashcut:registry ${warning}\n`);
       }
       const written: string[] = [];
       for (const dep of items) {
@@ -712,13 +712,13 @@ export function createStudioServer(options: StudioServerOptions): StudioServer {
   const app = new Hono();
 
   // Config probe endpoint — used by port detection to identify existing
-  // HyperFrames instances and reuse them instead of spawning duplicates.
-  // See portUtils.ts detectHyperframesServer() for the consumer.
-  app.get("/__hyperframes_config", (c) => {
+  // SmashCut instances and reuse them instead of spawning duplicates.
+  // See portUtils.ts detectSmashcutServer() for the consumer.
+  app.get("/__smashcut_config", (c) => {
     const serve = async () => {
       const serverBuildSignature = await loadPreviewServerBuildSignature();
       return c.json({
-        isHyperframes: true,
+        isSmashcut: true,
         pid: process.pid,
         projectName: projectId,
         projectDir: projectDir,
@@ -913,7 +913,7 @@ export function createStudioServer(options: StudioServerOptions): StudioServer {
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>HyperFrames Studio unavailable</title>
+    <title>SmashCut Studio unavailable</title>
     <style>
       body {
         margin: 0;
@@ -974,7 +974,7 @@ export function createStudioServer(options: StudioServerOptions): StudioServer {
     //
     // Only IDENTITY is withheld from an untrusted Host. The canary decisions
     // map still goes out — it is non-identifying, and a LAN/remote Studio
-    // (`HYPERFRAMES_PREVIEW_HOST=0.0.0.0`) needs it to stay in agreement with
+    // (`SMASHCUT_PREVIEW_HOST=0.0.0.0`) needs it to stay in agreement with
     // the CLI. See buildStudioHeadScriptsForHost.
     const headScript = buildStudioHeadScriptsForHost(buildRuntimeEnvScript(), c.req.header("host"));
     if (headScript) {

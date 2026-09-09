@@ -9,7 +9,7 @@ description: >
   including transcription and subject matting; split multi-shot footage before applying it.
 ---
 
-> **First, keep this skill fresh — confirm with the user before running:** `npx hyperframes skills update embedded-captions`. A fast no-op when everything is current; otherwise it refreshes this skill plus the core domain skills it depends on before you rely on them.
+> **First, keep this skill fresh — confirm with the user before running:** `npx smashcut skills update embedded-captions`. A fast no-op when everything is current; otherwise it refreshes this skill plus the core domain skills it depends on before you rely on them.
 
 # Embedded Captions
 
@@ -19,12 +19,12 @@ description: >
 
 ## Operational flow (TL;DR)
 
-Routed through `/hyperframes`, the intent layer confirms only the input (which clip) and **announces** the identity pick as a deferred ask — the shortlist needs the probed clip, so it stays at step 1 below; the layer's run-shape questions don't apply (the footage is untouched, there is no storyboard to review). A `BRIEF.md`, when present, carries the confirmed input and any user notes — read it first.
+Routed through `/smashcut`, the intent layer confirms only the input (which clip) and **announces** the identity pick as a deferred ask — the shortlist needs the probed clip, so it stays at step 1 below; the layer's run-shape questions don't apply (the footage is untouched, there is no storyboard to review). A `BRIEF.md`, when present, carries the confirmed input and any user notes — read it first.
 
 The craft prose below is long; the **pipeline itself is short** — and everything deterministic is computed or compiled, never hand-written:
 
 1. **Decision gate** (refuse bad clips) → **pick ONE identity from [CATALOG.md](CATALOG.md)** (35 identities; engine/compiler derived by lookup — never surface a mode/category question)
-2. `hyperframes init` (skip it if the project dir already exists with the video inside — `matte.cjs`/`transcribe.cjs` adopt any video in the dir as source.mp4) → **`bash scripts/prepare.sh <project>`** (matte ∥ transcribe ∥ audio-envelope in parallel, then safe-zones v2 with scene palette/optics/lighting — one command, nothing forgotten)
+2. `smashcut init` (skip it if the project dir already exists with the video inside — `matte.cjs`/`transcribe.cjs` adopt any video in the dir as source.mp4) → **`bash scripts/prepare.sh <project>`** (matte ∥ transcribe ∥ audio-envelope in parallel, then safe-zones v2 with scene palette/optics/lighting — one command, nothing forgotten)
 3. **author a small JSON of creative choices** (read `safe-zones.json` first): Cinematic → `plan.json` → `fill-timings.cjs` → `fit-fonts.cjs` → `make-composition.cjs`; Theme → `theme.json` → `make-theme.cjs` (rail/panel/poem/takeover paradigms; `anchor` is the quiet rail default)
 4. **Visual QA**: `node scripts/preview-frames.cjs <project>` → faithful composite previews in ~2s/frame (no render). Check § Visual QA before paying for a render.
 5. `render-and-composite.sh` → gates (timing / occlusion+hero / overflow / hand-off) → `final.mp4`
@@ -57,7 +57,7 @@ Rail-surface identities build exactly this (rail = `rail.html`, embed = the clim
 
 **One front-end, three engines behind.** The user picks an IDENTITY from [CATALOG.md](CATALOG.md) (35 entries: 10 classic + 25 themed); the engine, compiler and authoring file are derived by lookup from the catalog row. **Never surface "Standard vs Cinematic vs Theme" as a question** — those are backend names (a product has one UX even with several engines). The catalog encodes everything routing needs: reading surface, voice, recommend-for, scene needs, adjacency notes for the genuinely-close pairs (loud↔ordnance, neon↔neonsign, cream↔stardust).
 
-The identity pick is a **preference gate** (`../hyperframes-core/references/brief-contract.md` § 1): in autonomous mode ("surprise me" / "decide for me"), pick from your shortlist yourself and state the one-line why instead of asking.
+The identity pick is a **preference gate** (`../smashcut-core/references/brief-contract.md` § 1): in autonomous mode ("surprise me" / "decide for me"), pick from your shortlist yourself and state the one-line why instead of asking.
 
 Procedure: probe the clip → shortlist 2–3 identities from the catalog → recommend ONE with a one-line why → **the user picks** (autonomous mode: you pick, stating the why) → author that identity's file. Identities are engine-locked (no cross combos; opening one is a validation event — see dna/README.md).
 
@@ -102,7 +102,7 @@ Read the samples. Refuse if:
 ## Pipeline — 5 steps
 
 ```
-1. hyperframes init <project> --non-interactive --video <video.mp4> --skill=embedded-captions
+1. smashcut init <project> --non-interactive --video <video.mp4> --skill=embedded-captions
 2. bash scripts/prepare.sh <project>       # matte ∥ transcribe (parallel) → safe-zones. One command.
                                            #   → frames_fg/ transcript.json safe-zones.json
 3. [AGENT STEP — the only creative step] author a small JSON; see below by mode
@@ -233,7 +233,7 @@ The full **embed-track** playbook lives in **[references/composition-craft.md](r
 - **Never grade/recolor the video.** The footage ships untouched — captions are the only addition. No full-frame scanlines / duotone / darken / vignette over the a-roll. neon-noir/CRT texture belongs _inside_ a caption element, not over the whole frame.
 - **Rail-first for talking-head / explainer.** Don't embed the whole transcript — most text is the rail; embed only peaks. Embedding everything is the default mistake.
 - **Embed is scarce + spaced.** ≤1 embed per sentence/beat, never two adjacent or co-visible, ≥ a beat apart, at most one `apex`. climax = per-beat peak, **not** "the single payoff of the entire clip."
-- **Matte = the PERSON (hyperframes `remove-background`, u2net_human_seg, Apache-2.0).** Human segmentation by intent, but not surgically: thin offset furniture (mic boom arms) is usually excluded — captions render over it, behind the person — while large salient objects NEAR the subject (a telescope, a desk rig) can still leak into the matte and occlude captions. Objects HELD by the subject (products, phones) may drop out intermittently, letting captions pass in front. NEVER assume: sample `frames_fg/` at 2-3 timestamps before placing the hero, and prefer hero positions clear of any leaked furniture (`heroAnchor` can be skewed by leaks — cross-check against frames_bg).
+- **Matte = the PERSON (smashcut `remove-background`, u2net_human_seg, Apache-2.0).** Human segmentation by intent, but not surgically: thin offset furniture (mic boom arms) is usually excluded — captions render over it, behind the person — while large salient objects NEAR the subject (a telescope, a desk rig) can still leak into the matte and occlude captions. Objects HELD by the subject (products, phones) may drop out intermittently, letting captions pass in front. NEVER assume: sample `frames_fg/` at 2-3 timestamps before placing the hero, and prefer hero positions clear of any leaked furniture (`heroAnchor` can be skewed by leaks — cross-check against frames_bg).
 - **safe-zones is PROP-BLIND — eyeball every band you use.** Zones/heroBands score _subject_ occlusion + luma only: a mic, telescope, or screen sitting inside a "clean" zone is invisible to them (and a prop leaking INTO the matte skews `heroAnchor.centerXPct` off the person). Before authoring, extract ONE frame of each band you intend to use; if a prop lives there, measure its bbox and move/shrink the plane. Two real cases shipped clean only because the agent did exactly this. (Auto prop-saliency is a known gap; zones' `peakLuma` only catches _moving_ bright objects.)
 - **Captions stay on-frame.** Cinematic mode hard-gates frame-overflow; Standard mode runs `check-overflow.cjs` as a WARNING (intentional bleed is the only exception — read the warning).
 - **Each caption ≥ 0.5s on screen** — shorter = unreadable.
@@ -248,11 +248,11 @@ The full **embed-track** playbook lives in **[references/composition-craft.md](r
 
 ## Dependencies
 
-- **hyperframes**, built (`packages/cli/dist/cli.js`). Scripts auto-resolve the checkout: `HYPERFRAMES_ROOT` env → repo root if this skill ships _inside_ hyperframes → `~/Downloads/hyperframes`. Build with `bun install && bun run build`.
-- **Node-first; two Python touchpoints via `uvx` (no manual installs):** transcription runs WhisperX through `uvx` (word-level timings; falls back per SKILL §transcription), and Theme's `drawon` setpiece shells `python3 scripts/gen-stroke-path.py` at compile time. Everything else runs on the toolchain hyperframes already ships: matting via the hyperframes CLI's **`remove-background`** (u2net_human_seg; weights auto-download once, ~168 MB, to `~/.cache/hyperframes/`), image/alpha math via **`sharp`**, layout/occlusion/overflow via **`puppeteer`**, plus **`ffmpeg`**. The scripts auto-resolve these from the hyperframes checkout — nothing extra to install.
+- **smashcut**, built (`packages/cli/dist/cli.js`). Scripts auto-resolve the checkout: `SMASHCUT_ROOT` env → repo root if this skill ships _inside_ smashcut → `~/Downloads/smashcut`. Build with `bun install && bun run build`.
+- **Node-first; two Python touchpoints via `uvx` (no manual installs):** transcription runs WhisperX through `uvx` (word-level timings; falls back per SKILL §transcription), and Theme's `drawon` setpiece shells `python3 scripts/gen-stroke-path.py` at compile time. Everything else runs on the toolchain smashcut already ships: matting via the smashcut CLI's **`remove-background`** (u2net_human_seg; weights auto-download once, ~168 MB, to `~/.cache/smashcut/`), image/alpha math via **`sharp`**, layout/occlusion/overflow via **`puppeteer`**, plus **`ffmpeg`**. The scripts auto-resolve these from the smashcut checkout — nothing extra to install.
 - **Transcription = WhisperX via `uvx`** (word-level timings + alignment; no manual install — `transcribe.cjs` drives `uvx whisperx`). Falls back to an existing word-level `transcript.json` if present.
-- **Source video** — `matte.cjs` / `transcribe.cjs` auto-resolve `source.mp4` (or glob the clip / read `hyperframes.json`), so `hyperframes init --video X.mp4` needs no manual rename.
+- **Source video** — `matte.cjs` / `transcribe.cjs` auto-resolve `source.mp4` (or glob the clip / read `smashcut.json`), so `smashcut init --video X.mp4` needs no manual rename.
 - **fps** — `matte.cjs` extracts at the source's native rate and records `matte.fps`; `render-and-composite.sh` uses that so the matte stays frame-aligned.
-- Matting weights are NOT bundled: `matte.cjs` shells the hyperframes CLI's `remove-background`, which downloads u2net_human_seg (~168 MB, Apache-2.0) once to `~/.cache/hyperframes/background-removal/models/`. First prepare on a fresh machine needs network for that one download.
+- Matting weights are NOT bundled: `matte.cjs` shells the smashcut CLI's `remove-background`, which downloads u2net_human_seg (~168 MB, Apache-2.0) once to `~/.cache/smashcut/background-removal/models/`. First prepare on a fresh machine needs network for that one download.
 
 If a hard dependency is missing, STOP and ask the user — don't silently skip steps.

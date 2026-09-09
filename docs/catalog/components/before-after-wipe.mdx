@@ -16,7 +16,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 ```html before-after-wipe.html
 <!doctype html>
 <!--
-  before-after-wipe: HyperFrames video primitive (ui-props / holdable / compare)
+  before-after-wipe: SmashCut video primitive (ui-props / holdable / compare)
 
   Concept: two full-bleed CONTENT SLOTS share one frame. The before slot stays
   fully visible as the base layer while the after slot wipes over it from the
@@ -70,7 +70,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
   size), has no data-width/data-height, and registers one paused timeline
   under the literal "before-after-wipe" key (mount flattening strips
   data-composition-id from the live root). Variables come from
-  window.__hyperframes.getVariables().
+  window.__smashcut.getVariables().
 -->
 <html
   lang="en"
@@ -369,8 +369,8 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
             var chipB = root.querySelector(".baw-chip-b");
 
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             var labelA = vars.label_a == null ? "Before" : String(vars.label_a);
@@ -498,7 +498,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 
 ## Install
 
-<InstallCommand command="npx hyperframes add before-after-wipe" item="before-after-wipe" />
+<InstallCommand command="npx smashcut add before-after-wipe" item="before-after-wipe" />
 
 That writes one file: `compositions/components/before-after-wipe.html`.
 
@@ -541,7 +541,7 @@ defaults, so this behaves exactly like the preview above until you change one:
 ```html
 <!doctype html>
 <!--
-  before-after-wipe: HyperFrames video primitive (ui-props / holdable / compare)
+  before-after-wipe: SmashCut video primitive (ui-props / holdable / compare)
 
   Concept: two full-bleed CONTENT SLOTS share one frame. The before slot stays
   fully visible as the base layer while the after slot wipes over it from the
@@ -595,7 +595,7 @@ defaults, so this behaves exactly like the preview above until you change one:
   size), has no data-width/data-height, and registers one paused timeline
   under the literal "before-after-wipe" key (mount flattening strips
   data-composition-id from the live root). Variables come from
-  window.__hyperframes.getVariables().
+  window.__smashcut.getVariables().
 -->
 <html
   lang="en"
@@ -894,8 +894,8 @@ defaults, so this behaves exactly like the preview above until you change one:
             var chipB = root.querySelector(".baw-chip-b");
 
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             var labelA = vars.label_a == null ? "Before" : String(vars.label_a);

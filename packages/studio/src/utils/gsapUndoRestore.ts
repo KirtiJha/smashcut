@@ -11,7 +11,7 @@ import {
 
 type PreviewWindow = Window & {
   __player?: { seek?: (t: number) => void };
-  __hfStudioManualEditsApply?: () => void;
+  __scStudioManualEditsApply?: () => void;
 };
 
 /** One file's restore from the edit-history store: before (live) / after (target) bytes. */
@@ -21,21 +21,21 @@ export interface UndoRestoreFile {
 }
 
 /**
- * Identity for the soft diff: `data-hf-id` when present, else `id`. Nearly
+ * Identity for the soft diff: `data-sc-id` when present, else `id`. Nearly
  * every studio-editable element carries one of the two — z-order commits and
- * timeline patches target by id OR hf-id OR stable selector, and hf-ids are
+ * timeline patches target by id OR sc-id OR stable selector, and sc-ids are
  * stamped uniquely by the SDK — so preferring them keeps duplicate authored
  * ids distinct and selector-targeted clips inside soft-undo's reach.
  */
 function elementIdentityKey(el: Element): string | null {
-  const hfId = el.getAttribute("data-hf-id");
+  const hfId = el.getAttribute("data-sc-id");
   if (hfId) return `hf:${hfId}`;
   const id = el.getAttribute("id");
   if (id) return `id:${id}`;
   return null;
 }
 
-const IDENTITY_SELECTOR = "[id], [data-hf-id]";
+const IDENTITY_SELECTOR = "[id], [data-sc-id]";
 
 function identityElementMap(doc: Document): Map<string, Element> | null {
   const map = new Map<string, Element>();
@@ -54,17 +54,17 @@ function identityElementMap(doc: Document): Map<string, Element> | null {
 // scripts, in place: docs that differ only in identified-element attributes/
 // inline-style/script text normalize equal; any residual difference is beyond
 // soft-reload's reach → caller full-reloads. Both identity attributes are
-// KEPT, so a change to `id`/`data-hf-id` themselves stays a residual
+// KEPT, so a change to `id`/`data-sc-id` themselves stays a residual
 // (structural) difference.
 function normalizeSoftResidual(doc: Document): void {
   for (const el of doc.querySelectorAll(IDENTITY_SELECTOR)) {
     const id = el.getAttribute("id");
-    const hfId = el.getAttribute("data-hf-id");
+    const hfId = el.getAttribute("data-sc-id");
     for (const name of [...el.getAttributeNames()]) {
-      if (name !== "id" && name !== "data-hf-id") el.removeAttribute(name);
+      if (name !== "id" && name !== "data-sc-id") el.removeAttribute(name);
     }
     if (id) el.setAttribute("id", id);
-    if (hfId) el.setAttribute("data-hf-id", hfId);
+    if (hfId) el.setAttribute("data-sc-id", hfId);
   }
   for (const script of findGsapScriptElements(doc)) script.textContent = "";
 }
@@ -156,7 +156,7 @@ function hasAmbiguousGsapScriptChange(previous: string, restored: string): boole
  * a sub-comp or multi-file restore falls back to `reloadPreview`.
  *
  * The restore is soft-applied when its only differences are identified-element
- * (id / data-hf-id) attributes / inline-style and/or the GSAP script (see
+ * (id / data-sc-id) attributes / inline-style and/or the GSAP script (see
  * diffSoftReloadableRestore):
  *   1. Each changed element's attribute surface (inline style, data-start /
  *      -duration, the studio manual-offset props + flags) is synced onto the live
@@ -168,7 +168,7 @@ function hasAmbiguousGsapScriptChange(previous: string, restored: string): boole
  *        `currentTime`, re-folds manual edits).
  *      - Script unchanged or absent (the overwhelmingly common undo: z-order,
  *        lane move, timing shift, style tweak) → NO script execution — the
- *        blink-free finalization only (seek + __hfForceTimelineRebind + manual
+ *        blink-free finalization only (seek + __scForceTimelineRebind + manual
  *        reapply, exactly the rebindPreviewTiming path), so timing-attribute
  *        reverts refresh their visibility windows. Re-running an unchanged
  *        script here used to be the biggest undo blink source: it tore down
@@ -260,7 +260,7 @@ export function applyUndoRestoreToPreview(
   if (applySoftReloadFinalization(iframe, currentTime)) return "soft";
   try {
     win.__player?.seek?.(currentTime);
-    win.__hfStudioManualEditsApply?.();
+    win.__scStudioManualEditsApply?.();
   } catch {
     reloadPreview();
     return "full";

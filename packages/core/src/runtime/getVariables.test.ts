@@ -15,7 +15,7 @@ function setDeclared(json: string | null) {
 }
 
 function setOverrides(value: unknown) {
-  (window as Window & { __hfVariables?: unknown }).__hfVariables = value;
+  (window as Window & { __scVariables?: unknown }).__scVariables = value;
 }
 
 describe("getVariables", () => {
@@ -341,10 +341,10 @@ describe("out-of-set enum values (observability only — never changes the retur
 describe("css variable injection (figma brand-token chain)", () => {
   afterEach(() => {
     document.documentElement.removeAttribute(VARIABLES_ATTR);
-    document.documentElement.removeAttribute("data-hf-css-vars");
+    document.documentElement.removeAttribute("data-sc-css-vars");
     document.documentElement.style.cssText = "";
     document.body.innerHTML = "";
-    delete (window as Window & { __hfVariables?: unknown }).__hfVariables;
+    delete (window as Window & { __scVariables?: unknown }).__scVariables;
   });
 
   it("slug stays byte-compatible with the figma importer", async () => {
@@ -395,7 +395,7 @@ describe("css variable injection (figma brand-token chain)", () => {
   it("render-time overrides win over declared defaults AND authored values", async () => {
     const { injectCompositionCssVariables } = await import("./getVariables");
     document.body.innerHTML = `<div id="root" style="--figma-brand: #000000" ${VARIABLES_ATTR}='[{"id":"figma:brand","type":"color","label":"b","default":"#2c2c2c"}]'></div>`;
-    (window as Window & { __hfVariables?: Record<string, unknown> }).__hfVariables = {
+    (window as Window & { __scVariables?: Record<string, unknown> }).__scVariables = {
       "figma:brand": "#00ff99",
     };
     injectCompositionCssVariables(document);
@@ -410,7 +410,7 @@ describe("css variable injection (figma brand-token chain)", () => {
     applyCssVariables(el, { blank: "", real: "#123456" });
     expect(el.style.getPropertyValue("--blank")).toBe("");
     expect(el.style.getPropertyValue("--real")).toBe("#123456");
-    expect(el.getAttribute("data-hf-css-vars")).toBe("--real");
+    expect(el.getAttribute("data-sc-css-vars")).toBe("--real");
   });
 
   it("clearAppliedCssVariables removes exactly what was applied", async () => {
@@ -421,7 +421,7 @@ describe("css variable injection (figma brand-token chain)", () => {
     clearAppliedCssVariables(el);
     expect(el.style.getPropertyValue("--figma-brand")).toBe("");
     expect(el.style.getPropertyValue("--authored")).toBe("keep");
-    expect(el.hasAttribute("data-hf-css-vars")).toBe(false);
+    expect(el.hasAttribute("data-sc-css-vars")).toBe(false);
   });
 
   it("getVariables() honors element-declared variables like the injection does", async () => {

@@ -2,15 +2,15 @@
 // `ITEM_TYPES` / `FILE_TYPES` below — `types.test.ts` is the drift guard.
 
 /** Top-level classification for a registry item. */
-export type ItemType = "hyperframes:example" | "hyperframes:block" | "hyperframes:component";
+export type ItemType = "smashcut:example" | "smashcut:block" | "smashcut:component";
 
 /** File-level classification, drives installer behavior. */
 export type FileType =
-  | "hyperframes:composition"
-  | "hyperframes:asset"
-  | "hyperframes:snippet"
-  | "hyperframes:style"
-  | "hyperframes:timeline";
+  | "smashcut:composition"
+  | "smashcut:asset"
+  | "smashcut:snippet"
+  | "smashcut:style"
+  | "smashcut:timeline";
 
 /** A single file to install as part of a registry item. */
 export interface FileTarget {
@@ -71,7 +71,7 @@ interface RegistryItemBase {
   sourcePrompt?: string;
   /** SPDX license identifier. */
   license?: string;
-  /** Minimum `hyperframes` CLI version required to install this item (semver). */
+  /** Minimum `smashcut` CLI version required to install this item (semver). */
   minCliVersion?: string;
   /** If set, the item is deprecated; the value is the reason or migration note. */
   deprecated?: string;
@@ -81,13 +81,13 @@ interface RegistryItemBase {
   files: FileTarget[];
   /** Optional preview media. */
   preview?: RegistryItemPreview;
-  /** Related skill slug (e.g. `hyperframes-captions`) — shown in docs. */
+  /** Related skill slug (e.g. `smashcut-captions`) — shown in docs. */
   relatedSkill?: string;
 }
 
-/** Full-project example — scaffolded by `hyperframes init --example <name>`. */
+/** Full-project example — scaffolded by `smashcut init --example <name>`. */
 export interface ExampleItem extends RegistryItemBase {
-  type: "hyperframes:example";
+  type: "smashcut:example";
   /** Canvas dimensions (required for examples). */
   dimensions: RegistryItemDimensions;
   /** Duration in seconds (required for examples). */
@@ -105,9 +105,9 @@ export interface BlockParam {
   step?: number;
 }
 
-/** Sub-composition block — installed by `hyperframes add <name>`. */
+/** Sub-composition block — installed by `smashcut add <name>`. */
 export interface BlockItem extends RegistryItemBase {
-  type: "hyperframes:block";
+  type: "smashcut:block";
   /** Canvas dimensions (required for blocks — they are standalone compositions). */
   dimensions: RegistryItemDimensions;
   /** Duration in seconds (required for blocks). */
@@ -118,7 +118,7 @@ export interface BlockItem extends RegistryItemBase {
 
 /** Effect / snippet — merged into an existing composition. */
 export interface ComponentItem extends RegistryItemBase {
-  type: "hyperframes:component";
+  type: "smashcut:component";
   /** Components have no intrinsic dimensions — they inherit from the host composition. */
   dimensions?: never;
   /** Components have no intrinsic duration — they inherit from the host composition. */
@@ -141,7 +141,7 @@ export interface RegistryManifestEntry {
 export interface RegistryManifest {
   /** JSON Schema URL — `https://hyperframes.heygen.com/schema/registry.json`. */
   $schema?: string;
-  /** Registry name (e.g. `hyperframes`). */
+  /** Registry name (e.g. `smashcut`). */
   name: string;
   /** Registry homepage URL. */
   homepage: string;
@@ -157,17 +157,17 @@ export interface RegistryManifest {
 // ── Constants (kept in sync with JSON Schema enums) ─────────────────────────
 
 export const ITEM_TYPES = [
-  "hyperframes:example",
-  "hyperframes:block",
-  "hyperframes:component",
+  "smashcut:example",
+  "smashcut:block",
+  "smashcut:component",
 ] as const satisfies readonly ItemType[];
 
 export const FILE_TYPES = [
-  "hyperframes:composition",
-  "hyperframes:asset",
-  "hyperframes:snippet",
-  "hyperframes:style",
-  "hyperframes:timeline",
+  "smashcut:composition",
+  "smashcut:asset",
+  "smashcut:snippet",
+  "smashcut:style",
+  "smashcut:timeline",
 ] as const satisfies readonly FileType[];
 
 /**
@@ -177,9 +177,9 @@ export const FILE_TYPES = [
  * tooling, and codegen scripts all agree.
  */
 export const ITEM_TYPE_DIRS = {
-  "hyperframes:example": "examples",
-  "hyperframes:block": "blocks",
-  "hyperframes:component": "components",
+  "smashcut:example": "examples",
+  "smashcut:block": "blocks",
+  "smashcut:component": "components",
 } as const satisfies Record<ItemType, string>;
 
 // Compile-time exhaustiveness: every member of the TS union appears in the constant.
@@ -242,13 +242,13 @@ export function resolveBlockCategory(tags: string[] | undefined): BlockCategory 
 // ── Type guards ─────────────────────────────────────────────────────────────
 
 export function isExampleItem(item: RegistryItem): item is ExampleItem {
-  return item.type === "hyperframes:example";
+  return item.type === "smashcut:example";
 }
 
 export function isBlockItem(item: RegistryItem): item is BlockItem {
-  return item.type === "hyperframes:block";
+  return item.type === "smashcut:block";
 }
 
 export function isComponentItem(item: RegistryItem): item is ComponentItem {
-  return item.type === "hyperframes:component";
+  return item.type === "smashcut:component";
 }

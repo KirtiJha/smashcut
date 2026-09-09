@@ -3,7 +3,7 @@ title: "Timing & Animation"
 description: "Set clip timing, elastic holds, GSAP tweens, and keyframed animations on composition elements."
 ---
 
-Every clip in a HyperFrames composition has a position on the timeline (`data-start`, `data-duration`) and an optional animation attached to it. The SDK exposes typed helpers for both: the timing API controls _when_ an element appears and how long it stays on screen; the animation API controls _how_ it moves through that window.
+Every clip in a SmashCut composition has a position on the timeline (`data-start`, `data-duration`) and an optional animation attached to it. The SDK exposes typed helpers for both: the timing API controls _when_ an element appears and how long it stays on screen; the animation API controls _how_ it moves through that window.
 
 ## Clip Timing
 
@@ -12,7 +12,7 @@ Every clip in a HyperFrames composition has a position on the timeline (`data-st
 `getElementTimings()` returns a `Record<HfId, ElementTimingSnapshot>` — one entry per element that carries timing data. Values are derived from the live DOM on every call (never cached in the snapshot). Keys are `scopedId`: for top-level elements this equals the bare `id`, but for elements inside a sub-composition it is the scoped form `"hf-HOST/hf-LEAF"`.
 
 ```typescript
-import { openComposition } from "@hyperframes/sdk";
+import { openComposition } from "@smashcut/sdk";
 
 const comp = await openComposition(html);
 const timings = comp.getElementTimings();
@@ -44,8 +44,8 @@ Each `ElementTimingSnapshot` contains:
 ### Setting timing on one element
 
 ```typescript
-// Move hf-title to start at 1.0 s, last 2.5 s, on track 0
-comp.setTiming("hf-title", { start: 1.0, duration: 2.5, trackIndex: 0 });
+// Move sc-title to start at 1.0 s, last 2.5 s, on track 0
+comp.setTiming("sc-title", { start: 1.0, duration: 2.5, trackIndex: 0 });
 ```
 
 All three fields are optional — pass only what you want to change:
@@ -66,9 +66,9 @@ All three fields are optional — pass only what you want to change:
 
 ```typescript
 comp.setElementTiming({
-  "hf-title": { start: 0.5, duration: 2.0 },
-  "hf-logo": { start: 0.0, duration: 5.0, trackIndex: 1 },
-  "hf-cta": { start: 3.0, duration: 2.5 },
+  "sc-title": { start: 0.5, duration: 2.0 },
+  "sc-logo": { start: 0.0, duration: 5.0, trackIndex: 1 },
+  "sc-cta": { start: 3.0, duration: 2.5 },
 });
 ```
 
@@ -79,7 +79,7 @@ Unknown ids are silently skipped.
 An elastic hold freezes or loops a portion of an element's timeline window. Use it to hold a static frame between two animated segments without changing clip duration.
 
 ```typescript
-comp.setHold("hf-card", {
+comp.setHold("sc-card", {
   start: 1.5, // hold begins at this time within the composition
   end: 4.0, // hold ends at this time
   fill: "freeze", // "freeze" | "loop"
@@ -108,7 +108,7 @@ GSAP tweens are the primary animation primitive. The SDK reads tween IDs from `e
 ### Adding a tween
 
 ```typescript
-const animId = comp.addGsapTween("hf-title", {
+const animId = comp.addGsapTween("sc-title", {
   method: "from",
   position: 0.5,
   duration: 0.6,
@@ -175,7 +175,7 @@ comp.removeGsapTween(animId);
 Query the element snapshot to find animation IDs attached to a given element:
 
 ```typescript
-const el = comp.getElement("hf-title");
+const el = comp.getElement("sc-title");
 const [firstAnimId] = el?.animationIds ?? [];
 if (firstAnimId) {
   comp.setGsapTween(firstAnimId, { ease: "none" });
@@ -192,7 +192,7 @@ to a timeline — without a `gsap.timeline()` in the script, `can()` returns
 ```typescript
 const op = {
   type: "addGsapTween",
-  target: "hf-title",
+  target: "sc-title",
   tween: { method: "to", properties: { opacity: 1 }, duration: 0.5 },
 } as const;
 
@@ -227,7 +227,7 @@ For keyframe-based animations, use `addWithKeyframes` and `replaceWithKeyframes`
 
 ```typescript
 const animId = comp.addWithKeyframes(
-  "#hf-badge", // CSS selector targeting the element
+  "#sc-badge", // CSS selector targeting the element
   1.0, // timeline position in seconds (number only)
   0.8, // duration in seconds
   [
@@ -244,7 +244,7 @@ Returns the new animation ID string, or `""` if the op was rejected.
 ### Replacing an existing keyframed tween
 
 ```typescript
-const newAnimId = comp.replaceWithKeyframes(oldAnimId, "#hf-badge", 1.0, 1.2, [
+const newAnimId = comp.replaceWithKeyframes(oldAnimId, "#sc-badge", 1.0, 1.2, [
   { percentage: 0, properties: { x: -60, opacity: 0 } },
   { percentage: 100, properties: { x: 0, opacity: 1 }, ease: "back.out(1.7)" },
 ]);

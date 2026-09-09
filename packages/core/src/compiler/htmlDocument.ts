@@ -1,11 +1,11 @@
 import { parseHTML } from "linkedom";
 
-export const RUNTIME_BOOTSTRAP_ATTR = "data-hyperframes-preview-runtime";
+export const RUNTIME_BOOTSTRAP_ATTR = "data-smashcut-preview-runtime";
 
 const RUNTIME_SRC_MARKERS = [
-  "hyperframe.runtime.iife.js",
-  "hyperframes-runtime.modular.inline.js",
-  "hyperframe-runtime.modular-runtime.inline.js",
+  "smashcut.runtime.iife.js",
+  "smashcut-runtime.modular.inline.js",
+  "smashcut-runtime.modular-runtime.inline.js",
   RUNTIME_BOOTSTRAP_ATTR,
 ];
 

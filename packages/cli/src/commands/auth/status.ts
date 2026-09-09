@@ -1,6 +1,6 @@
 import { failCommand, setCommandExitCode } from "../../utils/commandResult.js";
 /**
- * `hyperframes auth status` — print the active credential's source,
+ * `smashcut auth status` — print the active credential's source,
  * type, and identity (verified against `GET /v3/users/me`).
  *
  * Exits non-zero when nothing is configured or the API rejects the
@@ -8,7 +8,7 @@ import { failCommand, setCommandExitCode } from "../../utils/commandResult.js";
  *
  * When nothing is configured the output is onboarding-first: an
  * interactive session (a TTY, or a coding agent driving the CLI) gets
- * registration guidance led by `hyperframes auth login` — sign-in and
+ * registration guidance led by `smashcut auth login` — sign-in and
  * sign-up are the same OAuth step — while CI / non-interactive runs get
  * a terse note and continue on local fallbacks. This is the shared
  * preflight every TTS/BGM workflow relays, so the wording lives in one
@@ -163,7 +163,7 @@ async function verify(credential: ResolvedCredential): Promise<VerifiedStatus> {
 
 /**
  * Load the persisted friendly-display block, but only for file-sourced
- * credentials. An env credential (`HEYGEN_API_KEY` / `HYPERFRAMES_API_KEY`)
+ * credentials. An env credential (`HEYGEN_API_KEY` / `SMASHCUT_API_KEY`)
  * could belong to a different key than the on-disk block, so surfacing
  * that block would mislabel the active account. A read error is swallowed
  * — the block is purely cosmetic and must never break `auth status`.
@@ -259,7 +259,7 @@ function identityRows(user: UserInfo): [string, string][] {
 
 const SOURCE_LABELS: Record<ResolvedCredential["source"], string> = {
   env: "env (HEYGEN_API_KEY)",
-  env_alias: "env (HYPERFRAMES_API_KEY)",
+  env_alias: "env (SMASHCUT_API_KEY)",
   file_legacy: "file (~/.heygen/credentials — legacy plaintext)",
   file_json: "file (~/.heygen/credentials)",
 };

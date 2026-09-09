@@ -1,2 +1,2 @@
-// Moved to @hyperframes/parsers/slideshow. Re-exported here for back-compat.
-export * from "@hyperframes/parsers/slideshow";
+// Moved to @smashcut/parsers/slideshow. Re-exported here for back-compat.
+export * from "@smashcut/parsers/slideshow";

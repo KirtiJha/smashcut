@@ -4,7 +4,7 @@ import { readTagCI } from "./ffprobe.js";
 /**
  * Hidden render provenance.
  *
- * HyperFrames stamps the *container* — never the picture — with the renderer
+ * SmashCut stamps the *container* — never the picture — with the renderer
  * name and version, so a rendered file carries a machine-readable note about
  * what produced it, with no visible watermark burned into the frames.
  *
@@ -15,8 +15,8 @@ import { readTagCI } from "./ffprobe.js";
  *
  * **An unauthenticated hint — not an authenticity or attribution boundary.**
  * These are ordinary unsigned container keys that any tool can write, so a
- * present tag means the file *claims* to be HyperFrames output, not that
- * HyperFrames produced it: one `ffmpeg -metadata hyperframes_renderer=...`
+ * present tag means the file *claims* to be SmashCut output, not that
+ * SmashCut produced it: one `ffmpeg -metadata smashcut_renderer=...`
  * forges it. Absence proves just as little, since re-encoding, remuxing, or
  * any tool that drops unknown keys strips them, and files rendered before this
  * feature never had them. Good for diagnostics and support ("what wrote this
@@ -25,9 +25,9 @@ import { readTagCI } from "./ffprobe.js";
  * this deliberately is not.
  */
 
-export const PROVENANCE_RENDERER_TAG = "hyperframes_renderer";
-export const PROVENANCE_VERSION_TAG = "hyperframes_version";
-export const PROVENANCE_RENDERER_NAME = "hyperframes";
+export const PROVENANCE_RENDERER_TAG = "smashcut_renderer";
+export const PROVENANCE_VERSION_TAG = "smashcut_version";
+export const PROVENANCE_RENDERER_NAME = "smashcut";
 
 const UNKNOWN_VERSION = "0.0.0-dev";
 

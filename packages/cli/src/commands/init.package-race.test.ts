@@ -18,11 +18,11 @@ afterEach(() => {
 
 describe("init config creation", () => {
   it.each(
-    ["package.json", "hyperframes.json"].flatMap((filename) =>
+    ["package.json", "smashcut.json"].flatMap((filename) =>
       ["existing", "concurrent", "dangling symlink"].map((kind) => ({ filename, kind })),
     ),
   )("preserves $kind $filename while completing initialization", async ({ filename, kind }) => {
-    const dir = fs.mkdtempSync(join(tmpdir(), "hf-init-package-"));
+    const dir = fs.mkdtempSync(join(tmpdir(), "sc-init-package-"));
     const project = join(dir, "project");
     const packagePath = join(project, filename);
     const target = join(dir, "missing-target.json");
@@ -37,7 +37,7 @@ describe("init config creation", () => {
       }
       return original.existsSync(path);
     });
-    vi.stubEnv("HYPERFRAMES_SKIP_SKILLS", "1");
+    vi.stubEnv("SMASHCUT_SKIP_SKILLS", "1");
     const log = vi.spyOn(console, "log").mockImplementation(() => {});
     try {
       await runCommand(init, {
@@ -52,7 +52,7 @@ describe("init config creation", () => {
       }
       expect(fs.existsSync(join(project, "index.html"))).toBe(true);
       expect(log.mock.calls.flat().join("\n")).toContain("npm run dev");
-      expect(fs.readdirSync(project).filter((name) => name.startsWith(".hf-create-"))).toEqual([]);
+      expect(fs.readdirSync(project).filter((name) => name.startsWith(".sc-create-"))).toEqual([]);
     } finally {
       vi.mocked(fs.existsSync).mockImplementation(original.existsSync);
       fs.rmSync(dir, { recursive: true, force: true });

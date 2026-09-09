@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest";
 import { simplifyPoints } from "./automationSimplify";
-import { VOLUME_RANGE } from "@hyperframes/core/audio-automation";
+import { VOLUME_RANGE } from "@smashcut/core/audio-automation";
 import { toUnit } from "./automationLaneGeometry";
-import type { HfAutomationPoint } from "@hyperframes/core/audio-automation";
+import type { HfAutomationPoint } from "@smashcut/core/audio-automation";
 
 describe("simplifyPoints", () => {
   it("collapses collinear runs to their endpoints", () => {

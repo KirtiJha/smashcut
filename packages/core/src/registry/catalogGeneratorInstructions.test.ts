@@ -47,7 +47,7 @@ describe("catalog pages keep the required reader continuation", () => {
 // emitted and whose first line looks like generated prose, and one appended below
 // the generated footer marker.
 describe("carriedSectionsFrom preserves hand-written sections", () => {
-  const dir = mkdtempSync(join(tmpdir(), "hf-catalog-carry-"));
+  const dir = mkdtempSync(join(tmpdir(), "sc-catalog-carry-"));
   afterAll(() => rmSync(dir, { recursive: true, force: true }));
 
   const write = (name: string, body: string) => {
@@ -63,7 +63,7 @@ describe("carriedSectionsFrom preserves hand-written sections", () => {
         "## Install",
         "",
         "```bash Terminal",
-        "npx hyperframes add sample",
+        "npx smashcut add sample",
         "```",
         "",
         "## Usage",

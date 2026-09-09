@@ -5,8 +5,8 @@ import {
   rewriteAssetPaths,
   rewriteCssAssetUrls,
   rewriteInlineStyleAssetUrls,
-} from "@hyperframes/core";
-import { stripEmbeddedRuntimeScripts } from "@hyperframes/core/compiler";
+} from "@smashcut/core";
+import { stripEmbeddedRuntimeScripts } from "@smashcut/core/compiler";
 
 /**
  * Detect whether `html` is a full document (has `<html>`, `<head>`, or
@@ -273,7 +273,7 @@ export function buildSubCompositionHtml(
   const compFile = join(projectDir, compPath);
   if (!existsSync(compFile)) return null;
 
-  // rawOverride lets the preview route thread the hf-id-stamped content in
+  // rawOverride lets the preview route thread the sc-id-stamped content in
   // directly, so the build uses pinned ids even when the persist-to-disk write
   // was skipped (read-only fs, concurrent-save TOCTOU guard).
   const rawComp = rawOverride ?? readFileSync(compFile, "utf-8");
@@ -309,7 +309,7 @@ export function buildSubCompositionHtml(
   }
 
   // A composition file may ship a baked inline runtime (from a prior export:
-  // data-hyperframes-runtime / __hyperframeRuntime…). The studio injects its own
+  // data-smashcut-runtime / __hyperframeRuntime…). The studio injects its own
   // preview runtime below, so strip the baked one from the body — otherwise it's
   // double-loaded AND the baked inline copy can fail to parse inline (the
   // "Unexpected token '<'" SyntaxError seen on comps with a baked runtime).
@@ -350,10 +350,10 @@ export function buildSubCompositionHtml(
 
   // Ensure runtime is present (might differ from the one in index.html)
   if (
-    !headContent.includes("hyperframe.runtime") &&
-    !headContent.includes("hyperframes-preview-runtime")
+    !headContent.includes("smashcut.runtime") &&
+    !headContent.includes("smashcut-preview-runtime")
   ) {
-    headContent += `\n<script data-hyperframes-preview-runtime="1" src="${runtimeUrl}"></script>`;
+    headContent += `\n<script data-smashcut-preview-runtime="1" src="${runtimeUrl}"></script>`;
   }
 
   // Fallback: if no index.html head was found, add minimal deps

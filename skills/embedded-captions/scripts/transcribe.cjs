@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /*
- * transcribe.cjs — word-level transcription via hyperframes' native Whisper
+ * transcribe.cjs — word-level transcription via smashcut' native Whisper
  * (replaces the Python ElevenLabs Scribe path; no Python, no API key).
  *
  *   node transcribe.cjs <project-dir> [model] [language]
@@ -14,13 +14,13 @@ const cp = require("child_process");
 
 function hfRoot() {
   const roots = [
-    process.env.HYPERFRAMES_ROOT,
+    process.env.SMASHCUT_ROOT,
     path.resolve(__dirname, "..", "..", ".."),
-    path.join(os.homedir(), "Downloads", "hyperframes"),
+    path.join(os.homedir(), "Downloads", "smashcut"),
   ].filter(Boolean);
   for (const r of roots)
     if (fs.existsSync(path.join(r, "packages", "cli", "dist", "cli.js"))) return r;
-  console.error("[transcribe] hyperframes CLI not found — set HYPERFRAMES_ROOT");
+  console.error("[transcribe] smashcut CLI not found — set SMASHCUT_ROOT");
   process.exit(3);
 }
 function ensureSource(project) {
@@ -119,7 +119,7 @@ function main() {
   const out = path.join(project, "transcript.json");
 
   // already in our schema? skip — but validate the SHAPE, not just the keys:
-  // `hyperframes init` drops a whisper.cpp segment/token-format transcript.json
+  // `smashcut init` drops a whisper.cpp segment/token-format transcript.json
   // (offsets-in-ms, nested tokens) that can carry a `words` key yet poison the
   // compilers. Only a word-level {text,start,end} array counts as normalized.
   try {
@@ -162,7 +162,7 @@ function main() {
 
   // ── engine: WhisperX (preferred — wav2vec2 forced alignment gives word timings far
   // tighter than whisper.cpp's segment-interpolated ones; our gates are 80ms-strict) →
-  // fallback hyperframes whisper.cpp. Force with TRANSCRIBE_ENGINE=whisper|whisperx.
+  // fallback smashcut whisper.cpp. Force with TRANSCRIBE_ENGINE=whisper|whisperx.
   let words = null,
     engine = null;
   const wantWx = (process.env.TRANSCRIBE_ENGINE || "whisperx") === "whisperx";
@@ -246,7 +246,7 @@ function main() {
   }
 
   if (!words) {
-    // run hyperframes Whisper → writes a flat word array to <dir>/transcript.json
+    // run smashcut Whisper → writes a flat word array to <dir>/transcript.json
     const cli = path.join(hfRoot(), "packages", "cli", "dist", "cli.js");
     const args = ["transcribe", audio, "-d", project, "--json", "--model", model];
     if (language) args.push("--language", language);
@@ -256,7 +256,7 @@ function main() {
       const line = so.trim().split("\n").filter(Boolean).pop();
       info = JSON.parse(line);
     } catch (e) {
-      console.error("[transcribe] hyperframes whisper failed:", e.message);
+      console.error("[transcribe] smashcut whisper failed:", e.message);
       process.exit(1);
     }
     const flatPath = info.transcriptPath || out;

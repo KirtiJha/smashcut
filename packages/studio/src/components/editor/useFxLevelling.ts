@@ -12,9 +12,9 @@ import {
   HF_AUDIO_FX_ATTR,
   serializeAudioFxChain,
   type HfAudioFxChain,
-} from "@hyperframes/core/audio-fx";
-import { levellingResult, removeLevelling } from "@hyperframes/core/audio-leveller";
-import type { HfAutomation } from "@hyperframes/core/audio-automation";
+} from "@smashcut/core/audio-fx";
+import { levellingResult, removeLevelling } from "@smashcut/core/audio-leveller";
+import type { HfAutomation } from "@smashcut/core/audio-automation";
 import {
   automationAttrValue,
   HF_AUDIO_AUTOMATION_ATTR,

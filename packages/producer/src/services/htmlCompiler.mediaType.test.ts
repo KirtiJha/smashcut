@@ -8,7 +8,7 @@ import { Semaphore } from "../utils/semaphore.js";
 import { sharedMediaProbeSemaphore } from "../utils/mediaProbeConcurrency.js";
 
 describe("compileForRender media-type ownership", () => {
-  const projectDir = mkdtempSync(join(tmpdir(), "hf-compiler-media-type-"));
+  const projectDir = mkdtempSync(join(tmpdir(), "sc-compiler-media-type-"));
   const downloadDir = join(projectDir, "downloads");
   const stillPath = join(projectDir, "extensionless-still");
   const videoPath = join(projectDir, "extensionless-video");

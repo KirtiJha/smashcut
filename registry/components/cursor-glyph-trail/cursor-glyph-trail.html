@@ -1,6 +1,6 @@
 <!doctype html>
 <!--
-  cursor-glyph-trail: HyperFrames video primitive (product demo / trails)
+  cursor-glyph-trail: SmashCut video primitive (product demo / trails)
 
   An actor (default: a cursor dot) travels an authored path and deposits
   small dithered glyphs at its past positions. Each glyph pops in where the
@@ -166,8 +166,8 @@
             var field = root.querySelector(".cgt-field");
             var actor = root.querySelector(".cgt-actor");
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             // Arc-length spacing (percent-of-stage units). Fixed spacing

@@ -9,12 +9,12 @@ import { InstallCommand } from "/snippets/install-command.jsx";
   className="w-full aspect-video rounded-xl border-0 bg-zinc-100 dark:bg-zinc-800"
   title="code-scroll preview"
   loading="lazy"
-  srcDoc={`<!doctype html><html><head><meta charset="utf-8"><style>html,body{margin:0;height:100%;overflow:hidden;background:transparent}hyperframes-player{display:block;width:100%;height:100%}</style><script src="https://cdn.jsdelivr.net/npm/@hyperframes/player@latest/dist/hyperframes-player.global.js"><\/script></head><body><script>fetch("/public/catalog/blocks/code-scroll.json").then(function(r){return r.json()}).then(function(d){var p=document.createElement("hyperframes-player");p.setAttribute("srcdoc",d.html);p.setAttribute("controls","");p.setAttribute("autoplay","");p.setAttribute("loop","");p.setAttribute("muted","");p.setAttribute("poster","https://static.heygen.ai/hyperframes-oss/docs/images/catalog/blocks/code-scroll.png");document.body.appendChild(p)});<\/script></body></html>`}
+  srcDoc={`<!doctype html><html><head><meta charset="utf-8"><style>html,body{margin:0;height:100%;overflow:hidden;background:transparent}smashcut-player{display:block;width:100%;height:100%}</style><script src="https://cdn.jsdelivr.net/npm/@smashcut/player@latest/dist/smashcut-player.global.js"><\/script></head><body><script>fetch("/public/catalog/blocks/code-scroll.json").then(function(r){return r.json()}).then(function(d){var p=document.createElement("smashcut-player");p.setAttribute("srcdoc",d.html);p.setAttribute("controls","");p.setAttribute("autoplay","");p.setAttribute("loop","");p.setAttribute("muted","");p.setAttribute("poster","https://static.heygen.ai/smashcut-oss/docs/images/catalog/blocks/code-scroll.png");document.body.appendChild(p)});<\/script></body></html>`}
 />
 
 ## Install
 
-<InstallCommand command="npx hyperframes add code-scroll" item="code-scroll" />
+<InstallCommand command="npx smashcut add code-scroll" item="code-scroll" />
 
 That writes one file: `compositions/code-scroll.html`.
 
@@ -1376,10 +1376,10 @@ That writes one file: `compositions/code-scroll.html`.
       };
     </script>
     <script>
-      // hf-code-anim.js — self-contained code-animation engine for HyperFrames registry blocks.
+      // sc-code-anim.js — self-contained code-animation engine for SmashCut registry blocks.
       //
       // Reuses Shiki Magic Move's baked output (window.__TOKENS, baked at author time) and
-      // drives the animation as a PAUSED GSAP timeline the HyperFrames engine seeks per frame —
+      // drives the animation as a PAUSED GSAP timeline the SmashCut engine seeks per frame —
       // NOT CSS transitions (those break under non-sequential frame seeking). FLIP measurement
       // runs once inside document.fonts.ready (glyph metrics must be final). Each block sets
       // window.__BLOCK = { id, effect, seq, line?, duration } and includes this engine; the
@@ -1571,8 +1571,8 @@ That writes one file: `compositions/code-scroll.html`.
             var dur = parseFloat(root.dataset.duration) || tl.duration();
             tl.to({}, { duration: dur }, 0); // pad to full composition length
             window.__timelines["code-scroll"] = tl; // register AFTER setup completes
-            if (typeof window.__hfForceTimelineRebind === "function") {
-              window.__hfForceTimelineRebind(); // re-nest now that we are populated
+            if (typeof window.__scForceTimelineRebind === "function") {
+              window.__scForceTimelineRebind(); // re-nest now that we are populated
             }
           });
         }

@@ -16,7 +16,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 ```html scroll-camera-story.html
 <!doctype html>
 <!--
-  scroll-camera-story -- HyperFrames video primitive (camera)
+  scroll-camera-story -- SmashCut video primitive (camera)
 
   A compressed forced-scroll cinematic pass: a tall authored scene travels
   past the camera top to bottom. Four depth layers move at different rates
@@ -595,8 +595,8 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
             var layerFore = root.querySelector(".scs-fore");
             var sectionElements = Array.prototype.slice.call(root.querySelectorAll(".scs-section"));
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             function num(value, fallback, min, max) {
@@ -825,7 +825,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 
 ## Install
 
-<InstallCommand command="npx hyperframes add scroll-camera-story" item="scroll-camera-story" />
+<InstallCommand command="npx smashcut add scroll-camera-story" item="scroll-camera-story" />
 
 That writes one file: `compositions/components/scroll-camera-story.html`.
 
@@ -867,7 +867,7 @@ defaults, so this behaves exactly like the preview above until you change one:
 ```html
 <!doctype html>
 <!--
-  scroll-camera-story -- HyperFrames video primitive (camera)
+  scroll-camera-story -- SmashCut video primitive (camera)
 
   A compressed forced-scroll cinematic pass: a tall authored scene travels
   past the camera top to bottom. Four depth layers move at different rates
@@ -1446,8 +1446,8 @@ defaults, so this behaves exactly like the preview above until you change one:
             var layerFore = root.querySelector(".scs-fore");
             var sectionElements = Array.prototype.slice.call(root.querySelectorAll(".scs-section"));
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             function num(value, fallback, min, max) {

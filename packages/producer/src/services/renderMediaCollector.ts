@@ -5,7 +5,7 @@
  * inlining, then merged with the main document's media and deduplicated by
  * element id. That merge is unsound: ids are unique per file, not per render
  * document, so two scenes that both declare `<video id="clip">` — or that both
- * declare a bare `<video>` and get the per-file auto-id `hf-video-0` — collapse
+ * declare a bare `<video>` and get the per-file auto-id `sc-video-0` — collapse
  * into a single entry. See mediaRenderIds.ts for the full failure.
  *
  * Reading the inlined document instead makes the render document the single
@@ -15,13 +15,13 @@
  */
 
 import { parseHTML } from "linkedom";
-import { MEDIA_RENDER_ID_ATTR } from "@hyperframes/core";
+import { MEDIA_RENDER_ID_ATTR } from "@smashcut/core";
 import {
   MEDIA_START_BASIS_ATTR,
   readMediaStartBasis,
   resolveAbsoluteMediaStartSeconds,
   type MediaStartBasis,
-} from "@hyperframes/core/media-timing";
+} from "@smashcut/core/media-timing";
 import {
   parseVideoElements,
   parseImageElements,
@@ -32,7 +32,7 @@ import {
   type VideoElement,
   type ImageElement,
   type AudioElement,
-} from "@hyperframes/engine";
+} from "@smashcut/engine";
 
 /**
  * Marks a host element that `inlineSubCompositions` hoisted a composition into.

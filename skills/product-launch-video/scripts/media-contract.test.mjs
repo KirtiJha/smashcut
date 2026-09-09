@@ -17,7 +17,7 @@ test("frame worker documents the approved video-hoist contract", () => {
 });
 
 test("assemble hoists an approved timed frame video to the host root", () => {
-  const project = mkdtempSync(join(tmpdir(), "hf-frame-video-"));
+  const project = mkdtempSync(join(tmpdir(), "sc-frame-video-"));
   mkdirSync(join(project, "compositions"));
   const framePath = join(project, "compositions", "frame-1.html");
   writeFileSync(
@@ -31,7 +31,7 @@ test("assemble hoists an approved timed frame video to the host root", () => {
 
   const result = spawnSync(
     process.execPath,
-    [join(skillDir, "scripts", "assemble-index.mjs"), "--hyperframes", project],
+    [join(skillDir, "scripts", "assemble-index.mjs"), "--smashcut", project],
     { encoding: "utf8" },
   );
   assert.equal(result.status, 0, result.stderr);
@@ -58,7 +58,7 @@ test("assemble hoists an approved timed frame video to the host root", () => {
 });
 
 test("assemble preserves approved-video geometry through sanitized host CSS", () => {
-  const project = mkdtempSync(join(tmpdir(), "hf-frame-video-layout-"));
+  const project = mkdtempSync(join(tmpdir(), "sc-frame-video-layout-"));
   mkdirSync(join(project, "compositions"));
   const framePath = join(project, "compositions", "frame-1.html");
   writeFileSync(
@@ -72,7 +72,7 @@ test("assemble preserves approved-video geometry through sanitized host CSS", ()
 
   const result = spawnSync(
     process.execPath,
-    [join(skillDir, "scripts", "assemble-index.mjs"), "--hyperframes", project],
+    [join(skillDir, "scripts", "assemble-index.mjs"), "--smashcut", project],
     { encoding: "utf8" },
   );
 
@@ -91,7 +91,7 @@ test("assemble preserves approved-video geometry through sanitized host CSS", ()
 });
 
 test("rejects partial or unsafe approved-video layout geometry", () => {
-  const project = mkdtempSync(join(tmpdir(), "hf-frame-video-layout-invalid-"));
+  const project = mkdtempSync(join(tmpdir(), "sc-frame-video-layout-invalid-"));
   mkdirSync(join(project, "compositions"));
   writeFileSync(
     join(project, "STORYBOARD.md"),
@@ -104,7 +104,7 @@ test("rejects partial or unsafe approved-video layout geometry", () => {
 
   const result = spawnSync(
     process.execPath,
-    [join(skillDir, "scripts", "assemble-index.mjs"), "--hyperframes", project],
+    [join(skillDir, "scripts", "assemble-index.mjs"), "--smashcut", project],
     { encoding: "utf8" },
   );
 
@@ -114,7 +114,7 @@ test("rejects partial or unsafe approved-video layout geometry", () => {
 });
 
 test("rejects an approved video without mandatory layout geometry", () => {
-  const project = mkdtempSync(join(tmpdir(), "hf-frame-video-layout-missing-"));
+  const project = mkdtempSync(join(tmpdir(), "sc-frame-video-layout-missing-"));
   mkdirSync(join(project, "compositions"));
   writeFileSync(
     join(project, "STORYBOARD.md"),
@@ -127,7 +127,7 @@ test("rejects an approved video without mandatory layout geometry", () => {
 
   const result = spawnSync(
     process.execPath,
-    [join(skillDir, "scripts", "assemble-index.mjs"), "--hyperframes", project],
+    [join(skillDir, "scripts", "assemble-index.mjs"), "--smashcut", project],
     { encoding: "utf8" },
   );
 
@@ -137,7 +137,7 @@ test("rejects an approved video without mandatory layout geometry", () => {
 });
 
 test("rejects empty approved-video layout coordinates", () => {
-  const project = mkdtempSync(join(tmpdir(), "hf-frame-video-layout-empty-"));
+  const project = mkdtempSync(join(tmpdir(), "sc-frame-video-layout-empty-"));
   mkdirSync(join(project, "compositions"));
   writeFileSync(
     join(project, "STORYBOARD.md"),
@@ -150,7 +150,7 @@ test("rejects empty approved-video layout coordinates", () => {
 
   const result = spawnSync(
     process.execPath,
-    [join(skillDir, "scripts", "assemble-index.mjs"), "--hyperframes", project],
+    [join(skillDir, "scripts", "assemble-index.mjs"), "--smashcut", project],
     { encoding: "utf8" },
   );
 
@@ -160,7 +160,7 @@ test("rejects empty approved-video layout coordinates", () => {
 });
 
 test("rejects an approved video with missing admission timing", () => {
-  const project = mkdtempSync(join(tmpdir(), "hf-frame-video-missing-"));
+  const project = mkdtempSync(join(tmpdir(), "sc-frame-video-missing-"));
   mkdirSync(join(project, "compositions"));
   writeFileSync(
     join(project, "STORYBOARD.md"),
@@ -172,7 +172,7 @@ test("rejects an approved video with missing admission timing", () => {
   );
   const result = spawnSync(
     process.execPath,
-    [join(skillDir, "scripts", "assemble-index.mjs"), "--hyperframes", project],
+    [join(skillDir, "scripts", "assemble-index.mjs"), "--smashcut", project],
     { encoding: "utf8" },
   );
   assert.notEqual(result.status, 0);
@@ -180,7 +180,7 @@ test("rejects an approved video with missing admission timing", () => {
 });
 
 test("does not hoist declarations hidden in comments or scripts", () => {
-  const project = mkdtempSync(join(tmpdir(), "hf-frame-video-hidden-"));
+  const project = mkdtempSync(join(tmpdir(), "sc-frame-video-hidden-"));
   mkdirSync(join(project, "compositions"));
   writeFileSync(
     join(project, "STORYBOARD.md"),
@@ -192,7 +192,7 @@ test("does not hoist declarations hidden in comments or scripts", () => {
   );
   const result = spawnSync(
     process.execPath,
-    [join(skillDir, "scripts", "assemble-index.mjs"), "--hyperframes", project],
+    [join(skillDir, "scripts", "assemble-index.mjs"), "--smashcut", project],
     { encoding: "utf8" },
   );
   assert.equal(result.status, 0, result.stderr);

@@ -86,7 +86,7 @@
         padding-top: 4px;
         border-top: 1px solid #f4f4f5;
       }
-      .hf-transition-text-state-swap {
+      .sc-transition-text-state-swap {
         position: relative;
         width: 140px;
         height: 22px;
@@ -97,15 +97,15 @@
           system-ui,
           sans-serif;
       }
-      .hf-transition-text-state-swap span {
+      .sc-transition-text-state-swap span {
         position: absolute;
         left: 0;
         top: 0;
-        filter: blur(var(--hf-text-blur, 0px));
-        transform: translateY(var(--hf-text-y, 0px));
+        filter: blur(var(--sc-text-blur, 0px));
+        transform: translateY(var(--sc-text-y, 0px));
         will-change: transform, filter, opacity;
       }
-      .hf-transition-text-state-swap .to {
+      .sc-transition-text-state-swap .to {
         opacity: 0;
       }
     </style>
@@ -133,7 +133,7 @@
           </div>
           <div class="demo-card-footer">
             <div
-              class="hf-transition-text-state-swap"
+              class="sc-transition-text-state-swap"
               data-composition-variables='[
     {"id": "from-text", "type": "string", "role": "content", "label": "From text", "description": "The outgoing label, on screen before the swap.", "default": "Saving draft"},
     {"id": "to-text", "type": "string", "role": "content", "label": "To text", "description": "The incoming label, on screen after the swap. It rests hidden until the timeline reveals it.", "default": "Saved"},
@@ -151,8 +151,8 @@
           "use strict";
 
           var vars =
-            window.__hyperframes && window.__hyperframes.getVariables
-              ? window.__hyperframes.getVariables()
+            window.__smashcut && window.__smashcut.getVariables
+              ? window.__smashcut.getVariables()
               : {};
 
           // Unrecognised overrides return to their declared defaults.
@@ -177,11 +177,11 @@
           var reach = reaches[pick(reaches, vars.distance, "standard")];
           var tone = tones[pick(tones, vars.tone, "ink")];
 
-          var roots = document.querySelectorAll(".hf-transition-text-state-swap");
+          var roots = document.querySelectorAll(".sc-transition-text-state-swap");
           for (var i = 0; i < roots.length; i += 1) {
             var root = roots[i];
-            root.style.setProperty("--hf-text-reach", String(reach));
-            root.style.setProperty("--hf-text-color", tone);
+            root.style.setProperty("--sc-text-reach", String(reach));
+            root.style.setProperty("--sc-text-color", tone);
             root.querySelector(".from").textContent = fromText;
             root.querySelector(".to").textContent = toText;
           }
@@ -191,23 +191,23 @@
         const tl = gsap.timeline({ paused: true });
         const startTime = 0.5;
         tl.to(
-          ".hf-transition-text-state-swap .from",
+          ".sc-transition-text-state-swap .from",
           {
             opacity: 0,
-            "--hf-text-y": "-18px",
-            "--hf-text-blur": "8px",
+            "--sc-text-y": "-18px",
+            "--sc-text-blur": "8px",
             duration: 0.18,
             ease: "power2.in",
           },
           startTime,
         );
         tl.fromTo(
-          ".hf-transition-text-state-swap .to",
-          { opacity: 0, "--hf-text-y": "18px", "--hf-text-blur": "8px" },
+          ".sc-transition-text-state-swap .to",
+          { opacity: 0, "--sc-text-y": "18px", "--sc-text-blur": "8px" },
           {
             opacity: 1,
-            "--hf-text-y": "0px",
-            "--hf-text-blur": "0px",
+            "--sc-text-y": "0px",
+            "--sc-text-blur": "0px",
             duration: 0.26,
             ease: "power2.out",
           },
@@ -219,25 +219,25 @@
       </script>
     </div>
     <style>
-      .hf-transition-text-state-swap {
+      .sc-transition-text-state-swap {
         position: relative;
         width: 250px;
         height: 36px;
-        color: var(--hf-text-color, #18181b);
+        color: var(--sc-text-color, #18181b);
         font:
           900 28px/1 Inter,
           system-ui,
           sans-serif;
       }
-      .hf-transition-text-state-swap span {
+      .sc-transition-text-state-swap span {
         position: absolute;
         left: 0;
         top: 0;
-        filter: blur(var(--hf-text-blur, 0px));
-        transform: translateY(calc(var(--hf-text-y, 0px) * var(--hf-text-reach, 1)));
+        filter: blur(var(--sc-text-blur, 0px));
+        transform: translateY(calc(var(--sc-text-y, 0px) * var(--sc-text-reach, 1)));
         will-change: transform, filter, opacity;
       }
-      .hf-transition-text-state-swap .to {
+      .sc-transition-text-state-swap .to {
         opacity: 0;
       }
     </style>

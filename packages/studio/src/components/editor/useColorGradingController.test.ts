@@ -3,7 +3,7 @@
 import React, { act } from "react";
 import { createRoot } from "react-dom/client";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { normalizeHfColorGrading } from "@hyperframes/core/color-grading";
+import { normalizeHfColorGrading } from "@smashcut/core/color-grading";
 import { useColorGradingController } from "./useColorGradingController";
 import type { DomEditSelection } from "./domEditing";
 
@@ -123,7 +123,7 @@ function renderHook(
 }
 
 type PreviewWindow = Window & {
-  __hf?: {
+  __sc?: {
     colorGrading?: {
       renderPreviews?: ReturnType<typeof vi.fn>;
       startPreviewPlayback?: ReturnType<typeof vi.fn>;
@@ -150,7 +150,7 @@ function installPreviewRenderer(contentWindow: PreviewWindow) {
         dataUrl: `data:image/png;base64,${id}`,
       })),
     }));
-  contentWindow.__hf = { colorGrading: { renderPreviews } };
+  contentWindow.__sc = { colorGrading: { renderPreviews } };
   return renderPreviews;
 }
 
@@ -233,7 +233,7 @@ describe("useColorGradingController", () => {
       height: 90,
       images: [{ id: "bright-pop", dataUrl: "data:image/png;base64,bright" }],
     });
-    contentWindow.__hf = { colorGrading: { renderPreviews } };
+    contentWindow.__sc = { colorGrading: { renderPreviews } };
     const { root, getState } = renderHook(vi.fn(), makeElement(), { current: iframe });
 
     act(() => getState().requestPresetPreviews());
@@ -397,7 +397,7 @@ describe("useColorGradingController", () => {
       images: [{ id: "bright-pop", dataUrl: "data:image/png;base64,animated" }],
     });
     const startPreviewPlayback = vi.fn(() => stopPlayback);
-    contentWindow.__hf = { colorGrading: { renderPreviews, startPreviewPlayback } };
+    contentWindow.__sc = { colorGrading: { renderPreviews, startPreviewPlayback } };
     contentWindow.__player = { play: vi.fn() };
     const { root, getState } = renderHook(vi.fn(), makeElement(), { current: iframe });
 

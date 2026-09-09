@@ -3,7 +3,7 @@ import {
   createFrameLookupTable,
   type ExtractedFrames,
   type VideoElement,
-} from "@hyperframes/engine";
+} from "@smashcut/engine";
 import {
   buildPlanVideosJson,
   parsePlanVideosJson,

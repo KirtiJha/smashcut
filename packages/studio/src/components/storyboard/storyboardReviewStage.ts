@@ -1,4 +1,4 @@
-import type { FrameStatus } from "@hyperframes/core/storyboard";
+import type { FrameStatus } from "@smashcut/core/storyboard";
 
 export type StoryboardReviewStage =
   | "empty"

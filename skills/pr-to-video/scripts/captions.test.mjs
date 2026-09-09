@@ -7,7 +7,7 @@ import { fileURLToPath } from "node:url";
 import { brandFontFaces, buildFromSkin } from "./captions.mjs";
 
 const presetsDir = fileURLToPath(
-  new URL("../../hyperframes-creative/frame-presets/", import.meta.url),
+  new URL("../../smashcut-creative/frame-presets/", import.meta.url),
 );
 const skins = readdirSync(presetsDir, { withFileTypes: true })
   .filter((entry) => entry.isDirectory())
@@ -15,7 +15,7 @@ const skins = readdirSync(presetsDir, { withFileTypes: true })
     name: entry.name,
     source: readFileSync(
       new URL(
-        `../../hyperframes-creative/frame-presets/${entry.name}/caption-skin.html`,
+        `../../smashcut-creative/frame-presets/${entry.name}/caption-skin.html`,
         import.meta.url,
       ),
       "utf8",
@@ -57,7 +57,7 @@ for (const canvas of ["#f7f3e8", "#111827"]) {
 // to describe each face exactly: get an axis wrong and the whole document renders the brand
 // family wrong.
 function withFontProject(files, run) {
-  const dir = mkdtempSync(join(tmpdir(), "hf-captions-fonts-"));
+  const dir = mkdtempSync(join(tmpdir(), "sc-captions-fonts-"));
   try {
     mkdirSync(join(dir, "assets/fonts"), { recursive: true });
     for (const name of files) writeFileSync(join(dir, "assets/fonts", name), "");

@@ -16,14 +16,14 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 ```html conic-progress-ring.html
 <!doctype html>
 <!--
-  conic-progress-ring: HyperFrames video primitive (data / prove / demonstrate)
+  conic-progress-ring: SmashCut video primitive (data / prove / demonstrate)
 
   Concept: one registered percentage moves the hard frontier of a conic
   gradient while a radial mask cuts out the center. The center value is
   derived from that same percentage on every GSAP update, so fill and count
   cannot drift apart.
 
-  Compiled-from evidence: hyperframes-research-css-gems.md, section 10,
+  Compiled-from evidence: smashcut-research-css-gems.md, section 10,
   "Registered conic progress ring". The finding specifies a typed percentage
   as the seek handle for a conic-gradient frontier and a radial mask for the
   ring cutout.
@@ -179,8 +179,8 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
             var ring = root.querySelector(".ring");
             var label = root.querySelector(".ring-label");
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             /* INVARIANT: zero is a valid progress value, so missing and zero
@@ -255,7 +255,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 
 ## Install
 
-<InstallCommand command="npx hyperframes add conic-progress-ring" item="conic-progress-ring" />
+<InstallCommand command="npx smashcut add conic-progress-ring" item="conic-progress-ring" />
 
 That writes one file: `compositions/components/conic-progress-ring.html`.
 
@@ -295,14 +295,14 @@ defaults, so this behaves exactly like the preview above until you change one:
 ```html
 <!doctype html>
 <!--
-  conic-progress-ring: HyperFrames video primitive (data / prove / demonstrate)
+  conic-progress-ring: SmashCut video primitive (data / prove / demonstrate)
 
   Concept: one registered percentage moves the hard frontier of a conic
   gradient while a radial mask cuts out the center. The center value is
   derived from that same percentage on every GSAP update, so fill and count
   cannot drift apart.
 
-  Compiled-from evidence: hyperframes-research-css-gems.md, section 10,
+  Compiled-from evidence: smashcut-research-css-gems.md, section 10,
   "Registered conic progress ring". The finding specifies a typed percentage
   as the seek handle for a conic-gradient frontier and a radial mask for the
   ring cutout.
@@ -458,8 +458,8 @@ defaults, so this behaves exactly like the preview above until you change one:
             var ring = root.querySelector(".ring");
             var label = root.querySelector(".ring-label");
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             /* INVARIANT: zero is a valid progress value, so missing and zero

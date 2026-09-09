@@ -1,10 +1,10 @@
 /**
- * @hyperframes/engine — Protocol Types
+ * @smashcut/engine — Protocol Types
  *
  * The engine's page contract. Any web page that wants to be rendered
- * as video must expose `window.__hf` implementing the HfProtocol interface.
+ * as video must expose `window.__sc` implementing the HfProtocol interface.
  */
-import type { Fps } from "@hyperframes/core";
+import type { Fps } from "@smashcut/core";
 
 /**
  * Outcome of waiting for a sub-composition's GSAP timelines to register.
@@ -65,8 +65,8 @@ export interface HfMediaElement {
 /**
  * Metadata for a shader transition between two scenes.
  *
- * Compositions using @hyperframes/shader-transitions populate
- * `window.__hf.transitions` with one entry per transition so the
+ * Compositions using @smashcut/shader-transitions populate
+ * `window.__sc.transitions` with one entry per transition so the
  * producer can pre-compute scene ranges, capture per-scene buffers,
  * and apply the transition in HDR-aware compositing.
  */
@@ -103,7 +103,7 @@ export interface HfProtocol {
   seek(time: number): void;
   /** Optional: media elements the engine should handle */
   media?: HfMediaElement[];
-  /** Optional: shader transition metadata, populated by @hyperframes/shader-transitions */
+  /** Optional: shader transition metadata, populated by @smashcut/shader-transitions */
   transitions?: HfTransitionMeta[];
 }
 
@@ -115,10 +115,10 @@ export interface CaptureOptions {
   /**
    * Producer-resolved composition duration (seconds) — the data-duration
    * clamp actually rendered, which can differ from the page's raw
-   * `__hf.duration` (infinite-repeat GSAP timelines report a huge sentinel;
+   * `__sc.duration` (infinite-repeat GSAP timelines report a huge sentinel;
    * timelines can outrun their declared duration). Consumers that derive
    * frame indices meant to be drained by the producer (drawElement
-   * self-verification) MUST prefer this over `__hf.duration`.
+   * self-verification) MUST prefer this over `__sc.duration`.
    */
   compositionDurationSeconds?: number;
   /**
@@ -158,7 +158,7 @@ export interface CaptureOptions {
   skipReadinessVideoIds?: readonly string[];
   /**
    * Render-time variable overrides for the composition. The engine injects
-   * these as `window.__hfVariables` via `evaluateOnNewDocument` before any
+   * these as `window.__scVariables` via `evaluateOnNewDocument` before any
    * page script runs, so the runtime helper `getVariables()` returns the
    * merged result of declared defaults (`data-composition-variables`) and
    * these overrides on its first call.
@@ -374,6 +374,6 @@ export interface CapturePerfSummary {
 
 declare global {
   interface Window {
-    __hf?: HfProtocol;
+    __sc?: HfProtocol;
   }
 }

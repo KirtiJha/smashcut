@@ -52,11 +52,11 @@ import {
   patchRemove,
 } from "./patches.js";
 import { upsertCssRule } from "./cssWriter.js";
-import { mintHfId, EXCLUDED_TAGS } from "@hyperframes/core/hf-ids";
-import { EDIT_BASE_X_ATTR, EDIT_BASE_Y_ATTR } from "@hyperframes/core/runtime/position-edits";
-import { readClipTiming, writeClipTiming } from "@hyperframes/core/composition-contract";
-import { parseGsapScriptAcornForWrite } from "@hyperframes/core/gsap-parser-acorn";
-import type { GsapAnimation } from "@hyperframes/core/gsap-parser";
+import { mintHfId, EXCLUDED_TAGS } from "@smashcut/core/sc-ids";
+import { EDIT_BASE_X_ATTR, EDIT_BASE_Y_ATTR } from "@smashcut/core/runtime/position-edits";
+import { readClipTiming, writeClipTiming } from "@smashcut/core/composition-contract";
+import { parseGsapScriptAcornForWrite } from "@smashcut/core/gsap-parser-acorn";
+import type { GsapAnimation } from "@smashcut/core/gsap-parser";
 import {
   addAnimationToScript,
   addAnimationWithKeyframesToScript,
@@ -77,7 +77,7 @@ import {
   updateArcSegmentInScript,
   removeArcPathFromScript,
   unrollDynamicAnimations,
-} from "@hyperframes/core/gsap-writer-acorn";
+} from "@smashcut/core/gsap-writer-acorn";
 import { deriveKeyframeBackfillDefaults } from "./keyframeBackfill.js";
 import {
   readVariableDefault,
@@ -89,13 +89,13 @@ import {
 import {
   isCompositionVariable,
   isScalarVariableValue as isScalar,
-} from "@hyperframes/core/variables";
-import type { CompositionVariable } from "@hyperframes/core/variables";
+} from "@smashcut/core/variables";
+import type { CompositionVariable } from "@smashcut/core/variables";
 import {
   URI_BEARING_ATTRS,
   DANGEROUS_URI_SCHEMES,
   DANGEROUS_DATA_URI,
-} from "@hyperframes/core/html-attr-safety";
+} from "@smashcut/core/html-attr-safety";
 
 export interface MutationResult {
   forward: JsonPatchOp[];
@@ -110,7 +110,7 @@ const EMPTY: MutationResult = { forward: [], inverse: [] };
 // Composition-reserved attributes — changing these breaks element identity or
 // the core/studio data model. Reject before mutating.
 const RESERVED_ATTRS = new Set([
-  "data-hf-id",
+  "data-sc-id",
   "data-composition-id",
   "data-width",
   "data-height",
@@ -366,10 +366,10 @@ function handleMoveElement(
   y: number,
 ): MutationResult {
   // HF elements are positioned via data-x / data-y (parsed by htmlParser.ts,
-  // emitted by hyperframes generator). CSS left/top is not the convention.
+  // emitted by smashcut generator). CSS left/top is not the convention.
   //
   // The pre-edit values are captured once per element into
-  // data-hf-edit-base-x/y. The runtime (core runtime/positionEdits.ts) renders
+  // data-sc-edit-base-x/y. The runtime (core runtime/positionEdits.ts) renders
   // the edit as translate(data-x − base, data-y − base), which composes with
   // GSAP-animated transforms instead of being overwritten per-axis.
   const parts: MutationResult[] = [];
@@ -541,11 +541,11 @@ function handleSetTiming(
     // Sync GSAP tween positions: the GSAP script is the source of truth at play time —
     // the timeline rebuilds from it on every seek. Without this, DOM attribute edits
     // have zero playback effect; the script's position/duration silently overrides them.
-    // Match against BOTH the element's data-hf-id (the canonical form) AND its DOM
+    // Match against BOTH the element's data-sc-id (the canonical form) AND its DOM
     // id: the Studio GSAP panel / ensureElementAddressable author tweens as
     // `#domId`, which selectorMatchesId(hfId) never matched — so moving/resizing
     // those clips left their tweens unsynced.
-    const matchHfId = el.getAttribute("data-hf-id") ?? id;
+    const matchHfId = el.getAttribute("data-sc-id") ?? id;
     const matchDomId = el.getAttribute("id");
     if (parsedGsap && currentScript) {
       // A missing data-start means an implicit start of 0 (matching the server
@@ -644,11 +644,11 @@ function handleRemoveElement(parsed: ParsedDocument, ids: HfId[]): MutationResul
     const el = resolveScoped(parsed.document, id);
     if (!el) continue;
     const parentEl = el.parentElement;
-    const parentId = parentEl?.getAttribute("data-hf-id") ?? null;
+    const parentId = parentEl?.getAttribute("data-sc-id") ?? null;
     const siblingIndex = getSiblingIndex(el);
     const html = el.outerHTML;
 
-    // Collect all bare hf-ids in the subtree BEFORE removal so GSAP cascade
+    // Collect all bare sc-ids in the subtree BEFORE removal so GSAP cascade
     // removes animations targeting any sub-composition element, not just the host.
     const subtreeIds = collectSubtreeHfIds(el);
 
@@ -679,33 +679,33 @@ function handleRemoveElement(parsed: ParsedDocument, ids: HfId[]): MutationResul
 // ─── addElement handler ───────────────────────────────────────────────────────
 
 /**
- * Resolve all existing hf-ids in the document into `assigned` so that
+ * Resolve all existing sc-ids in the document into `assigned` so that
  * mintHfId cannot issue an id that already exists in the composition.
  */
 function collectDocumentHfIds(document: Document): Set<string> {
   const assigned = new Set<string>();
-  for (const el of Array.from(document.querySelectorAll("[data-hf-id]"))) {
-    const id = el.getAttribute("data-hf-id");
+  for (const el of Array.from(document.querySelectorAll("[data-sc-id]"))) {
+    const id = el.getAttribute("data-sc-id");
     if (id) assigned.add(id);
   }
   return assigned;
 }
 
 /**
- * Stamp data-hf-id onto every un-stamped element in `root` and its
+ * Stamp data-sc-id onto every un-stamped element in `root` and its
  * descendants, minting ids against `assigned` (the live document's id set).
  * Returns the minted id of `root` (or its existing id if already stamped).
  */
 function mintFragmentIds(root: Element, assigned: Set<string>): string {
-  if (!root.getAttribute("data-hf-id") && !EXCLUDED_TAGS.has(root.tagName.toLowerCase())) {
-    root.setAttribute("data-hf-id", mintHfId(root, assigned));
+  if (!root.getAttribute("data-sc-id") && !EXCLUDED_TAGS.has(root.tagName.toLowerCase())) {
+    root.setAttribute("data-sc-id", mintHfId(root, assigned));
   }
   for (const el of Array.from(root.querySelectorAll("*"))) {
     if (EXCLUDED_TAGS.has(el.tagName.toLowerCase())) continue;
-    if (el.getAttribute("data-hf-id")) continue; // pinned
-    el.setAttribute("data-hf-id", mintHfId(el, assigned));
+    if (el.getAttribute("data-sc-id")) continue; // pinned
+    el.setAttribute("data-sc-id", mintHfId(el, assigned));
   }
-  return root.getAttribute("data-hf-id") ?? "";
+  return root.getAttribute("data-sc-id") ?? "";
 }
 
 /**
@@ -762,7 +762,7 @@ function handleAddElement(
   parentEl.insertBefore(node, ref);
 
   // parentId for the inverse/replay patch: preserve the caller's id verbatim
-  // (scoped "hf-host/hf-leaf" path or composition id), not the bare data-hf-id —
+  // (scoped "sc-host/sc-leaf" path or composition id), not the bare data-sc-id —
   // apply-patches resolves it via findById→resolveScoped, so dropping the host
   // prefix would re-insert under the wrong (canonical) parent on redo/replay.
   const parentId = parent;
@@ -904,7 +904,7 @@ function cssCompatChange(
   newVal: string | null,
 ): { forward: JsonPatchOp; inverse: JsonPatchOp } | null {
   const root = findRoot(parsed.document);
-  const rootId = root?.getAttribute("data-hf-id");
+  const rootId = root?.getAttribute("data-sc-id");
   if (!root || !rootId) return null;
   const cssVar = `--${id}`;
   const oldCssValue = getElementStyles(root)[cssVar] ?? null;
@@ -1065,25 +1065,25 @@ function handleRemoveVariableDeclaration(parsed: ParsedDocument, id: string): Mu
 
 function selectorMatchesId(selector: string, id: HfId): boolean {
   return (
-    selector === `[data-hf-id="${id}"]` ||
-    selector === `[data-hf-id='${id}']` ||
+    selector === `[data-sc-id="${id}"]` ||
+    selector === `[data-sc-id='${id}']` ||
     selector === `#${id}`
   );
 }
 
 // v1 limitation: selectorMatchesId uses bare-id matching across the whole script, so a
-// selector targeting "hf-leaf" will cascade-remove animations for both "hf-parent/hf-leaf"
-// and any other element whose scoped or bare id matches "hf-leaf". Acceptable for typical
+// selector targeting "sc-leaf" will cascade-remove animations for both "sc-parent/sc-leaf"
+// and any other element whose scoped or bare id matches "sc-leaf". Acceptable for typical
 // single-comp use; sub-composition authors with leaf-id collisions should use
 // fully-qualified selectors.
 
-/** Collect all bare data-hf-id values from el and all its descendants. */
+/** Collect all bare data-sc-id values from el and all its descendants. */
 function collectSubtreeHfIds(el: Element): string[] {
   const ids: string[] = [];
-  const own = el.getAttribute("data-hf-id");
+  const own = el.getAttribute("data-sc-id");
   if (own) ids.push(own);
-  for (const child of Array.from(el.querySelectorAll("[data-hf-id]"))) {
-    const id = child.getAttribute("data-hf-id");
+  for (const child of Array.from(el.querySelectorAll("[data-sc-id]"))) {
+    const id = child.getAttribute("data-sc-id");
     if (id) ids.push(id);
   }
   return ids;
@@ -1198,13 +1198,13 @@ function gsapScriptChange(oldScript: string, newScript: string): MutationResult 
 // ─── Phase 3b handlers ───────────────────────────────────────────────────────
 
 // Build the GSAP target selector for an add op. The SDK's whole element↔tween
-// attribution is data-hf-id based (selectorMatchesId, cascadeRemoveAnimations,
-// buildAnimationIdMap), so ALWAYS emit the canonical [data-hf-id="…"] form.
+// attribution is data-sc-id based (selectorMatchesId, cascadeRemoveAnimations,
+// buildAnimationIdMap), so ALWAYS emit the canonical [data-sc-id="…"] form.
 //
-// Resolve the target first: a normal element resolves to itself (hf-id ==
+// Resolve the target first: a normal element resolves to itself (sc-id ==
 // target). A sub-composition ROOT addressed by its composition id resolves —
 // via resolveScoped's comp-id fallback — to the host element, whose own
-// data-hf-id we then emit. The fidelity resolver unifies this with the server
+// data-sc-id we then emit. The fidelity resolver unifies this with the server
 // writer's [data-composition-id="…"] form because both querySelector to the
 // same host node.
 function gsapTargetSelector(
@@ -1212,14 +1212,14 @@ function gsapTargetSelector(
   bareTarget: string,
 ): string {
   const el = resolveScoped(document, bareTarget);
-  if (!el) return `[data-hf-id="${escapeHfId(bareTarget)}"]`;
-  const hfId = el.getAttribute("data-hf-id");
-  if (hfId) return `[data-hf-id="${escapeHfId(hfId)}"]`;
+  if (!el) return `[data-sc-id="${escapeHfId(bareTarget)}"]`;
+  const hfId = el.getAttribute("data-sc-id");
+  if (hfId) return `[data-sc-id="${escapeHfId(hfId)}"]`;
   // Resolved a sub-comp root that carries data-composition-id but no own
-  // data-hf-id (rare/defensive) — address it by its composition id.
+  // data-sc-id (rare/defensive) — address it by its composition id.
   const compId = el.getAttribute("data-composition-id");
   if (compId) return `[data-composition-id="${escapeHfId(compId)}"]`;
-  return `[data-hf-id="${escapeHfId(bareTarget)}"]`;
+  return `[data-sc-id="${escapeHfId(bareTarget)}"]`;
 }
 
 // fallow-ignore-next-line complexity
@@ -1242,8 +1242,8 @@ function handleAddGsapTween(
   // empty to-vars object, so fromTo animations added via cutover animated to {}.
   const toProps = (tween.toProperties ?? tween.properties ?? {}) as Record<string, number | string>;
 
-  // Scoped ids like "hf-host/hf-leaf" must use the bare leaf id in the GSAP
-  // selector — only the leaf part is written as data-hf-id on the DOM element.
+  // Scoped ids like "sc-host/sc-leaf" must use the bare leaf id in the GSAP
+  // selector — only the leaf part is written as data-sc-id on the DOM element.
   const bareTarget = target.includes("/") ? (target.split("/").at(-1) ?? target) : target;
   const animation: Omit<GsapAnimation, "id"> = {
     targetSelector: gsapTargetSelector(parsed.document, bareTarget),
@@ -1410,7 +1410,7 @@ function handleDeleteAllForSelector(parsed: ParsedDocument, selector: string): M
   if (!script) return EMPTY;
   const parsedForWrite = parseGsapScriptAcornForWrite(script);
   if (!parsedForWrite) return EMPTY;
-  // Compare quote-insensitively: [data-hf-id='x'] and [data-hf-id="x"] are the
+  // Compare quote-insensitively: [data-sc-id='x'] and [data-sc-id="x"] are the
   // same selector. A strict === missed the alternate quote style and matched
   // nothing while can() reported ok.
   const wanted = selector.replace(/'/g, '"');
@@ -1424,7 +1424,7 @@ function handleDeleteAllForSelector(parsed: ParsedDocument, selector: string): M
   }
   if (newScript === script) return EMPTY;
   setGsapScript(parsed.document, newScript);
-  // ponytail: skips stripStudioEditsFromTarget (data-hf-studio-path-offset cleanup) —
+  // ponytail: skips stripStudioEditsFromTarget (data-sc-studio-path-offset cleanup) —
   // studio path offset is cosmetic once all animations are gone; session reloads after write
   return gsapScriptChange(script, newScript);
 }

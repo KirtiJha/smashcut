@@ -171,7 +171,7 @@ export function readAttr(tagSource: string, attr: string): string | null {
   const escaped = attr.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
   // `(?<![\w-])` not `\b`: a plain `\b` boundary treats the hyphen in a longer
   // attribute as a word break, so reading "id" would wrongly match the trailing
-  // `id="…"` inside `data-hf-id="…"` (and "width" inside `data-width`, etc.).
+  // `id="…"` inside `data-sc-id="…"` (and "width" inside `data-width`, etc.).
   // The lookbehind requires the match to start a fresh attribute name.
   const match = tagSource.match(new RegExp(`(?<![\\w-])${escaped}\\s*=\\s*["']([^"']+)["']`, "i"));
   return match?.[1] || null;

@@ -15,7 +15,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 
 ```html panel-reveal.html
 <!--
-  Panel Reveal - transitions.dev-inspired primitive for HyperFrames.
+  Panel Reveal - transitions.dev-inspired primitive for SmashCut.
 
   Paste the markup, CSS and script into a composition. Use the timeline
   integration note at the bottom as the starting point for deterministic GSAP
@@ -41,7 +41,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 -->
 
 <section
-  class="hf-transition-panel-reveal"
+  class="sc-transition-panel-reveal"
   data-composition-variables='[
     { "id": "title", "type": "string", "role": "content", "label": "Title", "description": "The header line that sits above the folded body.", "default": "Motion tokens" },
     { "id": "width", "type": "enum", "role": "layout", "label": "Width", "description": "How wide the panel sits, 280, 360 or 480 px.", "default": "standard", "options": [{ "value": "narrow", "label": "Narrow" }, { "value": "standard", "label": "Standard" }, { "value": "wide", "label": "Wide" }] },
@@ -57,30 +57,30 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 </section>
 
 <style>
-  .hf-transition-panel-reveal {
-    --hf-panel-open: 1;
-    width: var(--hf-panel-width, 360px);
+  .sc-transition-panel-reveal {
+    --sc-panel-open: 1;
+    width: var(--sc-panel-width, 360px);
     overflow: hidden;
-    border: 1px solid var(--hf-panel-border, #e4e4e7);
+    border: 1px solid var(--sc-panel-border, #e4e4e7);
     border-radius: 14px;
-    background: var(--hf-panel-surface, #fff);
-    color: var(--hf-panel-text, #18181b);
+    background: var(--sc-panel-surface, #fff);
+    color: var(--sc-panel-text, #18181b);
     font-family: Inter, system-ui, sans-serif;
     box-shadow: 0 20px 56px rgba(24, 24, 27, 0.1);
   }
-  .hf-transition-panel-reveal header {
+  .sc-transition-panel-reveal header {
     padding: 15px 17px;
     font-weight: 900;
   }
-  .hf-transition-panel-reveal div {
-    max-height: calc(var(--hf-panel-open) * 120px);
-    opacity: calc(1 - var(--hf-panel-fade, 1) * (1 - var(--hf-panel-open)));
-    padding: 0 17px calc(var(--hf-panel-open) * 17px);
+  .sc-transition-panel-reveal div {
+    max-height: calc(var(--sc-panel-open) * 120px);
+    opacity: calc(1 - var(--sc-panel-fade, 1) * (1 - var(--sc-panel-open)));
+    padding: 0 17px calc(var(--sc-panel-open) * 17px);
     overflow: hidden;
   }
-  .hf-transition-panel-reveal p {
+  .sc-transition-panel-reveal p {
     margin: 0 0 8px;
-    color: var(--hf-panel-muted, #71717a);
+    color: var(--sc-panel-muted, #71717a);
     font-size: 14px;
   }
 </style>
@@ -90,8 +90,8 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
     "use strict";
 
     var vars =
-      window.__hyperframes && window.__hyperframes.getVariables
-        ? window.__hyperframes.getVariables()
+      window.__smashcut && window.__smashcut.getVariables
+        ? window.__smashcut.getVariables()
         : {};
 
     // Unrecognised overrides return to their declared defaults.
@@ -125,15 +125,15 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
       title = "Motion tokens";
     }
 
-    var roots = document.querySelectorAll(".hf-transition-panel-reveal");
+    var roots = document.querySelectorAll(".sc-transition-panel-reveal");
     for (var i = 0; i < roots.length; i += 1) {
       var root = roots[i];
-      root.style.setProperty("--hf-panel-width", width);
-      root.style.setProperty("--hf-panel-surface", tone.surface);
-      root.style.setProperty("--hf-panel-border", tone.border);
-      root.style.setProperty("--hf-panel-text", tone.text);
-      root.style.setProperty("--hf-panel-muted", tone.muted);
-      root.style.setProperty("--hf-panel-fade", String(fade));
+      root.style.setProperty("--sc-panel-width", width);
+      root.style.setProperty("--sc-panel-surface", tone.surface);
+      root.style.setProperty("--sc-panel-border", tone.border);
+      root.style.setProperty("--sc-panel-text", tone.text);
+      root.style.setProperty("--sc-panel-muted", tone.muted);
+      root.style.setProperty("--sc-panel-fade", String(fade));
 
       var header = root.querySelector("header");
       if (header) {
@@ -145,7 +145,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 
 <!--
   Timeline integration:
-  tl.fromTo('.hf-transition-panel-reveal', { '--hf-panel-open': 0 }, { '--hf-panel-open': 1, duration: 0.44, ease: 'power3.inOut' }, startTime);
+  tl.fromTo('.sc-transition-panel-reveal', { '--sc-panel-open': 0 }, { '--sc-panel-open': 1, duration: 0.44, ease: 'power3.inOut' }, startTime);
 -->
 ```
 
@@ -153,7 +153,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 
 ## Install
 
-<InstallCommand command="npx hyperframes add panel-reveal" item="panel-reveal" />
+<InstallCommand command="npx smashcut add panel-reveal" item="panel-reveal" />
 
 That writes one file: `compositions/components/panel-reveal.html`.
 
@@ -186,7 +186,7 @@ defaults, so this behaves exactly like the preview above until you change one:
 
 ```html
 <!--
-  Panel Reveal - transitions.dev-inspired primitive for HyperFrames.
+  Panel Reveal - transitions.dev-inspired primitive for SmashCut.
 
   Paste the markup, CSS and script into a composition. Use the timeline
   integration note at the bottom as the starting point for deterministic GSAP
@@ -212,7 +212,7 @@ defaults, so this behaves exactly like the preview above until you change one:
 -->
 
 <section
-  class="hf-transition-panel-reveal"
+  class="sc-transition-panel-reveal"
   data-composition-variables='[
     { "id": "title", "type": "string", "role": "content", "label": "Title", "description": "The header line that sits above the folded body.", "default": "Motion tokens" },
     { "id": "width", "type": "enum", "role": "layout", "label": "Width", "description": "How wide the panel sits, 280, 360 or 480 px.", "default": "standard", "options": [{ "value": "narrow", "label": "Narrow" }, { "value": "standard", "label": "Standard" }, { "value": "wide", "label": "Wide" }] },
@@ -228,30 +228,30 @@ defaults, so this behaves exactly like the preview above until you change one:
 </section>
 
 <style>
-  .hf-transition-panel-reveal {
-    --hf-panel-open: 1;
-    width: var(--hf-panel-width, 360px);
+  .sc-transition-panel-reveal {
+    --sc-panel-open: 1;
+    width: var(--sc-panel-width, 360px);
     overflow: hidden;
-    border: 1px solid var(--hf-panel-border, #e4e4e7);
+    border: 1px solid var(--sc-panel-border, #e4e4e7);
     border-radius: 14px;
-    background: var(--hf-panel-surface, #fff);
-    color: var(--hf-panel-text, #18181b);
+    background: var(--sc-panel-surface, #fff);
+    color: var(--sc-panel-text, #18181b);
     font-family: Inter, system-ui, sans-serif;
     box-shadow: 0 20px 56px rgba(24, 24, 27, 0.1);
   }
-  .hf-transition-panel-reveal header {
+  .sc-transition-panel-reveal header {
     padding: 15px 17px;
     font-weight: 900;
   }
-  .hf-transition-panel-reveal div {
-    max-height: calc(var(--hf-panel-open) * 120px);
-    opacity: calc(1 - var(--hf-panel-fade, 1) * (1 - var(--hf-panel-open)));
-    padding: 0 17px calc(var(--hf-panel-open) * 17px);
+  .sc-transition-panel-reveal div {
+    max-height: calc(var(--sc-panel-open) * 120px);
+    opacity: calc(1 - var(--sc-panel-fade, 1) * (1 - var(--sc-panel-open)));
+    padding: 0 17px calc(var(--sc-panel-open) * 17px);
     overflow: hidden;
   }
-  .hf-transition-panel-reveal p {
+  .sc-transition-panel-reveal p {
     margin: 0 0 8px;
-    color: var(--hf-panel-muted, #71717a);
+    color: var(--sc-panel-muted, #71717a);
     font-size: 14px;
   }
 </style>
@@ -261,8 +261,8 @@ defaults, so this behaves exactly like the preview above until you change one:
     "use strict";
 
     var vars =
-      window.__hyperframes && window.__hyperframes.getVariables
-        ? window.__hyperframes.getVariables()
+      window.__smashcut && window.__smashcut.getVariables
+        ? window.__smashcut.getVariables()
         : {};
 
     // Unrecognised overrides return to their declared defaults.
@@ -296,15 +296,15 @@ defaults, so this behaves exactly like the preview above until you change one:
       title = "Motion tokens";
     }
 
-    var roots = document.querySelectorAll(".hf-transition-panel-reveal");
+    var roots = document.querySelectorAll(".sc-transition-panel-reveal");
     for (var i = 0; i < roots.length; i += 1) {
       var root = roots[i];
-      root.style.setProperty("--hf-panel-width", width);
-      root.style.setProperty("--hf-panel-surface", tone.surface);
-      root.style.setProperty("--hf-panel-border", tone.border);
-      root.style.setProperty("--hf-panel-text", tone.text);
-      root.style.setProperty("--hf-panel-muted", tone.muted);
-      root.style.setProperty("--hf-panel-fade", String(fade));
+      root.style.setProperty("--sc-panel-width", width);
+      root.style.setProperty("--sc-panel-surface", tone.surface);
+      root.style.setProperty("--sc-panel-border", tone.border);
+      root.style.setProperty("--sc-panel-text", tone.text);
+      root.style.setProperty("--sc-panel-muted", tone.muted);
+      root.style.setProperty("--sc-panel-fade", String(fade));
 
       var header = root.querySelector("header");
       if (header) {
@@ -316,7 +316,7 @@ defaults, so this behaves exactly like the preview above until you change one:
 
 <!--
   Timeline integration:
-  tl.fromTo('.hf-transition-panel-reveal', { '--hf-panel-open': 0 }, { '--hf-panel-open': 1, duration: 0.44, ease: 'power3.inOut' }, startTime);
+  tl.fromTo('.sc-transition-panel-reveal', { '--sc-panel-open': 0 }, { '--sc-panel-open': 1, duration: 0.44, ease: 'power3.inOut' }, startTime);
 -->
 ```
 

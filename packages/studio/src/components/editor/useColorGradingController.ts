@@ -8,7 +8,7 @@ import {
   type HfColorGradingActiveEffectKey,
   type HfColorGradingTarget,
   type NormalizedHfColorGrading,
-} from "@hyperframes/core/color-grading";
+} from "@smashcut/core/color-grading";
 import {
   addStudioPendingEditFlushListener,
   trackStudioPendingEdit,
@@ -138,7 +138,7 @@ function readRuntimeColorGradingStatus(
   try {
     const win = iframe?.contentWindow as
       | (Window & {
-          __hf?: {
+          __sc?: {
             colorGrading?: {
               getStatus?: (
                 target: HfColorGradingTarget | string | null | undefined,
@@ -148,7 +148,7 @@ function readRuntimeColorGradingStatus(
         })
       | null
       | undefined;
-    const status = win?.__hf?.colorGrading?.getStatus?.(target);
+    const status = win?.__sc?.colorGrading?.getStatus?.(target);
     return status ?? { state: "pending", message: "Waiting for runtime" };
   } catch {
     return { state: "unavailable", message: "Preview unavailable" };
@@ -443,7 +443,7 @@ export function useColorGradingController({
     const onMessage = (event: MessageEvent) => {
       if (event.source !== iframe.contentWindow) return;
       const data = event.data as { source?: unknown; type?: unknown } | null;
-      if (data?.source !== "hf-preview" || data.type !== "ready") return;
+      if (data?.source !== "sc-preview" || data.type !== "ready") return;
       if (!acceptStudioRuntimeMessage(data)) return;
       refreshAndReplay();
     };

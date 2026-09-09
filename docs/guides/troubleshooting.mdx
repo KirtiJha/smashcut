@@ -10,22 +10,22 @@ Start with the symptom you can see. Keep the exact error and note whether the pr
 <Steps>
   <Step title="Check the machine">
     ```bash
-    npx hyperframes doctor
+    npx smashcut doctor
     ```
 
     This checks the runtime, browser, FFmpeg, and other local requirements.
   </Step>
   <Step title="Check the project">
     ```bash
-    npx hyperframes lint
-    npx hyperframes check
+    npx smashcut lint
+    npx smashcut check
     ```
   </Step>
   <Step title="Inspect the visible result">
     Open Studio or capture important frames:
 
     ```bash
-    npx hyperframes snapshot --at 0,3,8
+    npx smashcut snapshot --at 0,3,8
     ```
   </Step>
   <Step title="Give the agent useful context">
@@ -45,7 +45,7 @@ The project needs an `index.html` containing a valid composition root with `data
 Create a new project:
 
 ```bash
-npx hyperframes init my-video
+npx smashcut init my-video
 ```
 
 Or compare the current source with [Compositions](/concepts/compositions).
@@ -70,7 +70,7 @@ sudo apt install ffmpeg
 ```
 </CodeGroup>
 
-Verify with `ffmpeg -version`, then rerun `npx hyperframes doctor`.
+Verify with `ffmpeg -version`, then rerun `npx smashcut doctor`.
 
 ### Docker render will not start
 
@@ -84,11 +84,11 @@ Confirm Docker is installed, its daemon is running, your user has permission, an
 
 The browser may not decode the source codec even though FFmpeg can.
 
-HyperFrames normally creates and uses a compatible preview proxy. If the frame remains black:
+SmashCut normally creates and uses a compatible preview proxy. If the frame remains black:
 
 1. confirm automatic proxying is not disabled;
-2. run `npx hyperframes doctor`;
-3. run `npx hyperframes lint --verbose` to identify affected files;
+2. run `npx smashcut doctor`;
+3. run `npx smashcut lint --verbose` to identify affected files;
 4. confirm the source file exists and can be read.
 
 ### Video, image, or audio is missing
@@ -132,14 +132,14 @@ tl.to("#video-wrapper", { width: 500, height: 280, x: 1200 }, 2);
 
 Do not call `play()`, `pause()`, or set `currentTime` from composition scripts.
 
-HyperFrames owns media playback. Use timing and media attributes to describe when the file should play.
+SmashCut owns media playback. Use timing and media attributes to describe when the file should play.
 
 ### The composition ends too early
 
 Check the resolved composition duration:
 
 ```bash
-npx hyperframes compositions
+npx smashcut compositions
 ```
 
 A short animation timeline can make a project end before the underlying media. Extend the authored root duration or timeline using the correct pattern for that composition.
@@ -154,7 +154,7 @@ Timed visible elements need `class="clip"` as well as their timing attributes.
 </h1>
 ```
 
-`npx hyperframes lint` normally catches this.
+`npx smashcut lint` normally catches this.
 
 ### Animation is static
 
@@ -183,7 +183,7 @@ Check fonts, remote media, browser-specific effects, and the actual exported fil
 Use Docker when you need a pinned rendering environment:
 
 ```bash
-npx hyperframes render --docker --output output.mp4
+npx smashcut render --docker --output output.mp4
 ```
 
 ### The render is slow
@@ -196,7 +196,7 @@ During iteration:
 - simplify expensive filters;
 - avoid increasing resolution or frame rate before needed.
 
-Run `npx hyperframes benchmark` when tuning worker settings.
+Run `npx smashcut benchmark` when tuning worker settings.
 
 ### Expected HDR but received SDR
 
@@ -209,14 +209,14 @@ Use `--hdr` only when the whole source and delivery workflow is intended for HDR
 Run:
 
 ```bash
-npx hyperframes info
+npx smashcut info
 ```
 
 Then search [GitHub issues](https://github.com/heygen-com/hyperframes/issues) or open a report with:
 
 - the exact error;
 - steps to reproduce;
-- HyperFrames version and operating system;
+- SmashCut version and operating system;
 - whether the issue occurs in preview, checks, or render;
 - a small shareable project when possible.
 

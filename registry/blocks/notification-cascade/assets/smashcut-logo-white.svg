@@ -1,0 +1,9 @@
+<svg width="263" height="79" viewBox="0 0 263 79" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <title>SmashCut</title>
+  <!-- the cut: a hard diagonal through the mark -->
+  <path d="M232 14 L252 14 L242 65 L222 65 Z" fill="#FFFFFF"/>
+  <path d="M206 14 L226 14 L216 65 L196 65 Z" fill="#FFFFFF" opacity="0.45"/>
+  <text x="0" y="56"
+        font-family="'Bebas Neue','Oswald','Arial Narrow',Impact,sans-serif"
+        font-size="54" font-weight="700" letter-spacing="1.5" fill="#FFFFFF">SMASHCUT</text>
+</svg>

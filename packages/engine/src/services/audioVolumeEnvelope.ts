@@ -18,7 +18,7 @@
 import { mkdtempSync, readFileSync, renameSync, rmSync, writeFileSync } from "fs";
 import { dirname, join } from "path";
 import type { AudioVolumeKeyframe } from "./audioMixer.types.js";
-import { normaliseEnvelope } from "@hyperframes/core/media-volume-envelope";
+import { normaliseEnvelope } from "@smashcut/core/media-volume-envelope";
 import { riffChunks } from "./wavChunks.js";
 
 const PCM_FORMAT = 1; // WAVE_FORMAT_PCM
@@ -176,7 +176,7 @@ export function applyVolumeEnvelopeToWav(
 
     // A private sibling directory owns the staging file; the same-filesystem
     // rename keeps a failed write from truncating the original WAV.
-    stagingDir = mkdtempSync(join(dirname(wavPath), ".hf-volume-"));
+    stagingDir = mkdtempSync(join(dirname(wavPath), ".sc-volume-"));
     const tempPath = join(stagingDir, "audio.wav");
     writeFileSync(tempPath, buffer, { flag: "wx" });
     renameSync(tempPath, wavPath);

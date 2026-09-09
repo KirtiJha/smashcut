@@ -1,4 +1,4 @@
-import type { PropertyGroupName } from "@hyperframes/core/gsap-parser";
+import type { PropertyGroupName } from "@smashcut/core/gsap-parser";
 import {
   timelineKeyframeSelectionKey,
   type TimelineKeyframeTarget,

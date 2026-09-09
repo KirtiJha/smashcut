@@ -1,2 +1,2 @@
-/** @deprecated Import from @hyperframes/parsers/gsap-constants */
-export * from "@hyperframes/parsers/gsap-constants";
+/** @deprecated Import from @smashcut/parsers/gsap-constants */
+export * from "@smashcut/parsers/gsap-constants";

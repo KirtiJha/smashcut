@@ -31,15 +31,15 @@
         /* ponytail: scale wrapper (not a GSAP target) to fill ~65% of 1920x1080 */
         transform: scale(1.85);
       }
-      .hf-catalog-chromatic-aberration-wipe {
-        --hf-accent: #2563eb;
-        --hf-ink: #111827;
-        --hf-muted: #6b7280;
-        --hf-surface: #ffffff;
-        color: var(--hf-ink);
+      .sc-catalog-chromatic-aberration-wipe {
+        --sc-accent: #2563eb;
+        --sc-ink: #111827;
+        --sc-muted: #6b7280;
+        --sc-surface: #ffffff;
+        color: var(--sc-ink);
         font-family: Inter, system-ui, sans-serif;
       }
-      .hf-catalog-chromatic-aberration-wipe {
+      .sc-catalog-chromatic-aberration-wipe {
         position: relative;
         width: 760px;
         height: 428px;
@@ -48,7 +48,7 @@
         background: #111827;
         box-shadow: 0 28px 80px rgba(15, 23, 42, 0.2);
       }
-      .hf-catalog-chromatic-aberration-wipe .scene {
+      .sc-catalog-chromatic-aberration-wipe .scene {
         position: absolute;
         inset: 0;
         display: grid;
@@ -58,39 +58,39 @@
         letter-spacing: -0.05em;
         color: #fff;
       }
-      .hf-catalog-chromatic-aberration-wipe .from {
+      .sc-catalog-chromatic-aberration-wipe .from {
         background: linear-gradient(135deg, #111827, #374151);
-        transform: translate(var(--hf-from-x, 0px), var(--hf-from-y, 0px))
-          scale(var(--hf-from-scale, 1));
-        filter: blur(var(--hf-from-blur, 0px));
+        transform: translate(var(--sc-from-x, 0px), var(--sc-from-y, 0px))
+          scale(var(--sc-from-scale, 1));
+        filter: blur(var(--sc-from-blur, 0px));
       }
-      .hf-catalog-chromatic-aberration-wipe .to {
+      .sc-catalog-chromatic-aberration-wipe .to {
         background: linear-gradient(135deg, #2563eb, #7c3aed);
-        transform: translate(var(--hf-to-x, 0px), var(--hf-to-y, 0px)) scale(var(--hf-to-scale, 1));
+        transform: translate(var(--sc-to-x, 0px), var(--sc-to-y, 0px)) scale(var(--sc-to-scale, 1));
         clip-path: inset(
-          var(--hf-clip-top, 0%) var(--hf-clip-right, 100%) var(--hf-clip-bottom, 0%)
-            var(--hf-clip-left, 0%)
+          var(--sc-clip-top, 0%) var(--sc-clip-right, 100%) var(--sc-clip-bottom, 0%)
+            var(--sc-clip-left, 0%)
         );
       }
-      .hf-catalog-chromatic-aberration-wipe .fx {
+      .sc-catalog-chromatic-aberration-wipe .fx {
         position: absolute;
         inset: 0;
         background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.75), transparent);
         mix-blend-mode: screen;
-        transform: translateX(var(--hf-fx-x, -110%));
+        transform: translateX(var(--sc-fx-x, -110%));
       }
-      .hf-catalog-chromatic-aberration-wipe .rgb {
+      .sc-catalog-chromatic-aberration-wipe .rgb {
         position: absolute;
         inset: 0;
         pointer-events: none;
-        opacity: var(--hf-rgb-opacity, 0);
+        opacity: var(--sc-rgb-opacity, 0);
         background: linear-gradient(
           90deg,
           rgba(239, 68, 68, 0.35),
           transparent,
           rgba(34, 211, 238, 0.35)
         );
-        transform: translateX(var(--hf-rgb-x, 0px));
+        transform: translateX(var(--sc-rgb-x, 0px));
       }
     </style>
   </head>
@@ -105,7 +105,7 @@
     >
       <div class="demo-frame">
         <div
-          class="hf-catalog-chromatic-aberration-wipe"
+          class="sc-catalog-chromatic-aberration-wipe"
           data-composition-variables='[
     { "id": "direction", "type": "enum", "role": "motion", "label": "Direction", "description": "The direction the reveal travels; both scenes slide the same way and the wipe edge follows.", "default": "left", "options": [{ "value": "left", "label": "Left" }, { "value": "right", "label": "Right" }, { "value": "up", "label": "Up" }, { "value": "down", "label": "Down" }] },
     { "id": "accent", "type": "enum", "role": "style", "label": "Accent", "description": "Colour family of the incoming scene&#39;s gradient.", "default": "blue", "options": [{ "value": "blue", "label": "Blue" }, { "value": "green", "label": "Green" }, { "value": "violet", "label": "Violet" }] },
@@ -123,8 +123,8 @@
           "use strict";
 
           var vars =
-            window.__hyperframes && window.__hyperframes.getVariables
-              ? window.__hyperframes.getVariables()
+            window.__smashcut && window.__smashcut.getVariables
+              ? window.__smashcut.getVariables()
               : {};
 
           // Unrecognised overrides return to their declared defaults.
@@ -152,17 +152,17 @@
           var aberration =
             typeof raw === "number" && isFinite(raw) ? Math.min(2, Math.max(0, raw)) : 1;
 
-          var roots = document.querySelectorAll(".hf-catalog-chromatic-aberration-wipe");
+          var roots = document.querySelectorAll(".sc-catalog-chromatic-aberration-wipe");
           for (var i = 0; i < roots.length; i += 1) {
-            roots[i].style.setProperty("--hf-wipe-ax", direction.ax);
-            roots[i].style.setProperty("--hf-wipe-ay", direction.ay);
-            roots[i].style.setProperty("--hf-wipe-t", direction.t);
-            roots[i].style.setProperty("--hf-wipe-r", direction.r);
-            roots[i].style.setProperty("--hf-wipe-b", direction.b);
-            roots[i].style.setProperty("--hf-wipe-l", direction.l);
-            roots[i].style.setProperty("--hf-scene-a", accent[0]);
-            roots[i].style.setProperty("--hf-scene-b", accent[1]);
-            roots[i].style.setProperty("--hf-rgb-strength", String(aberration));
+            roots[i].style.setProperty("--sc-wipe-ax", direction.ax);
+            roots[i].style.setProperty("--sc-wipe-ay", direction.ay);
+            roots[i].style.setProperty("--sc-wipe-t", direction.t);
+            roots[i].style.setProperty("--sc-wipe-r", direction.r);
+            roots[i].style.setProperty("--sc-wipe-b", direction.b);
+            roots[i].style.setProperty("--sc-wipe-l", direction.l);
+            roots[i].style.setProperty("--sc-scene-a", accent[0]);
+            roots[i].style.setProperty("--sc-scene-b", accent[1]);
+            roots[i].style.setProperty("--sc-rgb-strength", String(aberration));
           }
         })();
       </script>
@@ -170,40 +170,40 @@
         const tl = gsap.timeline({ paused: true });
         const startTime = 0.5;
         tl.fromTo(
-          ".hf-catalog-chromatic-aberration-wipe .to",
-          { "--hf-clip-right": "100%", "--hf-to-x": "60px", "--hf-to-scale": 1.04 },
+          ".sc-catalog-chromatic-aberration-wipe .to",
+          { "--sc-clip-right": "100%", "--sc-to-x": "60px", "--sc-to-scale": 1.04 },
           {
-            "--hf-clip-right": "0%",
-            "--hf-to-x": "0px",
-            "--hf-to-scale": 1,
+            "--sc-clip-right": "0%",
+            "--sc-to-x": "0px",
+            "--sc-to-scale": 1,
             duration: 0.9,
             ease: "power3.inOut",
           },
           startTime,
         );
         tl.to(
-          ".hf-catalog-chromatic-aberration-wipe .from",
+          ".sc-catalog-chromatic-aberration-wipe .from",
           {
-            "--hf-from-x": "-70px",
-            "--hf-from-scale": 0.96,
-            "--hf-from-blur": "5px",
+            "--sc-from-x": "-70px",
+            "--sc-from-scale": 0.96,
+            "--sc-from-blur": "5px",
             duration: 0.9,
             ease: "power3.inOut",
           },
           startTime,
         );
         tl.fromTo(
-          ".hf-catalog-chromatic-aberration-wipe .fx",
-          { "--hf-fx-x": "-110%" },
-          { "--hf-fx-x": "110%", duration: 0.58, ease: "power2.inOut" },
+          ".sc-catalog-chromatic-aberration-wipe .fx",
+          { "--sc-fx-x": "-110%" },
+          { "--sc-fx-x": "110%", duration: 0.58, ease: "power2.inOut" },
           startTime + 0.18,
         );
         tl.fromTo(
-          ".hf-catalog-chromatic-aberration-wipe .rgb",
-          { "--hf-rgb-opacity": 0, "--hf-rgb-x": "-16px" },
+          ".sc-catalog-chromatic-aberration-wipe .rgb",
+          { "--sc-rgb-opacity": 0, "--sc-rgb-x": "-16px" },
           {
-            "--hf-rgb-opacity": 1,
-            "--hf-rgb-x": "16px",
+            "--sc-rgb-opacity": 1,
+            "--sc-rgb-x": "16px",
             repeat: 3,
             yoyo: true,
             duration: 0.07,
@@ -217,15 +217,15 @@
       </script>
     </div>
     <style>
-      .hf-catalog-chromatic-aberration-wipe {
-        --hf-accent: #2563eb;
-        --hf-ink: #111827;
-        --hf-muted: #6b7280;
-        --hf-surface: #ffffff;
-        color: var(--hf-ink);
+      .sc-catalog-chromatic-aberration-wipe {
+        --sc-accent: #2563eb;
+        --sc-ink: #111827;
+        --sc-muted: #6b7280;
+        --sc-surface: #ffffff;
+        color: var(--sc-ink);
         font-family: Inter, system-ui, sans-serif;
       }
-      .hf-catalog-chromatic-aberration-wipe {
+      .sc-catalog-chromatic-aberration-wipe {
         position: relative;
         width: 760px;
         height: 428px;
@@ -234,7 +234,7 @@
         background: #111827;
         box-shadow: 0 28px 80px rgba(15, 23, 42, 0.2);
       }
-      .hf-catalog-chromatic-aberration-wipe .scene {
+      .sc-catalog-chromatic-aberration-wipe .scene {
         position: absolute;
         inset: 0;
         display: grid;
@@ -244,48 +244,48 @@
         letter-spacing: -0.05em;
         color: #fff;
       }
-      .hf-catalog-chromatic-aberration-wipe .from {
+      .sc-catalog-chromatic-aberration-wipe .from {
         background: linear-gradient(135deg, #111827, #374151);
         transform: translate(
-            calc(var(--hf-from-x, 0px) * var(--hf-wipe-ax, 1)),
-            calc(var(--hf-from-y, 0px) + var(--hf-from-x, 0px) * var(--hf-wipe-ay, 0))
+            calc(var(--sc-from-x, 0px) * var(--sc-wipe-ax, 1)),
+            calc(var(--sc-from-y, 0px) + var(--sc-from-x, 0px) * var(--sc-wipe-ay, 0))
           )
-          scale(var(--hf-from-scale, 1));
-        filter: blur(var(--hf-from-blur, 0px));
+          scale(var(--sc-from-scale, 1));
+        filter: blur(var(--sc-from-blur, 0px));
       }
-      .hf-catalog-chromatic-aberration-wipe .to {
-        background: linear-gradient(135deg, var(--hf-scene-a, #2563eb), var(--hf-scene-b, #7c3aed));
+      .sc-catalog-chromatic-aberration-wipe .to {
+        background: linear-gradient(135deg, var(--sc-scene-a, #2563eb), var(--sc-scene-b, #7c3aed));
         transform: translate(
-            calc(var(--hf-to-x, 0px) * var(--hf-wipe-ax, 1)),
-            calc(var(--hf-to-y, 0px) + var(--hf-to-x, 0px) * var(--hf-wipe-ay, 0))
+            calc(var(--sc-to-x, 0px) * var(--sc-wipe-ax, 1)),
+            calc(var(--sc-to-y, 0px) + var(--sc-to-x, 0px) * var(--sc-wipe-ay, 0))
           )
-          scale(var(--hf-to-scale, 1));
+          scale(var(--sc-to-scale, 1));
         clip-path: inset(
-          calc(var(--hf-clip-top, 0%) + var(--hf-clip-right, 100%) * var(--hf-wipe-t, 0))
-            calc(var(--hf-clip-right, 100%) * var(--hf-wipe-r, 1))
-            calc(var(--hf-clip-bottom, 0%) + var(--hf-clip-right, 100%) * var(--hf-wipe-b, 0))
-            calc(var(--hf-clip-left, 0%) + var(--hf-clip-right, 100%) * var(--hf-wipe-l, 0))
+          calc(var(--sc-clip-top, 0%) + var(--sc-clip-right, 100%) * var(--sc-wipe-t, 0))
+            calc(var(--sc-clip-right, 100%) * var(--sc-wipe-r, 1))
+            calc(var(--sc-clip-bottom, 0%) + var(--sc-clip-right, 100%) * var(--sc-wipe-b, 0))
+            calc(var(--sc-clip-left, 0%) + var(--sc-clip-right, 100%) * var(--sc-wipe-l, 0))
         );
       }
-      .hf-catalog-chromatic-aberration-wipe .fx {
+      .sc-catalog-chromatic-aberration-wipe .fx {
         position: absolute;
         inset: 0;
         background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.75), transparent);
         mix-blend-mode: screen;
-        transform: translateX(var(--hf-fx-x, -110%));
+        transform: translateX(var(--sc-fx-x, -110%));
       }
-      .hf-catalog-chromatic-aberration-wipe .rgb {
+      .sc-catalog-chromatic-aberration-wipe .rgb {
         position: absolute;
         inset: 0;
         pointer-events: none;
-        opacity: calc(var(--hf-rgb-opacity, 0) * var(--hf-rgb-strength, 1));
+        opacity: calc(var(--sc-rgb-opacity, 0) * var(--sc-rgb-strength, 1));
         background: linear-gradient(
           90deg,
           rgba(239, 68, 68, 0.35),
           transparent,
           rgba(34, 211, 238, 0.35)
         );
-        transform: translateX(calc(var(--hf-rgb-x, 0px) * var(--hf-rgb-strength, 1)));
+        transform: translateX(calc(var(--sc-rgb-x, 0px) * var(--sc-rgb-strength, 1)));
       }
     </style>
   </body>

@@ -260,7 +260,7 @@ describe("waapi adapter", () => {
 
       expect((MockElement.prototype as { animate?: unknown }).animate).toBe(originalAnimate);
       expect(
-        (MockElement.prototype as { __hfOriginalAnimate?: unknown }).__hfOriginalAnimate,
+        (MockElement.prototype as { __scOriginalAnimate?: unknown }).__scOriginalAnimate,
       ).toBeUndefined();
     } finally {
       if (originalElement === undefined) {

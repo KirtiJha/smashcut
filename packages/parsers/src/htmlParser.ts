@@ -204,7 +204,7 @@ export function parseHtml(html: string): ParsedHtml {
   const timedElements = Array.from(doc.querySelectorAll("[data-start]"));
   const timedById = new Map<string, Element>();
   for (const element of timedElements) {
-    for (const id of [element.id, element.getAttribute("data-hf-id")]) {
+    for (const id of [element.id, element.getAttribute("data-sc-id")]) {
       if (id) timedById.set(id, element);
     }
   }
@@ -224,7 +224,7 @@ export function parseHtml(html: string): ParsedHtml {
     const type = getElementType(el);
     if (!type) return;
 
-    const ownId = el.id || el.getAttribute("data-hf-id");
+    const ownId = el.id || el.getAttribute("data-sc-id");
     const timing = readClipTiming(el, {
       resolveReferenceEnd: (refId) => resolveEnd(refId, new Set(ownId ? [ownId] : [])),
     });
@@ -232,15 +232,15 @@ export function parseHtml(html: string): ParsedHtml {
     const duration = timing.duration ?? 5;
 
     // R1: stable hf- id minted by ensureHfIds above; clips just read it.
-    // Legacy/migration note: ensureHfIds pins a pre-existing `data-hf-id`, and
-    // the generator emits `data-hf-id="${element.id}"`. So a clip authored
-    // before R1 with `id="my-title"` round-trips as `data-hf-id="my-title"` —
+    // Legacy/migration note: ensureHfIds pins a pre-existing `data-sc-id`, and
+    // the generator emits `data-sc-id="${element.id}"`. So a clip authored
+    // before R1 with `id="my-title"` round-trips as `data-sc-id="my-title"` —
     // a non-`hf-`-shaped but still stable, exact-match handle. This is safe
-    // indefinitely: targeting uses exact `[data-hf-id="…"]` match (it does not
+    // indefinitely: targeting uses exact `[data-sc-id="…"]` match (it does not
     // require the hf- prefix). ensureHfIds skips elements that already carry
-    // data-hf-id, so legacy values are NOT re-minted automatically — they
+    // data-sc-id, so legacy values are NOT re-minted automatically — they
     // persist until the user re-saves the composition through Studio. Not a bug.
-    const id = el.getAttribute("data-hf-id") || el.id || `element-${++idCounter}`;
+    const id = el.getAttribute("data-sc-id") || el.id || `element-${++idCounter}`;
     const name = getElementName(el);
     const zIndex = getZIndex(el);
 
@@ -443,7 +443,7 @@ export function parseHtml(html: string): ParsedHtml {
       .join("\n\n") || null;
 
   const customStyleTags = Array.from(styleTags).filter(
-    (s) => s.getAttribute("data-hf-custom") === "true",
+    (s) => s.getAttribute("data-sc-custom") === "true",
   );
   const customStylesFromTags =
     customStyleTags
@@ -729,9 +729,9 @@ export function addElementToHtml(
 function elementSelectors(element: Element): string[] {
   const selectors: string[] = [];
   const id = element.getAttribute("id");
-  const hfId = element.getAttribute("data-hf-id");
+  const hfId = element.getAttribute("data-sc-id");
   if (id) selectors.push(`#${id}`);
-  if (hfId) selectors.push(`[data-hf-id="${hfId}"]`, `[data-hf-id='${hfId}']`);
+  if (hfId) selectors.push(`[data-sc-id="${hfId}"]`, `[data-sc-id='${hfId}']`);
   return selectors;
 }
 

@@ -109,8 +109,8 @@ export async function sampleMarkerOnionElements(
   selectors: string[],
   ts: number[],
 ): Promise<OnionElement[]> {
-  const seek = (window as unknown as { __hfSeekAllAdapters?: (t: number) => Promise<void> })
-    .__hfSeekAllAdapters;
+  const seek = (window as unknown as { __scSeekAllAdapters?: (t: number) => Promise<void> })
+    .__scSeekAllAdapters;
   const rigs = selectors.map((selector) => {
     const el = document.querySelector(selector) as HTMLElement | null;
     if (!el) return null;
@@ -267,8 +267,8 @@ function compositeGhostFrames(
 
 // Runs IN THE BROWSER. Self-contained (only `tt` + window/document — never a
 // Node-side closure variable), pauses/seeks every adapter to time `tt`: GSAP
-// `__timelines`, the Web Animations API, `__hfAnime` instances, then dispatches
-// `hf-seek` and nudges the three/GSAP render hooks. GPU work registered through
+// `__timelines`, the Web Animations API, `__scAnime` instances, then dispatches
+// `sc-seek` and nudges the three/GSAP render hooks. GPU work registered through
 // `waitUntil()` is awaited before returning. This one routine backs BOTH
 // the ghost-frame capture and the marker sampler below — see installSeekHelper
 // for why it's installed as a page global instead of being duplicated inline
@@ -287,11 +287,11 @@ export async function seekAllAdaptersInBrowser(tt: number): Promise<void> {
   };
   const w = window as unknown as {
     __player?: { renderSeek?: (t: number) => void; seek?: (t: number) => void };
-    __hfReseekGpu?: (t: number) => void;
-    __hfWaitForSeekCompletion?: () => Promise<void>;
-    __hfThreeTime?: number;
-    __hfThreeRender?: () => void;
-    __hfAnime?: Array<{ pause?: () => void; seek?: (timeMs: number) => void }>;
+    __scReseekGpu?: (t: number) => void;
+    __scWaitForSeekCompletion?: () => Promise<void>;
+    __scThreeTime?: number;
+    __scThreeRender?: () => void;
+    __scAnime?: Array<{ pause?: () => void; seek?: (timeMs: number) => void }>;
     gsap?: { ticker?: { tick?: () => void } };
     __timelines?: Record<
       string,
@@ -310,8 +310,8 @@ export async function seekAllAdaptersInBrowser(tt: number): Promise<void> {
     runtimeSeeked = tryCall(() => w.__player?.renderSeek?.(tt));
   } else if (typeof w.__player?.seek === "function") {
     runtimeSeeked = tryCall(() => w.__player?.seek?.(tt));
-  } else if (typeof w.__hfReseekGpu === "function") {
-    runtimeSeeked = tryCall(() => w.__hfReseekGpu?.(tt));
+  } else if (typeof w.__scReseekGpu === "function") {
+    runtimeSeeked = tryCall(() => w.__scReseekGpu?.(tt));
   }
 
   Object.values(w.__timelines ?? {}).forEach((tl) => {
@@ -337,24 +337,24 @@ export async function seekAllAdaptersInBrowser(tt: number): Promise<void> {
     }
   });
 
-  for (const instance of w.__hfAnime ?? []) {
+  for (const instance of w.__scAnime ?? []) {
     tryCall(() => {
       instance.pause?.();
       instance.seek?.(timeMs);
     });
   }
 
-  w.__hfThreeTime = tt;
+  w.__scThreeTime = tt;
   if (!runtimeSeeked) {
     let acceptingGpuWork = true;
     try {
       window.dispatchEvent(
-        new CustomEvent("hf-seek", {
+        new CustomEvent("sc-seek", {
           detail: {
             time: tt,
             waitUntil(promise: PromiseLike<unknown>) {
               if (!acceptingGpuWork) {
-                throw new Error("hf-seek waitUntil() must be called synchronously");
+                throw new Error("sc-seek waitUntil() must be called synchronously");
               }
               pendingGpuWork.push(promise);
             },
@@ -365,10 +365,10 @@ export async function seekAllAdaptersInBrowser(tt: number): Promise<void> {
       acceptingGpuWork = false;
     }
   }
-  tryCall(() => w.__hfThreeRender?.());
+  tryCall(() => w.__scThreeRender?.());
   tryCall(() => w.gsap?.ticker?.tick?.());
 
-  await Promise.all([Promise.all(pendingGpuWork), w.__hfWaitForSeekCompletion?.()]);
+  await Promise.all([Promise.all(pendingGpuWork), w.__scWaitForSeekCompletion?.()]);
 }
 
 // Installs seekAllAdaptersInBrowser as a real `window` global, once per page
@@ -377,7 +377,7 @@ export async function seekAllAdaptersInBrowser(tt: number): Promise<void> {
 // own doc comment for why a page global (rather than a Node-side reference) is
 // required here.
 async function installSeekHelper(page: import("puppeteer-core").Page): Promise<void> {
-  await page.evaluate(`window.__hfSeekAllAdapters = ${seekAllAdaptersInBrowser.toString()};`);
+  await page.evaluate(`window.__scSeekAllAdapters = ${seekAllAdaptersInBrowser.toString()};`);
 }
 
 // Launch headless Chrome, load the composition sized to its canvas, wait for the
@@ -392,7 +392,7 @@ async function openCompositionPage(
   size: FrameSize;
 }> {
   const puppeteer = await import("puppeteer-core");
-  const { buildChromeArgs } = await import("@hyperframes/engine");
+  const { buildChromeArgs } = await import("@smashcut/engine");
   const size = resolveCompositionViewportFromHtml(html);
   const requestedGpuMode = resolveLocalBrowserGpuMode();
   const resolvedGpuMode = await resolveCaptureBrowserGpuMode(requestedGpuMode, executablePath);
@@ -439,7 +439,7 @@ function timelineDuration(page: import("puppeteer-core").Page): Promise<number> 
     const w = window as unknown as {
       __player?: { getDuration?: () => number };
       __timelines?: Record<string, { duration?: () => number; totalDuration?: () => number }>;
-      __hfAnime?: Array<{ duration?: number | string; totalDuration?: number | string }>;
+      __scAnime?: Array<{ duration?: number | string; totalDuration?: number | string }>;
     };
 
     const timelinesDuration = (): number => {
@@ -480,7 +480,7 @@ function timelineDuration(page: import("puppeteer-core").Page): Promise<number> 
 
     const animeDuration = (): number => {
       let d = 0;
-      for (const instance of w.__hfAnime ?? []) {
+      for (const instance of w.__scAnime ?? []) {
         d = Math.max(d, finiteMsToSeconds(instance.totalDuration ?? instance.duration));
       }
       return d;
@@ -563,15 +563,15 @@ async function resolveScopedRequests(
 }
 
 // In-tick capture: seek the timeline (fires the composition's onUpdate render
-// synchronously via the shared window.__hfSeekAllAdapters) + nudge the
+// synchronously via the shared window.__scSeekAllAdapters) + nudge the
 // three-adapter, then drawImage every <canvas> onto an offscreen canvas in the
 // SAME tick — before the browser clears the GL drawing buffer (works without
 // preserveDrawingBuffer; page.screenshot can't see the GL buffer here).
 function captureGhostFrame(page: import("puppeteer-core").Page, t: number): Promise<string> {
   return page.evaluate(async (tt: number) => {
     await (
-      window as unknown as { __hfSeekAllAdapters?: (time: number) => Promise<void> }
-    ).__hfSeekAllAdapters?.(tt);
+      window as unknown as { __scSeekAllAdapters?: (time: number) => Promise<void> }
+    ).__scSeekAllAdapters?.(tt);
     const root = (document.querySelector("[data-composition-id]") ?? document.body) as HTMLElement;
     const rb = root.getBoundingClientRect();
     const off = document.createElement("canvas");
@@ -669,8 +669,8 @@ async function captureRenderedSvgStrip(
       await page.evaluate(
         async (time: number) =>
           await (
-            window as unknown as { __hfSeekAllAdapters?: (value: number) => Promise<void> }
-          ).__hfSeekAllAdapters?.(time),
+            window as unknown as { __scSeekAllAdapters?: (value: number) => Promise<void> }
+          ).__scSeekAllAdapters?.(time),
         captureTime,
       );
       clip = await page.evaluate((value: string) => {
@@ -770,7 +770,7 @@ export async function captureMotionPathShot(
 
   const { ensureBrowser } = await import("../browser/manager.js");
   const { serveStaticProjectHtml } = await import("../utils/staticProjectServer.js");
-  const { bundleToSingleHtml } = await import("@hyperframes/core/compiler");
+  const { bundleToSingleHtml } = await import("@smashcut/core/compiler");
 
   const html = await bundleToSingleHtml(projectDir, { entryFile: opts.entryFile });
   const server = await serveStaticProjectHtml(

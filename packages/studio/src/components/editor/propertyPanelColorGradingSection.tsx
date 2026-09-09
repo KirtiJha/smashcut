@@ -1,5 +1,5 @@
 import { type PointerEvent as ReactPointerEvent, type RefObject } from "react";
-import { isHfColorGradingActive } from "@hyperframes/core/color-grading";
+import { isHfColorGradingActive } from "@smashcut/core/color-grading";
 import { Compare, Palette, RotateCcw } from "../../icons/SystemIcons";
 import type { DomEditSelection } from "./domEditing";
 import { ColorGradingControls } from "./propertyPanelColorGradingControls";

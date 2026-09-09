@@ -1,7 +1,7 @@
 {
   "$schema": "https://hyperframes.heygen.com/schema/registry-item.json",
   "name": "menu-morph",
-  "type": "hyperframes:component",
+  "type": "smashcut:component",
   "title": "Menu Morph",
   "description": "A transitions.dev-inspired hamburger and plus-menu morph primitive for compact action menus",
   "tags": ["video-primitive", "transition-primitive", "transitions-dev-port", "menu", "morph"],
@@ -9,7 +9,7 @@
     {
       "path": "menu-morph.html",
       "target": "compositions/components/menu-morph.html",
-      "type": "hyperframes:snippet"
+      "type": "smashcut:snippet"
     }
   ],
   "variables": [
@@ -61,6 +61,6 @@
     }
   ],
   "preview": {
-    "poster": "https://static.heygen.ai/hyperframes-oss/docs/images/catalog/components/menu-morph.png"
+    "poster": "https://static.heygen.ai/smashcut-oss/docs/images/catalog/components/menu-morph.png"
   }
 }

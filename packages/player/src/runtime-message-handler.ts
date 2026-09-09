@@ -12,7 +12,7 @@ import {
 } from "./playback-state.js";
 import type { ShaderLoaderState } from "./shader-loader-state.js";
 import type { ShaderTransitionState } from "./shader-options.js";
-import { inspectRuntimeProtocol } from "@hyperframes/core/runtime/protocol";
+import { inspectRuntimeProtocol } from "@smashcut/core/runtime/protocol";
 
 type SceneRecord = { id: string; start: number; duration: number };
 
@@ -63,7 +63,7 @@ export function handleRuntimeMessage(
 ): void {
   if (event.source !== frameWindow) return;
   const data = event.data as Record<string, unknown> | undefined;
-  if (!data || data["source"] !== "hf-preview") return;
+  if (!data || data["source"] !== "sc-preview") return;
   const protocol = inspectRuntimeProtocol(data);
   if (protocol.status === "unsupported") {
     callbacks.dispatchEvent(

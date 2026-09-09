@@ -23,7 +23,7 @@ function createAdapter(
   projectDir: string;
   startBackgroundRemoval: ReturnType<typeof vi.fn>;
 } {
-  const projectDir = mkdtempSync(join(tmpdir(), "hf-media-route-test-"));
+  const projectDir = mkdtempSync(join(tmpdir(), "sc-media-route-test-"));
   tempProjectDirs.push(projectDir);
 
   mkdirSync(join(projectDir, "assets"), { recursive: true });

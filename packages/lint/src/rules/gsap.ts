@@ -23,12 +23,12 @@ interface LintParsedGsap {
 // instead of all-collapsed-at-0. It's also browser-safe, so this keeps recast
 // out of the lint graph entirely. Dynamic import preserves the lazy load.
 async function loadParseGsapScript(): Promise<(script: string) => LintParsedGsap> {
-  const mod = await import("@hyperframes/parsers/gsap-parser-acorn");
+  const mod = await import("@smashcut/parsers/gsap-parser-acorn");
   return mod.parseGsapScriptAcorn as unknown as (script: string) => LintParsedGsap;
 }
 
 async function loadGsapScriptMotionPathFirstUseIndex(): Promise<(script: string) => number | null> {
-  const mod = await import("@hyperframes/parsers/gsap-parser-acorn");
+  const mod = await import("@smashcut/parsers/gsap-parser-acorn");
   return mod.gsapScriptMotionPathFirstUseIndex;
 }
 import type { LintContext } from "../context";
@@ -1687,7 +1687,7 @@ export const gsapRules: LintRule<LintContext>[] = [
         severity: hasFiniteCompositionWindow ? "warning" : "error",
         message: hasFiniteCompositionWindow
           ? `GSAP tween uses \`repeat: -1\` (infinite), but the composition declares a finite ${declaredDuration}s window. ` +
-            "HyperFrames clips deterministic seeking and export to that explicit duration."
+            "SmashCut clips deterministic seeking and export to that explicit duration."
           : "GSAP tween uses `repeat: -1` (infinite) without a finite composition `data-duration`. " +
             "The timeline can report an unbounded duration and make render planning fail.",
         fixHint: hasFiniteCompositionWindow
@@ -1814,7 +1814,7 @@ export const gsapRules: LintRule<LintContext>[] = [
         fixHint:
           "Move the `window.__timelines[id] = tl;` assignment to the END of the " +
           "document.fonts.ready callback, after the tweens are added. Optionally call " +
-          "window.__hfForceTimelineRebind() right after, to re-nest the populated timeline.",
+          "window.__scForceTimelineRebind() right after, to re-nest the populated timeline.",
       });
     }
     return findings;

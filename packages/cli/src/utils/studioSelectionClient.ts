@@ -5,7 +5,7 @@ import type {
   LintResult,
   ResolvedProject,
   StudioSelectionResponse,
-} from "@hyperframes/studio-server";
+} from "@smashcut/studio-server";
 
 export type StudioLintResponse = LintResult;
 

@@ -59,7 +59,7 @@ export async function runToolBody<T>(
   } catch (error) {
     const reason = error instanceof Error ? error.message : String(error);
     if (error instanceof TypeError || error instanceof ReferenceError) {
-      console.error(`[hf-webmcp] ${toolName} threw`, error);
+      console.error(`[sc-webmcp] ${toolName} threw`, error);
       return toolFailure("internal", reason);
     }
     return toolFailure("failed", reason);

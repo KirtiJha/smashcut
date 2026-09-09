@@ -1,31 +1,31 @@
 ---
 title: "Add an avatar presenter"
 sidebarTitle: "Avatar presenter"
-description: "Create or reuse a presenter clip, keep it as project media, and combine it with editable HyperFrames scenes."
+description: "Create or reuse a presenter clip, keep it as project media, and combine it with editable SmashCut scenes."
 ---
 
 import { DocsVideo } from "/snippets/docs-video.jsx";
 
-Use an avatar when a person should speak on screen. Use HyperFrames for the
+Use an avatar when a person should speak on screen. Use SmashCut for the
 parts around that person: layouts, product scenes, captions, graphics, timing,
 music, and the final composition.
 
-<Frame caption="A presenter clip remains the source footage while HyperFrames adds the caption rail and emphasis layer around it.">
+<Frame caption="A presenter clip remains the source footage while SmashCut adds the caption rail and emphasis layer around it.">
   <DocsVideo
     title="Presenter footage with a readable caption rail and an emphasis moment"
-    src="https://static.heygen.ai/hyperframes-oss/docs/images/prompting/captions-anchor-rail-v2.mp4#t=0.1"
-    poster="https://static.heygen.ai/hyperframes-oss/docs/images/showcase/avatar-presenter-caption-rail-v1.jpg"
+    src="https://static.heygen.ai/smashcut-oss/docs/images/prompting/captions-anchor-rail-v2.mp4#t=0.1"
+    poster="https://static.heygen.ai/smashcut-oss/docs/images/showcase/avatar-presenter-caption-rail-v1.jpg"
   />
 </Frame>
 
 ## Choose the right path
 
 **The presenter is the whole video.** Use HeyGen Video Agent or an avatar-video
-workflow. The result is a rendered HeyGen video, not an editable HyperFrames
+workflow. The result is a rendered HeyGen video, not an editable SmashCut
 composition.
 
 **The presenter is one part of a designed video.** Generate the presenter clip,
-keep it as a local project asset, then compose the rest in HyperFrames. This is
+keep it as a local project asset, then compose the rest in SmashCut. This is
 the path below.
 
 **You already recorded a person.** Skip avatar generation. Bring the footage
@@ -36,9 +36,9 @@ into the project and choose [captions, designed overlays, or a real recut](/guid
 Tell the agent what the presenter contributes and what remains editable:
 
 ```text
-Using /hyperframes, make a 20-second product update.
+Using /smashcut, make a 20-second product update.
 Use a generated presenter only for the opening sentence.
-Build the product scenes, captions, and ending in HyperFrames.
+Build the product scenes, captions, and ending in SmashCut.
 Keep the presenter clip as a local project asset.
 ```
 
@@ -46,10 +46,10 @@ The agent may ask you to sign in to HeyGen before it generates the clip. Check
 the active account first:
 
 ```bash
-npx hyperframes auth status
+npx smashcut auth status
 ```
 
-Run `npx hyperframes auth login` if no account is active. Avatar generation can
+Run `npx smashcut auth login` if no account is active. Avatar generation can
 use the allowance or credits attached to that account; confirm the account and
 usage before starting a long or repeated run.
 
@@ -68,7 +68,7 @@ file. If the presenter must sit over a designed background, create a transparent
 version locally:
 
 ```bash
-npx hyperframes remove-background assets/presenter.mp4 \
+npx smashcut remove-background assets/presenter.mp4 \
   -o assets/presenter-transparent.webm
 ```
 

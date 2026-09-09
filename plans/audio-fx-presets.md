@@ -31,7 +31,7 @@ to keep clearing.
 
 ### What already exists, so this does not duplicate it
 
-- **`skills/hyperframes-audio`** teaches the effect _families_ and when to
+- **`skills/smashcut-audio`** teaches the effect _families_ and when to
   reach for each ("Reach for a family by the problem, not the name"), and
   documents carve. It contains **no recipes and no named looks** — it explains
   the why, and stops short of the one-click. This catalog is the complement,
@@ -302,7 +302,7 @@ data it needs.
 The rack is a 292&nbsp;px column of stacked modules — which is, near enough, a
 Eurorack case. Worth leaning into: a faceplate recognised by colour and
 lettering before the label is read. Carve already gets a distinct treatment
-(`hf-fx-carve-module`); this generalises it.
+(`sc-fx-carve-module`); this generalises it.
 
 **Direction chosen 2026-08-09: schematic** — picked from four mocked
 alternatives (hardware silkscreen, vintage test equipment, risograph,
@@ -454,7 +454,7 @@ need one.
 ### If this ships
 
 `CLAUDE.md`'s skill-catalog rules apply: a preset catalog changes what
-`/hyperframes-audio` covers, so the skill's `description:` and the surfaces
+`/smashcut-audio` covers, so the skill's `description:` and the surfaces
 listed under "Skill catalog maintenance" have to move in lockstep.
 
 ---
@@ -462,7 +462,7 @@ listed under "Skill catalog maintenance" have to move in lockstep.
 ## Sources
 
 Internal: `wiki/decisions/vst-studio-integration-cancelled.md`;
-`skills/hyperframes-audio/SKILL.md`; `packages/core/src/audioFx.ts` (ranges);
+`skills/smashcut-audio/SKILL.md`; `packages/core/src/audioFx.ts` (ranges);
 `packages/core/src/audioCarve.ts` (the script pattern);
 `packages/core/src/colorGrading.ts` (the preset pattern). Cortex:
 [studio acoustics reprocessing](https://heygen.slack.com/archives/C0A9ZHLSQFN/p1781063751377189),

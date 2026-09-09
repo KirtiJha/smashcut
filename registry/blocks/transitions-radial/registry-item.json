@@ -1,7 +1,7 @@
 {
   "$schema": "https://hyperframes.heygen.com/schema/registry-item.json",
   "name": "transitions-radial",
-  "type": "hyperframes:block",
+  "type": "smashcut:block",
   "title": "Radial Transitions",
   "description": "Showcase of radial wipe and reveal transitions",
   "tags": ["transition", "showcase"],
@@ -14,11 +14,11 @@
     {
       "path": "transitions-radial.html",
       "target": "compositions/transitions-radial.html",
-      "type": "hyperframes:composition"
+      "type": "smashcut:composition"
     }
   ],
   "preview": {
-    "video": "https://static.heygen.ai/hyperframes-oss/docs/images/catalog/blocks/transitions-radial.mp4",
-    "poster": "https://static.heygen.ai/hyperframes-oss/docs/images/catalog/blocks/transitions-radial.png"
+    "video": "https://static.heygen.ai/smashcut-oss/docs/images/catalog/blocks/transitions-radial.mp4",
+    "poster": "https://static.heygen.ai/smashcut-oss/docs/images/catalog/blocks/transitions-radial.png"
   }
 }

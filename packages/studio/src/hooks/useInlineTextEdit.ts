@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { sanitizeRichTextChildren } from "@hyperframes/core/rich-text-sanitize";
+import { sanitizeRichTextChildren } from "@smashcut/core/rich-text-sanitize";
 
 /**
  * Editing an element's text where it sits, in the composition itself.

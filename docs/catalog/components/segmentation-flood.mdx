@@ -16,7 +16,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 ```html segmentation-flood.html
 <!doctype html>
 <!--
-  segmentation-flood: HyperFrames video primitive (product demo / AI)
+  segmentation-flood: SmashCut video primitive (product demo / AI)
 
   A machine-vision read of a slotted subject. Translucent accent
   segmentation masks FLOOD onto 2-4 regions in scanline steps: rows arrive
@@ -262,8 +262,8 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
             var canvas = root.querySelector(".sgf-canvas");
             var overlay = root.querySelector(".sgf-overlay");
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             var labels = String(vars.regions == null ? "" : vars.regions)
@@ -537,7 +537,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 
 ## Install
 
-<InstallCommand command="npx hyperframes add segmentation-flood" item="segmentation-flood" />
+<InstallCommand command="npx smashcut add segmentation-flood" item="segmentation-flood" />
 
 That writes one file: `compositions/components/segmentation-flood.html`.
 
@@ -579,7 +579,7 @@ defaults, so this behaves exactly like the preview above until you change one:
 ```html
 <!doctype html>
 <!--
-  segmentation-flood: HyperFrames video primitive (product demo / AI)
+  segmentation-flood: SmashCut video primitive (product demo / AI)
 
   A machine-vision read of a slotted subject. Translucent accent
   segmentation masks FLOOD onto 2-4 regions in scanline steps: rows arrive
@@ -825,8 +825,8 @@ defaults, so this behaves exactly like the preview above until you change one:
             var canvas = root.querySelector(".sgf-canvas");
             var overlay = root.querySelector(".sgf-overlay");
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             var labels = String(vars.regions == null ? "" : vars.regions)

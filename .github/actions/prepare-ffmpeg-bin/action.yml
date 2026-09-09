@@ -16,13 +16,13 @@ runs:
       run: |
         FFMPEG=$(which ffmpeg 2>/dev/null || echo "")
         if [ -n "$FFMPEG" ]; then
-          cp "$FFMPEG" "$RUNNER_TEMP/hf-ffmpeg"
+          cp "$FFMPEG" "$RUNNER_TEMP/sc-ffmpeg"
         else
           # ffmpeg not pre-installed; write a stub so ffmpeg-static's postinstall
           # finds a file at FFMPEG_BIN and exits early (statSync check) without
           # attempting the CDN download. Jobs that need a real ffmpeg binary
           # install it via apt before calling this action.
-          printf '#!/bin/sh\nexec ffmpeg "$@"\n' > "$RUNNER_TEMP/hf-ffmpeg"
+          printf '#!/bin/sh\nexec ffmpeg "$@"\n' > "$RUNNER_TEMP/sc-ffmpeg"
         fi
-        chmod +x "$RUNNER_TEMP/hf-ffmpeg"
-        echo "FFMPEG_BIN=$RUNNER_TEMP/hf-ffmpeg" >> "$GITHUB_ENV"
+        chmod +x "$RUNNER_TEMP/sc-ffmpeg"
+        echo "FFMPEG_BIN=$RUNNER_TEMP/sc-ffmpeg" >> "$GITHUB_ENV"

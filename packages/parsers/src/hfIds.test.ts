@@ -5,22 +5,22 @@ import { assignHfIds } from "./hfIdAssignment.js";
 
 function ids(html: string): string[] {
   const { document } = parseHTML(html);
-  return Array.from(document.querySelectorAll("[data-hf-id]")).map(
-    (e) => e.getAttribute("data-hf-id") as string,
+  return Array.from(document.querySelectorAll("[data-sc-id]")).map(
+    (e) => e.getAttribute("data-sc-id") as string,
   );
 }
 
-// data-hf-id of the first element matching `selector`.
+// data-sc-id of the first element matching `selector`.
 function idOf(html: string, selector: string): string | null {
   const { document } = parseHTML(html);
-  return document.querySelector(selector)?.getAttribute("data-hf-id") ?? null;
+  return document.querySelector(selector)?.getAttribute("data-sc-id") ?? null;
 }
 
 const doc = (body: string) => `<!doctype html><html><body>${body}</body></html>`;
 
 describe("ensureHfIds", () => {
   it("ignores HTML attribute case and editor state while retaining pinned IDs", () => {
-    const lower = doc(`<div id="x" data-start="2" data-hf-state="a">hello</div>`);
+    const lower = doc(`<div id="x" data-start="2" data-sc-state="a">hello</div>`);
     const upper = doc(`<DIV ID="x" DATA-START="2" DATA-HF-STATE="b">hello</DIV>`);
     expect(ids(ensureHfIds(upper))).toEqual(ids(ensureHfIds(lower)));
     const pinned = ensureHfIds(doc(`<DIV DATA-HF-ID="pinned" DATA-START="2">hello</DIV>`));
@@ -28,7 +28,7 @@ describe("ensureHfIds", () => {
       new DOMParser()
         .parseFromString(pinned, "text/html")
         .querySelector("[data-start]")
-        ?.getAttribute("data-hf-id"),
+        ?.getAttribute("data-sc-id"),
     ).toBe("pinned");
   });
 
@@ -44,7 +44,7 @@ describe("ensureHfIds", () => {
       const result: string[] = [];
       walkCompositionDescendants(document.body, (el) => {
         if (el.tagName.toLowerCase() !== "template")
-          result.push(el.getAttribute("data-hf-id") ?? "missing");
+          result.push(el.getAttribute("data-sc-id") ?? "missing");
       });
       return result;
     };
@@ -65,7 +65,7 @@ describe("ensureHfIds", () => {
     const persisted = new DOMParser().parseFromString(ensureHfIds(html), "text/html");
     const collect = (document: Document) =>
       Array.from(document.querySelectorAll("svg, linearGradient")).map((el) =>
-        el.getAttribute("data-hf-id"),
+        el.getAttribute("data-sc-id"),
       );
     expect(collect(native)).toHaveLength(2);
     expect(collect(native)).not.toContain(null);
@@ -73,7 +73,7 @@ describe("ensureHfIds", () => {
     expect(ensureHfIds(ensureHfIds(html))).toBe(ensureHfIds(html));
     const gradient = persisted.querySelector("linearGradient");
     if (body.includes("VIEWBOX")) expect(gradient?.getAttribute("viewBox")).toBe("0 0 1 1");
-    if (body.includes("DATA-HF-ID")) expect(gradient?.getAttribute("data-hf-id")).toBe("pinned");
+    if (body.includes("DATA-HF-ID")) expect(gradient?.getAttribute("data-sc-id")).toBe("pinned");
   });
 
   it("mints a hf- id on every editable element node in body", () => {
@@ -92,9 +92,9 @@ describe("ensureHfIds", () => {
     const out = ensureHfIds(html);
     // only the <p> gets an id
     expect(ids(out)).toHaveLength(1);
-    expect(out).not.toContain("<script data-hf-id");
-    expect(out).not.toContain("<style data-hf-id");
-    expect(out).not.toContain("<meta data-hf-id");
+    expect(out).not.toContain("<script data-sc-id");
+    expect(out).not.toContain("<style data-sc-id");
+    expect(out).not.toContain("<meta data-sc-id");
   });
 
   it("is idempotent: a second call mints nothing and is byte-stable", () => {
@@ -104,12 +104,12 @@ describe("ensureHfIds", () => {
     expect(twice).toBe(once);
   });
 
-  it("pins existing data-hf-id and mints around it", () => {
+  it("pins existing data-sc-id and mints around it", () => {
     const html = `<!doctype html><html><body>
-      <div data-hf-id="hf-keep"><p>a</p></div></body></html>`;
+      <div data-sc-id="sc-keep"><p>a</p></div></body></html>`;
     const out = ensureHfIds(html);
-    expect(out).toContain('data-hf-id="hf-keep"');
-    expect(ids(out)).toContain("hf-keep");
+    expect(out).toContain('data-sc-id="sc-keep"');
+    expect(ids(out)).toContain("sc-keep");
     expect(ids(out)).toHaveLength(2); // div pinned + p minted
   });
 
@@ -136,7 +136,7 @@ describe("ensureHfIds", () => {
     expect(b).toMatch(/^hf-[a-z0-9]{4}$/);
   });
 
-  // Post-persist stability: once data-hf-id is written back to source, edits
+  // Post-persist stability: once data-sc-id is written back to source, edits
   // don't drift the id because the attribute is already present and pinned.
   it("pinned id survives text edit after first persist", () => {
     const raw = `<!doctype html><html><body><div>original text</div></body></html>`;
@@ -159,12 +159,12 @@ describe("ensureHfIds", () => {
 
 // Lock the edit-lifecycle behavior. These pin BOTH the guarantee that holds
 // once ids are persisted to source (pinning) AND the behavior for truly unpinned
-// HTML (no data-hf-id in the input — unreachable in production after write-back
+// HTML (no data-sc-id in the input — unreachable in production after write-back
 // landed in R7 Task 1-2, but still the correct contract for that path).
 describe("ensureHfIds — template-inner minting", () => {
   // linkedom's querySelectorAll does not descend into <template>, so extract
   // ids by regex over the serialized output instead of the DOM-walk helper.
-  const rawIds = (html: string) => [...html.matchAll(/data-hf-id="([^"]+)"/g)].map((m) => m[1]);
+  const rawIds = (html: string) => [...html.matchAll(/data-sc-id="([^"]+)"/g)].map((m) => m[1]);
 
   it("mints ids on elements inside a <template> (template itself stays unstamped)", () => {
     const html = doc(
@@ -172,7 +172,7 @@ describe("ensureHfIds — template-inner minting", () => {
     );
     const out = ensureHfIds(html);
     expect(rawIds(out)).toHaveLength(2); // div + p, not the template
-    expect(out).not.toMatch(/<template[^>]*data-hf-id/);
+    expect(out).not.toMatch(/<template[^>]*data-sc-id/);
   });
 
   it("template-inner ids equal the ids minted for the same content unwrapped (preview parity)", () => {
@@ -184,10 +184,10 @@ describe("ensureHfIds — template-inner minting", () => {
 
   it("pins existing template-inner ids and seeds them against fresh mints", () => {
     const html = doc(
-      `<template data-composition-id="t"><div data-hf-id="hf-keep">a</div><p>b</p></template>`,
+      `<template data-composition-id="t"><div data-sc-id="sc-keep">a</div><p>b</p></template>`,
     );
     const out = ensureHfIds(html);
-    expect(out).toContain('data-hf-id="hf-keep"');
+    expect(out).toContain('data-sc-id="sc-keep"');
     expect(new Set(rawIds(out)).size).toBe(2);
   });
 
@@ -205,7 +205,7 @@ describe("ensureHfIds — template-inner minting", () => {
     const html = doc(`<div class="stage">x</div><template><li class="row">item</li></template>`);
     const out = ensureHfIds(html);
     expect(rawIds(out)).toHaveLength(1); // only the stage div
-    expect(out).not.toMatch(/<li[^>]*data-hf-id/);
+    expect(out).not.toMatch(/<li[^>]*data-sc-id/);
   });
 
   it("does NOT stamp inside a plain template nested in a composition template", () => {
@@ -214,7 +214,7 @@ describe("ensureHfIds — template-inner minting", () => {
     );
     const out = ensureHfIds(html);
     expect(rawIds(out)).toHaveLength(1); // only the div
-    expect(out).not.toMatch(/<li[^>]*data-hf-id/);
+    expect(out).not.toMatch(/<li[^>]*data-sc-id/);
   });
 
   it("is idempotent for template-inner ids", () => {
@@ -225,13 +225,13 @@ describe("ensureHfIds — template-inner minting", () => {
 
 describe("ensureHfIds — edit lifecycle (R1 stability)", () => {
   it("pinned id survives a content edit (the §3 write-back guarantee)", () => {
-    // Element already carries data-hf-id in source (as it would after write-back).
-    const edited = doc(`<p class="body" data-hf-id="hf-abcd">Hello world</p>`);
-    expect(idOf(ensureHfIds(edited), "p.body")).toBe("hf-abcd");
+    // Element already carries data-sc-id in source (as it would after write-back).
+    const edited = doc(`<p class="body" data-sc-id="sc-abcd">Hello world</p>`);
+    expect(idOf(ensureHfIds(edited), "p.body")).toBe("sc-abcd");
   });
 
   it("unpinned id drifts when element text is edited (pure-hash, unreachable after write-back)", () => {
-    // No data-hf-id in source → every parse re-mints from content. This path is
+    // No data-sc-id in source → every parse re-mints from content. This path is
     // unreachable in production after R7 write-back: the first serve pins the id.
     const before = idOf(ensureHfIds(doc(`<p class="body">Hello</p>`)), "p.body");
     const after = idOf(ensureHfIds(doc(`<p class="body">Hello world</p>`)), "p.body");

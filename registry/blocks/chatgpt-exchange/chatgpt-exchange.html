@@ -629,7 +629,7 @@
   </head>
   <body>
     <div
-      data-hf-id="hf-ahdx"
+      data-sc-id="sc-ahdx"
       id="cge-root"
       data-composition-id="chatgpt-exchange"
       data-fps="60"
@@ -638,24 +638,24 @@
       data-width="1080"
       data-height="1920"
     >
-      <div data-hf-id="hf-tan6" class="stage">
+      <div data-sc-id="sc-tan6" class="stage">
         <div
-          data-hf-id="hf-szt4"
+          data-sc-id="sc-szt4"
           id="cge-scene"
           class="clip"
           data-start="0"
           data-duration="14.9"
           data-track-index="1"
         >
-          <div data-hf-id="hf-ylue" class="screen" id="cge-screen"></div>
+          <div data-sc-id="sc-ylue" class="screen" id="cge-screen"></div>
         </div>
       </div>
     </div>
 
     <script>
       const variables =
-        window.__hyperframes && typeof window.__hyperframes.getVariables === "function"
-          ? window.__hyperframes.getVariables()
+        window.__smashcut && typeof window.__smashcut.getVariables === "function"
+          ? window.__smashcut.getVariables()
           : {};
       const content = (id, fallback) =>
         typeof variables[id] === "string" && variables[id].trim() ? variables[id] : fallback;

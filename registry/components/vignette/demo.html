@@ -52,7 +52,7 @@
 
       <!-- The vignette component -->
       <div
-        id="hf-vignette"
+        id="sc-vignette"
         style="
           position: absolute;
           top: 0;
@@ -168,7 +168,7 @@
           opacity: 0;
         }
 
-        #hf-vignette {
+        #sc-vignette {
           background: radial-gradient(
             var(--vignette-shape, ellipse) at center,
             transparent var(--vignette-size, 45%),
@@ -212,13 +212,13 @@
           // then ramp to a strong cinematic vignette and hold through the
           // capture-time peak (~3.0s, picked to match the catalog thumbnail
           // sampling at `Math.min(3.0, duration * 0.6)` for duration=5).
-          gsap.set("#hf-vignette", {
+          gsap.set("#sc-vignette", {
             "--vignette-color": "rgba(0, 0, 0, 0.35)",
             "--vignette-size": "70%",
             "--vignette-edge": "100%",
           });
           tl.to(
-            "#hf-vignette",
+            "#sc-vignette",
             {
               "--vignette-color": "rgba(0, 0, 0, 0.92)",
               "--vignette-size": "26%",
@@ -231,12 +231,12 @@
           // Gentle breathing for the video loop so the effect reads as alive,
           // not static. Keeps the still-frame at peak intensity around t≈3s.
           tl.to(
-            "#hf-vignette",
+            "#sc-vignette",
             { "--vignette-size": "32%", duration: 0.9, ease: "sine.inOut" },
             3.4,
           );
           tl.to(
-            "#hf-vignette",
+            "#sc-vignette",
             { "--vignette-size": "26%", duration: 0.9, ease: "sine.inOut" },
             4.3,
           );

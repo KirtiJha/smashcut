@@ -14,7 +14,7 @@ interface EditPopoverProps {
 }
 
 function draftKey(start: number, end: number): string {
-  return `hf-edit-draft:${start.toFixed(2)}:${end.toFixed(2)}`;
+  return `sc-edit-draft:${start.toFixed(2)}:${end.toFixed(2)}`;
 }
 
 function readDraft(key: string): string {

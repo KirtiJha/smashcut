@@ -172,8 +172,8 @@ describe("isPathInside", () => {
   });
 
   it("rejects symlink escapes when realpath enforcement is enabled", () => {
-    const rootDir = mkdtempSync(join(tmpdir(), "hf-file-server-root-"));
-    const outsideDir = mkdtempSync(join(tmpdir(), "hf-file-server-outside-"));
+    const rootDir = mkdtempSync(join(tmpdir(), "sc-file-server-root-"));
+    const outsideDir = mkdtempSync(join(tmpdir(), "sc-file-server-outside-"));
     const outsideFile = join(outsideDir, "secret.txt");
     const symlinkPath = join(rootDir, "escaped.txt");
 
@@ -323,7 +323,7 @@ describe("createFileServer", () => {
     ["mov", "video/quicktime"],
     ["ico", "image/vnd.microsoft.icon"],
   ])("serves .%s media with its content type for full and range requests", async (ext, type) => {
-    const projectDir = mkdtempSync(join(tmpdir(), "hf-media-content-type-"));
+    const projectDir = mkdtempSync(join(tmpdir(), "sc-media-content-type-"));
     const bytes = new Uint8Array([0, 255, 128, 64, 32]);
     try {
       writeFileSync(join(projectDir, `asset.${ext}`), bytes);
@@ -347,13 +347,13 @@ describe("createFileServer", () => {
   });
 
   it("marks producer pages as render capture before the runtime loads", async () => {
-    const projectDir = mkdtempSync(join(tmpdir(), "hf-file-server-render-mode-"));
+    const projectDir = mkdtempSync(join(tmpdir(), "sc-file-server-render-mode-"));
     try {
       writeFileSync(
         join(projectDir, "index.html"),
         "<!doctype html><html><head></head><body></body></html>",
       );
-      const runtimeScript = "globalThis.__hfRuntimeLoaded = true;";
+      const runtimeScript = "globalThis.__scRuntimeLoaded = true;";
       const server = await createFileServer({
         projectDir,
         preHeadScripts: [],
@@ -374,7 +374,7 @@ describe("createFileServer", () => {
   });
 
   it("serves ES modules with a JavaScript MIME type", async () => {
-    const projectDir = mkdtempSync(join(tmpdir(), "hf-file-server-mjs-"));
+    const projectDir = mkdtempSync(join(tmpdir(), "sc-file-server-mjs-"));
     try {
       writeEmptyIndex(projectDir);
       writeFileSync(join(projectDir, "scene.mjs"), "export const scene = true;");
@@ -399,7 +399,7 @@ describe("createFileServer", () => {
       fallbackReason?: "missing" | "invalid";
     },
   ): Promise<void> {
-    const projectDir = mkdtempSync(join(tmpdir(), "hf-file-server-render-fps-"));
+    const projectDir = mkdtempSync(join(tmpdir(), "sc-file-server-render-fps-"));
 
     try {
       writeEmptyIndex(projectDir);
@@ -423,7 +423,7 @@ describe("createFileServer", () => {
         }
         expect(html).toContain("fps: __renderFps");
         expect(html).toContain("fpsSource: __renderFpsSource");
-        expect(html).not.toContain("[hyperframes] render fps defaulted");
+        expect(html).not.toContain("[smashcut] render fps defaulted");
       } finally {
         server.close();
       }
@@ -463,7 +463,7 @@ describe("createFileServer", () => {
   });
 
   it("serves asset files through project-root symlinked directories", async () => {
-    const workspaceDir = mkdtempSync(join(tmpdir(), "hf-file-server-symlink-assets-"));
+    const workspaceDir = mkdtempSync(join(tmpdir(), "sc-file-server-symlink-assets-"));
     const adsDir = join(workspaceDir, "Ads");
     const projectDir = join(adsDir, "annual-upsell-2");
     const sharedDir = join(adsDir, "shared");
@@ -505,7 +505,7 @@ describe("createFileServer", () => {
     //      parallel fetches all return identical content. With readFileSync
     //      they'd block the event loop in serial; with the stream they
     //      pipe interleaved chunks.
-    const projectDir = mkdtempSync(join(tmpdir(), "hf-file-server-stream-"));
+    const projectDir = mkdtempSync(join(tmpdir(), "sc-file-server-stream-"));
     try {
       writeEmptyIndex(projectDir);
       // 5 MB of deterministic bytes — large enough to span many 64KB read
@@ -553,7 +553,7 @@ describe("createFileServer", () => {
     // partial-load without re-pulling the whole file. Also pins that the
     // server advertises `Accept-Ranges: bytes` on full-body GETs so clients
     // know future Range requests are supported.
-    const projectDir = mkdtempSync(join(tmpdir(), "hf-file-server-range-"));
+    const projectDir = mkdtempSync(join(tmpdir(), "sc-file-server-range-"));
     try {
       writeEmptyIndex(projectDir);
       // Use a 4 KB deterministic asset: small enough to keep the test
@@ -634,7 +634,7 @@ describe("createFileServer", () => {
   });
 
   it("decodes percent-encoded reserved characters in URL path segments", async () => {
-    const projectDir = mkdtempSync(join(tmpdir(), "hf-file-server-reserved-chars-"));
+    const projectDir = mkdtempSync(join(tmpdir(), "sc-file-server-reserved-chars-"));
 
     try {
       const subDir = join(projectDir, "video#1");
@@ -657,20 +657,20 @@ describe("HF_EARLY_STUB + HF_BRIDGE_SCRIPT integration", () => {
   /**
    * Simulates the real injection order in a Puppeteer page:
    *   1. HF_EARLY_STUB  (start of <head>, before everything)
-   *   2. authored page scripts that write to window.__hf.transitions
-   *      (e.g. @hyperframes/shader-transitions in <body>)
-   *   3. HF_BRIDGE_SCRIPT (end of <body>, upgrades __hf with seek/duration)
+   *   2. authored page scripts that write to window.__sc.transitions
+   *      (e.g. @smashcut/shader-transitions in <body>)
+   *   3. HF_BRIDGE_SCRIPT (end of <body>, upgrades __sc with seek/duration)
    *
    * Regression test for the race condition where the bridge used to overwrite
-   * window.__hf with a fresh object, dropping any fields user libraries
+   * window.__sc with a fresh object, dropping any fields user libraries
    * (notably `transitions`) had populated during page-script execution.
    * Without the early stub + patch-not-replace bridge, the engine never
    * detects shader transitions and HDR compositing falls back to plain DOM.
    */
-  it("preserves __hf.transitions written by page scripts through bridge upgrade", () => {
+  it("preserves __sc.transitions written by page scripts through bridge upgrade", () => {
     const sandbox: {
       window: Record<string, unknown> & {
-        __hf?: { transitions?: unknown[]; seek?: (t: number) => void; duration?: number };
+        __sc?: { transitions?: unknown[]; seek?: (t: number) => void; duration?: number };
         __player?: { renderSeek: (t: number) => void; getDuration: () => number };
         setInterval: typeof setInterval;
         clearInterval: typeof clearInterval;
@@ -694,10 +694,10 @@ describe("HF_EARLY_STUB + HF_BRIDGE_SCRIPT integration", () => {
     };
 
     run(HF_EARLY_STUB);
-    expect(sandbox.window.__hf).toBeDefined();
-    expect(sandbox.window.__hf?.transitions).toBeUndefined();
+    expect(sandbox.window.__sc).toBeDefined();
+    expect(sandbox.window.__sc?.transitions).toBeUndefined();
 
-    sandbox.window.__hf!.transitions = [
+    sandbox.window.__sc!.transitions = [
       { time: 5, duration: 0.5, shader: "domain-warp", fromScene: "a", toScene: "b" },
     ];
 
@@ -708,22 +708,22 @@ describe("HF_EARLY_STUB + HF_BRIDGE_SCRIPT integration", () => {
 
     run(HF_BRIDGE_SCRIPT);
 
-    expect(sandbox.window.__hf).toBeDefined();
-    expect(sandbox.window.__hf?.transitions).toEqual([
+    expect(sandbox.window.__sc).toBeDefined();
+    expect(sandbox.window.__sc?.transitions).toEqual([
       { time: 5, duration: 0.5, shader: "domain-warp", fromScene: "a", toScene: "b" },
     ]);
-    expect(typeof sandbox.window.__hf?.seek).toBe("function");
-    expect(sandbox.window.__hf?.duration).toBe(0);
+    expect(typeof sandbox.window.__sc?.seek).toBe("function");
+    expect(sandbox.window.__sc?.duration).toBe(0);
 
     sandbox.window.__renderReady = true;
-    expect(sandbox.window.__hf?.duration).toBe(30);
+    expect(sandbox.window.__sc?.duration).toBe(30);
   });
 
-  it("forwards suppressEvents from __hf.seek to renderSeek", () => {
+  it("forwards suppressEvents from __sc.seek to renderSeek", () => {
     const renderSeekCalls: Array<[number, { suppressEvents?: boolean } | undefined]> = [];
     const sandbox: {
       window: Record<string, unknown> & {
-        __hf?: {
+        __sc?: {
           seek?: (t: number, options?: { suppressEvents?: boolean }) => void;
           duration?: number;
         };
@@ -757,7 +757,7 @@ describe("HF_EARLY_STUB + HF_BRIDGE_SCRIPT integration", () => {
       sandbox.document,
     );
 
-    sandbox.window.__hf?.seek?.(5, { suppressEvents: true });
+    sandbox.window.__sc?.seek?.(5, { suppressEvents: true });
 
     expect(renderSeekCalls).toEqual([[5, { suppressEvents: true }]]);
   });
@@ -765,8 +765,8 @@ describe("HF_EARLY_STUB + HF_BRIDGE_SCRIPT integration", () => {
   it("keeps render-time timeline seeks synchronous during large renders", () => {
     const sandbox: {
       window: Record<string, unknown> & {
-        __hf?: Record<string, unknown>;
-        __hfTimelinesBuilding?: boolean;
+        __sc?: Record<string, unknown>;
+        __scTimelinesBuilding?: boolean;
         gsap?: { timeline: () => { totalTime: (time?: number) => number | unknown } };
         requestAnimationFrame: typeof requestAnimationFrame;
         setTimeout: typeof setTimeout;
@@ -821,14 +821,14 @@ describe("HF_EARLY_STUB + HF_BRIDGE_SCRIPT integration", () => {
     }
 
     expect(totalTimeCalls).toHaveLength(5100);
-    expect(sandbox.window.__hfTimelinesBuilding).toBe(false);
+    expect(sandbox.window.__scTimelinesBuilding).toBe(false);
   });
 
   it("flushes queued construction calls before forwarding timeline children", () => {
     const sandbox: {
       window: Record<string, unknown> & {
-        __hf?: Record<string, unknown>;
-        __hfTimelinesBuilding?: boolean;
+        __sc?: Record<string, unknown>;
+        __scTimelinesBuilding?: boolean;
         gsap?: {
           timeline: () => { to: (...args: unknown[]) => unknown; getChildren: () => unknown[] };
         };
@@ -888,14 +888,14 @@ describe("HF_EARLY_STUB + HF_BRIDGE_SCRIPT integration", () => {
     expect(constructionCalls).toHaveLength(0);
     expect(timeline.getChildren()).toEqual([child]);
     expect(constructionCalls).toHaveLength(1);
-    expect(sandbox.window.__hfTimelinesBuilding).toBe(false);
+    expect(sandbox.window.__scTimelinesBuilding).toBe(false);
   });
 
   it("proxy is non-thenable — Promise.resolve(proxy) resolves immediately", async () => {
     const sandbox: {
       window: Record<string, unknown> & {
-        __hf?: Record<string, unknown>;
-        __hfTimelinesBuilding?: boolean;
+        __sc?: Record<string, unknown>;
+        __scTimelinesBuilding?: boolean;
         gsap?: { timeline: () => Record<string, unknown> };
         requestAnimationFrame: typeof requestAnimationFrame;
         setTimeout: typeof setTimeout;
@@ -951,10 +951,10 @@ describe("HF_EARLY_STUB + HF_BRIDGE_SCRIPT integration", () => {
   it("keeps bridge duration at zero until the runtime publishes render readiness", () => {
     const sandbox: {
       window: Record<string, unknown> & {
-        __hf?: { seek?: (t: number) => void; duration?: number };
+        __sc?: { seek?: (t: number) => void; duration?: number };
         __player?: { renderSeek: (t: number) => void; getDuration: () => number };
         __renderReady?: boolean;
-        __hfTimelinesBuilding?: boolean;
+        __scTimelinesBuilding?: boolean;
         setInterval: typeof setInterval;
         clearInterval: typeof clearInterval;
       };
@@ -982,13 +982,13 @@ describe("HF_EARLY_STUB + HF_BRIDGE_SCRIPT integration", () => {
       sandbox.document,
     );
 
-    expect(sandbox.window.__hf?.duration).toBe(0);
+    expect(sandbox.window.__sc?.duration).toBe(0);
 
     sandbox.window.__renderReady = true;
-    expect(sandbox.window.__hf?.duration).toBe(15);
+    expect(sandbox.window.__sc?.duration).toBe(15);
 
-    sandbox.window.__hfTimelinesBuilding = true;
-    expect(sandbox.window.__hf?.duration).toBe(0);
+    sandbox.window.__scTimelinesBuilding = true;
+    expect(sandbox.window.__sc?.duration).toBe(0);
   });
 
   it("derives duration from sub-composition data-start + data-duration when root has none", () => {
@@ -1026,6 +1026,6 @@ describe("HF_EARLY_STUB + HF_BRIDGE_SCRIPT integration", () => {
       sandbox.document,
     );
 
-    expect(sandbox.window.__hf?.duration).toBe(13);
+    expect(sandbox.window.__sc?.duration).toBe(13);
   });
 });

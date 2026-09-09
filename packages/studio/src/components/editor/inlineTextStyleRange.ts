@@ -26,7 +26,7 @@ import {
   isRichTextFormattingAttribute,
   isRichTextFormattingStyle,
   isRichTextFormattingTag,
-} from "@hyperframes/core/rich-text-sanitize";
+} from "@smashcut/core/rich-text-sanitize";
 
 /** One stretch of characters that are all styled the same way. */
 interface StyledRun {
@@ -461,7 +461,7 @@ function runNode(doc: Document, run: StyledRun, carried: Map<string, string>): N
  * inside a flex container look like a layer as soon as the file had been saved
  * once, which put it back to shadowing the real layers underneath it.
  */
-const DERIVED_ATTR = "data-hf-id";
+const DERIVED_ATTR = "data-sc-id";
 
 /**
  * What a child carries besides its styling: the identity the design panel

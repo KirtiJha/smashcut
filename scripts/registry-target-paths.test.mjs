@@ -21,7 +21,7 @@ let sandbox;
 let project;
 
 before(() => {
-  sandbox = mkdtempSync(join(tmpdir(), "hf-registry-paths-"));
+  sandbox = mkdtempSync(join(tmpdir(), "sc-registry-paths-"));
   project = join(sandbox, "project");
   mkdirSync(join(project, "nested"), { recursive: true });
   mkdirSync(join(sandbox, "outside"), { recursive: true });

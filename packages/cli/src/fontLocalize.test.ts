@@ -78,9 +78,9 @@ describe("stampFontVersions", () => {
       { producer: "0.8.15", localizer: "0.8.16" },
     );
 
-    expect(stamped).toContain('<meta name="hyperframes-font-compiler-version" content="0.8.15">');
-    expect(stamped).toContain('<meta name="hyperframes-font-localizer-version" content="0.8.16">');
-    expect(stamped.indexOf("hyperframes-font-compiler-version")).toBeLessThan(
+    expect(stamped).toContain('<meta name="smashcut-font-compiler-version" content="0.8.15">');
+    expect(stamped).toContain('<meta name="smashcut-font-localizer-version" content="0.8.16">');
+    expect(stamped.indexOf("smashcut-font-compiler-version")).toBeLessThan(
       stamped.indexOf("</head>"),
     );
   });
@@ -92,7 +92,7 @@ describe("stampFontVersions", () => {
     });
 
     expect(stamped).toMatch(
-      /^<!doctype html><meta name="hyperframes-font-compiler-version" content="0\.8\.15"><meta name="hyperframes-font-localizer-version" content="0\.8\.16">/,
+      /^<!doctype html><meta name="smashcut-font-compiler-version" content="0\.8\.15"><meta name="smashcut-font-localizer-version" content="0\.8\.16">/,
     );
   });
 
@@ -103,7 +103,7 @@ describe("stampFontVersions", () => {
     });
 
     expect(stamped).toBe(
-      '<meta name="hyperframes-font-compiler-version" content="0.8.15script"><meta name="hyperframes-font-localizer-version" content="0.8.16script"><main>x</main>',
+      '<meta name="smashcut-font-compiler-version" content="0.8.15script"><meta name="smashcut-font-localizer-version" content="0.8.16script"><main>x</main>',
     );
   });
 });

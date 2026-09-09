@@ -2,7 +2,7 @@
  * Node-only GSAP AST parser. Depends on recast / @babel/parser, which compile
  * to CommonJS that calls `require("fs")` — so this module must never be in the
  * static import graph of isomorphic/browser code. It is reachable only via the
- * `@hyperframes/core/gsap-parser` subpath (studio-api mutations + the linter).
+ * `@smashcut/core/gsap-parser` subpath (studio-api mutations + the linter).
  *
  * Recast-free helpers (serialization, keyframe conversion, validation, types)
  * live in `./gsapSerialize` and are re-exported here so this subpath exposes the
@@ -1339,12 +1339,12 @@ export function parseGsapScript(script: string): ParsedGsap {
 
 /**
  * Parse a value/expression snippet into a standalone AST expression node.
- * Uses an assignment (`__hf__ = <code>`) rather than wrapping in parens so an
+ * Uses an assignment (`__sc__ = <code>`) rather than wrapping in parens so an
  * object literal parses as an expression without recast re-emitting the
  * surrounding parentheses.
  */
 function parseExpr(code: string): AstNode {
-  return parseScript(`__hf__ = ${code};`).program.body[0].expression.right;
+  return parseScript(`__sc__ = ${code};`).program.body[0].expression.right;
 }
 
 function propKeyName(prop: AstNode): string | undefined {
@@ -1823,7 +1823,7 @@ function insertInheritedStateSet(
 /** Marker on Studio-emitted pre-keyframe hold `set`s. `data` is a GSAP-reserved
  * config key (attached to the tween, never applied to the target), so it carries
  * the tag without triggering GSAP's "Invalid property" warning. */
-const STUDIO_HOLD_MARKER = "hf-hold";
+const STUDIO_HOLD_MARKER = "sc-hold";
 
 /** True for a `tl.set(...)` this module emitted to hold a keyframe before its tween.
  * The Studio filters these out so they never appear as user keyframes/diamonds. */
@@ -1835,7 +1835,7 @@ export function isStudioHoldSet(anim: GsapAnimation): boolean {
  * Keep a `tl.set(selector, {x,y}, 0)` "hold" in front of every position-keyframed
  * tween that starts after t=0, so the element holds its first keyframe's position
  * BEFORE the tween plays instead of snapping to its CSS base (the universal NLE
- * "hold before first keyframe" behavior). The set is tagged with `data: "hf-hold"`
+ * "hold before first keyframe" behavior). The set is tagged with `data: "sc-hold"`
  * so this pass owns it: every call wipes the prior holds and recomputes from the
  * current keyframes, keeping them in sync as keyframes are added/moved/deleted.
  *

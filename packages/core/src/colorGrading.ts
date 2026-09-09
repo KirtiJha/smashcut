@@ -14,7 +14,7 @@ import {
   COLOR_GRADING_MAX_SECONDARIES,
   COLOR_GRADING_TOP_LEVEL_KEYS,
   COLOR_GRADING_WHEEL_KEYS,
-} from "@hyperframes/parsers/color-grading-contract";
+} from "@smashcut/parsers/color-grading-contract";
 
 export type { HfColorCurvePoint, HfHueCurvePoint } from "./colorGradingCurves";
 export {
@@ -29,15 +29,15 @@ export const HF_COLOR_GRADING_ATTR = "data-color-grading";
 // them; studio editing/soft-reload code reads them. Single owner — never
 // re-declare these literals elsewhere.
 /** Set on a graded source while its pixels render on the grading canvas. */
-export const COLOR_GRADING_SOURCE_HIDDEN_ATTR = "data-hf-color-grading-source-hidden";
+export const COLOR_GRADING_SOURCE_HIDDEN_ATTR = "data-sc-color-grading-source-hidden";
 /**
  * The element's AUTHORED inline opacity, stamped at document parse time before
  * any animation engine mutates it ("" = authored none; attribute absent =
  * never captured). See installAuthoredOpacityCapture in the runtime.
  */
-export const COLOR_GRADING_AUTHORED_OPACITY_ATTR = "data-hf-authored-opacity";
+export const COLOR_GRADING_AUTHORED_OPACITY_ATTR = "data-sc-authored-opacity";
 
-export const HF_COLOR_GRADING_CANVAS_ID_PREFIX = "__hf_color_grading_";
+export const HF_COLOR_GRADING_CANVAS_ID_PREFIX = "__sc_color_grading_";
 
 export const HF_COLOR_GRADING_COLOR_SPACE = COLOR_GRADING_COLOR_SPACE;
 
@@ -381,13 +381,13 @@ export const HF_COLOR_GRADING_PALETTES = [
   {
     id: "warm-print",
     label: "Warm Print",
-    group: "HyperFrames",
+    group: "SmashCut",
     colors: ["#17121a", "#824c50", "#e09873", "#f7ddb1"],
   },
   {
     id: "electric-ink",
     label: "Electric Ink",
-    group: "HyperFrames",
+    group: "SmashCut",
     colors: ["#080717", "#3c185f", "#7e2278", "#d9339f", "#ff6b66", "#aafae0"],
   },
 ] as const;
@@ -919,15 +919,15 @@ export const HF_COLOR_GRADING_EFFECT_APPLY_DEFAULTS: Readonly<
 };
 
 export const HF_COLOR_GRADING_ANIMATABLE_PROPERTIES = [
-  { path: "intensity", name: "--hf-color-grading-intensity", min: 0, max: 1 },
-  { path: "lut.intensity", name: "--hf-color-grading-lut-intensity", min: 0, max: 1 },
-  { path: "adjust.exposure", name: "--hf-color-grading-exposure", min: -2, max: 2 },
-  { path: "effects.blur", name: "--hf-color-grading-blur", min: 0, max: 1 },
-  { path: "effects.bloom", name: "--hf-color-grading-bloom", min: 0, max: 3 },
-  { path: "effects.kuwahara", name: "--hf-color-grading-kuwahara", min: 0, max: 1 },
-  { path: "effects.pixelate", name: "--hf-color-grading-pixelate", min: 0, max: 1 },
-  { path: "effects.ascii", name: "--hf-color-grading-ascii", min: 0, max: 1 },
-  { path: "effects.dither", name: "--hf-color-grading-dither", min: 0, max: 1 },
+  { path: "intensity", name: "--sc-color-grading-intensity", min: 0, max: 1 },
+  { path: "lut.intensity", name: "--sc-color-grading-lut-intensity", min: 0, max: 1 },
+  { path: "adjust.exposure", name: "--sc-color-grading-exposure", min: -2, max: 2 },
+  { path: "effects.blur", name: "--sc-color-grading-blur", min: 0, max: 1 },
+  { path: "effects.bloom", name: "--sc-color-grading-bloom", min: 0, max: 3 },
+  { path: "effects.kuwahara", name: "--sc-color-grading-kuwahara", min: 0, max: 1 },
+  { path: "effects.pixelate", name: "--sc-color-grading-pixelate", min: 0, max: 1 },
+  { path: "effects.ascii", name: "--sc-color-grading-ascii", min: 0, max: 1 },
+  { path: "effects.dither", name: "--sc-color-grading-dither", min: 0, max: 1 },
 ] as const;
 
 export type HfColorGradingAnimatablePath =

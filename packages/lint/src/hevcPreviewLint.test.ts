@@ -5,7 +5,7 @@ import { describe, expect, it } from "vitest";
 import { collectLocalVideoCandidates } from "./hevcPreviewLint.js";
 
 function makeProject(files: string[]): string {
-  const dir = mkdtempSync(join(tmpdir(), "hf-hevc-lint-"));
+  const dir = mkdtempSync(join(tmpdir(), "sc-hevc-lint-"));
   for (const rel of files) {
     const full = join(dir, rel);
     mkdirSync(join(full, ".."), { recursive: true });

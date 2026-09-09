@@ -14,22 +14,22 @@ describe("createStudioDevRenderBodyScripts", () => {
   });
 
   function createProject(): string {
-    projectDir = mkdtempSync(join(tmpdir(), "hf-studio-motion-"));
-    mkdirSync(join(projectDir, ".hyperframes"), { recursive: true });
+    projectDir = mkdtempSync(join(tmpdir(), "sc-studio-motion-"));
+    mkdirSync(join(projectDir, ".smashcut"), { recursive: true });
     return projectDir;
   }
 
   it("injects both manual edit and Studio GSAP motion render scripts in dev", () => {
     const dir = createProject();
     writeFileSync(
-      join(dir, ".hyperframes/studio-manual-edits.json"),
+      join(dir, ".smashcut/studio-manual-edits.json"),
       JSON.stringify({
         version: 1,
         edits: [{ kind: "text", target: { sourceFile: "index.html" } }],
       }),
     );
     writeFileSync(
-      join(dir, ".hyperframes/studio-motion.json"),
+      join(dir, ".smashcut/studio-motion.json"),
       JSON.stringify({
         version: 1,
         motions: [
@@ -51,8 +51,8 @@ describe("createStudioDevRenderBodyScripts", () => {
     });
 
     expect(scripts).toHaveLength(2);
-    expect(scripts[0]).toContain("__hfStudioManualEditsApply");
-    expect(scripts[1]).toContain("__hfStudioMotionApply");
+    expect(scripts[0]).toContain("__scStudioManualEditsApply");
+    expect(scripts[1]).toContain("__scStudioMotionApply");
     expect(scripts.join("\n")).toContain("compositions/scene.html");
   });
 });

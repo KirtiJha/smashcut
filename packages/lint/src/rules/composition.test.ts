@@ -143,7 +143,7 @@ describe("composition rules", () => {
 
     it("does not warn for large registry-installed block composition files", async () => {
       const html =
-        "<!-- hyperframes-registry-item: data-chart -->\n" +
+        "<!-- smashcut-registry-item: data-chart -->\n" +
         Array.from({ length: 300 }, (_, i) =>
           i === 0 ? "<html><body>" : `<!-- filler ${i} -->`,
         ).join("\n");
@@ -319,7 +319,7 @@ describe("composition rules", () => {
       // Regression: sub-compositions.md "Per-Instance Variables" documents
       // mounting one source several times with different data-variable-values.
       // That necessarily repeats the id, and the runtime rewrites repeated
-      // mounts to `id__hf1`/`id__hf2` so they coexist. Flagging it made the
+      // mounts to `id__sc1`/`id__sc2` so they coexist. Flagging it made the
       // documented pattern an error with no correct way to satisfy it.
       const html = `<!DOCTYPE html>
 <html>
@@ -841,7 +841,7 @@ describe("composition rules", () => {
 
     it("does not flag installed registry blocks that use rAF (e.g. particle effects)", async () => {
       const html =
-        `<!-- hyperframes-registry-item: particles -->\n` +
+        `<!-- smashcut-registry-item: particles -->\n` +
         `<html><body>
   <div data-composition-id="c1" data-width="1920" data-height="1080"></div>
   <script>
@@ -1419,7 +1419,7 @@ describe("composition rules", () => {
     });
 
     it("does not flag installed registry blocks", async () => {
-      const html = `<!-- hyperframes-registry-item: data-chart -->\n<html><body>
+      const html = `<!-- smashcut-registry-item: data-chart -->\n<html><body>
         <div data-composition-id="x">
           <img src="../assets/should-be-ignored.png">
         </div>
@@ -1710,7 +1710,7 @@ describe("composition rules", () => {
         </div>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.12.2/lottie.min.js"></script>
         <script>
-          window.__hfLottie = window.__hfLottie || [];
+          window.__scLottie = window.__scLottie || [];
           const anim = lottie.loadAnimation({
             container: document.getElementById("anim"),
             renderer: "svg",
@@ -1718,7 +1718,7 @@ describe("composition rules", () => {
             autoplay: false,
             path: "animation.json",
           });
-          window.__hfLottie.push(anim);
+          window.__scLottie.push(anim);
         </script>
       </body></html>`;
       const result = await lintHyperframeHtml(html);
@@ -2050,10 +2050,10 @@ describe("composition rules", () => {
       expect(finding).toBeUndefined();
     });
 
-    it("does not warn on registry-installed block files (`hyperframes-registry-item` marker)", async () => {
+    it("does not warn on registry-installed block files (`smashcut-registry-item` marker)", async () => {
       const overlays = repeat(40, (i) => `<div id="ov-${i}" style="filter: blur(6px)"></div>`);
       const html =
-        "<!-- hyperframes-registry-item: blur-hero -->\n" +
+        "<!-- smashcut-registry-item: blur-hero -->\n" +
         `<!DOCTYPE html><html><body>
           <div data-composition-id="main" data-start="0" data-width="1920" data-height="1080">
             ${overlays}

@@ -21,7 +21,7 @@ Applies `op` immediately. Emits a `patch` event, persists if an adapter is attac
 
 ```typescript
 comp.dispatch(
-  { type: "setStyle", target: "hf-title", styles: { color: "#FFD60A" } },
+  { type: "setStyle", target: "sc-title", styles: { color: "#FFD60A" } },
   { origin: "agent" },
 );
 ```
@@ -36,9 +36,9 @@ Groups all `dispatch()` calls made inside `fn` into a single undo step, a single
 
 ```typescript
 comp.batch(() => {
-  comp.dispatch({ type: "setText", target: "hf-title", value: "Launch Day" });
-  comp.dispatch({ type: "setStyle", target: "hf-title", styles: { fontSize: "96px" } });
-  comp.dispatch({ type: "setTiming", target: "hf-title", start: 0.5, duration: 3 });
+  comp.dispatch({ type: "setText", target: "sc-title", value: "Launch Day" });
+  comp.dispatch({ type: "setStyle", target: "sc-title", styles: { fontSize: "96px" } });
+  comp.dispatch({ type: "setTiming", target: "sc-title", start: 0.5, duration: 3 });
 });
 ```
 
@@ -70,7 +70,7 @@ Stable `code` values for `ok: false`:
 
 | Code | Meaning |
 |------|---------|
-| `E_TARGET_NOT_FOUND` | The `target` hf-id does not exist in the document. |
+| `E_TARGET_NOT_FOUND` | The `target` sc-id does not exist in the document. |
 | `E_NO_ROOT` | The document has no root element (empty HTML). |
 | `E_NO_GSAP_TIMELINE` | The GSAP script has no `gsap.timeline()` to attach to. Declare one (`var tl = gsap.timeline(...)`) and retry. |
 | `E_NO_GSAP_SCRIPT` | Op requires a GSAP `<script>` block; none found in the document. |
@@ -85,7 +85,7 @@ See also: [`Composition`](/sdk/reference/composition) for the typed-method wrapp
 
 ## Element edits
 
-These ops target one or more elements by explicit hf-id. `target` accepts a single `HfId` string or an `HfId[]` array; when an array is given the op is applied to each id individually within a single batch.
+These ops target one or more elements by explicit sc-id. `target` accepts a single `HfId` string or an `HfId[]` array; when an array is given the op is applied to each id individually within a single batch.
 
 | `type` | Key fields | What it does |
 |--------|-----------|--------------|
@@ -102,7 +102,7 @@ These ops target one or more elements by explicit hf-id. `target` accepts a sing
 ```typescript
 comp.dispatch({
   type: "setStyle",
-  target: "hf-card",
+  target: "sc-card",
   styles: {
     borderRadius: "24px",
     backgroundColor: "#1A1A1A",
@@ -118,7 +118,7 @@ comp.dispatch({
 ```typescript
 comp.dispatch({
   type: "setText",
-  target: ["hf-headline", "hf-sub"],
+  target: ["sc-headline", "sc-sub"],
   value: "Coming soon",
 });
 ```
@@ -128,7 +128,7 @@ comp.dispatch({
 ```typescript
 comp.dispatch({
   type: "setAttribute",
-  target: "hf-logo",
+  target: "sc-logo",
   name: "src",
   value: "/assets/logo-v2.png",
 });
@@ -136,7 +136,7 @@ comp.dispatch({
 // Remove an attribute:
 comp.dispatch({
   type: "setAttribute",
-  target: "hf-video",
+  target: "sc-video",
   name: "autoplay",
   value: null,
 });
@@ -147,7 +147,7 @@ comp.dispatch({
 ```typescript
 comp.dispatch({
   type: "setTiming",
-  target: "hf-title",
+  target: "sc-title",
   start: 1.5,
   duration: 3,
   trackIndex: 0,
@@ -161,7 +161,7 @@ comp.dispatch({
 ```typescript
 comp.dispatch({
   type: "setHold",
-  target: "hf-badge",
+  target: "sc-badge",
   hold: {
     start: 2,
     end: 5,
@@ -177,7 +177,7 @@ Sets the element's position via `data-x` / `data-y` attributes. Coordinates are 
 ```typescript
 comp.dispatch({
   type: "moveElement",
-  target: "hf-logo",
+  target: "sc-logo",
   x: 120,
   y: 48,
 });
@@ -191,7 +191,7 @@ These ops mutate document structure (add/remove/reorder elements, apply class-le
 
 | `type` | Key fields | What it does |
 |--------|-----------|--------------|
-| `addElement` | `parent`, `index`, `html` | Inserts an HTML fragment. Returns the minted hf-id via the typed `comp.addElement()` method. |
+| `addElement` | `parent`, `index`, `html` | Inserts an HTML fragment. Returns the minted sc-id via the typed `comp.addElement()` method. |
 | `reorderElements` | `entries` | Sets inline `z-index` on one or more elements to reorder their stacking. |
 | `setClassStyle` | `selector`, `styles` | Merges CSS rule styles for a class selector. `null` values remove properties. |
 | `deleteAllForSelector` | `selector` | Removes all elements matching the CSS selector from the document. |
@@ -199,18 +199,18 @@ These ops mutate document structure (add/remove/reorder elements, apply class-le
 
 ### addElement
 
-`parent` is the hf-id of the parent element, or `null` to insert at the document body root. `index` is the zero-based sibling index (append if `>= childCount`). `html` must be a single-root HTML fragment and must not contain `<script>`.
+`parent` is the sc-id of the parent element, or `null` to insert at the document body root. `index` is the zero-based sibling index (append if `>= childCount`). `html` must be a single-root HTML fragment and must not contain `<script>`.
 
 ```typescript
 comp.dispatch({
   type: "addElement",
-  parent: "hf-scene-1",
+  parent: "sc-scene-1",
   index: 2,
   html: '<div class="clip" data-start="3" data-duration="2">New layer</div>',
 });
 ```
 
-Use the typed `comp.addElement(parent, index, html)` method to get back the minted hf-id.
+Use the typed `comp.addElement(parent, index, html)` method to get back the minted sc-id.
 
 ### reorderElements
 
@@ -220,9 +220,9 @@ Each entry sets `z-index` on one element. Elements must be non-statically positi
 comp.dispatch({
   type: "reorderElements",
   entries: [
-    { target: "hf-bg",   zIndex: 0 },
-    { target: "hf-logo", zIndex: 10 },
-    { target: "hf-text", zIndex: 20 },
+    { target: "sc-bg",   zIndex: 0 },
+    { target: "sc-logo", zIndex: 10 },
+    { target: "sc-text", zIndex: 20 },
   ],
 });
 ```
@@ -323,7 +323,7 @@ These ops add, edit, and remove GSAP tween entries in the composition's GSAP scr
 
 | `type` | Key fields | What it does |
 |--------|-----------|--------------|
-| `addGsapTween` | `target`, `tween` | Adds a new tween for a target hf-id. Returns the minted `animationId` via the typed method. |
+| `addGsapTween` | `target`, `tween` | Adds a new tween for a target sc-id. Returns the minted `animationId` via the typed method. |
 | `setGsapTween` | `animationId`, `properties` | Partially updates an existing tween's `GsapTweenSpec` fields. |
 | `removeGsapTween` | `animationId` | Removes the tween entirely. |
 | `removeGsapProperty` | `animationId`, `property`, `from?` | Removes one animated property from a tween. `from: true` removes from `fromProperties`; otherwise removes from `toProperties` / `properties`. |
@@ -335,7 +335,7 @@ These ops add, edit, and remove GSAP tween entries in the composition's GSAP scr
 ```typescript
 comp.dispatch({
   type: "addGsapTween",
-  target: "hf-title",
+  target: "sc-title",
   tween: {
     method: "from",
     position: 0,
@@ -425,7 +425,7 @@ comp.dispatch({
     { percentage: 100, properties: { opacity: 1, y: 0 }, ease: "power2.out" },
   ],
   easeEach: "none",
-  resolvedSelector: "#hf-title",
+  resolvedSelector: "#sc-title",
 });
 ```
 
@@ -437,7 +437,7 @@ comp.dispatch({
 // Create a new keyframed tween:
 comp.dispatch({
   type: "addWithKeyframes",
-  targetSelector: "#hf-card",
+  targetSelector: "#sc-card",
   position: 1.5,
   duration: 0.6,
   keyframes: [
@@ -451,7 +451,7 @@ comp.dispatch({
 comp.dispatch({
   type: "replaceWithKeyframes",
   animationId: "anim-4",
-  targetSelector: "#hf-card",
+  targetSelector: "#sc-card",
   position: 1.5,
   duration: 0.6,
   keyframes: [
@@ -496,7 +496,7 @@ comp.dispatch({ type: "addLabel", name: "outro", position: 8 });
 // Tween positioned relative to a label:
 comp.dispatch({
   type: "addGsapTween",
-  target: "hf-cta",
+  target: "sc-cta",
   tween: {
     method: "from",
     position: "outro-=0.5",

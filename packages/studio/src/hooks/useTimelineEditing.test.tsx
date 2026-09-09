@@ -3,7 +3,7 @@
 
 import React, { act, useRef } from "react";
 import { createRoot } from "react-dom/client";
-import { openComposition } from "@hyperframes/sdk";
+import { openComposition } from "@smashcut/sdk";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { usePlayerStore, type TimelineElement } from "../player";
 import { jsonResponse, requestUrl } from "./fetchStubTestUtils";
@@ -317,8 +317,8 @@ function setupSingleClipHarness(options?: {
 }
 
 const SDK_KEYFRAMED_SOURCE = [
-  `<div data-hf-id="hf-stage" data-hf-root data-composition-id="main" data-duration="10">`,
-  `  <div id="clip" data-hf-id="hf-clip" data-start="1" data-duration="2"></div>`,
+  `<div data-sc-id="sc-stage" data-sc-root data-composition-id="main" data-duration="10">`,
+  `  <div id="clip" data-sc-id="sc-clip" data-start="1" data-duration="2"></div>`,
   `</div>`,
   `<script>`,
   `const tl = gsap.timeline({ paused: true });`,
@@ -385,7 +385,7 @@ function makeTwoClipPair(bSourceFile?: string) {
 
 const ROOT_DURATION_FALLBACK_SOURCE = [
   `<div data-composition-id="main" data-duration="4">`,
-  `  <div id="clip" data-hf-id="hf-clip" data-start="0" data-duration="2"></div>`,
+  `  <div id="clip" data-sc-id="sc-clip" data-start="0" data-duration="2"></div>`,
   `</div>`,
 ].join("\n");
 
@@ -939,9 +939,9 @@ describe("useTimelineEditing timeline z-index reorder", () => {
 
   it("shifts every keyed clip and invalidates the cache after an SDK-backed group move", async () => {
     const source = [
-      `<div data-hf-id="hf-stage" data-hf-root data-duration="10">`,
-      `  <div id="a" data-hf-id="hf-a" data-start="0" data-duration="1"></div>`,
-      `  <div id="b" data-hf-id="hf-b" data-start="1" data-duration="1"></div>`,
+      `<div data-sc-id="sc-stage" data-sc-root data-duration="10">`,
+      `  <div id="a" data-sc-id="sc-a" data-start="0" data-duration="1"></div>`,
+      `  <div id="b" data-sc-id="sc-b" data-start="1" data-duration="1"></div>`,
       `</div>`,
       `<script>`,
       `const tl = gsap.timeline({ paused: true });`,
@@ -1110,7 +1110,7 @@ describe("useTimelineEditing timeline z-index reorder", () => {
     const win = iframe.contentWindow as unknown as Record<string, unknown>;
     win.gsap = { timeline: vi.fn(), set: vi.fn() };
     win.__timelines = { root: { kill: vi.fn() } };
-    win.__hfForceTimelineRebind = vi.fn();
+    win.__scForceTimelineRebind = vi.fn();
     win.__player = { getTime: () => 0, seek: vi.fn() };
 
     const cap: TimelineElement = {
@@ -1122,7 +1122,7 @@ describe("useTimelineEditing timeline z-index reorder", () => {
     const writeProjectFile = vi.fn<(...args: unknown[]) => Promise<void>>(async () => {});
     const reloadPreview = vi.fn();
     const fetchMock = stubProjectFetch(
-      '<div class="cap" data-hf-id="hf-cap" data-start="2" data-duration="1" data-track-index="0"></div>',
+      '<div class="cap" data-sc-id="sc-cap" data-start="2" data-duration="1" data-track-index="0"></div>',
     );
     const { groupMove, unmount } = renderTimelineEditingHook({
       timelineElements: [cap],
@@ -1150,7 +1150,7 @@ describe("useTimelineEditing timeline z-index reorder", () => {
     // ...and the preview was rebound in place, NOT full-reloaded (blink),
     // with the live script element left untouched (no re-execution).
     expect(reloadPreview).not.toHaveBeenCalled();
-    expect(win.__hfForceTimelineRebind).toHaveBeenCalledTimes(1);
+    expect(win.__scForceTimelineRebind).toHaveBeenCalledTimes(1);
     expect(doc.body.contains(liveScript)).toBe(true);
     expect(doc.querySelectorAll("script")).toHaveLength(1);
 

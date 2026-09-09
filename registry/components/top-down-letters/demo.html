@@ -33,22 +33,22 @@
         /* ponytail: scale wrapper (not a GSAP target) to fill ~65% of frame width */
         transform: scale(3.2);
       }
-      .hf-catalog-top-down-letters {
+      .sc-catalog-top-down-letters {
         color: #18181b;
         font-family: Inter, system-ui, sans-serif;
         font-weight: 900;
         letter-spacing: -0.04em;
       }
-      .hf-catalog-top-down-letters {
+      .sc-catalog-top-down-letters {
         display: inline-flex;
         gap: 1px;
         font-size: 74px;
         line-height: 0.9;
         overflow: hidden;
       }
-      .hf-catalog-top-down-letters span {
+      .sc-catalog-top-down-letters span {
         display: inline-block;
-        transform: translateY(var(--hf-char-y, 0px));
+        transform: translateY(var(--sc-char-y, 0px));
         will-change: transform, opacity;
       }
     </style>
@@ -64,7 +64,7 @@
     >
       <div class="demo-frame">
         <div
-          class="hf-catalog-top-down-letters"
+          class="sc-catalog-top-down-letters"
           data-composition-variables='[
     { "id": "text", "type": "string", "role": "content", "label": "Text", "description": "Word that cascades in. Every character becomes one letter span, in source order.", "default": "CASCADE" },
     { "id": "distance", "type": "enum", "role": "motion", "label": "Distance", "description": "Multiplies the drop the timeline drives, so the letters cover a shorter or longer run in the same time.", "default": "standard", "options": [{ "value": "close", "label": "Close" }, { "value": "standard", "label": "Standard" }, { "value": "far", "label": "Far" }] },
@@ -80,8 +80,8 @@
           "use strict";
 
           var vars =
-            window.__hyperframes && window.__hyperframes.getVariables
-              ? window.__hyperframes.getVariables()
+            window.__smashcut && window.__smashcut.getVariables
+              ? window.__smashcut.getVariables()
               : {};
 
           // Unrecognised overrides return to their declared defaults.
@@ -100,11 +100,11 @@
           var tone = tones[pick(tones, vars.tone, "ink")];
           var text = typeof vars.text === "string" && vars.text !== "" ? vars.text : null;
 
-          var roots = document.querySelectorAll(".hf-catalog-top-down-letters");
+          var roots = document.querySelectorAll(".sc-catalog-top-down-letters");
           for (var i = 0; i < roots.length; i += 1) {
             var root = roots[i];
-            root.style.setProperty("--hf-char-distance", String(distance));
-            root.style.setProperty("--hf-letters-color", tone);
+            root.style.setProperty("--sc-char-distance", String(distance));
+            root.style.setProperty("--sc-letters-color", tone);
 
             // Only rebuild when text was supplied; the shipped markup is already the
             // exact span-per-character output this branch produces for CASCADE.
@@ -125,9 +125,9 @@
         const tl = gsap.timeline({ paused: true });
         const startTime = 0.5;
         tl.fromTo(
-          ".hf-catalog-top-down-letters span",
-          { opacity: 0, "--hf-char-y": "-42px" },
-          { opacity: 1, "--hf-char-y": "0px", duration: 0.22, stagger: 0.035, ease: "power3.out" },
+          ".sc-catalog-top-down-letters span",
+          { opacity: 0, "--sc-char-y": "-42px" },
+          { opacity: 1, "--sc-char-y": "0px", duration: 0.22, stagger: 0.035, ease: "power3.out" },
           startTime,
         );
         tl.set({}, {}, 5);
@@ -136,22 +136,22 @@
       </script>
     </div>
     <style>
-      .hf-catalog-top-down-letters {
-        color: var(--hf-letters-color, #18181b);
+      .sc-catalog-top-down-letters {
+        color: var(--sc-letters-color, #18181b);
         font-family: Inter, system-ui, sans-serif;
         font-weight: 900;
         letter-spacing: -0.04em;
       }
-      .hf-catalog-top-down-letters {
+      .sc-catalog-top-down-letters {
         display: inline-flex;
         gap: 1px;
         font-size: 74px;
         line-height: 0.9;
         overflow: hidden;
       }
-      .hf-catalog-top-down-letters span {
+      .sc-catalog-top-down-letters span {
         display: inline-block;
-        transform: translateY(calc(var(--hf-char-y, 0px) * var(--hf-char-distance, 1)));
+        transform: translateY(calc(var(--sc-char-y, 0px) * var(--sc-char-distance, 1)));
         will-change: transform, opacity;
       }
     </style>

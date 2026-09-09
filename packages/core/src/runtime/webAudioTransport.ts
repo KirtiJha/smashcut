@@ -22,7 +22,7 @@ function normalizeRate(rate: number): number {
  * The render puts every track volume through `clampVolume`, which is
  * `clampAudioGain` — ceiling MAX_AUDIO_GAIN (+12 dB, ~3.98), not unity. Preview
  * has to agree or the two diverge on exactly the attribute this bus exists to
- * honour: an authored `<hf-audio-group data-volume="2">` previewed at 1.0 and
+ * honour: an authored `<sc-audio-group data-volume="2">` previewed at 1.0 and
  * exported at 2.0, up to 6 dB quieter in the audition than in the file, and
  * 12 dB at the ceiling. Preview was also self-inconsistent — the same
  * parameter's automation lane is bounded by `VOLUME_RANGE.max`, which IS
@@ -38,13 +38,13 @@ function clampGroupVolume(volume: number): number {
 /**
  * Breadcrumb for the per-element-mute handoff: the transport just claimed a track
  * that was audibly playing through the HTMLMedia fallback. Quiet unless
- * `__hfDebug` — a hook for diagnosing the race if it ever regresses.
+ * `__scDebug` — a hook for diagnosing the race if it ever regresses.
  */
 function logFallbackHandoff(el: HTMLMediaElement, priorMuted: boolean): void {
-  if (priorMuted || el.paused || !getDebugSurface().__hfDebug) return;
+  if (priorMuted || el.paused || !getDebugSurface().__scDebug) return;
   // eslint-disable-next-line no-console -- intentional debug surface
   console.debug(
-    "[hyperframes] webAudioTransport claimed fallback-playing element:",
+    "[smashcut] webAudioTransport claimed fallback-playing element:",
     el.currentSrc || el.getAttribute("src") || "",
   );
 }
@@ -92,7 +92,7 @@ function startBoundedSource(
  * and the order the render bakes it in.
  *
  * Typed against the attribute reader rather than `HTMLMediaElement` so a group
- * bus (an `<hf-audio-group>`, not a media element) can ride the same path.
+ * bus (an `<sc-audio-group>`, not a media element) can ride the same path.
  */
 function scheduleVolumeLane(
   el: { getAttribute?(name: string): string | null },
@@ -386,7 +386,7 @@ export class WebAudioTransport {
    * `data-start`, and a missing start parses as 0, which is exactly
    * composition time — so its chain and volume lane are scheduled once here
    * against that zero-offset timing, not the member's own clip-local timing.
-   * A group id with no matching `<hf-audio-group>` element still gets a bus
+   * A group id with no matching `<sc-audio-group>` element still gets a bus
    * (flat, no chain) so a hand-authored `data-audio-group` degrades to a
    * plain sum rather than losing the member's audio.
    */

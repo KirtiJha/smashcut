@@ -1,7 +1,7 @@
 import { readFileSync, readdirSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import { bundleToSingleHtml } from "@hyperframes/core/compiler";
+import { bundleToSingleHtml } from "@smashcut/core/compiler";
 import { parseHTML } from "linkedom";
 import { describe, expect, it } from "vitest";
 
@@ -24,7 +24,7 @@ function findMissingLocalScripts(itemDir: string, manifest: RegistryManifest): s
   const missing: string[] = [];
 
   for (const file of manifest.files) {
-    if (file.type !== "hyperframes:composition" || !file.path.endsWith(".html")) continue;
+    if (file.type !== "smashcut:composition" || !file.path.endsWith(".html")) continue;
 
     const html = readFileSync(join(itemDir, file.path), "utf8");
     const localScripts = [...html.matchAll(/<script\b[^>]*\bsrc=["']([^"']+)["']/gi)]
@@ -56,9 +56,9 @@ describe("registry blocks", () => {
         (file) =>
           file.path === "TEMPLATE.md" &&
           file.target === "TEMPLATE.md" &&
-          file.type === "hyperframes:asset",
+          file.type === "smashcut:asset",
       );
-      const composition = manifest.files.find((file) => file.type === "hyperframes:composition");
+      const composition = manifest.files.find((file) => file.type === "smashcut:composition");
 
       expect(contractFiles, templateId).toHaveLength(1);
       expect(composition, templateId).toBeDefined();
@@ -121,6 +121,6 @@ describe("registry blocks", () => {
     expect(demo?.getAttribute("data-composition-id")).toBe("camcorder-hud-demo");
     expect(hud?.getAttribute("data-composition-id")).toBe("camcorder-hud");
     expect(hud?.hasAttribute("data-composition-src")).toBe(false);
-    expect(bundled).toContain('var __hfTimelineCompId = "camcorder-hud";');
+    expect(bundled).toContain('var __scTimelineCompId = "camcorder-hud";');
   });
 });

@@ -6,7 +6,7 @@ import { describe, expect, it } from "vitest";
 import { buildSubCompositionHtml } from "./subComposition";
 
 function makeTempProject(files: Record<string, string>): string {
-  const dir = mkdtempSync(join(tmpdir(), "hf-subcomp-preview-"));
+  const dir = mkdtempSync(join(tmpdir(), "sc-subcomp-preview-"));
   for (const [rel, content] of Object.entries(files)) {
     const full = join(dir, rel);
     mkdirSync(join(full, ".."), { recursive: true });

@@ -6,7 +6,7 @@ import { createRenderFileLogger } from "../renderOrchestrator.js";
 
 describe("createRenderFileLogger", () => {
   it("keeps concurrent debug logs scoped without replacing global console methods", async () => {
-    const dir = mkdtempSync(join(tmpdir(), "hf-render-log-"));
+    const dir = mkdtempSync(join(tmpdir(), "sc-render-log-"));
     const firstPath = join(dir, "first.log");
     const secondPath = join(dir, "second.log");
     const originalConsole = {

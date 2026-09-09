@@ -31,7 +31,7 @@ import {
 } from "./publishProject.js";
 
 function makeProjectDir(): string {
-  return mkdtempSync(join(tmpdir(), "hf-publish-"));
+  return mkdtempSync(join(tmpdir(), "sc-publish-"));
 }
 
 /** Writes an external asset and returns its path relative to `fromDir`, POSIX-slashed. */
@@ -64,7 +64,7 @@ function localizeSingleAsset(
   buildFiles: (relToExt: string, projectDir: string) => Map<string, Buffer>,
 ): { count: number; files: Map<string, Buffer>; relToExt: string } {
   const projectDir = makeProjectDir();
-  const extDir = mkdtempSync(join(tmpdir(), "hf-ext-"));
+  const extDir = mkdtempSync(join(tmpdir(), "sc-ext-"));
   try {
     const relToExt = stageExternalAsset(extDir, projectDir, assetName, assetContent);
     const files = buildFiles(relToExt, projectDir);
@@ -102,7 +102,7 @@ function uploadResponse(overrides?: Record<string, unknown>): Response {
     JSON.stringify({
       data: {
         upload_url: "https://s3.example.com/upload",
-        upload_key: "ephemeral_store/hyperframes/project_uploads/upload-1/demo.zip",
+        upload_key: "ephemeral_store/smashcut/project_uploads/upload-1/demo.zip",
         upload_headers: { "content-type": "application/zip" },
         content_type: "application/zip",
         ...overrides,
@@ -120,7 +120,7 @@ function publishedResponse(overrides?: Record<string, unknown>): Response {
         project_id: "hfp_123",
         title: "demo",
         file_count: 1,
-        url: "https://hyperframes.dev/p/hfp_123",
+        url: "https://smashcut.dev/p/hfp_123",
         claim_token: "claim-token",
         ...overrides,
       },
@@ -241,7 +241,7 @@ describe("createPublishArchive", () => {
     }
   });
 
-  it("applies gitignore-style rules from .hyperframesignore", () => {
+  it("applies gitignore-style rules from .smashcutignore", () => {
     const dir = makeProjectDir();
     try {
       writeFileSync(join(dir, "index.html"), "<html></html>", "utf-8");
@@ -251,7 +251,7 @@ describe("createPublishArchive", () => {
       writeFileSync(join(dir, "assets", "discard.psd"), "discard", "utf-8");
       writeFileSync(join(dir, "assets", "keep.psd"), "keep", "utf-8");
       writeFileSync(
-        join(dir, ".hyperframesignore"),
+        join(dir, ".smashcutignore"),
         ["# Generated source files", "/exports/", "*.psd", "!assets/keep.psd", ""].join("\n"),
         "utf-8",
       );
@@ -262,19 +262,19 @@ describe("createPublishArchive", () => {
       expect(entries).toContain("assets/keep.psd");
       expect(entries).not.toContain("exports/draft.mp4");
       expect(entries).not.toContain("assets/discard.psd");
-      expect(entries).not.toContain(".hyperframesignore");
+      expect(entries).not.toContain(".smashcutignore");
     } finally {
       rmSync(dir, { recursive: true, force: true });
     }
   });
 
-  it("allows .hyperframesignore to re-include a default output directory", () => {
+  it("allows .smashcutignore to re-include a default output directory", () => {
     const dir = makeProjectDir();
     try {
       writeFileSync(join(dir, "index.html"), "<html></html>", "utf-8");
       mkdirSync(join(dir, "snapshots"));
       writeFileSync(join(dir, "snapshots", "reference.png"), "reference", "utf-8");
-      writeFileSync(join(dir, ".hyperframesignore"), "!/snapshots/\n", "utf-8");
+      writeFileSync(join(dir, ".smashcutignore"), "!/snapshots/\n", "utf-8");
 
       const zip = new AdmZip(createPublishArchive(dir).buffer);
       expect(zip.getEntries().map((entry) => entry.entryName)).toContain("snapshots/reference.png");
@@ -283,14 +283,14 @@ describe("createPublishArchive", () => {
     }
   });
 
-  it("fails clearly when .hyperframesignore excludes index.html", () => {
+  it("fails clearly when .smashcutignore excludes index.html", () => {
     const dir = makeProjectDir();
     try {
       writeFileSync(join(dir, "index.html"), "<html></html>", "utf-8");
-      writeFileSync(join(dir, ".hyperframesignore"), "/index.html\n", "utf-8");
+      writeFileSync(join(dir, ".smashcutignore"), "/index.html\n", "utf-8");
 
       expect(() => createPublishArchive(dir)).toThrow(
-        "Project archive must include index.html at the root. Check that .hyperframesignore does not exclude it.",
+        "Project archive must include index.html at the root. Check that .smashcutignore does not exclude it.",
       );
     } finally {
       rmSync(dir, { recursive: true, force: true });
@@ -479,7 +479,7 @@ describe("localizeExternalAssets", () => {
 
   it("handles sub-composition HTML with external refs", () => {
     const projectDir = makeProjectDir();
-    const extDir = mkdtempSync(join(tmpdir(), "hf-ext-"));
+    const extDir = mkdtempSync(join(tmpdir(), "sc-ext-"));
     try {
       mkdirSync(join(projectDir, "compositions"));
       const relFromComps = stageExternalAsset(
@@ -521,7 +521,7 @@ describe("localizeExternalAssets", () => {
 
   it("createPublishArchive includes localized external assets", () => {
     const projectDir = makeProjectDir();
-    const extDir = mkdtempSync(join(tmpdir(), "hf-ext-"));
+    const extDir = mkdtempSync(join(tmpdir(), "sc-ext-"));
     try {
       const relToExt = stageExternalAsset(extDir, projectDir, "video.mp4", "MP4_DATA");
       writeFileSync(
@@ -569,7 +569,7 @@ describe("uploadTimeoutMs", () => {
 beforeEach(() => {
   authMocks.tryResolveCredential.mockReset().mockResolvedValue(null);
   linkMocks.writeProjectLink.mockReset();
-  vi.stubEnv("HYPERFRAMES_PUBLISHED_PROJECTS_API_URL", "");
+  vi.stubEnv("SMASHCUT_PUBLISHED_PROJECTS_API_URL", "");
   vi.stubEnv("HEYGEN_API_URL", "");
 });
 
@@ -606,13 +606,13 @@ describe("publishProjectArchive", () => {
       expect(getPublishApiBaseUrl()).toBe("https://api2.heygen.com");
       expect(result).toMatchObject({
         projectId: "hfp_123",
-        url: "https://hyperframes.dev/p/hfp_123",
+        url: "https://smashcut.dev/p/hfp_123",
       });
       expect(fetchMock).toHaveBeenCalledTimes(3);
       expectFetchCall(
         fetchMock,
         1,
-        "https://api2.heygen.com/v1/hyperframes/projects/publish/upload",
+        "https://api2.heygen.com/v1/smashcut/projects/publish/upload",
         {
           method: "POST",
           headers: jsonHeaders,
@@ -629,7 +629,7 @@ describe("publishProjectArchive", () => {
       expectFetchCall(
         fetchMock,
         3,
-        "https://api2.heygen.com/v1/hyperframes/projects/publish/complete",
+        "https://api2.heygen.com/v1/smashcut/projects/publish/complete",
         {
           method: "POST",
           headers: jsonHeaders,
@@ -687,7 +687,7 @@ describe("publishProjectArchive", () => {
 
       expect(result.projectId).toBe("hfp_123");
       expect(fetchMock).toHaveBeenCalledTimes(2);
-      expectFetchCall(fetchMock, 2, "https://api2.heygen.com/v1/hyperframes/projects/publish", {
+      expectFetchCall(fetchMock, 2, "https://api2.heygen.com/v1/smashcut/projects/publish", {
         method: "POST",
         headers: {},
       });
@@ -897,10 +897,10 @@ describe("publishProjectArchive", () => {
       expect(result.projectId).toBe("hfp_123");
       expect(fetchMock).toHaveBeenCalledTimes(4);
       expect(fetchMock.mock.calls[0]![0]).toBe(
-        "https://api2.heygen.com/v1/hyperframes/projects/publish/upload",
+        "https://api2.heygen.com/v1/smashcut/projects/publish/upload",
       );
       expect(fetchMock.mock.calls[1]![0]).toBe(
-        "https://api2.heygen.com/v1/hyperframes/projects/publish/upload",
+        "https://api2.heygen.com/v1/smashcut/projects/publish/upload",
       );
     } finally {
       rmSync(dir, { recursive: true, force: true });
@@ -956,7 +956,7 @@ describe("publishProjectArchive", () => {
 function ownedStagedFetch() {
   return stagedFetch({
     project_id: "hfp_stable",
-    url: "https://hyperframes.dev/p/hfp_stable",
+    url: "https://smashcut.dev/p/hfp_stable",
     claim_token: "",
     claimed: true,
   });
@@ -981,7 +981,7 @@ describe("publishProjectArchive", () => {
       expect(result.claimToken).toBe("");
       expect(linkMocks.writeProjectLink).toHaveBeenCalledWith(dir, {
         projectId: "hfp_stable",
-        url: "https://hyperframes.dev/p/hfp_stable",
+        url: "https://smashcut.dev/p/hfp_stable",
       });
     } finally {
       rmSync(dir, { recursive: true, force: true });

@@ -38,7 +38,7 @@
     ></div>
 
     <script>
-      // Minimal Three.js scene driven by window.__hfThreeTime. The runtime
+      // Minimal Three.js scene driven by window.__scThreeTime. The runtime
       // sets this per frame; the render loop reads it and derives all
       // rotation/position from time-in-seconds so output is fully
       // determined by the seek position.
@@ -64,18 +64,18 @@
       light.position.set(2, 2, 3);
       scene.add(light);
 
-      window.__hfThreeTime = 0;
+      window.__scThreeTime = 0;
       function renderFrame() {
-        const t = window.__hfThreeTime || 0;
+        const t = window.__scThreeTime || 0;
         cube.rotation.x = t * Math.PI;
         cube.rotation.y = t * Math.PI * 0.5;
         renderer.render(scene, camera);
       }
-      // Listen for the runtime's `hf-seek` event in case the engine pushes
-      // a seek before our render loop polls __hfThreeTime.
-      window.addEventListener("hf-seek", (e) => {
+      // Listen for the runtime's `sc-seek` event in case the engine pushes
+      // a seek before our render loop polls __scThreeTime.
+      window.addEventListener("sc-seek", (e) => {
         if (e && e.detail && typeof e.detail.time === "number") {
-          window.__hfThreeTime = e.detail.time;
+          window.__scThreeTime = e.detail.time;
         }
         renderFrame();
       });

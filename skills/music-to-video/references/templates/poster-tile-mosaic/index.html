@@ -110,7 +110,7 @@
   <body>
     <!-- duration 5.75s = the full group_5 span (3 operations back to back, ends frozen) -->
     <div
-      data-hf-id="hf-g5rt"
+      data-sc-id="sc-g5rt"
       id="root"
       data-composition-id="group-five-recreate"
       data-width="1920"
@@ -119,7 +119,7 @@
       data-duration="5.75"
       data-root="true"
     >
-      <div data-hf-id="hf-g5wall" id="wall"></div>
+      <div data-sc-id="sc-g5wall" id="wall"></div>
     </div>
 
     <script>
@@ -167,8 +167,8 @@
         var vars = Object.assign(
           {},
           defaults,
-          window.__hyperframes && window.__hyperframes.getVariables
-            ? window.__hyperframes.getVariables()
+          window.__smashcut && window.__smashcut.getVariables
+            ? window.__smashcut.getVariables()
             : {},
         );
         var N = Math.max(2, parseInt(vars.tiles, 10) || 12);

@@ -55,7 +55,7 @@ describe("live DOM manifest hydration", () => {
   });
   it("does not let an unmatched image steal the scene's editable identity", () => {
     const doc = documentWith(
-      '<div class="clip scene" data-hf-id="scene-hf" data-start="2" data-duration="4"></div>',
+      '<div class="clip scene" data-sc-id="scene-hf" data-start="2" data-duration="4"></div>',
     );
     const elements = buildTimelineElementsFromClips(
       [clip({ id: "missing", tagName: "img", kind: "image" }), clip({ start: 2 })],
@@ -81,7 +81,7 @@ describe("live DOM manifest hydration", () => {
     const doc = documentWith(
       Array.from(
         { length: 300 },
-        (_, i) => `<div data-hf-id="h${i}" data-start="${i}" data-duration="4"></div>`,
+        (_, i) => `<div data-sc-id="h${i}" data-start="${i}" data-duration="4"></div>`,
       ).join(""),
     );
     const query = vi.spyOn(doc, "querySelectorAll");
@@ -94,7 +94,7 @@ describe("live DOM manifest hydration", () => {
       Array.from(
         { length: 300 },
         (_, i) =>
-          `<div ${i % 2 ? "id" : "data-hf-id"}="direct${i}" data-start="${i}" data-duration="4"></div>`,
+          `<div ${i % 2 ? "id" : "data-sc-id"}="direct${i}" data-start="${i}" data-duration="4"></div>`,
       ).join(""),
     );
     const query = vi.spyOn(doc, "querySelectorAll");
@@ -103,18 +103,18 @@ describe("live DOM manifest hydration", () => {
     expect(query.mock.calls.filter(([selector]) => selector === "[data-start]")).toHaveLength(0);
   });
   it("resolves hf identities without a fallback scan and refreshes after DOM replacement", () => {
-    const doc = documentWith('<div data-hf-id="stable" data-start="2" data-duration="4"></div>');
+    const doc = documentWith('<div data-sc-id="stable" data-start="2" data-duration="4"></div>');
     const query = vi.spyOn(doc, "querySelectorAll");
     const clips = [clip({ id: "stable", start: 0 })];
     expect(buildTimelineElementsFromClips(clips, doc)[0].hfId).toBe("stable");
     expect(query.mock.calls.filter(([selector]) => selector === "[data-start]")).toHaveLength(0);
     doc.querySelector("[data-composition-id]")!.innerHTML =
-      '<div data-hf-id="replacement" data-start="2" data-duration="4"></div>';
+      '<div data-sc-id="replacement" data-start="2" data-duration="4"></div>';
     expect(buildTimelineElementsFromClips([clip({ start: 2 })], doc)[0].hfId).toBe("replacement");
   });
   it("preserves DOM-id precedence and same-tag positional recovery after timing drift", () => {
     const doc = documentWith(
-      '<div id="stable" data-start="5"></div><div data-hf-id="stable" data-start="0"></div>',
+      '<div id="stable" data-start="5"></div><div data-sc-id="stable" data-start="0"></div>',
     );
     expect(findTimelineDomNodeForClip(doc, clip({ id: "stable" }), 0)?.id).toBe("stable");
     expect(findTimelineDomNodeForClip(doc, clip({ start: 9 }), 0)?.id).toBe("stable");

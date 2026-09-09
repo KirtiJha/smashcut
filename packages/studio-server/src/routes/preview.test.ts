@@ -26,7 +26,7 @@ afterEach(() => {
 });
 
 function createProjectDir(): string {
-  const projectDir = mkdtempSync(join(tmpdir(), "hf-preview-test-"));
+  const projectDir = mkdtempSync(join(tmpdir(), "sc-preview-test-"));
   tempDirs.push(projectDir);
   writeFileSync(join(projectDir, "index.html"), "<html><head></head><body>Preview</body></html>");
   return projectDir;
@@ -69,7 +69,7 @@ async function getPreviewSignature(projectDir: string): Promise<string> {
   const response = await app.request("http://localhost/projects/demo/preview");
   expect(response.status).toBe(200);
   const html = await response.text();
-  const match = /<meta name="hyperframes-project-signature" content="([^"]+)">/.exec(html);
+  const match = /<meta name="smashcut-project-signature" content="([^"]+)">/.exec(html);
   expect(match?.[1]).toBeTruthy();
   return match![1]!;
 }
@@ -81,7 +81,7 @@ describe("registerPreviewRoutes", () => {
       join(projectDir, "index.html"),
       "<!doctype html><html><head></head><body><div id='card'></div></body></html>",
     );
-    const manifestDir = join(projectDir, ".hyperframes");
+    const manifestDir = join(projectDir, ".smashcut");
     mkdirSync(manifestDir, { recursive: true });
     writeFileSync(
       join(manifestDir, "studio-motion.json"),
@@ -94,7 +94,7 @@ describe("registerPreviewRoutes", () => {
     const html = await response.text();
 
     expect(response.status).toBe(200);
-    expect(html).toContain("__hfStudioMotionApply");
+    expect(html).toContain("__scStudioMotionApply");
     expect(html).toContain("studio-motion");
     expect(html).toContain("gsap@3.15.0/dist/gsap.min.js");
   });
@@ -105,7 +105,7 @@ describe("registerPreviewRoutes", () => {
       join(projectDir, "index.html"),
       "<!doctype html><html><head></head><body><div id='card'></div></body></html>",
     );
-    const manifestDir = join(projectDir, ".hyperframes");
+    const manifestDir = join(projectDir, ".smashcut");
     mkdirSync(manifestDir, { recursive: true });
     writeFileSync(
       join(manifestDir, "studio-motion.json"),
@@ -121,7 +121,7 @@ describe("registerPreviewRoutes", () => {
     expect(html).toContain("gsap@3.15.0/dist/gsap.min.js");
     expect(html).toContain("gsap@3.15.0/dist/CustomEase.min.js");
     expect(html.indexOf("gsap.min.js")).toBeLessThan(html.indexOf("CustomEase.min.js"));
-    expect(html.indexOf("CustomEase.min.js")).toBeLessThan(html.indexOf("__hfStudioMotionApply"));
+    expect(html.indexOf("CustomEase.min.js")).toBeLessThan(html.indexOf("__scStudioMotionApply"));
   });
 
   it("injects the GSAP MotionPathPlugin when the composition uses a motionPath", async () => {
@@ -186,7 +186,7 @@ describe("registerPreviewRoutes", () => {
       join(projectDir, "compositions/scene.html"),
       `<template><section id="card" data-composition-id="scene" data-width="1280" data-height="720"></section></template>`,
     );
-    const manifestDir = join(projectDir, ".hyperframes");
+    const manifestDir = join(projectDir, ".smashcut");
     mkdirSync(manifestDir, { recursive: true });
     writeFileSync(
       join(manifestDir, "studio-motion.json"),
@@ -201,7 +201,7 @@ describe("registerPreviewRoutes", () => {
     const html = await response.text();
 
     expect(response.status).toBe(200);
-    expect(html).toContain("__hfStudioMotionApply");
+    expect(html).toContain("__scStudioMotionApply");
     expect(html).toContain("compositions/scene.html");
   });
 
@@ -333,7 +333,7 @@ describe("registerPreviewRoutes", () => {
     expect(response.status).toBe(200);
     expect(getProjectSignature).toHaveBeenCalledWith(projectDir);
     expect(html).toContain(
-      '<meta name="hyperframes-project-signature" content="cached-signature">',
+      '<meta name="smashcut-project-signature" content="cached-signature">',
     );
   });
 
@@ -352,7 +352,7 @@ describe("registerPreviewRoutes", () => {
 
   it("updates the preview signature after Studio manifest edits", async () => {
     const projectDir = createProjectDir();
-    const manifestDir = join(projectDir, ".hyperframes");
+    const manifestDir = join(projectDir, ".smashcut");
     mkdirSync(manifestDir, { recursive: true });
     const motionFile = join(manifestDir, "studio-motion.json");
     writeFileSync(motionFile, `{"version":1,"motions":[]}`);
@@ -371,7 +371,7 @@ describe("registerPreviewRoutes", () => {
     const projectDir = createProjectDir();
     const firstSignature = await getPreviewSignature(projectDir);
 
-    const externalDir = mkdtempSync(join(tmpdir(), "hf-preview-external-"));
+    const externalDir = mkdtempSync(join(tmpdir(), "sc-preview-external-"));
     tempDirs.push(externalDir);
     const externalFile = join(externalDir, "external.js");
     writeFileSync(externalFile, "export const external = true;");
@@ -391,8 +391,8 @@ describe("registerPreviewRoutes", () => {
   });
 });
 
-describe("hf-id surfacing in preview route", () => {
-  it("serves HTML with data-hf-id on body elements (R7 write-back)", async () => {
+describe("sc-id surfacing in preview route", () => {
+  it("serves HTML with data-sc-id on body elements (R7 write-back)", async () => {
     const projectDir = createProjectDir();
     writeFileSync(
       join(projectDir, "index.html"),
@@ -403,12 +403,12 @@ describe("hf-id surfacing in preview route", () => {
     const res = await app.request("http://localhost/projects/demo/preview");
     expect(res.status).toBe(200);
     const html = await res.text();
-    const ids = html.match(/data-hf-id="hf-[a-z0-9]{4}"/g);
+    const ids = html.match(/data-sc-id="hf-[a-z0-9]{4}"/g);
     // div and p both tagged
     expect(ids?.length).toBeGreaterThanOrEqual(2);
   });
 
-  it("writes data-hf-id back to disk on first serve", async () => {
+  it("writes data-sc-id back to disk on first serve", async () => {
     const { readFileSync } = await import("node:fs");
     const projectDir = createProjectDir();
     const indexPath = join(projectDir, "index.html");
@@ -420,7 +420,7 @@ describe("hf-id surfacing in preview route", () => {
     registerPreviewRoutes(app, createAdapter(projectDir));
     await app.request("http://localhost/projects/demo/preview");
     const onDisk = readFileSync(indexPath, "utf-8");
-    expect(onDisk).toContain('data-hf-id="hf-');
+    expect(onDisk).toContain('data-sc-id="hf-');
   });
 
   it("bundle returning untagged HTML gets same ids as disk — content-hash is stable across mint contexts", async () => {
@@ -445,14 +445,14 @@ describe("hf-id surfacing in preview route", () => {
     const diskHtml = readFileSync(indexPath, "utf-8");
 
     // Extract ids from served HTML and disk HTML
-    const servedIds = [...servedHtml.matchAll(/data-hf-id="(hf-[a-z0-9]+)"/g)].map((m) => m[1]);
-    const diskIds = [...diskHtml.matchAll(/data-hf-id="(hf-[a-z0-9]+)"/g)].map((m) => m[1]);
+    const servedIds = [...servedHtml.matchAll(/data-sc-id="(hf-[a-z0-9]+)"/g)].map((m) => m[1]);
+    const diskIds = [...diskHtml.matchAll(/data-sc-id="(hf-[a-z0-9]+)"/g)].map((m) => m[1]);
 
     expect(servedIds.length).toBeGreaterThanOrEqual(2);
     expect(servedIds).toEqual(diskIds);
   });
 
-  it("sub-comp route writes data-hf-id back to disk on first serve", async () => {
+  it("sub-comp route writes data-sc-id back to disk on first serve", async () => {
     const { readFileSync } = await import("node:fs");
     const projectDir = createProjectDir();
     const compPath = join(projectDir, "scene.html");
@@ -461,7 +461,7 @@ describe("hf-id surfacing in preview route", () => {
     registerPreviewRoutes(app, createAdapter(projectDir));
     const res = await app.request("http://localhost/projects/demo/preview/comp/scene.html");
     expect(res.status).toBe(200);
-    expect(readFileSync(compPath, "utf-8")).toContain('data-hf-id="hf-');
+    expect(readFileSync(compPath, "utf-8")).toContain('data-sc-id="hf-');
   });
 
   it("sub-comp served ids equal disk ids even when relative asset paths are rewritten", async () => {
@@ -481,10 +481,10 @@ describe("hf-id surfacing in preview route", () => {
     registerPreviewRoutes(app, createAdapter(projectDir));
     const res = await app.request("http://localhost/projects/demo/preview/comp/scene.html");
     expect(res.status).toBe(200);
-    const servedIds = [...(await res.text()).matchAll(/data-hf-id="(hf-[a-z0-9]+)"/g)]
+    const servedIds = [...(await res.text()).matchAll(/data-sc-id="(hf-[a-z0-9]+)"/g)]
       .map((m) => m[1])
       .sort();
-    const diskIds = [...readFileSync(compPath, "utf-8").matchAll(/data-hf-id="(hf-[a-z0-9]+)"/g)]
+    const diskIds = [...readFileSync(compPath, "utf-8").matchAll(/data-sc-id="(hf-[a-z0-9]+)"/g)]
       .map((m) => m[1])
       .sort();
     expect(servedIds.length).toBeGreaterThanOrEqual(2); // div + img
@@ -503,11 +503,11 @@ describe("hf-id surfacing in preview route", () => {
     registerPreviewRoutes(app, createAdapter(projectDir));
     const res = await app.request("http://localhost/projects/demo/preview/comp/test-minimal.html");
     expect(res.status).toBe(200);
-    const servedIds = [...(await res.text()).matchAll(/data-hf-id="(hf-[a-z0-9]+)"/g)].map(
+    const servedIds = [...(await res.text()).matchAll(/data-sc-id="(hf-[a-z0-9]+)"/g)].map(
       (m) => m[1],
     );
     const diskIds = [
-      ...readFileSync(compPath, "utf-8").matchAll(/data-hf-id="(hf-[a-z0-9]+)"/g),
+      ...readFileSync(compPath, "utf-8").matchAll(/data-sc-id="(hf-[a-z0-9]+)"/g),
     ].map((m) => m[1]);
     expect(diskIds.length).toBe(2);
     for (const id of diskIds) expect(servedIds).toContain(id);
@@ -528,7 +528,7 @@ describe("hf-id surfacing in preview route", () => {
 
   it("serves an asset reached through an in-project symlink to a shared external directory", async () => {
     const projectDir = createProjectDir();
-    const externalDir = mkdtempSync(join(tmpdir(), "hf-preview-shared-assets-"));
+    const externalDir = mkdtempSync(join(tmpdir(), "sc-preview-shared-assets-"));
     tempDirs.push(externalDir);
     mkdirSync(join(projectDir, "assets"));
     writeFileSync(join(externalDir, "sample.svg"), "<svg>shared</svg>");
@@ -564,13 +564,13 @@ describe("hf-id surfacing in preview route", () => {
     const res = await app.request("http://localhost/projects/demo/preview/comp/clones.html");
     expect(res.status).toBe(200);
     const disk = readFileSync(compPath, "utf-8");
-    expect(disk).toMatch(/<div[^>]*data-hf-id/); // stage div stamped
-    expect(disk).not.toMatch(/<li[^>]*data-hf-id/); // clone-source untouched
+    expect(disk).toMatch(/<div[^>]*data-sc-id/); // stage div stamped
+    expect(disk).not.toMatch(/<li[^>]*data-sc-id/); // clone-source untouched
   });
 });
 
 describe("preview ?variables= injection", () => {
-  it("injects window.__hfVariables before composition scripts in the main preview", async () => {
+  it("injects window.__scVariables before composition scripts in the main preview", async () => {
     const projectDir = createProjectDir();
     const app = new Hono();
     registerPreviewRoutes(app, createAdapter(projectDir));
@@ -581,10 +581,10 @@ describe("preview ?variables= injection", () => {
     );
     expect(res.status).toBe(200);
     const html = await res.text();
-    expect(html).toContain("data-hf-preview-variables");
-    expect(html).toContain('window.__hfVariables={"title":"Custom","count":5}');
+    expect(html).toContain("data-sc-preview-variables");
+    expect(html).toContain('window.__scVariables={"title":"Custom","count":5}');
     // Injected in <head> — before the runtime script and all body scripts.
-    expect(html.indexOf("data-hf-preview-variables")).toBeLessThan(html.indexOf("</head>"));
+    expect(html.indexOf("data-sc-preview-variables")).toBeLessThan(html.indexOf("</head>"));
   });
 
   it("escapes </script> breakout attempts in string values", async () => {
@@ -597,7 +597,7 @@ describe("preview ?variables= injection", () => {
       `http://localhost/projects/demo/preview?variables=${encodeURIComponent(JSON.stringify(values))}`,
     );
     const html = await res.text();
-    const injected = /<script data-hf-preview-variables>([\s\S]*?)<\/script>/.exec(html);
+    const injected = /<script data-sc-preview-variables>([\s\S]*?)<\/script>/.exec(html);
     expect(injected?.[1]).toContain("\\u003c/script>");
     expect(injected?.[1]).not.toContain("</script>");
   });
@@ -645,7 +645,7 @@ describe("preview ?variables= injection", () => {
     );
     expect(res.status).toBe(200);
     const html = await res.text();
-    expect(html).toContain('window.__hfVariables={"accent":"#f00"}');
+    expect(html).toContain('window.__scVariables={"accent":"#f00"}');
   });
 });
 
@@ -673,7 +673,7 @@ describe("sub-composition preview attribute integrity", () => {
   });
 });
 
-// ── U3: ?hf-proxy=h264 negotiation + __HF_MEDIA_CODEC_MAP__ injection ───────
+// ── U3: ?sc-proxy=h264 negotiation + __HF_MEDIA_CODEC_MAP__ injection ───────
 // (docs/plans/2026-07-14-002-feat-transparent-media-proxies-plan.md)
 //
 // Both helpers preview.ts depends on (proxyTranscoder's resolveProxy,
@@ -682,7 +682,7 @@ describe("sub-composition preview attribute integrity", () => {
 // codec detection) is already covered by proxyTranscoder.test.ts and
 // mediaCodecMap.test.ts. This suite only tests preview.ts's own wiring —
 // the route branches, ETag salting, 404/502 mapping, and injection point.
-describe("hf-proxy negotiation and media codec map injection (U3)", () => {
+describe("sc-proxy negotiation and media codec map injection (U3)", () => {
   afterEach(() => {
     vi.resetModules();
     vi.doUnmock("../helpers/proxyTranscoder.js");
@@ -790,7 +790,7 @@ describe("hf-proxy negotiation and media codec map injection (U3)", () => {
     return import("./preview.js");
   }
 
-  describe("?hf-proxy=h264 on the static asset route", () => {
+  describe("?sc-proxy=h264 on the static asset route", () => {
     it("serves proxy bytes with Accept-Ranges on a full request, and a 206 range slice on a Range request", async () => {
       const projectDir = createProjectDir();
       writeFileSync(join(projectDir, "clip.mp4"), "original-hevc-bytes");
@@ -807,7 +807,7 @@ describe("hf-proxy negotiation and media codec map injection (U3)", () => {
       register(app, createAdapter(projectDir));
 
       const full = await app.request(
-        "http://localhost/projects/demo/preview/clip.mp4?hf-proxy=h264",
+        "http://localhost/projects/demo/preview/clip.mp4?sc-proxy=h264",
       );
       expect(full.status).toBe(200);
       expect(full.headers.get("Accept-Ranges")).toBe("bytes");
@@ -821,7 +821,7 @@ describe("hf-proxy negotiation and media codec map injection (U3)", () => {
       );
 
       const ranged = await app.request(
-        "http://localhost/projects/demo/preview/clip.mp4?hf-proxy=h264",
+        "http://localhost/projects/demo/preview/clip.mp4?sc-proxy=h264",
         {
           headers: { Range: "bytes=0-9" },
         },
@@ -847,7 +847,7 @@ describe("hf-proxy negotiation and media codec map injection (U3)", () => {
       register(app, createAdapter(projectDir));
 
       const first = await app.request(
-        "http://localhost/projects/demo/preview/clip.mp4?hf-proxy=h264",
+        "http://localhost/projects/demo/preview/clip.mp4?sc-proxy=h264",
       );
       expect(first.status).toBe(200);
       const etag = first.headers.get("ETag");
@@ -855,7 +855,7 @@ describe("hf-proxy negotiation and media codec map injection (U3)", () => {
       expect(resolveProxyMock).toHaveBeenCalledTimes(1);
 
       const second = await app.request(
-        "http://localhost/projects/demo/preview/clip.mp4?hf-proxy=h264",
+        "http://localhost/projects/demo/preview/clip.mp4?sc-proxy=h264",
         { headers: { "If-None-Match": etag! } },
       );
       expect(second.status).toBe(304);
@@ -874,7 +874,7 @@ describe("hf-proxy negotiation and media codec map injection (U3)", () => {
       register(app, createAdapter(projectDir));
 
       const res = await app.request(
-        "http://localhost/projects/demo/preview/does-not-exist.mp4?hf-proxy=h264",
+        "http://localhost/projects/demo/preview/does-not-exist.mp4?sc-proxy=h264",
       );
       expect(res.status).toBe(404);
       expect(resolveProxyMock).not.toHaveBeenCalled();
@@ -892,7 +892,7 @@ describe("hf-proxy negotiation and media codec map injection (U3)", () => {
       register(app, createAdapter(projectDir));
 
       const res = await app.request(
-        "http://localhost/projects/demo/preview/notes.txt?hf-proxy=h264",
+        "http://localhost/projects/demo/preview/notes.txt?sc-proxy=h264",
       );
       expect(res.status).toBe(404);
       expect(resolveProxyMock).not.toHaveBeenCalled();
@@ -918,7 +918,7 @@ describe("hf-proxy negotiation and media codec map injection (U3)", () => {
       const app = new Hono();
       register(app, createAdapter(projectDir));
 
-      const res = await app.request("http://localhost/projects/demo/preview/clip.mov?hf-proxy=vp8");
+      const res = await app.request("http://localhost/projects/demo/preview/clip.mov?sc-proxy=vp8");
 
       expect(res.status).toBe(200);
       expect(res.headers.get("Content-Type")).toBe("video/webm");
@@ -939,7 +939,7 @@ describe("hf-proxy negotiation and media codec map injection (U3)", () => {
       const app = new Hono();
       register(app, createAdapter(projectDir));
 
-      const res = await app.request("http://localhost/projects/demo/preview/clip.mp4?hf-proxy=vp8");
+      const res = await app.request("http://localhost/projects/demo/preview/clip.mp4?sc-proxy=vp8");
 
       expect(res.status).toBe(422);
       expect(resolveProxyMock).not.toHaveBeenCalled();
@@ -962,7 +962,7 @@ describe("hf-proxy negotiation and media codec map injection (U3)", () => {
       register(app, createAdapter(projectDir));
 
       const res = await app.request(
-        "http://localhost/projects/demo/preview/clip.mp4?hf-proxy=h264",
+        "http://localhost/projects/demo/preview/clip.mp4?sc-proxy=h264",
       );
 
       expect(res.status).toBe(422);
@@ -982,7 +982,7 @@ describe("hf-proxy negotiation and media codec map injection (U3)", () => {
 
       for (const value of ["H264", ""]) {
         const res = await app.request(
-          `http://localhost/projects/demo/preview/clip.mp4?hf-proxy=${value}`,
+          `http://localhost/projects/demo/preview/clip.mp4?sc-proxy=${value}`,
         );
         expect(res.status).toBe(404);
       }
@@ -1003,7 +1003,7 @@ describe("hf-proxy negotiation and media codec map injection (U3)", () => {
       register(app, createAdapter(projectDir));
 
       const res = await app.request(
-        "http://localhost/projects/demo/preview/clip.mp4?hf-proxy=h264",
+        "http://localhost/projects/demo/preview/clip.mp4?sc-proxy=h264",
       );
       expect(res.status).toBe(502);
       expect(await res.text()).toBe("ffmpeg exited with code 1");
@@ -1021,7 +1021,7 @@ describe("hf-proxy negotiation and media codec map injection (U3)", () => {
       register(app, createAdapter(projectDir));
 
       const res = await app.request(
-        "http://localhost/projects/demo/preview/clip.mp4?hf-proxy=h264",
+        "http://localhost/projects/demo/preview/clip.mp4?sc-proxy=h264",
       );
       expect(res.status).toBe(503);
       expect(res.headers.get("Retry-After")).toBe("5");
@@ -1038,7 +1038,7 @@ describe("hf-proxy negotiation and media codec map injection (U3)", () => {
       register(app, createAdapter(projectDir));
 
       const res = await app.request(
-        "http://localhost/projects/demo/preview/..%2f..%2f..%2fetc%2fpasswd?hf-proxy=h264",
+        "http://localhost/projects/demo/preview/..%2f..%2f..%2fetc%2fpasswd?sc-proxy=h264",
       );
       expect(res.status).toBe(404);
       expect(resolveProxyMock).not.toHaveBeenCalled();
@@ -1056,7 +1056,7 @@ describe("hf-proxy negotiation and media codec map injection (U3)", () => {
       register(app, createAdapter(projectDir, { autoProxy: false }));
 
       const res = await app.request(
-        "http://localhost/projects/demo/preview/clip.mp4?hf-proxy=h264",
+        "http://localhost/projects/demo/preview/clip.mp4?sc-proxy=h264",
       );
       expect(res.status).toBe(404);
       expect(resolveProxyMock).not.toHaveBeenCalled();
@@ -1074,7 +1074,7 @@ describe("hf-proxy negotiation and media codec map injection (U3)", () => {
 
       const res = await app.request("http://localhost/projects/demo/preview");
       const html = await res.text();
-      expect(html).not.toContain("data-hf-media-codec-map");
+      expect(html).not.toContain("data-sc-media-codec-map");
     });
     it("injects the scanned map naming the hostile fixture, and pre-warms resolveProxy for it", async () => {
       const projectDir = createProjectDir();
@@ -1114,7 +1114,7 @@ describe("hf-proxy negotiation and media codec map injection (U3)", () => {
 
     it("injects and serves a proxy for a hostile video through an external asset symlink", async () => {
       const projectDir = createProjectDir();
-      const externalDir = mkdtempSync(join(tmpdir(), "hf-preview-shared-video-"));
+      const externalDir = mkdtempSync(join(tmpdir(), "sc-preview-shared-video-"));
       tempDirs.push(externalDir);
       mkdirSync(join(projectDir, "assets"));
       writeFileSync(join(externalDir, "clip.mov"), "shared-hevc-bytes");
@@ -1145,7 +1145,7 @@ describe("hf-proxy negotiation and media codec map injection (U3)", () => {
       expect(scanMapMock).toHaveBeenCalled();
 
       const proxied = await app.request(
-        "http://localhost/projects/demo/preview/assets/shared/clip.mov?hf-proxy=h264",
+        "http://localhost/projects/demo/preview/assets/shared/clip.mov?sc-proxy=h264",
       );
       expect(proxied.status).toBe(200);
       expect(proxied.headers.get("Content-Type")).toBe("video/mp4");
@@ -1174,7 +1174,7 @@ describe("hf-proxy negotiation and media codec map injection (U3)", () => {
 
       const html = await (await app.request("http://localhost/projects/demo/preview")).text();
 
-      const injected = /<script data-hf-media-codec-map>([\s\S]*?)<\/script>/.exec(html)?.[1];
+      const injected = /<script data-sc-media-codec-map>([\s\S]*?)<\/script>/.exec(html)?.[1];
       expect(injected).toContain("\\u003c/script>");
       expect(injected).toContain("\\u2028");
       expect(injected).toContain("\\u2029");
@@ -1207,7 +1207,7 @@ describe("hf-proxy negotiation and media codec map injection (U3)", () => {
       expect(scanMapMock).not.toHaveBeenCalled();
 
       const proxyRes = await app.request(
-        "http://localhost/projects/demo/preview/clip.mp4?hf-proxy=h264",
+        "http://localhost/projects/demo/preview/clip.mp4?sc-proxy=h264",
       );
       expect(proxyRes.status).toBe(404);
       expect(resolveProxyMock).not.toHaveBeenCalled();

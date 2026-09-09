@@ -6,7 +6,7 @@
  * rather than a second interpretation of the attribute.
  */
 
-import { HF_AUDIO_AUTOMATION_DATA_KEY, VOLUME_TARGET } from "@hyperframes/core/audio-automation";
+import { HF_AUDIO_AUTOMATION_DATA_KEY, VOLUME_TARGET } from "@smashcut/core/audio-automation";
 import type { DomEditSelection } from "./domEditingTypes";
 import {
   automationAttrValue,

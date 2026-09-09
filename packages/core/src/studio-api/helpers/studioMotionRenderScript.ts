@@ -1,2 +1,2 @@
-/** @deprecated Import from @hyperframes/studio-server/studio-motion-render-script */
-export * from "@hyperframes/studio-server/studio-motion-render-script";
+/** @deprecated Import from @smashcut/studio-server/studio-motion-render-script */
+export * from "@smashcut/studio-server/studio-motion-render-script";

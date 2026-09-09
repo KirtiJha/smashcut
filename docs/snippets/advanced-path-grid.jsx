@@ -4,15 +4,15 @@
  * The videos are proof, not controls: every destination remains a normal link.
  */
 export const AdvancedPathGrid = () => {
-  const CDN = "https://static.heygen.ai/hyperframes-oss/docs/images/showcase";
+  const CDN = "https://static.heygen.ai/smashcut-oss/docs/images/showcase";
   const paths = [
     {
       title: "Direct the agent better",
       detail: "Change the story, source material, or several scenes with one clear revision.",
       action: "Give better direction",
       href: "/prompting/overview",
-      video: "https://static.heygen.ai/hyperframes-oss/docs/images/showcase/go-further-agent-revision-loop-v1.mp4",
-      poster: "https://static.heygen.ai/hyperframes-oss/docs/images/showcase/go-further-agent-revision-loop-v1.jpg",
+      video: "https://static.heygen.ai/smashcut-oss/docs/images/showcase/go-further-agent-revision-loop-v1.mp4",
+      poster: "https://static.heygen.ai/smashcut-oss/docs/images/showcase/go-further-agent-revision-loop-v1.jpg",
     },
     {
       title: "Edit in Studio",
@@ -27,8 +27,8 @@ export const AdvancedPathGrid = () => {
       detail: "Add project media and reusable Catalog scenes before adapting them to your work.",
       action: "Use Assets and Catalog",
       href: "/studio/assets-and-blocks",
-      video: "https://static.heygen.ai/hyperframes-oss/docs/images/showcase/studio-assets-catalog-loop-v1.mp4",
-      poster: "https://static.heygen.ai/hyperframes-oss/docs/images/showcase/studio-assets-catalog-loop-v1.jpg",
+      video: "https://static.heygen.ai/smashcut-oss/docs/images/showcase/studio-assets-catalog-loop-v1.mp4",
+      poster: "https://static.heygen.ai/smashcut-oss/docs/images/showcase/studio-assets-catalog-loop-v1.jpg",
     },
     {
       title: "Check, render, and share",

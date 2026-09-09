@@ -167,7 +167,7 @@ describe("usePreviewInteraction", () => {
 
   it("preserves group drill-in on double-click", async () => {
     const group = document.createElement("div");
-    group.setAttribute("data-hf-group", "hero");
+    group.setAttribute("data-sc-group", "hero");
     const child = document.createElement("span");
     child.id = "headline";
     group.append(child);

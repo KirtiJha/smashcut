@@ -15,7 +15,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 
 ```html shared-axis-z.html
 <!--
-  Shared Axis Z - typography primitive for HyperFrames.
+  Shared Axis Z - typography primitive for SmashCut.
 
   Paste the markup, CSS and script into a composition. Drive the timeline
   integration from a paused GSAP timeline so renders remain deterministic.
@@ -41,7 +41,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 -->
 
 <div
-  class="hf-catalog-shared-axis-z"
+  class="sc-catalog-shared-axis-z"
   data-composition-variables='[
     { "id": "direction", "type": "enum", "role": "motion", "label": "Direction", "description": "Which way the words travel along the z axis: in swells up from small, out settles down from large.", "default": "in", "options": [{ "value": "in", "label": "In" }, { "value": "out", "label": "Out" }] },
     { "id": "depth", "type": "enum", "role": "motion", "label": "Depth", "description": "Scales how far the words start from their final size, so the push covers a shorter or longer run in the same time.", "default": "standard", "options": [{ "value": "shallow", "label": "Shallow" }, { "value": "standard", "label": "Standard" }, { "value": "deep", "label": "Deep" }] },
@@ -52,23 +52,23 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 </div>
 
 <style>
-  .hf-catalog-shared-axis-z {
-    color: var(--hf-word-color, #18181b);
+  .sc-catalog-shared-axis-z {
+    color: var(--sc-word-color, #18181b);
     font-family: Inter, system-ui, sans-serif;
     font-weight: 900;
     letter-spacing: -0.04em;
   }
-  .hf-catalog-shared-axis-z {
+  .sc-catalog-shared-axis-z {
     display: inline-flex;
     gap: 12px;
     font-size: 56px;
     line-height: 1;
   }
-  .hf-catalog-shared-axis-z span {
+  .sc-catalog-shared-axis-z span {
     display: inline-block;
-    transform: translate(var(--hf-word-x, 0px), var(--hf-word-y, 0px))
-      scale(calc(1 + (var(--hf-word-scale, 1) - 1) * var(--hf-word-depth, 1)));
-    filter: blur(var(--hf-word-blur, 0px));
+    transform: translate(var(--sc-word-x, 0px), var(--sc-word-y, 0px))
+      scale(calc(1 + (var(--sc-word-scale, 1) - 1) * var(--sc-word-depth, 1)));
+    filter: blur(var(--sc-word-blur, 0px));
     will-change: transform, filter, opacity;
   }
 </style>
@@ -78,8 +78,8 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
     "use strict";
 
     var vars =
-      window.__hyperframes && window.__hyperframes.getVariables
-        ? window.__hyperframes.getVariables()
+      window.__smashcut && window.__smashcut.getVariables
+        ? window.__smashcut.getVariables()
         : {};
 
     // Unrecognised overrides return to their declared defaults.
@@ -99,17 +99,17 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
     var reach = reaches[pick(reaches, vars.depth, "standard")];
     var tone = tones[pick(tones, vars.tone, "ink")];
 
-    var roots = document.querySelectorAll(".hf-catalog-shared-axis-z");
+    var roots = document.querySelectorAll(".sc-catalog-shared-axis-z");
     for (var i = 0; i < roots.length; i += 1) {
-      roots[i].style.setProperty("--hf-word-depth", String(sign * reach));
-      roots[i].style.setProperty("--hf-word-color", tone);
+      roots[i].style.setProperty("--sc-word-depth", String(sign * reach));
+      roots[i].style.setProperty("--sc-word-color", tone);
     }
   })();
 </script>
 
 <!--
   Timeline integration:
-  tl.fromTo('.hf-catalog-shared-axis-z span', { opacity: 0, '--hf-word-scale': 0.72 }, { opacity: 1, '--hf-word-scale': 1, duration: 0.34, stagger: 0.06, ease: 'back.out(1.8)' }, startTime);
+  tl.fromTo('.sc-catalog-shared-axis-z span', { opacity: 0, '--sc-word-scale': 0.72 }, { opacity: 1, '--sc-word-scale': 1, duration: 0.34, stagger: 0.06, ease: 'back.out(1.8)' }, startTime);
 -->
 ```
 
@@ -117,7 +117,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 
 ## Install
 
-<InstallCommand command="npx hyperframes add shared-axis-z" item="shared-axis-z" />
+<InstallCommand command="npx smashcut add shared-axis-z" item="shared-axis-z" />
 
 That writes one file: `compositions/components/shared-axis-z.html`.
 
@@ -149,7 +149,7 @@ defaults, so this behaves exactly like the preview above until you change one:
 
 ```html
 <!--
-  Shared Axis Z - typography primitive for HyperFrames.
+  Shared Axis Z - typography primitive for SmashCut.
 
   Paste the markup, CSS and script into a composition. Drive the timeline
   integration from a paused GSAP timeline so renders remain deterministic.
@@ -175,7 +175,7 @@ defaults, so this behaves exactly like the preview above until you change one:
 -->
 
 <div
-  class="hf-catalog-shared-axis-z"
+  class="sc-catalog-shared-axis-z"
   data-composition-variables='[
     { "id": "direction", "type": "enum", "role": "motion", "label": "Direction", "description": "Which way the words travel along the z axis: in swells up from small, out settles down from large.", "default": "in", "options": [{ "value": "in", "label": "In" }, { "value": "out", "label": "Out" }] },
     { "id": "depth", "type": "enum", "role": "motion", "label": "Depth", "description": "Scales how far the words start from their final size, so the push covers a shorter or longer run in the same time.", "default": "standard", "options": [{ "value": "shallow", "label": "Shallow" }, { "value": "standard", "label": "Standard" }, { "value": "deep", "label": "Deep" }] },
@@ -186,23 +186,23 @@ defaults, so this behaves exactly like the preview above until you change one:
 </div>
 
 <style>
-  .hf-catalog-shared-axis-z {
-    color: var(--hf-word-color, #18181b);
+  .sc-catalog-shared-axis-z {
+    color: var(--sc-word-color, #18181b);
     font-family: Inter, system-ui, sans-serif;
     font-weight: 900;
     letter-spacing: -0.04em;
   }
-  .hf-catalog-shared-axis-z {
+  .sc-catalog-shared-axis-z {
     display: inline-flex;
     gap: 12px;
     font-size: 56px;
     line-height: 1;
   }
-  .hf-catalog-shared-axis-z span {
+  .sc-catalog-shared-axis-z span {
     display: inline-block;
-    transform: translate(var(--hf-word-x, 0px), var(--hf-word-y, 0px))
-      scale(calc(1 + (var(--hf-word-scale, 1) - 1) * var(--hf-word-depth, 1)));
-    filter: blur(var(--hf-word-blur, 0px));
+    transform: translate(var(--sc-word-x, 0px), var(--sc-word-y, 0px))
+      scale(calc(1 + (var(--sc-word-scale, 1) - 1) * var(--sc-word-depth, 1)));
+    filter: blur(var(--sc-word-blur, 0px));
     will-change: transform, filter, opacity;
   }
 </style>
@@ -212,8 +212,8 @@ defaults, so this behaves exactly like the preview above until you change one:
     "use strict";
 
     var vars =
-      window.__hyperframes && window.__hyperframes.getVariables
-        ? window.__hyperframes.getVariables()
+      window.__smashcut && window.__smashcut.getVariables
+        ? window.__smashcut.getVariables()
         : {};
 
     // Unrecognised overrides return to their declared defaults.
@@ -233,17 +233,17 @@ defaults, so this behaves exactly like the preview above until you change one:
     var reach = reaches[pick(reaches, vars.depth, "standard")];
     var tone = tones[pick(tones, vars.tone, "ink")];
 
-    var roots = document.querySelectorAll(".hf-catalog-shared-axis-z");
+    var roots = document.querySelectorAll(".sc-catalog-shared-axis-z");
     for (var i = 0; i < roots.length; i += 1) {
-      roots[i].style.setProperty("--hf-word-depth", String(sign * reach));
-      roots[i].style.setProperty("--hf-word-color", tone);
+      roots[i].style.setProperty("--sc-word-depth", String(sign * reach));
+      roots[i].style.setProperty("--sc-word-color", tone);
     }
   })();
 </script>
 
 <!--
   Timeline integration:
-  tl.fromTo('.hf-catalog-shared-axis-z span', { opacity: 0, '--hf-word-scale': 0.72 }, { opacity: 1, '--hf-word-scale': 1, duration: 0.34, stagger: 0.06, ease: 'back.out(1.8)' }, startTime);
+  tl.fromTo('.sc-catalog-shared-axis-z span', { opacity: 0, '--sc-word-scale': 0.72 }, { opacity: 1, '--sc-word-scale': 1, duration: 0.34, stagger: 0.06, ease: 'back.out(1.8)' }, startTime);
 -->
 ```
 

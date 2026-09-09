@@ -13,7 +13,7 @@ import {
 } from "./user.js";
 
 async function makeTmpDir(): Promise<string> {
-  return fs.mkdtemp(join(tmpdir(), "hf-auth-user-"));
+  return fs.mkdtemp(join(tmpdir(), "sc-auth-user-"));
 }
 
 describe("auth/user — userDisplayName priority", () => {

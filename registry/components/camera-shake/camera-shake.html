@@ -770,8 +770,8 @@
 
         /* ---- self-preview (not part of the snippet) ----------------------- */
         var vars =
-          window.__hyperframes && window.__hyperframes.getVariables
-            ? window.__hyperframes.getVariables()
+          window.__smashcut && window.__smashcut.getVariables
+            ? window.__smashcut.getVariables()
             : {};
         var PROFILE = vars.shakeProfile || "handheld-normal-mild";
         var INTENSITY = vars.shakeIntensity === undefined ? 1 : Number(vars.shakeIntensity);

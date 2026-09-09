@@ -79,7 +79,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
       <div id="hlf-backdrop"></div>
       <canvas id="hlf-canvas" width="1920" height="1080"></canvas>
 
-      <!-- Driver clip: gives HyperFrames a timed element to own on track 0. -->
+      <!-- Driver clip: gives SmashCut a timed element to own on track 0. -->
       <div
         id="hlf-drv"
         class="clip"
@@ -96,7 +96,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
         var W = 1920;
         var H = 1080;
 
-        var V = (window.__hyperframes && window.__hyperframes.getVariables()) || {};
+        var V = (window.__smashcut && window.__smashcut.getVariables()) || {};
         var CS = getComputedStyle(document.getElementById("hlf-root"));
 
         // The runtime defines every declared variable as `--<id>` on the root,
@@ -398,7 +398,7 @@ void main() {
 
 ## Install
 
-<InstallCommand command="npx hyperframes add halftone-field" item="halftone-field" />
+<InstallCommand command="npx smashcut add halftone-field" item="halftone-field" />
 
 That writes one file: `compositions/halftone-field.html`.
 
@@ -537,7 +537,7 @@ defaults, so this behaves exactly like the preview above until you change one:
       <div id="hlf-backdrop"></div>
       <canvas id="hlf-canvas" width="1920" height="1080"></canvas>
 
-      <!-- Driver clip: gives HyperFrames a timed element to own on track 0. -->
+      <!-- Driver clip: gives SmashCut a timed element to own on track 0. -->
       <div
         id="hlf-drv"
         class="clip"
@@ -554,7 +554,7 @@ defaults, so this behaves exactly like the preview above until you change one:
         var W = 1920;
         var H = 1080;
 
-        var V = (window.__hyperframes && window.__hyperframes.getVariables()) || {};
+        var V = (window.__smashcut && window.__smashcut.getVariables()) || {};
         var CS = getComputedStyle(document.getElementById("hlf-root"));
 
         // The runtime defines every declared variable as `--<id>` on the root,

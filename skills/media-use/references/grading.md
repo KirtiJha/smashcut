@@ -1,6 +1,6 @@
 # Color grading — grade blocks and LUTs
 
-Use `grade` when you need a canonical HyperFrames grading/effects payload for
+Use `grade` when you need a canonical SmashCut grading/effects payload for
 an `<img>` or `<video>`. Core presets and params-backed LUT entries resolve
 locally; future CDN-backed LUT entries require network unless already
 frozen. Persist a decided payload with the CLI rather than editing HTML by
@@ -17,7 +17,7 @@ Stop here and use that treatment workflow for requests such as retro, old home
 video, camcorder, film, print, ASCII, glitch, privacy, or a media reveal. Do not
 assemble those from a generic LUT plus handmade CSS vignette/grain/opacity.
 
-**Never `cat`/read a `.cube` file into context.** A 3D LUT is ~size^3 lines of raw numbers (33^3 ≈ 36k lines at the default size). It bloats context and carries zero human/agent-legible signal. To understand or choose a LUT, use `hyperframes grade-compare` to see it rendered, or `cube-validate.mjs` for a one-line `{ok,size}` check. Read `.media/index.md` or `luts/index.json` for the description. Never read the LUT body itself.
+**Never `cat`/read a `.cube` file into context.** A 3D LUT is ~size^3 lines of raw numbers (33^3 ≈ 36k lines at the default size). It bloats context and carries zero human/agent-legible signal. To understand or choose a LUT, use `smashcut grade-compare` to see it rendered, or `cube-validate.mjs` for a one-line `{ok,size}` check. Read `.media/index.md` or `luts/index.json` for the description. Never read the LUT body itself.
 
 ```bash
 node <SKILL_DIR>/scripts/resolve.mjs --type grade --intent "warm daylight" --project . --json
@@ -35,7 +35,7 @@ Preset-first output uses the core runtime vocabulary and does not freeze a file:
 Apply that payload to one unambiguous real media element:
 
 ```bash
-hyperframes media-treatment --project . --file index.html \
+smashcut media-treatment --project . --file index.html \
   --selector '#hero' \
   --grading '{"preset":"warm-daylight","intensity":1}' --apply --json
 ```
@@ -58,13 +58,13 @@ To build a treatment that is not already represented by a recipe, inspect the
 canonical toolbox first:
 
 ```bash
-hyperframes media-treatment --capabilities --json
+smashcut media-treatment --capabilities --json
 ```
 
 It reports a concise family map. Read `--capability grading` for the processing
 order, then request only the focused family needed to get its legal controls
 and ranges from Core. Compose one nested payload and pass it back through
-`hyperframes media-treatment`; the command rejects unknown keys before
+`smashcut media-treatment`; the command rejects unknown keys before
 mutation. Do not generate or hand-edit a LUT merely to combine controls already
 owned by the realtime shader.
 
@@ -73,15 +73,15 @@ on that same real media element with its registered paused GSAP timeline:
 
 | CSS property                       | Range   |
 | ---------------------------------- | ------- |
-| `--hf-color-grading-intensity`     | 0 to 1  |
-| `--hf-color-grading-lut-intensity` | 0 to 1  |
-| `--hf-color-grading-exposure`      | -2 to 2 |
-| `--hf-color-grading-blur`          | 0 to 1  |
-| `--hf-color-grading-bloom`         | 0 to 3  |
-| `--hf-color-grading-kuwahara`      | 0 to 1  |
-| `--hf-color-grading-pixelate`      | 0 to 1  |
-| `--hf-color-grading-ascii`         | 0 to 1  |
-| `--hf-color-grading-dither`        | 0 to 1  |
+| `--sc-color-grading-intensity`     | 0 to 1  |
+| `--sc-color-grading-lut-intensity` | 0 to 1  |
+| `--sc-color-grading-exposure`      | -2 to 2 |
+| `--sc-color-grading-blur`          | 0 to 1  |
+| `--sc-color-grading-bloom`         | 0 to 3  |
+| `--sc-color-grading-kuwahara`      | 0 to 1  |
+| `--sc-color-grading-pixelate`      | 0 to 1  |
+| `--sc-color-grading-ascii`         | 0 to 1  |
+| `--sc-color-grading-dither`        | 0 to 1  |
 
 Author the initial value directly in the media element's inline `style`, then
 use finite `tl.to()` keyframes. Do not use a frame-zero `tl.set()`, CSS
@@ -129,7 +129,7 @@ transforms. Use a CDN-backed scanned `.cube` entry or ingest a real scanned
 For visual selection, list reusable LUT candidates with
 `resolve --type grade --candidates`, write the promising entries to a
 `grades.json`, run
-`hyperframes grade-compare --for <frame> --grades grades.json`, then commit the
+`smashcut grade-compare --for <frame> --grades grades.json`, then commit the
 winner with `resolve -t grade` as the final `data-color-grading` block.
 
 For media already selected in a composition, use `media-treatment --analyze`
@@ -139,7 +139,7 @@ suggestion without modifying the composition. The suggestion is a starting
 point for visual review, not an automatic neutralization of intentional color.
 
 ```bash
-hyperframes media-treatment --project . --file index.html \
+smashcut media-treatment --project . --file index.html \
   --selector '#hero' --analyze --json
 ```
 

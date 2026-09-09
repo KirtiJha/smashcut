@@ -1,5 +1,5 @@
 import { useState } from "react";
-import type { RegistryItem } from "@hyperframes/core/registry";
+import type { RegistryItem } from "@smashcut/core/registry";
 import { useBlockCatalog } from "../../hooks/useBlockCatalog";
 import { Film, Plus } from "../../icons/SystemIcons";
 import { useTrackDesignInput } from "../../contexts/DesignPanelInputContext";
@@ -12,7 +12,7 @@ export const MEDIA_TREATMENT_OVERLAY_TAG = "media-treatment-overlay";
 export function filterMediaTreatmentOverlays(items: readonly RegistryItem[]): RegistryItem[] {
   return items.filter(
     (item) =>
-      item.type === "hyperframes:block" &&
+      item.type === "smashcut:block" &&
       item.tags?.includes(MEDIA_TREATMENT_OVERLAY_TAG) === true,
   );
 }

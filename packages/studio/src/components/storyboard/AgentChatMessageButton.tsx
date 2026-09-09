@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Button } from "../ui/Button";
 
 export const APPLY_STORYBOARD_FEEDBACK_MESSAGE =
-  "Read the storyboard feedback I saved in .hyperframes/frame-comments.json and revise the frames.";
+  "Read the storyboard feedback I saved in .smashcut/frame-comments.json and revise the frames.";
 
 export function AgentChatMessageButton({
   message,

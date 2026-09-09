@@ -106,13 +106,13 @@ function withCommentsStripped<T>(
   const stripped = css.replace(CSS_COMMENT_RE, (m) => {
     const idx = comments.length;
     comments.push(m);
-    return `/*__hf_c${idx}__*/`;
+    return `/*__sc_c${idx}__*/`;
   });
   const result = fn(stripped);
   const restore = (s: string) => {
     let out = s;
     for (let i = 0; i < comments.length; i++) {
-      out = out.replace(`/*__hf_c${i}__*/`, comments[i]!);
+      out = out.replace(`/*__sc_c${i}__*/`, comments[i]!);
     }
     return out;
   };
@@ -243,13 +243,13 @@ function inlineCssFile(
       const block = trimmedMedia ? `@media ${trimmedMedia} {\n${inlined}\n}\n` : inlined + "\n";
       const idx = importPlaceholders.length;
       importPlaceholders.push(block);
-      return `/*__hf_import_${idx}__*/`;
+      return `/*__sc_import_${idx}__*/`;
     },
   );
   let rebased = rebaseCssUrls(withPlaceholders, cssFileDir, projectDir);
   rebased = restoreComments(rebased);
   for (let i = 0; i < importPlaceholders.length; i++) {
-    rebased = rebased.replace(`/*__hf_import_${i}__*/`, importPlaceholders[i]!);
+    rebased = rebased.replace(`/*__sc_import_${i}__*/`, importPlaceholders[i]!);
   }
   return rebased;
 }
@@ -325,7 +325,7 @@ function warnColorGradingLutNotInlined(lutSrc: string): void {
   const trimmed = lutSrc.trim();
   if (!isRelativeUrl(trimmed)) return;
   console.warn(
-    `[HyperFrames] Could not inline color grading LUT "${trimmed}". The rendered bundle may not be self-contained.`,
+    `[SmashCut] Could not inline color grading LUT "${trimmed}". The rendered bundle may not be self-contained.`,
   );
 }
 
@@ -405,7 +405,7 @@ function cssAttributeSelector(attr: string, value: string): string {
 }
 
 function uniqueCompositionId(baseId: string, index: number): string {
-  return `${baseId}__hf${index}`;
+  return `${baseId}__sc${index}`;
 }
 
 export type BundledHostCompositionIdentity = {
@@ -416,7 +416,7 @@ export type BundledHostCompositionIdentity = {
 function getBundledHostCompositionIdentity(host: Element): BundledHostCompositionIdentity {
   const currentCompositionId = (host.getAttribute("data-composition-id") || "").trim() || null;
   const authoredCompositionId =
-    (host.getAttribute("data-hf-original-composition-id") || currentCompositionId || "").trim() ||
+    (host.getAttribute("data-sc-original-composition-id") || currentCompositionId || "").trim() ||
     null;
   return {
     authoredCompositionId,
@@ -482,9 +482,9 @@ export function assignBundledRuntimeCompositionIds(
         : 0;
       if (duplicateInstance) {
         instanceByCompositionId.set(authoredCompositionId, instanceIndex);
-        host.setAttribute("data-hf-original-composition-id", authoredCompositionId);
+        host.setAttribute("data-sc-original-composition-id", authoredCompositionId);
       } else {
-        host.removeAttribute("data-hf-original-composition-id");
+        host.removeAttribute("data-sc-original-composition-id");
       }
 
       runtimeCompositionId = duplicateInstance
@@ -640,10 +640,10 @@ function coalesceHeadStylesAndBodyScripts(document: Document): void {
 function injectTextRenderingRule(document: Document): void {
   const head = document.head;
   if (!head) return;
-  if (document.querySelector("style[data-hyperframes-text-rendering]")) return;
+  if (document.querySelector("style[data-smashcut-text-rendering]")) return;
 
   const styleEl = document.createElement("style");
-  styleEl.setAttribute("data-hyperframes-text-rendering", "true");
+  styleEl.setAttribute("data-smashcut-text-rendering", "true");
   styleEl.textContent = "html,body,*{text-rendering:geometricPrecision}";
   head.insertBefore(styleEl, head.firstChild);
 }
@@ -689,7 +689,7 @@ export interface BundleOptions {
   /** Optional media duration prober (e.g., ffprobe). If omitted, media durations are not resolved. */
   probeMediaDuration?: MediaDurationProber;
   /**
-   * How to handle the HyperFrames runtime <script> tag. Default: `"inline"`.
+   * How to handle the SmashCut runtime <script> tag. Default: `"inline"`.
    *
    * - `"inline"` — embed the runtime IIFE body directly into the bundle. Produces
    *   genuinely self-contained HTML. Right for CLI render output, validate,
@@ -716,7 +716,7 @@ export interface BundleOptions {
  * Bundle a project's index.html into a single self-contained HTML file.
  *
  * - Compiles timing attributes and optionally resolves media durations
- * - Injects the HyperFrames runtime script
+ * - Injects the SmashCut runtime script
  * - Inlines local CSS and JS files
  * - Inlines sub-composition HTML fragments (data-composition-src)
  * - Inlines small textual assets as data URLs
@@ -778,14 +778,14 @@ function hoistCompositionScripts(
           ? wrapScopedCompositionScript(
               scriptEl.textContent || "",
               opts.compId,
-              "[HyperFrames] composition script error:",
+              "[SmashCut] composition script error:",
               opts.runtimeScope,
               opts.runtimeCompId || opts.compId,
               opts.authoredRootId,
             )
           : wrapInlineScriptWithErrorBoundary(
               scriptEl.textContent || "",
-              "[HyperFrames] composition script error:",
+              "[SmashCut] composition script error:",
             ),
       );
     }
@@ -814,7 +814,7 @@ export async function bundleToSingleHtml(
   const staticGuard = await validateHyperframeHtmlContract(compiled);
   if (!staticGuard.isValid) {
     console.warn(
-      `[StaticGuard] Invalid HyperFrame contract: ${staticGuard.missingKeys.join("; ")}`,
+      `[StaticGuard] Invalid SmashCut contract: ${staticGuard.missingKeys.join("; ")}`,
     );
   }
 
@@ -838,7 +838,7 @@ export async function bundleToSingleHtml(
     localCssChunks.push(inlineCssFile(css, dirname(cssPath), projectDir));
     if (!cssAnchorPlaced) {
       const anchor = document.createElement("style");
-      anchor.setAttribute("data-hf-bundled-local-css", "1");
+      anchor.setAttribute("data-sc-bundled-local-css", "1");
       el.replaceWith(anchor);
       cssAnchorPlaced = true;
     } else {
@@ -846,9 +846,9 @@ export async function bundleToSingleHtml(
     }
   }
   if (localCssChunks.length > 0) {
-    const anchor = document.querySelector('style[data-hf-bundled-local-css="1"]');
+    const anchor = document.querySelector('style[data-sc-bundled-local-css="1"]');
     if (anchor) {
-      anchor.removeAttribute("data-hf-bundled-local-css");
+      anchor.removeAttribute("data-sc-bundled-local-css");
       anchor.textContent = localCssChunks.join("\n\n");
     } else {
       const style = document.createElement("style");
@@ -873,7 +873,7 @@ export async function bundleToSingleHtml(
     localJsChunks.push(js);
     if (!jsAnchorPlaced) {
       const anchor = document.createElement("script");
-      anchor.setAttribute("data-hf-bundled-local-js", "1");
+      anchor.setAttribute("data-sc-bundled-local-js", "1");
       el.replaceWith(anchor);
       jsAnchorPlaced = true;
     } else {
@@ -881,10 +881,10 @@ export async function bundleToSingleHtml(
     }
   }
   if (localJsChunks.length > 0) {
-    const anchor = document.querySelector('script[data-hf-bundled-local-js="1"]');
+    const anchor = document.querySelector('script[data-sc-bundled-local-js="1"]');
     const joinedJs = joinJsChunks(localJsChunks);
     if (anchor) {
-      anchor.removeAttribute("data-hf-bundled-local-js");
+      anchor.removeAttribute("data-sc-bundled-local-js");
       anchor.textContent = joinedJs;
     } else {
       const script = document.createElement("script");
@@ -919,7 +919,7 @@ export async function bundleToSingleHtml(
     readVariableDefaults: readDeclaredDefaults,
     parseHostVariables: parseHostVariableValues,
     buildScopeSelector: (compId: string) => cssAttributeSelector("data-composition-id", compId),
-    scriptErrorLabel: "[HyperFrames] composition script error:",
+    scriptErrorLabel: "[SmashCut] composition script error:",
     onMissingComposition: (srcPath: string, reason?: string) => {
       console.warn(
         `[Bundler] Skipping sub-composition "${srcPath}": ${reason ?? "the file could not be found"}.`,
@@ -1218,7 +1218,7 @@ export function emitRootCompositionVariableStyles(
   ];
   if (rules.length === 0) return false;
   const style = document.createElement("style");
-  style.setAttribute("data-hf-composition-variables", "");
+  style.setAttribute("data-sc-composition-variables", "");
   style.textContent = rules.join("\n\n");
   document.head.appendChild(style);
   return true;
@@ -1230,7 +1230,7 @@ type VariableLayer = (
 ) => Record<string, unknown>;
 
 function authoredDefinesPredicate(document: Document): (id: string) => boolean {
-  const authoredCss = [...document.querySelectorAll("style:not([data-hf-composition-variables])")]
+  const authoredCss = [...document.querySelectorAll("style:not([data-sc-composition-variables])")]
     .map((s) => s.textContent || "")
     .join("\n");
   return (id) => new RegExp(`${cssVariableName(id)}\\s*:`).test(authoredCss);
@@ -1315,8 +1315,8 @@ function declarerVariableRules(document: Document, layerFor: VariableLayer): str
     const vars = layerFor(declared, hostValues);
     if (Object.keys(vars).length === 0) continue;
     markerSeq += 1;
-    el.setAttribute("data-hf-var-scope", String(markerSeq));
-    const rule = compositionVariablesCssBlock(vars, `[data-hf-var-scope="${markerSeq}"]`);
+    el.setAttribute("data-sc-var-scope", String(markerSeq));
+    const rule = compositionVariablesCssBlock(vars, `[data-sc-var-scope="${markerSeq}"]`);
     if (rule) rules.push(rule);
   }
   return rules;

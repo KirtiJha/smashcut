@@ -58,12 +58,12 @@ describe("parseGcsUri", () => {
 
 describe("tarDirectory / untarDirectory", () => {
   it("round-trips a directory tree", async () => {
-    const src = mkTmp("hf-tar-src-");
+    const src = mkTmp("sc-tar-src-");
     mkdirSync(join(src, "nested"), { recursive: true });
     writeFileSync(join(src, "index.html"), "<html>hi</html>");
     writeFileSync(join(src, "nested", "data.json"), '{"a":1}');
 
-    const work = mkTmp("hf-tar-work-");
+    const work = mkTmp("sc-tar-work-");
     const tarball = join(work, "out.tar.gz");
     await tarDirectory(src, tarball);
     expect(existsSync(tarball)).toBe(true);
@@ -75,9 +75,9 @@ describe("tarDirectory / untarDirectory", () => {
   });
 
   it("untar wipes a stale destination first", async () => {
-    const src = mkTmp("hf-tar-src2-");
+    const src = mkTmp("sc-tar-src2-");
     writeFileSync(join(src, "keep.txt"), "new");
-    const work = mkTmp("hf-tar-work2-");
+    const work = mkTmp("sc-tar-work2-");
     const tarball = join(work, "out.tar.gz");
     await tarDirectory(src, tarball);
 
@@ -94,7 +94,7 @@ describe("tarDirectory / untarDirectory", () => {
 describe("download/upload bridge", () => {
   it("uploads a local file then downloads identical bytes", async () => {
     const gcs = new FakeGcs();
-    const work = mkTmp("hf-dl-");
+    const work = mkTmp("sc-dl-");
     const srcFile = join(work, "src.bin");
     writeFileSync(srcFile, Buffer.from("hello gcs"));
 
@@ -119,7 +119,7 @@ describe("download/upload bridge", () => {
 describe("content-addressed v2 artifacts", () => {
   it("uploads once and reuses an object with matching digest metadata", async () => {
     const gcs = new FakeGcs();
-    const source = join(mkTmp("hf-cas-upload-"), "artifact.bin");
+    const source = join(mkTmp("sc-cas-upload-"), "artifact.bin");
     writeFileSync(source, "immutable bytes");
     const digest = await sha256File(source);
     const uri = `gs://bucket/v2/artifacts/sha256/${digest.slice(0, 2)}/${digest}`;
@@ -136,7 +136,7 @@ describe("content-addressed v2 artifacts", () => {
 
   it("refuses to overwrite an immutable key with conflicting metadata", async () => {
     const gcs = new FakeGcs();
-    const source = join(mkTmp("hf-cas-conflict-"), "artifact.bin");
+    const source = join(mkTmp("sc-cas-conflict-"), "artifact.bin");
     writeFileSync(source, "expected bytes");
     const digest = await sha256File(source);
     const uri = `gs://bucket/v2/artifacts/sha256/${digest.slice(0, 2)}/${digest}`;
@@ -151,7 +151,7 @@ describe("content-addressed v2 artifacts", () => {
 
   it("reuses an identical object that wins the create-only generation race", async () => {
     const gcs = new FakeGcs();
-    const source = join(mkTmp("hf-cas-race-"), "artifact.bin");
+    const source = join(mkTmp("sc-cas-race-"), "artifact.bin");
     writeFileSync(source, "racing bytes");
     const digest = await sha256File(source);
     const uri = `gs://bucket/v2/artifacts/sha256/${digest.slice(0, 2)}/${digest}`;
@@ -169,7 +169,7 @@ describe("content-addressed v2 artifacts", () => {
 
   it("deletes a downloaded artifact when digest verification fails", async () => {
     const gcs = new FakeGcs();
-    const work = mkTmp("hf-cas-download-");
+    const work = mkTmp("sc-cas-download-");
     const expectedSource = join(work, "expected.bin");
     const destination = join(work, "download.bin");
     writeFileSync(expectedSource, "expected");

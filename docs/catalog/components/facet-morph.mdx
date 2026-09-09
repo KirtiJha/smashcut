@@ -16,7 +16,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 ```html facet-morph.html
 <!doctype html>
 <!--
-  facet-morph: HyperFrames video primitive (intros and reveals / morph)
+  facet-morph: SmashCut video primitive (intros and reveals / morph)
 
   Concept: a faceted low-poly mass (36 triangles, one SVG) continuously
   reshapes between three authored silhouettes (blob, mark, badge) with
@@ -69,7 +69,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
   <template> contents; #root fills the host box (inset:0, container-type:
   size), has no data-width/data-height, and registers one paused timeline
   under the literal "facet-morph" key. Variables come from
-  window.__hyperframes.getVariables().
+  window.__smashcut.getVariables().
 -->
 <html
   lang="en"
@@ -182,8 +182,8 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
             var mesh = root.querySelector(".fm-mesh");
 
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             /* ---------------- variables ---------------- */
@@ -571,7 +571,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 
 ## Install
 
-<InstallCommand command="npx hyperframes add facet-morph" item="facet-morph" />
+<InstallCommand command="npx smashcut add facet-morph" item="facet-morph" />
 
 That writes one file: `compositions/components/facet-morph.html`.
 
@@ -612,7 +612,7 @@ defaults, so this behaves exactly like the preview above until you change one:
 ```html
 <!doctype html>
 <!--
-  facet-morph: HyperFrames video primitive (intros and reveals / morph)
+  facet-morph: SmashCut video primitive (intros and reveals / morph)
 
   Concept: a faceted low-poly mass (36 triangles, one SVG) continuously
   reshapes between three authored silhouettes (blob, mark, badge) with
@@ -665,7 +665,7 @@ defaults, so this behaves exactly like the preview above until you change one:
   <template> contents; #root fills the host box (inset:0, container-type:
   size), has no data-width/data-height, and registers one paused timeline
   under the literal "facet-morph" key. Variables come from
-  window.__hyperframes.getVariables().
+  window.__smashcut.getVariables().
 -->
 <html
   lang="en"
@@ -778,8 +778,8 @@ defaults, so this behaves exactly like the preview above until you change one:
             var mesh = root.querySelector(".fm-mesh");
 
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             /* ---------------- variables ---------------- */

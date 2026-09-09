@@ -4,11 +4,11 @@ import type { Example } from "./_examples.js";
 import { existsSync, readFileSync } from "node:fs";
 
 export const examples: Example[] = [
-  ["Present the current deck", "hyperframes present"],
-  ["Present a specific project directory", "hyperframes present ./my-deck"],
-  ["Use a custom port", "hyperframes present --port 8080"],
-  ["Start without opening the browser", "hyperframes present --no-open"],
-  ["Open with a specific browser", "hyperframes present --browser-path /usr/bin/chromium"],
+  ["Present the current deck", "smashcut present"],
+  ["Present a specific project directory", "smashcut present ./my-deck"],
+  ["Use a custom port", "smashcut present --port 8080"],
+  ["Start without opening the browser", "smashcut present --no-open"],
+  ["Open with a specific browser", "smashcut present --browser-path /usr/bin/chromium"],
 ];
 import { resolve } from "node:path";
 import * as clack from "@clack/prompts";
@@ -79,7 +79,7 @@ export default defineCommand({
     const slideshowPath = resolveSlideshowPath();
     if (!playerPath || !slideshowPath) {
       clack.log.error(
-        "@hyperframes/player not found. Run `bun run --cwd packages/player build` first.",
+        "@smashcut/player not found. Run `bun run --cwd packages/player build` first.",
       );
       setCommandExitCode(1);
       return;
@@ -88,12 +88,12 @@ export default defineCommand({
     // The deck must carry a slideshow island; the presenter view is meaningless
     // without one. Extract it here so we can inline it into the wrapper page.
     const indexHtml = readFileSync(project.indexPath, "utf-8");
-    const { slideshowIslandRegex } = await import("@hyperframes/core/slideshow");
+    const { slideshowIslandRegex } = await import("@smashcut/core/slideshow");
     const islandMatch = slideshowIslandRegex("i").exec(indexHtml);
     if (!islandMatch?.[1]) {
       clack.log.error(
         `No slideshow island found in ${project.indexPath}. ` +
-          `Add a <script type="application/hyperframes-slideshow+json"> block — see /hyperframes (slideshow).`,
+          `Add a <script type="application/smashcut-slideshow+json"> block — see /smashcut (slideshow).`,
       );
       setCommandExitCode(1);
       return;
@@ -113,7 +113,7 @@ export default defineCommand({
 
     const { Hono } = await import("hono");
     const { createAdaptorServer } = await import("@hono/node-server");
-    const { isSafePath } = await import("@hyperframes/core/studio-api");
+    const { isSafePath } = await import("@smashcut/core/studio-api");
 
     const app = new Hono();
 
@@ -148,7 +148,7 @@ export default defineCommand({
     // ?mode=audience) load this same page; the component reads the mode from the URL.
     app.get("/", (ctx) => ctx.html(buildPresentPage(project.name, islandJson)));
 
-    clack.intro(c.bold("hyperframes present"));
+    clack.intro(c.bold("smashcut present"));
     const s = clack.spinner();
     s.start("Starting presenter server...");
 
@@ -205,25 +205,25 @@ function buildPresentPage(projectName: string, islandJson: string): string {
     <style>
       * { margin: 0; padding: 0; box-sizing: border-box; }
       html, body { height: 100%; background: #0a0a0a; overflow: hidden; }
-      hyperframes-slideshow { display: block; position: relative; width: 100vw; height: 100vh; }
-      hyperframes-player { position: absolute; inset: 0; }
+      smashcut-slideshow { display: block; position: relative; width: 100vw; height: 100vh; }
+      smashcut-player { position: absolute; inset: 0; }
     </style>
     <script src="/player.js"></script>
     <script src="/slideshow.js"></script>
   </head>
   <body>
-    <hyperframes-slideshow tabindex="0" sound>
-      <hyperframes-player interactive src="/composition/index.html"></hyperframes-player>
-      <script type="application/hyperframes-slideshow+json">
+    <smashcut-slideshow tabindex="0" sound>
+      <smashcut-player interactive src="/composition/index.html"></smashcut-player>
+      <script type="application/smashcut-slideshow+json">
 ${islandJson}
       </script>
-    </hyperframes-slideshow>
-    <!-- Present CTA lives in the component's nav cluster (data-hf-present, plus
+    </smashcut-slideshow>
+    <!-- Present CTA lives in the component's nav cluster (data-sc-present, plus
          the P key) — no page-level button, or we'd render two Present CTAs. -->
     <script>
       // Sound effects play HERE, in the parent document. The composition runs in the
       // player's iframe, which is autoplay-blocked without its own user gesture; the
-      // slideshow posts { type: "hf-sfx", name } to the parent on nav, and we play the
+      // slideshow posts { type: "sc-sfx", name } to the parent on nav, and we play the
       // matching clip from the deck's sfx/ folder (served under /composition/sfx/).
       // Runs in both presenter and audience windows. Missing clips fail silently.
       (function () {
@@ -239,16 +239,16 @@ ${islandJson}
         clips.back.volume = 0.4;
         for (var k in clips) clips[k].preload = "auto";
 
-        // Mute state is owned by <hyperframes-slideshow sound>; mirror it.
+        // Mute state is owned by <smashcut-slideshow sound>; mirror it.
         var muted = false;
         function setClipsMuted(nextMuted) {
           Object.keys(clips).forEach(function (name) {
             clips[name].muted = nextMuted;
           });
         }
-        var ss = document.querySelector("hyperframes-slideshow");
+        var ss = document.querySelector("smashcut-slideshow");
         if (ss) {
-          ss.addEventListener("hf-sound", function (e) {
+          ss.addEventListener("sc-sound", function (e) {
             muted = e.detail && e.detail.muted === true;
             setClipsMuted(muted);
           });
@@ -283,7 +283,7 @@ ${islandJson}
           // Only accept cues from this origin (the composition iframe is same-origin).
           if (e.origin !== location.origin) return;
           var d = e.data;
-          if (!d || d.type !== "hf-sfx" || muted) return;
+          if (!d || d.type !== "sc-sfx" || muted) return;
           // Own-property guard: a malicious name like "__proto__" must not resolve to
           // a prototype object (which would be truthy and then get mutated below).
           if (!Object.prototype.hasOwnProperty.call(clips, d.name)) return;

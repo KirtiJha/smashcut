@@ -9,7 +9,7 @@ import {
   type HfHueCurvePoint,
   type NormalizedHfColorGradingCurves,
   type NormalizedHfColorGradingHueCurves,
-} from "@hyperframes/core/color-grading";
+} from "@smashcut/core/color-grading";
 import { clampNumber } from "../../utils/studioHelpers";
 
 const GRAPH_SIZE = 160;
@@ -480,7 +480,7 @@ export function CurveGraph({
       className="mx-auto aspect-square w-full max-w-[200px] touch-none rounded border border-panel-border-input bg-black/20 outline-none focus:ring-1 focus:ring-panel-accent"
     >
       <defs>
-        <linearGradient id={`hf-hue-axis-${tab.key}`}>
+        <linearGradient id={`sc-hue-axis-${tab.key}`}>
           <stop offset="0%" stopColor="#f33" />
           <stop offset="16.7%" stopColor="#ff3" />
           <stop offset="33.3%" stopColor="#3f3" />
@@ -512,7 +512,7 @@ export function CurveGraph({
           y1={GRAPH_SIZE - 3}
           x2={GRAPH_SIZE - GRAPH_PADDING}
           y2={GRAPH_SIZE - 3}
-          stroke={`url(#hf-hue-axis-${tab.key})`}
+          stroke={`url(#sc-hue-axis-${tab.key})`}
           strokeWidth="3"
         />
       )}

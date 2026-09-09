@@ -7,7 +7,7 @@ import { isTextEditableSelection } from "./domEditing";
 import type { PropertyPanelFlatProps } from "./propertyPanelFlatProps";
 import { formatPxMetricValue } from "./propertyPanelHelpers";
 import { audioFxSummary } from "./audioFxSummary";
-import { resolveAudioGroups } from "@hyperframes/core/audio-groups";
+import { resolveAudioGroups } from "@smashcut/core/audio-groups";
 import { PropertyPanelFlatHeader } from "./PropertyPanelFlatHeader";
 import { PropertyPanelFlatFooter } from "./PropertyPanelFlatFooter";
 import { closedGroupHeader, isSelectionHidden } from "./propertyPanelFlatClosedGroup";
@@ -139,7 +139,7 @@ export function PropertyPanelFlat({
         ? "style"
         : sections.media
           ? "media"
-          : // An `<hf-audio-group>` has no style, no layout and no media — its
+          : // An `<sc-audio-group>` has no style, no layout and no media — its
             // chain is the only reason to select one. Without this the fallback
             // landed on "layout", a section a bus does not render, so opening the
             // rack on a group produced a panel with everything collapsed.
@@ -149,7 +149,7 @@ export function PropertyPanelFlat({
   );
 
   // Tracks which group(s) are actively transitioning this toggle cycle, so
-  // their header/body gets the fast entrance animation (hf-flat-group-enter)
+  // their header/body gets the fast entrance animation (sc-flat-group-enter)
   // and no one else's does. Deliberately NOT derived from remounting alone:
   // FlatGroupHeader instances are keyed by group id and React normally
   // preserves them across re-renders, but toggling a non-adjacent group still
@@ -287,7 +287,7 @@ export function PropertyPanelFlat({
   const audioSelection = isAudioDomElement(element.element);
   // Handlers being wired is necessary but not sufficient: App.tsx always passes
   // them, so this alone showed the tween editor for every selection — including
-  // an `<audio>` clip and an `<hf-audio-group>` bus, neither of which has a
+  // an `<audio>` clip and an `<sc-audio-group>` bus, neither of which has a
   // transform, an opacity or a box for a tween to move. Gated on the TAG, not on
   // `sections.animation` (`animationCount > 0`): a div with no tweens yet must
   // still offer "+ Add", so "has none" and "can have none" are different
@@ -538,7 +538,7 @@ export function PropertyPanelFlat({
             // the panel, still called "Hide element", is exactly what that step
             // set out to remove: "Two controls that silence a track, sitting
             // next to each other, differing only in a distinction the author
-            // cannot see." An `<hf-audio-group>` has no visual to hide at all.
+            // cannot see." An `<sc-audio-group>` has no visual to hide at all.
             //
             // EXCEPT while it is already hidden — the same door-from-the-inside
             // the timeline's eye keeps for an audio track
@@ -557,7 +557,7 @@ export function PropertyPanelFlat({
             onCopy={onCopyElementInfo}
             onClear={onClearSelection}
             onUngroup={onUngroup}
-            showUngroup={Boolean(onUngroup && element.dataAttributes["hf-group"] != null)}
+            showUngroup={Boolean(onUngroup && element.dataAttributes["sc-group"] != null)}
           />
         </DesignPanelInputProvider>
         <div
@@ -577,7 +577,7 @@ export function PropertyPanelFlat({
                   animateEntrance={justToggledIds.includes(openGroup.id)}
                 />
                 <div
-                  className={`${justToggledIds.includes(openGroup.id) ? "hf-flat-group-enter " : ""}min-h-0 flex-1 overflow-y-auto border-b border-panel-hairline bg-panel-bg-inset px-4 py-3 shadow-[inset_0_2px_4px_-1px_rgba(0,0,0,0.5)]`}
+                  className={`${justToggledIds.includes(openGroup.id) ? "sc-flat-group-enter " : ""}min-h-0 flex-1 overflow-y-auto border-b border-panel-hairline bg-panel-bg-inset px-4 py-3 shadow-[inset_0_2px_4px_-1px_rgba(0,0,0,0.5)]`}
                 >
                   {openGroup.content}
                 </div>

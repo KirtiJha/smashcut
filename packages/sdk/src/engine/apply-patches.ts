@@ -124,7 +124,7 @@ function applyVariableDefault(declEl: Element | null, id: string, newDefault: un
  */
 export function applyOverrideSet(parsed: ParsedDocument, overrides: OverrideSet): void {
   const patches: JsonPatchOp[] = [];
-  const rootId = findRoot(parsed.document)?.getAttribute("data-hf-id") ?? null;
+  const rootId = findRoot(parsed.document)?.getAttribute("data-sc-id") ?? null;
   // Whole-declaration snapshots (varDecl.{id}) must replay BEFORE value keys
   // (var.{id}): a declaration snapshot embeds the default at fold time, while
   // var.{id} always carries the latest value — insertion order alone would let

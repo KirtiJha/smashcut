@@ -6,8 +6,8 @@ const studioCss = readFileSync(new URL("../../styles/studio.css", import.meta.ur
 describe("preview volume range styles", () => {
   it("uses the same compact thumb in Chromium and Firefox", () => {
     const selectors = [
-      ".hf-preview-volume-range::-webkit-slider-thumb",
-      ".hf-preview-volume-range::-moz-range-thumb",
+      ".sc-preview-volume-range::-webkit-slider-thumb",
+      ".sc-preview-volume-range::-moz-range-thumb",
     ];
 
     for (const selector of selectors) {

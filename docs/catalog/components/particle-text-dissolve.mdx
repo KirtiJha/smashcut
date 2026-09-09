@@ -16,7 +16,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 ```html particle-text-dissolve.html
 <!doctype html>
 <!--
-  particle-text-dissolve: HyperFrames video primitive (type / particles).
+  particle-text-dissolve: SmashCut video primitive (type / particles).
   Wave M8. Direct donor: particle-image-reveal (canvas determinism law).
 
   Text assembles FROM a seeded particle cloud, or dissolves TO it (direction
@@ -169,8 +169,8 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
             var line = root.querySelector(".ptd-line");
             var canvas = root.querySelector(".ptd-canvas");
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             var text =
@@ -434,7 +434,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 
 ## Install
 
-<InstallCommand command="npx hyperframes add particle-text-dissolve" item="particle-text-dissolve" />
+<InstallCommand command="npx smashcut add particle-text-dissolve" item="particle-text-dissolve" />
 
 That writes one file: `compositions/components/particle-text-dissolve.html`.
 
@@ -476,7 +476,7 @@ defaults, so this behaves exactly like the preview above until you change one:
 ```html
 <!doctype html>
 <!--
-  particle-text-dissolve: HyperFrames video primitive (type / particles).
+  particle-text-dissolve: SmashCut video primitive (type / particles).
   Wave M8. Direct donor: particle-image-reveal (canvas determinism law).
 
   Text assembles FROM a seeded particle cloud, or dissolves TO it (direction
@@ -629,8 +629,8 @@ defaults, so this behaves exactly like the preview above until you change one:
             var line = root.querySelector(".ptd-line");
             var canvas = root.querySelector(".ptd-canvas");
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             var text =

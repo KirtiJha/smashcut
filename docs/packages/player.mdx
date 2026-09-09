@@ -1,13 +1,13 @@
 ---
-title: "@hyperframes/player"
-description: "Embeddable web component for playing HyperFrames compositions in any web page."
+title: "@smashcut/player"
+description: "Embeddable web component for playing SmashCut compositions in any web page."
 ---
 
-The player package provides a `<hyperframes-player>` custom element that embeds a
-HyperFrames composition in plain HTML or a framework application.
+The player package provides a `<smashcut-player>` custom element that embeds a
+SmashCut composition in plain HTML or a framework application.
 
 ```bash
-npm install @hyperframes/player
+npm install @smashcut/player
 ```
 
 Use Player when an application needs to play and seek an HTML composition. Use
@@ -19,26 +19,26 @@ Use Player when an application needs to play and seek an HTML composition. Use
 ### Via CDN
 
 ```html title="index.html"
-<script type="module" src="https://cdn.jsdelivr.net/npm/@hyperframes/player"></script>
+<script type="module" src="https://cdn.jsdelivr.net/npm/@smashcut/player"></script>
 
-<hyperframes-player
+<smashcut-player
   src="./my-composition/index.html"
   controls
   style="width: 100%; max-width: 800px; aspect-ratio: 16/9"
-></hyperframes-player>
+></smashcut-player>
 ```
 
 With a package manager:
 
 ```js
-import "@hyperframes/player";
+import "@smashcut/player";
 ```
 
 ```html title="index.html"
-<hyperframes-player
+<smashcut-player
   src="/compositions/intro.html"
   controls
-></hyperframes-player>
+></smashcut-player>
 ```
 
 Set `autoplay muted` only when playback should start without a user gesture.
@@ -70,7 +70,7 @@ authoring attributes.
 The main API follows familiar media-player behavior:
 
 ```js
-const player = document.querySelector("hyperframes-player");
+const player = document.querySelector("smashcut-player");
 
 player.play();
 player.pause();
@@ -86,7 +86,7 @@ console.log(player.duration, player.paused, player.ready);
 ## Events
 
 ```js
-const player = document.querySelector("hyperframes-player");
+const player = document.querySelector("smashcut-player");
 
 player.addEventListener("ready", (event) => {
   console.log("Duration:", event.detail.duration);
@@ -117,7 +117,7 @@ exists for same-origin tools that must inspect the composition DOM or connect a
 custom editing surface:
 
 ```js
-const player = document.querySelector("hyperframes-player");
+const player = document.querySelector("smashcut-player");
 const iframe = player.iframeElement;
 
 // Reach into the composition's DOM
@@ -130,14 +130,14 @@ iframe.contentWindow.__timelines;
 Direct DOM access works only when the composition and the host page are
 same-origin. Cross-origin embeds must use the Player API and events.
 
-[`@hyperframes/studio`](/packages/studio) exports `resolveIframe` for consumers
+[`@smashcut/studio`](/packages/studio) exports `resolveIframe` for consumers
 that need to pass the inner iframe to Studio's timeline hooks:
 
 ```ts
-import { resolveIframe, useTimelinePlayer } from "@hyperframes/studio";
+import { resolveIframe, useTimelinePlayer } from "@smashcut/studio";
 
 const { iframeRef } = useTimelinePlayer();
-const player = document.createElement("hyperframes-player");
+const player = document.createElement("smashcut-player");
 player.setAttribute("src", src);
 container.appendChild(player);
 
@@ -149,7 +149,7 @@ iframeRef.current = resolveIframe(player);
 
 The composition runs in a sandboxed iframe inside the player's Shadow DOM. This
 isolates its styles, scales it to the player container, and lets the player
-communicate with the HyperFrames runtime through `postMessage`.
+communicate with the SmashCut runtime through `postMessage`.
 
 ## Related topics
 

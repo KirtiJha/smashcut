@@ -44,7 +44,7 @@ export interface StudioUiPreferences {
   agentToolsEnabled?: boolean;
 }
 
-const STUDIO_UI_PREFERENCES_KEY = "hf-studio-ui-preferences";
+const STUDIO_UI_PREFERENCES_KEY = "sc-studio-ui-preferences";
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null;

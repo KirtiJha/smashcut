@@ -62,11 +62,11 @@ function applyPatchesToElement(el: HTMLElement, ops: PatchOperation[]): void {
 function resolvedTranslatePx(el: HTMLElement): { x: number; y: number } {
   const raw = el.style.getPropertyValue("translate").trim();
   if (!raw || raw === "none") return { x: 0, y: 0 };
-  const vx = Number.parseFloat(el.style.getPropertyValue("--hf-studio-offset-x")) || 0;
-  const vy = Number.parseFloat(el.style.getPropertyValue("--hf-studio-offset-y")) || 0;
+  const vx = Number.parseFloat(el.style.getPropertyValue("--sc-studio-offset-x")) || 0;
+  const vy = Number.parseFloat(el.style.getPropertyValue("--sc-studio-offset-y")) || 0;
   const parts = splitTopLevelWhitespace(raw);
   const parseAxis = (part: string, varVal: number): number => {
-    if (part && part.includes("--hf-studio-offset")) return varVal;
+    if (part && part.includes("--sc-studio-offset")) return varVal;
     const n = Number.parseFloat(part);
     return Number.isFinite(n) ? n : 0;
   };

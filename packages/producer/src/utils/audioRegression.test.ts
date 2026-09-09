@@ -33,7 +33,7 @@ describe.skipIf(!HAS_FFMPEG)("computeAudioResidualRmsDb", () => {
   let tmp: string;
 
   beforeAll(() => {
-    tmp = mkdtempSync(join(tmpdir(), "hf-audio-residual-test-"));
+    tmp = mkdtempSync(join(tmpdir(), "sc-audio-residual-test-"));
     // Two test wavs: identical 1-second 440 Hz sine, and a 880 Hz sine
     // that's audibly different from the 440 reference.
     for (const [name, freq] of [

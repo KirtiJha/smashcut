@@ -1,7 +1,7 @@
 {
   "$schema": "https://hyperframes.heygen.com/schema/registry-item.json",
   "name": "code-snippet-flight",
-  "type": "hyperframes:block",
+  "type": "smashcut:block",
   "title": "Code Snippet Flight",
   "description": "Discrete code snippets fly in from the side and assemble into a stacked program, staggered. Block-level FLIP.",
   "dimensions": {
@@ -14,11 +14,11 @@
     {
       "path": "code-snippet-flight.html",
       "target": "compositions/code-snippet-flight.html",
-      "type": "hyperframes:composition"
+      "type": "smashcut:composition"
     }
   ],
   "preview": {
-    "video": "https://static.heygen.ai/hyperframes-oss/docs/images/catalog/blocks/code-snippet-flight.mp4",
-    "poster": "https://static.heygen.ai/hyperframes-oss/docs/images/catalog/blocks/code-snippet-flight.png"
+    "video": "https://static.heygen.ai/smashcut-oss/docs/images/catalog/blocks/code-snippet-flight.mp4",
+    "poster": "https://static.heygen.ai/smashcut-oss/docs/images/catalog/blocks/code-snippet-flight.png"
   }
 }

@@ -10,5 +10,5 @@ import { join } from "node:path";
  * pre-create or symlink the path between choosing the name and making it.
  */
 export function createCatalogPreviewTempDir(itemName: string): string {
-  return mkdtempSync(join(tmpdir(), `hf-catalog-${itemName}-`));
+  return mkdtempSync(join(tmpdir(), `sc-catalog-${itemName}-`));
 }

@@ -1,7 +1,7 @@
 {
   "$schema": "https://hyperframes.heygen.com/schema/registry-item.json",
   "name": "simulated-cursor",
-  "type": "hyperframes:component",
+  "type": "smashcut:component",
   "title": "Simulated Cursor",
   "description": "A lightweight cursor pointer and click pulse for product walkthroughs and agent UI demos",
   "tags": ["video-primitive", "motion-primitive", "cursor", "ui", "walkthrough"],
@@ -9,7 +9,7 @@
     {
       "path": "simulated-cursor.html",
       "target": "compositions/components/simulated-cursor.html",
-      "type": "hyperframes:snippet"
+      "type": "smashcut:snippet"
     }
   ],
   "variables": [
@@ -30,7 +30,7 @@
       "type": "enum",
       "role": "style",
       "label": "Tone",
-      "description": "Pointer fill and click ring colour: light reads on dark screens, dark reads on light ones, accent rides --hf-ui-accent.",
+      "description": "Pointer fill and click ring colour: light reads on dark screens, dark reads on light ones, accent rides --sc-ui-accent.",
       "default": "light",
       "options": [
         {
@@ -75,6 +75,6 @@
     }
   ],
   "preview": {
-    "poster": "https://static.heygen.ai/hyperframes-oss/docs/images/catalog/components/simulated-cursor.png"
+    "poster": "https://static.heygen.ai/smashcut-oss/docs/images/catalog/components/simulated-cursor.png"
   }
 }

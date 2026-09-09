@@ -273,14 +273,14 @@ describe("FlatGroupHeader", () => {
     const { host: openHost, root: openRoot } = renderInto(
       <FlatGroupHeader title="Text" isOpen onToggleOpen={vi.fn()} animateEntrance />,
     );
-    expect(openHost.firstElementChild?.className).toContain("hf-flat-group-enter");
+    expect(openHost.firstElementChild?.className).toContain("sc-flat-group-enter");
     act(() => openRoot.unmount());
 
     const { host: collapsedHost, root: collapsedRoot } = renderInto(
       <FlatGroupHeader title="Style" isOpen={false} onToggleOpen={vi.fn()} animateEntrance />,
     );
     const row = collapsedHost.querySelector('[data-flat-group-collapsed="true"]');
-    expect(row?.className).toContain("hf-flat-group-enter");
+    expect(row?.className).toContain("sc-flat-group-enter");
     act(() => collapsedRoot.unmount());
   });
 
@@ -288,14 +288,14 @@ describe("FlatGroupHeader", () => {
     const { host: openHost, root: openRoot } = renderInto(
       <FlatGroupHeader title="Text" isOpen onToggleOpen={vi.fn()} />,
     );
-    expect(openHost.firstElementChild?.className).not.toContain("hf-flat-group-enter");
+    expect(openHost.firstElementChild?.className).not.toContain("sc-flat-group-enter");
     act(() => openRoot.unmount());
 
     const { host: collapsedHost, root: collapsedRoot } = renderInto(
       <FlatGroupHeader title="Style" isOpen={false} onToggleOpen={vi.fn()} />,
     );
     const row = collapsedHost.querySelector('[data-flat-group-collapsed="true"]');
-    expect(row?.className).not.toContain("hf-flat-group-enter");
+    expect(row?.className).not.toContain("sc-flat-group-enter");
     act(() => collapsedRoot.unmount());
   });
 

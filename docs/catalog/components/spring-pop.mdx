@@ -16,7 +16,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 ```html spring-pop.html
 <!doctype html>
 <!--
-  spring-pop: HyperFrames video primitive (effects / burst / reveal)
+  spring-pop: SmashCut video primitive (effects / burst / reveal)
 
   Concept: one badge arrives from scale 0.9 and opacity 0, passes slightly
   beyond full size, then settles exactly at scale 1. One mechanic, one job:
@@ -24,7 +24,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 
   Compiled-from evidence: Video Primitives v1 build contract, Easing
   vocabulary (--ease-overshoot = GSAP back.out(1.7), taste rules 4 and 5),
-  plus hyperframes-animation rules/spring-pop-entrance.md's playful
+  plus smashcut-animation rules/spring-pop-entrance.md's playful
   overshoot variation. This fills the gap left by spring-scale-in, whose
   power3.out curve never overshoots.
 
@@ -157,8 +157,8 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
             var badge = root.querySelector(".sp-badge");
             var label = root.querySelector(".sp-label");
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             // INVARIANT: invalid numeric overrides return to declared
@@ -215,7 +215,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 
 ## Install
 
-<InstallCommand command="npx hyperframes add spring-pop" item="spring-pop" />
+<InstallCommand command="npx smashcut add spring-pop" item="spring-pop" />
 
 That writes one file: `compositions/components/spring-pop.html`.
 
@@ -255,7 +255,7 @@ defaults, so this behaves exactly like the preview above until you change one:
 ```html
 <!doctype html>
 <!--
-  spring-pop: HyperFrames video primitive (effects / burst / reveal)
+  spring-pop: SmashCut video primitive (effects / burst / reveal)
 
   Concept: one badge arrives from scale 0.9 and opacity 0, passes slightly
   beyond full size, then settles exactly at scale 1. One mechanic, one job:
@@ -263,7 +263,7 @@ defaults, so this behaves exactly like the preview above until you change one:
 
   Compiled-from evidence: Video Primitives v1 build contract, Easing
   vocabulary (--ease-overshoot = GSAP back.out(1.7), taste rules 4 and 5),
-  plus hyperframes-animation rules/spring-pop-entrance.md's playful
+  plus smashcut-animation rules/spring-pop-entrance.md's playful
   overshoot variation. This fills the gap left by spring-scale-in, whose
   power3.out curve never overshoots.
 
@@ -396,8 +396,8 @@ defaults, so this behaves exactly like the preview above until you change one:
             var badge = root.querySelector(".sp-badge");
             var label = root.querySelector(".sp-label");
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             // INVARIANT: invalid numeric overrides return to declared

@@ -3,8 +3,8 @@ import { createReadStream, existsSync, readFileSync, statSync } from "node:fs";
 import { Readable } from "node:stream";
 import { join, resolve } from "node:path";
 import { createHash } from "node:crypto";
-import { injectScriptsIntoHtml, stripEmbeddedRuntimeScripts } from "@hyperframes/core/compiler";
-import { isWithinProjectRoot } from "@hyperframes/parsers/asset-resolution";
+import { injectScriptsIntoHtml, stripEmbeddedRuntimeScripts } from "@smashcut/core/compiler";
+import { isWithinProjectRoot } from "@smashcut/parsers/asset-resolution";
 import type { StudioApiAdapter } from "../types.js";
 import { resolveWithinProject } from "../helpers/safePath.js";
 import { getMimeType } from "../helpers/mime.js";
@@ -17,7 +17,7 @@ import {
   createStudioMotionRenderBodyScript,
   STUDIO_MOTION_PATH,
 } from "../helpers/studioMotionRenderScript.js";
-import { ensureHfIds } from "@hyperframes/parsers/hf-ids";
+import { ensureHfIds } from "@smashcut/parsers/sc-ids";
 import { persistHfIdsIfNeeded, stampFileHfIds } from "../helpers/hfIdPersist.js";
 import { isVariablesPayload, VARIABLES_PAYLOAD_ERROR } from "../helpers/variablesPayload.js";
 import { injectPreviewVariables } from "../helpers/previewVariables.js";
@@ -42,7 +42,7 @@ import {
   type PreviewApiAdapter,
 } from "../helpers/mediaProxyPreview.js";
 
-const PROJECT_SIGNATURE_META = "hyperframes-project-signature";
+const PROJECT_SIGNATURE_META = "smashcut-project-signature";
 const GSAP_CDN_VERSION = "3.15.0";
 const GSAP_CDN_SCRIPT = `<script src="https://cdn.jsdelivr.net/npm/gsap@${GSAP_CDN_VERSION}/dist/gsap.min.js"></script>`;
 const GSAP_CUSTOM_EASE_CDN_SCRIPT = `<script src="https://cdn.jsdelivr.net/npm/gsap@${GSAP_CDN_VERSION}/dist/CustomEase.min.js"></script>`;
@@ -178,7 +178,7 @@ function injectStudioMotionScript(
   );
 }
 
-const GSAP_CDN_FALLBACK_SCRIPT = `<script data-hf-gsap-fallback>
+const GSAP_CDN_FALLBACK_SCRIPT = `<script data-sc-gsap-fallback>
 (function(){
   var cdnBase="https://cdn.jsdelivr.net/npm/gsap@${GSAP_CDN_VERSION}/dist/";
   var loaded={};
@@ -200,7 +200,7 @@ const GSAP_CDN_FALLBACK_SCRIPT = `<script data-hf-gsap-fallback>
 </script>`;
 
 function injectGsapCdnFallback(html: string): string {
-  if (html.includes("data-hf-gsap-fallback")) return html;
+  if (html.includes("data-sc-gsap-fallback")) return html;
   if (html.includes("<head>")) return html.replace("<head>", "<head>" + GSAP_CDN_FALLBACK_SCRIPT);
   return GSAP_CDN_FALLBACK_SCRIPT + html;
 }
@@ -338,7 +338,7 @@ export function registerPreviewRoutes(api: Hono, adapter: PreviewApiAdapter): vo
       });
     }
 
-    // Normalize + persist data-hf-id to disk before bundle reads it. Idempotent.
+    // Normalize + persist data-sc-id to disk before bundle reads it. Idempotent.
     const diskMain = resolveProjectMainHtml(project.dir, project.id);
     const normalizedDisk = diskMain
       ? persistHfIdsIfNeeded(join(project.dir, diskMain.compositionPath), diskMain.html)
@@ -358,8 +358,8 @@ export function registerPreviewRoutes(api: Hono, adapter: PreviewApiAdapter): vo
 
       // Inject runtime if not already present (check URL pattern and bundler attribute)
       if (
-        !bundled.includes("hyperframe.runtime") &&
-        !bundled.includes("hyperframes-preview-runtime")
+        !bundled.includes("smashcut.runtime") &&
+        !bundled.includes("smashcut-preview-runtime")
       ) {
         const runtimeTag = `<script src="${adapter.runtimeUrl}"></script>`;
         bundled = bundled.includes("</body>")
@@ -425,7 +425,7 @@ export function registerPreviewRoutes(api: Hono, adapter: PreviewApiAdapter): vo
   });
 
   /**
-   * Pin hf-ids to the RAW sub-comp file before the build pipeline mutates
+   * Pin sc-ids to the RAW sub-comp file before the build pipeline mutates
    * attributes (rewriteRelativePaths etc.) — minting is content-keyed over
    * attrs, so stamping only AFTER the rewrite mints preview-only ids that
    * exist nowhere in the source. Pinned ids ride through the rewrite
@@ -466,7 +466,7 @@ export function registerPreviewRoutes(api: Hono, adapter: PreviewApiAdapter): vo
       return c.text("not found", 404);
     }
 
-    // "v2" salts the etag for the hf-id-pinning change below: a client holding
+    // "v2" salts the etag for the sc-id-pinning change below: a client holding
     // a pre-pin cached response (preview-only ids, unstamped disk file) must
     // not revalidate to a 304 that skips the pin.
     const etag = `"comp:v2:${compPath}:${signature}${variablesEtagSalt(vars.raw)}"`;
@@ -508,7 +508,7 @@ export function registerPreviewRoutes(api: Hono, adapter: PreviewApiAdapter): vo
     // Assets are read-only and should mirror the renderer: permit a path that
     // is lexically inside the project even if an explicit project symlink
     // targets a shared directory outside it. Composition source files still
-    // use resolveWithinProject because preview mutates their data-hf-id values.
+    // use resolveWithinProject because preview mutates their data-sc-id values.
     const candidate = resolve(project.dir, subPath);
     const file = isWithinProjectRoot(project.dir, candidate) ? candidate : null;
     if (!file) {
@@ -521,12 +521,12 @@ export function registerPreviewRoutes(api: Hono, adapter: PreviewApiAdapter): vo
     const contentType = getMimeType(subPath);
     const isText = /\.(html|css|js|json|svg|txt|md|cube)$/i.test(subPath);
 
-    // `?hf-proxy=` follows the asset's alpha-aware proxy variant. The
+    // `?sc-proxy=` follows the asset's alpha-aware proxy variant. The
     // param value must be recognized (matching play/staticProjectServer),
     // only a video asset can be proxied, and only when auto-proxy is enabled
     // for this adapter/project. Checked BEFORE any transcode or 304 shortcut
     // so a bogus/disabled request never spawns ffmpeg.
-    const proxyParam = c.req.query("hf-proxy");
+    const proxyParam = c.req.query("sc-proxy");
     let proxyVariant: ProxyVariant | undefined;
     if (proxyParam !== undefined) {
       if (

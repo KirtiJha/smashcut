@@ -16,7 +16,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 ```html stagger-cascade.html
 <!doctype html>
 <!--
-  stagger-cascade: HyperFrames video primitive (effects / burst / exhibit)
+  stagger-cascade: SmashCut video primitive (effects / burst / exhibit)
 
   Concept: a responsive grid of plain tile cards enters in DOM order with one
   visible, evenly spaced GSAP stagger. Each tile fades from opacity 0 to 1 and
@@ -57,7 +57,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
   #root has position:absolute; inset:0; container-type:size and no data-width or
   data-height, so the host owns the box. The composition id is hardcoded as
   "stagger-cascade" because mount flattening strips it from the live root.
-  Variables come from window.__hyperframes.getVariables(), which supplies the
+  Variables come from window.__smashcut.getVariables(), which supplies the
   declared defaults merged with host data-variable-values overrides.
 -->
 <html
@@ -177,8 +177,8 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
             // EDIT ZONE: declarations above and clamped reads below are the
             // single source of truth for the primitive's three public knobs.
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             var rawItemCount = Number(vars.itemCount);
@@ -278,7 +278,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 
 ## Install
 
-<InstallCommand command="npx hyperframes add stagger-cascade" item="stagger-cascade" />
+<InstallCommand command="npx smashcut add stagger-cascade" item="stagger-cascade" />
 
 That writes one file: `compositions/components/stagger-cascade.html`.
 
@@ -318,7 +318,7 @@ defaults, so this behaves exactly like the preview above until you change one:
 ```html
 <!doctype html>
 <!--
-  stagger-cascade: HyperFrames video primitive (effects / burst / exhibit)
+  stagger-cascade: SmashCut video primitive (effects / burst / exhibit)
 
   Concept: a responsive grid of plain tile cards enters in DOM order with one
   visible, evenly spaced GSAP stagger. Each tile fades from opacity 0 to 1 and
@@ -359,7 +359,7 @@ defaults, so this behaves exactly like the preview above until you change one:
   #root has position:absolute; inset:0; container-type:size and no data-width or
   data-height, so the host owns the box. The composition id is hardcoded as
   "stagger-cascade" because mount flattening strips it from the live root.
-  Variables come from window.__hyperframes.getVariables(), which supplies the
+  Variables come from window.__smashcut.getVariables(), which supplies the
   declared defaults merged with host data-variable-values overrides.
 -->
 <html
@@ -479,8 +479,8 @@ defaults, so this behaves exactly like the preview above until you change one:
             // EDIT ZONE: declarations above and clamped reads below are the
             // single source of truth for the primitive's three public knobs.
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             var rawItemCount = Number(vars.itemCount);

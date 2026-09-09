@@ -66,8 +66,8 @@ describe.skipIf(!HAS_FFMPEG)(
     });
 
     it("preserves the level of a mono source in the stereo mix", async () => {
-      const projectDir = mkdtempSync(join(tmpdir(), "hf-mono-level-"));
-      const workDir = mkdtempSync(join(tmpdir(), "hf-mono-work-"));
+      const projectDir = mkdtempSync(join(tmpdir(), "sc-mono-level-"));
+      const workDir = mkdtempSync(join(tmpdir(), "sc-mono-work-"));
       tempDirs.push(projectDir, workDir);
       const sourcePath = join(projectDir, "voice.wav");
       const outputPath = join(projectDir, "audio.aac");
@@ -121,8 +121,8 @@ describe.skipIf(!HAS_FFMPEG)(
       // frame-accurate video. MIXED_AUDIO_FILENAME picks a container that stores
       // the delay as an edit list instead; this asserts the artifact we actually
       // ship lands on time.
-      const projectDir = mkdtempSync(join(tmpdir(), "hf-onset-"));
-      const workDir = mkdtempSync(join(tmpdir(), "hf-onset-work-"));
+      const projectDir = mkdtempSync(join(tmpdir(), "sc-onset-"));
+      const workDir = mkdtempSync(join(tmpdir(), "sc-onset-work-"));
       tempDirs.push(projectDir, workDir);
       const sourcePath = join(projectDir, "tone.wav");
       const outputPath = join(projectDir, MIXED_AUDIO_FILENAME);

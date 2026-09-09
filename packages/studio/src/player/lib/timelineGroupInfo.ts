@@ -10,11 +10,11 @@ import {
   HF_AUDIO_GROUP_ATTR,
   HF_AUDIO_GROUP_TAG,
   resolveAudioGroups,
-} from "@hyperframes/core/audio-groups";
-import { HF_AUDIO_AUTOMATION_ATTR } from "@hyperframes/core/audio-automation";
-import { HF_AUDIO_FX_ATTR } from "@hyperframes/core/audio-fx";
+} from "@smashcut/core/audio-groups";
+import { HF_AUDIO_AUTOMATION_ATTR } from "@smashcut/core/audio-automation";
+import { HF_AUDIO_FX_ATTR } from "@smashcut/core/audio-fx";
 
-// One `<hf-audio-group>` scan per document, not per clip — resolveAudioGroups
+// One `<sc-audio-group>` scan per document, not per clip — resolveAudioGroups
 // walks the whole tree, and a parse touches every clip in it.
 interface GroupInfo {
   label: string;

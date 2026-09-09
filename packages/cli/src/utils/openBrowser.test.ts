@@ -29,9 +29,9 @@ describe("buildBrowserArgs", () => {
     expect(
       buildBrowserArgs("http://localhost:3002", {
         browserPath: "/usr/bin/chromium",
-        userDataDir: "/tmp/hf-profile",
+        userDataDir: "/tmp/sc-profile",
       }),
-    ).toEqual(["--user-data-dir=/tmp/hf-profile", "http://localhost:3002"]);
+    ).toEqual(["--user-data-dir=/tmp/sc-profile", "http://localhost:3002"]);
   });
 
   it("handles paths with spaces", () => {
@@ -58,11 +58,11 @@ describe("buildBrowserArgs", () => {
     expect(
       buildBrowserArgs("http://localhost:3002", {
         browserPath: "/usr/bin/chromium",
-        userDataDir: "/tmp/hf-profile",
+        userDataDir: "/tmp/sc-profile",
         remoteDebuggingPort: 9222,
       }),
     ).toEqual([
-      "--user-data-dir=/tmp/hf-profile",
+      "--user-data-dir=/tmp/sc-profile",
       "--remote-debugging-port=9222",
       "http://localhost:3002",
     ]);
@@ -126,7 +126,7 @@ describe("validateRemoteDebuggingPortDeps", () => {
     expect(
       validateRemoteDebuggingPortDeps({
         browserPath: "/usr/bin/chromium",
-        userDataDir: "/tmp/hf-profile",
+        userDataDir: "/tmp/sc-profile",
         remoteDebuggingPort: "9222",
       }),
     ).toBeNull();
@@ -135,7 +135,7 @@ describe("validateRemoteDebuggingPortDeps", () => {
   it("requires --browser-path when --remote-debugging-port is set", () => {
     expect(
       validateRemoteDebuggingPortDeps({
-        userDataDir: "/tmp/hf-profile",
+        userDataDir: "/tmp/sc-profile",
         remoteDebuggingPort: "9222",
       }),
     ).toBe("--remote-debugging-port requires --browser-path");

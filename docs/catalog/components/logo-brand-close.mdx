@@ -10,13 +10,13 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
   previewSrc="/public/catalog/components/logo-brand-close.json"
   compositionId="logo-brand-close"
   compositionSrc="compositions/components/logo-brand-close.html"
-  variables={[{"id":"wordmark","type":"string","role":"content","label":"Wordmark","description":"Brand name whose letters cascade into the centered lockup.","default":"HYPERFRAMES"},{"id":"tagline","type":"string","role":"content","label":"Tagline","description":"Optional tagline that settles beneath the wordmark. Empty hides it.","default":"Write HTML. Render video."},{"id":"url","type":"string","role":"content","label":"URL","description":"Optional mono URL line beneath the tagline. Empty hides it.","default":"hyperframes.heygen.com"},{"id":"accent","type":"enum","role":"style","label":"Accent","description":"Contract color used by the brand period at the end of the wordmark.","default":"green","options":[{"value":"green","label":"Green"},{"value":"blue","label":"Blue"},{"value":"violet","label":"Violet"}]},{"id":"exit","type":"enum","role":"style","label":"Exit","description":"Optional departure. Films end on the still hold, so the default is none.","default":"none","options":[{"value":"none","label":"None"},{"value":"fade","label":"Fade"},{"value":"up","label":"Up"}]}]}
+  variables={[{"id":"wordmark","type":"string","role":"content","label":"Wordmark","description":"Brand name whose letters cascade into the centered lockup.","default":"SMASHCUT"},{"id":"tagline","type":"string","role":"content","label":"Tagline","description":"Optional tagline that settles beneath the wordmark. Empty hides it.","default":"Write HTML. Render video."},{"id":"url","type":"string","role":"content","label":"URL","description":"Optional mono URL line beneath the tagline. Empty hides it.","default":"hyperframes.heygen.com"},{"id":"accent","type":"enum","role":"style","label":"Accent","description":"Contract color used by the brand period at the end of the wordmark.","default":"green","options":[{"value":"green","label":"Green"},{"value":"blue","label":"Blue"},{"value":"violet","label":"Violet"}]},{"id":"exit","type":"enum","role":"style","label":"Exit","description":"Optional departure. Films end on the still hold, so the default is none.","default":"none","options":[{"value":"none","label":"None"},{"value":"fade","label":"Fade"},{"value":"up","label":"Up"}]}]}
 >
 
 ```html logo-brand-close.html
 <!doctype html>
 <!--
-  logo-brand-close: HyperFrames video primitive (brand close)
+  logo-brand-close: SmashCut video primitive (brand close)
 
   The identity close that ends films. The wordmark lands at display scale,
   a chars-aware fit sizing it to roughly three quarters of the frame width.
@@ -52,7 +52,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
   data-composition-id="logo-brand-close"
   data-composition-duration="4"
   data-composition-variables='[
-    { "id": "wordmark", "type": "string", "role": "content", "label": "Wordmark", "description": "Brand name whose letters cascade into the centered lockup.", "default": "HYPERFRAMES" },
+    { "id": "wordmark", "type": "string", "role": "content", "label": "Wordmark", "description": "Brand name whose letters cascade into the centered lockup.", "default": "SMASHCUT" },
     { "id": "tagline", "type": "string", "role": "content", "label": "Tagline", "description": "Optional tagline that settles beneath the wordmark. Empty hides it.", "default": "Write HTML. Render video." },
     { "id": "url", "type": "string", "role": "content", "label": "URL", "description": "Optional mono URL line beneath the tagline. Empty hides it.", "default": "hyperframes.heygen.com" },
     { "id": "accent", "type": "enum", "role": "style", "label": "Accent", "description": "Contract color used by the brand period at the end of the wordmark.", "default": "green", "options": [{ "value": "green", "label": "Green" }, { "value": "blue", "label": "Blue" }, { "value": "violet", "label": "Violet" }] },
@@ -181,15 +181,15 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
             var taglineElement = root.querySelector(".lbc-tagline");
             var urlElement = root.querySelector(".lbc-url");
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             var wordmark =
               vars.wordmark == null
-                ? "HYPERFRAMES"
+                ? "SMASHCUT"
                 : String(vars.wordmark).trim().replace(/\s+/g, " ");
-            if (wordmark.length === 0) wordmark = "HYPERFRAMES";
+            if (wordmark.length === 0) wordmark = "SMASHCUT";
             var tagline =
               vars.tagline == null
                 ? "Write HTML. Render video."
@@ -387,7 +387,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 
 ## Install
 
-<InstallCommand command="npx hyperframes add logo-brand-close" item="logo-brand-close" />
+<InstallCommand command="npx smashcut add logo-brand-close" item="logo-brand-close" />
 
 That writes one file: `compositions/components/logo-brand-close.html`.
 
@@ -405,7 +405,7 @@ want to change on the element:
 
 | Variable | Default | Accepts | What it does |
 | --- | --- | --- | --- |
-| `wordmark` | `HYPERFRAMES` | string | Brand name whose letters cascade into the centered lockup. |
+| `wordmark` | `SMASHCUT` | string | Brand name whose letters cascade into the centered lockup. |
 | `tagline` | `Write HTML. Render video.` | string | Optional tagline that settles beneath the wordmark. Empty hides it. |
 | `url` | `hyperframes.heygen.com` | string | Optional mono URL line beneath the tagline. Empty hides it. |
 | `accent` | `green` | `green`, `blue`, `violet` | Contract color used by the brand period at the end of the wordmark. |
@@ -418,7 +418,7 @@ defaults, so this behaves exactly like the preview above until you change one:
 <div
   data-composition-id="logo-brand-close"
   data-composition-src="compositions/components/logo-brand-close.html"
-  data-variable-values='{"wordmark":"HYPERFRAMES","tagline":"Write HTML. Render video.","url":"hyperframes.heygen.com","accent":"green","exit":"none"}'
+  data-variable-values='{"wordmark":"SMASHCUT","tagline":"Write HTML. Render video.","url":"hyperframes.heygen.com","accent":"green","exit":"none"}'
 ></div>
 ```
 
@@ -429,7 +429,7 @@ defaults, so this behaves exactly like the preview above until you change one:
 ```html
 <!doctype html>
 <!--
-  logo-brand-close: HyperFrames video primitive (brand close)
+  logo-brand-close: SmashCut video primitive (brand close)
 
   The identity close that ends films. The wordmark lands at display scale,
   a chars-aware fit sizing it to roughly three quarters of the frame width.
@@ -465,7 +465,7 @@ defaults, so this behaves exactly like the preview above until you change one:
   data-composition-id="logo-brand-close"
   data-composition-duration="4"
   data-composition-variables='[
-    { "id": "wordmark", "type": "string", "role": "content", "label": "Wordmark", "description": "Brand name whose letters cascade into the centered lockup.", "default": "HYPERFRAMES" },
+    { "id": "wordmark", "type": "string", "role": "content", "label": "Wordmark", "description": "Brand name whose letters cascade into the centered lockup.", "default": "SMASHCUT" },
     { "id": "tagline", "type": "string", "role": "content", "label": "Tagline", "description": "Optional tagline that settles beneath the wordmark. Empty hides it.", "default": "Write HTML. Render video." },
     { "id": "url", "type": "string", "role": "content", "label": "URL", "description": "Optional mono URL line beneath the tagline. Empty hides it.", "default": "hyperframes.heygen.com" },
     { "id": "accent", "type": "enum", "role": "style", "label": "Accent", "description": "Contract color used by the brand period at the end of the wordmark.", "default": "green", "options": [{ "value": "green", "label": "Green" }, { "value": "blue", "label": "Blue" }, { "value": "violet", "label": "Violet" }] },
@@ -594,15 +594,15 @@ defaults, so this behaves exactly like the preview above until you change one:
             var taglineElement = root.querySelector(".lbc-tagline");
             var urlElement = root.querySelector(".lbc-url");
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             var wordmark =
               vars.wordmark == null
-                ? "HYPERFRAMES"
+                ? "SMASHCUT"
                 : String(vars.wordmark).trim().replace(/\s+/g, " ");
-            if (wordmark.length === 0) wordmark = "HYPERFRAMES";
+            if (wordmark.length === 0) wordmark = "SMASHCUT";
             var tagline =
               vars.tagline == null
                 ? "Write HTML. Render video."

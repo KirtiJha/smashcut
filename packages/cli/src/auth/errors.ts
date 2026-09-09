@@ -28,21 +28,21 @@ export const ErrNotConfigured = () =>
   new AuthError(
     "NOT_CONFIGURED",
     "No HeyGen credentials found",
-    "Run `hyperframes auth login` to sign in.",
+    "Run `smashcut auth login` to sign in.",
   );
 
 export const ErrInvalidStore = (detail: string) =>
   new AuthError(
     "INVALID_STORE",
     `Credential file is unreadable: ${detail}`,
-    "Delete ~/.heygen/credentials and run `hyperframes auth login` to re-create it.",
+    "Delete ~/.heygen/credentials and run `smashcut auth login` to re-create it.",
   );
 
 export const ErrUnauthenticated = (detail?: string) =>
   new AuthError(
     "UNAUTHENTICATED",
     detail ? `HeyGen rejected the credential: ${detail}` : "HeyGen rejected the credential",
-    "Run `hyperframes auth login` to re-authenticate.",
+    "Run `smashcut auth login` to re-authenticate.",
   );
 
 export const ErrApi = (status: number, detail: string) =>
@@ -52,21 +52,21 @@ export const ErrOAuthNotConfigured = () =>
   new AuthError(
     "OAUTH_NOT_CONFIGURED",
     "OAuth client is not configured",
-    "Set HYPERFRAMES_OAUTH_CLIENT_ID, or run `hyperframes auth login --api-key`.",
+    "Set SMASHCUT_OAUTH_CLIENT_ID, or run `smashcut auth login --api-key`.",
   );
 
 export const ErrRefreshFailed = (detail?: string) =>
   new AuthError(
     "REFRESH_FAILED",
     detail ? `Failed to refresh OAuth tokens: ${detail}` : "Failed to refresh OAuth tokens",
-    "Run `hyperframes auth login` to re-authenticate.",
+    "Run `smashcut auth login` to re-authenticate.",
   );
 
 export const ErrDeviceAuthFailed = (detail: string) =>
   new AuthError(
     "DEVICE_AUTH_FAILED",
     `Device authorization failed: ${detail}`,
-    "Run `hyperframes auth login --device` to start a new code.",
+    "Run `smashcut auth login --device` to start a new code.",
   );
 
 export function isAuthError(err: unknown): err is AuthError {

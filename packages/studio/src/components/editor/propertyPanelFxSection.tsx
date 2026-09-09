@@ -13,17 +13,17 @@ import {
   type HfAudioFxChain,
   type HfAudioFxNode,
   type HfAudioFxParamValues,
-} from "@hyperframes/core/audio-fx";
-import { applyAudioFxPreset, getAudioFxPreset } from "@hyperframes/core/audio-fx-presets";
+} from "@smashcut/core/audio-fx";
+import { applyAudioFxPreset, getAudioFxPreset } from "@smashcut/core/audio-fx-presets";
 import { applyPresetToChain } from "./useApplyAudioFxPreset.js";
 import {
   addAudioEq,
   audioEqIds,
   removeAudioEq,
   setAudioEqBandGain,
-} from "@hyperframes/core/audio-fx-eq";
-import { applyAudioFxProfile, getAudioFxProfile } from "@hyperframes/core/audio-fx-profiles";
-import { audioFxJobNode, type HfAudioFxJob } from "@hyperframes/core/audio-fx-jobs";
+} from "@smashcut/core/audio-fx-eq";
+import { applyAudioFxProfile, getAudioFxProfile } from "@smashcut/core/audio-fx-profiles";
+import { audioFxJobNode, type HfAudioFxJob } from "@smashcut/core/audio-fx-jobs";
 import { FxPresetMenu } from "./propertyPanelFxPresetMenu.js";
 import { FxRackChain } from "./propertyPanelFxRackChain.js";
 import { CLIP_SIGNAL_PATH } from "./audioFxSignalPath.js";
@@ -462,7 +462,7 @@ export function FxSection({
   return (
     <div
       ref={rootRef}
-      className="hf-fx-section space-y-2"
+      className="sc-fx-section space-y-2"
       // Focus lives on the buttons and menu items inside, so the keystroke
       // bubbles to here without the section needing focus of its own.
       onKeyDown={closeMenus}
@@ -558,7 +558,7 @@ export function FxSection({
       <div className="flex flex-col gap-1">
         <button
           type="button"
-          className="hf-fx-preset w-full rounded-[4px] border border-panel-text-0 py-1.5 text-[11px] font-semibold text-panel-text-0 disabled:opacity-40"
+          className="sc-fx-preset w-full rounded-[4px] border border-panel-text-0 py-1.5 text-[11px] font-semibold text-panel-text-0 disabled:opacity-40"
           aria-expanded={picking}
           disabled={disabled}
           onClick={() => {
@@ -574,7 +574,7 @@ export function FxSection({
         </button>
         <button
           type="button"
-          className="hf-fx-add self-end px-1 text-[10px] text-panel-text-2 hover:text-panel-text-0 disabled:opacity-40"
+          className="sc-fx-add self-end px-1 text-[10px] text-panel-text-2 hover:text-panel-text-0 disabled:opacity-40"
           aria-expanded={adding}
           disabled={disabled}
           onClick={() => {

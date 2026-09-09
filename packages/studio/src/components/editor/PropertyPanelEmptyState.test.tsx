@@ -119,12 +119,12 @@ describe("PropertyPanelEmptyState — flat multi-select", () => {
     act(() => root.unmount());
   });
 
-  it("counts an <hf-audio-group> bus as audio too", () => {
+  it("counts an <sc-audio-group> bus as audio too", () => {
     const { host, root } = renderInto(
       <PropertyPanelEmptyState
         flat
         multiSelectCount={2}
-        multiSelectedElements={audioElements(["hf-audio-group", "div"])}
+        multiSelectedElements={audioElements(["sc-audio-group", "div"])}
         onGroupSelection={vi.fn()}
       />,
     );

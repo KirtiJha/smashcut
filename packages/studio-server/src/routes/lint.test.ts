@@ -17,11 +17,11 @@ afterEach(() => {
 // Project layout for #1384: one real composition plus vendored example HTML
 // inside a dot-directory that must not inflate the lint findings.
 function createProjectDir(): string {
-  const projectDir = mkdtempSync(join(tmpdir(), "hf-lint-test-"));
+  const projectDir = mkdtempSync(join(tmpdir(), "sc-lint-test-"));
   tempDirs.push(projectDir);
   writeFileSync(join(projectDir, "index.html"), "<html><body>real</body></html>");
-  mkdirSync(join(projectDir, ".hyperframes"));
-  writeFileSync(join(projectDir, ".hyperframes", "preset.html"), "<html><body>junk</body></html>");
+  mkdirSync(join(projectDir, ".smashcut"));
+  writeFileSync(join(projectDir, ".smashcut", "preset.html"), "<html><body>junk</body></html>");
   return projectDir;
 }
 
@@ -56,7 +56,7 @@ describe("registerLintRoutes — dot-directory exclusion (#1384)", () => {
     expect(response.status).toBe(200);
     const lintedFiles = (payload.findings ?? []).map((f) => f.file);
     expect(lintedFiles).toContain("index.html");
-    expect(lintedFiles).not.toContain(".hyperframes/preset.html");
+    expect(lintedFiles).not.toContain(".smashcut/preset.html");
   });
 
   it("returns project-level findings instead of re-linting files independently", async () => {

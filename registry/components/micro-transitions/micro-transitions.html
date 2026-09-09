@@ -1,12 +1,12 @@
 <!--
-  Micro Transitions - transitions.dev-inspired UI motion pack for HyperFrames.
+  Micro Transitions - transitions.dev-inspired UI motion pack for SmashCut.
 
   Includes six app-transition patterns in one copy-paste snippet:
     badge pop, dropdown reveal, modal open, tab indicator, tooltip appear,
     and success check draw.
 
-  Animate --hf-micro-progress from 0 to 1, then optionally animate
-  --hf-micro-tab from 0 to 1 for the segmented control.
+  Animate --sc-micro-progress from 0 to 1, then optionally animate
+  --sc-micro-tab from 0 to 1 for the segmented control.
 
   Variables. The script reads each one, falls back to the declared default on
   anything missing or unrecognised, and writes either the panel wording or a
@@ -31,8 +31,8 @@
 -->
 
 <div
-  class="hf-micro-transitions"
-  style="--hf-micro-progress: 0; --hf-micro-tab: 0"
+  class="sc-micro-transitions"
+  style="--sc-micro-progress: 0; --sc-micro-tab: 0"
   data-composition-variables='[
     {"id": "badge", "type": "string", "role": "content", "label": "Badge", "description": "Count inside the notification badge on the bell.", "default": "3"},
     {"id": "tooltip", "type": "string", "role": "content", "label": "Tooltip", "description": "Wording inside the small dark tooltip.", "default": "Copied"},
@@ -40,41 +40,41 @@
     {"id": "travel", "type": "enum", "role": "motion", "label": "Travel", "description": "Scales how far every panel starts from its resting place before it settles.", "default": "standard", "options": [{"value": "close", "label": "Close"}, {"value": "standard", "label": "Standard"}, {"value": "far", "label": "Far"}]}
   ]'
 >
-  <div class="hf-micro-bell"><span>3</span></div>
-  <div class="hf-micro-dropdown">
+  <div class="sc-micro-bell"><span>3</span></div>
+  <div class="sc-micro-dropdown">
     <strong>Actions</strong>
     <p>Export, duplicate, archive</p>
   </div>
-  <div class="hf-micro-modal">
+  <div class="sc-micro-modal">
     <strong>Ready to publish?</strong><span>All checks passed.</span>
   </div>
-  <div class="hf-micro-tabs"><i></i><b>Draft</b><b>Live</b></div>
-  <div class="hf-micro-tooltip">Copied</div>
-  <svg class="hf-micro-check" viewBox="0 0 48 48" aria-hidden="true">
+  <div class="sc-micro-tabs"><i></i><b>Draft</b><b>Live</b></div>
+  <div class="sc-micro-tooltip">Copied</div>
+  <svg class="sc-micro-check" viewBox="0 0 48 48" aria-hidden="true">
     <path d="M12 25l8 8 17-19" />
   </svg>
 </div>
 
 <style>
-  .hf-micro-transitions {
-    --hf-micro-progress: 0;
-    --hf-micro-tab: 0;
+  .sc-micro-transitions {
+    --sc-micro-progress: 0;
+    --sc-micro-tab: 0;
     position: relative;
     width: min(640px, 100%);
     height: 360px;
     font-family: Inter, system-ui, sans-serif;
     color: #18181b;
   }
-  .hf-micro-bell,
-  .hf-micro-dropdown,
-  .hf-micro-modal,
-  .hf-micro-tabs,
-  .hf-micro-tooltip,
-  .hf-micro-check {
+  .sc-micro-bell,
+  .sc-micro-dropdown,
+  .sc-micro-modal,
+  .sc-micro-tabs,
+  .sc-micro-tooltip,
+  .sc-micro-check {
     position: absolute;
     will-change: transform, opacity;
   }
-  .hf-micro-bell {
+  .sc-micro-bell {
     top: 18px;
     left: 28px;
     width: 54px;
@@ -83,14 +83,14 @@
     background: #18181b;
     box-shadow: 0 18px 45px rgba(0, 0, 0, 0.18);
   }
-  .hf-micro-bell::before {
+  .sc-micro-bell::before {
     content: "";
     position: absolute;
     inset: 15px 17px 13px;
     border: 2px solid #fff;
     border-radius: 12px 12px 9px 9px;
   }
-  .hf-micro-bell span {
+  .sc-micro-bell span {
     position: absolute;
     top: -8px;
     right: -8px;
@@ -100,18 +100,18 @@
     place-items: center;
     border: 3px solid #fff;
     border-radius: 999px;
-    background: var(--hf-micro-badge, #ef4444);
+    background: var(--sc-micro-badge, #ef4444);
     color: #fff;
     font-size: 12px;
     font-weight: 850;
-    opacity: var(--hf-micro-progress);
+    opacity: var(--sc-micro-progress);
     transform: translate(
-        calc((1 - var(--hf-micro-progress)) * -7px * var(--hf-micro-travel, 1)),
-        calc((1 - var(--hf-micro-progress)) * 10px * var(--hf-micro-travel, 1))
+        calc((1 - var(--sc-micro-progress)) * -7px * var(--sc-micro-travel, 1)),
+        calc((1 - var(--sc-micro-progress)) * 10px * var(--sc-micro-travel, 1))
       )
-      scale(calc(0.25 + var(--hf-micro-progress) * 0.75));
+      scale(calc(0.25 + var(--sc-micro-progress) * 0.75));
   }
-  .hf-micro-dropdown {
+  .sc-micro-dropdown {
     top: 92px;
     left: 28px;
     width: 210px;
@@ -119,26 +119,26 @@
     border: 1px solid #e4e4e7;
     border-radius: 18px;
     background: #fff;
-    opacity: var(--hf-micro-progress);
-    transform: translateY(calc((1 - var(--hf-micro-progress)) * -12px * var(--hf-micro-travel, 1)))
-      scale(calc(0.95 + var(--hf-micro-progress) * 0.05));
+    opacity: var(--sc-micro-progress);
+    transform: translateY(calc((1 - var(--sc-micro-progress)) * -12px * var(--sc-micro-travel, 1)))
+      scale(calc(0.95 + var(--sc-micro-progress) * 0.05));
     transform-origin: top left;
     box-shadow: 0 24px 65px rgba(0, 0, 0, 0.16);
   }
-  .hf-micro-dropdown strong,
-  .hf-micro-modal strong {
+  .sc-micro-dropdown strong,
+  .sc-micro-modal strong {
     display: block;
     font-size: 16px;
   }
-  .hf-micro-dropdown p,
-  .hf-micro-modal span {
+  .sc-micro-dropdown p,
+  .sc-micro-modal span {
     display: block;
     margin: 8px 0 0;
     color: #71717a;
     font-size: 13px;
     line-height: 1.4;
   }
-  .hf-micro-modal {
+  .sc-micro-modal {
     top: 48px;
     right: 34px;
     width: 260px;
@@ -146,12 +146,12 @@
     border: 1px solid #e4e4e7;
     border-radius: 22px;
     background: #fff;
-    opacity: var(--hf-micro-progress);
-    transform: translateY(calc((1 - var(--hf-micro-progress)) * 18px * var(--hf-micro-travel, 1)))
-      scale(calc(0.96 + var(--hf-micro-progress) * 0.04));
+    opacity: var(--sc-micro-progress);
+    transform: translateY(calc((1 - var(--sc-micro-progress)) * 18px * var(--sc-micro-travel, 1)))
+      scale(calc(0.96 + var(--sc-micro-progress) * 0.04));
     box-shadow: 0 32px 80px rgba(0, 0, 0, 0.2);
   }
-  .hf-micro-tabs {
+  .sc-micro-tabs {
     left: 260px;
     bottom: 46px;
     display: grid;
@@ -161,10 +161,10 @@
     padding: 4px;
     border-radius: 14px;
     background: #f4f4f5;
-    opacity: var(--hf-micro-progress);
-    transform: translateY(calc((1 - var(--hf-micro-progress)) * 14px * var(--hf-micro-travel, 1)));
+    opacity: var(--sc-micro-progress);
+    transform: translateY(calc((1 - var(--sc-micro-progress)) * 14px * var(--sc-micro-travel, 1)));
   }
-  .hf-micro-tabs i {
+  .sc-micro-tabs i {
     position: absolute;
     top: 4px;
     left: 4px;
@@ -172,10 +172,10 @@
     height: calc(100% - 8px);
     border-radius: 11px;
     background: #fff;
-    transform: translateX(calc(var(--hf-micro-tab) * 100%));
+    transform: translateX(calc(var(--sc-micro-tab) * 100%));
     box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
   }
-  .hf-micro-tabs b {
+  .sc-micro-tabs b {
     position: relative;
     z-index: 1;
     display: grid;
@@ -184,7 +184,7 @@
     color: #52525b;
     font-size: 13px;
   }
-  .hf-micro-tooltip {
+  .sc-micro-tooltip {
     right: 54px;
     bottom: 48px;
     padding: 8px 11px;
@@ -193,11 +193,11 @@
     color: #fff;
     font-size: 12px;
     font-weight: 750;
-    opacity: var(--hf-micro-progress);
-    transform: translateY(calc((1 - var(--hf-micro-progress)) * 6px * var(--hf-micro-travel, 1)))
-      scale(calc(0.96 + var(--hf-micro-progress) * 0.04));
+    opacity: var(--sc-micro-progress);
+    transform: translateY(calc((1 - var(--sc-micro-progress)) * 6px * var(--sc-micro-travel, 1)))
+      scale(calc(0.96 + var(--sc-micro-progress) * 0.04));
   }
-  .hf-micro-check {
+  .sc-micro-check {
     right: 116px;
     bottom: 92px;
     width: 48px;
@@ -207,11 +207,11 @@
     stroke-width: 5;
     stroke-linecap: round;
     stroke-linejoin: round;
-    opacity: var(--hf-micro-progress);
+    opacity: var(--sc-micro-progress);
   }
-  .hf-micro-check path {
+  .sc-micro-check path {
     stroke-dasharray: 42;
-    stroke-dashoffset: calc((1 - var(--hf-micro-progress)) * 42);
+    stroke-dashoffset: calc((1 - var(--sc-micro-progress)) * 42);
   }
 </style>
 
@@ -220,8 +220,8 @@
     "use strict";
 
     var vars =
-      window.__hyperframes && window.__hyperframes.getVariables
-        ? window.__hyperframes.getVariables()
+      window.__smashcut && window.__smashcut.getVariables
+        ? window.__smashcut.getVariables()
         : {};
 
     // Unrecognised overrides return to their declared defaults.
@@ -244,13 +244,13 @@
     var badgeText = text(vars.badge, "3");
     var tooltipText = text(vars.tooltip, "Copied");
 
-    var roots = document.querySelectorAll(".hf-micro-transitions");
+    var roots = document.querySelectorAll(".sc-micro-transitions");
     for (var i = 0; i < roots.length; i += 1) {
       var root = roots[i];
-      root.style.setProperty("--hf-micro-badge", tone);
-      root.style.setProperty("--hf-micro-travel", String(travel));
-      var badge = root.querySelector(".hf-micro-bell span");
-      var tooltip = root.querySelector(".hf-micro-tooltip");
+      root.style.setProperty("--sc-micro-badge", tone);
+      root.style.setProperty("--sc-micro-travel", String(travel));
+      var badge = root.querySelector(".sc-micro-bell span");
+      var tooltip = root.querySelector(".sc-micro-tooltip");
       if (badge) badge.textContent = badgeText;
       if (tooltip) tooltip.textContent = tooltipText;
     }
@@ -259,6 +259,6 @@
 
 <!--
   Timeline integration:
-  tl.to('.hf-micro-transitions', { '--hf-micro-progress': 1, duration: 0.5, ease: 'power3.out' }, startTime);
-  tl.to('.hf-micro-transitions', { '--hf-micro-tab': 1, duration: 0.35, ease: 'power3.out' }, startTime + 0.55);
+  tl.to('.sc-micro-transitions', { '--sc-micro-progress': 1, duration: 0.5, ease: 'power3.out' }, startTime);
+  tl.to('.sc-micro-transitions', { '--sc-micro-tab': 1, duration: 0.35, ease: 'power3.out' }, startTime + 0.55);
 -->

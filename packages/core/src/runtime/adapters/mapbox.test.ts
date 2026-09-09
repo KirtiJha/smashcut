@@ -6,7 +6,7 @@ type MapboxMapLike = {
   on: (event: string, cb: () => void) => void;
 };
 
-const mapWindow = window as Window & { __hfMapbox?: MapboxMapLike[] };
+const mapWindow = window as Window & { __scMapbox?: MapboxMapLike[] };
 
 function createMockMap(opts?: { loaded?: boolean }): MapboxMapLike {
   const listeners: Record<string, (() => void)[]> = {};
@@ -23,11 +23,11 @@ function createMockMap(opts?: { loaded?: boolean }): MapboxMapLike {
 
 describe("mapbox adapter", () => {
   beforeEach(() => {
-    delete mapWindow.__hfMapbox;
+    delete mapWindow.__scMapbox;
   });
 
   afterEach(() => {
-    delete mapWindow.__hfMapbox;
+    delete mapWindow.__scMapbox;
   });
 
   it("has correct name", () => {
@@ -40,15 +40,15 @@ describe("mapbox adapter", () => {
       expect(adapter.getReadyPromise!()).toBeNull();
     });
 
-    it("returns null when __hfMapbox is empty", () => {
-      mapWindow.__hfMapbox = [];
+    it("returns null when __scMapbox is empty", () => {
+      mapWindow.__scMapbox = [];
       const adapter = createMapboxAdapter();
       expect(adapter.getReadyPromise!()).toBeNull();
     });
 
     it("resolves when map fires load event", async () => {
       const map = createMockMap() as MapboxMapLike & { _fire: (e: string) => void };
-      mapWindow.__hfMapbox = [map];
+      mapWindow.__scMapbox = [map];
       const adapter = createMapboxAdapter();
       const promise = adapter.getReadyPromise!();
       expect(promise).not.toBeNull();
@@ -58,7 +58,7 @@ describe("mapbox adapter", () => {
 
     it("resolves immediately for already-loaded map", async () => {
       const map = createMockMap({ loaded: true });
-      mapWindow.__hfMapbox = [map];
+      mapWindow.__scMapbox = [map];
       const adapter = createMapboxAdapter();
       const promise = adapter.getReadyPromise!();
       expect(promise).not.toBeNull();
@@ -67,7 +67,7 @@ describe("mapbox adapter", () => {
 
     it("returns same promise on repeated calls (stable identity)", () => {
       const map = createMockMap();
-      mapWindow.__hfMapbox = [map];
+      mapWindow.__scMapbox = [map];
       const adapter = createMapboxAdapter();
       const p1 = adapter.getReadyPromise!();
       const p2 = adapter.getReadyPromise!();
@@ -76,7 +76,7 @@ describe("mapbox adapter", () => {
 
     it("returns null after all maps have settled", async () => {
       const map = createMockMap({ loaded: true });
-      mapWindow.__hfMapbox = [map];
+      mapWindow.__scMapbox = [map];
       const adapter = createMapboxAdapter();
       await adapter.getReadyPromise!();
       expect(adapter.getReadyPromise!()).toBeNull();
@@ -85,7 +85,7 @@ describe("mapbox adapter", () => {
     it("handles mix of loaded and unloaded maps", async () => {
       const loaded = createMockMap({ loaded: true });
       const unloaded = createMockMap() as MapboxMapLike & { _fire: (e: string) => void };
-      mapWindow.__hfMapbox = [loaded, unloaded];
+      mapWindow.__scMapbox = [loaded, unloaded];
       const adapter = createMapboxAdapter();
       const promise = adapter.getReadyPromise!();
       expect(promise).not.toBeNull();
@@ -99,7 +99,7 @@ describe("mapbox adapter", () => {
         loaded: vi.fn(() => true),
         on: vi.fn(),
       };
-      mapWindow.__hfMapbox = [racyMap];
+      mapWindow.__scMapbox = [racyMap];
       const adapter = createMapboxAdapter();
       const promise = adapter.getReadyPromise!();
       expect(promise).not.toBeNull();

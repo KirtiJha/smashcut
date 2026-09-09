@@ -16,7 +16,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 ```html aurora-drift.html
 <!doctype html>
 <!--
-  aurora-drift: HyperFrames video primitive (backgrounds / ambient)
+  aurora-drift: SmashCut video primitive (backgrounds / ambient)
 
   Concept: three oversized, softly blurred accent-derived fields drift over
   a deep base beneath a faint vignette. The motion stays slow and restrained,
@@ -176,8 +176,8 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 
             var root = document.getElementById("root");
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             // Invalid enum overrides return to their declared defaults.
@@ -255,7 +255,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 
 ## Install
 
-<InstallCommand command="npx hyperframes add aurora-drift" item="aurora-drift" />
+<InstallCommand command="npx smashcut add aurora-drift" item="aurora-drift" />
 
 That writes one file: `compositions/components/aurora-drift.html`.
 
@@ -294,7 +294,7 @@ defaults, so this behaves exactly like the preview above until you change one:
 ```html
 <!doctype html>
 <!--
-  aurora-drift: HyperFrames video primitive (backgrounds / ambient)
+  aurora-drift: SmashCut video primitive (backgrounds / ambient)
 
   Concept: three oversized, softly blurred accent-derived fields drift over
   a deep base beneath a faint vignette. The motion stays slow and restrained,
@@ -454,8 +454,8 @@ defaults, so this behaves exactly like the preview above until you change one:
 
             var root = document.getElementById("root");
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             // Invalid enum overrides return to their declared defaults.

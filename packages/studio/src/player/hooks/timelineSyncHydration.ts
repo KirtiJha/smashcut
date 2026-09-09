@@ -12,9 +12,9 @@
 import { createTimelineDomNodeResolver } from "../lib/timelineElementHelpers";
 import { usePlayerStore } from "../store/playerStore";
 import type { TimelineElement, DomClipChild, SubCompositionHostState } from "../store/playerStore";
-import { resolveCssStackingContextId } from "@hyperframes/core/runtime/stacking-context";
-import type { ClipTree } from "@hyperframes/core/runtime/clipTree";
-import { HF_AUDIO_GROUP_ATTR } from "@hyperframes/core/audio-groups";
+import { resolveCssStackingContextId } from "@smashcut/core/runtime/stacking-context";
+import type { ClipTree } from "@smashcut/core/runtime/clipTree";
+import { HF_AUDIO_GROUP_ATTR } from "@smashcut/core/audio-groups";
 import { groupInfoFor } from "../lib/timelineGroupInfo";
 import type { PlaybackAdapter, ClipManifestClip, IframeWindow } from "../lib/playbackTypes";
 import {
@@ -98,12 +98,12 @@ function collectHostDomChildren(
       collectHostDomChildren(hostId, child, parentId, parentMap, out); // id-less wrapper
       continue;
     }
-    const isGroup = child.hasAttribute("data-hf-group");
+    const isGroup = child.hasAttribute("data-sc-group");
     out.push({
       id: child.id,
       parentId,
       hostId,
-      label: isGroup ? child.getAttribute("data-hf-group") || child.id : child.id,
+      label: isGroup ? child.getAttribute("data-sc-group") || child.id : child.id,
       stackingContextId: resolveCssStackingContextId(child),
       ...readChildAudioGroupState(child),
     });
@@ -131,7 +131,7 @@ export function collectSubCompositionDomChildren(
     if (clip.kind !== "composition" || !clip.id) continue;
     const hostEl = iframeDoc.getElementById(clip.id);
     if (!hostEl) continue;
-    const innerRoot = hostEl.querySelector("[data-hf-inner-root]") ?? hostEl;
+    const innerRoot = hostEl.querySelector("[data-sc-inner-root]") ?? hostEl;
     collectHostDomChildren(clip.id, innerRoot, clip.id, parentMap, out);
   }
   return out;
@@ -384,7 +384,7 @@ export function isPreviewReadinessMessage(
 ): boolean {
   if (!isFromPreviewFrame(e, iframe)) return false;
   const data = e.data;
-  if (data?.source !== "hf-preview") return false;
+  if (data?.source !== "sc-preview") return false;
   if (data?.type !== "state" && data?.type !== "timeline") return false;
   return inspectStudioRuntimeMessage(data).status !== "unsupported";
 }

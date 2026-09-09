@@ -25,7 +25,7 @@ afterEach(() => {
 });
 
 function writeComposition(width: number, height: number): string {
-  const dir = mkdtempSync(join(tmpdir(), "hf-cloud-render-test-"));
+  const dir = mkdtempSync(join(tmpdir(), "sc-cloud-render-test-"));
   writeFileSync(
     join(dir, "index.html"),
     `<!doctype html><html><body><div data-composition-id="main" data-width="${width}" data-height="${height}"></div></body></html>`,
@@ -89,7 +89,7 @@ describe("cloud render --dry-run", () => {
             ...process.env,
             CI: "1",
             HEYGEN_API_URL: "http://127.0.0.1:1",
-            HYPERFRAMES_NO_UPDATE_CHECK: "1",
+            SMASHCUT_NO_UPDATE_CHECK: "1",
           },
         },
       );

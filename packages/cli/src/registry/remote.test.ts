@@ -5,8 +5,8 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 
 // The cache lives under homedir(), so the whole suite runs against a scratch
-// home rather than the developer's own ~/.hyperframes.
-const scratchHome = mkdtempSync(join(tmpdir(), "hf-remote-"));
+// home rather than the developer's own ~/.smashcut.
+const scratchHome = mkdtempSync(join(tmpdir(), "sc-remote-"));
 vi.mock("node:os", async (importOriginal) => ({
   ...(await importOriginal<typeof import("node:os")>()),
   homedir: () => scratchHome,
@@ -21,8 +21,8 @@ const {
   DEFAULT_REGISTRY_URL,
 } = await import("./remote.js");
 
-const MANIFEST = { name: "hyperframes", items: [{ name: "count-up" }] };
-const ITEM = { name: "count-up", type: "hyperframes:component", files: [] };
+const MANIFEST = { name: "smashcut", items: [{ name: "count-up" }] };
+const ITEM = { name: "count-up", type: "smashcut:component", files: [] };
 
 const ONE_DAY_MS = 24 * 60 * 60 * 1000;
 
@@ -50,7 +50,7 @@ async function staleAfterPriming(
 }
 
 beforeEach(() => {
-  rmSync(join(scratchHome, ".hyperframes"), { recursive: true, force: true });
+  rmSync(join(scratchHome, ".smashcut"), { recursive: true, force: true });
   vi.restoreAllMocks();
   vi.useRealTimers();
 });
@@ -135,11 +135,11 @@ describe("fetchRegistryManifest", () => {
 describe("fetchItemManifest", () => {
   it("serves the expired cache when the item fetch fails", async () => {
     const fetchSpy = await staleAfterPriming(ITEM, () =>
-      fetchItemManifest("count-up", "hyperframes:component", DEFAULT_REGISTRY_URL),
+      fetchItemManifest("count-up", "smashcut:component", DEFAULT_REGISTRY_URL),
     );
 
     await expect(
-      fetchItemManifest("count-up", "hyperframes:component", DEFAULT_REGISTRY_URL),
+      fetchItemManifest("count-up", "smashcut:component", DEFAULT_REGISTRY_URL),
     ).resolves.toEqual(ITEM);
     expect(fetchSpy).toHaveBeenCalledTimes(1);
   });
@@ -150,7 +150,7 @@ describe("fetchItemManifest", () => {
     vi.spyOn(globalThis, "fetch").mockRejectedValue(new Error("The operation was aborted"));
 
     await expect(
-      fetchItemManifest("never-fetched", "hyperframes:component", DEFAULT_REGISTRY_URL),
+      fetchItemManifest("never-fetched", "smashcut:component", DEFAULT_REGISTRY_URL),
     ).rejects.toThrow("The operation was aborted");
   });
 
@@ -162,7 +162,7 @@ describe("fetchItemManifest", () => {
     } as unknown as Response);
 
     await expect(
-      fetchItemManifest("no-such-move", "hyperframes:component", DEFAULT_REGISTRY_URL),
+      fetchItemManifest("no-such-move", "smashcut:component", DEFAULT_REGISTRY_URL),
     ).rejects.toThrow("HTTP 404");
   });
 });
@@ -212,7 +212,7 @@ describe("describeCauseChain", () => {
 });
 
 describe("assetSourceUrl", () => {
-  const item = { name: "carousel-orbit-1", type: "hyperframes:block" } as never;
+  const item = { name: "carousel-orbit-1", type: "smashcut:block" } as never;
 
   it("resolves a plain file against the registry base", () => {
     const file = { path: "carousel-orbit-1.html" } as never;
@@ -246,7 +246,7 @@ describe("assetSourceUrl", () => {
 });
 
 describe("fetchItemFile retries", () => {
-  const item = { name: "blur-in", type: "hyperframes:component" } as never;
+  const item = { name: "blur-in", type: "smashcut:component" } as never;
   const file = { path: "blur-in.html", target: "compositions/components/blur-in.html" } as never;
   const dest = () => join(scratchHome, `dl-${Math.random().toString(36).slice(2)}.html`);
 

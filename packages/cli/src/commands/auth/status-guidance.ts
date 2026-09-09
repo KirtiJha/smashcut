@@ -26,7 +26,7 @@ export interface OfflineEngineLine {
 }
 
 /** The recommended first step; sign-in and sign-up are the same OAuth flow. */
-const RECOMMENDED_ACTION = "npx hyperframes auth login";
+const RECOMMENDED_ACTION = "npx smashcut auth login";
 
 /**
  * Render the "what offline will use" block from probed engine readiness.
@@ -50,14 +50,14 @@ function offlineEngineLines(engines?: OfflineEngineLine[]): string[] {
     }
   }
   if (engines.some((e) => !e.ready)) {
-    lines.push(c.dim("  (or run `hyperframes doctor` to check the local toolchain)"));
+    lines.push(c.dim("  (or run `smashcut doctor` to check the local toolchain)"));
   }
   return lines;
 }
 
 /**
  * Human guidance for an unconfigured machine — registration-first.
- * Both paths use `npx hyperframes` (zero-install via npm): browser OAuth
+ * Both paths use `npx smashcut` (zero-install via npm): browser OAuth
  * (sign-in / sign-up) and `--api-key` both write `~/.heygen`. The separate
  * `heygen` CLI shares that file but needs its own install (no `npx heygen`),
  * so it's left to the docs — not dangled here as a command a fresh machine
@@ -81,10 +81,10 @@ export function buildUnconfiguredLines(
     c.warn("Not signed in to HeyGen — voice & music will use local engines (free, offline)."),
     "",
     "Sign in or sign up (browser OAuth, writes ~/.heygen — no per-repo .env):",
-    `  ${c.accent("npx hyperframes auth login")}            ${c.dim("# browser sign-in / sign-up")}`,
+    `  ${c.accent("npx smashcut auth login")}            ${c.dim("# browser sign-in / sign-up")}`,
     "",
     "Or paste an existing HeyGen API key (get one at app.heygen.com/settings/api):",
-    `  ${c.accent("npx hyperframes auth login --api-key")}  ${c.dim("# paste at the prompt")}`,
+    `  ${c.accent("npx smashcut auth login --api-key")}  ${c.dim("# paste at the prompt")}`,
     "",
     ...offlineEngineLines(engines),
   ];

@@ -99,7 +99,7 @@ export function getCgroupMemoryLimitMb(): number | null {
   if (_cachedCgroupLimitMb !== null) {
     // stderr, not stdout: this is a diagnostic notice, and commands like `check --json`
     // write their machine-readable payload to stdout. A banner on stdout corrupts that
-    // payload for any JSON consumer (it broke the Video Agent's hyperframes check parse).
+    // payload for any JSON consumer (it broke the Video Agent's smashcut check parse).
     console.warn(
       `[SystemMemory] cgroup memory limit detected: ${_cachedCgroupLimitMb} MiB — ` +
         `it governs memory-adaptive render behaviour instead of host RAM.`,

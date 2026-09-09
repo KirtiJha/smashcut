@@ -39,7 +39,7 @@ describe("studioSelect", () => {
   });
 
   it("applies the selection a click would produce and reports it back", async () => {
-    const doc = previewDoc('<h1 id="headline" data-hf-id="abc">Ship it</h1>');
+    const doc = previewDoc('<h1 id="headline" data-sc-id="abc">Ship it</h1>');
     const applySelection = vi.fn();
 
     const result = await studioSelect(
@@ -69,8 +69,8 @@ describe("studioSelect", () => {
   });
 
   it("reacquires once when the preview document reloads during selection resolution", async () => {
-    const firstDoc = previewDoc('<h1 data-hf-id="abc">Old preview</h1>');
-    const nextDoc = previewDoc('<h1 data-hf-id="abc">Current preview</h1>');
+    const firstDoc = previewDoc('<h1 data-sc-id="abc">Old preview</h1>');
+    const nextDoc = previewDoc('<h1 data-sc-id="abc">Current preview</h1>');
     let currentDoc = firstDoc;
     const buildSelection = vi.fn(async (element: HTMLElement) => {
       if (element.ownerDocument === firstDoc) {
@@ -103,9 +103,9 @@ describe("studioSelect", () => {
 
   it("refuses when the preview changes again during the bounded reacquire", async () => {
     const documents = [
-      previewDoc('<h1 data-hf-id="abc">First preview</h1>'),
-      previewDoc('<h1 data-hf-id="abc">Second preview</h1>'),
-      previewDoc('<h1 data-hf-id="abc">Third preview</h1>'),
+      previewDoc('<h1 data-sc-id="abc">First preview</h1>'),
+      previewDoc('<h1 data-sc-id="abc">Second preview</h1>'),
+      previewDoc('<h1 data-sc-id="abc">Third preview</h1>'),
     ];
     let currentIndex = 0;
     const buildSelection = vi.fn(async (element: HTMLElement) => {

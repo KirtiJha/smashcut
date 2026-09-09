@@ -3,13 +3,13 @@ import { Hono } from "hono";
 import { mkdtempSync, mkdirSync, writeFileSync, symlinkSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { VALID_CANVAS_RESOLUTIONS } from "@hyperframes/parsers";
+import { VALID_CANVAS_RESOLUTIONS } from "@smashcut/parsers";
 import { registerRenderRoutes } from "./render";
 import type { StudioApiAdapter } from "../types";
 
 function createAdapter(
   startRenderSpy: ReturnType<typeof vi.fn>,
-  rendersDir = mkdtempSync(join(tmpdir(), "hf-render-test-")),
+  rendersDir = mkdtempSync(join(tmpdir(), "sc-render-test-")),
 ): { adapter: StudioApiAdapter; rendersDir: string } {
   const adapter: StudioApiAdapter = {
     listProjects: () => [],
@@ -331,8 +331,8 @@ describe("POST /projects/:id/render — composition path safety", () => {
     app: Hono;
     projectDir: string;
   } {
-    const projectDir = mkdtempSync(join(tmpdir(), "hf-render-proj-"));
-    const rendersDir = mkdtempSync(join(tmpdir(), "hf-render-out-"));
+    const projectDir = mkdtempSync(join(tmpdir(), "sc-render-proj-"));
+    const rendersDir = mkdtempSync(join(tmpdir(), "sc-render-out-"));
     tmpDirs.push(projectDir, rendersDir);
     const adapter: StudioApiAdapter = {
       listProjects: () => [],
@@ -394,7 +394,7 @@ describe("POST /projects/:id/render — composition path safety", () => {
   it("rejects a composition reached through an in-project symlink pointing outside the project", async () => {
     const spy = vi.fn();
     const { app, projectDir } = buildAppWithProjectDir(spy);
-    const external = mkdtempSync(join(tmpdir(), "hf-render-external-"));
+    const external = mkdtempSync(join(tmpdir(), "sc-render-external-"));
     tmpDirs.push(external);
     writeFileSync(join(external, "secret.html"), "<html></html>");
     if (!tryCreateSymlink(external, join(projectDir, "link"), "dir")) return;
@@ -419,7 +419,7 @@ describe("GET /projects/:id/renders/file/* — path safety", () => {
   const tmpDirs: string[] = [];
 
   function buildApp(): { app: Hono; rendersDir: string } {
-    const rendersDir = mkdtempSync(join(tmpdir(), "hf-renders-out-"));
+    const rendersDir = mkdtempSync(join(tmpdir(), "sc-renders-out-"));
     tmpDirs.push(rendersDir);
     const adapter: StudioApiAdapter = {
       listProjects: () => [],
@@ -468,7 +468,7 @@ describe("GET /projects/:id/renders/file/* — path safety", () => {
     const { app, rendersDir } = buildApp();
     // A bare join()+readFileSync followed the symlink and leaked the target;
     // the resolveWithinProject chokepoint canonicalizes with realpath first.
-    const external = mkdtempSync(join(tmpdir(), "hf-renders-external-"));
+    const external = mkdtempSync(join(tmpdir(), "sc-renders-external-"));
     tmpDirs.push(external);
     writeFileSync(join(external, "secret.txt"), "TOP-SECRET");
     if (!tryCreateSymlink(join(external, "secret.txt"), join(rendersDir, "leak.txt"), "file"))

@@ -138,8 +138,8 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
           window.__timelines = window.__timelines || {};
 
           var vars =
-            window.__hyperframes && window.__hyperframes.getVariables
-              ? window.__hyperframes.getVariables()
+            window.__smashcut && window.__smashcut.getVariables
+              ? window.__smashcut.getVariables()
               : {};
 
           var mainText = (vars.TXT_MAIN_1_Line || "BILD EXKLUSIV").trim();
@@ -171,7 +171,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 
 ## Install
 
-<InstallCommand command="npx hyperframes add lower-third-bild" item="lower-third-bild" />
+<InstallCommand command="npx smashcut add lower-third-bild" item="lower-third-bild" />
 
 That writes `compositions/lower-third-bild.html`, plus 2 supporting files under `compositions/assets/fonts/`.
 
@@ -325,8 +325,8 @@ defaults, so this behaves exactly like the preview above until you change one:
           window.__timelines = window.__timelines || {};
 
           var vars =
-            window.__hyperframes && window.__hyperframes.getVariables
-              ? window.__hyperframes.getVariables()
+            window.__smashcut && window.__smashcut.getVariables
+              ? window.__smashcut.getVariables()
               : {};
 
           var mainText = (vars.TXT_MAIN_1_Line || "BILD EXKLUSIV").trim();

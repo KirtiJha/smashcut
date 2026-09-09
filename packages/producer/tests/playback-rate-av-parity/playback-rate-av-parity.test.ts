@@ -99,7 +99,7 @@ function sampleFrequency(path: string, center: number): number {
 test(
   "final render keeps timecoded picture and pitch-preserved sound aligned at 2x",
   async () => {
-    const projectDir = mkdtempSync(join(tmpdir(), "hf-playback-rate-parity-"));
+    const projectDir = mkdtempSync(join(tmpdir(), "sc-playback-rate-parity-"));
     workDirs.push(projectDir);
     const source = join(projectDir, "timecoded.mp4");
     const output = join(projectDir, "out.mp4");

@@ -1,5 +1,5 @@
 {
-  "name": "@hyperframes/core",
+  "name": "@smashcut/core",
   "version": "0.8.33",
   "description": "",
   "repository": {
@@ -12,7 +12,7 @@
     "dist/**/*.d.ts",
     "dist/**/*.d.ts.map",
     "dist/**/*.js.map",
-    "!dist/hyperframe.runtime.mjs",
+    "!dist/smashcut.runtime.mjs",
     "docs",
     "schemas",
     "README.md"
@@ -95,10 +95,10 @@
       "types": "./src/slideshow/index.ts"
     },
     "./generators": {
-      "bun": "./src/generators/hyperframes.ts",
-      "node": "./dist/generators/hyperframes.js",
-      "import": "./src/generators/hyperframes.ts",
-      "types": "./src/generators/hyperframes.ts"
+      "bun": "./src/generators/smashcut.ts",
+      "node": "./dist/generators/smashcut.js",
+      "import": "./src/generators/smashcut.ts",
+      "types": "./src/generators/smashcut.ts"
     },
     "./lint": {
       "bun": "./src/lint/index.ts",
@@ -214,7 +214,7 @@
       "import": "./src/storyboard/index.ts",
       "types": "./src/storyboard/index.ts"
     },
-    "./runtime": "./dist/hyperframe.runtime.iife.js",
+    "./runtime": "./dist/smashcut.runtime.iife.js",
     "./runtime/clipTree": {
       "bun": "./src/runtime/clipTree.ts",
       "node": "./dist/runtime/clipTree.js",
@@ -335,7 +335,7 @@
       "import": "./src/runtime/mediaVolumeEnvelope.ts",
       "types": "./src/runtime/mediaVolumeEnvelope.ts"
     },
-    "./hf-ids": {
+    "./sc-ids": {
       "bun": "./src/parsers/hfIds.ts",
       "node": "./dist/parsers/hfIds.js",
       "import": "./src/parsers/hfIds.ts",
@@ -451,8 +451,8 @@
         "types": "./dist/slideshow/index.d.ts"
       },
       "./generators": {
-        "import": "./dist/generators/hyperframes.js",
-        "types": "./dist/generators/hyperframes.d.ts"
+        "import": "./dist/generators/smashcut.js",
+        "types": "./dist/generators/smashcut.d.ts"
       },
       "./lint": {
         "import": "./dist/lint/index.js",
@@ -530,7 +530,7 @@
         "import": "./dist/storyboard/index.js",
         "types": "./dist/storyboard/index.d.ts"
       },
-      "./runtime": "./dist/hyperframe.runtime.iife.js",
+      "./runtime": "./dist/smashcut.runtime.iife.js",
       "./runtime/clipTree": {
         "import": "./dist/runtime/clipTree.js",
         "types": "./dist/runtime/clipTree.d.ts"
@@ -611,7 +611,7 @@
         "import": "./dist/runtime/mediaVolumeEnvelope.js",
         "types": "./dist/runtime/mediaVolumeEnvelope.d.ts"
       },
-      "./hf-ids": {
+      "./sc-ids": {
         "import": "./dist/parsers/hfIds.js",
         "types": "./dist/parsers/hfIds.d.ts"
       },
@@ -658,7 +658,7 @@
     "types": "./dist/index.d.ts"
   },
   "scripts": {
-    "build": "bun run build:hyperframes-runtime && bun run build:position-edits-render && bun run build:audio-fx-runtime && tsc && tsx scripts/rewrite-esm-extensions.ts",
+    "build": "bun run build:smashcut-runtime && bun run build:position-edits-render && bun run build:audio-fx-runtime && tsc && tsx scripts/rewrite-esm-extensions.ts",
     "test": "bun run check:position-edits-render && bun run build:audio-fx-runtime && vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
@@ -667,28 +667,28 @@
     "typecheck:runtime": "tsc --noEmit -p tsconfig.runtime.json",
     "lint:runtime-preview-guards": "bun scripts/lint-runtime-preview-guards.ts",
     "build:audio-fx-runtime": "tsx scripts/build-audio-fx-runtime.ts",
-    "build:hyperframes-runtime": "tsx scripts/build-hyperframes-runtime-artifact.ts",
+    "build:smashcut-runtime": "tsx scripts/build-smashcut-runtime-artifact.ts",
     "build:position-edits-render": "tsx scripts/build-position-edits-render.ts",
     "check:position-edits-render": "bun run build:position-edits-render && git diff --exit-code -- src/generated/position-edits-render-inline.ts",
-    "build:hyperframes-runtime:modular": "SANDBOX_RUNTIME_VARIANT=modular tsx scripts/build-hyperframes-runtime-artifact.ts",
-    "build:hyperframe-runtime": "tsx scripts/build-hyperframes-runtime-artifact.ts",
-    "test:hyperframe-runtime-contract": "tsx scripts/test-hyperframe-runtime-contract.ts",
-    "test:hyperframe-runtime-behavior": "tsx scripts/test-hyperframe-runtime-behavior.ts",
-    "test:hyperframe-runtime-seek": "tsx scripts/test-hyperframe-runtime-seek.ts",
-    "test:hyperframe-runtime-duration-guards": "tsx scripts/test-hyperframe-runtime-duration-guards.ts",
-    "test:hyperframe-runtime-parity": "tsx scripts/test-hyperframe-runtime-parity.ts",
-    "test:hyperframe-runtime-security": "tsx scripts/test-hyperframe-runtime-security.ts",
-    "test:hyperframe-linter": "bun scripts/test-hyperframe-linter.ts",
-    "test:hyperframe-runtime-ci": "bun run typecheck:runtime && bun run lint:runtime-preview-guards && bun run build:hyperframes-runtime && bun run test:hyperframe-runtime-contract && bun run test:hyperframe-runtime-behavior && bun run test:hyperframe-runtime-seek && bun run test:hyperframe-runtime-duration-guards && bun run test:hyperframe-runtime-parity && bun run test:hyperframe-runtime-security && bun run test:runtime-coverage && bun run test:hyperframe-linter",
-    "check:hyperframe-html": "bun scripts/check-hyperframe-static.ts",
+    "build:smashcut-runtime:modular": "SANDBOX_RUNTIME_VARIANT=modular tsx scripts/build-smashcut-runtime-artifact.ts",
+    "build:smashcut-runtime": "tsx scripts/build-smashcut-runtime-artifact.ts",
+    "test:smashcut-runtime-contract": "tsx scripts/test-smashcut-runtime-contract.ts",
+    "test:smashcut-runtime-behavior": "tsx scripts/test-smashcut-runtime-behavior.ts",
+    "test:smashcut-runtime-seek": "tsx scripts/test-smashcut-runtime-seek.ts",
+    "test:smashcut-runtime-duration-guards": "tsx scripts/test-smashcut-runtime-duration-guards.ts",
+    "test:smashcut-runtime-parity": "tsx scripts/test-smashcut-runtime-parity.ts",
+    "test:smashcut-runtime-security": "tsx scripts/test-smashcut-runtime-security.ts",
+    "test:smashcut-linter": "bun scripts/test-smashcut-linter.ts",
+    "test:smashcut-runtime-ci": "bun run typecheck:runtime && bun run lint:runtime-preview-guards && bun run build:smashcut-runtime && bun run test:smashcut-runtime-contract && bun run test:smashcut-runtime-behavior && bun run test:smashcut-runtime-seek && bun run test:smashcut-runtime-duration-guards && bun run test:smashcut-runtime-parity && bun run test:smashcut-runtime-security && bun run test:runtime-coverage && bun run test:smashcut-linter",
+    "check:smashcut-html": "bun scripts/check-smashcut-static.ts",
     "debug:timeline": "tsx scripts/debug-timeline.ts",
     "prepublishOnly": "echo skip"
   },
   "dependencies": {
     "@chenglou/pretext": "^0.0.5",
-    "@hyperframes/lint": "workspace:*",
-    "@hyperframes/parsers": "workspace:*",
-    "@hyperframes/studio-server": "workspace:*",
+    "@smashcut/lint": "workspace:*",
+    "@smashcut/parsers": "workspace:*",
+    "@smashcut/studio-server": "workspace:*",
     "bpm-detective": "^2.0.5",
     "linkedom": "^0.18.12",
     "postcss": "^8.5.8"

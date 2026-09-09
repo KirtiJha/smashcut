@@ -2,7 +2,7 @@ import type { RuntimeDeterministicAdapter } from "../types";
 import { swallow } from "../diagnostics";
 
 /**
- * anime.js adapter for HyperFrames
+ * anime.js adapter for SmashCut
  *
  * Supports anime.js v4+ (the `.seek(timeMs)` API).
  *
@@ -22,8 +22,8 @@ import { swallow } from "../diagnostics";
  *     ease: 'outExpo',
  *     autoplay: false,
  *   });
- *   window.__hfAnime = window.__hfAnime || [];
- *   window.__hfAnime.push(anim);
+ *   window.__scAnime = window.__scAnime || [];
+ *   window.__scAnime.push(anim);
  * </script>
  * ```
  *
@@ -34,8 +34,8 @@ import { swallow } from "../diagnostics";
  *   const tl = anime.createTimeline({ autoplay: false });
  *   tl.add('.a', { opacity: [0, 1], duration: 500 })
  *     .add('.b', { y: [-40, 0], duration: 400 });
- *   window.__hfAnime = window.__hfAnime || [];
- *   window.__hfAnime.push(tl);
+ *   window.__scAnime = window.__scAnime || [];
+ *   window.__scAnime.push(tl);
  * </script>
  * ```
  *
@@ -45,7 +45,7 @@ import { swallow } from "../diagnostics";
  *
  * `discover()` checks `anime.running`, which v4 no longer exports, so it always
  * returns empty against a v4 build. Compositions MUST push every instance onto
- * `window.__hfAnime` themselves; an unregistered instance is never seeked.
+ * `window.__scAnime` themselves; an unregistered instance is never seeked.
  */
 export function createAnimeJsAdapter(): RuntimeDeterministicAdapter {
   return {
@@ -59,14 +59,14 @@ export function createAnimeJsAdapter(): RuntimeDeterministicAdapter {
         const running = animeGlobal.running;
         if (!Array.isArray(running) || running.length === 0) return;
 
-        const existing = (window as AnimeWindow).__hfAnime ?? [];
+        const existing = (window as AnimeWindow).__scAnime ?? [];
         const existingSet = new Set(existing);
         for (const instance of running) {
           if (!existingSet.has(instance)) {
             existing.push(instance);
           }
         }
-        (window as AnimeWindow).__hfAnime = existing;
+        (window as AnimeWindow).__scAnime = existing;
       } catch (err) {
         // ignore discovery failures
         swallow("runtime.adapters.animejs.site1", err);
@@ -75,7 +75,7 @@ export function createAnimeJsAdapter(): RuntimeDeterministicAdapter {
 
     seek: (ctx) => {
       const timeMs = Math.max(0, (Number(ctx.time) || 0) * 1000);
-      const instances = (window as AnimeWindow).__hfAnime;
+      const instances = (window as AnimeWindow).__scAnime;
       if (!instances || instances.length === 0) return;
 
       for (const instance of instances) {
@@ -91,7 +91,7 @@ export function createAnimeJsAdapter(): RuntimeDeterministicAdapter {
     },
 
     pause: () => {
-      const instances = (window as AnimeWindow).__hfAnime;
+      const instances = (window as AnimeWindow).__scAnime;
       if (!instances || instances.length === 0) return;
 
       for (const instance of instances) {
@@ -107,7 +107,7 @@ export function createAnimeJsAdapter(): RuntimeDeterministicAdapter {
     },
 
     play: () => {
-      const instances = (window as AnimeWindow).__hfAnime;
+      const instances = (window as AnimeWindow).__scAnime;
       if (!instances || instances.length === 0) return;
 
       for (const instance of instances) {
@@ -123,7 +123,7 @@ export function createAnimeJsAdapter(): RuntimeDeterministicAdapter {
     },
 
     revert: () => {
-      // Don't clear __hfAnime — instances are owned by the composition.
+      // Don't clear __scAnime — instances are owned by the composition.
     },
   };
 }
@@ -147,5 +147,5 @@ interface AnimeGlobal {
 interface AnimeWindow extends Window {
   anime?: AnimeGlobal;
   /** anime.js instances registered by compositions for the adapter to seek. */
-  __hfAnime?: AnimeInstance[];
+  __scAnime?: AnimeInstance[];
 }

@@ -16,7 +16,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 ```html beat-timeline.html
 <!doctype html>
 <!--
-  beat-timeline -- HyperFrames video primitive (transitions / sequencing / bridge)
+  beat-timeline -- SmashCut video primitive (transitions / sequencing / bridge)
 
   Concept: a visible orchestration spine made from a paused master GSAP
   timeline. Each beat row is pinned to an evenly spaced named label, then
@@ -55,7 +55,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
   only <template> contents, so all live styles, markup, and scripts are inside
   the template. #root fills the host-owned box with no data-width/data-height,
   and all internal geometry is based on its own cqw/cqh container. Variables
-  come from window.__hyperframes.getVariables(), because document.documentElement
+  come from window.__smashcut.getVariables(), because document.documentElement
   belongs to the host after mounting.
 -->
 <html
@@ -197,8 +197,8 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
             // EDIT ZONE: declarations live on <html>; this runtime call is the
             // single owner of declared defaults plus per-instance overrides.
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             var parsedBeatCount = Number(vars.beatCount);
@@ -308,7 +308,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 
 ## Install
 
-<InstallCommand command="npx hyperframes add beat-timeline" item="beat-timeline" />
+<InstallCommand command="npx smashcut add beat-timeline" item="beat-timeline" />
 
 That writes one file: `compositions/components/beat-timeline.html`.
 
@@ -348,7 +348,7 @@ defaults, so this behaves exactly like the preview above until you change one:
 ```html
 <!doctype html>
 <!--
-  beat-timeline -- HyperFrames video primitive (transitions / sequencing / bridge)
+  beat-timeline -- SmashCut video primitive (transitions / sequencing / bridge)
 
   Concept: a visible orchestration spine made from a paused master GSAP
   timeline. Each beat row is pinned to an evenly spaced named label, then
@@ -387,7 +387,7 @@ defaults, so this behaves exactly like the preview above until you change one:
   only <template> contents, so all live styles, markup, and scripts are inside
   the template. #root fills the host-owned box with no data-width/data-height,
   and all internal geometry is based on its own cqw/cqh container. Variables
-  come from window.__hyperframes.getVariables(), because document.documentElement
+  come from window.__smashcut.getVariables(), because document.documentElement
   belongs to the host after mounting.
 -->
 <html
@@ -529,8 +529,8 @@ defaults, so this behaves exactly like the preview above until you change one:
             // EDIT ZONE: declarations live on <html>; this runtime call is the
             // single owner of declared defaults plus per-instance overrides.
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             var parsedBeatCount = Number(vars.beatCount);

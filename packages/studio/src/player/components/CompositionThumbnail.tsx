@@ -154,7 +154,7 @@ export const CompositionThumbnail = memo(function CompositionThumbnail({
       {value && (
         <div
           className="absolute inset-0 flex"
-          style={{ animation: "hf-thumb-fade 200ms ease-out", mixBlendMode: "lighten" }}
+          style={{ animation: "sc-thumb-fade 200ms ease-out", mixBlendMode: "lighten" }}
         >
           {Array.from({ length: frameCount }, (_, index) => (
             <div

@@ -9,8 +9,8 @@ import { createIframePreviewAdapter } from "./iframe.js";
 import { openComposition } from "../session.js";
 
 const BASE_HTML = `
-<div data-hf-id="hf-stage" data-hf-root style="width: 1280px; height: 720px" data-duration="5">
-  <h1 data-hf-id="hf-title" style="color: #fff; font-size: 64px">Hello World</h1>
+<div data-sc-id="sc-stage" data-sc-root style="width: 1280px; height: 720px" data-duration="5">
+  <h1 data-sc-id="sc-title" style="color: #fff; font-size: 64px">Hello World</h1>
 </div>
 `.trim();
 
@@ -28,13 +28,13 @@ describe("IframePreviewAdapter.attachSync", () => {
   it("mirrors comp.getOverrides() onto the iframe immediately on attach", async () => {
     const iframe = mountIframe(BASE_HTML);
     const comp = await openComposition(BASE_HTML);
-    comp.setStyle("hf-title", { color: "#f00" }); // edit BEFORE attaching
+    comp.setStyle("sc-title", { color: "#f00" }); // edit BEFORE attaching
 
     const adapter = createIframePreviewAdapter(iframe);
     adapter.attachSync(comp);
 
     const liveTitle = iframe.contentDocument!.querySelector(
-      '[data-hf-id="hf-title"]',
+      '[data-sc-id="sc-title"]',
     ) as HTMLElement;
     expect(liveTitle.style.getPropertyValue("color")).toBe("#f00");
   });
@@ -45,10 +45,10 @@ describe("IframePreviewAdapter.attachSync", () => {
     const adapter = createIframePreviewAdapter(iframe);
     adapter.attachSync(comp);
 
-    comp.setStyle("hf-title", { fontSize: "96px" });
+    comp.setStyle("sc-title", { fontSize: "96px" });
 
     const liveTitle = iframe.contentDocument!.querySelector(
-      '[data-hf-id="hf-title"]',
+      '[data-sc-id="sc-title"]',
     ) as HTMLElement;
     expect(liveTitle.style.getPropertyValue("font-size")).toBe("96px");
   });
@@ -60,14 +60,14 @@ describe("IframePreviewAdapter.attachSync", () => {
     adapter.attachSync(comp);
     const liveDoc = iframe.contentDocument!;
 
-    comp.setText("hf-title", "Goodbye");
-    expect(liveDoc.querySelector('[data-hf-id="hf-title"]')?.textContent).toContain("Goodbye");
+    comp.setText("sc-title", "Goodbye");
+    expect(liveDoc.querySelector('[data-sc-id="sc-title"]')?.textContent).toContain("Goodbye");
 
-    comp.setAttribute("hf-title", "data-test", "1");
-    expect(liveDoc.querySelector('[data-hf-id="hf-title"]')?.getAttribute("data-test")).toBe("1");
+    comp.setAttribute("sc-title", "data-test", "1");
+    expect(liveDoc.querySelector('[data-sc-id="sc-title"]')?.getAttribute("data-test")).toBe("1");
 
-    comp.removeElement("hf-title");
-    expect(liveDoc.querySelector('[data-hf-id="hf-title"]')).toBeNull();
+    comp.removeElement("sc-title");
+    expect(liveDoc.querySelector('[data-sc-id="sc-title"]')).toBeNull();
   });
 
   it("mirrors undo — restores the live DOM to the pre-edit state", async () => {
@@ -77,16 +77,16 @@ describe("IframePreviewAdapter.attachSync", () => {
     adapter.attachSync(comp);
     const liveDoc = iframe.contentDocument!;
 
-    comp.setStyle("hf-title", { color: "#f00" });
+    comp.setStyle("sc-title", { color: "#f00" });
     expect(
-      (liveDoc.querySelector('[data-hf-id="hf-title"]') as HTMLElement).style.getPropertyValue(
+      (liveDoc.querySelector('[data-sc-id="sc-title"]') as HTMLElement).style.getPropertyValue(
         "color",
       ),
     ).toBe("#f00");
 
     comp.undo();
     expect(
-      (liveDoc.querySelector('[data-hf-id="hf-title"]') as HTMLElement).style.getPropertyValue(
+      (liveDoc.querySelector('[data-sc-id="sc-title"]') as HTMLElement).style.getPropertyValue(
         "color",
       ),
     ).toBe("#fff");
@@ -99,11 +99,11 @@ describe("IframePreviewAdapter.attachSync", () => {
     adapter.attachSync(comp);
     const liveDoc = iframe.contentDocument!;
 
-    comp.setStyle("hf-title", { color: "#f00" });
+    comp.setStyle("sc-title", { color: "#f00" });
     comp.undo();
     comp.redo();
     expect(
-      (liveDoc.querySelector('[data-hf-id="hf-title"]') as HTMLElement).style.getPropertyValue(
+      (liveDoc.querySelector('[data-sc-id="sc-title"]') as HTMLElement).style.getPropertyValue(
         "color",
       ),
     ).toBe("#f00");
@@ -112,8 +112,8 @@ describe("IframePreviewAdapter.attachSync", () => {
   it("does NOT mirror a /script/gsap patch onto the live <script> tag", async () => {
     const html = `<!DOCTYPE html>
 <html><body>
-  <div data-hf-id="hf-stage" data-hf-root style="width:1280px;height:720px" data-duration="5">
-    <div data-hf-id="hf-box" style="opacity:0"></div>
+  <div data-sc-id="sc-stage" data-sc-root style="width:1280px;height:720px" data-duration="5">
+    <div data-sc-id="sc-box" style="opacity:0"></div>
   </div>
   <script>var tl = gsap.timeline({ paused: true });
 window.__timelines = { t: tl };</script>
@@ -125,7 +125,7 @@ window.__timelines = { t: tl };</script>
     const adapter = createIframePreviewAdapter(iframe);
     adapter.attachSync(comp);
 
-    comp.addGsapTween("hf-box", { method: "to", properties: { opacity: 1 }, duration: 1 });
+    comp.addGsapTween("sc-box", { method: "to", properties: { opacity: 1 }, duration: 1 });
 
     // The offscreen model's script changed (proves the edit really happened)...
     expect(comp.serialize()).not.toBe(html);
@@ -136,8 +136,8 @@ window.__timelines = { t: tl };</script>
   it("DOES mirror a /style/css (stylesheet) patch onto the live <style> tag", async () => {
     const html = `<!DOCTYPE html>
 <html><body>
-  <div data-hf-id="hf-stage" data-hf-root style="width:1280px;height:720px" data-duration="5">
-    <div data-hf-id="hf-box" class="boxy"></div>
+  <div data-sc-id="sc-stage" data-sc-root style="width:1280px;height:720px" data-duration="5">
+    <div data-sc-id="sc-box" class="boxy"></div>
   </div>
   <style>.boxy { color: blue; }</style>
 </body></html>`;
@@ -160,7 +160,7 @@ window.__timelines = { t: tl };</script>
 
     iframe.remove(); // contentDocument becomes null (or inaccessible) once detached
 
-    expect(() => comp.setStyle("hf-title", { color: "#0f0" })).not.toThrow();
+    expect(() => comp.setStyle("sc-title", { color: "#0f0" })).not.toThrow();
   });
 
   it("re-attaching detaches the previous subscription — old comp's edits stop mirroring", async () => {
@@ -172,11 +172,11 @@ window.__timelines = { t: tl };</script>
     adapter.attachSync(compA);
     adapter.attachSync(compB); // should detach compA's subscription
 
-    compA.setStyle("hf-title", { color: "#f00" }); // must NOT mirror — stale subscription
-    compB.setStyle("hf-title", { fontSize: "10px" }); // must mirror — active subscription
+    compA.setStyle("sc-title", { color: "#f00" }); // must NOT mirror — stale subscription
+    compB.setStyle("sc-title", { fontSize: "10px" }); // must mirror — active subscription
 
     const liveTitle = iframe.contentDocument!.querySelector(
-      '[data-hf-id="hf-title"]',
+      '[data-sc-id="sc-title"]',
     ) as HTMLElement;
     expect(liveTitle.style.getPropertyValue("color")).not.toBe("#f00");
     expect(liveTitle.style.getPropertyValue("font-size")).toBe("10px");
@@ -189,10 +189,10 @@ window.__timelines = { t: tl };</script>
     const detach = adapter.attachSync(comp);
 
     detach();
-    comp.setStyle("hf-title", { color: "#f00" });
+    comp.setStyle("sc-title", { color: "#f00" });
 
     const liveTitle = iframe.contentDocument!.querySelector(
-      '[data-hf-id="hf-title"]',
+      '[data-sc-id="sc-title"]',
     ) as HTMLElement;
     expect(liveTitle.style.getPropertyValue("color")).not.toBe("#f00");
   });
@@ -201,8 +201,8 @@ window.__timelines = { t: tl };</script>
     const html = `<!DOCTYPE html>
 <html data-composition-variables='[{"id":"accent","default":"#fff"}]'>
 <body>
-  <div data-hf-id="hf-stage" data-hf-root style="--accent: #fff; width: 1280px; height: 720px" data-duration="5">
-    <h1 data-hf-id="hf-title" style="color: var(--accent)">Hello World</h1>
+  <div data-sc-id="sc-stage" data-sc-root style="--accent: #fff; width: 1280px; height: 720px" data-duration="5">
+    <h1 data-sc-id="sc-title" style="color: var(--accent)">Hello World</h1>
   </div>
 </body>
 </html>`;
@@ -214,7 +214,7 @@ window.__timelines = { t: tl };</script>
     comp.setVariableValue("accent", "#0f0");
 
     const liveRoot = iframe.contentDocument!.querySelector(
-      '[data-hf-id="hf-stage"]',
+      '[data-sc-id="sc-stage"]',
     ) as HTMLElement;
     expect(liveRoot.style.getPropertyValue("--accent")).toBe("#0f0");
   });
@@ -243,10 +243,10 @@ window.__timelines = { t: tl };</script>
     const adapter = createIframePreviewAdapter(iframe);
     adapter.attachSync(comp);
 
-    comp.setTiming("hf-title", { start: 1, duration: 2 });
+    comp.setTiming("sc-title", { start: 1, duration: 2 });
 
     const liveTitle = iframe.contentDocument!.querySelector(
-      '[data-hf-id="hf-title"]',
+      '[data-sc-id="sc-title"]',
     ) as HTMLElement;
     expect(liveTitle.getAttribute("data-start")).toBe("1");
     expect(liveTitle.getAttribute("data-duration")).toBe("2");
@@ -260,7 +260,7 @@ describe("IframePreviewAdapter.attachSync — iframe load re-sync", () => {
     const comp = await openComposition(BASE_HTML);
     const adapter = createIframePreviewAdapter(iframe);
     adapter.attachSync(comp);
-    comp.setStyle("hf-title", { color: "#f00" });
+    comp.setStyle("sc-title", { color: "#f00" });
 
     // Simulate a navigation: replace the document with a fresh base (the
     // mirrored edit is gone), then fire the load event a real srcdoc
@@ -273,7 +273,7 @@ describe("IframePreviewAdapter.attachSync — iframe load re-sync", () => {
     iframe.dispatchEvent(new Event("load"));
 
     const liveTitle = iframe.contentDocument?.querySelector(
-      '[data-hf-id="hf-title"]',
+      '[data-sc-id="sc-title"]',
     ) as HTMLElement;
     expect(liveTitle.style.getPropertyValue("color")).toBe("#f00");
   });
@@ -283,7 +283,7 @@ describe("IframePreviewAdapter.attachSync — iframe load re-sync", () => {
     const comp = await openComposition(BASE_HTML);
     const adapter = createIframePreviewAdapter(iframe);
     const detach = adapter.attachSync(comp);
-    comp.setStyle("hf-title", { color: "#f00" });
+    comp.setStyle("sc-title", { color: "#f00" });
     detach();
 
     const midDoc = iframe.contentDocument;
@@ -294,7 +294,7 @@ describe("IframePreviewAdapter.attachSync — iframe load re-sync", () => {
     iframe.dispatchEvent(new Event("load"));
 
     const liveTitle = iframe.contentDocument?.querySelector(
-      '[data-hf-id="hf-title"]',
+      '[data-sc-id="sc-title"]',
     ) as HTMLElement;
     // BASE_HTML's authored inline color remains because detach must not
     // re-apply comp's #f00 override on the load event.

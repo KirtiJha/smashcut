@@ -29,7 +29,7 @@ import {
   blitRgb48leAffine,
   parseTransformMatrix,
   convertTransfer,
-} from "@hyperframes/engine";
+} from "@smashcut/engine";
 import type { ProducerLogger } from "../logger.js";
 import { type HdrImageTransferCache } from "./hdrImageTransferCache.js";
 import { writeFileExclusiveSync } from "./render/shared.js";
@@ -85,7 +85,7 @@ function resolveBlitOpacity(opacity: number): number | undefined {
 
 /**
  * Metadata for a shader transition between two scenes, extracted from
- * `window.__hf.transitions`. Re-exported from the engine so the producer
+ * `window.__sc.transitions`. Re-exported from the engine so the producer
  * shares the contract with composition runtime code.
  */
 export type HdrTransitionMeta = HfTransitionMeta;
@@ -667,7 +667,7 @@ export async function compositeHdrFrame(
       // 1. Seek GSAP to restore all animated properties from clean state
       await timeHdrPhaseAsync(hdrPerf, "domLayerSeekMs", () =>
         domSession.page.evaluate((t: number) => {
-          if (window.__hf && typeof window.__hf.seek === "function") window.__hf.seek(t);
+          if (window.__sc && typeof window.__sc.seek === "function") window.__sc.seek(t);
         }, time),
       );
 

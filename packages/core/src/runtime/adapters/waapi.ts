@@ -8,7 +8,7 @@ export function createWaapiAdapter(): RuntimeDeterministicAdapter {
   let hookedPrototype:
     | (Element & {
         animate?: Element["animate"];
-        __hfOriginalAnimate?: Element["animate"];
+        __scOriginalAnimate?: Element["animate"];
       })
     | undefined;
   let originalAnimate: Element["animate"] | undefined;
@@ -91,12 +91,12 @@ export function createWaapiAdapter(): RuntimeDeterministicAdapter {
     if (typeof Element === "undefined") return;
     const proto = Element.prototype as Element & {
       animate?: Element["animate"];
-      __hfOriginalAnimate?: Element["animate"];
+      __scOriginalAnimate?: Element["animate"];
     };
-    if (typeof proto.animate !== "function" || proto.__hfOriginalAnimate) return;
+    if (typeof proto.animate !== "function" || proto.__scOriginalAnimate) return;
     const original = proto.animate;
     try {
-      Object.defineProperty(proto, "__hfOriginalAnimate", {
+      Object.defineProperty(proto, "__scOriginalAnimate", {
         value: original,
         configurable: true,
       });
@@ -202,8 +202,8 @@ export function createWaapiAdapter(): RuntimeDeterministicAdapter {
       ) {
         try {
           hookedPrototype.animate = originalAnimate;
-          if (hookedPrototype.__hfOriginalAnimate === originalAnimate) {
-            delete hookedPrototype.__hfOriginalAnimate;
+          if (hookedPrototype.__scOriginalAnimate === originalAnimate) {
+            delete hookedPrototype.__scOriginalAnimate;
           }
         } catch (err) {
           swallow("runtime.adapters.waapi.site5", err);

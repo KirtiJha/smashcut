@@ -1,6 +1,6 @@
 import { isHtmlElement } from "./domEditingDom";
 
-// `data-hf-group` selection semantics: a group wrapper is selected as one unit
+// `data-sc-group` selection semantics: a group wrapper is selected as one unit
 // until the user drills into it; once drilled in, clicks resolve to its children
 // (or to the next nested group inside it). One level of drill-in at a time keeps
 // nested groups navigable.
@@ -25,7 +25,7 @@ export function resolveGroupCapture(
 ): GroupCapture {
   const groups: HTMLElement[] = [];
   for (let n: HTMLElement | null = startEl; n; n = n.parentElement) {
-    if (n.hasAttribute("data-hf-group")) groups.push(n);
+    if (n.hasAttribute("data-sc-group")) groups.push(n);
   }
   const result = ((): GroupCapture => {
     if (!activeGroupElement) {

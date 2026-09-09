@@ -1,11 +1,11 @@
-# Contributing to Hyperframes
+# Contributing to Smashcut
 
-Thanks for your interest in contributing to Hyperframes! This guide will help you get started.
+Thanks for your interest in contributing to Smashcut! This guide will help you get started.
 
 ## Getting Started
 
 1. Fork the repository
-2. Clone your fork: `git clone https://github.com/YOUR_USERNAME/hyperframes.git`
+2. Clone your fork: `git clone https://github.com/YOUR_USERNAME/smashcut.git`
 3. Install dependencies: `bun install`
 4. Create a branch: `git checkout -b my-feature`
 
@@ -23,9 +23,9 @@ bun run format:check   # Check formatting
 ### Running Tests
 
 ```bash
-bun run --filter @hyperframes/core test          # Core unit tests (vitest)
-bun run --filter @hyperframes/engine test        # Engine unit tests (vitest)
-bun run --filter @hyperframes/core test:hyperframe-runtime-ci  # Runtime contract tests
+bun run --filter @smashcut/core test          # Core unit tests (vitest)
+bun run --filter @smashcut/engine test        # Engine unit tests (vitest)
+bun run --filter @smashcut/core test:smashcut-runtime-ci  # Runtime contract tests
 ```
 
 ### Linting & Formatting
@@ -63,7 +63,7 @@ const event = data as unknown as RuntimeEvent;
 
 ## Adding Registry Items (Blocks & Components)
 
-The registry at `registry/` contains reusable items installable via `hyperframes add <name>`. Each item lives in its own directory under `registry/blocks/` or `registry/components/`.
+The registry at `registry/` contains reusable items installable via `smashcut add <name>`. Each item lives in its own directory under `registry/blocks/` or `registry/components/`.
 
 ### Directory structure
 
@@ -97,14 +97,14 @@ before merge, listed at the end.
 
 1. Create `registry/<blocks|components>/<name>/registry-item.json` following the [schema](packages/core/schemas/registry-item.json)
 2. For components: include a `demo.html`
-3. Run `npx hyperframes lint` and `npx hyperframes validate` on your HTML
-4. Test the install flow: `hyperframes add <name> --dir /tmp/test-project`
+3. Run `npx smashcut lint` and `npx smashcut validate` on your HTML
+4. Test the install flow: `smashcut add <name> --dir /tmp/test-project`
 5. Regenerate the manifest: `npx tsx scripts/generate-registry-items.ts`
 
 `registry/registry.json` is generated from the item directories, so edit it with
 that script rather than by hand. An entry added by hand survives until the next
 regeneration and then disappears; entries left behind for directories that no
-longer exist are worse, because `hyperframes add <name>` resolves the name and
+longer exist are worse, because `smashcut add <name>` resolves the name and
 then fails on missing files.
 
 ### What a maintainer finishes for you
@@ -151,11 +151,11 @@ The script wipes `docs/catalog/` before regenerating, so deleted items are autom
 
 | Package                 | Description                                 |
 | ----------------------- | ------------------------------------------- |
-| `@hyperframes/core`     | Types, HTML generation, runtime, linter     |
-| `@hyperframes/engine`   | Seekable page-to-video capture engine       |
-| `@hyperframes/producer` | Full rendering pipeline (capture + encode)  |
-| `@hyperframes/studio`   | Composition editor UI                       |
-| `hyperframes`           | CLI for creating, previewing, and rendering |
+| `@smashcut/core`     | Types, HTML generation, runtime, linter     |
+| `@smashcut/engine`   | Seekable page-to-video capture engine       |
+| `@smashcut/producer` | Full rendering pipeline (capture + encode)  |
+| `@smashcut/studio`   | Composition editor UI                       |
+| `smashcut`           | CLI for creating, previewing, and rendering |
 
 ## Releasing (Maintainers)
 
@@ -189,7 +189,7 @@ bun run set-version 0.2.0-rc.1       # release candidate (--tag rc)
 bun run set-version 0.2.0            # final stable release (--tag latest)
 ```
 
-Consumers install pre-releases with `npm install @hyperframes/core@alpha` (or `@beta`, `@rc`). The `latest` tag is never touched by pre-releases, so `npm install @hyperframes/core` always gets the last stable version.
+Consumers install pre-releases with `npm install @smashcut/core@alpha` (or `@beta`, `@rc`). The `latest` tag is never touched by pre-releases, so `npm install @smashcut/core` always gets the last stable version.
 
 Pre-releases also create GitHub Releases marked as **pre-release**.
 
@@ -217,7 +217,7 @@ We welcome contributions that use AI tools (GitHub Copilot, Claude, ChatGPT, etc
 
 ## Governance
 
-Hyperframes uses a **BDFL (Benevolent Dictator for Life)** governance model. The core maintainers at HeyGen have final say on the project's direction, API design, and what gets merged. This keeps the project focused and moving fast.
+Smashcut uses a **BDFL (Benevolent Dictator for Life)** governance model. The core maintainers at HeyGen have final say on the project's direction, API design, and what gets merged. This keeps the project focused and moving fast.
 
 Community input is valued and encouraged — open issues, propose RFCs, and discuss in PRs. But final decisions rest with the maintainers.
 

@@ -1,17 +1,17 @@
 ---
 title: "Install and update agent skills"
 sidebarTitle: "Agent skills"
-description: "Teach a coding agent how to create valid HyperFrames projects and load specialized workflows when needed."
+description: "Teach a coding agent how to create valid SmashCut projects and load specialized workflows when needed."
 ---
 
 import { DocsVideo } from "/snippets/docs-video.jsx";
 
-HyperFrames skills teach coding agents the project format, animation rules, media workflow, validation loop, and creation workflows that generic web knowledge does not cover.
+SmashCut skills teach coding agents the project format, animation rules, media workflow, validation loop, and creation workflows that generic web knowledge does not cover.
 
 <DocsVideo
   title="One command installs the skills, and the router picks the workflow"
-  src="https://static.heygen.ai/hyperframes-oss/docs/images/showcase/skills-install-demo-v2.mp4"
-  poster="https://static.heygen.ai/hyperframes-oss/docs/images/showcase/skills-install-demo-v2.jpg"
+  src="https://static.heygen.ai/smashcut-oss/docs/images/showcase/skills-install-demo-v2.mp4"
+  poster="https://static.heygen.ai/smashcut-oss/docs/images/showcase/skills-install-demo-v2.jpg"
 />
 
 The terminal output is a real run of the command. Afterwards the router reads a
@@ -26,30 +26,30 @@ Run the interactive installer:
 npx skills add heygen-com/hyperframes
 ```
 
-Select **Core Skills**. The `/hyperframes` router installs a specialized creation workflow when the request needs one, so you do not need the full catalog up front.
+Select **Core Skills**. The `/smashcut` router installs a specialized creation workflow when the request needs one, so you do not need the full catalog up front.
 
-Start a fresh agent chat after installation, then ask it to use `/hyperframes`.
+Start a fresh agent chat after installation, then ask it to use `/smashcut`.
 
 ## Install or refresh from an agent
 
 For a non-interactive agent or CI environment, use:
 
 ```bash
-npx hyperframes skills update
+npx smashcut skills update
 ```
 
-This installs or refreshes the core set and any HyperFrames skills already present in the global install, then links those bundles into compatible installed agents. It does not add every optional workflow.
+This installs or refreshes the core set and any SmashCut skills already present in the global install, then links those bundles into compatible installed agents. It does not add every optional workflow.
 
 Check freshness without changing anything:
 
 ```bash
-npx hyperframes skills check
+npx smashcut skills check
 ```
 
 Install or refresh one workflow explicitly:
 
 ```bash
-npx hyperframes skills update pr-to-video
+npx smashcut skills update pr-to-video
 ```
 
 ## Use the skills in Google Antigravity
@@ -70,29 +70,29 @@ before managing that directory by hand.
 
 ## Use the skills in GitHub Copilot CLI
 
-Run `npx hyperframes skills update`, open the project, and start Copilot:
+Run `npx smashcut skills update`, open the project, and start Copilot:
 
 ```bash
 copilot
 ```
 
 If Copilot was already running, use `/skills reload`. Use `/skills list` or
-`/skills info hyperframes` to confirm discovery. GitHub's [current skills
+`/skills info smashcut` to confirm discovery. GitHub's [current skills
 guide](https://docs.github.com/en/copilot/how-tos/copilot-cli/customize-copilot/add-skills)
 lists its project and personal skill locations.
 
 Both agents can use the same first request:
 
 ```text
-Using /hyperframes, make a 10-second product intro for https://example.com.
+Using /smashcut, make a 10-second product intro for https://example.com.
 ```
 
 Continue in the same conversation for revisions. For hosted creation instead
-of a local project, use the [HyperFrames MCP guide](/guides/mcp).
+of a local project, use the [SmashCut MCP guide](/guides/mcp).
 
 ## Let the router choose
 
-The normal entry point is `/hyperframes`. It confirms the important intent, then selects a workflow from the input:
+The normal entry point is `/smashcut`. It confirms the important intent, then selects a workflow from the input:
 
 | You provide | Workflow |
 | --- | --- |
@@ -113,7 +113,7 @@ You can invoke a workflow directly when you already know it is the right one, bu
 Install the complete published set deliberately with:
 
 ```bash
-npx hyperframes skills
+npx smashcut skills
 ```
 
 (`npx skills add heygen-com/hyperframes --all` also works, but it installs every `SKILL.md` in the repository, including repo-internal skills that are not part of the published set.)
@@ -121,20 +121,20 @@ npx hyperframes skills
 Or install one named skill:
 
 ```bash
-npx skills add heygen-com/hyperframes --skill hyperframes-animation
+npx skills add heygen-com/hyperframes --skill smashcut-animation
 ```
 
-Use the full set for an environment that must work across many HyperFrames tasks without fetching later. For a normal project, the core set is smaller and easier to keep current.
+Use the full set for an environment that must work across many SmashCut tasks without fetching later. For a normal project, the core set is smaller and easier to keep current.
 
 ## If the agent cannot see a skill
 
 1. Start a new agent session.
 2. Confirm that the project or global skill directory belongs to the agent you are using.
-3. Run `npx hyperframes skills check`.
-4. Run `npx hyperframes skills update` when the check reports a missing or stale core skill.
+3. Run `npx smashcut skills check`.
+4. Run `npx smashcut skills update` when the check reports a missing or stale core skill.
 
 The individual skill definitions remain the source of truth for agents and are
-available in the [HyperFrames repository](https://github.com/heygen-com/hyperframes/tree/main/skills).
+available in the [SmashCut repository](https://github.com/heygen-com/hyperframes/tree/main/skills).
 
 ## Related topics
 

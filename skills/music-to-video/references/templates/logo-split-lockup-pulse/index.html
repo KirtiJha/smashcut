@@ -50,7 +50,7 @@
             { frac: 1.0, slope: 0.1 },
           ];
           var state = targets.map(function (el) {
-            var uid = "hf-mb-" + window._hfMbUid++;
+            var uid = "sc-mb-" + window._hfMbUid++;
             var svg = document.createElementNS(ns, "svg");
             svg.setAttribute("style", "position:absolute;width:0;height:0;overflow:hidden;");
             var filter = document.createElementNS(ns, "filter");
@@ -262,7 +262,7 @@
     <!-- duration = 2.875s = the green logo lifecycle (seed -> split -> lockup ->
          snap -> pulse); the source then HARD-CUTS to the next group at f70 (2.917s). -->
     <div
-      data-hf-id="hf-g7rt"
+      data-sc-id="sc-g7rt"
       id="root"
       data-composition-id="group-seven-logo"
       data-width="1920"
@@ -271,10 +271,10 @@
       data-duration="2.875"
       data-root="true"
     >
-      <div data-hf-id="hf-g7lk" id="lockup">
-        <div data-hf-id="hf-g7ml" class="mark left" id="markLeft"></div>
-        <div data-hf-id="hf-g7wd" class="words" id="words"></div>
-        <div data-hf-id="hf-g7mr" class="mark right" id="markRight"></div>
+      <div data-sc-id="sc-g7lk" id="lockup">
+        <div data-sc-id="sc-g7ml" class="mark left" id="markLeft"></div>
+        <div data-sc-id="sc-g7wd" class="words" id="words"></div>
+        <div data-sc-id="sc-g7mr" class="mark right" id="markRight"></div>
       </div>
     </div>
 
@@ -303,8 +303,8 @@
         var vars = Object.assign(
           {},
           defaults,
-          window.__hyperframes && window.__hyperframes.getVariables
-            ? window.__hyperframes.getVariables()
+          window.__smashcut && window.__smashcut.getVariables
+            ? window.__smashcut.getVariables()
             : {},
         );
 

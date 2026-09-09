@@ -1,6 +1,6 @@
 import { useCallback } from "react";
-import { HF_AUDIO_FX_ATTR } from "@hyperframes/core/audio-fx";
-import { HF_AUDIO_AUTOMATION_ATTR } from "@hyperframes/core/audio-automation";
+import { HF_AUDIO_FX_ATTR } from "@smashcut/core/audio-fx";
+import { HF_AUDIO_AUTOMATION_ATTR } from "@smashcut/core/audio-automation";
 import { usePlayerStore } from "../player";
 import type { TimelineElementPatch } from "../player/store/timelineElement";
 import { invalidateGroupInfoCache } from "../player/lib/timelineGroupInfo";
@@ -112,7 +112,7 @@ function syncStoredGroupAttribute(groupId: string, attr: string, value: string |
  * the composition id but not the file. The file is on the HOST one level above
  * it. Measured on a live preview:
  *
- *   hf-audio-group#voiceover        (no composition attrs)
+ *   sc-audio-group#voiceover        (no composition attrs)
  *   section#voices-root             data-composition-id="voices"          <- stops here
  *   div#voices-host                 data-composition-file="…/voices.html" <- file is here
  *   body                            data-composition-id="<root>"
@@ -168,7 +168,7 @@ async function setAudioGroupAttribute({
 }: SetAudioGroupAttributeInput): Promise<string[]> {
   // The file that actually CONTAINS the group element, not just the active
   // composition. A hand-authored sub-composition can declare both the members
-  // and their `<hf-audio-group>`, and until sub-comp children inherited
+  // and their `<sc-audio-group>`, and until sub-comp children inherited
   // `audioGroup*` no group row existed for that case so nothing could reach
   // here. Now the row appears, and routing its writes at `activeCompPath`
   // means `readTagSnippetByTarget` finds nothing and every mute, fader move and

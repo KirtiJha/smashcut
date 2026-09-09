@@ -16,7 +16,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 ```html gesture-tap.html
 <!doctype html>
 <!--
-  gesture-tap: HyperFrames video primitive (ui-props / interaction / demonstrate)
+  gesture-tap: SmashCut video primitive (ui-props / interaction / demonstrate)
 
   Concept: a contact circle appears directly over a real pill button, presses
   it, releases it into a new state, then lifts away. One mechanic, one job:
@@ -274,8 +274,8 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
             var contact = root.querySelector(".gt-contact");
             var pulse = root.querySelector(".gt-response-pulse");
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             var tapLabel = vars.tap_label == null ? "Follow" : String(vars.tap_label);
@@ -424,7 +424,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 
 ## Install
 
-<InstallCommand command="npx hyperframes add gesture-tap" item="gesture-tap" />
+<InstallCommand command="npx smashcut add gesture-tap" item="gesture-tap" />
 
 That writes one file: `compositions/components/gesture-tap.html`.
 
@@ -464,7 +464,7 @@ defaults, so this behaves exactly like the preview above until you change one:
 ```html
 <!doctype html>
 <!--
-  gesture-tap: HyperFrames video primitive (ui-props / interaction / demonstrate)
+  gesture-tap: SmashCut video primitive (ui-props / interaction / demonstrate)
 
   Concept: a contact circle appears directly over a real pill button, presses
   it, releases it into a new state, then lifts away. One mechanic, one job:
@@ -722,8 +722,8 @@ defaults, so this behaves exactly like the preview above until you change one:
             var contact = root.querySelector(".gt-contact");
             var pulse = root.querySelector(".gt-response-pulse");
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             var tapLabel = vars.tap_label == null ? "Follow" : String(vars.tap_label);

@@ -7,16 +7,16 @@ import {
 } from "./sourceMutation.js";
 
 describe("splitElementInHtml — hfId clone isolation", () => {
-  it("does not copy data-hf-id to the cloned second half", () => {
-    const source = `<html><body><div data-composition-id="root"><div id="clip1" class="clip" data-start="0" data-duration="10" data-hf-id="hf-abc123"></div></div></body></html>`;
+  it("does not copy data-sc-id to the cloned second half", () => {
+    const source = `<html><body><div data-composition-id="root"><div id="clip1" class="clip" data-start="0" data-duration="10" data-sc-id="sc-abc123"></div></div></body></html>`;
     const { html, matched } = splitElementInHtml(source, { id: "clip1" }, 5, "clip2");
 
     expect(matched).toBe(true);
     const { document } = parseHTML(html);
-    const occurrences = (html.match(/data-hf-id="hf-abc123"/g) ?? []).length;
+    const occurrences = (html.match(/data-sc-id="sc-abc123"/g) ?? []).length;
     expect(occurrences).toBe(1);
-    expect(document.getElementById("clip2")?.getAttribute("data-hf-id")).toMatch(/^hf-/);
-    expect(document.getElementById("clip2")?.getAttribute("data-hf-id")).not.toBe("hf-abc123");
+    expect(document.getElementById("clip2")?.getAttribute("data-sc-id")).toMatch(/^hf-/);
+    expect(document.getElementById("clip2")?.getAttribute("data-sc-id")).not.toBe("sc-abc123");
   });
 });
 
@@ -172,7 +172,7 @@ describe("wrapElementsInHtml / unwrapElementsFromHtml", () => {
   const FIXTURE = `<!doctype html><html><body><div data-composition-id="main">
 <div id="title" class="clip" style="position: absolute; left: 260px; top: 100px">Title</div>
 <div id="logo" class="clip" style="position: absolute; left: 300px; top: 200px; transform: translate(10px, 5px)">Logo</div>
-<div id="badge" class="clip" style="position: absolute; left: 400px; top: 50px; --hf-studio-offset: 12px">Badge</div>
+<div id="badge" class="clip" style="position: absolute; left: 400px; top: 50px; --sc-studio-offset: 12px">Badge</div>
 <div id="outside" class="clip" style="position: absolute; left: 10px; top: 10px">Outside</div>
 </div></body></html>`;
 
@@ -215,7 +215,7 @@ describe("wrapElementsInHtml / unwrapElementsFromHtml", () => {
     expect(result.matched).toBe(true);
     const { document } = parseHTML(result.html);
     const group = document.getElementById(`${id}-3`);
-    expect(group?.getAttribute("data-hf-group")).toBe(name);
+    expect(group?.getAttribute("data-sc-group")).toBe(name);
     expect(Array.from(group?.children ?? []).map((child) => child.id)).toEqual([
       "title",
       "logo",
@@ -223,7 +223,7 @@ describe("wrapElementsInHtml / unwrapElementsFromHtml", () => {
     ]);
   });
 
-  it("wraps members in a data-hf-group div, preserving order and rebasing left/top", () => {
+  it("wraps members in a data-sc-group div, preserving order and rebasing left/top", () => {
     const { html, matched, groupId } = wrapElementsInHtml(
       FIXTURE,
       TARGETS,
@@ -235,7 +235,7 @@ describe("wrapElementsInHtml / unwrapElementsFromHtml", () => {
     expect(groupId).toBe("Group 1");
 
     const { document } = parseHTML(html);
-    const group = requireElement(document, '[data-hf-group="Group 1"]');
+    const group = requireElement(document, '[data-sc-group="Group 1"]');
 
     expect(leftTop(group)).toEqual({ left: 260, top: 50 });
     expect(Array.from(group.children).map((c) => c.id)).toEqual(["title", "logo", "badge"]);
@@ -249,19 +249,19 @@ describe("wrapElementsInHtml / unwrapElementsFromHtml", () => {
     );
     expect(leftTop(requireElement(document, "#badge"))).toEqual({ left: 140, top: 0 });
     expect(requireElement(document, "#badge").getAttribute("style")).toContain(
-      "--hf-studio-offset: 12px",
+      "--sc-studio-offset: 12px",
     );
   });
 
   it("round-trips: unwrap restores original structure and coordinates", () => {
     const wrapped = wrapElementsInHtml(FIXTURE, TARGETS, "Group 1", BBOX, REBASES).html;
     const { html, unwrapped } = unwrapElementsFromHtml(wrapped, {
-      selector: '[data-hf-group="Group 1"]',
+      selector: '[data-sc-group="Group 1"]',
     });
     expect(unwrapped).toBe(true);
 
     const { document } = parseHTML(html);
-    expect(document.querySelector("[data-hf-group]")).toBeNull();
+    expect(document.querySelector("[data-sc-group]")).toBeNull();
 
     const main = requireElement(document, '[data-composition-id="main"]');
     expect(Array.from(main.children).map((c) => c.id)).toEqual([
@@ -277,7 +277,7 @@ describe("wrapElementsInHtml / unwrapElementsFromHtml", () => {
     );
     expect(leftTop(requireElement(document, "#badge"))).toEqual({ left: 400, top: 50 });
     expect(requireElement(document, "#badge").getAttribute("style")).toContain(
-      "--hf-studio-offset: 12px",
+      "--sc-studio-offset: 12px",
     );
   });
 
@@ -307,16 +307,16 @@ describe("wrapElementsInHtml / unwrapElementsFromHtml", () => {
     expect(matched).toBe(true);
     const { document } = parseHTML(html);
     const parent = requireElement(document, '[data-composition-id="main"]');
-    const group = requireElement(document, '[data-hf-group="Group 1"]');
+    const group = requireElement(document, '[data-sc-group="Group 1"]');
     expect(Array.from(group.children).map((c) => c.id)).toEqual(["low", "high"]);
     const topChildren = Array.from(parent.children).map(
-      (c) => c.getAttribute("data-hf-group") ?? c.id,
+      (c) => c.getAttribute("data-sc-group") ?? c.id,
     );
     expect(topChildren).toEqual(["middle", "Group 1"]);
     expect(group.getAttribute("style")).toMatch(/z-index:\s*4/);
   });
 
-  it("refuses to unwrap an element without data-hf-group (no silent corruption)", () => {
+  it("refuses to unwrap an element without data-sc-group (no silent corruption)", () => {
     const html = `<!doctype html><html><body><div data-composition-id="main"><div id="plain" style="position:absolute;left:0;top:0"><span id="kid"></span></div></div></body></html>`;
     const result = unwrapElementsFromHtml(html, { id: "plain" });
     expect(result.unwrapped).toBe(false);

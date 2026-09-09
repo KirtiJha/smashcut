@@ -12,7 +12,7 @@ import {
 let workdir: string;
 
 beforeEach(() => {
-  workdir = mkdtempSync(join(tmpdir(), "hf-lambda-policies-test-"));
+  workdir = mkdtempSync(join(tmpdir(), "sc-lambda-policies-test-"));
 });
 
 afterEach(() => {

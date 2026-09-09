@@ -2,7 +2,7 @@
 import { existsSync, readFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import { patchElementInHtml } from "@hyperframes/studio-server/source-mutation";
+import { patchElementInHtml } from "@smashcut/studio-server/source-mutation";
 import { describe, expect, it } from "vitest";
 import { buildDomEditStylePatchOperation } from "./domEditing";
 
@@ -60,9 +60,9 @@ describe("composition reliability acceptance fixture", () => {
     );
     expect(headline?.tagName).toBe("H1");
 
-    const collisionA = index.querySelector('[data-hf-id="collision-a"]')!;
-    const collisionB = index.querySelector('[data-hf-id="collision-b"]')!;
-    const layered = index.querySelector('[data-hf-id="layer-overlap"]')!;
+    const collisionA = index.querySelector('[data-sc-id="collision-a"]')!;
+    const collisionB = index.querySelector('[data-sc-id="collision-b"]')!;
+    const layered = index.querySelector('[data-sc-id="layer-overlap"]')!;
     expect(collisionA.getAttribute("data-track-index")).toBe(
       collisionB.getAttribute("data-track-index"),
     );
@@ -82,10 +82,10 @@ describe("composition reliability acceptance fixture", () => {
       { type: "attribute", property: "duration", value: "2" },
     ]);
     expect(moved.matched).toBe(true);
-    expect(moved.html).toContain('data-hf-id="title-host-a"');
+    expect(moved.html).toContain('data-sc-id="title-host-a"');
     expect(moved.html).toContain('data-start="5"');
     expect(moved.html).toContain('data-duration="2"');
-    expect(moved.html).not.toContain('data-hf-id="title-text"');
+    expect(moved.html).not.toContain('data-sc-id="title-text"');
     expect(titleSource).not.toContain("#12b886");
 
     const recolored = patchElementInHtml(titleSource, { hfId: "title-text" }, [
@@ -94,12 +94,12 @@ describe("composition reliability acceptance fixture", () => {
     expect(recolored.matched).toBe(true);
     const recoloredDocument = parse(recolored.html);
     expect(
-      inTemplate(recoloredDocument, '[data-hf-id="title-text"]')?.getAttribute("style"),
+      inTemplate(recoloredDocument, '[data-sc-id="title-text"]')?.getAttribute("style"),
     ).toContain("color: #12b886");
     expect(
-      inTemplate(recoloredDocument, '[data-hf-id="title-mask"]')?.getAttribute("style"),
+      inTemplate(recoloredDocument, '[data-sc-id="title-mask"]')?.getAttribute("style"),
     ).toBeNull();
-    expect(recolored.html).not.toContain('data-hf-id="title-host-a"');
+    expect(recolored.html).not.toContain('data-sc-id="title-host-a"');
     expect(indexSource).not.toContain("#12b886");
   });
 });

@@ -50,7 +50,7 @@ const baseConfig: SerializableDistributedRenderConfig = {
 let projectDir: string;
 
 beforeEach(() => {
-  projectDir = mkdtempSync(join(tmpdir(), "hf-render-test-"));
+  projectDir = mkdtempSync(join(tmpdir(), "sc-render-test-"));
   writeFileSync(join(projectDir, "index.html"), "<html></html>");
 });
 
@@ -209,7 +209,7 @@ describe("renderToLambda", () => {
       sfn: asSFNClient(sfn),
       s3: asS3Client(s3),
     });
-    expect(handle.renderId).toMatch(/^hf-render-[0-9a-f-]{36}$/);
+    expect(handle.renderId).toMatch(/^sc-render-[0-9a-f-]{36}$/);
   });
 
   it("threads variables through the Step Functions execution input", async () => {

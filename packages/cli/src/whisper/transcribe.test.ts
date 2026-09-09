@@ -201,7 +201,7 @@ describe("wrapWhisperTimeoutError", () => {
     // timeout, and cite the model so slow-CPU reporters see the knob.
     expect(wrapped).not.toBe(original);
     expect(wrapped.message).toContain("--timeout");
-    expect(wrapped.message).toContain("HYPERFRAMES_TRANSCRIBE_TIMEOUT_MS");
+    expect(wrapped.message).toContain("SMASHCUT_TRANSCRIBE_TIMEOUT_MS");
     expect(wrapped.message).toContain("1260s");
     expect(wrapped.message).toContain("medium.en");
     expect((wrapped as { cause?: unknown }).cause).toBe(original);

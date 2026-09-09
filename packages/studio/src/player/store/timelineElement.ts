@@ -40,7 +40,7 @@ export interface TimelineElement {
   /** Composition ancestry from root to nearest parent, matching RuntimeTimelineClip. */
   compositionAncestors?: string[];
   domId?: string;
-  /** Stable `data-hf-id` attribute value — used as primary patch target when present */
+  /** Stable `data-sc-id` attribute value — used as primary patch target when present */
   hfId?: string;
   /** Best-effort selector used when patching source HTML back from timeline edits */
   selector?: string;
@@ -67,7 +67,7 @@ export interface TimelineElement {
   hidden?: boolean;
   /** Value of data-timeline-role attribute — used to identify music vs. voiceover. */
   timelineRole?: string;
-  /** Verbatim `data-audio-group` — the id of the `<hf-audio-group>` this clip belongs to, when any. */
+  /** Verbatim `data-audio-group` — the id of the `<sc-audio-group>` this clip belongs to, when any. */
   audioGroup?: string;
   /** The owning group's `data-label` (falls back to its id) — resolved once per parse. */
   audioGroupLabel?: string;

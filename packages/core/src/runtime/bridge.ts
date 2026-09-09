@@ -98,7 +98,7 @@ function rejectUnsupportedProtocol(data: BridgeControlData): boolean {
   const protocol = inspectRuntimeProtocol(data);
   if (protocol.status !== "unsupported") return false;
   postRuntimeMessage({
-    source: "hf-preview",
+    source: "sc-preview",
     type: "diagnostic",
     code: `runtime.protocol.${protocol.code}`,
     details: {
@@ -124,7 +124,7 @@ function handleFlashElements(data: BridgeControlData): void {
 export function installRuntimeControlBridge(deps: BridgeDeps): (event: MessageEvent) => void {
   const handler = (event: MessageEvent) => {
     const data = event.data as BridgeControlData | null;
-    if (!data || data.source !== "hf-parent" || data.type !== "control") return;
+    if (!data || data.source !== "sc-parent" || data.type !== "control") return;
     if (rejectUnsupportedProtocol(data)) return;
     const action = data.action;
     if (typeof action !== "string") return;
@@ -137,7 +137,7 @@ export function installRuntimeControlBridge(deps: BridgeDeps): (event: MessageEv
   // (avoids losing the initial `set-muted` / `set-volume` / `set-playback-rate`
   // when the parent finishes loading before the iframe does — a deterministic
   // race on warm-cache reloads and inside the Claude desktop Electron client).
-  postRuntimeMessage({ source: "hf-preview", type: "ready" });
+  postRuntimeMessage({ source: "sc-preview", type: "ready" });
   return handler;
 }
 
@@ -146,16 +146,16 @@ export function installRuntimeControlBridge(deps: BridgeDeps): (event: MessageEv
  * Used by the chat-canvas bridge to show what changed after an agent edit.
  */
 function flashElements(selectors: string[], duration: number): void {
-  if (!document.getElementById("__hf-flash-styles")) {
+  if (!document.getElementById("__sc-flash-styles")) {
     const style = document.createElement("style");
-    style.id = "__hf-flash-styles";
+    style.id = "__sc-flash-styles";
     style.textContent = `
-      .__hf-flash {
+      .__sc-flash {
         outline: 2px solid rgba(59, 130, 246, 0.6) !important;
         outline-offset: 2px !important;
-        animation: __hf-flash-pulse ${duration}ms ease-out forwards !important;
+        animation: __sc-flash-pulse ${duration}ms ease-out forwards !important;
       }
-      @keyframes __hf-flash-pulse {
+      @keyframes __sc-flash-pulse {
         0% { outline-color: rgba(59, 130, 246, 0.8); }
         100% { outline-color: transparent; }
       }
@@ -167,8 +167,8 @@ function flashElements(selectors: string[], duration: number): void {
     try {
       const els = document.querySelectorAll(selector);
       els.forEach((el) => {
-        el.classList.add("__hf-flash");
-        setTimeout(() => el.classList.remove("__hf-flash"), duration);
+        el.classList.add("__sc-flash");
+        setTimeout(() => el.classList.remove("__sc-flash"), duration);
       });
     } catch (err) {
       // Invalid selector — skip

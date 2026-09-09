@@ -3,7 +3,7 @@ import { existsSync } from "node:fs";
 import { readBundleFile } from "./readBundleFile.js";
 import { resolve, dirname } from "node:path";
 
-const ARTIFACT_NAMES = ["hyperframe-runtime.js", "hyperframe.runtime.iife.js"];
+const ARTIFACT_NAMES = ["smashcut-runtime.js", "smashcut.runtime.iife.js"];
 
 /**
  * Resolve the runtime JS source for the studio preview server.
@@ -11,7 +11,7 @@ const ARTIFACT_NAMES = ["hyperframe-runtime.js", "hyperframe.runtime.iife.js"];
  * Three resolution strategies, in priority order:
  *
  *   1. esbuild from source (dev only — gated on entry.ts existence)
- *   2. Inlined constant    (production — baked into @hyperframes/core at build time)
+ *   2. Inlined constant    (production — baked into @smashcut/core at build time)
  *   3. Pre-built artifact  (fallback — reads IIFE file from dist/)
  */
 export async function loadRuntimeSource(): Promise<string | null> {
@@ -28,7 +28,7 @@ export function hashSignatureParts(parts: Array<string | null | undefined>): str
   const hash = createHash("sha256");
   for (const part of parts) {
     hash.update(part ?? "");
-    hash.update("\n--hf-signature-part--\n");
+    hash.update("\n--sc-signature-part--\n");
   }
   return hash.digest("hex");
 }
@@ -40,7 +40,7 @@ const ENTRY_TS = resolve(__dirname, "..", "..", "..", "core", "src", "runtime", 
 async function buildFromSource(): Promise<string | null> {
   if (!existsSync(ENTRY_TS)) return null;
   try {
-    const mod = await import("@hyperframes/core");
+    const mod = await import("@smashcut/core");
     if (typeof mod.loadHyperframeRuntimeSource === "function") {
       const source = mod.loadHyperframeRuntimeSource();
       if (source) return source;
@@ -55,7 +55,7 @@ async function buildFromSource(): Promise<string | null> {
 
 async function getInlinedRuntime(): Promise<string | null> {
   try {
-    const mod = await import("@hyperframes/core");
+    const mod = await import("@smashcut/core");
     if (typeof mod.getHyperframeRuntimeScript === "function") {
       return mod.getHyperframeRuntimeScript() ?? null;
     }
@@ -85,7 +85,7 @@ function readFromCoreDistDir(): string | null {
 }
 
 function readFromNodeModules(): string | null {
-  const subPaths = ["node_modules/hyperframes/dist", "node_modules/@hyperframes/core/dist"];
+  const subPaths = ["node_modules/smashcut/dist", "node_modules/@smashcut/core/dist"];
   let dir = __dirname;
   for (;;) {
     for (const sub of subPaths) {

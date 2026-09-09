@@ -2,7 +2,7 @@
 
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { usePlayerStore, type TimelineElement } from "../player";
-import { resolveAudioGroups } from "@hyperframes/core/audio-groups";
+import { resolveAudioGroups } from "@smashcut/core/audio-groups";
 import { readTagSnippetByTarget } from "../utils/sourcePatcher";
 import { createAudioGroupAndAssignMembers } from "./timelineAudioGroupCreate";
 import { toggleTimelineElementHidden, toggleTimelineTrackHidden } from "./timelineTrackVisibility";
@@ -321,10 +321,10 @@ describe("toggleTimelineElementHidden", () => {
     if (!win) throw new Error("Expected iframe contentWindow");
     const playerWindow: Window & {
       __player?: { seek?: (time: number) => void };
-      __hfForceTimelineRebind?: () => void;
+      __scForceTimelineRebind?: () => void;
     } = win;
     playerWindow.__player = { seek };
-    playerWindow.__hfForceTimelineRebind = forceTimelineRebind;
+    playerWindow.__scForceTimelineRebind = forceTimelineRebind;
 
     const files = new Map([
       [
@@ -522,7 +522,7 @@ describe("createAudioGroupAndAssignMembers", () => {
   // fader's data-volume, an FX preset all go through
   // `buildPatchTarget({ domId: groupId })`. Membership alone parses, but leaves
   // a group nothing can edit.
-  it("emits the group's own <hf-audio-group> element, patchable by its DOM id", async () => {
+  it("emits the group's own <sc-audio-group> element, patchable by its DOM id", async () => {
     const iframe = document.createElement("iframe");
     document.body.append(iframe);
     if (iframe.contentDocument) {
@@ -562,14 +562,14 @@ describe("createAudioGroupAndAssignMembers", () => {
     });
 
     const written = writes.get("index.html") ?? "";
-    expect(written).toContain('<hf-audio-group id="voiceover"></hf-audio-group>');
+    expect(written).toContain('<sc-audio-group id="voiceover"></sc-audio-group>');
     // The actual contract: the group-attribute writer can now find a target.
     // This is the read that threw "Unable to patch element in index.html".
     expect(readTagSnippetByTarget(written, { id: "voiceover" })).toBeDefined();
     // ...and in the live preview, which is what patchLiveGroupAttribute reads
     // before the next reload.
     expect(iframe.contentDocument?.getElementById("voiceover")?.tagName.toLowerCase()).toBe(
-      "hf-audio-group",
+      "sc-audio-group",
     );
     // Both members still resolve into it.
     expect(resolveAudioGroups(iframe.contentDocument as Document)[0]).toMatchObject({

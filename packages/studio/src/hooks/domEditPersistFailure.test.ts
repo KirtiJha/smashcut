@@ -9,7 +9,7 @@ import {
 
 const selection = {
   label: "Hero title",
-  hfId: "hf-hero",
+  hfId: "sc-hero",
   id: "hero",
   selector: ".hero",
   selectorIndex: 0,
@@ -30,7 +30,7 @@ describe("reportDomEditPersistFailure", () => {
       "[Studio] DOM edit persist failed",
       expect.objectContaining({
         target: {
-          hfId: "hf-hero",
+          hfId: "sc-hero",
           id: "hero",
           selector: ".hero",
           selectorIndex: 0,
@@ -90,7 +90,7 @@ describe("reportDomEditPersistFailure", () => {
     expect(warnSpy).toHaveBeenCalledWith(
       "[Studio] DOM edit persist failed",
       expect.objectContaining({
-        target: expect.objectContaining({ hfId: "hf-hero", sourceFile: "index.html" }),
+        target: expect.objectContaining({ hfId: "sc-hero", sourceFile: "index.html" }),
       }),
     );
 
@@ -108,7 +108,7 @@ describe("warnDomEditPersistNoOp", () => {
       "[Studio] DOM edit persist no-op",
       expect.objectContaining({
         target: {
-          hfId: "hf-hero",
+          hfId: "sc-hero",
           id: "hero",
           selector: ".hero",
           selectorIndex: 0,

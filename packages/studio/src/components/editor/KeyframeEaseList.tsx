@@ -1,4 +1,4 @@
-import type { GsapPercentageKeyframe } from "@hyperframes/core/gsap-parser";
+import type { GsapPercentageKeyframe } from "@smashcut/core/gsap-parser";
 import { EASE_LABELS } from "./gsapAnimationConstants";
 import { EaseCurveSection } from "./EaseCurveSection";
 import type { AnimationKeyframeTarget } from "../../hooks/gsapTweenSynth";

@@ -1,7 +1,7 @@
 {
   "$schema": "https://hyperframes.heygen.com/schema/registry-item.json",
   "name": "code-typing",
-  "type": "hyperframes:block",
+  "type": "smashcut:block",
   "title": "Code Typing",
   "description": "Token-streamed typing reveal with a caret that tracks the frontier — deterministic, no CSS animation.",
   "dimensions": {
@@ -14,11 +14,11 @@
     {
       "path": "code-typing.html",
       "target": "compositions/code-typing.html",
-      "type": "hyperframes:composition"
+      "type": "smashcut:composition"
     }
   ],
   "preview": {
-    "video": "https://static.heygen.ai/hyperframes-oss/docs/images/catalog/blocks/code-typing.mp4",
-    "poster": "https://static.heygen.ai/hyperframes-oss/docs/images/catalog/blocks/code-typing.png"
+    "video": "https://static.heygen.ai/smashcut-oss/docs/images/catalog/blocks/code-typing.mp4",
+    "poster": "https://static.heygen.ai/smashcut-oss/docs/images/catalog/blocks/code-typing.png"
   }
 }

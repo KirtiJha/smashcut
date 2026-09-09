@@ -18,7 +18,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
   Soft Blur In - web-native motion primitive.
 
   Usage:
-  1. Add class="hf-soft-blur-in" to the element you want to reveal.
+  1. Add class="sc-soft-blur-in" to the element you want to reveal.
   2. Paste this style block and script once.
   3. Add the timeline snippet to your paused GSAP timeline.
 
@@ -47,10 +47,10 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
     { "id": "blur", "type": "enum", "role": "style", "label": "Blur", "description": "Starting blur radius, from a light haze to a full smear.", "default": "standard", "options": [{ "value": "soft", "label": "Soft" }, { "value": "standard", "label": "Standard" }, { "value": "heavy", "label": "Heavy" }] }
   ]'
 >
-  .hf-soft-blur-in {
+  .sc-soft-blur-in {
     opacity: 0;
-    transform: translate3d(0, var(--hf-soft-blur-y, 28px), 0);
-    filter: blur(var(--hf-soft-blur-radius, 18px));
+    transform: translate3d(0, var(--sc-soft-blur-y, 28px), 0);
+    filter: blur(var(--sc-soft-blur-radius, 18px));
     will-change: transform, opacity, filter;
   }
 </style>
@@ -60,8 +60,8 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
     "use strict";
 
     var vars =
-      window.__hyperframes && window.__hyperframes.getVariables
-        ? window.__hyperframes.getVariables()
+      window.__smashcut && window.__smashcut.getVariables
+        ? window.__smashcut.getVariables()
         : {};
 
     // Unrecognised overrides return to their declared defaults.
@@ -80,15 +80,15 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
     // Set on the root so every element carrying the class inherits the values,
     // whether it exists yet or not.
     var root = document.documentElement;
-    root.style.setProperty("--hf-soft-blur-y", distance * direction + "px");
-    root.style.setProperty("--hf-soft-blur-radius", blur + "px");
+    root.style.setProperty("--sc-soft-blur-y", distance * direction + "px");
+    root.style.setProperty("--sc-soft-blur-radius", blur + "px");
   })();
 </script>
 
 <!--
   Timeline integration:
 
-  tl.to(".hf-soft-blur-in", {
+  tl.to(".sc-soft-blur-in", {
     opacity: 1,
     y: 0,
     filter: "blur(0px)",
@@ -103,7 +103,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 
 ## Install
 
-<InstallCommand command="npx hyperframes add soft-blur-in" item="soft-blur-in" />
+<InstallCommand command="npx smashcut add soft-blur-in" item="soft-blur-in" />
 
 That writes one file: `compositions/components/soft-blur-in.html`.
 
@@ -138,7 +138,7 @@ defaults, so this behaves exactly like the preview above until you change one:
   Soft Blur In - web-native motion primitive.
 
   Usage:
-  1. Add class="hf-soft-blur-in" to the element you want to reveal.
+  1. Add class="sc-soft-blur-in" to the element you want to reveal.
   2. Paste this style block and script once.
   3. Add the timeline snippet to your paused GSAP timeline.
 
@@ -167,10 +167,10 @@ defaults, so this behaves exactly like the preview above until you change one:
     { "id": "blur", "type": "enum", "role": "style", "label": "Blur", "description": "Starting blur radius, from a light haze to a full smear.", "default": "standard", "options": [{ "value": "soft", "label": "Soft" }, { "value": "standard", "label": "Standard" }, { "value": "heavy", "label": "Heavy" }] }
   ]'
 >
-  .hf-soft-blur-in {
+  .sc-soft-blur-in {
     opacity: 0;
-    transform: translate3d(0, var(--hf-soft-blur-y, 28px), 0);
-    filter: blur(var(--hf-soft-blur-radius, 18px));
+    transform: translate3d(0, var(--sc-soft-blur-y, 28px), 0);
+    filter: blur(var(--sc-soft-blur-radius, 18px));
     will-change: transform, opacity, filter;
   }
 </style>
@@ -180,8 +180,8 @@ defaults, so this behaves exactly like the preview above until you change one:
     "use strict";
 
     var vars =
-      window.__hyperframes && window.__hyperframes.getVariables
-        ? window.__hyperframes.getVariables()
+      window.__smashcut && window.__smashcut.getVariables
+        ? window.__smashcut.getVariables()
         : {};
 
     // Unrecognised overrides return to their declared defaults.
@@ -200,15 +200,15 @@ defaults, so this behaves exactly like the preview above until you change one:
     // Set on the root so every element carrying the class inherits the values,
     // whether it exists yet or not.
     var root = document.documentElement;
-    root.style.setProperty("--hf-soft-blur-y", distance * direction + "px");
-    root.style.setProperty("--hf-soft-blur-radius", blur + "px");
+    root.style.setProperty("--sc-soft-blur-y", distance * direction + "px");
+    root.style.setProperty("--sc-soft-blur-radius", blur + "px");
   })();
 </script>
 
 <!--
   Timeline integration:
 
-  tl.to(".hf-soft-blur-in", {
+  tl.to(".sc-soft-blur-in", {
     opacity: 1,
     y: 0,
     filter: "blur(0px)",

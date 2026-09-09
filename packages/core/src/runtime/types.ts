@@ -25,7 +25,7 @@ type RuntimeBridgeControlActionBase =
   | "flash-elements";
 
 type RuntimeBridgeControlMessageBase = {
-  source: "hf-parent";
+  source: "sc-parent";
   type: "control";
   action: RuntimeBridgeControlAction;
   frame?: number;
@@ -42,7 +42,7 @@ type RuntimeBridgeControlMessageBase = {
 };
 
 export type RuntimeStateMessage = {
-  source: "hf-preview";
+  source: "sc-preview";
   type: "state";
   frame: number;
   isPlaying: boolean;
@@ -87,7 +87,7 @@ export type RuntimeTimelineScene = {
 };
 
 export type RuntimeTimelineMessage = RuntimeProtocolV1 & {
-  source: "hf-preview";
+  source: "sc-preview";
   type: "timeline";
   compositionContractVersion: 1;
   durationSeconds: number;
@@ -99,7 +99,7 @@ export type RuntimeTimelineMessage = RuntimeProtocolV1 & {
 };
 
 export type RuntimeDiagnosticMessage = {
-  source: "hf-preview";
+  source: "sc-preview";
   type: "diagnostic";
   code: string;
   details: Record<string, RuntimeJson>;
@@ -108,13 +108,13 @@ export type RuntimeDiagnosticMessage = {
 export type RuntimePickerElementInfo = HyperframePickerElementInfo;
 
 export type RuntimePickerHoveredMessage = {
-  source: "hf-preview";
+  source: "sc-preview";
   type: "element-hovered";
   elementInfo: RuntimePickerElementInfo;
 };
 
 export type RuntimePickerCandidatesMessage = {
-  source: "hf-preview";
+  source: "sc-preview";
   type: "element-pick-candidates";
   candidates: RuntimePickerElementInfo[];
   selectedIndex: number;
@@ -122,24 +122,24 @@ export type RuntimePickerCandidatesMessage = {
 };
 
 export type RuntimePickerPickedMessage = {
-  source: "hf-preview";
+  source: "sc-preview";
   type: "element-picked";
   elementInfo: RuntimePickerElementInfo;
 };
 
 export type RuntimePickerPickedManyMessage = {
-  source: "hf-preview";
+  source: "sc-preview";
   type: "element-picked-many";
   elementInfos: RuntimePickerElementInfo[];
 };
 
 export type RuntimePickerCancelledMessage = {
-  source: "hf-preview";
+  source: "sc-preview";
   type: "pick-mode-cancelled";
 };
 
 export type RuntimeStageSizeMessage = {
-  source: "hf-preview";
+  source: "sc-preview";
   type: "stage-size";
   width: number;
   height: number;
@@ -153,7 +153,7 @@ export type RuntimeStageSizeMessage = {
  * parent frame, so the host has to take over audible playback there.
  */
 export type RuntimeMediaAutoplayBlockedMessage = {
-  source: "hf-preview";
+  source: "sc-preview";
   type: "media-autoplay-blocked";
 };
 
@@ -167,12 +167,12 @@ export type RuntimeMediaAutoplayBlockedMessage = {
  * reload because the new runtime instance starts with no state.
  */
 export type RuntimeReadyMessage = {
-  source: "hf-preview";
+  source: "sc-preview";
   type: "ready";
 };
 
 export type RuntimeDataErrorMessage = {
-  source: "hf-preview";
+  source: "sc-preview";
   type: "runtime-data-error";
   channel: string;
   requestId: number;
@@ -180,7 +180,7 @@ export type RuntimeDataErrorMessage = {
 };
 
 export type RuntimeDataAppliedMessage = {
-  source: "hf-preview";
+  source: "sc-preview";
   type: "runtime-data-applied";
   channel: string;
   requestId: number;
@@ -194,7 +194,7 @@ export type RuntimeDataAppliedMessage = {
  * No analytics SDK runs inside this iframe.
  */
 export type RuntimeAnalyticsMessage = {
-  source: "hf-preview";
+  source: "sc-preview";
   type: "analytics";
   event: RuntimeAnalyticsEvent;
   properties: Record<string, string | number | boolean | null>;
@@ -208,7 +208,7 @@ export type RuntimeAnalyticsMessage = {
  * is continuous and numeric, not discrete.
  */
 export type RuntimePerformanceMessage = {
-  source: "hf-preview";
+  source: "sc-preview";
   type: "perf";
   name: string;
   value: number;
@@ -219,7 +219,7 @@ export type RuntimePerformanceMessage = {
  *  while playing. A group id absent from `levels` is idle/unknown (no active
  *  member) — the studio side treats that as "no reading", not zero. */
 export type RuntimeGroupLevelsMessage = {
-  source: "hf-preview";
+  source: "sc-preview";
   type: "group-levels";
   levels: Array<{ groupId: string; level: number; clipped: boolean }>;
 };

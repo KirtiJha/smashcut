@@ -17,7 +17,7 @@ beforeEach(() => {
 describe("resolveAudioGroups", () => {
   it("returns one group of two members plus ignores an ungrouped track", () => {
     document.body.innerHTML = `
-      <hf-audio-group id="voiceover" data-label="Voiceover"></hf-audio-group>
+      <sc-audio-group id="voiceover" data-label="Voiceover"></sc-audio-group>
       <audio id="vo-1" data-audio-group="voiceover"></audio>
       <audio id="vo-2" data-audio-group="voiceover"></audio>
       <audio id="sfx-1"></audio>
@@ -46,7 +46,7 @@ describe("resolveAudioGroups", () => {
 
   it("ignores data-audio-group on the group element itself (groups do not nest)", () => {
     document.body.innerHTML = `
-      <hf-audio-group id="outer" data-audio-group="outer"></hf-audio-group>
+      <sc-audio-group id="outer" data-audio-group="outer"></sc-audio-group>
       <audio id="vo-1" data-audio-group="outer"></audio>
     `;
     const groups = resolveAudioGroups(document);
@@ -74,7 +74,7 @@ describe("resolveAudioGroups", () => {
 
   it("reads the group element's fx chain, automation, volume and hidden", () => {
     document.body.innerHTML = `
-      <hf-audio-group id="voiceover" data-fx-chain='{"version":1,"nodes":[]}' data-automation='{"lanes":[]}' data-volume="0.5" data-hidden></hf-audio-group>
+      <sc-audio-group id="voiceover" data-fx-chain='{"version":1,"nodes":[]}' data-automation='{"lanes":[]}' data-volume="0.5" data-hidden></sc-audio-group>
       <audio id="vo-1" data-audio-group="voiceover"></audio>
     `;
     const groups = resolveAudioGroups(document);
@@ -93,7 +93,7 @@ describe("resolveAudioGroups", () => {
 
   it("defaults volume to 1 and hidden to false when a group element exists but carries neither", () => {
     document.body.innerHTML = `
-      <hf-audio-group id="voiceover"></hf-audio-group>
+      <sc-audio-group id="voiceover"></sc-audio-group>
       <audio id="vo-1" data-audio-group="voiceover"></audio>
     `;
     const [group] = resolveAudioGroups(document);
@@ -130,7 +130,7 @@ describe("audioGroupOf", () => {
 
   // Groups do not nest, and the group element is not a member of itself.
   it("returns null for the group element even when it carries the attribute", () => {
-    document.body.innerHTML = `<hf-audio-group id="bus" data-audio-group="other"></hf-audio-group>`;
+    document.body.innerHTML = `<sc-audio-group id="bus" data-audio-group="other"></sc-audio-group>`;
     expect(audioGroupOf(document.getElementById("bus") as Element)).toBeNull();
   });
 });
@@ -189,9 +189,9 @@ describe("resolveGroupElement", () => {
     return d;
   };
 
-  it("returns the bus for a real <hf-audio-group>", () => {
-    const d = doc(`<hf-audio-group id="vo" data-volume="0.5"></hf-audio-group>`);
-    expect(resolveGroupElement(d, "vo")?.tagName.toLowerCase()).toBe("hf-audio-group");
+  it("returns the bus for a real <sc-audio-group>", () => {
+    const d = doc(`<sc-audio-group id="vo" data-volume="0.5"></sc-audio-group>`);
+    expect(resolveGroupElement(d, "vo")?.tagName.toLowerCase()).toBe("sc-audio-group");
   });
 
   // The trap: a bare getElementById read a member's OWN fader and chain as the
@@ -208,7 +208,7 @@ describe("resolveGroupElement", () => {
 
   it("matches a stamped id containing selector syntax without throwing", () => {
     const d = doc("");
-    const bus = d.createElement("hf-audio-group");
+    const bus = d.createElement("sc-audio-group");
     bus.setAttribute(MEDIA_RENDER_ID_ATTR, 'vo"\\instance');
     d.body.append(bus);
 
@@ -227,7 +227,7 @@ describe("isMemberGroupHidden", () => {
   // `closest("[data-hidden]")` cannot see it.
   it("sees a muted bus that does not nest its member", () => {
     const d = doc(
-      `<hf-audio-group id="vo" data-hidden></hf-audio-group>
+      `<sc-audio-group id="vo" data-hidden></sc-audio-group>
        <div><audio id="vo-1" data-audio-group="vo"></audio></div>`,
     );
     const member = d.getElementById("vo-1");
@@ -237,7 +237,7 @@ describe("isMemberGroupHidden", () => {
 
   it("is false for an unmuted bus and for a member with no group", () => {
     const d = doc(
-      `<hf-audio-group id="vo"></hf-audio-group>
+      `<sc-audio-group id="vo"></sc-audio-group>
        <audio id="vo-1" data-audio-group="vo"></audio>
        <audio id="lone"></audio>`,
     );
@@ -247,10 +247,10 @@ describe("isMemberGroupHidden", () => {
 
   it("uses the stamped bus instance when repeated compositions disagree on mute", () => {
     const d = doc(`
-      <hf-audio-group id="bed" ${MEDIA_RENDER_ID_ATTR}="bed"></hf-audio-group>
+      <sc-audio-group id="bed" ${MEDIA_RENDER_ID_ATTR}="bed"></sc-audio-group>
       <audio id="m1" data-audio-group="bed" ${AUDIO_GROUP_RENDER_ID_ATTR}="bed"></audio>
-      <hf-audio-group id="bed" ${MEDIA_RENDER_ID_ATTR}="bed__hf2" data-hidden></hf-audio-group>
-      <audio id="m2" data-audio-group="bed" ${AUDIO_GROUP_RENDER_ID_ATTR}="bed__hf2"></audio>
+      <sc-audio-group id="bed" ${MEDIA_RENDER_ID_ATTR}="bed__sc2" data-hidden></sc-audio-group>
+      <audio id="m2" data-audio-group="bed" ${AUDIO_GROUP_RENDER_ID_ATTR}="bed__sc2"></audio>
     `);
 
     expect(isMemberGroupHidden(d, d.getElementById("m1"))).toBe(false);
@@ -261,7 +261,7 @@ describe("isMemberGroupHidden", () => {
 describe("resolveCarveSourceIds — empty group", () => {
   it("drops an empty group's own bus id instead of returning it as a clip", () => {
     const d = document.implementation.createHTMLDocument("t");
-    d.body.innerHTML = `<hf-audio-group id="voiceover"></hf-audio-group>`;
+    d.body.innerHTML = `<sc-audio-group id="voiceover"></sc-audio-group>`;
     // No members, so the group resolves to nothing; its element must not pass
     // the existence check as if it were a clip the analysis could read.
     expect(resolveCarveSourceIds(d, ["voiceover"])).toEqual([]);
@@ -270,7 +270,7 @@ describe("resolveCarveSourceIds — empty group", () => {
 
 describe("ensureAudioGroupInertStyle", () => {
   it("takes the group element out of layout", () => {
-    document.body.innerHTML = `<hf-audio-group id="voiceover"></hf-audio-group>`;
+    document.body.innerHTML = `<sc-audio-group id="voiceover"></sc-audio-group>`;
     const el = document.getElementById("voiceover") as HTMLElement;
     ensureAudioGroupInertStyle(document);
     expect(getComputedStyle(el).display).toBe("none");
@@ -287,7 +287,7 @@ describe("ensureAudioGroupInertStyle", () => {
       "beforeend",
       `<style id="author">#voiceover{display:flex}</style>`,
     );
-    document.body.innerHTML = `<hf-audio-group id="voiceover"></hf-audio-group>`;
+    document.body.innerHTML = `<sc-audio-group id="voiceover"></sc-audio-group>`;
     ensureAudioGroupInertStyle(document);
     expect(getComputedStyle(document.getElementById("voiceover") as HTMLElement).display).toBe(
       "none",
@@ -298,6 +298,6 @@ describe("ensureAudioGroupInertStyle", () => {
   it("injects once, however many times it is called", () => {
     ensureAudioGroupInertStyle(document);
     ensureAudioGroupInertStyle(document);
-    expect(document.querySelectorAll("#__hf-audio-group-inert")).toHaveLength(1);
+    expect(document.querySelectorAll("#__sc-audio-group-inert")).toHaveLength(1);
   });
 });

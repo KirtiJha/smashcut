@@ -25,11 +25,11 @@
         background: var(--bg, #f7f7f8);
         font-family: var(--font-body, Inter, system-ui, sans-serif);
       }
-      .hf-advanced-arc-motion-path {
+      .sc-advanced-arc-motion-path {
         color: var(--fg, #111827);
         font-family: var(--font-body, Inter, system-ui, sans-serif);
       }
-      .hf-advanced-arc-motion-path {
+      .sc-advanced-arc-motion-path {
         position: relative;
         width: 760px;
         height: 430px;
@@ -44,20 +44,20 @@
         box-shadow: 0 28px 80px rgba(15, 23, 42, 0.18);
         transform: scale(0.84);
       }
-      .hf-advanced-arc-motion-path svg {
+      .sc-advanced-arc-motion-path svg {
         position: absolute;
         inset: 0;
         width: 100%;
         height: 100%;
         overflow: visible;
       }
-      .hf-advanced-arc-motion-path .path {
+      .sc-advanced-arc-motion-path .path {
         fill: none;
         stroke: color-mix(in srgb, var(--fg, #111827) 18%, transparent);
         stroke-width: 3;
         stroke-dasharray: 10 12;
       }
-      .hf-advanced-arc-motion-path .core {
+      .sc-advanced-arc-motion-path .core {
         position: absolute;
         left: 50%;
         top: 50%;
@@ -75,7 +75,7 @@
         letter-spacing: -0.04em;
         box-shadow: 0 22px 54px rgba(15, 23, 42, 0.25);
       }
-      .hf-advanced-arc-motion-path .chip {
+      .sc-advanced-arc-motion-path .chip {
         position: absolute;
         left: 0;
         top: 0;
@@ -91,7 +91,7 @@
         font-weight: 800;
         transform-origin: 50% 50%;
       }
-      .hf-advanced-arc-motion-path .dot {
+      .sc-advanced-arc-motion-path .dot {
         width: 10px;
         height: 10px;
         border-radius: 999px;
@@ -108,7 +108,7 @@
       data-height="1080"
       data-duration="5"
     >
-      <div class="hf-advanced-arc-motion-path">
+      <div class="sc-advanced-arc-motion-path">
         <svg viewBox="0 0 760 430" aria-hidden="true">
           <path
             id="arc-motion-path-path-a"
@@ -127,7 +127,7 @@
       const startTime = 0.5;
       if (window.MotionPathPlugin) gsap.registerPlugin(MotionPathPlugin);
       tl.to(
-        ".hf-advanced-arc-motion-path .chip-a",
+        ".sc-advanced-arc-motion-path .chip-a",
         {
           motionPath: {
             path: "#arc-motion-path-path-a",
@@ -141,7 +141,7 @@
         startTime,
       );
       tl.to(
-        ".hf-advanced-arc-motion-path .chip-b",
+        ".sc-advanced-arc-motion-path .chip-b",
         {
           motionPath: {
             path: "#arc-motion-path-path-b",

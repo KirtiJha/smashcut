@@ -1,22 +1,22 @@
 ---
 title: "Share feedback"
-description: "Report a problem or tell the HyperFrames team what would make the product better."
+description: "Report a problem or tell the SmashCut team what would make the product better."
 ---
 
 Useful feedback explains the outcome you wanted and what stopped you from reaching it.
 
-## Talk with the HyperFrames team
+## Talk with the SmashCut team
 
-Building something with HyperFrames? We would love to understand what you are creating, where you got stuck, and what feels harder than it should.
+Building something with SmashCut? We would love to understand what you are creating, where you got stuck, and what feels harder than it should.
 
-[Book a casual 30-minute conversation with the HyperFrames team](https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ2cSpKoDgmcmRrgekrnrgqmvPT8W6F2Zg6e7MY7IJqaZKwpn_I0NdTHkN390iguMepE_NVg8ezb?gv=true). No preparation is required, and this is product research—not a sales call.
+[Book a casual 30-minute conversation with the SmashCut team](https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ2cSpKoDgmcmRrgekrnrgqmvPT8W6F2Zg6e7MY7IJqaZKwpn_I0NdTHkN390iguMepE_NVg8ezb?gv=true). No preparation is required, and this is product research—not a sales call.
 
 ## Send feedback from the command line
 
-From a HyperFrames project, run:
+From a SmashCut project, run:
 
 ```bash
-npx hyperframes feedback --rating 7 --comment "The render finished, but the captions were missing."
+npx smashcut feedback --rating 7 --comment "The render finished, but the captions were missing."
 ```
 
 The rating is from 0 to 10. The comment is optional, but a specific example is usually more useful than a score alone.
@@ -26,7 +26,7 @@ The rating is from 0 to 10. The comment is optional, but a specific example is u
 Use `--file-issue` when the project can be shared publicly:
 
 ```bash
-npx hyperframes feedback \
+npx smashcut feedback \
   --rating 3 \
   --comment "The timeline freezes when this GSAP scene is opened." \
   --file-issue
@@ -39,7 +39,7 @@ npx hyperframes feedback \
   that folder with `--dir`. Never publish private media, customer data, credentials, or secrets.
 </Warning>
 
-HyperFrames then opens a prepared GitHub issue in your browser. Review it before submitting; the issue is not posted automatically.
+SmashCut then opens a prepared GitHub issue in your browser. Review it before submitting; the issue is not posted automatically.
 
 You can also [open a GitHub issue directly](https://github.com/heygen-com/hyperframes/issues).
 
@@ -60,14 +60,14 @@ Do not include API keys, access tokens, credentials, private media, or customer 
 
 ## About feedback data
 
-HyperFrames may occasionally show a short rating prompt after a render or during a Studio session. You can ignore or dismiss it.
+SmashCut may occasionally show a short rating prompt after a render or during a Studio session. You can ignore or dismiss it.
 
 Feedback can include the rating, an optional comment, and basic environment information used to understand the problem. It does not include your composition HTML, video files, project names, file paths, or environment-variable values.
 
 To turn off CLI telemetry:
 
 ```bash
-npx hyperframes telemetry disable
+npx smashcut telemetry disable
 ```
 
 That also stops the feedback prompt and takes the install out of any

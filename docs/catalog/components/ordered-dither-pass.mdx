@@ -16,7 +16,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 ```html ordered-dither-pass.html
 <!doctype html>
 <!--
-  ordered-dither-pass: HyperFrames video primitive (Wave M experiment,
+  ordered-dither-pass: SmashCut video primitive (Wave M experiment,
   texture / transitions)
 
   Bayer-matrix ordered dithering quantizes a slotted scene. The source is
@@ -150,8 +150,8 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
             var stage = root.querySelector(".odp-stage");
             var canvas = root.querySelector(".odp-canvas");
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             function num(value, fallback, min, max) {
@@ -531,7 +531,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 
 ## Install
 
-<InstallCommand command="npx hyperframes add ordered-dither-pass" item="ordered-dither-pass" />
+<InstallCommand command="npx smashcut add ordered-dither-pass" item="ordered-dither-pass" />
 
 That writes one file: `compositions/components/ordered-dither-pass.html`.
 
@@ -573,7 +573,7 @@ defaults, so this behaves exactly like the preview above until you change one:
 ```html
 <!doctype html>
 <!--
-  ordered-dither-pass: HyperFrames video primitive (Wave M experiment,
+  ordered-dither-pass: SmashCut video primitive (Wave M experiment,
   texture / transitions)
 
   Bayer-matrix ordered dithering quantizes a slotted scene. The source is
@@ -707,8 +707,8 @@ defaults, so this behaves exactly like the preview above until you change one:
             var stage = root.querySelector(".odp-stage");
             var canvas = root.querySelector(".odp-canvas");
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             function num(value, fallback, min, max) {

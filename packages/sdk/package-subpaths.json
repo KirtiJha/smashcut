@@ -1,5 +1,5 @@
 {
-  "package": "@hyperframes/sdk",
+  "package": "@smashcut/sdk",
   "subpaths": {
     ".": {
       "source": "./src/index.ts",

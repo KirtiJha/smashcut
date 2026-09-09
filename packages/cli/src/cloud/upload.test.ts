@@ -1,14 +1,14 @@
 import { describe, it, expect, vi } from "vitest";
 import { createHash } from "node:crypto";
-import { HyperframesApiError } from "./_gen/client.js";
-import type { HyperframesCloudClient } from "./_gen/client.js";
+import { SmashcutApiError } from "./_gen/client.js";
+import type { SmashcutCloudClient } from "./_gen/client.js";
 import { uploadZipViaDirectUpload } from "./upload.js";
 
 function sha256Hex(bytes: Uint8Array): string {
   return createHash("sha256").update(bytes).digest("hex");
 }
 
-function makeClient(overrides: Partial<HyperframesCloudClient> = {}): HyperframesCloudClient {
+function makeClient(overrides: Partial<SmashcutCloudClient> = {}): SmashcutCloudClient {
   return {
     createAssetUpload: vi.fn(async () => ({
       asset_id: "asset_xyz",
@@ -26,7 +26,7 @@ function makeClient(overrides: Partial<HyperframesCloudClient> = {}): Hyperframe
       status: "processing" as const,
     })),
     ...overrides,
-  } as unknown as HyperframesCloudClient;
+  } as unknown as SmashcutCloudClient;
 }
 
 function makeFetchOk(): typeof fetch {
@@ -35,7 +35,7 @@ function makeFetchOk(): typeof fetch {
 
 describe("uploadZipViaDirectUpload", () => {
   it("sends the correct filename, content_type, size_bytes, and SHA256 to createAssetUpload", async () => {
-    const bytes = new TextEncoder().encode("hello-hyperframes-zip");
+    const bytes = new TextEncoder().encode("hello-smashcut-zip");
     const expectedSha = sha256Hex(bytes);
     const client = makeClient();
     const fetchImpl = makeFetchOk();
@@ -67,7 +67,7 @@ describe("uploadZipViaDirectUpload", () => {
         expires_in_seconds: 3600,
         max_bytes: 200 * 1024 * 1024,
         status: "pending_upload" as const,
-      })) as HyperframesCloudClient["createAssetUpload"],
+      })) as SmashcutCloudClient["createAssetUpload"],
     });
     const fetchImpl = makeFetchOk();
 
@@ -131,7 +131,7 @@ describe("uploadZipViaDirectUpload", () => {
     const completeAssetUpload = vi.fn(async () => {
       completeCalls++;
       if (completeCalls < 3) {
-        throw new HyperframesApiError({
+        throw new SmashcutApiError({
           status: 409,
           message: "Uploaded object not found yet. Retry after upload PUT returns 200.",
           code: "conflict",
@@ -147,7 +147,7 @@ describe("uploadZipViaDirectUpload", () => {
     });
     const client = makeClient({
       completeAssetUpload:
-        completeAssetUpload as unknown as HyperframesCloudClient["completeAssetUpload"],
+        completeAssetUpload as unknown as SmashcutCloudClient["completeAssetUpload"],
     });
 
     const result = await uploadZipViaDirectUpload({
@@ -165,7 +165,7 @@ describe("uploadZipViaDirectUpload", () => {
     let completeCalls = 0;
     const completeAssetUpload = vi.fn(async () => {
       completeCalls++;
-      throw new HyperframesApiError({
+      throw new SmashcutApiError({
         status: 400,
         message: "invalid checksum",
         code: "invalid_parameter",
@@ -173,7 +173,7 @@ describe("uploadZipViaDirectUpload", () => {
     });
     const client = makeClient({
       completeAssetUpload:
-        completeAssetUpload as unknown as HyperframesCloudClient["completeAssetUpload"],
+        completeAssetUpload as unknown as SmashcutCloudClient["completeAssetUpload"],
     });
 
     await expect(

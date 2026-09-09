@@ -62,37 +62,37 @@ describe("upgradeProjectPins", () => {
   const dirs: string[] = [];
   afterEach(() => dirs.forEach((d) => rmSync(d, { recursive: true, force: true })));
   function project(scripts: Record<string, string>): string {
-    const d = mkdtempSync(join(tmpdir(), "hf-proj-"));
+    const d = mkdtempSync(join(tmpdir(), "sc-proj-"));
     dirs.push(d);
     writeFileSync(join(d, "package.json"), JSON.stringify({ name: "x", scripts }, null, 2));
     return d;
   }
 
   it("rewrites pinned scripts to latest and reports the delta", async () => {
-    const d = project({ render: "npx --yes hyperframes@0.7.48 render" });
+    const d = project({ render: "npx --yes smashcut@0.7.48 render" });
     const r = await upgradeProjectPins(d, { json: false, check: false });
     expect(r.changed).toBe(true);
     expect(r.from).toEqual(["0.7.48"]);
     expect(r.to).toBe("0.7.55");
     const pkg = JSON.parse(readFileSync(join(d, "package.json"), "utf-8"));
-    expect(pkg.scripts.render).toBe("npx --yes hyperframes@0.7.55 render");
+    expect(pkg.scripts.render).toBe("npx --yes smashcut@0.7.55 render");
   });
 
   it("rewrites project-root shell wrapper pins alongside package scripts", async () => {
-    const d = project({ render: "npx --yes hyperframes@0.7.48 render" });
-    const fullCpu = join(d, "hyperframes-full-cpu.sh");
+    const d = project({ render: "npx --yes smashcut@0.7.48 render" });
+    const fullCpu = join(d, "smashcut-full-cpu.sh");
     const publish = join(d, "publish-wrapper.sh");
-    writeFileSync(fullCpu, "npx --yes hyperframes@0.7.48 render --workers 2\n");
-    writeFileSync(publish, "./publish.sh 0.7.48 hyperframes@0.7.48\n");
+    writeFileSync(fullCpu, "npx --yes smashcut@0.7.48 render --workers 2\n");
+    writeFileSync(publish, "./publish.sh 0.7.48 smashcut@0.7.48\n");
 
     await upgradeProjectPins(d, { json: false, check: false });
 
-    expect(readFileSync(fullCpu, "utf8")).toContain("hyperframes@0.7.55");
-    expect(readFileSync(publish, "utf8")).toContain("hyperframes@0.7.55");
+    expect(readFileSync(fullCpu, "utf8")).toContain("smashcut@0.7.55");
+    expect(readFileSync(publish, "utf8")).toContain("smashcut@0.7.55");
   });
 
   it("--check reports without writing", async () => {
-    const d = project({ render: "npx --yes hyperframes@0.7.48 render" });
+    const d = project({ render: "npx --yes smashcut@0.7.48 render" });
     const before = readFileSync(join(d, "package.json"), "utf-8");
     const r = await upgradeProjectPins(d, { json: false, check: true });
     expect(r.changed).toBe(true);

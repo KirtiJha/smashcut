@@ -16,7 +16,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 ```html parallax-device-dive.html
 <!doctype html>
 <!--
-  parallax-device-dive: HyperFrames video primitive (camera / device / transition)
+  parallax-device-dive: SmashCut video primitive (camera / device / transition)
 
   Concept: a canonical phone rises into view, then the camera pushes through
   its screen. The app header, hero card, and supporting cards separate at
@@ -384,8 +384,8 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
             var stats = root.querySelector(".pdd-stats");
             var title = root.querySelector(".pdd-title");
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             var accent = vars.accent;
@@ -471,7 +471,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 
 ## Install
 
-<InstallCommand command="npx hyperframes add parallax-device-dive" item="parallax-device-dive" />
+<InstallCommand command="npx smashcut add parallax-device-dive" item="parallax-device-dive" />
 
 That writes one file: `compositions/components/parallax-device-dive.html`.
 
@@ -510,7 +510,7 @@ defaults, so this behaves exactly like the preview above until you change one:
 ```html
 <!doctype html>
 <!--
-  parallax-device-dive: HyperFrames video primitive (camera / device / transition)
+  parallax-device-dive: SmashCut video primitive (camera / device / transition)
 
   Concept: a canonical phone rises into view, then the camera pushes through
   its screen. The app header, hero card, and supporting cards separate at
@@ -878,8 +878,8 @@ defaults, so this behaves exactly like the preview above until you change one:
             var stats = root.querySelector(".pdd-stats");
             var title = root.querySelector(".pdd-title");
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             var accent = vars.accent;

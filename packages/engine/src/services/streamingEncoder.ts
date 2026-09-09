@@ -36,7 +36,7 @@ import { getFfmpegBinary } from "../utils/ffmpegBinaries.js";
 import { getHdrEncoderColorParams } from "../utils/hdr.js";
 import { withEvenDimensionPad } from "../utils/evenDimensions.js";
 import { DEFAULT_CONFIG, type EngineConfig } from "../config.js";
-import { fpsToFfmpegArg, fpsToNumber, type Fps } from "@hyperframes/core";
+import { fpsToFfmpegArg, fpsToNumber, type Fps } from "@smashcut/core";
 import { appendVp9CpuUsedArg } from "./vp9Options.js";
 import { appendRenderProvenanceArgs } from "../utils/renderProvenance.js";
 
@@ -138,7 +138,7 @@ export function createFrameReorderBuffer(startFrame: number, endFrame: number): 
 // ---------------------------------------------------------------------------
 
 export interface StreamingEncoderOptions {
-  /** Frame rate as an exact rational; see `Fps` in @hyperframes/core. */
+  /** Frame rate as an exact rational; see `Fps` in @smashcut/core. */
   fps: Fps;
   width: number;
   height: number;

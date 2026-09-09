@@ -7,9 +7,9 @@
 // ---------------------------------------------------------------------------
 
 import { freemem } from "node:os";
-import type { Fps } from "@hyperframes/core";
-import { fpsToNumber } from "@hyperframes/core";
-import type { RenderJob, RenderPerfSummary } from "@hyperframes/producer";
+import type { Fps } from "@smashcut/core";
+import { fpsToNumber } from "@smashcut/core";
+import type { RenderJob, RenderPerfSummary } from "@smashcut/producer";
 import { trackRenderComplete, trackRenderError } from "../telemetry/events.js";
 import {
   renderJobObservabilityTelemetryPayload,

@@ -84,7 +84,7 @@ function makeSource(contents: string): {
   readonly digest: string;
   readonly sizeBytes: number;
 } {
-  const root = mkdtempSync(join(tmpdir(), "hf-s3-plan-v2-publisher-"));
+  const root = mkdtempSync(join(tmpdir(), "sc-s3-plan-v2-publisher-"));
   roots.push(root);
   const path = join(root, "artifact.bin");
   writeFileSync(path, contents);

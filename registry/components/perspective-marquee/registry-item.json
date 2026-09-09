@@ -1,7 +1,7 @@
 {
   "$schema": "https://hyperframes.heygen.com/schema/registry-item.json",
   "name": "perspective-marquee",
-  "type": "hyperframes:component",
+  "type": "smashcut:component",
   "title": "Perspective Marquee",
   "description": "A 3D tilted marquee with depth feel as items roll toward the horizon.",
   "tags": ["motion-primitive", "typography"],
@@ -9,7 +9,7 @@
     {
       "path": "perspective-marquee.html",
       "target": "compositions/components/perspective-marquee.html",
-      "type": "hyperframes:snippet"
+      "type": "smashcut:snippet"
     }
   ],
   "variables": [
@@ -62,6 +62,6 @@
     }
   ],
   "preview": {
-    "poster": "https://static.heygen.ai/hyperframes-oss/docs/images/catalog/components/perspective-marquee.png"
+    "poster": "https://static.heygen.ai/smashcut-oss/docs/images/catalog/components/perspective-marquee.png"
   }
 }

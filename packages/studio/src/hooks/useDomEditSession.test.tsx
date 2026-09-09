@@ -4,7 +4,7 @@ import { createRoot } from "react-dom/client";
 import { describe, expect, it, vi } from "vitest";
 import { shouldUseSdkCutover } from "../utils/sdkCutover";
 import type { PatchOperation } from "../utils/sourcePatcher";
-import type { Composition } from "@hyperframes/sdk";
+import type { Composition } from "@smashcut/sdk";
 import type { DomEditSelection } from "../components/editor/domEditingTypes";
 import type { UseDomEditSessionParams } from "./useDomEditSession";
 
@@ -22,11 +22,11 @@ const attrOp = (property: string, value: string): PatchOperation => ({
 
 describe("shouldUseSdkCutover", () => {
   it("returns false when flag is disabled", () => {
-    expect(shouldUseSdkCutover(false, true, "hf-abc", [styleOp("color", "red")])).toBe(false);
+    expect(shouldUseSdkCutover(false, true, "sc-abc", [styleOp("color", "red")])).toBe(false);
   });
 
   it("returns false when no SDK session", () => {
-    expect(shouldUseSdkCutover(true, false, "hf-abc", [styleOp("color", "red")])).toBe(false);
+    expect(shouldUseSdkCutover(true, false, "sc-abc", [styleOp("color", "red")])).toBe(false);
   });
 
   it("returns false when selection has no hfId", () => {
@@ -35,13 +35,13 @@ describe("shouldUseSdkCutover", () => {
   });
 
   it("returns false when ops array is empty", () => {
-    expect(shouldUseSdkCutover(true, true, "hf-abc", [])).toBe(false);
+    expect(shouldUseSdkCutover(true, true, "sc-abc", [])).toBe(false);
   });
 
   it("returns true when all conditions met with supported op types", () => {
-    expect(shouldUseSdkCutover(true, true, "hf-abc", [styleOp("color", "red")])).toBe(true);
+    expect(shouldUseSdkCutover(true, true, "sc-abc", [styleOp("color", "red")])).toBe(true);
     expect(
-      shouldUseSdkCutover(true, true, "hf-abc", [styleOp("color", "red"), attrOp("data-x", "1")]),
+      shouldUseSdkCutover(true, true, "sc-abc", [styleOp("color", "red"), attrOp("data-x", "1")]),
     ).toBe(true);
   });
 });
@@ -283,10 +283,10 @@ describe("onReorderShadow source filter", () => {
     });
     try {
       expect(capturedOnReorderShadow.fn).toBeTypeOf("function");
-      capturedOnReorderShadow.fn?.(["hf-target"]);
+      capturedOnReorderShadow.fn?.(["sc-target"]);
       expect(recordResolverParity).toHaveBeenCalledWith(
         sdkSession,
-        "hf-target",
+        "sc-target",
         "reorderElements",
         expect.any(Function),
       );

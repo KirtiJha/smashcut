@@ -103,13 +103,13 @@ describe("inlineSubCompositions – #ID selector scoping divergence", () => {
     expect(host.getAttribute("data-composition-id")).toBe("intro");
 
     // CSS was scoped: #intro selectors should be rewritten to use
-    // data-hf-authored-id attribute selector so they still resolve.
+    // data-sc-authored-id attribute selector so they still resolve.
     const scopedCss = result.styles.join("\n");
-    expect(scopedCss).toContain('[data-hf-authored-id="intro"]');
+    expect(scopedCss).toContain('[data-sc-authored-id="intro"]');
     expect(scopedCss).not.toContain("#intro");
   });
 
-  it("producer path: scoped CSS rewrites #id selectors to [data-hf-authored-id] attribute", () => {
+  it("producer path: scoped CSS rewrites #id selectors to [data-sc-authored-id] attribute", () => {
     const document = makeHostDocument("intro");
     const host = document.querySelector('[data-composition-src="intro.html"]')!;
 
@@ -118,11 +118,11 @@ describe("inlineSubCompositions – #ID selector scoping divergence", () => {
       parseHtml: (html) => parseHTML(html).document,
     });
 
-    // The CSS scoper rewrites `#intro` to `[data-hf-authored-id="intro"]`
+    // The CSS scoper rewrites `#intro` to `[data-sc-authored-id="intro"]`
     // so that the selector resolves against the flattened structure.
     const scopedCss = result.styles.join("\n");
-    expect(scopedCss).toContain('[data-hf-authored-id="intro"]');
-    expect(scopedCss).toContain('[data-hf-authored-id="intro"] .title');
+    expect(scopedCss).toContain('[data-sc-authored-id="intro"]');
+    expect(scopedCss).toContain('[data-sc-authored-id="intro"] .title');
   });
 
   it("producer path: scoped scripts rewrite #intro selectors for GSAP targets", () => {
@@ -136,9 +136,9 @@ describe("inlineSubCompositions – #ID selector scoping divergence", () => {
 
     // The wrapped script should contain the authored root id normalization
     // logic so that runtime querySelector('#intro .title') maps to the
-    // data-hf-authored-id attribute selector.
+    // data-sc-authored-id attribute selector.
     const wrappedScript = result.scripts.join("\n");
-    expect(wrappedScript).toContain("__hfAuthoredRootId");
+    expect(wrappedScript).toContain("__scAuthoredRootId");
     expect(wrappedScript).toContain('"intro"');
   });
 
@@ -164,8 +164,8 @@ describe("inlineSubCompositions – #ID selector scoping divergence", () => {
     expect(host.querySelector('[data-composition-id="captions"]')).not.toBeNull();
     expect(result.styles.join("\n")).toContain('[data-composition-id="captions-comp"]');
     const wrappedScript = result.scripts.join("\n");
-    expect(wrappedScript).toContain('var __hfCompId = "captions"');
-    expect(wrappedScript).toContain('var __hfTimelineCompId = "captions-comp"');
+    expect(wrappedScript).toContain('var __scCompId = "captions"');
+    expect(wrappedScript).toContain('var __scTimelineCompId = "captions-comp"');
   });
 
   it("bundler path (with flattenInnerRoot): preserves inner root as a child element", () => {
@@ -173,12 +173,12 @@ describe("inlineSubCompositions – #ID selector scoping divergence", () => {
     const host = document.querySelector('[data-composition-src="intro.html"]')!;
 
     // Simulate the bundler's flattenInnerRoot: clone the element, add
-    // data-hf-authored-id, strip timing attrs (simplified here).
+    // data-sc-authored-id, strip timing attrs (simplified here).
     function flattenInnerRoot(innerRoot: Element): Element {
       const clone = innerRoot.cloneNode(true) as Element;
       const authoredId = clone.getAttribute("id");
       if (authoredId) {
-        clone.setAttribute("data-hf-authored-id", authoredId);
+        clone.setAttribute("data-sc-authored-id", authoredId);
         clone.removeAttribute("id");
       }
       clone.removeAttribute("data-start");
@@ -193,13 +193,13 @@ describe("inlineSubCompositions – #ID selector scoping divergence", () => {
     });
 
     // With flattenInnerRoot, the inner root is preserved as a child of the
-    // host via outerHTML. The data-hf-authored-id attribute is present.
-    const authoredRoot = host.querySelector('[data-hf-authored-id="intro"]');
+    // host via outerHTML. The data-sc-authored-id attribute is present.
+    const authoredRoot = host.querySelector('[data-sc-authored-id="intro"]');
     expect(authoredRoot).not.toBeNull();
 
     // CSS is still rewritten to use the attribute selector.
     const scopedCss = result.styles.join("\n");
-    expect(scopedCss).toContain('[data-hf-authored-id="intro"]');
+    expect(scopedCss).toContain('[data-sc-authored-id="intro"]');
   });
 
   it("with flattenInnerRoot: restores data-composition-id on the wrapper for an anonymous host", () => {
@@ -231,7 +231,7 @@ describe("inlineSubCompositions – #ID selector scoping divergence", () => {
       clone.removeAttribute("data-composition-id");
       clone.removeAttribute("data-start");
       clone.removeAttribute("data-duration");
-      clone.setAttribute("data-hf-inner-root", "true");
+      clone.setAttribute("data-sc-inner-root", "true");
       return clone;
     }
 
@@ -241,7 +241,7 @@ describe("inlineSubCompositions – #ID selector scoping divergence", () => {
       flattenInnerRoot,
     });
 
-    const wrapper = host.querySelector("[data-hf-inner-root]");
+    const wrapper = host.querySelector("[data-sc-inner-root]");
     expect(wrapper?.getAttribute("data-composition-id")).toBe("scoped-text");
 
     const scopedCss = result.styles.join("\n");
@@ -388,7 +388,7 @@ describe("inlineSubCompositions – #ID selector scoping divergence", () => {
     expect(host.hasAttribute("data-timeline-locked")).toBe(true);
   });
 
-  it("producer path propagates data-hf-authored-id to host when inner root has id", () => {
+  it("producer path propagates data-sc-authored-id to host when inner root has id", () => {
     const document = makeHostDocument("intro");
     const host = document.querySelector('[data-composition-src="intro.html"]')!;
 
@@ -398,9 +398,9 @@ describe("inlineSubCompositions – #ID selector scoping divergence", () => {
     });
 
     // The inner root's id="intro" is stripped (innerHTML), but the producer
-    // now propagates it as data-hf-authored-id on the host element so that
-    // rewritten #ID selectors ([data-hf-authored-id="intro"]) resolve.
-    expect(host.getAttribute("data-hf-authored-id")).toBe("intro");
+    // now propagates it as data-sc-authored-id on the host element so that
+    // rewritten #ID selectors ([data-sc-authored-id="intro"]) resolve.
+    expect(host.getAttribute("data-sc-authored-id")).toBe("intro");
 
     // The original #intro element is still gone — innerHTML stripped it.
     const introById = host.querySelector("#intro");
@@ -419,24 +419,24 @@ describe("inlineSubCompositions – #ID selector scoping divergence", () => {
       compoundAuthoredRoot: true,
     });
 
-    // After inlining, the host has both data-composition-id and data-hf-authored-id.
+    // After inlining, the host has both data-composition-id and data-sc-authored-id.
     // CSS selectors targeting the root must be compound (no space) so they match
     // when both attributes are on the same element.
     expect(host.getAttribute("data-composition-id")).toBe("intro");
-    expect(host.getAttribute("data-hf-authored-id")).toBe("intro");
+    expect(host.getAttribute("data-sc-authored-id")).toBe("intro");
 
     const scopedCss = result.styles.join("\n");
 
     // Root-only selector: must be compound
-    expect(scopedCss).toMatch(/\[data-composition-id="intro"\]\[data-hf-authored-id="intro"\]/);
+    expect(scopedCss).toMatch(/\[data-composition-id="intro"\]\[data-sc-authored-id="intro"\]/);
     // Must NOT have a descendant combinator between the two attribute selectors
     expect(scopedCss).not.toMatch(
-      /\[data-composition-id="intro"\]\s+\[data-hf-authored-id="intro"\]\s*\{/,
+      /\[data-composition-id="intro"\]\s+\[data-sc-authored-id="intro"\]\s*\{/,
     );
 
     // Descendant selector: compound root + space + child
     expect(scopedCss).toMatch(
-      /\[data-composition-id="intro"\]\[data-hf-authored-id="intro"\]\s+\.title/,
+      /\[data-composition-id="intro"\]\[data-sc-authored-id="intro"\]\s+\.title/,
     );
   });
 });

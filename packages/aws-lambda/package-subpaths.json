@@ -1,5 +1,5 @@
 {
-  "package": "@hyperframes/aws-lambda",
+  "package": "@smashcut/aws-lambda",
   "subpaths": {
     ".": {
       "source": "./src/index.ts",

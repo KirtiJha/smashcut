@@ -89,7 +89,7 @@ describe("skillsUpdateCheck", () => {
       skillsRemovedCount: 2,
     });
     // 1 outdated + 1 missing + 2 removed = 4, not the pre-fix "2".
-    expect(text).toContain("4 HyperFrames skills out of date or missing");
+    expect(text).toContain("4 SmashCut skills out of date or missing");
   });
 
   it("prints nothing when outdated, missing, and removed are all zero", async () => {
@@ -107,7 +107,7 @@ describe("skillsUpdateCheck", () => {
       skillsMissingCount: 0,
       skillsRemovedCount: 1,
     });
-    expect(text).toContain("1 HyperFrames skill out of date or missing");
+    expect(text).toContain("1 SmashCut skill out of date or missing");
   });
 
   // Regression: the stale-24h-cache bug. A successful `skills update`/install

@@ -3,7 +3,7 @@ import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-// Point the module's ~/.hyperframes config dir at a throwaway home so tests use real fs
+// Point the module's ~/.smashcut config dir at a throwaway home so tests use real fs
 // without touching the developer's actual home directory.
 const osState = vi.hoisted(() => ({ home: "" }));
 vi.mock("node:os", async (importOriginal) => {
@@ -21,8 +21,8 @@ describe("projectLink", () => {
   let writeTeamProject: typeof import("./projectLink.js").writeTeamProject;
 
   beforeEach(async () => {
-    osState.home = mkdtempSync(join(tmpdir(), "hf-home-"));
-    projectsPath = join(osState.home, ".hyperframes", "projects.json");
+    osState.home = mkdtempSync(join(tmpdir(), "sc-home-"));
+    projectsPath = join(osState.home, ".smashcut", "projects.json");
     projectDirs = [];
     vi.resetModules();
     ({ ensureProjectId, readProjectLink, writeProjectLink, readTeamProject, writeTeamProject } =
@@ -35,7 +35,7 @@ describe("projectLink", () => {
   });
 
   function makeProjectDir(): string {
-    const dir = mkdtempSync(join(tmpdir(), "hf-proj-"));
+    const dir = mkdtempSync(join(tmpdir(), "sc-proj-"));
     projectDirs.push(dir);
     return dir;
   }
@@ -51,7 +51,7 @@ describe("projectLink", () => {
 
   it("round-trips a project link", () => {
     const dir = makeProjectDir();
-    const link = { projectId: "hfp_123", url: "https://hyperframes.dev/p/hfp_123" };
+    const link = { projectId: "hfp_123", url: "https://smashcut.dev/p/hfp_123" };
 
     writeProjectLink(dir, link);
 
@@ -60,7 +60,7 @@ describe("projectLink", () => {
 
   it("persists only the project id and URL", () => {
     const dir = makeProjectDir();
-    const link = { projectId: "hfp_123", url: "https://hyperframes.dev/p/hfp_123", secret: "nope" };
+    const link = { projectId: "hfp_123", url: "https://smashcut.dev/p/hfp_123", secret: "nope" };
 
     writeProjectLink(dir, link);
 

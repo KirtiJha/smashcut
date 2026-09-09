@@ -1,5 +1,5 @@
 {
-  "name": "@hyperframes/parsers",
+  "name": "@smashcut/parsers",
   "version": "0.8.33",
   "repository": {
     "type": "git",
@@ -52,7 +52,7 @@
       "import": "./src/springEase.ts",
       "types": "./src/springEase.ts"
     },
-    "./hf-ids": {
+    "./sc-ids": {
       "bun": "./src/hfIds.ts",
       "node": "./dist/hfIds.js",
       "import": "./src/hfIds.ts",
@@ -141,7 +141,7 @@
         "import": "./dist/springEase.js",
         "types": "./dist/springEase.d.ts"
       },
-      "./hf-ids": {
+      "./sc-ids": {
         "import": "./dist/hfIds.js",
         "types": "./dist/hfIds.d.ts"
       },
@@ -201,7 +201,7 @@
     "recast": "^0.23.11"
   },
   "devDependencies": {
-    "@hyperframes/core": "workspace:*",
+    "@smashcut/core": "workspace:*",
     "@types/node": "^25.0.10",
     "tsup": "^8.0.0",
     "tsx": "^4.21.0",

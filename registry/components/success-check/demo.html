@@ -31,7 +31,7 @@
         min-height: 480px;
         padding: 56px;
       }
-      .hf-transition-success-check {
+      .sc-transition-success-check {
         display: grid;
         place-items: center;
         /* ponytail: sized up from 82px to fill ~55% of frame height at 1080p */
@@ -44,7 +44,7 @@
           0 24px 80px rgba(22, 163, 74, 0.18),
           0 4px 16px rgba(22, 163, 74, 0.1);
       }
-      .hf-transition-success-check svg {
+      .sc-transition-success-check svg {
         width: 220px;
         height: 220px;
         fill: none;
@@ -52,15 +52,15 @@
         stroke-width: 3.5;
         stroke-linecap: round;
         stroke-linejoin: round;
-        filter: blur(var(--hf-check-blur, 0px));
-        transform: rotate(var(--hf-check-rotate, 0deg)) scale(var(--hf-check-scale, 1));
+        filter: blur(var(--sc-check-blur, 0px));
+        transform: rotate(var(--sc-check-rotate, 0deg)) scale(var(--sc-check-scale, 1));
       }
-      .hf-transition-success-check circle {
+      .sc-transition-success-check circle {
         opacity: 0.28;
       }
-      .hf-transition-success-check path {
+      .sc-transition-success-check path {
         stroke-dasharray: 36;
-        stroke-dashoffset: var(--hf-check-dash, 0);
+        stroke-dashoffset: var(--sc-check-dash, 0);
       }
     </style>
   </head>
@@ -75,7 +75,7 @@
     >
       <div class="demo-frame">
         <div
-          class="hf-transition-success-check"
+          class="sc-transition-success-check"
           aria-label="Success"
           data-composition-variables='[
     { "id": "tint", "type": "enum", "role": "style", "label": "Tint", "description": "Colour pair, a pale halo behind a saturated mark. green and amber are literal state colours; blue and violet ride the composition theme tokens.", "default": "green", "options": [{ "value": "green", "label": "Green" }, { "value": "blue", "label": "Blue" }, { "value": "violet", "label": "Violet" }, { "value": "amber", "label": "Amber" }] },
@@ -95,8 +95,8 @@
           "use strict";
 
           var vars =
-            window.__hyperframes && window.__hyperframes.getVariables
-              ? window.__hyperframes.getVariables()
+            window.__smashcut && window.__smashcut.getVariables
+              ? window.__smashcut.getVariables()
               : {};
 
           // Unrecognised overrides return to their declared defaults.
@@ -128,14 +128,14 @@
           var ring = rings[pick(rings, vars.ring, "standard")];
           var spin = spins[pick(spins, vars.spin, "standard")];
 
-          var roots = document.querySelectorAll(".hf-transition-success-check");
+          var roots = document.querySelectorAll(".sc-transition-success-check");
           for (var i = 0; i < roots.length; i += 1) {
-            roots[i].style.setProperty("--hf-check-halo", tint.halo);
-            roots[i].style.setProperty("--hf-check-ink", tint.ink);
-            roots[i].style.setProperty("--hf-check-size", size.box);
-            roots[i].style.setProperty("--hf-check-mark-size", size.mark);
-            roots[i].style.setProperty("--hf-check-ring-opacity", ring);
-            roots[i].style.setProperty("--hf-check-spin", spin);
+            roots[i].style.setProperty("--sc-check-halo", tint.halo);
+            roots[i].style.setProperty("--sc-check-ink", tint.ink);
+            roots[i].style.setProperty("--sc-check-size", size.box);
+            roots[i].style.setProperty("--sc-check-mark-size", size.mark);
+            roots[i].style.setProperty("--sc-check-ring-opacity", ring);
+            roots[i].style.setProperty("--sc-check-spin", spin);
           }
         })();
       </script>
@@ -143,27 +143,27 @@
         const tl = gsap.timeline({ paused: true });
         const startTime = 0.5;
         tl.fromTo(
-          ".hf-transition-success-check svg",
+          ".sc-transition-success-check svg",
           {
             opacity: 0,
-            "--hf-check-scale": 0.72,
-            "--hf-check-rotate": "-18deg",
-            "--hf-check-blur": "7px",
+            "--sc-check-scale": 0.72,
+            "--sc-check-rotate": "-18deg",
+            "--sc-check-blur": "7px",
           },
           {
             opacity: 1,
-            "--hf-check-scale": 1,
-            "--hf-check-rotate": "0deg",
-            "--hf-check-blur": "0px",
+            "--sc-check-scale": 1,
+            "--sc-check-rotate": "0deg",
+            "--sc-check-blur": "0px",
             duration: 0.34,
             ease: "back.out(1.8)",
           },
           startTime,
         );
         tl.fromTo(
-          ".hf-transition-success-check path",
-          { "--hf-check-dash": 36 },
-          { "--hf-check-dash": 0, duration: 0.42, ease: "power2.out" },
+          ".sc-transition-success-check path",
+          { "--sc-check-dash": 36 },
+          { "--sc-check-dash": 0, duration: 0.42, ease: "power2.out" },
           startTime + 0.12,
         );
         tl.set({}, {}, 5);
@@ -172,33 +172,33 @@
       </script>
     </div>
     <style>
-      .hf-transition-success-check {
+      .sc-transition-success-check {
         display: grid;
         place-items: center;
-        width: var(--hf-check-size, 82px);
-        height: var(--hf-check-size, 82px);
+        width: var(--sc-check-size, 82px);
+        height: var(--sc-check-size, 82px);
         border-radius: 999px;
-        background: var(--hf-check-halo, #dcfce7);
-        color: var(--hf-check-ink, #16a34a);
+        background: var(--sc-check-halo, #dcfce7);
+        color: var(--sc-check-ink, #16a34a);
       }
-      .hf-transition-success-check svg {
-        width: var(--hf-check-mark-size, 64px);
-        height: var(--hf-check-mark-size, 64px);
+      .sc-transition-success-check svg {
+        width: var(--sc-check-mark-size, 64px);
+        height: var(--sc-check-mark-size, 64px);
         fill: none;
         stroke: currentColor;
         stroke-width: 5;
         stroke-linecap: round;
         stroke-linejoin: round;
-        filter: blur(var(--hf-check-blur, 0px));
-        transform: rotate(calc(var(--hf-check-rotate, 0deg) * var(--hf-check-spin, 1)))
-          scale(var(--hf-check-scale, 1));
+        filter: blur(var(--sc-check-blur, 0px));
+        transform: rotate(calc(var(--sc-check-rotate, 0deg) * var(--sc-check-spin, 1)))
+          scale(var(--sc-check-scale, 1));
       }
-      .hf-transition-success-check circle {
-        opacity: var(--hf-check-ring-opacity, 0.28);
+      .sc-transition-success-check circle {
+        opacity: var(--sc-check-ring-opacity, 0.28);
       }
-      .hf-transition-success-check path {
+      .sc-transition-success-check path {
         stroke-dasharray: 36;
-        stroke-dashoffset: var(--hf-check-dash, 0);
+        stroke-dashoffset: var(--sc-check-dash, 0);
       }
     </style>
   </body>

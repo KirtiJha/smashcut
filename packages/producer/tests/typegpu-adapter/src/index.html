@@ -114,7 +114,7 @@ fn hsv(h: f32, s: f32, v: f32) -> vec3f {
       }
 
       render(0);
-      window.addEventListener('hf-seek', function(e) {
+      window.addEventListener('sc-seek', function(e) {
         render(e.detail.time);
         e.detail.waitUntil(device.queue.onSubmittedWorkDone());
       });

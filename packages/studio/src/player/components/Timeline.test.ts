@@ -688,14 +688,14 @@ describe("Timeline provider boundary", () => {
     act(() => root.render(React.createElement(Timeline)));
     act(() => host.querySelector<HTMLButtonElement>('button[aria-label$=" lanes"]')?.click());
 
-    const before = [...host.querySelectorAll(".hf-automation-lane")];
+    const before = [...host.querySelectorAll(".sc-automation-lane")];
     expect(before).toHaveLength(2);
 
     act(() => usePlayerStore.setState({ selectedElementId: "narration-1" }));
 
     // Identity, not deep equality: a remount produces structurally identical
     // nodes, so only `toBe` can tell the two apart.
-    const after = [...host.querySelectorAll(".hf-automation-lane")];
+    const after = [...host.querySelectorAll(".sc-automation-lane")];
     expect(after).toHaveLength(before.length);
     after.forEach((node, index) => expect(node).toBe(before[index]));
     act(() => root.unmount());

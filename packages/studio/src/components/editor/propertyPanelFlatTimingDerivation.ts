@@ -1,4 +1,4 @@
-import type { GsapAnimation } from "@hyperframes/core/gsap-parser";
+import type { GsapAnimation } from "@smashcut/core/gsap-parser";
 import type { DomEditSelection } from "./domEditingTypes";
 
 /**
@@ -10,7 +10,7 @@ import type { DomEditSelection } from "./domEditingTypes";
  * different absolute time than the range Motion displays for the same
  * element (found by the Plan 3a+3b whole-plan coherence review).
  *
- * Precedence: an explicit `data-duration` (or `data-hf-authored-duration`)
+ * Precedence: an explicit `data-duration` (or `data-sc-authored-duration`)
  * wins outright. Only when neither is present do we infer the range from the
  * element's own GSAP tweens (earliest tween start → latest tween end).
  *
@@ -47,7 +47,7 @@ export function deriveElementTiming(
   const explicitStart = Number.parseFloat(element.dataAttributes.start ?? "0") || 0;
   const explicitDuration =
     Number.parseFloat(
-      element.dataAttributes.duration ?? element.dataAttributes["hf-authored-duration"] ?? "0",
+      element.dataAttributes.duration ?? element.dataAttributes["sc-authored-duration"] ?? "0",
     ) || 0;
 
   const derived = explicitDuration > 0 ? null : deriveTimingFromAnimations(animations);

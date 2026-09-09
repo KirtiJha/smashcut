@@ -53,9 +53,9 @@ describe("createStudioManualEditsRenderBodyScript", () => {
     let seekCalls = 0;
     (
       window as unknown as {
-        __hf: { seek: (time: number) => void };
+        __sc: { seek: (time: number) => void };
       }
-    ).__hf = {
+    ).__sc = {
       seek: () => {
         seekCalls += 1;
         card.style.removeProperty("translate");
@@ -102,35 +102,35 @@ describe("createStudioManualEditsRenderBodyScript", () => {
       }) as typeof globalThis.setInterval,
     });
 
-    expect(card.style.getPropertyValue("translate")).toContain("--hf-studio-offset-x");
+    expect(card.style.getPropertyValue("translate")).toContain("--sc-studio-offset-x");
     expect(card.style.getPropertyValue("width")).toBe("120px");
     expect(card.style.getPropertyValue("height")).toBe("64px");
-    expect(card.style.getPropertyValue("rotate")).toContain("--hf-studio-rotation");
+    expect(card.style.getPropertyValue("rotate")).toContain("--sc-studio-rotation");
     expect(card.style.getPropertyValue("transform-origin")).toBe("center center");
 
     (
       window as unknown as {
-        __hf: { seek: (time: number) => void };
+        __sc: { seek: (time: number) => void };
       }
-    ).__hf.seek(1);
+    ).__sc.seek(1);
 
     expect(seekCalls).toBe(1);
-    expect(card.style.getPropertyValue("translate")).toContain("--hf-studio-offset-x");
+    expect(card.style.getPropertyValue("translate")).toContain("--sc-studio-offset-x");
 
     (
       window as unknown as {
-        __hf: { seek: (time: number) => void };
+        __sc: { seek: (time: number) => void };
       }
-    ).__hf.seek = () => {
+    ).__sc.seek = () => {
       card.style.removeProperty("rotate");
     };
     intervalCallbacks.forEach((callback) => callback());
     (
       window as unknown as {
-        __hf: { seek: (time: number) => void };
+        __sc: { seek: (time: number) => void };
       }
-    ).__hf.seek(2);
-    expect(card.style.getPropertyValue("rotate")).toContain("--hf-studio-rotation");
+    ).__sc.seek(2);
+    expect(card.style.getPropertyValue("rotate")).toContain("--sc-studio-rotation");
 
     (
       window as unknown as {
@@ -147,7 +147,7 @@ describe("createStudioManualEditsRenderBodyScript", () => {
         __player: { renderSeek: (time: number) => void };
       }
     ).__player.renderSeek(3);
-    expect(card.style.getPropertyValue("rotate")).toContain("--hf-studio-rotation");
+    expect(card.style.getPropertyValue("rotate")).toContain("--sc-studio-rotation");
   });
 
   it("applies render edits to the matching source file target", () => {
@@ -187,7 +187,7 @@ describe("createStudioManualEditsRenderBodyScript", () => {
     runScript(window, script);
 
     expect(rootCard.style.getPropertyValue("rotate")).toBe("");
-    expect(nestedCard.style.getPropertyValue("rotate")).toContain("--hf-studio-rotation");
+    expect(nestedCard.style.getPropertyValue("rotate")).toContain("--sc-studio-rotation");
   });
 
   it("applies render edits inside composition-file hosts without composition ids", () => {
@@ -228,7 +228,7 @@ describe("createStudioManualEditsRenderBodyScript", () => {
     runScript(window, script);
 
     expect(rootCard.style.getPropertyValue("translate")).toBe("");
-    expect(nestedCard.style.getPropertyValue("translate")).toContain("--hf-studio-offset-x");
+    expect(nestedCard.style.getPropertyValue("translate")).toContain("--sc-studio-offset-x");
   });
 
   it("uses the active composition path as the unscoped document fallback", () => {
@@ -257,7 +257,7 @@ describe("createStudioManualEditsRenderBodyScript", () => {
 
     runScript(window, script);
 
-    expect(card.style.getPropertyValue("translate")).toContain("--hf-studio-offset-x");
+    expect(card.style.getPropertyValue("translate")).toContain("--sc-studio-offset-x");
   });
 
   it("preserves computed transform longhands as render edit bases", () => {
@@ -303,7 +303,7 @@ describe("createStudioManualEditsRenderBodyScript", () => {
     expect(card.style.getPropertyValue("translate")).toContain("calc(10px +");
     expect(card.style.getPropertyValue("translate")).toContain("calc(20px +");
     expect(card.style.getPropertyValue("rotate")).toContain("8deg");
-    expect(card.style.getPropertyValue("rotate")).toContain("--hf-studio-rotation");
+    expect(card.style.getPropertyValue("rotate")).toContain("--sc-studio-rotation");
     expect(card.style.getPropertyValue("transform-origin")).toBe("center center");
   });
 
@@ -311,8 +311,8 @@ describe("createStudioManualEditsRenderBodyScript", () => {
     const window = new Window();
     window.document.body.innerHTML = `
       <div id="card" style="
-        translate: var(--hf-studio-offset-x, 0px) var(--hf-studio-offset-y, 0px);
-        rotate: var(--hf-studio-rotation, 0deg);
+        translate: var(--sc-studio-offset-x, 0px) var(--sc-studio-offset-y, 0px);
+        rotate: var(--sc-studio-rotation, 0deg);
       "></div>
     `;
     const card = window.document.getElementById("card");
@@ -343,9 +343,9 @@ describe("createStudioManualEditsRenderBodyScript", () => {
     runScript(window, script);
 
     expect(card.style.getPropertyValue("translate")).toBe(
-      "var(--hf-studio-offset-x, 0px) var(--hf-studio-offset-y, 0px)",
+      "var(--sc-studio-offset-x, 0px) var(--sc-studio-offset-y, 0px)",
     );
-    expect(card.style.getPropertyValue("rotate")).toBe("var(--hf-studio-rotation, 0deg)");
+    expect(card.style.getPropertyValue("rotate")).toBe("var(--sc-studio-rotation, 0deg)");
   });
 
   it("exposes a render reapply hook for thumbnails after layout settles", () => {
@@ -376,11 +376,11 @@ describe("createStudioManualEditsRenderBodyScript", () => {
 
     (
       window as unknown as {
-        __hfStudioManualEditsApply?: () => number;
+        __scStudioManualEditsApply?: () => number;
       }
-    ).__hfStudioManualEditsApply?.();
+    ).__scStudioManualEditsApply?.();
 
-    expect(card.style.getPropertyValue("translate")).toContain("--hf-studio-offset-x");
+    expect(card.style.getPropertyValue("translate")).toContain("--sc-studio-offset-x");
   });
 });
 
@@ -421,8 +421,8 @@ describe("createStudioPositionSeekReapplyScript", () => {
     const window = new Window();
     window.document.body.innerHTML = `
       <div id="card"
-        data-hf-studio-box-size="true"
-        style="--hf-studio-width: 200px; --hf-studio-height: 100px; width: 200px; height: 100px">
+        data-sc-studio-box-size="true"
+        style="--sc-studio-width: 200px; --sc-studio-height: 100px; width: 200px; height: 100px">
       </div>
     `;
     const card = window.document.getElementById("card") as unknown as HTMLElement;
@@ -431,10 +431,10 @@ describe("createStudioPositionSeekReapplyScript", () => {
       card.style.removeProperty("width");
       card.style.removeProperty("height");
     };
-    (window as unknown as { __hf: Record<string, unknown> }).__hf = { seek: originalSeek };
+    (window as unknown as { __sc: Record<string, unknown> }).__sc = { seek: originalSeek };
 
     runPositionScript(window);
-    const wrappedSeek = (window as unknown as { __hf: { seek: (t: number) => void } }).__hf.seek;
+    const wrappedSeek = (window as unknown as { __sc: { seek: (t: number) => void } }).__sc.seek;
     wrappedSeek(1);
 
     expect(card.style.getPropertyValue("width")).toBe("200px");
@@ -445,9 +445,9 @@ describe("createStudioPositionSeekReapplyScript", () => {
     const window = new Window();
     window.document.body.innerHTML = `
       <div id="card"
-        data-hf-studio-path-offset="true"
-        data-hf-studio-original-translate=""
-        style="--hf-studio-offset-x: 50px; --hf-studio-offset-y: 30px; translate: var(--hf-studio-offset-x, 0px) var(--hf-studio-offset-y, 0px)">
+        data-sc-studio-path-offset="true"
+        data-sc-studio-original-translate=""
+        style="--sc-studio-offset-x: 50px; --sc-studio-offset-y: 30px; translate: var(--sc-studio-offset-x, 0px) var(--sc-studio-offset-y, 0px)">
       </div>
     `;
     const card = window.document.getElementById("card") as unknown as HTMLElement;
@@ -455,13 +455,13 @@ describe("createStudioPositionSeekReapplyScript", () => {
     const originalSeek = () => {
       card.style.setProperty("transform", "matrix(1, 0, 0, 1, 120, 60)");
     };
-    (window as unknown as { __hf: Record<string, unknown> }).__hf = { seek: originalSeek };
+    (window as unknown as { __sc: Record<string, unknown> }).__sc = { seek: originalSeek };
 
     runPositionScript(window);
-    const wrappedSeek = (window as unknown as { __hf: { seek: (t: number) => void } }).__hf.seek;
+    const wrappedSeek = (window as unknown as { __sc: { seek: (t: number) => void } }).__sc.seek;
     wrappedSeek(1);
 
-    expect(card.style.getPropertyValue("translate")).toContain("--hf-studio-offset-x");
+    expect(card.style.getPropertyValue("translate")).toContain("--sc-studio-offset-x");
     const transform = card.style.getPropertyValue("transform");
     if (transform && transform !== "none") {
       const m = new DOMMatrix(transform);
@@ -474,9 +474,9 @@ describe("createStudioPositionSeekReapplyScript", () => {
     const window = new Window();
     window.document.body.innerHTML = `
       <div id="card"
-        data-hf-studio-path-offset="true"
-        data-hf-studio-original-translate=""
-        style="--hf-studio-offset-x: 10px; --hf-studio-offset-y: 20px; translate: var(--hf-studio-offset-x, 0px) var(--hf-studio-offset-y, 0px)">
+        data-sc-studio-path-offset="true"
+        data-sc-studio-original-translate=""
+        style="--sc-studio-offset-x: 10px; --sc-studio-offset-y: 20px; translate: var(--sc-studio-offset-x, 0px) var(--sc-studio-offset-y, 0px)">
       </div>
     `;
     const card = window.document.getElementById("card") as unknown as HTMLElement;
@@ -484,10 +484,10 @@ describe("createStudioPositionSeekReapplyScript", () => {
     const originalSeek = () => {
       card.style.setProperty("transform", "matrix(0.5, 0, 0, 0.5, 80, 40)");
     };
-    (window as unknown as { __hf: Record<string, unknown> }).__hf = { seek: originalSeek };
+    (window as unknown as { __sc: Record<string, unknown> }).__sc = { seek: originalSeek };
 
     runPositionScript(window);
-    const wrappedSeek = (window as unknown as { __hf: { seek: (t: number) => void } }).__hf.seek;
+    const wrappedSeek = (window as unknown as { __sc: { seek: (t: number) => void } }).__sc.seek;
     wrappedSeek(1);
 
     const transform = card.style.getPropertyValue("transform");
@@ -500,9 +500,9 @@ describe("createStudioPositionSeekReapplyScript", () => {
     const window = new Window();
     window.document.body.innerHTML = `
       <div id="card"
-        data-hf-studio-path-offset="true"
-        data-hf-studio-original-translate=""
-        style="--hf-studio-offset-x: 10px; --hf-studio-offset-y: 20px; translate: var(--hf-studio-offset-x, 0px) var(--hf-studio-offset-y, 0px)">
+        data-sc-studio-path-offset="true"
+        data-sc-studio-original-translate=""
+        style="--sc-studio-offset-x: 10px; --sc-studio-offset-y: 20px; translate: var(--sc-studio-offset-x, 0px) var(--sc-studio-offset-y, 0px)">
       </div>
     `;
     const card = window.document.getElementById("card") as unknown as HTMLElement;
@@ -510,10 +510,10 @@ describe("createStudioPositionSeekReapplyScript", () => {
     const originalSeek = () => {
       card.style.setProperty("transform", "matrix(1, 0, 0, 1, 50, 25)");
     };
-    (window as unknown as { __hf: Record<string, unknown> }).__hf = { seek: originalSeek };
+    (window as unknown as { __sc: Record<string, unknown> }).__sc = { seek: originalSeek };
 
     runPositionScript(window);
-    const wrappedSeek = (window as unknown as { __hf: { seek: (t: number) => void } }).__hf.seek;
+    const wrappedSeek = (window as unknown as { __sc: { seek: (t: number) => void } }).__sc.seek;
     wrappedSeek(1);
 
     const transform = card.style.getPropertyValue("transform");
@@ -524,14 +524,14 @@ describe("createStudioPositionSeekReapplyScript", () => {
     const window = new Window();
     window.document.body.innerHTML = `
       <div id="card"
-        data-hf-studio-path-offset="true"
-        data-hf-studio-original-translate=""
-        style="--hf-studio-offset-x: 10px; --hf-studio-offset-y: 20px; translate: var(--hf-studio-offset-x, 0px) var(--hf-studio-offset-y, 0px); transform: none">
+        data-sc-studio-path-offset="true"
+        data-sc-studio-original-translate=""
+        style="--sc-studio-offset-x: 10px; --sc-studio-offset-y: 20px; translate: var(--sc-studio-offset-x, 0px) var(--sc-studio-offset-y, 0px); transform: none">
       </div>
     `;
     const card = window.document.getElementById("card") as unknown as HTMLElement;
 
-    (window as unknown as { __hf: Record<string, unknown> }).__hf = { seek: () => {} };
+    (window as unknown as { __sc: Record<string, unknown> }).__sc = { seek: () => {} };
     runPositionScript(window);
 
     expect(card.style.getPropertyValue("transform")).toBe("none");
@@ -541,9 +541,9 @@ describe("createStudioPositionSeekReapplyScript", () => {
     const window = new Window();
     window.document.body.innerHTML = `
       <div id="card"
-        data-hf-studio-rotation="true"
-        data-hf-studio-original-rotate=""
-        style="--hf-studio-rotation: 45deg; rotate: var(--hf-studio-rotation, 0deg)">
+        data-sc-studio-rotation="true"
+        data-sc-studio-original-rotate=""
+        style="--sc-studio-rotation: 45deg; rotate: var(--sc-studio-rotation, 0deg)">
       </div>
     `;
     const card = window.document.getElementById("card") as unknown as HTMLElement;
@@ -551,13 +551,13 @@ describe("createStudioPositionSeekReapplyScript", () => {
     const originalSeek = () => {
       card.style.setProperty("transform", "matrix(1, 0, 0, 1, 100, 50)");
     };
-    (window as unknown as { __hf: Record<string, unknown> }).__hf = { seek: originalSeek };
+    (window as unknown as { __sc: Record<string, unknown> }).__sc = { seek: originalSeek };
 
     runPositionScript(window);
-    const wrappedSeek = (window as unknown as { __hf: { seek: (t: number) => void } }).__hf.seek;
+    const wrappedSeek = (window as unknown as { __sc: { seek: (t: number) => void } }).__sc.seek;
     wrappedSeek(1);
 
-    expect(card.style.getPropertyValue("rotate")).toContain("--hf-studio-rotation");
+    expect(card.style.getPropertyValue("rotate")).toContain("--sc-studio-rotation");
     const transform = card.style.getPropertyValue("transform");
     expect(!transform || transform === "none" || transform === "").toBe(true);
   });

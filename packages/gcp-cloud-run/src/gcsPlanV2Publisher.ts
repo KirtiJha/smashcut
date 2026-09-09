@@ -8,7 +8,7 @@ import {
   PlanV2IntegrityError,
   type PlanV2ArtifactPublisher,
   type PlanV2PublishBlob,
-} from "@hyperframes/producer/distributed";
+} from "@smashcut/producer/distributed";
 import { parseGcsUri, uploadContentAddressedFileToGcs } from "./gcsTransport.js";
 
 export interface GcsPlanV2ArtifactPublisherOptions {
@@ -105,7 +105,7 @@ export class GcsPlanV2ArtifactPublisher implements PlanV2ArtifactPublisher {
     }
 
     const manifestDigest = createHash("sha256").update(manifestBytes, "utf8").digest("hex");
-    const stagingDir = mkdtempSync(join(this.#temporaryRoot, "hf-plan-v2-manifest-"));
+    const stagingDir = mkdtempSync(join(this.#temporaryRoot, "sc-plan-v2-manifest-"));
     const manifestPath = join(stagingDir, "manifest.json");
     try {
       writeFileSync(manifestPath, manifestBytes, "utf8");

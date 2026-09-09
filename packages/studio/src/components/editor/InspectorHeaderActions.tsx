@@ -46,7 +46,7 @@ export function InspectorHeaderActions({
           )}
         </button>
       )}
-      {onUngroup && element.dataAttributes["hf-group"] != null && (
+      {onUngroup && element.dataAttributes["sc-group"] != null && (
         <button
           type="button"
           onClick={() => {

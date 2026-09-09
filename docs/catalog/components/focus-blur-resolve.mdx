@@ -15,7 +15,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 
 ```html focus-blur-resolve.html
 <!--
-  Focus Blur Resolve - typography primitive for HyperFrames.
+  Focus Blur Resolve - typography primitive for SmashCut.
 
   Paste the markup and CSS into a composition. Drive the timeline integration
   from a paused GSAP timeline so renders remain deterministic.
@@ -38,7 +38,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 -->
 
 <div
-  class="hf-catalog-focus-blur-resolve"
+  class="sc-catalog-focus-blur-resolve"
   data-composition-variables='[
     { "id": "tone", "type": "enum", "role": "style", "label": "Tone", "description": "Word colour: ink for light frames, paper for dark ones, accent rides --brand.", "default": "ink", "options": [{ "value": "ink", "label": "Ink" }, { "value": "paper", "label": "Paper" }, { "value": "accent", "label": "Accent" }] },
     { "id": "size", "type": "enum", "role": "style", "label": "Size", "description": "Type size of the words, from a caption-scale line to a full display card.", "default": "standard", "options": [{ "value": "compact", "label": "Compact" }, { "value": "standard", "label": "Standard" }, { "value": "display", "label": "Display" }] },
@@ -49,23 +49,23 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 </div>
 
 <style>
-  .hf-catalog-focus-blur-resolve {
-    color: var(--hf-word-color, #18181b);
+  .sc-catalog-focus-blur-resolve {
+    color: var(--sc-word-color, #18181b);
     font-family: Inter, system-ui, sans-serif;
     font-weight: 900;
     letter-spacing: -0.04em;
   }
-  .hf-catalog-focus-blur-resolve {
+  .sc-catalog-focus-blur-resolve {
     display: inline-flex;
     gap: 12px;
-    font-size: var(--hf-word-size, 56px);
+    font-size: var(--sc-word-size, 56px);
     line-height: 1;
   }
-  .hf-catalog-focus-blur-resolve span {
+  .sc-catalog-focus-blur-resolve span {
     display: inline-block;
-    transform: translate(var(--hf-word-x, 0px), var(--hf-word-y, 0px))
-      scale(var(--hf-word-scale, 1));
-    filter: blur(calc(var(--hf-word-blur, 0px) * var(--hf-word-blur-scale, 1)));
+    transform: translate(var(--sc-word-x, 0px), var(--sc-word-y, 0px))
+      scale(var(--sc-word-scale, 1));
+    filter: blur(calc(var(--sc-word-blur, 0px) * var(--sc-word-blur-scale, 1)));
     will-change: transform, filter, opacity;
   }
 </style>
@@ -75,8 +75,8 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
     "use strict";
 
     var vars =
-      window.__hyperframes && window.__hyperframes.getVariables
-        ? window.__hyperframes.getVariables()
+      window.__smashcut && window.__smashcut.getVariables
+        ? window.__smashcut.getVariables()
         : {};
 
     // Unrecognised overrides return to their declared defaults.
@@ -92,18 +92,18 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
     var size = sizes[pick(sizes, vars.size, "standard")];
     var blurScale = blurScales[pick(blurScales, vars.blur, "standard")];
 
-    var roots = document.querySelectorAll(".hf-catalog-focus-blur-resolve");
+    var roots = document.querySelectorAll(".sc-catalog-focus-blur-resolve");
     for (var i = 0; i < roots.length; i += 1) {
-      roots[i].style.setProperty("--hf-word-color", tone);
-      roots[i].style.setProperty("--hf-word-size", size);
-      roots[i].style.setProperty("--hf-word-blur-scale", String(blurScale));
+      roots[i].style.setProperty("--sc-word-color", tone);
+      roots[i].style.setProperty("--sc-word-size", size);
+      roots[i].style.setProperty("--sc-word-blur-scale", String(blurScale));
     }
   })();
 </script>
 
 <!--
   Timeline integration:
-  tl.fromTo('.hf-catalog-focus-blur-resolve span', { opacity: 0, '--hf-word-scale': 1.08, '--hf-word-blur': '16px' }, { opacity: 1, '--hf-word-scale': 1, '--hf-word-blur': '0px', duration: 0.52, stagger: 0.05, ease: 'power3.out' }, startTime);
+  tl.fromTo('.sc-catalog-focus-blur-resolve span', { opacity: 0, '--sc-word-scale': 1.08, '--sc-word-blur': '16px' }, { opacity: 1, '--sc-word-scale': 1, '--sc-word-blur': '0px', duration: 0.52, stagger: 0.05, ease: 'power3.out' }, startTime);
 -->
 ```
 
@@ -111,7 +111,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 
 ## Install
 
-<InstallCommand command="npx hyperframes add focus-blur-resolve" item="focus-blur-resolve" />
+<InstallCommand command="npx smashcut add focus-blur-resolve" item="focus-blur-resolve" />
 
 That writes one file: `compositions/components/focus-blur-resolve.html`.
 
@@ -143,7 +143,7 @@ defaults, so this behaves exactly like the preview above until you change one:
 
 ```html
 <!--
-  Focus Blur Resolve - typography primitive for HyperFrames.
+  Focus Blur Resolve - typography primitive for SmashCut.
 
   Paste the markup and CSS into a composition. Drive the timeline integration
   from a paused GSAP timeline so renders remain deterministic.
@@ -166,7 +166,7 @@ defaults, so this behaves exactly like the preview above until you change one:
 -->
 
 <div
-  class="hf-catalog-focus-blur-resolve"
+  class="sc-catalog-focus-blur-resolve"
   data-composition-variables='[
     { "id": "tone", "type": "enum", "role": "style", "label": "Tone", "description": "Word colour: ink for light frames, paper for dark ones, accent rides --brand.", "default": "ink", "options": [{ "value": "ink", "label": "Ink" }, { "value": "paper", "label": "Paper" }, { "value": "accent", "label": "Accent" }] },
     { "id": "size", "type": "enum", "role": "style", "label": "Size", "description": "Type size of the words, from a caption-scale line to a full display card.", "default": "standard", "options": [{ "value": "compact", "label": "Compact" }, { "value": "standard", "label": "Standard" }, { "value": "display", "label": "Display" }] },
@@ -177,23 +177,23 @@ defaults, so this behaves exactly like the preview above until you change one:
 </div>
 
 <style>
-  .hf-catalog-focus-blur-resolve {
-    color: var(--hf-word-color, #18181b);
+  .sc-catalog-focus-blur-resolve {
+    color: var(--sc-word-color, #18181b);
     font-family: Inter, system-ui, sans-serif;
     font-weight: 900;
     letter-spacing: -0.04em;
   }
-  .hf-catalog-focus-blur-resolve {
+  .sc-catalog-focus-blur-resolve {
     display: inline-flex;
     gap: 12px;
-    font-size: var(--hf-word-size, 56px);
+    font-size: var(--sc-word-size, 56px);
     line-height: 1;
   }
-  .hf-catalog-focus-blur-resolve span {
+  .sc-catalog-focus-blur-resolve span {
     display: inline-block;
-    transform: translate(var(--hf-word-x, 0px), var(--hf-word-y, 0px))
-      scale(var(--hf-word-scale, 1));
-    filter: blur(calc(var(--hf-word-blur, 0px) * var(--hf-word-blur-scale, 1)));
+    transform: translate(var(--sc-word-x, 0px), var(--sc-word-y, 0px))
+      scale(var(--sc-word-scale, 1));
+    filter: blur(calc(var(--sc-word-blur, 0px) * var(--sc-word-blur-scale, 1)));
     will-change: transform, filter, opacity;
   }
 </style>
@@ -203,8 +203,8 @@ defaults, so this behaves exactly like the preview above until you change one:
     "use strict";
 
     var vars =
-      window.__hyperframes && window.__hyperframes.getVariables
-        ? window.__hyperframes.getVariables()
+      window.__smashcut && window.__smashcut.getVariables
+        ? window.__smashcut.getVariables()
         : {};
 
     // Unrecognised overrides return to their declared defaults.
@@ -220,18 +220,18 @@ defaults, so this behaves exactly like the preview above until you change one:
     var size = sizes[pick(sizes, vars.size, "standard")];
     var blurScale = blurScales[pick(blurScales, vars.blur, "standard")];
 
-    var roots = document.querySelectorAll(".hf-catalog-focus-blur-resolve");
+    var roots = document.querySelectorAll(".sc-catalog-focus-blur-resolve");
     for (var i = 0; i < roots.length; i += 1) {
-      roots[i].style.setProperty("--hf-word-color", tone);
-      roots[i].style.setProperty("--hf-word-size", size);
-      roots[i].style.setProperty("--hf-word-blur-scale", String(blurScale));
+      roots[i].style.setProperty("--sc-word-color", tone);
+      roots[i].style.setProperty("--sc-word-size", size);
+      roots[i].style.setProperty("--sc-word-blur-scale", String(blurScale));
     }
   })();
 </script>
 
 <!--
   Timeline integration:
-  tl.fromTo('.hf-catalog-focus-blur-resolve span', { opacity: 0, '--hf-word-scale': 1.08, '--hf-word-blur': '16px' }, { opacity: 1, '--hf-word-scale': 1, '--hf-word-blur': '0px', duration: 0.52, stagger: 0.05, ease: 'power3.out' }, startTime);
+  tl.fromTo('.sc-catalog-focus-blur-resolve span', { opacity: 0, '--sc-word-scale': 1.08, '--sc-word-blur': '16px' }, { opacity: 1, '--sc-word-scale': 1, '--sc-word-blur': '0px', duration: 0.52, stagger: 0.05, ease: 'power3.out' }, startTime);
 -->
 ```
 

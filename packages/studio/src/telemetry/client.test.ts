@@ -5,13 +5,13 @@ import { describe, expect, it, vi, beforeEach } from "vitest";
 // `shouldTrack()` reads module-level constants evaluated at module load time,
 // so changing env after import has no effect. Each test resets module cache.
 
-const OPT_OUT_KEY = "hyperframes-studio:telemetryDisabled";
+const OPT_OUT_KEY = "smashcut-studio:telemetryDisabled";
 
 function setNoTelemetry(value: string | undefined): void {
   if (value === undefined) {
-    delete (import.meta.env as Record<string, unknown>).VITE_HYPERFRAMES_NO_TELEMETRY;
+    delete (import.meta.env as Record<string, unknown>).VITE_SMASHCUT_NO_TELEMETRY;
   } else {
-    (import.meta.env as Record<string, unknown>).VITE_HYPERFRAMES_NO_TELEMETRY = value;
+    (import.meta.env as Record<string, unknown>).VITE_SMASHCUT_NO_TELEMETRY = value;
   }
 }
 
@@ -50,14 +50,14 @@ describe("studio client shouldTrack", () => {
     expect(shouldTrack()).toBe(false);
   });
 
-  it("returns false when VITE_HYPERFRAMES_NO_TELEMETRY=1 at build time", async () => {
+  it("returns false when VITE_SMASHCUT_NO_TELEMETRY=1 at build time", async () => {
     setNoTelemetry("1");
     const shouldTrack = await loadShouldTrack();
     expect(shouldTrack()).toBe(false);
   });
 
   it.each(["true", "TRUE", " yes ", "on"])(
-    "returns false when VITE_HYPERFRAMES_NO_TELEMETRY=%j",
+    "returns false when VITE_SMASHCUT_NO_TELEMETRY=%j",
     async (value) => {
       setNoTelemetry(value);
       const shouldTrack = await loadShouldTrack();

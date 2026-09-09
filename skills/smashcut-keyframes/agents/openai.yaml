@@ -1,0 +1,4 @@
+interface:
+  display_name: "SmashCut Keyframes"
+  short_description: "Author seek-safe video keyframes"
+  default_prompt: "Use $smashcut-keyframes to author seek-safe 2D/3D keyframes and verify them with the CLI."

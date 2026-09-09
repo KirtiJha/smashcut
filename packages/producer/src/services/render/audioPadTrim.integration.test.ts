@@ -3,7 +3,7 @@ import { mkdtempSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
-import { getFfmpegBinary, muxVideoWithAudio } from "@hyperframes/engine";
+import { getFfmpegBinary, muxVideoWithAudio } from "@smashcut/engine";
 import { padOrTrimAudioToVideoFrameCount } from "./audioPadTrim.js";
 
 const dirs: string[] = [];
@@ -46,7 +46,7 @@ const hasFfmpeg = (() => {
 
 describe.skipIf(!hasFfmpeg)("audio pad real-media packet contract", () => {
   it("normalizes a tiny raw-ADTS pad without an oversized terminal packet", async () => {
-    const dir = mkdtempSync(join(tmpdir(), "hf-pad-"));
+    const dir = mkdtempSync(join(tmpdir(), "sc-pad-"));
     dirs.push(dir);
     const input = join(dir, "input.aac");
     const output = join(dir, "normalized.m4a");
@@ -107,7 +107,7 @@ describe.skipIf(!hasFfmpeg)("audio pad real-media packet contract", () => {
   });
 
   it("keeps the delivered AAC below its true-peak ceiling", async () => {
-    const dir = mkdtempSync(join(tmpdir(), "hf-aac-peak-"));
+    const dir = mkdtempSync(join(tmpdir(), "sc-aac-peak-"));
     dirs.push(dir);
     const source = join(dir, "source.wav");
     const mixed = join(dir, "mixed.m4a");

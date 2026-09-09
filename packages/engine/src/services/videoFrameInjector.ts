@@ -2,7 +2,7 @@
  * Video Frame Injector
  *
  * Creates a BeforeCaptureHook that replaces native <video> elements with
- * pre-extracted frame images during rendering. This is the Hyperframes-specific
+ * pre-extracted frame images during rendering. This is the Smashcut-specific
  * video handling strategy — OSS users with different video pipelines can
  * provide their own hook or skip video injection entirely.
  */
@@ -18,7 +18,7 @@ import {
   RENDER_FRAME_ID_PREFIX,
   RENDER_FRAME_ID_SUFFIX,
   renderFrameIdForRenderId,
-} from "@hyperframes/core";
+} from "@smashcut/core";
 
 export interface VideoFrameInjectorOptions extends Partial<
   Pick<EngineConfig, "frameDataUriCacheLimit" | "frameDataUriCacheBytesLimitMb">
@@ -230,7 +230,7 @@ export function createVideoFrameInjector(
         // re-upload their video textures from the correct frame. No-op in
         // compositions without a GPU adapter.
         await page.evaluate((t: number) => {
-          (window as unknown as { __hfReseekGpu?: (n: number) => void }).__hfReseekGpu?.(t);
+          (window as unknown as { __scReseekGpu?: (n: number) => void }).__scReseekGpu?.(t);
         }, time);
       }
     }
@@ -293,7 +293,7 @@ async function setVideoElementsVisibility(
         }
       };
       for (const { id, frameId } of entries) {
-        const video = window.__hfMediaEl?.(id) ?? document.getElementById(id);
+        const video = window.__scMediaEl?.(id) ?? document.getElementById(id);
         if (!video) continue;
         apply(video);
         apply(document.getElementById(frameId));
@@ -319,7 +319,7 @@ export async function queryVideoElementBounds(
   if (videoIds.length === 0) return [];
   return page.evaluate((ids: string[]): VideoElementBounds[] => {
     const resolveVideo = (id: string): HTMLVideoElement | null =>
-      (window.__hfMediaEl?.(id) ?? document.getElementById(id)) as HTMLVideoElement | null;
+      (window.__scMediaEl?.(id) ?? document.getElementById(id)) as HTMLVideoElement | null;
     return ids.map((id) => {
       const el = resolveVideo(id);
       if (!el) {
@@ -666,8 +666,8 @@ export async function queryElementStacking(
 
       for (const el of elements) {
         // Report the render id so callers can match these back to the media list.
-        // `||`, not `??`: `__hfMediaId` yields "" for an element with neither id.
-        const id = window.__hfMediaId?.(el) || el.id;
+        // `||`, not `??`: `__scMediaId` yields "" for an element with neither id.
+        const id = window.__scMediaId?.(el) || el.id;
         if (!id) continue;
         const rect = el.getBoundingClientRect();
         const style = window.getComputedStyle(el);

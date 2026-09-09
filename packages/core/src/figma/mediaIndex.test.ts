@@ -10,7 +10,7 @@ import { manifestPath } from "./manifest";
 
 const dirs: string[] = [];
 function project(): string {
-  const d = mkdtempSync(join(tmpdir(), "hf-media-index-"));
+  const d = mkdtempSync(join(tmpdir(), "sc-media-index-"));
   dirs.push(d);
   mkdirSync(join(d, ".media"), { recursive: true });
   return d;

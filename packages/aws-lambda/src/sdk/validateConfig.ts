@@ -3,18 +3,18 @@
  *
  * The cloud-agnostic config-shape validation (`validateDistributedRenderConfig`,
  * `validateVariablesPayload`, `InvalidConfigError`) lives in
- * `@hyperframes/producer/distributed` and is shared with the other adapters.
+ * `@smashcut/producer/distributed` and is shared with the other adapters.
  * This module re-exports those and adds the one piece specific to Step
  * Functions: the 256 KiB Standard-workflow execution-input size cap.
  */
 
-import { InvalidConfigError } from "@hyperframes/producer/distributed";
+import { InvalidConfigError } from "@smashcut/producer/distributed";
 
 export {
   InvalidConfigError,
   validateDistributedRenderConfig,
   validateVariablesPayload,
-} from "@hyperframes/producer/distributed";
+} from "@smashcut/producer/distributed";
 
 /**
  * Hard cap on Step Functions Standard workflow execution input — 256 KiB per

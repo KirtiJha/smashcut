@@ -9,11 +9,11 @@ import {
   runAssetImportMany,
   type AssetImportDeps,
 } from "./asset.js";
-import { FigmaClientError, type FigmaClient } from "@hyperframes/core/figma";
+import { FigmaClientError, type FigmaClient } from "@smashcut/core/figma";
 
 const dirs: string[] = [];
 function scratch(): string {
-  const d = mkdtempSync(join(tmpdir(), "hf-figma-asset-"));
+  const d = mkdtempSync(join(tmpdir(), "sc-figma-asset-"));
   dirs.push(d);
   return d;
 }

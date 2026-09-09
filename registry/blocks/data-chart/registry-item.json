@@ -1,7 +1,7 @@
 {
   "$schema": "https://hyperframes.heygen.com/schema/registry-item.json",
   "name": "data-chart",
-  "type": "hyperframes:block",
+  "type": "smashcut:block",
   "title": "Data Chart",
   "description": "Animated bar + line chart with staggered reveal, NYT-style typography, and value labels",
   "tags": ["data", "chart", "statistics"],
@@ -14,12 +14,12 @@
     {
       "path": "data-chart.html",
       "target": "compositions/data-chart.html",
-      "type": "hyperframes:composition"
+      "type": "smashcut:composition"
     }
   ],
   "preview": {
-    "video": "https://static.heygen.ai/hyperframes-oss/docs/images/catalog/blocks/data-chart.mp4",
-    "poster": "https://static.heygen.ai/hyperframes-oss/docs/images/catalog/blocks/data-chart.png"
+    "video": "https://static.heygen.ai/smashcut-oss/docs/images/catalog/blocks/data-chart.mp4",
+    "poster": "https://static.heygen.ai/smashcut-oss/docs/images/catalog/blocks/data-chart.png"
   },
   "params": [
     {

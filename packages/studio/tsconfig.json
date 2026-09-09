@@ -5,7 +5,7 @@
     "moduleResolution": "bundler",
     "baseUrl": ".",
     "paths": {
-      "@hyperframes/player": ["../player/src/hyperframes-player.ts"]
+      "@smashcut/player": ["../player/src/smashcut-player.ts"]
     },
     "jsx": "react-jsx",
     "strict": true,

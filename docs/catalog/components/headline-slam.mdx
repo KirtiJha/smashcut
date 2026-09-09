@@ -16,7 +16,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 ```html headline-slam.html
 <!doctype html>
 <!--
-  headline-slam: HyperFrames video primitive
+  headline-slam: SmashCut video primitive
 
   One headline scales down from 1.6 to rest with expo.out weight. Its landing
   drives a deterministic three-frame stage shake, followed by a quiet drift
@@ -147,8 +147,8 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
             var stage = root.querySelector(".hs-stage");
             var headline = root.querySelector(".hs-headline");
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             var text = vars.text == null ? "Ship it today" : String(vars.text);
@@ -257,7 +257,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 
 ## Install
 
-<InstallCommand command="npx hyperframes add headline-slam" item="headline-slam" />
+<InstallCommand command="npx smashcut add headline-slam" item="headline-slam" />
 
 That writes one file: `compositions/components/headline-slam.html`.
 
@@ -298,7 +298,7 @@ defaults, so this behaves exactly like the preview above until you change one:
 ```html
 <!doctype html>
 <!--
-  headline-slam: HyperFrames video primitive
+  headline-slam: SmashCut video primitive
 
   One headline scales down from 1.6 to rest with expo.out weight. Its landing
   drives a deterministic three-frame stage shake, followed by a quiet drift
@@ -429,8 +429,8 @@ defaults, so this behaves exactly like the preview above until you change one:
             var stage = root.querySelector(".hs-stage");
             var headline = root.querySelector(".hs-headline");
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             var text = vars.text == null ? "Ship it today" : String(vars.text);

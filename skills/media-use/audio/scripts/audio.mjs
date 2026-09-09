@@ -1,10 +1,10 @@
 #!/usr/bin/env node
-// audio.mjs — the shared HyperFrames audio engine. ONE implementation of TTS +
+// audio.mjs — the shared SmashCut audio engine. ONE implementation of TTS +
 // BGM + SFX for every video workflow (product-launch, general-video, pr-to-video,
 // …). Workflows do NOT vendor a copy: they write a neutral `audio_request.json`
 // (a tiny per-workflow adapter maps their storyboard/scenes into it) and call:
 //
-//   node <MEDIA_DIR>/scripts/audio.mjs --request ./audio_request.json --hyperframes . --out ./audio_meta.json
+//   node <MEDIA_DIR>/scripts/audio.mjs --request ./audio_request.json --smashcut . --out ./audio_meta.json
 //
 // The three capabilities degrade on ONE switch — whether HeyGen is configured
 // (credential present, NOT the CLI). This mirrors the table in ../SKILL.md:
@@ -77,11 +77,11 @@ const r3 = (x) => Number(x.toFixed(3));
 // model per subprocess, so firing every line at once multiplies that cost by
 // the line count. mapWithConcurrency caps how many run at once — still
 // parallel, just bounded.
-const ttsConcurrency = Math.max(1, Number(process.env.HYPERFRAMES_TTS_CONCURRENCY) || 4);
+const ttsConcurrency = Math.max(1, Number(process.env.SMASHCUT_TTS_CONCURRENCY) || 4);
 
-const hyperframesDir = resolve(flag("hyperframes", "."));
-const requestPath = resolve(flag("request", join(hyperframesDir, "audio_request.json")));
-const outPath = resolve(flag("out", join(hyperframesDir, "audio_meta.json")));
+const smashcutDir = resolve(flag("smashcut", "."));
+const requestPath = resolve(flag("request", join(smashcutDir, "audio_request.json")));
+const outPath = resolve(flag("out", join(smashcutDir, "audio_meta.json")));
 const sfxLibDir = resolve(flag("sfx-lib", join(HERE, "..", "assets", "sfx")));
 const lyriaRecipe = resolve(flag("lyria-recipe", join(HERE, "lyria-recipe.py")));
 const onlyArg = flag("only", "tts,bgm,sfx");
@@ -111,7 +111,7 @@ const lang = langOverride || request.lang || "en";
 const speed = Number(speedOverride ?? request.speed ?? 1.0) || 1.0;
 
 // ── env + HeyGen availability (the single switch) ─────────────────────────────
-loadEnvFromDir(hyperframesDir);
+loadEnvFromDir(smashcutDir);
 const heygenOK = heygenCredential() !== null;
 const headers = heygenOK ? heygenAuthHeaders() : null;
 
@@ -146,7 +146,7 @@ if (only.has("tts") && lines.length) {
       return null;
     }
     const rel = `assets/voice/${id}.wav`;
-    const abs = join(hyperframesDir, rel);
+    const abs = join(smashcutDir, rel);
     const { ok, words, error } = await synthesizeOne({
       provider: ttsProvider,
       text,
@@ -154,14 +154,14 @@ if (only.has("tts") && lines.length) {
       lang,
       speed,
       wavAbs: abs,
-      hyperframesDir,
+      smashcutDir,
     });
     if (!ok) {
       anomalies.push(`line ${id}: TTS failed — omitted${error ? ` (${error})` : ""}`);
       return null;
     }
     let wordArr = words; // heygen: native; else transcribe
-    if (!wordArr) wordArr = await transcribeWav({ wavRel: rel, lang, hyperframesDir });
+    if (!wordArr) wordArr = await transcribeWav({ wavRel: rel, lang, smashcutDir });
     const dur = ffprobeDuration(abs);
     if (!isFinite(dur) || dur <= 0) {
       anomalies.push(`line ${id}: bad voice duration — omitted`);
@@ -210,7 +210,7 @@ if (only.has("bgm")) {
     console.error(`· bgm: disabled`);
   } else if (mode === "retrieve") {
     try {
-      bgm = await retrieveBgm({ query: request.bgm?.query, headers, hyperframesDir, hasVoice });
+      bgm = await retrieveBgm({ query: request.bgm?.query, headers, smashcutDir, hasVoice });
       if (bgm) {
         bgmFields.bgm_provider = "heygen";
         bgmFields.bgm_mode = "retrieve";
@@ -232,7 +232,7 @@ if (only.has("bgm")) {
     const gen = generateBgmDetached({
       prompt,
       durationS: totalDuration || 30,
-      hyperframesDir,
+      smashcutDir,
       lyriaRecipe: existsSync(lyriaRecipe) ? lyriaRecipe : null,
       seedSeconds,
       hasVoice,
@@ -262,7 +262,7 @@ if (only.has("sfx")) {
       .map((name) => ({ id: String(l.id), name: String(name).trim() }))
       .filter((c) => c.name),
   );
-  const res = await resolveSfx({ cues, heygenOK, headers, hyperframesDir, sfxLibDir });
+  const res = await resolveSfx({ cues, heygenOK, headers, smashcutDir, sfxLibDir });
   sfx = res.sfx;
   anomalies.push(...res.anomalies);
   console.error(

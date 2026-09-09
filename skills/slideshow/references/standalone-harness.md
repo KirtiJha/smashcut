@@ -1,13 +1,13 @@
-# Standalone HyperFrames Slideshow Harness
+# Standalone SmashCut Slideshow Harness
 
 ## 1. Interim framing — why this exists
 
-These patterns are a **temporary workaround** for standalone demos. The durable solution is engine-hosted: a future `hyperframes preview --slideshow` / studio present mode will host the composition over the real HyperFrames engine, which drives seek-timelines frame-by-frame, owns the gesture frame, and reads the slideshow island directly from the composition. When that path ships, most of what follows collapses.
+These patterns are a **temporary workaround** for standalone demos. The durable solution is engine-hosted: a future `smashcut preview --slideshow` / studio present mode will host the composition over the real SmashCut engine, which drives seek-timelines frame-by-frame, owns the gesture frame, and reads the slideshow island directly from the composition. When that path ships, most of what follows collapses.
 
 Until then, a standalone slideshow opened via the bare player bundle must work around three facts:
 
 1. The composition must expose a seekable `window.__timelines.root` timeline. Anything outside that seek path, such as Three.js loops or imperative entrance effects, must be self-driving.
-2. `<hyperframes-slideshow>` reads the slideshow island from its **own innerHTML** (the wrapper element), not from the composition the player loads. The island must be duplicated into the wrapper.
+2. `<smashcut-slideshow>` reads the slideshow island from its **own innerHTML** (the wrapper element), not from the composition the player loads. The island must be duplicated into the wrapper.
 3. The composition runs in the player's **iframe**; user keypresses and pointer events land on the **parent page**. Wrapper-owned SFX/global audio should live in the parent, where the activation token is reliable. Normal slide media stays in the composition and is stopped by the slideshow player on slide exit.
 
 Do not treat these as the blessed authoring model. When the engine-hosted path ships, compositions authored the normal way will just work.
@@ -23,7 +23,7 @@ Do not treat these as the blessed authoring model. When the engine-hosted path s
 
 The parent page hosts the two dist bundles, wraps the components, duplicates the island, and owns all audio.
 
-For public or user-facing generated projects, make this wrapper the root `index.html` so opening the project in a browser runs the slideshow. Put the raw HyperFrames composition in a separate path such as `composition/index.html`. In repo examples you may still see this file called `demo.html`; that name is a reference pattern, not the preferred handoff for a standalone deck.
+For public or user-facing generated projects, make this wrapper the root `index.html` so opening the project in a browser runs the slideshow. Put the raw SmashCut composition in a separate path such as `composition/index.html`. In repo examples you may still see this file called `demo.html`; that name is a reference pattern, not the preferred handoff for a standalone deck.
 
 ```html
 <!doctype html>
@@ -35,11 +35,11 @@ For public or user-facing generated projects, make this wrapper the root `index.
 
     <!--
       Load both bundles from packages/player/dist.
-      The global builds register <hyperframes-player> and <hyperframes-slideshow>
+      The global builds register <smashcut-player> and <smashcut-slideshow>
       as custom elements — no import map needed.
     -->
-    <script src="../../../packages/player/dist/hyperframes-player.global.js"></script>
-    <script src="../../../packages/player/dist/slideshow/hyperframes-slideshow.global.js"></script>
+    <script src="../../../packages/player/dist/smashcut-player.global.js"></script>
+    <script src="../../../packages/player/dist/slideshow/smashcut-slideshow.global.js"></script>
 
     <style>
       *,
@@ -60,27 +60,27 @@ For public or user-facing generated projects, make this wrapper the root `index.
   </head>
   <body>
     <!--
-      tabindex="0" is critical — <hyperframes-slideshow> binds keydown
+      tabindex="0" is critical — <smashcut-slideshow> binds keydown
       (ArrowLeft/Right, Space, Backspace) to itself. Without tabindex the
       element cannot receive focus and arrow keys are dead.
     -->
-    <hyperframes-slideshow
+    <smashcut-slideshow
       tabindex="0"
       style="display: block; position: relative; width: 100vw; height: 100vh"
     >
-      <hyperframes-player
+      <smashcut-player
         interactive
         style="position: absolute; inset: 0"
         src="composition/index.html"
-      ></hyperframes-player>
+      ></smashcut-player>
 
       <!--
         DUPLICATED ISLAND — keep in sync with the island inside index.html.
-        <hyperframes-slideshow> reads from its own innerHTML, not from the
+        <smashcut-slideshow> reads from its own innerHTML, not from the
         composition the player loads. Every time slides/fragments/hotspots/
         sequences change in index.html, update this copy too.
       -->
-      <script type="application/hyperframes-slideshow+json">
+      <script type="application/smashcut-slideshow+json">
         {
           "slides": [
             { "sceneId": "scene-one", "notes": "..." },
@@ -99,7 +99,7 @@ For public or user-facing generated projects, make this wrapper the root `index.
           ]
         }
       </script>
-    </hyperframes-slideshow>
+    </smashcut-slideshow>
     <!-- The built-in slideshow nav capsule renders Present; do not add a wrapper-level button. -->
 
     <!-- Audio player lives here — see Section 6 -->
@@ -135,7 +135,7 @@ Audible playback has one extra browser constraint: a `BroadcastChannel` message 
 
   var sender =
     new URLSearchParams(location.search).get("mode") === "audience" ? "audience" : "presenter";
-  var channel = new BroadcastChannel("hf-slideshow:" + location.pathname);
+  var channel = new BroadcastChannel("sc-slideshow:" + location.pathname);
   var applyingRemote = false;
   var lastTimeBroadcast = 0;
   var pendingPlayByKey = {};
@@ -144,7 +144,7 @@ Audible playback has one extra browser constraint: a `BroadcastChannel` message 
   var unlockButton = null;
 
   function frameDocument() {
-    var player = document.querySelector("hyperframes-player");
+    var player = document.querySelector("smashcut-player");
     var frame = player && player.iframeElement;
     try {
       return frame && frame.contentDocument ? frame.contentDocument : null;
@@ -375,18 +375,18 @@ Use a dedicated wiring marker such as `data-media-sync-wired`. Do not reuse a ma
 
 ### Editable presenter notes
 
-The shared `<hyperframes-slideshow>` presenter already renders speaker notes as an editable textarea and stores edits in `localStorage`. Do not add deck-specific note editors when the shared player is available.
+The shared `<smashcut-slideshow>` presenter already renders speaker notes as an editable textarea and stores edits in `localStorage`. Do not add deck-specific note editors when the shared player is available.
 
 For interim custom wrappers that cannot use the shared presenter chrome, use this deterministic storage contract exactly so notes migrate cleanly:
 
 ```js
-const NOTES_STORAGE_PREFIX = "hf-slideshow:presenter-notes:v1:";
+const NOTES_STORAGE_PREFIX = "sc-slideshow:presenter-notes:v1:";
 
 function notesDeckKey(slideshowEl) {
   const explicit = slideshowEl.getAttribute("notes-storage-key");
   if (explicit && explicit.trim()) return explicit.trim();
 
-  const playerSrc = slideshowEl.querySelector("hyperframes-player")?.getAttribute("src") || "";
+  const playerSrc = slideshowEl.querySelector("smashcut-player")?.getAttribute("src") || "";
   let resolvedPlayerSrc = playerSrc;
   try {
     resolvedPlayerSrc = new URL(playerSrc, location.href).href;
@@ -425,7 +425,7 @@ function wirePresenterNotes(textarea, slideshowEl, position, slide) {
 }
 ```
 
-Clearing the textarea must save an empty string, not remove the local value, because a presenter may intentionally blank a manifest note for their run. Use `notes-storage-key="stable-deck-id"` on `<hyperframes-slideshow>` when a standalone demo has a stable project id; otherwise the fallback key isolates by page, title, and player `src`.
+Clearing the textarea must save an empty string, not remove the local value, because a presenter may intentionally blank a manifest note for their run. Use `notes-storage-key="stable-deck-id"` on `<smashcut-slideshow>` when a standalone demo has a stable project id; otherwise the fallback key isolates by page, title, and player `src`.
 
 ---
 
@@ -439,7 +439,7 @@ For converted source pages, preserve the original page's visual design, motion l
 
 ### Navigation camera transitions for converted pages
 
-When a source page uses scroll to move a translated/scaled world, slideshow navigation usually seeks directly to each slide's hold frame. That seek bypasses any in-timeline interpolation near the scene boundary, so a deck can compute the right camera positions and still appear to jump. Add an explicit standalone navigation transition for manual slide changes, while keeping normal HyperFrames timeline seeks static and deterministic.
+When a source page uses scroll to move a translated/scaled world, slideshow navigation usually seeks directly to each slide's hold frame. That seek bypasses any in-timeline interpolation near the scene boundary, so a deck can compute the right camera positions and still appear to jump. Add an explicit standalone navigation transition for manual slide changes, while keeping normal SmashCut timeline seeks static and deterministic.
 
 Use this pattern only for direct-open/presenter slideshow UI. Do not depend on CSS transitions for rendered video output; rendered compositions must still be correct when seeking a single frame.
 
@@ -452,7 +452,7 @@ Use this pattern only for direct-open/presenter slideshow UI. Do not depend on C
     opacity 0.3s ease;
 }
 
-#world.hf-camera-static {
+#world.sc-camera-static {
   transition: opacity 0.3s ease;
 }
 ```
@@ -467,12 +467,12 @@ function cameraTransform(cam) {
 
 function setWorldCamera(world, cam, animate) {
   if (!cam) return;
-  if (!animate) world.classList.add("hf-camera-static");
+  if (!animate) world.classList.add("sc-camera-static");
   world.style.transform = cameraTransform(cam);
   world.style.opacity = "1";
   if (!animate) {
     world.getBoundingClientRect();
-    world.classList.remove("hf-camera-static");
+    world.classList.remove("sc-camera-static");
   }
   currentCamera = cam;
 }
@@ -488,7 +488,7 @@ function updateCameraForTime(t, opts) {
     nextSlideIndex !== currentSlideIndex &&
     Math.abs(t - lastTime) > 1.2;
   var animateCamera = Boolean(
-    window.__hfCameraTransitionsEnabled && jumpedBetweenSlides && !(opts && opts.staticCamera),
+    window.__scCameraTransitionsEnabled && jumpedBetweenSlides && !(opts && opts.staticCamera),
   );
   var cam = cameraAtTime(t);
   setWorldCamera(world, cam, animateCamera);
@@ -496,9 +496,9 @@ function updateCameraForTime(t, opts) {
 }
 ```
 
-During measurement, temporarily remove the transform with `hf-camera-static`, compute all element union rects, then restore `currentCamera` without animation. On initial load, resize, and validation-style seeks, call `updateCameraForTime(t, { staticCamera: true })`. In the standalone wrapper, set `iframe.contentWindow.__hfCameraTransitionsEnabled = true` after the player iframe is available. That keeps the exported composition seekable while letting presenter navigation glide between focal points.
+During measurement, temporarily remove the transform with `sc-camera-static`, compute all element union rects, then restore `currentCamera` without animation. On initial load, resize, and validation-style seeks, call `updateCameraForTime(t, { staticCamera: true })`. In the standalone wrapper, set `iframe.contentWindow.__scCameraTransitionsEnabled = true` after the player iframe is available. That keeps the exported composition seekable while letting presenter navigation glide between focal points.
 
-Before validation, resolve source font variables. HyperFrames lint accepts concrete generic stacks such as `system-ui, sans-serif` and `ui-monospace, monospace`, or real `@font-face` declarations pointing at local font files. It does not accept `font-family: var(--f-body)` / `var(--f-mono)` as a render-safe family.
+Before validation, resolve source font variables. SmashCut lint accepts concrete generic stacks such as `system-ui, sans-serif` and `ui-monospace, monospace`, or real `@font-face` declarations pointing at local font files. It does not accept `font-family: var(--f-body)` / `var(--f-mono)` as a render-safe family.
 
 ```html
 <!-- In index.html (composition) -->
@@ -588,7 +588,7 @@ Before validation, resolve source font variables. HyperFrames lint accepts concr
       // fragment reveals here — see Section 4
     }
 
-    window.__hfSetTime = updateVisibility;
+    window.__scSetTime = updateVisibility;
 
     // Show first slide immediately — avoids blank on load
     updateVisibility(0);
@@ -673,7 +673,7 @@ Fragment items start with `opacity: 0` in CSS. The visibility controller reveals
 
 ## 5. The scenes bootstrap postMessage
 
-`<hyperframes-slideshow>` must know each scene's time range to map a `sceneId` to a playhead position. Without the engine injecting this at runtime, the composition must post it manually after load.
+`<smashcut-slideshow>` must know each scene's time range to map a `sceneId` to a playhead position. Without the engine injecting this at runtime, the composition must post it manually after load.
 
 Post the manifest from the composition (index.html), not the parent wrapper:
 
@@ -698,7 +698,7 @@ Post the manifest from the composition (index.html), not the parent wrapper:
   function postTimeline() {
     parent.postMessage(
       {
-        source: "hf-preview",
+        source: "sc-preview",
         type: "timeline",
         durationInFrames: totalFrames,
         scenes: scenes,
@@ -722,13 +722,13 @@ Omitting any scene (including branch scenes) from this manifest means the slides
 
 ---
 
-## 6. Audio/SFX — built-in mute control via `<hyperframes-slideshow sound>`
+## 6. Audio/SFX — built-in mute control via `<smashcut-slideshow sound>`
 
 Wrapper-owned SFX should live in the parent page. Browsers enforce user-activation for AudioContext and HTMLAudioElement.play() — an iframe without its own activation (i.e., the user never clicked inside it) is often autoplay-blocked. The user's keypress lands on the parent, so the parent is the reliable frame for click/transition sound effects.
 
-Normal slide media should stay in the composition. The slideshow player now stops slide media automatically on slide/sequence changes by calling `hyperframes-player.stopMedia()`, which pauses iframe `<video>` / `<audio>`, runtime WebAudio, and parent proxies adopted from iframe media. Same-slide fragment reveals do not stop media, and global/deck-level parent audio such as `audio-src` is left alone. Do not hand-roll per-slide cleanup scripts for regular video/audio players.
+Normal slide media should stay in the composition. The slideshow player now stops slide media automatically on slide/sequence changes by calling `smashcut-player.stopMedia()`, which pauses iframe `<video>` / `<audio>`, runtime WebAudio, and parent proxies adopted from iframe media. Same-slide fragment reveals do not stop media, and global/deck-level parent audio such as `audio-src` is left alone. Do not hand-roll per-slide cleanup scripts for regular video/audio players.
 
-Every copied `<video>` / `<audio>` with a `src` must be timed for HyperFrames ownership:
+Every copied `<video>` / `<audio>` with a `src` must be timed for SmashCut ownership:
 
 ```html
 <video
@@ -748,27 +748,27 @@ Implementation detail: iframe media elements belong to the iframe's DOM realm. F
 
 ### Mute toggle — built-in chrome control
 
-Add the `sound` boolean attribute to `<hyperframes-slideshow>` in demo.html. The component renders a speaker/speaker-muted SVG button as the **leftmost item in the nav capsule**, styled identically to the prev/next ghost buttons. No separate mute button in the composition.
+Add the `sound` boolean attribute to `<smashcut-slideshow>` in demo.html. The component renders a speaker/speaker-muted SVG button as the **leftmost item in the nav capsule**, styled identically to the prev/next ghost buttons. No separate mute button in the composition.
 
 ```html
-<hyperframes-slideshow tabindex="0" sound style="..."> ... </hyperframes-slideshow>
+<smashcut-slideshow tabindex="0" sound style="..."> ... </smashcut-slideshow>
 ```
 
 The component:
 
 - Tracks `muted` state (default `false`); exposes a `muted` getter
-- Reflects to a `data-hf-muted` attribute on the host when muted
-- Applies mute globally to child `<hyperframes-player>` media and top-level page `<audio>` / `<video>` elements
-- Dispatches `CustomEvent("hf-sound", { detail: { muted }, bubbles: true, composed: true })` on every toggle
+- Reflects to a `data-sc-muted` attribute on the host when muted
+- Applies mute globally to child `<smashcut-player>` media and top-level page `<audio>` / `<video>` elements
+- Dispatches `CustomEvent("sc-sound", { detail: { muted }, bubbles: true, composed: true })` on every toggle
 - Browser-checks the actual iframe media state after changes; every composition `<video>` / `<audio>` should report `muted: true` after clicking the nav mute button
 
-Wrapper-owned `new Audio(...)` objects are not attached to the DOM, so the parent audio player must mirror the `hf-sound` event onto each clip:
+Wrapper-owned `new Audio(...)` objects are not attached to the DOM, so the parent audio player must mirror the `sc-sound` event onto each clip:
 
 ```js
 var muted = false;
-var slideshow = document.querySelector("hyperframes-slideshow");
+var slideshow = document.querySelector("smashcut-slideshow");
 if (slideshow) {
-  slideshow.addEventListener("hf-sound", function (e) {
+  slideshow.addEventListener("sc-sound", function (e) {
     muted = e.detail && e.detail.muted === true;
     Object.keys(clips).forEach(function (name) {
       clips[name].muted = muted;
@@ -779,7 +779,7 @@ if (slideshow) {
 if (muted) return; // skip play
 ```
 
-If `sound` is **not** present on `<hyperframes-slideshow>` (decks without audio), the mute control is hidden — the capsule shows only nav.
+If `sound` is **not** present on `<smashcut-slideshow>` (decks without audio), the mute control is hidden — the capsule shows only nav.
 
 ### Composition: post cues unconditionally
 
@@ -792,7 +792,7 @@ The composition posts sfx cues **unconditionally** — it does not track mute st
 // The parent audio player gates on the slideshow component's mute state.
 function playSfx(name) {
   try {
-    parent.postMessage({ type: "hf-sfx", name: name }, "*");
+    parent.postMessage({ type: "sc-sfx", name: name }, "*");
   } catch (e) {}
 }
 
@@ -825,11 +825,11 @@ Do NOT add a mute button inside the composition. The `#sfx-mute` coral button pa
       clips[k].preload = "auto";
     });
 
-    // Track mute state from the slideshow component's hf-sound event.
+    // Track mute state from the slideshow component's sc-sound event.
     var muted = false;
-    var slideshow = document.querySelector("hyperframes-slideshow");
+    var slideshow = document.querySelector("smashcut-slideshow");
     if (slideshow) {
-      slideshow.addEventListener("hf-sound", function (e) {
+      slideshow.addEventListener("sc-sound", function (e) {
         muted = e.detail && e.detail.muted === true;
       });
     }
@@ -864,7 +864,7 @@ Do NOT add a mute button inside the composition. The `#sfx-mute` coral button pa
 
     window.addEventListener("message", function (e) {
       var d = e.data;
-      if (!d || d.type !== "hf-sfx") return;
+      if (!d || d.type !== "sc-sfx") return;
       // Gate on mute state — the component owns this.
       if (muted) return;
       var el = clips[d.name];
@@ -878,7 +878,7 @@ Do NOT add a mute button inside the composition. The `#sfx-mute` coral button pa
 </script>
 ```
 
-**Sourcing SFX files:** use the HeyGen MCP `search_audio_sounds` tool with `type=sound_effects` and keywords like "whoosh", "click", "transition". Download the results to a local `sfx/` directory next to `demo.html` and reference them by relative path. Do not fetch SFX at render time — the HyperFrames determinism rule forbids runtime network requests; pre-download and commit them.
+**Sourcing SFX files:** use the HeyGen MCP `search_audio_sounds` tool with `type=sound_effects` and keywords like "whoosh", "click", "transition". Download the results to a local `sfx/` directory next to `demo.html` and reference them by relative path. Do not fetch SFX at render time — the SmashCut determinism rule forbids runtime network requests; pre-download and commit them.
 
 ---
 
@@ -1001,20 +1001,20 @@ if (!renderer) {
 
 | Failure                                               | Symptom                                                         | One-line fix                                                                                                                                     |
 | ----------------------------------------------------- | --------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Island not duplicated in wrapper                      | Slideshow chrome never renders; no slide counter, no prev/next  | Copy the `<script type="application/hyperframes-slideshow+json">` block verbatim into the `<hyperframes-slideshow>` element in demo.html         |
-| Wrapper SFX in the iframe                             | Click/transition sounds silent                                  | Move SFX Audio elements and unlock logic to demo.html; post `{type:'hf-sfx',name}` from index.html                                               |
+| Island not duplicated in wrapper                      | Slideshow chrome never renders; no slide counter, no prev/next  | Copy the `<script type="application/smashcut-slideshow+json">` block verbatim into the `<smashcut-slideshow>` element in demo.html         |
+| Wrapper SFX in the iframe                             | Click/transition sounds silent                                  | Move SFX Audio elements and unlock logic to demo.html; post `{type:'sc-sfx',name}` from index.html                                               |
 | No self-clock in composition                          | All scene frames stacked / wrong slide visible at load          | Add the root GSAP timeline (`window.__timelines["root"]`) and the `onUpdate` visibility controller as shown in Section 3                         |
 | Content opacity:0 with no engine                      | Blank slides — `[data-anim]` elements invisible at rest         | Call `updateVisibility(0)` synchronously after defining the controller so the first slide is shown immediately                                   |
-| Keydown bound to the element without focus            | ArrowLeft/Right dead                                            | Add `tabindex="0"` to `<hyperframes-slideshow>` so it can receive keyboard focus                                                                 |
+| Keydown bound to the element without focus            | ArrowLeft/Right dead                                            | Add `tabindex="0"` to `<smashcut-slideshow>` so it can receive keyboard focus                                                                 |
 | Opaque scene background occluding Three.js canvas     | 3D never visible                                                | Set `background: transparent` on `.scene-frame`; put the visual fill on the text scrim container instead                                         |
 | WebGL renderer creation spams errors in headless envs | Console noise, rAF loop starts anyway                           | Silence `console.error` during `new THREE.WebGLRenderer(...)`, restore in `finally`, guard the rAF start on `renderer !== null`                  |
 | Branch scene missing from postMessage manifest        | Hotspot navigates but slide is blank                            | Include every scene — main line and branch — in the `scenes` array of the `postTimeline()` message                                               |
 | Prominent 3D/content in nav-capsule zone              | Bright element bleeds behind/beside the nav pill                | Keep the bottom-right ~360×140px region clear; add a background-matching gradient overlay on any slide whose 3D mood is bright in that corner    |
 | Custom media visualizer uses its own timer            | Canvas/playhead drifts from the actual video or native controls | Drive visual state from media events and `media.currentTime`; do not use an independent `setTimeout` clock                                       |
 | One `data-wired` flag means two different things      | Pre-rendered timeline HTML skips media listener setup           | Use separate markers such as `data-timeline-rendered` and `data-media-sync-wired`                                                                |
-| Presenter media events are not bridged                | Audience follows slides but not play/pause/seek/mute            | Mirror native media events over `BroadcastChannel("hf-slideshow:" + location.pathname)` in standalone wrappers with interactive media            |
+| Presenter media events are not bridged                | Audience follows slides but not play/pause/seek/mute            | Mirror native media events over `BroadcastChannel("sc-slideshow:" + location.pathname)` in standalone wrappers with interactive media            |
 | Remote play is blocked in the audience window         | Audience media time jumps but video never plays                 | Try muted playback first; if `media.play()` rejects, show an audience unlock button and ignore live `timeupdate` chasing until playback succeeds |
 | Audience muted autoplay publishes back to presenter   | Presenter audio starts, then mutes or cuts out                  | Publish media events only from presenter mode; audience mute is a local browser-autoplay workaround, not shared media state                      |
-| Copied media lacks HyperFrames timing                 | Lint errors on untimed media; preview/render diverge            | Add `data-start`, `data-duration`, and `data-has-audio="true"` when audible; avoid `preload="none"`                                              |
+| Copied media lacks SmashCut timing                 | Lint errors on untimed media; preview/render diverge            | Add `data-start`, `data-duration`, and `data-has-audio="true"` when audible; avoid `preload="none"`                                              |
 | Source font CSS variables kept as font-family values  | StaticGuard font-family contract errors                         | Replace with concrete render-safe stacks or add local `@font-face` declarations                                                                  |
 | Converted scroll/camera source jumps between slides   | Per-slide focal points are correct but manual navigation snaps  | Add a standalone navigation-camera transition hook; disable it for measurement, initial load, resize, and render/validation seeks                |

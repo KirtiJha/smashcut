@@ -192,7 +192,7 @@ describe("applyPositionEdits", () => {
 
 describe("installPositionEditsSeekReapply", () => {
   it("wraps __player.renderSeek so each call reapplies position edits", () => {
-    const el = makeElement({ "data-x": "10", "data-y": "0", "data-hf-edit-base-x": "0" });
+    const el = makeElement({ "data-x": "10", "data-y": "0", "data-sc-edit-base-x": "0" });
     const calls: number[] = [];
     // @ts-expect-error test global
     window.__player = { renderSeek: (time: number) => calls.push(time) };
@@ -209,7 +209,7 @@ describe("installPositionEditsSeekReapply", () => {
   });
 
   it("is idempotent when installed twice", () => {
-    const el = makeElement({ "data-x": "5", "data-y": "0", "data-hf-edit-base-x": "0" });
+    const el = makeElement({ "data-x": "5", "data-y": "0", "data-sc-edit-base-x": "0" });
     const calls: number[] = [];
     // @ts-expect-error test global
     window.__player = { renderSeek: (time: number) => calls.push(time) };
@@ -225,24 +225,24 @@ describe("installPositionEditsSeekReapply", () => {
     el.remove();
   });
 
-  it("wraps __hf.seek and a seek function assigned after installation", () => {
+  it("wraps __sc.seek and a seek function assigned after installation", () => {
     vi.useFakeTimers();
-    const el = makeElement({ "data-x": "8", "data-y": "0", "data-hf-edit-base-x": "0" });
+    const el = makeElement({ "data-x": "8", "data-y": "0", "data-sc-edit-base-x": "0" });
     const calls: number[] = [];
     // @ts-expect-error test global
-    window.__hf = {};
+    window.__sc = {};
 
     installPositionEditsSeekReapply(window as Window & typeof globalThis);
     // @ts-expect-error test global
-    window.__hf.seek = (time: number) => calls.push(time);
+    window.__sc.seek = (time: number) => calls.push(time);
     vi.advanceTimersByTime(50);
     // @ts-expect-error test global
-    window.__hf.seek(3);
+    window.__sc.seek(3);
 
     expect(calls).toEqual([3]);
     expect(el.style.getPropertyValue("translate")).toBe("8px 0px");
     // @ts-expect-error test global
-    delete window.__hf;
+    delete window.__sc;
     el.remove();
     vi.useRealTimers();
   });

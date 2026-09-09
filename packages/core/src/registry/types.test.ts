@@ -64,11 +64,11 @@ describe("registry types", () => {
 
   describe("type guards", () => {
     const baseFiles = [
-      { path: "x.html", target: "compositions/x.html", type: "hyperframes:composition" as const },
+      { path: "x.html", target: "compositions/x.html", type: "smashcut:composition" as const },
     ];
     const example: ExampleItem = {
       name: "demo",
-      type: "hyperframes:example",
+      type: "smashcut:example",
       title: "Demo",
       description: "d",
       dimensions: { width: 1920, height: 1080 },
@@ -77,7 +77,7 @@ describe("registry types", () => {
     };
     const block: BlockItem = {
       name: "demo-block",
-      type: "hyperframes:block",
+      type: "smashcut:block",
       title: "Demo Block",
       description: "d",
       dimensions: { width: 1080, height: 1350 },
@@ -86,7 +86,7 @@ describe("registry types", () => {
     };
     const component: ComponentItem = {
       name: "demo-component",
-      type: "hyperframes:component",
+      type: "smashcut:component",
       title: "Demo Component",
       description: "d",
       files: baseFiles,
@@ -146,12 +146,12 @@ describe("registry types", () => {
     it("RegistryManifest accepts well-formed shape", () => {
       const m: RegistryManifest = {
         $schema: "https://hyperframes.heygen.com/schema/registry.json",
-        name: "hyperframes",
+        name: "smashcut",
         homepage: "https://hyperframes.heygen.com",
         items: [
-          { name: "warm-grain", type: "hyperframes:example" },
-          { name: "linkedin-post-card", type: "hyperframes:block" },
-          { name: "shader-wipe", type: "hyperframes:component" },
+          { name: "warm-grain", type: "smashcut:example" },
+          { name: "linkedin-post-card", type: "smashcut:block" },
+          { name: "shader-wipe", type: "smashcut:component" },
         ],
       };
       expect(m.items).toHaveLength(3);
@@ -168,7 +168,7 @@ describe("registry types", () => {
       // @ts-expect-error — ComponentItem forbids `dimensions`.
       const _bad1: ComponentItem = {
         name: "bad",
-        type: "hyperframes:component",
+        type: "smashcut:component",
         title: "Bad",
         description: "d",
         files: [],
@@ -177,7 +177,7 @@ describe("registry types", () => {
       // @ts-expect-error — ComponentItem forbids `duration`.
       const _bad2: ComponentItem = {
         name: "bad",
-        type: "hyperframes:component",
+        type: "smashcut:component",
         title: "Bad",
         description: "d",
         files: [],
@@ -192,7 +192,7 @@ describe("registry types", () => {
       // @ts-expect-error — ExampleItem requires `dimensions`.
       const _bad1: ExampleItem = {
         name: "bad",
-        type: "hyperframes:example",
+        type: "smashcut:example",
         title: "Bad",
         description: "d",
         duration: 5,
@@ -201,7 +201,7 @@ describe("registry types", () => {
       // @ts-expect-error — BlockItem requires `duration`.
       const _bad2: BlockItem = {
         name: "bad",
-        type: "hyperframes:block",
+        type: "smashcut:block",
         title: "Bad",
         description: "d",
         dimensions: { width: 1, height: 1 },
@@ -215,7 +215,7 @@ describe("registry types", () => {
     it("optional metadata fields are accepted", () => {
       const item: ComponentItem = {
         name: "shader-wipe",
-        type: "hyperframes:component",
+        type: "smashcut:component",
         title: "Shader Wipe",
         description: "d",
         author: "heygen",
@@ -228,7 +228,7 @@ describe("registry types", () => {
           {
             path: "shader-wipe.html",
             target: "compositions/components/shader-wipe/shader-wipe.html",
-            type: "hyperframes:snippet",
+            type: "smashcut:snippet",
           },
         ],
       };

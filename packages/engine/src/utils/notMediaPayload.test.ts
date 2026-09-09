@@ -10,7 +10,7 @@ import {
 } from "./notMediaPayload.js";
 
 function writeFixture(name: string, contents: string | Buffer): string {
-  const dir = mkdtempSync(join(tmpdir(), "hf-markup-sniff-"));
+  const dir = mkdtempSync(join(tmpdir(), "sc-markup-sniff-"));
   const filePath = join(dir, name);
   writeFileSync(filePath, contents);
   return filePath;
@@ -108,13 +108,13 @@ describe("isNotMediaPayload", () => {
     // `existsSync` passes for a directory, so callers reach the sniff with one.
     // The read fails EISDIR; classifying rather than propagating keeps the real
     // probe's own error as the one the caller sees.
-    const dir = mkdtempSync(join(tmpdir(), "hf-markup-sniff-dir-"));
+    const dir = mkdtempSync(join(tmpdir(), "sc-markup-sniff-dir-"));
     mkdirSync(join(dir, "assets"));
     expect(await isNotMediaPayload(join(dir, "assets"))).toBe(false);
   });
 
   it("reports not-a-document instead of throwing when the file is missing", async () => {
-    const dir = mkdtempSync(join(tmpdir(), "hf-markup-sniff-gone-"));
+    const dir = mkdtempSync(join(tmpdir(), "sc-markup-sniff-gone-"));
     expect(await isNotMediaPayload(join(dir, "evicted.mp4"))).toBe(false);
   });
 });

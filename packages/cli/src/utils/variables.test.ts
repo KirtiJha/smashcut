@@ -91,7 +91,7 @@ describe("validateVariablesAgainstProject", () => {
   });
 
   beforeEach(() => {
-    tmpDir = mkdtempSync(join(tmpdir(), "hf-validate-vars-"));
+    tmpDir = mkdtempSync(join(tmpdir(), "sc-validate-vars-"));
   });
 
   afterEach(() => {

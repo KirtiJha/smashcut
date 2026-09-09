@@ -104,7 +104,7 @@ describe("buildTimelineAssetInsertHtml", () => {
   it("builds an image clip with explicit timing and track", () => {
     const html = buildTimelineAssetInsertHtml({
       id: "photo_asset",
-      hfId: "hf-abc123",
+      hfId: "sc-abc123",
       assetPath: "assets/photo.png",
       kind: "image",
       start: 1.25,
@@ -123,7 +123,7 @@ describe("buildTimelineAssetInsertHtml", () => {
   it("builds an audio clip without visual layout styles", () => {
     const html = buildTimelineAssetInsertHtml({
       id: "music_asset",
-      hfId: "hf-xyz789",
+      hfId: "sc-xyz789",
       assetPath: "assets/music.wav",
       kind: "audio",
       start: 0.5,
@@ -201,7 +201,7 @@ describe("insertTimelineAssetIntoSource", () => {
 describe("buildTimelineAssetInsertHtml markup quality", () => {
   const base = {
     id: "clip_1",
-    hfId: "hf-test-1",
+    hfId: "sc-test-1",
     assetPath: "assets/a.mp4",
     start: 1,
     duration: 4,
@@ -209,9 +209,9 @@ describe("buildTimelineAssetInsertHtml markup quality", () => {
     zIndex: 3,
   };
 
-  it("stamps data-hf-id on all kinds", () => {
+  it("stamps data-sc-id on all kinds", () => {
     for (const kind of ["image", "video", "audio"] as const) {
-      expect(buildTimelineAssetInsertHtml({ ...base, kind })).toContain('data-hf-id="hf-test-1"');
+      expect(buildTimelineAssetInsertHtml({ ...base, kind })).toContain('data-sc-id="sc-test-1"');
     }
   });
 

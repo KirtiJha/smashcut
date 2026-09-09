@@ -1,4 +1,4 @@
-import type { RegistryItem } from "@hyperframes/core/registry";
+import type { RegistryItem } from "@smashcut/core/registry";
 import type { TimelineElement } from "../player";
 import {
   insertTimelineAssetIntoSource,
@@ -92,7 +92,7 @@ async function makeComponentBackgroundTransparent(
   readProjectFile: AddBlockOptions["readProjectFile"],
   writeProjectFile: AddBlockOptions["writeProjectFile"],
 ): Promise<void> {
-  if (block.type !== "hyperframes:component") return;
+  if (block.type !== "smashcut:component") return;
   const content = await readProjectFile(compositionFile);
   const transparentContent = content.replace(
     /background:\s*(?:#(?:0a0a0a|000000|000|0a0805)|rgba?\([^)]*\))\s*;/g,
@@ -112,7 +112,7 @@ function resolveBlockPlacement({
   timelineElements: TimelineElement[];
   currentTime: number;
 }) {
-  const isBlock = block.type === "hyperframes:block";
+  const isBlock = block.type === "smashcut:block";
   const {
     start: placementStart = currentTime,
     duration: placementDuration,
@@ -158,7 +158,7 @@ function buildSubCompositionHtml({
   return [
     `<div`,
     `  id="${id}"`,
-    `  data-hf-id="hf-${generateId()}"`,
+    `  data-sc-id="hf-${generateId()}"`,
     `  data-composition-id="${id}"`,
     `  data-composition-src="${compositionFile}"`,
     `  data-start="${formatTimelineAttributeNumber(start)}"`,

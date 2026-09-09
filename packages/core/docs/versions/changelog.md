@@ -1,4 +1,4 @@
-# HyperFrames Core Changelog
+# SmashCut Core Changelog
 
 ## v0.1
 

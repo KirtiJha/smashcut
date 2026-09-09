@@ -16,7 +16,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 ```html vox-annotate.html
 <!doctype html>
 <!--
-  vox-annotate: HyperFrames video primitive (text effects / annotation)
+  vox-annotate: SmashCut video primitive (text effects / annotation)
 
   The Vox-style annotate gesture: a keyword inside a held sentence gets a
   hand-drawn marker WHILE a thin connector draws from the marker up to a
@@ -233,8 +233,8 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
             var stage = root.querySelector(".va-stage");
             var textEl = root.querySelector(".va-text");
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             var text =
@@ -497,7 +497,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 
 ## Install
 
-<InstallCommand command="npx hyperframes add vox-annotate" item="vox-annotate" />
+<InstallCommand command="npx smashcut add vox-annotate" item="vox-annotate" />
 
 That writes one file: `compositions/components/vox-annotate.html`.
 
@@ -541,7 +541,7 @@ defaults, so this behaves exactly like the preview above until you change one:
 ```html
 <!doctype html>
 <!--
-  vox-annotate: HyperFrames video primitive (text effects / annotation)
+  vox-annotate: SmashCut video primitive (text effects / annotation)
 
   The Vox-style annotate gesture: a keyword inside a held sentence gets a
   hand-drawn marker WHILE a thin connector draws from the marker up to a
@@ -758,8 +758,8 @@ defaults, so this behaves exactly like the preview above until you change one:
             var stage = root.querySelector(".va-stage");
             var textEl = root.querySelector(".va-text");
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             var text =

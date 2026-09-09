@@ -16,7 +16,7 @@ import {
   normalizeHfColorGrading,
   parseCubeLut,
   serializeHfColorGrading,
-} from "@hyperframes/core";
+} from "@smashcut/core";
 import { defineCommand } from "citty";
 import sharp from "sharp";
 import type { Example } from "./_examples.js";
@@ -89,11 +89,11 @@ interface ReferenceFrame {
 export const examples: Example[] = [
   [
     "Compare grade presets on one reference frame",
-    "hyperframes grade-compare --for frame.png --grades grades.json",
+    "smashcut grade-compare --for frame.png --grades grades.json",
   ],
   [
     "Compare LUT files and print agent-friendly JSON",
-    "hyperframes grade-compare --for frame.png --luts looks/a.cube,looks/b.cube --json",
+    "smashcut grade-compare --for frame.png --luts looks/a.cube,looks/b.cube --json",
   ],
 ];
 
@@ -343,7 +343,7 @@ export function buildGradeCompareHtml(options: GradeCompareHtmlOptions): string 
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=${metrics.width}, height=${metrics.height}" />
-    <title>HyperFrames Grade Compare</title>
+    <title>SmashCut Grade Compare</title>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
     <style>
       html,
@@ -428,7 +428,7 @@ export async function prepareGradeCompareTempProject(opts: {
   frameHeight: number;
   frameFileName?: string;
 }): Promise<PreparedGradeCompareProject> {
-  const tempDir = mkdtempSync(join(tmpdir(), "hf-grade-compare-"));
+  const tempDir = mkdtempSync(join(tmpdir(), "sc-grade-compare-"));
   try {
     const frameFileName = opts.frameFileName ?? frameFileNameForPath(opts.framePath);
     writeFileSync(join(tempDir, frameFileName), opts.frameBuffer);
@@ -480,7 +480,7 @@ function isVideoPath(filePath: string): boolean {
 }
 
 async function extractVideoFrameToBuffer(videoPath: string): Promise<Buffer | null> {
-  const tmp = mkdtempSync(join(tmpdir(), "hf-grade-compare-frame-"));
+  const tmp = mkdtempSync(join(tmpdir(), "sc-grade-compare-frame-"));
   const outPath = join(tmp, "frame.png");
   try {
     const ffmpegPath = findFFmpeg();
@@ -543,7 +543,7 @@ async function captureGradeCompareSheet(
   projectDir: string,
   timeoutMs: number,
 ): Promise<{ sheetPath: string; renderReadyTimedOut: boolean }> {
-  const { bundleToSingleHtml } = await import("@hyperframes/core/compiler");
+  const { bundleToSingleHtml } = await import("@smashcut/core/compiler");
 
   const html = await bundleToSingleHtml(projectDir);
   const server = await serveStaticProjectHtml(projectDir, html);

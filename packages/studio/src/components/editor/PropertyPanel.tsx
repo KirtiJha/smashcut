@@ -18,7 +18,7 @@ import {
 import { MetricField, Section } from "./propertyPanelPrimitives";
 import { createTransformCommitHandlers } from "./propertyPanelTransformCommit";
 import { resolveAnimIdForProperty } from "../../player/components/TimelinePropertyLanes";
-import { resolveEditingSections } from "@hyperframes/core/editing";
+import { resolveEditingSections } from "@smashcut/core/editing";
 import { MediaSection } from "./propertyPanelMediaSection";
 import { ColorGradingSection } from "./propertyPanelColorGradingSection";
 import { domEditSelectionToFacts } from "./domEditingLayers";
@@ -129,7 +129,7 @@ export const PropertyPanel = memo(function PropertyPanel(props: PropertyPanelPro
    * in the panel, still called "Hide element", is precisely the thing that step
    * removed: "Two controls that silence a track, sitting next to each other,
    * differing only in a distinction the author cannot see." An
-   * `<hf-audio-group>` has no visual to hide at all, and its mute lives on its
+   * `<sc-audio-group>` has no visual to hide at all, and its mute lives on its
    * own row.
    */
   const audioSelection = isAudioDomElement(element?.element);

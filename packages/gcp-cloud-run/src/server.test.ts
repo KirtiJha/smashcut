@@ -31,7 +31,7 @@ import {
   type PlanV2ArtifactPublisher,
   type PlanV2Manifest,
   publishPlanV2FromExecutionPlan,
-} from "@hyperframes/producer/distributed";
+} from "@smashcut/producer/distributed";
 import { recomputePlanHashFromPlanDir } from "../../producer/src/services/render/stages/freezePlan.js";
 import { asStorage, FakeGcs } from "./__fixtures__/fakeGcs.js";
 import type { AssembleEvent, CloudRunEvent, PlanEvent, RenderChunkEvent } from "./events.js";
@@ -52,18 +52,18 @@ const PLAN_HASH = "abc123planhash";
 
 /** Build a real project tarball, seed it into the fake, return its URI. */
 async function seedProjectTar(gcs: FakeGcs, uri: string): Promise<void> {
-  const src = mkTmp("hf-proj-");
+  const src = mkTmp("sc-proj-");
   writeFileSync(join(src, "index.html"), "<html></html>");
-  const tarPath = join(mkTmp("hf-proj-tar-"), "project.tar.gz");
+  const tarPath = join(mkTmp("sc-proj-tar-"), "project.tar.gz");
   await tarDirectory(src, tarPath);
   gcs.seedFromFile(uri, tarPath);
 }
 
 /** Build a real plan tarball containing plan.json, seed it, return its URI. */
 async function seedPlanTar(gcs: FakeGcs, uri: string, planHash: string): Promise<void> {
-  const planDir = mkTmp("hf-plan-");
+  const planDir = mkTmp("sc-plan-");
   writeFileSync(join(planDir, "plan.json"), JSON.stringify({ planHash }));
-  const tarPath = join(mkTmp("hf-plan-tar-"), "plan.tar.gz");
+  const tarPath = join(mkTmp("sc-plan-tar-"), "plan.tar.gz");
   await tarDirectory(planDir, tarPath);
   gcs.seedFromFile(uri, tarPath);
 }
@@ -258,7 +258,7 @@ describe("dispatch", () => {
   it("defaults omitted plan protocol to v2 across plan → chunk → assemble", async () => {
     const gcs = new FakeGcs();
     await seedProjectTar(gcs, "gs://b/sites/v2/project.tar.gz");
-    const root = mkTmp("hf-v2-e2e-");
+    const root = mkTmp("sc-v2-e2e-");
     const planV2WithPublisher = async (
       projectDir: string,
       _config: unknown,
@@ -404,8 +404,8 @@ describe("dispatch", () => {
 describe("bucket allowlist guard", () => {
   it("throws GCS_URI_NOT_ALLOWED for an off-bucket URI", async () => {
     const gcs = new FakeGcs();
-    const prev = process.env.HYPERFRAMES_RENDER_BUCKET;
-    process.env.HYPERFRAMES_RENDER_BUCKET = "allowed-bucket";
+    const prev = process.env.SMASHCUT_RENDER_BUCKET;
+    process.env.SMASHCUT_RENDER_BUCKET = "allowed-bucket";
     try {
       const event: RenderChunkEvent = {
         Action: "renderChunk",
@@ -418,14 +418,14 @@ describe("bucket allowlist guard", () => {
       };
       await expect(dispatch(event, depsWith(gcs))).rejects.toThrow(/GCS_URI_NOT_ALLOWED/);
     } finally {
-      if (prev === undefined) delete process.env.HYPERFRAMES_RENDER_BUCKET;
-      else process.env.HYPERFRAMES_RENDER_BUCKET = prev;
+      if (prev === undefined) delete process.env.SMASHCUT_RENDER_BUCKET;
+      else process.env.SMASHCUT_RENDER_BUCKET = prev;
     }
   });
 
   it("checks both v2 manifest and artifact-prefix buckets", async () => {
-    const prev = process.env.HYPERFRAMES_RENDER_BUCKET;
-    process.env.HYPERFRAMES_RENDER_BUCKET = "allowed-bucket";
+    const prev = process.env.SMASHCUT_RENDER_BUCKET;
+    process.env.SMASHCUT_RENDER_BUCKET = "allowed-bucket";
     try {
       const event: RenderChunkEvent = {
         Action: "renderChunk",
@@ -439,16 +439,16 @@ describe("bucket allowlist guard", () => {
       };
       await expect(dispatch(event, depsWith(new FakeGcs()))).rejects.toThrow(/GCS_URI_NOT_ALLOWED/);
     } finally {
-      if (prev === undefined) delete process.env.HYPERFRAMES_RENDER_BUCKET;
-      else process.env.HYPERFRAMES_RENDER_BUCKET = prev;
+      if (prev === undefined) delete process.env.SMASHCUT_RENDER_BUCKET;
+      else process.env.SMASHCUT_RENDER_BUCKET = prev;
     }
   });
 
-  it('treats HYPERFRAMES_RENDER_BUCKET="*" as an explicit opt-out (off-bucket allowed)', async () => {
+  it('treats SMASHCUT_RENDER_BUCKET="*" as an explicit opt-out (off-bucket allowed)', async () => {
     const gcs = new FakeGcs();
     await seedPlanTar(gcs, "gs://any-bucket/renders/r1/plan.tar.gz", PLAN_HASH);
-    const prev = process.env.HYPERFRAMES_RENDER_BUCKET;
-    process.env.HYPERFRAMES_RENDER_BUCKET = "*";
+    const prev = process.env.SMASHCUT_RENDER_BUCKET;
+    process.env.SMASHCUT_RENDER_BUCKET = "*";
     try {
       const event: RenderChunkEvent = {
         Action: "renderChunk",
@@ -462,8 +462,8 @@ describe("bucket allowlist guard", () => {
       const res = await dispatch(event, depsWith(gcs));
       expect(res.Action).toBe("renderChunk");
     } finally {
-      if (prev === undefined) delete process.env.HYPERFRAMES_RENDER_BUCKET;
-      else process.env.HYPERFRAMES_RENDER_BUCKET = prev;
+      if (prev === undefined) delete process.env.SMASHCUT_RENDER_BUCKET;
+      else process.env.SMASHCUT_RENDER_BUCKET = prev;
     }
   });
 });

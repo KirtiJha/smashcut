@@ -68,7 +68,7 @@ export async function captureFullPagePlate(
     `document.querySelectorAll('*').forEach((el) => {
       const p = getComputedStyle(el).position;
       if (p === 'fixed' || p === 'sticky') {
-        el.setAttribute('data-hf-plate-position', el.style.position || '');
+        el.setAttribute('data-sc-plate-position', el.style.position || '');
         el.style.position = 'static';
       }
     })`,
@@ -99,9 +99,9 @@ export async function captureFullPagePlate(
     // real error with a cleanup one. Nothing to restore if the page is already gone.
     try {
       await page.evaluate(
-        `document.querySelectorAll('[data-hf-plate-position]').forEach((el) => {
-          el.style.position = el.getAttribute('data-hf-plate-position');
-          el.removeAttribute('data-hf-plate-position');
+        `document.querySelectorAll('[data-sc-plate-position]').forEach((el) => {
+          el.style.position = el.getAttribute('data-sc-plate-position');
+          el.removeAttribute('data-sc-plate-position');
         })`,
       );
     } catch {

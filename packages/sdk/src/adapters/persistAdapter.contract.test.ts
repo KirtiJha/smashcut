@@ -133,5 +133,5 @@ runPersistAdapterContract("memory", createMemoryAdapter);
 
 // Run against the fs adapter — each test gets an isolated tmpdir
 runPersistAdapterContract("fs", () =>
-  createFsAdapter({ root: mkdtempSync(join(tmpdir(), "hf-fs-test-")) }),
+  createFsAdapter({ root: mkdtempSync(join(tmpdir(), "sc-fs-test-")) }),
 );

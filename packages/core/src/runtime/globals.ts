@@ -1,7 +1,7 @@
 export interface HFDebugSurface {
-  __hfDebug?: boolean;
-  __HYPERFRAMES_DEBUG?: boolean;
-  __hf?: {
+  __scDebug?: boolean;
+  __SMASHCUT_DEBUG?: boolean;
+  __sc?: {
     onSwallowed?: (event: { label: string; error: unknown }) => void;
   };
 }

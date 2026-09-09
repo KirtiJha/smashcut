@@ -3,7 +3,7 @@ import { describe, expect, it, vi } from "vitest";
 import { handleRuntimeMessage, type MessageHandlerCallbacks } from "./runtime-message-handler.js";
 import type { ParentMediaManager } from "./parent-media.js";
 import type { ShaderLoaderState } from "./shader-loader-state.js";
-import { runtimeProtocolMetadata } from "@hyperframes/core/runtime/protocol";
+import { runtimeProtocolMetadata } from "@smashcut/core/runtime/protocol";
 
 // Only the stage-size branch is exercised here; the rest of the callback
 // surface is satisfied with inert spies so the handler's type contract
@@ -34,7 +34,7 @@ const makeCallbacks = (): MessageHandlerCallbacks => ({
 const stageSizeEvent = (width: unknown, height: unknown, source: object): MessageEvent =>
   ({
     source,
-    data: { source: "hf-preview", type: "stage-size", width, height },
+    data: { source: "sc-preview", type: "stage-size", width, height },
   }) as unknown as MessageEvent;
 
 describe("handleRuntimeMessage stage-size", () => {
@@ -81,7 +81,7 @@ describe("handleRuntimeMessage runtime data errors", () => {
       {
         source: frameWindow,
         data: {
-          source: "hf-preview",
+          source: "sc-preview",
           type: "runtime-data-error",
           channel: "captions",
           requestId: 41,
@@ -101,7 +101,7 @@ describe("handleRuntimeMessage runtime data errors", () => {
       {
         source: frameWindow,
         data: {
-          source: "hf-preview",
+          source: "sc-preview",
           type: "runtime-data-applied",
           channel: "captions",
           requestId: 42,
@@ -118,7 +118,7 @@ describe("handleRuntimeMessage media autoplay fallback", () => {
   const autoplayBlockedEvent = (source: object): MessageEvent =>
     ({
       source,
-      data: { source: "hf-preview", type: "media-autoplay-blocked" },
+      data: { source: "sc-preview", type: "media-autoplay-blocked" },
     }) as unknown as MessageEvent;
 
   it("promotes and mutes iframe output by default", () => {
@@ -157,7 +157,7 @@ describe("handleRuntimeMessage timeline ready", () => {
     ({
       source,
       data: {
-        source: "hf-preview",
+        source: "sc-preview",
         type: "timeline",
         durationInFrames,
         scenes: [],

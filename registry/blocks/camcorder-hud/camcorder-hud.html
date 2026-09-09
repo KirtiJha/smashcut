@@ -20,15 +20,15 @@
       }
 
       #ch-hud {
-        --hf-camcorder-color: #fff;
-        --hf-camcorder-accent: #f12c2c;
-        --hf-camcorder-inset: 5vmin;
-        --hf-camcorder-font-size: 3.7vmin;
+        --sc-camcorder-color: #fff;
+        --sc-camcorder-accent: #f12c2c;
+        --sc-camcorder-inset: 5vmin;
+        --sc-camcorder-font-size: 3.7vmin;
         position: absolute;
         inset: 0;
-        color: var(--hf-camcorder-color);
+        color: var(--sc-camcorder-color);
         font-family: monospace;
-        font-size: var(--hf-camcorder-font-size);
+        font-size: var(--sc-camcorder-font-size);
         font-weight: 700;
         line-height: 1.25;
         pointer-events: none;
@@ -41,8 +41,8 @@
       }
 
       #ch-hud .ch-record {
-        top: var(--hf-camcorder-inset);
-        left: var(--hf-camcorder-inset);
+        top: var(--sc-camcorder-inset);
+        left: var(--sc-camcorder-inset);
         display: flex;
         align-items: center;
         gap: 1.8vmin;
@@ -52,13 +52,13 @@
         width: 2.2vmin;
         height: 2.2vmin;
         border-radius: 50%;
-        background: var(--hf-camcorder-accent);
-        box-shadow: 0 0 0.9vmin color-mix(in srgb, var(--hf-camcorder-accent) 55%, transparent);
+        background: var(--sc-camcorder-accent);
+        box-shadow: 0 0 0.9vmin color-mix(in srgb, var(--sc-camcorder-accent) 55%, transparent);
       }
 
       #ch-hud .ch-battery {
-        top: var(--hf-camcorder-inset);
-        right: var(--hf-camcorder-inset);
+        top: var(--sc-camcorder-inset);
+        right: var(--sc-camcorder-inset);
         width: 7vmin;
         height: 3.5vmin;
         border: 0.35vmin solid currentcolor;
@@ -85,13 +85,13 @@
       }
 
       #ch-hud .ch-date {
-        bottom: var(--hf-camcorder-inset);
-        left: var(--hf-camcorder-inset);
+        bottom: var(--sc-camcorder-inset);
+        left: var(--sc-camcorder-inset);
       }
 
       #ch-hud .ch-counter {
-        right: var(--hf-camcorder-inset);
-        bottom: var(--hf-camcorder-inset);
+        right: var(--sc-camcorder-inset);
+        bottom: var(--sc-camcorder-inset);
         text-align: right;
       }
 
@@ -111,7 +111,7 @@
       data-width="1920"
       data-height="1080"
     >
-      <div id="ch-hud" data-hf-counter-start="0" aria-hidden="true">
+      <div id="ch-hud" data-sc-counter-start="0" aria-hidden="true">
         <div class="ch-corner ch-record"><span class="ch-record-dot"></span><span>REC</span></div>
         <div class="ch-corner ch-battery"></div>
         <div class="ch-corner ch-date">JAN 01 2000<br />12:00 AM</div>
@@ -134,7 +134,7 @@
 
       var compositionId = host.getAttribute("data-composition-id");
       var duration = Number(host.getAttribute("data-duration")) || 4;
-      var counterStart = Number(hud.getAttribute("data-hf-counter-start")) || 0;
+      var counterStart = Number(hud.getAttribute("data-sc-counter-start")) || 0;
       var state = { seconds: 0 };
 
       function formatCounter(value) {

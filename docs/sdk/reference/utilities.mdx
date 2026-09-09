@@ -1,17 +1,17 @@
 ---
 title: "Utilities & Constants"
-description: "History module, persist queue, document utilities, constants, and error types exported from @hyperframes/sdk."
+description: "History module, persist queue, document utilities, constants, and error types exported from @smashcut/sdk."
 ---
 
-This page covers everything exported from `@hyperframes/sdk` that is not covered in [`openComposition`](/sdk/reference/open-composition), the [`Composition` interface](/sdk/reference/composition), [edit operations](/sdk/reference/edit-operations), [types](/sdk/reference/types), or [adapters](/sdk/reference/adapters).
+This page covers everything exported from `@smashcut/sdk` that is not covered in [`openComposition`](/sdk/reference/open-composition), the [`Composition` interface](/sdk/reference/composition), [edit operations](/sdk/reference/edit-operations), [types](/sdk/reference/types), or [adapters](/sdk/reference/adapters).
 
 ---
 
 ## History Module
 
 ```typescript
-import { createHistory } from "@hyperframes/sdk";
-import type { HistoryModule, HistoryOptions, HistoryEntry } from "@hyperframes/sdk";
+import { createHistory } from "@smashcut/sdk";
+import type { HistoryModule, HistoryOptions, HistoryEntry } from "@smashcut/sdk";
 ```
 
 Optional undo/redo module that wires onto a `Composition` session via the `"patch"` event. Standalone sessions created by `openComposition()` attach a history module automatically — you only need `createHistory` directly when you are building a host application that manages its own undo stack, or when you want non-default coalesce/depth settings.
@@ -25,13 +25,13 @@ function createHistory(session: Composition, opts?: HistoryOptions): HistoryModu
 Subscribes to `session.on('patch')` and builds an undo/redo stack. Coalesces rapid same-operation bursts on the same element into a single undo entry so a slider drag produces one undo step, not hundreds.
 
 ```typescript
-import { openComposition, createHistory } from "@hyperframes/sdk";
+import { openComposition, createHistory } from "@smashcut/sdk";
 
 // Custom history — host controls undo/redo buttons
 const comp = await openComposition(html, { history: false });
 const history = createHistory(comp, { coalesceMs: 500, maxEntries: 50 });
 
-comp.setText("hf-title", "Draft v1");
+comp.setText("sc-title", "Draft v1");
 
 history.canUndo(); // true
 history.undo();    // reverts to original
@@ -117,8 +117,8 @@ Entries are internal to the history module — you do not create them directly. 
 ## Persist Queue
 
 ```typescript
-import { createPersistQueue } from "@hyperframes/sdk";
-import type { PersistQueueModule, PersistQueueOptions } from "@hyperframes/sdk";
+import { createPersistQueue } from "@smashcut/sdk";
+import type { PersistQueueModule, PersistQueueOptions } from "@smashcut/sdk";
 ```
 
 Optional module that subscribes to `"change"` events on a session and schedules async writes through a `PersistAdapter`. One write is in flight at a time; the latest HTML always wins (last-write-wins coalescing). Standalone sessions wired with a `persist` adapter attach this automatically via `openComposition()`. Use `createPersistQueue` directly only when you are building an embedded host that owns persistence separately from the SDK session.
@@ -134,8 +134,8 @@ function createPersistQueue(
 ```
 
 ```typescript
-import { openComposition, createPersistQueue } from "@hyperframes/sdk";
-import { createFsAdapter } from "@hyperframes/sdk/adapters/fs";
+import { openComposition, createPersistQueue } from "@smashcut/sdk";
+import { createFsAdapter } from "@smashcut/sdk/adapters/fs";
 
 const adapt = createFsAdapter({ root: "./project" });
 const comp = await openComposition(html, { history: false });
@@ -145,7 +145,7 @@ const queue = createPersistQueue(comp, adapt, {
   onError: ({ error }) => console.error("Write failed:", error.message),
 });
 
-comp.setText("hf-title", "Autosaved");
+comp.setText("sc-title", "Autosaved");
 
 // Force immediate flush before app close
 await queue.flush();
@@ -191,10 +191,10 @@ interface PersistQueueOptions {
 ## Document Utilities
 
 ```typescript
-import { buildDocument, buildRoots, flatElements } from "@hyperframes/sdk";
+import { buildDocument, buildRoots, flatElements } from "@smashcut/sdk";
 ```
 
-Low-level utilities for building the `SdkDocument` model and `HyperFramesElement` trees from parsed HTML. These are the same functions the SDK uses internally on every `openComposition()` call. You rarely need them directly — they are exposed for hosts that parse HTML outside of a session, or for testing.
+Low-level utilities for building the `SdkDocument` model and `SmashCutElement` trees from parsed HTML. These are the same functions the SDK uses internally on every `openComposition()` call. You rarely need them directly — they are exposed for hosts that parse HTML outside of a session, or for testing.
 
 ### buildDocument
 
@@ -202,26 +202,26 @@ Low-level utilities for building the `SdkDocument` model and `HyperFramesElement
 function buildDocument(html: string): SdkDocument;
 ```
 
-Parses an HTML string into the SDK document model. Calls `ensureHfIds` first so every element gets a stable `data-hf-id`. Uses `linkedom` for DOM parsing — node-safe, works in agents, CI, and server-side code. Returns an `SdkDocument` snapshot; mutations on the live session do not update the returned value.
+Parses an HTML string into the SDK document model. Calls `ensureHfIds` first so every element gets a stable `data-sc-id`. Uses `linkedom` for DOM parsing — node-safe, works in agents, CI, and server-side code. Returns an `SdkDocument` snapshot; mutations on the live session do not update the returned value.
 
 ### buildRoots
 
 ```typescript
-function buildRoots(document: Document): HyperFramesElement[];
+function buildRoots(document: Document): SmashCutElement[];
 ```
 
-Builds the element tree from an already-parsed (hf-id-stamped) `linkedom` `Document`. Walks the live DOM directly — no serialize/re-parse round trip. This is what the session's query API uses against its mutable document after each op.
+Builds the element tree from an already-parsed (sc-id-stamped) `linkedom` `Document`. Walks the live DOM directly — no serialize/re-parse round trip. This is what the session's query API uses against its mutable document after each op.
 
 ### flatElements
 
 ```typescript
-function flatElements(roots: readonly HyperFramesElement[]): HyperFramesElement[];
+function flatElements(roots: readonly SmashCutElement[]): SmashCutElement[];
 ```
 
 Returns every element from `roots` and all their descendants in document order (depth-first pre-order). Useful for searching across the full element tree without writing your own recursive walk.
 
 ```typescript
-import { buildDocument, flatElements } from "@hyperframes/sdk";
+import { buildDocument, flatElements } from "@smashcut/sdk";
 
 const doc = buildDocument(html);
 const all = flatElements(doc.roots);
@@ -233,7 +233,7 @@ const images = all.filter((el) => el.tag === "img");
 ## Id & Scope Utilities
 
 ```typescript
-import { resolveScoped, findById, bareId, escapeHfId, isNewHostBoundary } from "@hyperframes/sdk";
+import { resolveScoped, findById, bareId, escapeHfId, isNewHostBoundary } from "@smashcut/sdk";
 ```
 
 Low-level id-resolution helpers used internally by dispatch, patch replay, and query — exposed for hosts building their own DOM-facing tooling against the same document model.
@@ -244,7 +244,7 @@ Low-level id-resolution helpers used internally by dispatch, patch replay, and q
 function resolveScoped(document: Document, id: string): Element | null;
 ```
 
-Resolve an `HfId` — bare (`"hf-title"`) or scoped (`"hf-host/hf-leaf"`) — to its `Element`. For an ambiguous bare id (the same id appearing both top-level and inside a sub-composition), prefers the canonical top-level match, matching `getElement()`'s own preference. This is the single resolution rule every mutation and patch-replay path shares — using your own `querySelector` instead can silently target the wrong duplicate.
+Resolve an `HfId` — bare (`"sc-title"`) or scoped (`"sc-host/sc-leaf"`) — to its `Element`. For an ambiguous bare id (the same id appearing both top-level and inside a sub-composition), prefers the canonical top-level match, matching `getElement()`'s own preference. This is the single resolution rule every mutation and patch-replay path shares — using your own `querySelector` instead can silently target the wrong duplicate.
 
 ### findById
 
@@ -260,7 +260,7 @@ Thin alias for `resolveScoped` kept for call-site clarity where "find" reads bet
 function bareId(scopedId: string): string;
 ```
 
-Strip a scoped id down to its leaf segment: `bareId("hf-host/hf-leaf")` returns `"hf-leaf"`. A no-op on an already-bare id.
+Strip a scoped id down to its leaf segment: `bareId("sc-host/sc-leaf")` returns `"sc-leaf"`. A no-op on an already-bare id.
 
 ### escapeHfId
 
@@ -268,7 +268,7 @@ Strip a scoped id down to its leaf segment: `bareId("hf-host/hf-leaf")` returns 
 function escapeHfId(id: string): string;
 ```
 
-Escape an id for safe interpolation into a `querySelectorAll` attribute-value selector (backslashes and double quotes). Use this if you're writing a raw `[data-hf-id="..."]` selector yourself instead of going through `resolveScoped`/`findById`.
+Escape an id for safe interpolation into a `querySelectorAll` attribute-value selector (backslashes and double quotes). Use this if you're writing a raw `[data-sc-id="..."]` selector yourself instead of going through `resolveScoped`/`findById`.
 
 ### isNewHostBoundary
 
@@ -283,7 +283,7 @@ Returns `true` when `el` is the root of an inlined sub-composition — that is, 
 ## Variable Utilities
 
 ```typescript
-import { readVariableDefault } from "@hyperframes/sdk";
+import { readVariableDefault } from "@smashcut/sdk";
 ```
 
 ### readVariableDefault
@@ -304,9 +304,9 @@ already have the declaration element.
 ### ORIGIN\_APPLY\_PATCHES
 
 ```typescript
-import { ORIGIN_APPLY_PATCHES } from "@hyperframes/sdk";
+import { ORIGIN_APPLY_PATCHES } from "@smashcut/sdk";
 
-const ORIGIN_APPLY_PATCHES = "@hyperframes/sdk:applyPatches";
+const ORIGIN_APPLY_PATCHES = "@smashcut/sdk:applyPatches";
 ```
 
 Reserved origin tag emitted by `applyPatches()` and by the history module's `undo()` / `redo()` methods. Host patch listeners **must** skip this origin to avoid undo loops:
@@ -318,12 +318,12 @@ comp.on("patch", ({ origin, patches }) => {
 });
 ```
 
-The value is a namespaced string rather than a `Symbol` so it survives realm boundaries — `postMessage`, structured clone, and JSON serialization all preserve it correctly. T3 embedded hosts that forward patch events across frames or workers rely on this property. The namespace prefix (`@hyperframes/sdk:`) makes accidental collision with a host-chosen origin string negligible.
+The value is a namespaced string rather than a `Symbol` so it survives realm boundaries — `postMessage`, structured clone, and JSON serialization all preserve it correctly. T3 embedded hosts that forward patch events across frames or workers rely on this property. The namespace prefix (`@smashcut/sdk:`) makes accidental collision with a host-chosen origin string negligible.
 
 ### ORIGIN\_LOCAL
 
 ```typescript
-import { ORIGIN_LOCAL } from "@hyperframes/sdk";
+import { ORIGIN_LOCAL } from "@smashcut/sdk";
 
 const ORIGIN_LOCAL = "local";
 ```
@@ -337,7 +337,7 @@ Default origin applied when you call typed methods (`setText`, `setStyle`, …) 
 ### UnsupportedOpError
 
 ```typescript
-import { UnsupportedOpError } from "@hyperframes/sdk";
+import { UnsupportedOpError } from "@smashcut/sdk";
 ```
 
 Thrown by `dispatch()` when an op type is not handled by the current engine version. The `code` property is stable and part of the public API contract — switch on it rather than the message string.
@@ -364,7 +364,7 @@ comp.setGsapTween(id, { ease: "power2.out" });
 ## resolveNearestHfElement
 
 ```typescript
-import { resolveNearestHfElement } from "@hyperframes/sdk";
+import { resolveNearestHfElement } from "@smashcut/sdk";
 
 function resolveNearestHfElement(
   el: Element | null,
@@ -372,7 +372,7 @@ function resolveNearestHfElement(
 ): ElementAtPointResult | null;
 ```
 
-Walks from `el` upward through `parentElement`, returning the nearest ancestor (inclusive) that carries `[data-hf-id]` and is not `[data-hf-root]`. Returns `null` when the walk exits the DOM without finding a match, when the matched node is the composition root, or when `isVisible(node)` returns `false` for the matched node.
+Walks from `el` upward through `parentElement`, returning the nearest ancestor (inclusive) that carries `[data-sc-id]` and is not `[data-sc-root]`. Returns `null` when the walk exits the DOM without finding a match, when the matched node is the composition root, or when `isVisible(node)` returns `false` for the matched node.
 
 This is a pure function (no `window` or DOM API calls beyond `getAttribute`) and is unit-testable in a plain Node environment. `createIframePreviewAdapter` uses it internally to translate raw hit-test results into SDK element IDs. Full treatment of hit-testing and the visual editor canvas pattern is in the [Canvas Integration guide](/sdk/guides/canvas-integration).
 
@@ -381,10 +381,10 @@ This is a pure function (no `window` or DOM API calls beyond `getAttribute`) and
 ## resolveElementAffordances
 
 ```typescript
-import { resolveElementAffordances } from "@hyperframes/sdk/editing";
+import { resolveElementAffordances } from "@smashcut/sdk/editing";
 ```
 
-Determines which editing operations are available for a live element given its current DOM state and model. Imported from the `@hyperframes/sdk/editing` subpath. Full documentation is in the [Editing Affordances guide](/sdk/guides/editing-affordances).
+Determines which editing operations are available for a live element given its current DOM state and model. Imported from the `@smashcut/sdk/editing` subpath. Full documentation is in the [Editing Affordances guide](/sdk/guides/editing-affordances).
 
 ---
 

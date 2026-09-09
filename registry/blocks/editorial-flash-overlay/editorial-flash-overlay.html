@@ -20,9 +20,9 @@
       }
 
       #ef-flash {
-        --hf-editorial-flash-wash: 255 253 250;
-        --hf-editorial-flash-warm: 255 174 105;
-        --hf-editorial-flash-cool: 183 218 255;
+        --sc-editorial-flash-wash: 255 253 250;
+        --sc-editorial-flash-warm: 255 174 105;
+        --sc-editorial-flash-cool: 183 218 255;
         position: absolute;
         inset: -12%;
         overflow: hidden;
@@ -37,7 +37,7 @@
       }
 
       #ef-wash {
-        background: rgb(var(--hf-editorial-flash-wash));
+        background: rgb(var(--sc-editorial-flash-wash));
       }
 
       #ef-core {
@@ -46,8 +46,8 @@
           ellipse 68% 92% at 37% 47%,
           rgb(255 255 255) 0%,
           rgb(255 255 255 / 98%) 20%,
-          rgb(var(--hf-editorial-flash-wash) / 86%) 45%,
-          rgb(var(--hf-editorial-flash-warm) / 32%) 67%,
+          rgb(var(--sc-editorial-flash-wash) / 86%) 45%,
+          rgb(var(--sc-editorial-flash-warm) / 32%) 67%,
           transparent 86%
         );
         mix-blend-mode: screen;
@@ -59,10 +59,10 @@
         background: linear-gradient(
           108deg,
           transparent 21%,
-          rgb(var(--hf-editorial-flash-warm) / 10%) 38%,
-          rgb(var(--hf-editorial-flash-wash) / 90%) 49%,
+          rgb(var(--sc-editorial-flash-warm) / 10%) 38%,
+          rgb(var(--sc-editorial-flash-wash) / 90%) 49%,
           rgb(255 255 255 / 98%) 53%,
-          rgb(var(--hf-editorial-flash-cool) / 24%) 62%,
+          rgb(var(--sc-editorial-flash-cool) / 24%) 62%,
           transparent 79%
         );
         mix-blend-mode: screen;

@@ -13,7 +13,7 @@ import {
 } from "./catalog-payload-assets.ts";
 
 function project(files: Record<string, string | Buffer>): string {
-  const dir = mkdtempSync(join(tmpdir(), "hf-payload-assets-"));
+  const dir = mkdtempSync(join(tmpdir(), "sc-payload-assets-"));
   for (const [name, contents] of Object.entries(files)) {
     const path = join(dir, name);
     mkdirSync(join(path, ".."), { recursive: true });
@@ -23,7 +23,7 @@ function project(files: Record<string, string | Buffer>): string {
 }
 
 function target() {
-  return { dir: mkdtempSync(join(tmpdir(), "hf-payload-out-")), urlBase: "/public/catalog/assets" };
+  return { dir: mkdtempSync(join(tmpdir(), "sc-payload-out-")), urlBase: "/public/catalog/assets" };
 }
 
 describe("localReferences", () => {

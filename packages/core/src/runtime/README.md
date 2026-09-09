@@ -1,14 +1,14 @@
-# Hyperframe Runtime Engine
+# Smashcut Runtime Engine
 
 This folder owns the runtime that powers preview and producer parity.
 
 ## Current Direction
 
-- Runtime source of truth is converging on `hyperframe.ts`.
+- Runtime source of truth is converging on `smashcut.ts`.
 - Build produces:
-  - `dist/hyperframe.runtime.iife.js` (browser bootstrap)
-  - `dist/hyperframe.runtime.mjs` (tooling/tests)
-  - `dist/hyperframe.manifest.json` (version + sha256 + artifact map)
+  - `dist/smashcut.runtime.iife.js` (browser bootstrap)
+  - `dist/smashcut.runtime.mjs` (tooling/tests)
+  - `dist/smashcut.manifest.json` (version + sha256 + artifact map)
 - FE owns iframe runtime injection.
 - BE persists raw generated HTML without injecting runtime scripts.
 - Producer validates pinned runtime checksum from manifest before render.
@@ -26,11 +26,11 @@ Globals:
 postMessage:
 
 - parent -> runtime control:
-  - `source: "hf-parent"`
+  - `source: "sc-parent"`
   - `type: "control"`
   - actions: `play`, `pause`, `seek`, `set-muted`, `set-playback-rate`, `enable-pick-mode`, `disable-pick-mode`
 - runtime -> parent events:
-  - `source: "hf-preview"`
+  - `source: "sc-preview"`
   - `type: "state"` and `type: "timeline"`
   - `type: "ready"` — emitted once when `installRuntimeControlBridge` registers
     the control-message listener. The parent uses it to replay current playback
@@ -46,7 +46,7 @@ Determinism baseline:
 ## Build
 
 ```bash
-bun run --filter @hyperframes/core build:hyperframes-runtime
+bun run --filter @smashcut/core build:smashcut-runtime
 ```
 
 ## Security Expectations

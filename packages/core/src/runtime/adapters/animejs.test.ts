@@ -5,7 +5,7 @@ const animeWindow = window as Window & {
   anime?: {
     running: unknown[];
   };
-  __hfAnime?: unknown[];
+  __scAnime?: unknown[];
 };
 
 function createAnimeInstance(opts?: { duration?: number }) {
@@ -20,12 +20,12 @@ function createAnimeInstance(opts?: { duration?: number }) {
 describe("animejs adapter", () => {
   beforeEach(() => {
     delete animeWindow.anime;
-    delete animeWindow.__hfAnime;
+    delete animeWindow.__scAnime;
   });
 
   afterEach(() => {
     delete animeWindow.anime;
-    delete animeWindow.__hfAnime;
+    delete animeWindow.__scAnime;
   });
 
   it("has correct name", () => {
@@ -36,19 +36,19 @@ describe("animejs adapter", () => {
     it("auto-discovers from anime.running", () => {
       const instance = createAnimeInstance();
       animeWindow.anime = { running: [instance] };
-      animeWindow.__hfAnime = [];
+      animeWindow.__scAnime = [];
       const adapter = createAnimeJsAdapter();
       adapter.discover();
-      expect(animeWindow.__hfAnime).toContain(instance);
+      expect(animeWindow.__scAnime).toContain(instance);
     });
 
     it("does not duplicate existing instances", () => {
       const instance = createAnimeInstance();
       animeWindow.anime = { running: [instance] };
-      animeWindow.__hfAnime = [instance];
+      animeWindow.__scAnime = [instance];
       const adapter = createAnimeJsAdapter();
       adapter.discover();
-      expect(animeWindow.__hfAnime).toHaveLength(1);
+      expect(animeWindow.__scAnime).toHaveLength(1);
     });
 
     it("handles no global anime", () => {
@@ -66,7 +66,7 @@ describe("animejs adapter", () => {
   describe("seek", () => {
     it("seeks with time in milliseconds", () => {
       const instance = createAnimeInstance();
-      animeWindow.__hfAnime = [instance];
+      animeWindow.__scAnime = [instance];
       const adapter = createAnimeJsAdapter();
       adapter.seek({ time: 2 });
       expect(instance.seek).toHaveBeenCalledWith(2000);
@@ -74,7 +74,7 @@ describe("animejs adapter", () => {
 
     it("seeks fractional seconds accurately", () => {
       const instance = createAnimeInstance();
-      animeWindow.__hfAnime = [instance];
+      animeWindow.__scAnime = [instance];
       const adapter = createAnimeJsAdapter();
       adapter.seek({ time: 0.5 });
       expect(instance.seek).toHaveBeenCalledWith(500);
@@ -82,7 +82,7 @@ describe("animejs adapter", () => {
 
     it("clamps negative time to 0", () => {
       const instance = createAnimeInstance();
-      animeWindow.__hfAnime = [instance];
+      animeWindow.__scAnime = [instance];
       const adapter = createAnimeJsAdapter();
       adapter.seek({ time: -3 });
       expect(instance.seek).toHaveBeenCalledWith(0);
@@ -96,7 +96,7 @@ describe("animejs adapter", () => {
     it("seeks multiple instances", () => {
       const a = createAnimeInstance();
       const b = createAnimeInstance();
-      animeWindow.__hfAnime = [a, b];
+      animeWindow.__scAnime = [a, b];
       const adapter = createAnimeJsAdapter();
       adapter.seek({ time: 1.5 });
       expect(a.seek).toHaveBeenCalledWith(1500);
@@ -112,7 +112,7 @@ describe("animejs adapter", () => {
         play: vi.fn(),
       };
       const good = createAnimeInstance();
-      animeWindow.__hfAnime = [bad, good];
+      animeWindow.__scAnime = [bad, good];
       const adapter = createAnimeJsAdapter();
       adapter.seek({ time: 1 });
       expect(good.seek).toHaveBeenCalledWith(1000);
@@ -123,7 +123,7 @@ describe("animejs adapter", () => {
     it("pauses all instances", () => {
       const a = createAnimeInstance();
       const b = createAnimeInstance();
-      animeWindow.__hfAnime = [a, b];
+      animeWindow.__scAnime = [a, b];
       const adapter = createAnimeJsAdapter();
       adapter.pause();
       expect(a.pause).toHaveBeenCalled();
@@ -139,7 +139,7 @@ describe("animejs adapter", () => {
   describe("play", () => {
     it("plays all instances", () => {
       const a = createAnimeInstance();
-      animeWindow.__hfAnime = [a];
+      animeWindow.__scAnime = [a];
       const adapter = createAnimeJsAdapter();
       adapter.play!();
       expect(a.play).toHaveBeenCalled();

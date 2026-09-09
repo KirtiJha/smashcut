@@ -4,7 +4,7 @@ These are optional tested seeds, not the complete capability surface. Read the
 shared policy and choose one relevant section through `media-treatments.md`.
 Agents may modify or combine a seed with compatible canonical controls after
 inspecting the media, or assemble a bespoke payload from
-`hyperframes media-treatment --capabilities --json` when no seed fits.
+`smashcut media-treatment --capabilities --json` when no seed fits.
 
 ## Natural Portrait
 
@@ -212,7 +212,7 @@ footage. Compare against the source and lower strength when it does.
 
 Use the existing registered paused GSAP timeline on the same media element:
 
-- author `--hf-color-grading-exposure: 0` in the media element's inline
+- author `--sc-color-grading-exposure: 0` in the media element's inline
   `style`;
 - move it through a finite irregular sequence within `-0.03` to `0.03`, using
   gentle `sine.inOut` segments around `0.45` to `0.8` seconds;
@@ -305,7 +305,7 @@ When the narrative benefits from explicit recording-device language, install
 the Registry overlay block:
 
 ```bash
-npx hyperframes add camcorder-hud --no-clipboard
+npx smashcut add camcorder-hud --no-clipboard
 ```
 
 Insert the printed `data-composition-src` host over the intended media range.
@@ -407,7 +407,7 @@ The digital stage is used only for rare horizontal row tears: keep its color
 split, pixelation, block displacement, block opacity, and corruption values at
 zero. Leave blur, CRT curvature, generic pixelation, and a camera HUD off.
 
-These values are an original HyperFrames recipe calibrated on the same public
+These values are an original SmashCut recipe calibrated on the same public
 Orange Cat source used for the external visual reference. They are not copied
 shader code or a claim of pixel-identical output from the external reference. The scanline count is
 mapped to the reference's approximately 127-cycle primary line pattern; the HF
@@ -426,7 +426,7 @@ that competes with the subject.
 
 Use for personal archive, family-memory, childhood, travel-memory, or explicit
 small-gauge home-movie language. This is stronger and more materially film-like
-than Film Memory, but it is still an owned HyperFrames treatment rather than a
+than Film Memory, but it is still an owned SmashCut treatment rather than a
 claim to reproduce a named film stock, camera, or laboratory process.
 
 Do not use for literal UI, technical demonstrations, catalog products, clean
@@ -515,7 +515,7 @@ like a transparent dot texture laid over unchanged footage.
 
 Use for poster frames, editorial portraits, music/social cutaways, zine
 graphics, and bold print-led transitions where two visible spot inks are more
-appropriate than photographic color. This is a fixed original HyperFrames
+appropriate than photographic color. This is a fixed original SmashCut
 vermilion/teal treatment, not a claim to emulate a named printer, ink set, or
 commercial print process.
 
@@ -691,7 +691,7 @@ for code/data/device language. For a warmer print-like **Editorial ASCII**, use:
 
 Keep `ascii` between `0.75` and `1` for a fully readable treatment and
 `asciiSize` between `0.04` and `0.15`. A finite reveal may author
-`--hf-color-grading-ascii: 0` inline and tween it to `1` with the registered
+`--sc-color-grading-ascii: 0` inline and tween it to `1` with the registered
 paused GSAP timeline. Reject unstable cells, lost silhouette/face structure,
 unreadable composition, or a palette that conflicts with the project.
 
@@ -722,7 +722,7 @@ the six-color **Electric Ink** palette:
 }
 ```
 
-HyperFrames also owns these named ramps. The name is an authoring shortcut;
+SmashCut also owns these named ramps. The name is an authoring shortcut;
 persist the listed colors through the existing `palette` array:
 
 | Group       | Palette ID       | Ordered colors                                                   |
@@ -740,8 +740,8 @@ persist the listed colors through the existing `palette` array:
 | Mood        | `forest`         | `#1a2e1a`, `#2d4a2d`, `#4a7c4a`, `#7ab37a`, `#c8e6c8`            |
 | Mono        | `sepia`          | `#1a1610`, `#3d3020`, `#6b5a40`, `#a89070`, `#e8dcc8`            |
 | Mono        | `blueprint`      | `#001830`, `#003060`, `#0050a0`, `#0080e0`, `#e0f0ff`            |
-| HyperFrames | `warm-print`     | `#17121a`, `#824c50`, `#e09873`, `#f7ddb1`                       |
-| HyperFrames | `electric-ink`   | `#080717`, `#3c185f`, `#7e2278`, `#d9339f`, `#ff6b66`, `#aafae0` |
+| SmashCut | `warm-print`     | `#17121a`, `#824c50`, `#e09873`, `#f7ddb1`                       |
+| SmashCut | `electric-ink`   | `#080717`, `#3c185f`, `#7e2278`, `#d9339f`, `#ff6b66`, `#aafae0` |
 
 Choose by inspected source and project language, not by palette name alone.
 For example, `terminal` fits device/code language, `warm-print` fits editorial
@@ -751,7 +751,7 @@ print, and `synthwave` is an intentional stylization rather than generic polish.
 dark-to-light order for this treatment; the runtime validates colors but does
 not reorder them, so reversing the array intentionally inverts the mapping.
 Keep `dither` between `0.7` and `1` and `ditherSize` between `0.1` and `0.5`.
-A finite reveal may author `--hf-color-grading-dither: 0` inline and tween it
+A finite reveal may author `--sc-color-grading-dither: 0` inline and tween it
 to the chosen amount with GSAP. Judge the moving result at output resolution;
 reject shimmer, lost subject structure, accidental muddy intermediate colors,
 or a palette chosen without regard to the project's design language.
@@ -804,7 +804,7 @@ texture, generic flash, or film-stock emulation.
 Install the Registry overlay block:
 
 ```bash
-npx hyperframes add organic-light-leak-overlay --no-clipboard
+npx smashcut add organic-light-leak-overlay --no-clipboard
 ```
 
 Insert the printed `data-composition-src` host at the intended beat and keep
@@ -824,9 +824,9 @@ Extract the exact deterministic source frame first, then remove its background:
 
 ```bash
 ffmpeg -ss <seconds> -i <source-video> -frames:v 1 -y .media/generated/freeze-source.png
-npx hyperframes remove-background .media/generated/freeze-source.png \
+npx smashcut remove-background .media/generated/freeze-source.png \
   -o .media/generated/freeze-cutout.png --json
-npx hyperframes add freeze-frame-dressing --no-clipboard
+npx smashcut add freeze-frame-dressing --no-clipboard
 ```
 
 Add the transparent result as a direct-root timed media layer and insert the
@@ -835,7 +835,7 @@ tape, and flash; the host timeline only animates the real cutout:
 
 ```html
 <img
-  id="hf-freeze-cutout"
+  id="sc-freeze-cutout"
   class="clip"
   src="./.media/generated/freeze-cutout.png"
   alt=""
@@ -847,7 +847,7 @@ tape, and flash; the host timeline only animates the real cutout:
 
 ```js
 tl.fromTo(
-  "#hf-freeze-cutout",
+  "#sc-freeze-cutout",
   { y: 42, scale: 0.86, rotation: -2 },
   { y: 0, scale: 1, rotation: 0.4, duration: 0.5, ease: "back.out(1.35)" },
   freezeAt,
@@ -876,7 +876,7 @@ authored light/motion layers when they do not obscure required information.
 Install the Registry overlay block:
 
 ```bash
-npx hyperframes add editorial-flash-overlay --no-clipboard
+npx smashcut add editorial-flash-overlay --no-clipboard
 ```
 
 Insert the printed `data-composition-src` host so the block's midpoint lands
@@ -889,7 +889,7 @@ tl.to(
   "#outgoing-media",
   {
     scale: 1.035,
-    "--hf-color-grading-exposure": 0.82,
+    "--sc-color-grading-exposure": 0.82,
     duration: 0.12,
     ease: "power3.in",
   },
@@ -904,8 +904,8 @@ tl.fromTo(
 tl.to(
   "#incoming-media",
   {
-    "--hf-color-grading-exposure": 0,
-    "--hf-color-grading-intensity": 0.58,
+    "--sc-color-grading-exposure": 0,
+    "--sc-color-grading-intensity": 0.58,
     duration: 0.24,
     ease: "power2.out",
   },
@@ -914,8 +914,8 @@ tl.to(
 ```
 
 When the shader steps are used, author
-`--hf-color-grading-exposure: 0.72` and
-`--hf-color-grading-intensity: 0` inline on the incoming media so a fresh seek
+`--sc-color-grading-exposure: 0.72` and
+`--sc-color-grading-intensity: 0` inline on the incoming media so a fresh seek
 has the correct start state. Set the final intensity to the source-approved
 value instead of copying `0.58` blindly. Skip the shader intensity step when
 the incoming source should remain ungraded.

@@ -6,7 +6,7 @@ const lottieWindow = window as Window & {
     loadAnimation: (params: unknown) => unknown;
     getRegisteredAnimations: () => unknown[];
   };
-  __hfLottie?: unknown[];
+  __scLottie?: unknown[];
 };
 
 function createLottieWebAnim(opts?: { totalFrames?: number; frameRate?: number }) {
@@ -40,12 +40,12 @@ function createDotLottiePlayer(opts?: {
 describe("lottie adapter", () => {
   beforeEach(() => {
     delete lottieWindow.lottie;
-    delete lottieWindow.__hfLottie;
+    delete lottieWindow.__scLottie;
   });
 
   afterEach(() => {
     delete lottieWindow.lottie;
-    delete lottieWindow.__hfLottie;
+    delete lottieWindow.__scLottie;
   });
 
   it("has correct name", () => {
@@ -59,10 +59,10 @@ describe("lottie adapter", () => {
         loadAnimation: vi.fn(),
         getRegisteredAnimations: () => [anim],
       };
-      lottieWindow.__hfLottie = [];
+      lottieWindow.__scLottie = [];
       const adapter = createLottieAdapter();
       adapter.discover();
-      expect(lottieWindow.__hfLottie).toContain(anim);
+      expect(lottieWindow.__scLottie).toContain(anim);
     });
 
     it("does not duplicate existing animations", () => {
@@ -71,10 +71,10 @@ describe("lottie adapter", () => {
         loadAnimation: vi.fn(),
         getRegisteredAnimations: () => [anim],
       };
-      lottieWindow.__hfLottie = [anim];
+      lottieWindow.__scLottie = [anim];
       const adapter = createLottieAdapter();
       adapter.discover();
-      expect(lottieWindow.__hfLottie).toHaveLength(1);
+      expect(lottieWindow.__scLottie).toHaveLength(1);
     });
 
     it("handles no global lottie", () => {
@@ -86,7 +86,7 @@ describe("lottie adapter", () => {
   describe("seek", () => {
     it("seeks lottie-web with goToAndStop in ms", () => {
       const anim = createLottieWebAnim();
-      lottieWindow.__hfLottie = [anim];
+      lottieWindow.__scLottie = [anim];
       const adapter = createLottieAdapter();
       adapter.seek({ time: 2 });
       expect(anim.goToAndStop).toHaveBeenCalledWith(2000, false);
@@ -94,7 +94,7 @@ describe("lottie adapter", () => {
 
     it("seeks dotlottie-web v2 with setCurrentRawFrameValue", () => {
       const player = createDotLottiePlayer({ totalFrames: 60, frameRate: 30 });
-      lottieWindow.__hfLottie = [player];
+      lottieWindow.__scLottie = [player];
       const adapter = createLottieAdapter();
       adapter.seek({ time: 1 });
       // frame = time * fps = 1 * 30 = 30
@@ -103,7 +103,7 @@ describe("lottie adapter", () => {
 
     it("clamps frame to totalFrames - 1", () => {
       const player = createDotLottiePlayer({ totalFrames: 60, frameRate: 30 });
-      lottieWindow.__hfLottie = [player];
+      lottieWindow.__scLottie = [player];
       const adapter = createLottieAdapter();
       adapter.seek({ time: 10 }); // frame = 300, but totalFrames = 60
       expect(player.setCurrentRawFrameValue).toHaveBeenCalledWith(59);
@@ -113,7 +113,7 @@ describe("lottie adapter", () => {
       "does not seek a dotlottie v1 player with duration %s",
       (duration) => {
         const player = { pause: vi.fn(), seek: vi.fn(), duration };
-        lottieWindow.__hfLottie = [player];
+        lottieWindow.__scLottie = [player];
         const adapter = createLottieAdapter();
         adapter.seek({ time: 0 });
         adapter.seek({ time: 1 });
@@ -123,7 +123,7 @@ describe("lottie adapter", () => {
 
     it("seeks a dotlottie v1 player once its duration becomes available", () => {
       const player = { pause: vi.fn(), seek: vi.fn(), duration: 0 };
-      lottieWindow.__hfLottie = [player];
+      lottieWindow.__scLottie = [player];
       const adapter = createLottieAdapter();
       adapter.seek({ time: 0 });
       player.duration = 2;
@@ -140,7 +140,7 @@ describe("lottie adapter", () => {
 
     it("clamps negative time to 0", () => {
       const anim = createLottieWebAnim();
-      lottieWindow.__hfLottie = [anim];
+      lottieWindow.__scLottie = [anim];
       const adapter = createLottieAdapter();
       adapter.seek({ time: -5 });
       expect(anim.goToAndStop).toHaveBeenCalledWith(0, false);
@@ -150,7 +150,7 @@ describe("lottie adapter", () => {
   describe("pause", () => {
     it("pauses lottie-web animation", () => {
       const anim = createLottieWebAnim();
-      lottieWindow.__hfLottie = [anim];
+      lottieWindow.__scLottie = [anim];
       const adapter = createLottieAdapter();
       adapter.pause();
       expect(anim.pause).toHaveBeenCalled();
@@ -158,7 +158,7 @@ describe("lottie adapter", () => {
 
     it("pauses dotlottie player", () => {
       const player = createDotLottiePlayer();
-      lottieWindow.__hfLottie = [player];
+      lottieWindow.__scLottie = [player];
       const adapter = createLottieAdapter();
       adapter.pause();
       expect(player.pause).toHaveBeenCalled();
@@ -180,21 +180,21 @@ describe("lottie adapter", () => {
 
     it("infers duration from lottie-web totalFrames/frameRate", () => {
       const anim = createLottieWebAnim({ totalFrames: 90, frameRate: 30 });
-      lottieWindow.__hfLottie = [anim];
+      lottieWindow.__scLottie = [anim];
       const adapter = createLottieAdapter();
       expect(adapter.getInferredDurationSeconds?.()).toBe(3);
     });
 
     it("infers duration from dotlottie player's duration field", () => {
       const player = createDotLottiePlayer({ duration: 4.2 });
-      lottieWindow.__hfLottie = [player];
+      lottieWindow.__scLottie = [player];
       const adapter = createLottieAdapter();
       expect(adapter.getInferredDurationSeconds?.()).toBe(4.2);
     });
 
     it("falls back to totalFrames/frameRate when dotlottie duration is absent", () => {
       const player = createDotLottiePlayer({ totalFrames: 150, frameRate: 30, duration: 0 });
-      lottieWindow.__hfLottie = [player];
+      lottieWindow.__scLottie = [player];
       const adapter = createLottieAdapter();
       expect(adapter.getInferredDurationSeconds?.()).toBe(5);
     });
@@ -202,14 +202,14 @@ describe("lottie adapter", () => {
     it("returns the max across multiple registered animations", () => {
       const short = createLottieWebAnim({ totalFrames: 30, frameRate: 30 });
       const long = createLottieWebAnim({ totalFrames: 300, frameRate: 30 });
-      lottieWindow.__hfLottie = [short, long];
+      lottieWindow.__scLottie = [short, long];
       const adapter = createLottieAdapter();
       expect(adapter.getInferredDurationSeconds?.()).toBe(10);
     });
 
     it("returns null when the animation hasn't loaded yet (totalFrames=0)", () => {
       const anim = createLottieWebAnim({ totalFrames: 0, frameRate: 30 });
-      lottieWindow.__hfLottie = [anim];
+      lottieWindow.__scLottie = [anim];
       const adapter = createLottieAdapter();
       expect(adapter.getInferredDurationSeconds?.()).toBeNull();
     });

@@ -107,22 +107,22 @@ describe("readTimelineDurationFromDocument", () => {
     expect(readTimelineDurationFromDocument(doc)).toBe(5.5);
   });
 
-  it("reads data-hf-authored-duration when data-duration is stripped", () => {
+  it("reads data-sc-authored-duration when data-duration is stripped", () => {
     const doc = createDocument(`
       <div data-composition-id="main">
-        <div data-composition-id="sub-a" data-start="0" data-hf-authored-duration="8"></div>
-        <div data-composition-id="sub-b" data-start="60" data-hf-authored-duration="10"></div>
+        <div data-composition-id="sub-a" data-start="0" data-sc-authored-duration="8"></div>
+        <div data-composition-id="sub-b" data-start="60" data-sc-authored-duration="10"></div>
       </div>
     `);
 
     expect(readTimelineDurationFromDocument(doc)).toBe(70);
   });
 
-  it("picks the larger of data-duration and data-hf-authored-duration children", () => {
+  it("picks the larger of data-duration and data-sc-authored-duration children", () => {
     const doc = createDocument(`
       <div data-composition-id="main">
         <div data-start="0" data-duration="5"></div>
-        <div data-composition-id="ext" data-start="74" data-hf-authored-duration="8"></div>
+        <div data-composition-id="ext" data-start="74" data-sc-authored-duration="8"></div>
       </div>
     `);
 

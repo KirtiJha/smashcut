@@ -48,5 +48,5 @@ Fewer re-renders. More finished videos.
 **Delivery:** Calm, inviting. Let the command land.
 
 ```
-Try it: npx hyperframes.
+Try it: npx smashcut.
 ```

@@ -2,7 +2,7 @@
 #
 # Upload docs/images/ to the HeyGen public CDN.
 #
-# Docs previews (mp4/png/gif) are served from https://static.heygen.ai/hyperframes-oss/docs/images/
+# Docs previews (mp4/png/gif) are served from https://static.heygen.ai/smashcut-oss/docs/images/
 # rather than committed to the repo. After regenerating previews with
 # `scripts/generate-catalog-previews.ts` or `scripts/generate-template-previews.ts`,
 # run this script to publish the new files.
@@ -17,7 +17,7 @@ set -euo pipefail
 
 REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 SRC="$REPO_ROOT/docs/images/"
-DEST="s3://heygen-public/hyperframes-oss/docs/images/"
+DEST="s3://heygen-public/smashcut-oss/docs/images/"
 PROFILE="${AWS_PROFILE:-engineering-767398024897}"
 
 if [ ! -d "$SRC" ]; then
@@ -38,7 +38,7 @@ DISTRIBUTION="${DOCS_CDN_DISTRIBUTION_ID:-E2BSLVSZ7FG3U0}"
 echo "Invalidating $DISTRIBUTION"
 aws --profile "$PROFILE" cloudfront create-invalidation \
   --distribution-id "$DISTRIBUTION" \
-  --paths "/hyperframes-oss/docs/images/*" \
+  --paths "/smashcut-oss/docs/images/*" \
   --query "Invalidation.Id" --output text
 
-echo "Done. Files are live at https://static.heygen.ai/hyperframes-oss/docs/images/"
+echo "Done. Files are live at https://static.heygen.ai/smashcut-oss/docs/images/"

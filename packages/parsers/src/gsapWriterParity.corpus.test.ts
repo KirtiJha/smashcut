@@ -169,7 +169,7 @@ window.__timelines["t"] = tl;`;
 const SYN_NESTED = `\
 var tl = gsap.timeline({ paused: true });
 tl.to("#scene-2 .headline", { y: 0, opacity: 1, duration: 0.5 }, 0);
-tl.from('[data-hf-id="scene-2"] .sub', { opacity: 0, duration: 0.4 }, 0.3);
+tl.from('[data-sc-id="scene-2"] .sub', { opacity: 0, duration: 0.4 }, 0.3);
 window.__timelines["t"] = tl;`;
 
 // SYNTH — percentage keyframes (3 kfs).

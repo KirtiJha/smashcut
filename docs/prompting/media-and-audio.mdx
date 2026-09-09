@@ -7,7 +7,7 @@ import { DocsVideo } from "/snippets/docs-video.jsx";
 
 Your video moves and reads right. This level gives it a voice.
 
-HyperFrames owns media *playback*. A sibling media pipeline resolves everything
+SmashCut owns media *playback*. A sibling media pipeline resolves everything
 else: voice, music, sound effects, images, icons, logos, captions, and
 background removal. You describe what the composition needs. The agent resolves
 each need to a frozen local file.
@@ -146,7 +146,7 @@ for you. Naming the layout you want still helps.
   background guide](/guides/remove-background#compositing-patterns-and-pitfalls):
 
   - A cutout that reveals into view goes inside a non-timed `<div>`, and the
-    *wrapper* is what gets animated. HyperFrames owns clip visibility, so
+    *wrapper* is what gets animated. SmashCut owns clip visibility, so
     animating the media element directly fights the clip lifecycle.
   - The base video and the cutout both mount at `data-start="0"`, so their
     decoders stay in sync at the cut.
@@ -168,9 +168,9 @@ asset and builds a bounded H.264 proxy automatically, cached under
 playback. A render always decodes the original file, so nothing about final
 quality or color is touched.
 
-`hyperframes lint` also flags the asset at info level (`hevc_preview_codec`) so
+`smashcut lint` also flags the asset at info level (`hevc_preview_codec`) so
 you know a proxy is in play. Proxying is optional. Pass `--no-proxy` per
-command, or set `media.autoProxy: false` in `hyperframes.json` project-wide.
+command, or set `media.autoProxy: false` in `smashcut.json` project-wide.
 
 The same mechanism covers alpha-channel sources. ProRes 4444 and alpha WebM get
 a VP8 + Opus WebM proxy instead of being refused, so a transparent cutout in a
@@ -182,8 +182,8 @@ other supplied asset, and describe the composition you want built from it.
 > Build a short picture-in-picture piece from `source-hevc.mp4` — inset it bottom-right over a full-bleed background scene, with a soft rounded border.
 
 <DocsVideo
-  title="HyperFrames video: Proxy Footage"
-  src="https://static.heygen.ai/hyperframes-oss/docs/images/prompting/proxy-footage.mp4#t=0.1"
+  title="SmashCut video: Proxy Footage"
+  src="https://static.heygen.ai/smashcut-oss/docs/images/prompting/proxy-footage.mp4#t=0.1"
   loop
 />
 *Rendered from the prompt above, unedited. The source clip is a plain H.265/HEVC
@@ -237,8 +237,8 @@ prompt language you can lift for your own video:
 > […] a real talking-head clip (generate a short clip of a person speaking one neutral line via the media pipeline's avatar video generation […] **transcode it to HEVC `hvc1`** so the automatic proxy subsystem carries preview) sits as a clip on the wire. The order of operations IS the story: as the camera arrives and BEFORE the person speaks, the framework mattes the footage — **the background peels away via background removal** […] THEN they speak, and the main **keywords of their own line — derived from the clip's transcription — land word-synced** […] The clip's own audio ducks the BGM briefly; the VO resumes as the camera pulls away.
 
 <DocsVideo
-  title="HyperFrames video: Capstone Region Material"
-  src="https://static.heygen.ai/hyperframes-oss/docs/images/prompting/capstone-region-material.mp4#t=0.1"
+  title="SmashCut video: Capstone Region Material"
+  src="https://static.heygen.ai/smashcut-oss/docs/images/prompting/capstone-region-material.mp4#t=0.1"
   loop
 />
 *That clause, rendered — the region cut from the finished film.*

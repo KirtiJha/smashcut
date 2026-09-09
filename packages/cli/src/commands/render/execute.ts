@@ -1,5 +1,5 @@
 import { mkdirSync, readFileSync } from "node:fs";
-import type { CanvasResolution, OutputResolutionIssueKind } from "@hyperframes/core";
+import type { CanvasResolution, OutputResolutionIssueKind } from "@smashcut/core";
 import { c } from "../../ui/colors.js";
 import { errorBox, formatBytes } from "../../ui/format.js";
 import { formatLintFindings } from "../../utils/lintFormat.js";
@@ -168,7 +168,7 @@ async function ensureRenderBrowser(plan: RenderPlan): Promise<string> {
     errorBox(
       "Chrome not found",
       normalizeErrorMessage(error),
-      "Run: npx hyperframes browser ensure",
+      "Run: npx smashcut browser ensure",
     );
     failCommand();
   }

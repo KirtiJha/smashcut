@@ -20,7 +20,7 @@ function el(html: string): HTMLElement {
 
 describe("resolveElementAffordances (live DOM)", () => {
   it("video element with model => media + colorGrading, existsInSource", () => {
-    const v = el(`<video data-hf-id="hf-v" style="position:absolute;left:10px;top:20px"></video>`);
+    const v = el(`<video data-sc-id="sc-v" style="position:absolute;left:10px;top:20px"></video>`);
     const a = resolveElementAffordances(v, { text: null, animationIds: [], start: null });
     expect(a.sections).toMatchObject({ media: true, colorGrading: true });
     expect(a.capabilities.canSelect).toBe(true);

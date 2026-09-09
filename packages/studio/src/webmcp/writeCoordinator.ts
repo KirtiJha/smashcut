@@ -361,7 +361,7 @@ export async function runTargetedWrite<T extends object>(
     prepared = await prepareWriteSelection(deps, input, address.handle);
   } catch (error) {
     const { kind, reason } = classifyThrownError(error);
-    if (kind === "internal") console.error(`[hf-webmcp] ${input.operation} preflight threw`, error);
+    if (kind === "internal") console.error(`[sc-webmcp] ${input.operation} preflight threw`, error);
     return refusedResult(input.operation, toolFailure(kind, reason));
   }
   if (!prepared.ok) return prepared.result;
@@ -384,7 +384,7 @@ export async function runTargetedWrite<T extends object>(
     adapter = await input.write(selection);
   } catch (error) {
     const { kind, reason } = classifyThrownError(error);
-    if (kind === "internal") console.error(`[hf-webmcp] ${input.operation} threw`, error);
+    if (kind === "internal") console.error(`[sc-webmcp] ${input.operation} threw`, error);
     const result: StudioWriteResult<T> = {
       ok: false,
       kind,

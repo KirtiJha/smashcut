@@ -7,7 +7,7 @@
  */
 
 import { useCallback, useState, type MutableRefObject } from "react";
-import type { Composition, CompositionVariable } from "@hyperframes/sdk";
+import type { Composition, CompositionVariable } from "@smashcut/sdk";
 import {
   useEditVariablesInFile,
   useProjectCompositionVariables,

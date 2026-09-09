@@ -15,7 +15,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 
 ```html tilt-card.html
 <!--
-  Tilt Card - transitions.dev-inspired primitive for HyperFrames.
+  Tilt Card - transitions.dev-inspired primitive for SmashCut.
 
   Paste the markup, CSS and script into a composition. Use the timeline
   integration note at the bottom as the starting point for deterministic GSAP
@@ -43,7 +43,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 -->
 
 <div
-  class="hf-transition-tilt-card"
+  class="sc-transition-tilt-card"
   data-composition-variables='[
     {"id": "eyebrow", "type": "string", "role": "content", "label": "Eyebrow", "description": "Small uppercase kicker above the headline.", "default": "Primitive"},
     {"id": "headline", "type": "string", "role": "content", "label": "Headline", "description": "Large card headline.", "default": "Agent-ready motion"},
@@ -51,37 +51,37 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
     {"id": "accent", "type": "enum", "role": "style", "label": "Accent", "description": "Colour family of the card gradient, corner glow, eyebrow and drop shadow.", "default": "indigo", "options": [{"value": "indigo", "label": "Indigo"}, {"value": "emerald", "label": "Emerald"}, {"value": "violet", "label": "Violet"}]}
   ]'
 >
-  <div class="hf-transition-tilt-glow"></div>
-  <div class="hf-transition-tilt-content">
+  <div class="sc-transition-tilt-glow"></div>
+  <div class="sc-transition-tilt-content">
     <span>Primitive</span>
     <strong>Agent-ready motion</strong>
   </div>
 </div>
 
 <style>
-  .hf-transition-tilt-card {
+  .sc-transition-tilt-card {
     position: relative;
     width: 420px;
     height: 260px;
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.18);
     border-radius: 30px;
-    background: linear-gradient(135deg, #18181b, var(--hf-tilt-accent, #312e81));
+    background: linear-gradient(135deg, #18181b, var(--sc-tilt-accent, #312e81));
     color: #ffffff;
     font-family: Inter, system-ui, sans-serif;
     transform-style: preserve-3d;
-    box-shadow: 0 32px 90px var(--hf-tilt-shadow, rgba(49, 46, 129, 0.34));
+    box-shadow: 0 32px 90px var(--sc-tilt-shadow, rgba(49, 46, 129, 0.34));
   }
-  .hf-transition-tilt-glow {
+  .sc-transition-tilt-glow {
     position: absolute;
-    inset: var(--hf-tilt-glow-inset, -30%);
+    inset: var(--sc-tilt-glow-inset, -30%);
     background: radial-gradient(
       circle at 30% 20%,
-      var(--hf-tilt-glow, rgba(125, 211, 252, 0.5)),
+      var(--sc-tilt-glow, rgba(125, 211, 252, 0.5)),
       transparent 36%
     );
   }
-  .hf-transition-tilt-content {
+  .sc-transition-tilt-content {
     position: relative;
     display: grid;
     align-content: end;
@@ -90,14 +90,14 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
     padding: 34px;
     transform: translateZ(38px);
   }
-  .hf-transition-tilt-content span {
-    color: var(--hf-tilt-label, #a5b4fc);
+  .sc-transition-tilt-content span {
+    color: var(--sc-tilt-label, #a5b4fc);
     font-size: 13px;
     font-weight: 900;
     letter-spacing: 0.12em;
     text-transform: uppercase;
   }
-  .hf-transition-tilt-content strong {
+  .sc-transition-tilt-content strong {
     max-width: 280px;
     font-size: 34px;
     line-height: 0.96;
@@ -109,8 +109,8 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
     "use strict";
 
     var vars =
-      window.__hyperframes && window.__hyperframes.getVariables
-        ? window.__hyperframes.getVariables()
+      window.__smashcut && window.__smashcut.getVariables
+        ? window.__smashcut.getVariables()
         : {};
 
     // Unrecognised overrides return to their declared defaults.
@@ -150,25 +150,25 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
     var inset = insets[pick(insets, vars.glow, "standard")];
     var accent = accents[pick(accents, vars.accent, "indigo")];
 
-    var roots = document.querySelectorAll(".hf-transition-tilt-card");
+    var roots = document.querySelectorAll(".sc-transition-tilt-card");
     for (var i = 0; i < roots.length; i += 1) {
       var root = roots[i];
-      root.style.setProperty("--hf-tilt-glow-inset", inset);
-      root.style.setProperty("--hf-tilt-accent", accent.accent);
-      root.style.setProperty("--hf-tilt-glow", accent.glow);
-      root.style.setProperty("--hf-tilt-label", accent.label);
-      root.style.setProperty("--hf-tilt-shadow", accent.shadow);
-      root.querySelector(".hf-transition-tilt-content span").textContent = eyebrow;
-      root.querySelector(".hf-transition-tilt-content strong").textContent = headline;
+      root.style.setProperty("--sc-tilt-glow-inset", inset);
+      root.style.setProperty("--sc-tilt-accent", accent.accent);
+      root.style.setProperty("--sc-tilt-glow", accent.glow);
+      root.style.setProperty("--sc-tilt-label", accent.label);
+      root.style.setProperty("--sc-tilt-shadow", accent.shadow);
+      root.querySelector(".sc-transition-tilt-content span").textContent = eyebrow;
+      root.querySelector(".sc-transition-tilt-content strong").textContent = headline;
     }
   })();
 </script>
 
 <!--
   Timeline integration:
-  tl.fromTo('.hf-transition-tilt-card', { opacity: 0, y: 30, rotateX: 0, rotateY: 0 }, { opacity: 1, y: 0, duration: 0.38, ease: 'power2.out' }, 0.3);
-  tl.to('.hf-transition-tilt-card', { rotateX: -7, rotateY: 10, duration: 0.72, ease: 'power3.inOut' }, 0.75);
-  tl.to('.hf-transition-tilt-glow', { xPercent: 12, yPercent: 10, duration: 0.72, ease: 'power3.inOut' }, 0.75);
+  tl.fromTo('.sc-transition-tilt-card', { opacity: 0, y: 30, rotateX: 0, rotateY: 0 }, { opacity: 1, y: 0, duration: 0.38, ease: 'power2.out' }, 0.3);
+  tl.to('.sc-transition-tilt-card', { rotateX: -7, rotateY: 10, duration: 0.72, ease: 'power3.inOut' }, 0.75);
+  tl.to('.sc-transition-tilt-glow', { xPercent: 12, yPercent: 10, duration: 0.72, ease: 'power3.inOut' }, 0.75);
 -->
 ```
 
@@ -176,7 +176,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 
 ## Install
 
-<InstallCommand command="npx hyperframes add tilt-card" item="tilt-card" />
+<InstallCommand command="npx smashcut add tilt-card" item="tilt-card" />
 
 That writes one file: `compositions/components/tilt-card.html`.
 
@@ -209,7 +209,7 @@ defaults, so this behaves exactly like the preview above until you change one:
 
 ```html
 <!--
-  Tilt Card - transitions.dev-inspired primitive for HyperFrames.
+  Tilt Card - transitions.dev-inspired primitive for SmashCut.
 
   Paste the markup, CSS and script into a composition. Use the timeline
   integration note at the bottom as the starting point for deterministic GSAP
@@ -237,7 +237,7 @@ defaults, so this behaves exactly like the preview above until you change one:
 -->
 
 <div
-  class="hf-transition-tilt-card"
+  class="sc-transition-tilt-card"
   data-composition-variables='[
     {"id": "eyebrow", "type": "string", "role": "content", "label": "Eyebrow", "description": "Small uppercase kicker above the headline.", "default": "Primitive"},
     {"id": "headline", "type": "string", "role": "content", "label": "Headline", "description": "Large card headline.", "default": "Agent-ready motion"},
@@ -245,37 +245,37 @@ defaults, so this behaves exactly like the preview above until you change one:
     {"id": "accent", "type": "enum", "role": "style", "label": "Accent", "description": "Colour family of the card gradient, corner glow, eyebrow and drop shadow.", "default": "indigo", "options": [{"value": "indigo", "label": "Indigo"}, {"value": "emerald", "label": "Emerald"}, {"value": "violet", "label": "Violet"}]}
   ]'
 >
-  <div class="hf-transition-tilt-glow"></div>
-  <div class="hf-transition-tilt-content">
+  <div class="sc-transition-tilt-glow"></div>
+  <div class="sc-transition-tilt-content">
     <span>Primitive</span>
     <strong>Agent-ready motion</strong>
   </div>
 </div>
 
 <style>
-  .hf-transition-tilt-card {
+  .sc-transition-tilt-card {
     position: relative;
     width: 420px;
     height: 260px;
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.18);
     border-radius: 30px;
-    background: linear-gradient(135deg, #18181b, var(--hf-tilt-accent, #312e81));
+    background: linear-gradient(135deg, #18181b, var(--sc-tilt-accent, #312e81));
     color: #ffffff;
     font-family: Inter, system-ui, sans-serif;
     transform-style: preserve-3d;
-    box-shadow: 0 32px 90px var(--hf-tilt-shadow, rgba(49, 46, 129, 0.34));
+    box-shadow: 0 32px 90px var(--sc-tilt-shadow, rgba(49, 46, 129, 0.34));
   }
-  .hf-transition-tilt-glow {
+  .sc-transition-tilt-glow {
     position: absolute;
-    inset: var(--hf-tilt-glow-inset, -30%);
+    inset: var(--sc-tilt-glow-inset, -30%);
     background: radial-gradient(
       circle at 30% 20%,
-      var(--hf-tilt-glow, rgba(125, 211, 252, 0.5)),
+      var(--sc-tilt-glow, rgba(125, 211, 252, 0.5)),
       transparent 36%
     );
   }
-  .hf-transition-tilt-content {
+  .sc-transition-tilt-content {
     position: relative;
     display: grid;
     align-content: end;
@@ -284,14 +284,14 @@ defaults, so this behaves exactly like the preview above until you change one:
     padding: 34px;
     transform: translateZ(38px);
   }
-  .hf-transition-tilt-content span {
-    color: var(--hf-tilt-label, #a5b4fc);
+  .sc-transition-tilt-content span {
+    color: var(--sc-tilt-label, #a5b4fc);
     font-size: 13px;
     font-weight: 900;
     letter-spacing: 0.12em;
     text-transform: uppercase;
   }
-  .hf-transition-tilt-content strong {
+  .sc-transition-tilt-content strong {
     max-width: 280px;
     font-size: 34px;
     line-height: 0.96;
@@ -303,8 +303,8 @@ defaults, so this behaves exactly like the preview above until you change one:
     "use strict";
 
     var vars =
-      window.__hyperframes && window.__hyperframes.getVariables
-        ? window.__hyperframes.getVariables()
+      window.__smashcut && window.__smashcut.getVariables
+        ? window.__smashcut.getVariables()
         : {};
 
     // Unrecognised overrides return to their declared defaults.
@@ -344,25 +344,25 @@ defaults, so this behaves exactly like the preview above until you change one:
     var inset = insets[pick(insets, vars.glow, "standard")];
     var accent = accents[pick(accents, vars.accent, "indigo")];
 
-    var roots = document.querySelectorAll(".hf-transition-tilt-card");
+    var roots = document.querySelectorAll(".sc-transition-tilt-card");
     for (var i = 0; i < roots.length; i += 1) {
       var root = roots[i];
-      root.style.setProperty("--hf-tilt-glow-inset", inset);
-      root.style.setProperty("--hf-tilt-accent", accent.accent);
-      root.style.setProperty("--hf-tilt-glow", accent.glow);
-      root.style.setProperty("--hf-tilt-label", accent.label);
-      root.style.setProperty("--hf-tilt-shadow", accent.shadow);
-      root.querySelector(".hf-transition-tilt-content span").textContent = eyebrow;
-      root.querySelector(".hf-transition-tilt-content strong").textContent = headline;
+      root.style.setProperty("--sc-tilt-glow-inset", inset);
+      root.style.setProperty("--sc-tilt-accent", accent.accent);
+      root.style.setProperty("--sc-tilt-glow", accent.glow);
+      root.style.setProperty("--sc-tilt-label", accent.label);
+      root.style.setProperty("--sc-tilt-shadow", accent.shadow);
+      root.querySelector(".sc-transition-tilt-content span").textContent = eyebrow;
+      root.querySelector(".sc-transition-tilt-content strong").textContent = headline;
     }
   })();
 </script>
 
 <!--
   Timeline integration:
-  tl.fromTo('.hf-transition-tilt-card', { opacity: 0, y: 30, rotateX: 0, rotateY: 0 }, { opacity: 1, y: 0, duration: 0.38, ease: 'power2.out' }, 0.3);
-  tl.to('.hf-transition-tilt-card', { rotateX: -7, rotateY: 10, duration: 0.72, ease: 'power3.inOut' }, 0.75);
-  tl.to('.hf-transition-tilt-glow', { xPercent: 12, yPercent: 10, duration: 0.72, ease: 'power3.inOut' }, 0.75);
+  tl.fromTo('.sc-transition-tilt-card', { opacity: 0, y: 30, rotateX: 0, rotateY: 0 }, { opacity: 1, y: 0, duration: 0.38, ease: 'power2.out' }, 0.3);
+  tl.to('.sc-transition-tilt-card', { rotateX: -7, rotateY: 10, duration: 0.72, ease: 'power3.inOut' }, 0.75);
+  tl.to('.sc-transition-tilt-glow', { xPercent: 12, yPercent: 10, duration: 0.72, ease: 'power3.inOut' }, 0.75);
 -->
 ```
 

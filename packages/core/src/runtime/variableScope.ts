@@ -7,20 +7,20 @@
  */
 
 type VariablesWindow = Window & {
-  __hfVariables?: Record<string, unknown>;
-  __hfVariablesByComp?: Record<string, Record<string, unknown>>;
-  __hyperframes?: { getVariables?: () => Record<string, unknown> };
+  __scVariables?: Record<string, unknown>;
+  __scVariablesByComp?: Record<string, Record<string, unknown>>;
+  __smashcut?: { getVariables?: () => Record<string, unknown> };
 };
 
 export function readVariablesForElement(element: Element): Record<string, unknown> {
   const win = window as VariablesWindow;
   const scope = element.closest("[data-composition-id]");
   const compositionId = scope?.getAttribute("data-composition-id")?.trim() ?? "";
-  const scoped = compositionId ? win.__hfVariablesByComp?.[compositionId] : undefined;
+  const scoped = compositionId ? win.__scVariablesByComp?.[compositionId] : undefined;
   if (scoped) return scoped;
-  const fromHelper = win.__hyperframes?.getVariables?.();
+  const fromHelper = win.__smashcut?.getVariables?.();
   if (fromHelper && typeof fromHelper === "object") {
     return fromHelper;
   }
-  return win.__hfVariables ?? {};
+  return win.__scVariables ?? {};
 }

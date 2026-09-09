@@ -1,2 +1,2 @@
-/** @deprecated Import from @hyperframes/parsers/hf-ids */
-export * from "@hyperframes/parsers/hf-ids";
+/** @deprecated Import from @smashcut/parsers/sc-ids */
+export * from "@smashcut/parsers/sc-ids";

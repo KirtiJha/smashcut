@@ -1,5 +1,5 @@
-// Canvas drag diagnostics — grep [hf-drag]. Off by default; opt in per session
-// with `localStorage.setItem("hf-drag-debug", "1")` (then reload).
+// Canvas drag diagnostics — grep [sc-drag]. Off by default; opt in per session
+// with `localStorage.setItem("sc-drag-debug", "1")` (then reload).
 //
 // A drag that "jumps" is a position that changed without the pointer asking. The
 // pointer delta, what snapping did to it, what each member was told to move, and

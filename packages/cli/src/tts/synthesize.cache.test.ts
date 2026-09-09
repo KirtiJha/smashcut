@@ -32,8 +32,8 @@ describe("synthesis script cache", () => {
   beforeEach(() => {
     vi.resetModules();
     vi.clearAllMocks();
-    paths.home = fs.mkdtempSync(join(tmpdir(), "hf-tts-cache-"));
-    cacheDir = join(paths.home, ".cache", "hyperframes", "tts");
+    paths.home = fs.mkdtempSync(join(tmpdir(), "sc-tts-cache-"));
+    cacheDir = join(paths.home, ".cache", "smashcut", "tts");
     scriptPath = join(cacheDir, "synth-v3.py");
     outputPath = join(paths.home, "speech.wav");
     fs.mkdirSync(cacheDir, { recursive: true });
@@ -49,7 +49,7 @@ describe("synthesis script cache", () => {
   });
 
   afterEach(() => {
-    expect(fs.readdirSync(cacheDir).filter((name) => name.startsWith(".hf-create-"))).toEqual([]);
+    expect(fs.readdirSync(cacheDir).filter((name) => name.startsWith(".sc-create-"))).toEqual([]);
     fs.rmSync(paths.home, { recursive: true, force: true });
   });
 

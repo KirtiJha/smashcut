@@ -362,7 +362,7 @@ function sceneDoc(): Document {
       <span id="duplicate">root duplicate</span>
       <em class="dom-only">no timeline</em>
       <div data-composition-id="nested" data-composition-file="compositions/nested.html">
-        <section id="nested-parent" data-hf-group>
+        <section id="nested-parent" data-sc-group>
           <span id="duplicate">nested duplicate</span>
         </section>
       </div>

@@ -35,7 +35,7 @@ describe("frame source cache eviction", () => {
   let dir: string;
 
   beforeEach(() => {
-    dir = mkdtempSync(join(tmpdir(), "hf-frame-cache-test-"));
+    dir = mkdtempSync(join(tmpdir(), "sc-frame-cache-test-"));
   });
 
   afterEach(() => {
@@ -287,9 +287,9 @@ describe("createVideoFrameInjector cache hygiene against page-side skips", () =>
   });
 
   // Regression: WebGL/WebGPU compositions that sample a <video> as a texture
-  // render on `hf-seek` BEFORE frames are injected. After injecting the
+  // render on `sc-seek` BEFORE frames are injected. After injecting the
   // decoded frames, the hook must re-render the GPU adapters at the same time
-  // (window.__hfReseekGpu) so they re-upload their textures from the fresh
+  // (window.__scReseekGpu) so they re-upload their textures from the fresh
   // frames — otherwise the facet flickers / goes black non-deterministically.
   it("re-renders GPU adapters after injecting frames (post-injection reseek)", async () => {
     const { evaluate, page, hook } = makeGpuInjector();
@@ -299,10 +299,10 @@ describe("createVideoFrameInjector cache hygiene against page-side skips", () =>
 
     const reseekCall = evaluate.mock.calls.find((call) => call[1] === 1.5);
     expect(reseekCall).toBeDefined();
-    // The evaluated page function invokes window.__hfReseekGpu(time).
+    // The evaluated page function invokes window.__scReseekGpu(time).
     const pageFn = reseekCall![0] as (t: number) => void;
     const reseek = vi.fn();
-    (globalThis as unknown as { window?: unknown }).window = { __hfReseekGpu: reseek };
+    (globalThis as unknown as { window?: unknown }).window = { __scReseekGpu: reseek };
     pageFn(1.5);
     delete (globalThis as unknown as { window?: unknown }).window;
     expect(reseek).toHaveBeenCalledWith(1.5);

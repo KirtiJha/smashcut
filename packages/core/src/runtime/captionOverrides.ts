@@ -209,6 +209,6 @@ export function applyCaptionOverrides(): void {
     })
     .catch((error: unknown) => {
       const message = error instanceof Error ? error.message : String(error);
-      console.error(`[HyperFrames] Invalid caption-overrides.json: ${message}`);
+      console.error(`[SmashCut] Invalid caption-overrides.json: ${message}`);
     });
 }

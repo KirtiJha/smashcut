@@ -33,7 +33,7 @@
         /* ponytail: scale non-GSAP wrapper so the stat fills ~65% of the frame */
         transform: scale(1.37);
       }
-      .hf-transition-number-pop-in {
+      .sc-transition-number-pop-in {
         display: inline-flex;
         align-items: baseline;
         gap: 2px;
@@ -42,14 +42,14 @@
         font-weight: 900;
         letter-spacing: -0.04em;
       }
-      .hf-transition-number-pop-in span {
+      .sc-transition-number-pop-in span {
         font-size: 96px;
         line-height: 0.9;
-        filter: blur(var(--hf-number-blur, 0px));
-        transform: translateY(var(--hf-number-y, 0px)) scale(var(--hf-number-scale, 1));
+        filter: blur(var(--sc-number-blur, 0px));
+        transform: translateY(var(--sc-number-y, 0px)) scale(var(--sc-number-scale, 1));
         will-change: transform, filter, opacity;
       }
-      .hf-transition-number-pop-in small {
+      .sc-transition-number-pop-in small {
         margin-left: 4px;
         color: #71717a;
         font-size: 42px;
@@ -68,7 +68,7 @@
     >
       <div class="demo-frame">
         <div
-          class="hf-transition-number-pop-in"
+          class="sc-transition-number-pop-in"
           data-composition-variables='[
     { "id": "value", "type": "string", "role": "content", "label": "Value", "description": "The number itself. Every character becomes its own span, so the stagger still lands character by character.", "default": "5.7" },
     { "id": "unit", "type": "string", "role": "content", "label": "Unit", "description": "Small suffix printed after the number. Pass an empty string to drop it.", "default": "k" },
@@ -84,8 +84,8 @@
           "use strict";
 
           var vars =
-            window.__hyperframes && window.__hyperframes.getVariables
-              ? window.__hyperframes.getVariables()
+            window.__smashcut && window.__smashcut.getVariables
+              ? window.__smashcut.getVariables()
               : {};
 
           // Unrecognised overrides return to their declared defaults.
@@ -108,12 +108,12 @@
             : "standard";
           var tone = Object.prototype.hasOwnProperty.call(tones, vars.tone) ? vars.tone : "ink";
 
-          var roots = document.querySelectorAll(".hf-transition-number-pop-in");
+          var roots = document.querySelectorAll(".sc-transition-number-pop-in");
           for (var i = 0; i < roots.length; i += 1) {
             var root = roots[i];
-            root.style.setProperty("--hf-number-lift", String(lifts[lift]));
-            root.style.setProperty("--hf-number-color", tones[tone].number);
-            root.style.setProperty("--hf-number-unit-color", tones[tone].unit);
+            root.style.setProperty("--sc-number-lift", String(lifts[lift]));
+            root.style.setProperty("--sc-number-color", tones[tone].number);
+            root.style.setProperty("--sc-number-unit-color", tones[tone].unit);
 
             var next = [];
             for (var c = 0; c < value.length; c += 1) {
@@ -134,18 +134,18 @@
         const tl = gsap.timeline({ paused: true });
         const startTime = 0.5;
         tl.fromTo(
-          ".hf-transition-number-pop-in span, .hf-transition-number-pop-in small",
+          ".sc-transition-number-pop-in span, .sc-transition-number-pop-in small",
           {
             opacity: 0,
-            "--hf-number-y": "24px",
-            "--hf-number-scale": 0.82,
-            "--hf-number-blur": "8px",
+            "--sc-number-y": "24px",
+            "--sc-number-scale": 0.82,
+            "--sc-number-blur": "8px",
           },
           {
             opacity: 1,
-            "--hf-number-y": "0px",
-            "--hf-number-scale": 1,
-            "--hf-number-blur": "0px",
+            "--sc-number-y": "0px",
+            "--sc-number-scale": 1,
+            "--sc-number-blur": "0px",
             duration: 0.34,
             stagger: 0.055,
             ease: "back.out(1.8)",
@@ -158,26 +158,26 @@
       </script>
     </div>
     <style>
-      .hf-transition-number-pop-in {
+      .sc-transition-number-pop-in {
         display: inline-flex;
         align-items: baseline;
         gap: 2px;
-        color: var(--hf-number-color, #18181b);
+        color: var(--sc-number-color, #18181b);
         font-family: Inter, system-ui, sans-serif;
         font-weight: 900;
         letter-spacing: -0.04em;
       }
-      .hf-transition-number-pop-in span {
+      .sc-transition-number-pop-in span {
         font-size: 76px;
         line-height: 0.9;
-        filter: blur(var(--hf-number-blur, 0px));
-        transform: translateY(calc(var(--hf-number-y, 0px) * var(--hf-number-lift, 1)))
-          scale(var(--hf-number-scale, 1));
+        filter: blur(var(--sc-number-blur, 0px));
+        transform: translateY(calc(var(--sc-number-y, 0px) * var(--sc-number-lift, 1)))
+          scale(var(--sc-number-scale, 1));
         will-change: transform, filter, opacity;
       }
-      .hf-transition-number-pop-in small {
+      .sc-transition-number-pop-in small {
         margin-left: 2px;
-        color: var(--hf-number-unit-color, #71717a);
+        color: var(--sc-number-unit-color, #71717a);
         font-size: 34px;
         font-weight: 850;
       }

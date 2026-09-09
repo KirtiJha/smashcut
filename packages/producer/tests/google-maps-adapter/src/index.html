@@ -30,7 +30,7 @@
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
   <script>
     window.__timelines = window.__timelines || {};
-    window.__hfGoogleMaps = window.__hfGoogleMaps || [];
+    window.__scGoogleMaps = window.__scGoogleMaps || [];
 
     // Draw procedural road-network visualization
     var canvas = document.getElementById('map-canvas');
@@ -173,7 +173,7 @@
     }, 150);
 
     // Register for adapter
-    window.__hfGoogleMaps = [mockGoogleMap];
+    window.__scGoogleMaps = [mockGoogleMap];
 
     // GSAP timeline
     var compId = 'google-maps-test';

@@ -8,7 +8,7 @@
  * absolute positions back into the GSAP script, regardless of tween type,
  * easing, or seek position.
  */
-import type { GsapAnimation, PropertyGroupName } from "@hyperframes/core/gsap-parser";
+import type { GsapAnimation, PropertyGroupName } from "@smashcut/core/gsap-parser";
 import type { DomEditSelection } from "../components/editor/domEditingTypes";
 import { usePlayerStore } from "../player/store/playerStore";
 
@@ -364,7 +364,7 @@ export async function tryGsapRotationIntercept(
   // angle belongs in a `tl.set("#el",{rotation})`, not a keyframe conversion —
   // mirroring the static position set. Idempotent: re-rotate updates an existing
   // rotation set in place, else add a new one. This replaces the old
-  // `--hf-studio-rotation` CSS-var fallback (the same dual-channel bug class).
+  // `--sc-studio-rotation` CSS-var fallback (the same dual-channel bug class).
   if (!anim || isInstantHold(anim)) {
     const existingSet =
       anim ?? findRotationSetAnimation(resolvedAnimations, selector, selection.element);

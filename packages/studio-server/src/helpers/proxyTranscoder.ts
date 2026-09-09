@@ -10,7 +10,7 @@ import {
   utimesSync,
 } from "node:fs";
 import { basename, dirname, isAbsolute, join, relative, resolve, sep } from "node:path";
-import { findFfBinary } from "@hyperframes/parsers/ff-binaries";
+import { findFfBinary } from "@smashcut/parsers/ff-binaries";
 import { probeMediaMetadata } from "./mediaMetadata.js";
 import { cleanupProxyCache } from "./proxyCache.js";
 import { PROXY_VARIANT_CONFIG, type ProxyVariant } from "./mediaCodecMap.js";
@@ -18,7 +18,7 @@ import { PROXY_VARIANT_CONFIG, type ProxyVariant } from "./mediaCodecMap.js";
 /**
  * Transcodes browser-hostile local video sources (HEVC, ProRes, ...) into a
  * cached, seekable authoring proxy. Consumed by the preview/play/static
- * project routes (U3/U4) to serve a `?hf-proxy=` request; never used on
+ * project routes (U3/U4) to serve a `?sc-proxy=` request; never used on
  * the render path (render always sees the original file).
  *
  * IMPORTANT — request-lifecycle detachment: nothing here accepts or wires an
@@ -46,8 +46,8 @@ function boundedEnvInteger(name: string, fallback: number, min: number, max: num
 // ffmpeg is internally multithreaded, so two concurrent proxy encodes already
 // saturate a typical laptop. Operators of shared/large machines may tune the
 // bounded values without patching the package; invalid values fail safe.
-const MAX_CONCURRENT_TRANSCODES = boundedEnvInteger("HYPERFRAMES_PROXY_MAX_CONCURRENCY", 2, 1, 16);
-const MAX_QUEUED_TRANSCODES = boundedEnvInteger("HYPERFRAMES_PROXY_MAX_QUEUE", 8, 0, 256);
+const MAX_CONCURRENT_TRANSCODES = boundedEnvInteger("SMASHCUT_PROXY_MAX_CONCURRENCY", 2, 1, 16);
+const MAX_QUEUED_TRANSCODES = boundedEnvInteger("SMASHCUT_PROXY_MAX_QUEUE", 8, 0, 256);
 
 const STDERR_TAIL_MAX_CHARS = 4000;
 export const TRANSCODE_TIMEOUT_MS = 15 * 60 * 1000;
@@ -272,7 +272,7 @@ function markCacheEntryUsed(cachePath: string): void {
 // --- negative cache ---------------------------------------------------------
 // A source that failed to transcode fails again identically until the file
 // changes (the cache key embeds mtime+size, so a re-export invalidates this
-// naturally). Remembering the failure per key means repeated `?hf-proxy=`
+// naturally). Remembering the failure per key means repeated `?sc-proxy=`
 // requests for a broken asset rethrow instantly instead of respawning ffmpeg
 // on every retry the browser makes.
 interface RememberedFailure {

@@ -1,5 +1,5 @@
 {
-  "package": "@hyperframes/producer",
+  "package": "@smashcut/producer",
   "subpaths": {
     ".": {
       "source": "./src/index.ts",

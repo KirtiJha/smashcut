@@ -121,7 +121,7 @@ export function useGroupCommits(params: UseGroupCommitsParams) {
 
       // Auto-name "Group N" by the count of existing groups in the document.
       const doc = members[0].element.ownerDocument;
-      const groupId = `Group ${doc.querySelectorAll("[data-hf-group]").length + 1}`;
+      const groupId = `Group ${doc.querySelectorAll("[data-sc-group]").length + 1}`;
       const { bbox, targets, rebases } = computeGroupGeometry(members);
 
       try {

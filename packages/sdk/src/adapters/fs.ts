@@ -107,7 +107,7 @@ class FsAdapter implements PersistAdapter {
   }
 
   private versionsDir(path: string): string {
-    return join(this.root, ".hf-versions", path);
+    return join(this.root, ".sc-versions", path);
   }
 
   private async appendVersion(path: string, content: string): Promise<void> {

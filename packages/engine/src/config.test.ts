@@ -204,31 +204,31 @@ describe("resolveConfig", () => {
 
   describe("extraction cache env", () => {
     it("defaults the extract cache directory to tmpdir plus uid when env is unset", () => {
-      unsetEnv("HYPERFRAMES_EXTRACT_CACHE_DIR");
+      unsetEnv("SMASHCUT_EXTRACT_CACHE_DIR");
 
       const config = resolveConfig();
 
       expect(config.extractCacheDir).toBe(
-        join(tmpdir(), `hyperframes-extract-cache-${process.getuid?.() ?? "u"}`),
+        join(tmpdir(), `smashcut-extract-cache-${process.getuid?.() ?? "u"}`),
       );
     });
 
     it("disables the extract cache when env is an opt-out token", () => {
       for (const value of ["off", "none", "false", "0", " OFF "]) {
-        setEnv("HYPERFRAMES_EXTRACT_CACHE_DIR", value);
+        setEnv("SMASHCUT_EXTRACT_CACHE_DIR", value);
 
         expect(resolveConfig().extractCacheDir).toBeUndefined();
       }
     });
 
     it("uses an explicit extract cache path from env", () => {
-      setEnv("HYPERFRAMES_EXTRACT_CACHE_DIR", "/tmp/custom-hf-cache");
+      setEnv("SMASHCUT_EXTRACT_CACHE_DIR", "/tmp/custom-sc-cache");
 
-      expect(resolveConfig().extractCacheDir).toBe("/tmp/custom-hf-cache");
+      expect(resolveConfig().extractCacheDir).toBe("/tmp/custom-sc-cache");
     });
 
-    it("converts HYPERFRAMES_EXTRACT_CACHE_MAX_MB to bytes", () => {
-      setEnv("HYPERFRAMES_EXTRACT_CACHE_MAX_MB", "512");
+    it("converts SMASHCUT_EXTRACT_CACHE_MAX_MB to bytes", () => {
+      setEnv("SMASHCUT_EXTRACT_CACHE_MAX_MB", "512");
 
       expect(resolveConfig().extractCacheMaxBytes).toBe(512 * 1024 ** 2);
     });
@@ -930,20 +930,20 @@ describe("resolveExtractCacheDir", () => {
 
   it("threads a positive env value through verbatim (source: env)", () => {
     const res = resolveExtractCacheDir({
-      HYPERFRAMES_EXTRACT_CACHE_DIR: "D:/hf-cache",
+      SMASHCUT_EXTRACT_CACHE_DIR: "D:/sc-cache",
     });
     expect(res.disabled).toBe(false);
     expect(res.source).toBe("env");
     if (!res.disabled) {
-      expect(res.dir).toBe("D:/hf-cache");
-      expect(res.rawValue).toBe("D:/hf-cache");
+      expect(res.dir).toBe("D:/sc-cache");
+      expect(res.rawValue).toBe("D:/sc-cache");
     }
   });
 
   it.each(EXTRACT_CACHE_DIR_DISABLED_ALIASES.flatMap((v) => [v, v.toUpperCase(), `  ${v}  `]))(
     "reports disabled for opt-out alias %s",
     (value) => {
-      const res = resolveExtractCacheDir({ HYPERFRAMES_EXTRACT_CACHE_DIR: value });
+      const res = resolveExtractCacheDir({ SMASHCUT_EXTRACT_CACHE_DIR: value });
       expect(res.disabled).toBe(true);
       if (res.disabled) {
         expect(res.dir).toBeUndefined();

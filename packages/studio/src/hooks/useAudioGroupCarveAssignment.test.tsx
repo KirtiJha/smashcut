@@ -110,7 +110,7 @@ describe("useAudioGroupCarveAssignment", () => {
     expect(written).toContain(
       'id="voice-2" data-start="5" data-duration="5" data-audio-group="voiceover"',
     );
-    expect(written).toContain('<hf-audio-group id="voiceover"></hf-audio-group>');
+    expect(written).toContain('<sc-audio-group id="voiceover"></sc-audio-group>');
     expect(showToast).not.toHaveBeenCalled();
     act(() => root.unmount());
   });

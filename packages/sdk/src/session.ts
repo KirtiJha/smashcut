@@ -36,15 +36,15 @@ import { parseMutable } from "./engine/model.js";
 import type { ParsedDocument } from "./engine/model.js";
 import { applyOp, validateOp, type MutationResult } from "./engine/mutate.js";
 import { getGsapScripts, resolveScoped, declarationElement } from "./engine/model.js";
-import { extractGsapLabels } from "@hyperframes/core/gsap-parser-acorn";
-import { stripEmbeddedRuntimeScripts } from "@hyperframes/core/compiler/html-document";
-import { readClipTiming, type ClipTiming } from "@hyperframes/core/composition-contract";
+import { extractGsapLabels } from "@smashcut/core/gsap-parser-acorn";
+import { stripEmbeddedRuntimeScripts } from "@smashcut/core/compiler/html-document";
+import { readClipTiming, type ClipTiming } from "@smashcut/core/composition-contract";
 import {
   readDeclaredDefaults,
   validateVariables,
   scanVariableUsage,
-} from "@hyperframes/core/variables";
-import type { CompositionVariable, VariableValidationIssue } from "@hyperframes/core/variables";
+} from "@smashcut/core/variables";
+import type { CompositionVariable, VariableValidationIssue } from "@smashcut/core/variables";
 import { readVariableDeclarations } from "./engine/variableModel.js";
 import { serializeDocument } from "./engine/serialize.js";
 import { applyPatchesToDocument, applyOverrideSet } from "./engine/apply-patches.js";
@@ -262,10 +262,10 @@ class CompositionImpl implements Composition {
     for (const script of Array.from(this.parsed.document.querySelectorAll("script"))) {
       if (script.getAttribute("src")) continue;
       const text = script.textContent ?? "";
-      // Direct global reads (window.__hfVariables / __hfVariablesByComp) are
+      // Direct global reads (window.__scVariables / __scVariablesByComp) are
       // invisible to the getVariables() scanner — the report must degrade to
       // a lower bound instead of confidently claiming declarations unused.
-      if (text.includes("__hfVariables")) scanIncomplete = true;
+      if (text.includes("__scVariables")) scanIncomplete = true;
       if (!text.includes("getVariables")) continue; // cheap pre-filter before an acorn parse
       const scan = this._variableUsageScanCache.get(text) ?? scanVariableUsage(text);
       freshCache.set(text, scan);
@@ -629,15 +629,15 @@ class CompositionImpl implements Composition {
 
     // Purge orphan property keys for removed elements so the override-set stays
     // compact and a future T3 session doesn't replay stale properties onto a
-    // non-existent element. Override-set keys use decoded scoped ids ("hf-host/hf-leaf")
-    // while path segments use RFC 6902 encoding ("hf-host~1hf-leaf") — decode before compare.
+    // non-existent element. Override-set keys use decoded scoped ids ("sc-host/sc-leaf")
+    // while path segments use RFC 6902 encoding ("sc-host~1hf-leaf") — decode before compare.
     for (const p of forward) {
       const elemMatch = /^\/elements\/([^/]+)$/.exec(p.path);
       if (p.op === "remove" && elemMatch) {
         // Decode RFC 6902 escaping: ~1 → /, ~0 → ~
         const id = elemMatch[1]!.replace(/~1/g, "/").replace(/~0/g, "~");
         for (const key of Object.keys(this.overrides)) {
-          // Purge property sub-keys (e.g. "hf-x.style.color") but preserve
+          // Purge property sub-keys (e.g. "sc-x.style.color") but preserve
           // the removal marker itself (key === id, set to null in the loop above).
           if (key.startsWith(`${id}.`) || key.startsWith(`${id}/`)) {
             delete this.overrides[key];
@@ -784,7 +784,7 @@ class CompositionImpl implements Composition {
 
   serialize(opts?: { stripRuntime?: boolean }): string {
     const html = serializeDocument(this.parsed);
-    // Newer agent-generated compositions embed hyperframe.runtime.iife.js in their own
+    // Newer agent-generated compositions embed smashcut.runtime.iife.js in their own
     // HTML. Any host driving its own clock (not just an editing iframe — anything that
     // owns seeking/playback itself) must not let that runtime self-init: it races the
     // host's first seek and resets the timeline to t=0. Opt-in (default false) since a
@@ -859,7 +859,7 @@ export async function openComposition(
   html: string,
   opts?: OpenCompositionOptions,
 ): Promise<Composition> {
-  // Single parse: parseMutable stamps hf-ids + builds the live linkedom DOM;
+  // Single parse: parseMutable stamps sc-ids + builds the live linkedom DOM;
   // the query API derives element snapshots from it lazily.
   const parsed = parseMutable(html);
 

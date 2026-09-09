@@ -26,7 +26,7 @@ import { resolveNpxInvocation } from "./lib/npx-sync.mjs";
 //
 // Parakeet v3 covers English + 25 European languages. For other languages, or
 // when parakeet-mlx is not installed, it falls back to whisper.cpp via
-// `hyperframes transcribe` (99 languages; the CLI resolves/builds whisper.cpp
+// `smashcut transcribe` (99 languages; the CLI resolves/builds whisper.cpp
 // on first use — it is not bundled). `--engine` forces one.
 
 const { values: args } = parseArgs({
@@ -72,7 +72,7 @@ const outPath = resolve(
 // silently falling through to whisper. Returns the runner path, or null.
 function resolveParakeet() {
   for (const p of [
-    process.env.HYPERFRAMES_PARAKEET,
+    process.env.SMASHCUT_PARAKEET,
     join(homedir(), ".venvs", "parakeet", "bin", "parakeet-mlx"),
   ]) {
     if (p && existsSync(p)) return p;
@@ -122,7 +122,7 @@ function runParakeet(runner) {
   }
 }
 
-// whisper.cpp via the hyperframes CLI (fetched/built on first use — see
+// whisper.cpp via the smashcut CLI (fetched/built on first use — see
 // SKILL.md): writes transcript.json into --dir; relocate to --out.
 function runWhisper() {
   const workDir = mkdtempSync(join(tmpdir(), "media-use-whisper-"));
@@ -132,7 +132,7 @@ function runWhisper() {
     // node + npx-cli.js (and throws actionably when it can't), same
     // mechanism as the audio engine's TTS spawns.
     const resolved = resolveNpxInvocation(
-      ["hyperframes", "transcribe", inputPath, "--dir", workDir],
+      ["smashcut", "transcribe", inputPath, "--dir", workDir],
       { stdio: ["ignore", "pipe", "pipe"], timeout: 1_800_000 },
     );
     execFileSync(resolved.cmd, resolved.args, resolved.opts);
@@ -165,7 +165,7 @@ try {
   if (engine === "parakeet") {
     if (!parakeetBin) {
       throw new Error(
-        "parakeet-mlx not found (checked $HYPERFRAMES_PARAKEET, ~/.venvs/parakeet, and PATH). Install: uv venv ~/.venvs/parakeet && VIRTUAL_ENV=~/.venvs/parakeet uv pip install parakeet-mlx (or use --engine whisper)",
+        "parakeet-mlx not found (checked $SMASHCUT_PARAKEET, ~/.venvs/parakeet, and PATH). Install: uv venv ~/.venvs/parakeet && VIRTUAL_ENV=~/.venvs/parakeet uv pip install parakeet-mlx (or use --engine whisper)",
       );
     }
     runParakeet(parakeetBin);

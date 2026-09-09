@@ -1,7 +1,7 @@
 {
   "$schema": "https://hyperframes.heygen.com/schema/registry-item.json",
   "name": "typewriter",
-  "type": "hyperframes:component",
+  "type": "smashcut:component",
   "title": "Typewriter",
   "description": "Character-by-character text reveal with a deterministic blinking cursor.",
   "tags": ["video-primitive", "motion-primitive", "typography"],
@@ -9,7 +9,7 @@
     {
       "path": "typewriter.html",
       "target": "compositions/components/typewriter.html",
-      "type": "hyperframes:snippet"
+      "type": "smashcut:snippet"
     }
   ],
   "variables": [
@@ -19,7 +19,7 @@
       "role": "content",
       "label": "Text",
       "description": "Line that types itself out character by character.",
-      "default": "hyperframes add typewriter"
+      "default": "smashcut add typewriter"
     },
     {
       "id": "tone",
@@ -67,6 +67,6 @@
     }
   ],
   "preview": {
-    "poster": "https://static.heygen.ai/hyperframes-oss/docs/images/catalog/components/typewriter.png"
+    "poster": "https://static.heygen.ai/smashcut-oss/docs/images/catalog/components/typewriter.png"
   }
 }

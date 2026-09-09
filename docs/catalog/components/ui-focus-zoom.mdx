@@ -16,7 +16,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 ```html ui-focus-zoom.html
 <!doctype html>
 <!--
-  ui-focus-zoom -- HyperFrames video primitive (product demo / camera)
+  ui-focus-zoom -- SmashCut video primitive (product demo / camera)
 
   A full app surface establishes with one settle, then the camera zooms and
   pans to an anchored region on its cue and holds the zoomed state. An
@@ -394,8 +394,8 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
             var surface = root.querySelector(".ufz-surface");
             var halo = root.querySelector(".ufz-halo");
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             function num(value, fallback, min, max) {
@@ -584,7 +584,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 
 ## Install
 
-<InstallCommand command="npx hyperframes add ui-focus-zoom" item="ui-focus-zoom" />
+<InstallCommand command="npx smashcut add ui-focus-zoom" item="ui-focus-zoom" />
 
 That writes one file: `compositions/components/ui-focus-zoom.html`.
 
@@ -628,7 +628,7 @@ defaults, so this behaves exactly like the preview above until you change one:
 ```html
 <!doctype html>
 <!--
-  ui-focus-zoom -- HyperFrames video primitive (product demo / camera)
+  ui-focus-zoom -- SmashCut video primitive (product demo / camera)
 
   A full app surface establishes with one settle, then the camera zooms and
   pans to an anchored region on its cue and holds the zoomed state. An
@@ -1006,8 +1006,8 @@ defaults, so this behaves exactly like the preview above until you change one:
             var surface = root.querySelector(".ufz-surface");
             var halo = root.querySelector(".ufz-halo");
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             function num(value, fallback, min, max) {

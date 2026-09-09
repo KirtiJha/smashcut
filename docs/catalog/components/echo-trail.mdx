@@ -16,7 +16,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 ```html echo-trail.html
 <!doctype html>
 <!--
-  echo-trail: HyperFrames video primitive (trails)
+  echo-trail: SmashCut video primitive (trails)
 
   The generalized onion skin: a moving element renders with N ghosted
   copies of itself, each ghost showing the element where it was at
@@ -190,8 +190,8 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
             var stage = root.querySelector(".et-stage");
             var lead = root.querySelector(".et-lead");
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             var echoesRaw = parseFloat(vars.echoes);
@@ -373,7 +373,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 
 ## Install
 
-<InstallCommand command="npx hyperframes add echo-trail" item="echo-trail" />
+<InstallCommand command="npx smashcut add echo-trail" item="echo-trail" />
 
 That writes one file: `compositions/components/echo-trail.html`.
 
@@ -415,7 +415,7 @@ defaults, so this behaves exactly like the preview above until you change one:
 ```html
 <!doctype html>
 <!--
-  echo-trail: HyperFrames video primitive (trails)
+  echo-trail: SmashCut video primitive (trails)
 
   The generalized onion skin: a moving element renders with N ghosted
   copies of itself, each ghost showing the element where it was at
@@ -589,8 +589,8 @@ defaults, so this behaves exactly like the preview above until you change one:
             var stage = root.querySelector(".et-stage");
             var lead = root.querySelector(".et-lead");
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             var echoesRaw = parseFloat(vars.echoes);

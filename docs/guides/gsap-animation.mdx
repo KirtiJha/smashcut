@@ -1,18 +1,18 @@
 ---
 title: "Animate with GSAP"
 sidebarTitle: "GSAP animation"
-description: "Create a paused timeline that HyperFrames can seek to any frame."
+description: "Create a paused timeline that SmashCut can seek to any frame."
 ---
 
 import { DocsVideo } from "/snippets/docs-video.jsx";
 
-GSAP is the primary animation runtime for HyperFrames compositions. You author the motion; HyperFrames owns the playhead.
+GSAP is the primary animation runtime for SmashCut compositions. You author the motion; SmashCut owns the playhead.
 
 
 <DocsVideo
   title="GSAP keyframes on screen, and the ease curve being shaped in Studio"
-  src="https://static.heygen.ai/hyperframes-oss/docs/images/showcase/gsap-keyframes-demo-v2.mp4"
-  poster="https://static.heygen.ai/hyperframes-oss/docs/images/showcase/gsap-keyframes-demo-v1.jpg"
+  src="https://static.heygen.ai/smashcut-oss/docs/images/showcase/gsap-keyframes-demo-v2.mp4"
+  poster="https://static.heygen.ai/smashcut-oss/docs/images/showcase/gsap-keyframes-demo-v1.jpg"
 />
 
 The code in that clip is the real thing — a `gsap.to()` with a `keyframes` array,
@@ -39,7 +39,7 @@ Give the composition a finite duration, create a paused timeline, and register i
       data-height="1080"
     >
       <h1 id="title" class="clip" data-start="0" data-duration="3" data-track-index="0">
-        HyperFrames
+        SmashCut
       </h1>
     </div>
 
@@ -69,9 +69,9 @@ The registry key must match `data-composition-id`.
 3. Give important tweens an explicit position.
 4. Prefer `fromTo()` when both endpoints matter; it remains reliable after backward or random seeks.
 5. Animate transforms and opacity for movement. Avoid repeatedly animating layout properties such as `top`, `left`, `width`, or `height`.
-6. Let HyperFrames control clip visibility and media playback.
+6. Let SmashCut control clip visibility and media playback.
 
-The normal timeline methods are `to()`, `from()`, `fromTo()`, and `set()`. GSAP supports many CSS properties, but the [HyperFrames animation skill](https://github.com/heygen-com/hyperframes/tree/main/skills/hyperframes-animation) contains the render-safe patterns used by agents.
+The normal timeline methods are `to()`, `from()`, `fromTo()`, and `set()`. GSAP supports many CSS properties, but the [SmashCut animation skill](https://github.com/heygen-com/hyperframes/tree/main/skills/smashcut-animation) contains the render-safe patterns used by agents.
 
 ## Duration
 
@@ -81,7 +81,7 @@ An explicit root `data-duration` is the composition's render length:
 <div data-composition-id="demo" data-duration="12"></div>
 ```
 
-This is the clearest choice for a complete composition. If the root omits `data-duration`, HyperFrames can infer length from registered timelines and supported media after the page initializes.
+This is the clearest choice for a complete composition. If the root omits `data-duration`, SmashCut can infer length from registered timelines and supported media after the page initializes.
 
 Do not assume a long source video automatically extends a shorter explicit root duration. The authored duration is the output window.
 
@@ -110,14 +110,14 @@ Each nested composition owns and registers its own timeline. The parent decides 
 ></div>
 ```
 
-Do not manually add the child timeline to the parent's GSAP timeline. HyperFrames maps the parent playhead into the nested scene.
+Do not manually add the child timeline to the parent's GSAP timeline. SmashCut maps the parent playhead into the nested scene.
 
 ## Verify the motion
 
 ```bash
-npx hyperframes lint
-npx hyperframes check
-npx hyperframes snapshot --at 0,0.6,2.9
+npx smashcut lint
+npx smashcut check
+npx smashcut snapshot --at 0,0.6,2.9
 ```
 
 Check the first frame, the moving state, and the end state. A timeline that looks correct only during continuous browser playback may still fail when the renderer seeks directly to a frame.

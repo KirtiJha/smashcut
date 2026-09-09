@@ -1,5 +1,5 @@
 <!--
-  Line-by-Line Slide - typography primitive for HyperFrames.
+  Line-by-Line Slide - typography primitive for SmashCut.
 
   Paste the markup and CSS into a composition. Drive the timeline integration
   from a paused GSAP timeline so renders remain deterministic.
@@ -24,7 +24,7 @@
 -->
 
 <div
-  class="hf-catalog-line-by-line-slide"
+  class="sc-catalog-line-by-line-slide"
   data-composition-variables='[
     {"id": "size", "type": "enum", "role": "layout", "label": "Size", "description": "Type size of the whole stack.", "default": "standard", "options": [{"value": "compact", "label": "Compact"}, {"value": "standard", "label": "Standard"}, {"value": "display", "label": "Display"}]},
     {"id": "tone", "type": "enum", "role": "style", "label": "Tone", "description": "Line colour: ink for light frames, paper for dark ones, accent rides the brand token.", "default": "ink", "options": [{"value": "ink", "label": "Ink"}, {"value": "paper", "label": "Paper"}, {"value": "accent", "label": "Accent"}]},
@@ -36,26 +36,26 @@
 </div>
 
 <style>
-  .hf-catalog-line-by-line-slide {
-    color: var(--hf-line-color, #18181b);
+  .sc-catalog-line-by-line-slide {
+    color: var(--sc-line-color, #18181b);
     font-family: Inter, system-ui, sans-serif;
     font-weight: 900;
     letter-spacing: -0.04em;
   }
-  .hf-catalog-line-by-line-slide {
+  .sc-catalog-line-by-line-slide {
     display: grid;
-    gap: var(--hf-line-gap, 10px);
-    font-size: var(--hf-line-size, 52px);
+    gap: var(--sc-line-gap, 10px);
+    font-size: var(--sc-line-size, 52px);
     line-height: 1;
     overflow: hidden;
   }
-  .hf-catalog-line-by-line-slide span {
+  .sc-catalog-line-by-line-slide span {
     display: block;
     transform: translate(
-      calc(var(--hf-line-x, 0px) * var(--hf-line-axis-x, 1)),
-      var(--hf-line-y, 0px)
+      calc(var(--sc-line-x, 0px) * var(--sc-line-axis-x, 1)),
+      var(--sc-line-y, 0px)
     );
-    filter: blur(var(--hf-line-blur, 0px));
+    filter: blur(var(--sc-line-blur, 0px));
     will-change: transform, filter, opacity;
   }
 </style>
@@ -65,8 +65,8 @@
     "use strict";
 
     var vars =
-      window.__hyperframes && window.__hyperframes.getVariables
-        ? window.__hyperframes.getVariables()
+      window.__smashcut && window.__smashcut.getVariables
+        ? window.__smashcut.getVariables()
         : {};
 
     // Unrecognised overrides return to their declared defaults.
@@ -88,18 +88,18 @@
     var gap = gaps[pick(gaps, vars.density, "standard")];
     var axis = axes[pick(axes, vars.direction, "left")];
 
-    var roots = document.querySelectorAll(".hf-catalog-line-by-line-slide");
+    var roots = document.querySelectorAll(".sc-catalog-line-by-line-slide");
     for (var i = 0; i < roots.length; i += 1) {
       var root = roots[i];
-      root.style.setProperty("--hf-line-size", size);
-      root.style.setProperty("--hf-line-color", tone);
-      root.style.setProperty("--hf-line-gap", gap);
-      root.style.setProperty("--hf-line-axis-x", String(axis));
+      root.style.setProperty("--sc-line-size", size);
+      root.style.setProperty("--sc-line-color", tone);
+      root.style.setProperty("--sc-line-gap", gap);
+      root.style.setProperty("--sc-line-axis-x", String(axis));
     }
   })();
 </script>
 
 <!--
   Timeline integration:
-  tl.fromTo('.hf-catalog-line-by-line-slide span', { opacity: 0, '--hf-line-x': '-36px', '--hf-line-y': '18px', '--hf-line-blur': '6px' }, { opacity: 1, '--hf-line-x': '0px', '--hf-line-y': '0px', '--hf-line-blur': '0px', duration: 0.34, stagger: 0.08, ease: 'power3.out' }, startTime);
+  tl.fromTo('.sc-catalog-line-by-line-slide span', { opacity: 0, '--sc-line-x': '-36px', '--sc-line-y': '18px', '--sc-line-blur': '6px' }, { opacity: 1, '--sc-line-x': '0px', '--sc-line-y': '0px', '--sc-line-blur': '0px', duration: 0.34, stagger: 0.08, ease: 'power3.out' }, startTime);
 -->

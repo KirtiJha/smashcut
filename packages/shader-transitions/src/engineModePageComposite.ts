@@ -12,14 +12,14 @@
  *    - Runs original GSAP seek to position the timeline
  *    - If inside a transition window, clones FROM/TO scene elements into
  *      layoutsubtree staging canvases
- *    - Sets window.__hf_page_composite_pending with transition metadata
+ *    - Sets window.__sc_page_composite_pending with transition metadata
  *    - Returns immediately (seek resolves)
  *
  *  Paint force (engine-side, frameCapture.ts):
  *    - Engine detects the pending flag and fires a micro Page.captureScreenshot
  *      to force the browser compositor to paint the staging canvas clones
  *
- *  Phase 2 (engine calls window.__hf_page_composite_resolve):
+ *  Phase 2 (engine calls window.__sc_page_composite_resolve):
  *    - drawElementImage reads the now-valid paint records from the clones
  *    - Uploads textures to WebGL, runs the shader, shows the GL overlay
  *    - Cleans up staging canvases
@@ -73,8 +73,8 @@ interface ResolvedTransition {
   prog: WebGLProgram;
 }
 
-export const PAGE_COMPOSITOR_CANVAS_ID = "__hf-page-side-compositor";
-export const PAGE_COMPOSITOR_BUILD_CANARY = "__hf_page_compositor_v1__";
+export const PAGE_COMPOSITOR_CANVAS_ID = "__sc-page-side-compositor";
+export const PAGE_COMPOSITOR_BUILD_CANARY = "__sc_page_compositor_v1__";
 
 export interface ClonePinStyle {
   left: string;
@@ -240,8 +240,8 @@ export function installPageSideCompositor(options: PageCompositorInstallOptions)
   let currentProgress = 0;
 
   type PendingWindow = Window & {
-    __hf_page_composite_pending?: boolean;
-    __hf_page_composite_resolve?: () => boolean;
+    __sc_page_composite_pending?: boolean;
+    __sc_page_composite_resolve?: () => boolean;
   };
   const pWin = window as PendingWindow;
 
@@ -252,14 +252,14 @@ export function installPageSideCompositor(options: PageCompositorInstallOptions)
   async function prepareComposite(): Promise<boolean> {
     const active = currentActive;
     if (!active) {
-      pWin.__hf_page_composite_pending = false;
+      pWin.__sc_page_composite_pending = false;
       return false;
     }
 
     const fromEl = document.getElementById(active.fromSceneId);
     const toEl = document.getElementById(active.toSceneId);
     if (!(fromEl instanceof HTMLElement) || !(toEl instanceof HTMLElement)) {
-      pWin.__hf_page_composite_pending = false;
+      pWin.__sc_page_composite_pending = false;
       return false;
     }
     // Measure each scene's rendered box WHILE STILL LIVE — a scene root sized
@@ -322,21 +322,21 @@ export function installPageSideCompositor(options: PageCompositorInstallOptions)
   function resolveComposite(): boolean {
     const active = currentActive;
     if (!active) {
-      pWin.__hf_page_composite_pending = false;
+      pWin.__sc_page_composite_pending = false;
       return false;
     }
 
     const fromChild = fromStaging.firstElementChild;
     const toChild = toStaging.firstElementChild;
     if (!fromChild || !toChild) {
-      pWin.__hf_page_composite_pending = false;
+      pWin.__sc_page_composite_pending = false;
       return false;
     }
 
     const fromCtx = fromStaging.getContext("2d") as DrawElementImageCtx | null;
     const toCtx = toStaging.getContext("2d") as DrawElementImageCtx | null;
     if (!fromCtx?.drawElementImage || !toCtx?.drawElementImage) {
-      pWin.__hf_page_composite_pending = false;
+      pWin.__sc_page_composite_pending = false;
       return false;
     }
 
@@ -351,7 +351,7 @@ export function installPageSideCompositor(options: PageCompositorInstallOptions)
     } catch (err) {
       // eslint-disable-next-line no-console
       console.warn("[HyperShader] page-side compositor: drawElementImage failed:", err);
-      pWin.__hf_page_composite_pending = false;
+      pWin.__sc_page_composite_pending = false;
       return false;
     }
 
@@ -376,29 +376,29 @@ export function installPageSideCompositor(options: PageCompositorInstallOptions)
       console.warn("[HyperShader] page-side compositor: renderShader failed:", err);
       glCanvas.style.display = "none";
     }
-    pWin.__hf_page_composite_pending = false;
+    pWin.__sc_page_composite_pending = false;
     return true;
   }
 
-  pWin.__hf_page_composite_resolve = resolveComposite;
+  pWin.__sc_page_composite_resolve = resolveComposite;
   (
-    pWin as unknown as { __hf_page_composite_prepare?: () => Promise<boolean> }
-  ).__hf_page_composite_prepare = prepareComposite;
+    pWin as unknown as { __sc_page_composite_prepare?: () => Promise<boolean> }
+  ).__sc_page_composite_prepare = prepareComposite;
 
   type HfWindow = Window & {
-    __hf?: { seek?: (t: number) => unknown };
+    __sc?: { seek?: (t: number) => unknown };
   };
   const hfWin = window as HfWindow;
   const wrapSeek = (): void => {
-    if (!hfWin.__hf) return;
-    const originalSeek = hfWin.__hf.seek;
+    if (!hfWin.__sc) return;
+    const originalSeek = hfWin.__sc.seek;
     if (typeof originalSeek !== "function") return;
     const wrapped = (time: number): unknown => {
-      const result = originalSeek.call(hfWin.__hf, time);
+      const result = originalSeek.call(hfWin.__sc, time);
       const active = findActive(time);
       if (!active) {
         glCanvas.style.display = "none";
-        pWin.__hf_page_composite_pending = false;
+        pWin.__sc_page_composite_pending = false;
         while (fromStaging.firstChild) fromStaging.removeChild(fromStaging.firstChild);
         while (toStaging.firstChild) toStaging.removeChild(toStaging.firstChild);
         // Live-page screenshot parity with the layered path's forceVisible: the
@@ -416,24 +416,24 @@ export function installPageSideCompositor(options: PageCompositorInstallOptions)
         active.duration === 0
           ? 1
           : Math.min(1, Math.max(0, (time - active.time) / active.duration));
-      pWin.__hf_page_composite_pending = true;
+      pWin.__sc_page_composite_pending = true;
 
       return result;
     };
-    hfWin.__hf.seek = wrapped;
+    hfWin.__sc.seek = wrapped;
   };
 
   let attempts = 0;
   const ivHandle = window.setInterval(() => {
     attempts += 1;
-    if (hfWin.__hf?.seek) {
+    if (hfWin.__sc?.seek) {
       wrapSeek();
       window.clearInterval(ivHandle);
     } else if (attempts > 200) {
       window.clearInterval(ivHandle);
       // eslint-disable-next-line no-console
       console.warn(
-        "[HyperShader] page-side compositor: window.__hf.seek never appeared after 10s; " +
+        "[HyperShader] page-side compositor: window.__sc.seek never appeared after 10s; " +
           "the engine bridge did not initialize. Falling back to opacity-flip mode.",
       );
     }

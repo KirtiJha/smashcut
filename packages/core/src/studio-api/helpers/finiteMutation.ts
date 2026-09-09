@@ -1,2 +1,2 @@
-/** @deprecated Import from @hyperframes/studio-server/finite-mutation */
-export * from "@hyperframes/studio-server/finite-mutation";
+/** @deprecated Import from @smashcut/studio-server/finite-mutation */
+export * from "@smashcut/studio-server/finite-mutation";

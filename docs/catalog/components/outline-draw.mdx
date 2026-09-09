@@ -16,7 +16,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 ```html outline-draw.html
 <!doctype html>
 <!--
-  outline-draw: HyperFrames video primitive (effects / burst / prove)
+  outline-draw: SmashCut video primitive (effects / burst / prove)
 
   Concept: a conic-gradient sector draws a rounded outline clockwise. Two
   opaque masks, clipped to the padding box and border box, are excluded to
@@ -138,8 +138,8 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
             var root = document.getElementById("root");
             var outline = root.querySelector(".od-outline");
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             // INVARIANT: invalid values return to declared defaults. Valid
@@ -193,7 +193,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 
 ## Install
 
-<InstallCommand command="npx hyperframes add outline-draw" item="outline-draw" />
+<InstallCommand command="npx smashcut add outline-draw" item="outline-draw" />
 
 That writes one file: `compositions/components/outline-draw.html`.
 
@@ -233,7 +233,7 @@ defaults, so this behaves exactly like the preview above until you change one:
 ```html
 <!doctype html>
 <!--
-  outline-draw: HyperFrames video primitive (effects / burst / prove)
+  outline-draw: SmashCut video primitive (effects / burst / prove)
 
   Concept: a conic-gradient sector draws a rounded outline clockwise. Two
   opaque masks, clipped to the padding box and border box, are excluded to
@@ -355,8 +355,8 @@ defaults, so this behaves exactly like the preview above until you change one:
             var root = document.getElementById("root");
             var outline = root.querySelector(".od-outline");
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             // INVARIANT: invalid values return to declared defaults. Valid

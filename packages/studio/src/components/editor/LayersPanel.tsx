@@ -197,7 +197,7 @@ export const LayersPanel = memo(function LayersPanel() {
         if (doc) {
           const found =
             (layer.id ? doc.getElementById(layer.id) : null) ??
-            (layer.hfId ? doc.querySelector(`[data-hf-id="${CSS.escape(layer.hfId)}"]`) : null) ??
+            (layer.hfId ? doc.querySelector(`[data-sc-id="${CSS.escape(layer.hfId)}"]`) : null) ??
             doc.getElementById(layer.key);
           if (found instanceof HTMLElement) el = found;
         }
@@ -264,7 +264,7 @@ export const LayersPanel = memo(function LayersPanel() {
   const handleLayerDoubleClick = useCallback(
     async (layer: DomEditLayerItem) => {
       const selection = await resolveSelection(layer);
-      if (selection?.element.hasAttribute("data-hf-group")) {
+      if (selection?.element.hasAttribute("data-sc-group")) {
         setActiveGroupElement(selection.element);
       } else {
         await handleSelectLayer(layer);
@@ -435,7 +435,7 @@ export const LayersPanel = memo(function LayersPanel() {
           >
             <span aria-hidden="true">←</span>
             <span className="truncate">
-              {activeGroupElement.getAttribute("data-hf-group") || "Group"}
+              {activeGroupElement.getAttribute("data-sc-group") || "Group"}
             </span>
           </button>
         )}
@@ -473,7 +473,7 @@ export const LayersPanel = memo(function LayersPanel() {
               style={{ paddingLeft: 8 + layer.depth * 16 }}
               title={
                 draggable
-                  ? layer.element.hasAttribute("data-hf-group")
+                  ? layer.element.hasAttribute("data-sc-group")
                     ? "Double-click to enter group"
                     : undefined
                   : "This layer can't be reordered"

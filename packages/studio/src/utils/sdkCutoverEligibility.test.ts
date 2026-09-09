@@ -12,6 +12,6 @@ const childStyleOp: PatchOperation = {
 
 describe("shouldUseSdkCutover child-scoped operations", () => {
   it("declines child-scoped operations because SDK patch ops target only the parent hfId", () => {
-    expect(shouldUseSdkCutover(true, true, "hf-parent", [childStyleOp])).toBe(false);
+    expect(shouldUseSdkCutover(true, true, "sc-parent", [childStyleOp])).toBe(false);
   });
 });

@@ -36,10 +36,10 @@ import {
   findUnsafeMutationValues,
   type UnsafeMutationValue,
 } from "../helpers/finiteMutation.js";
-import type { GsapAnimation } from "@hyperframes/parsers";
-import { classifyPropertyGroup } from "@hyperframes/parsers/gsap-constants";
-import { parseGsapScriptAcorn } from "@hyperframes/parsers/gsap-parser-acorn";
-import { unrollComputedTimeline } from "@hyperframes/parsers";
+import type { GsapAnimation } from "@smashcut/parsers";
+import { classifyPropertyGroup } from "@smashcut/parsers/gsap-constants";
+import { parseGsapScriptAcorn } from "@smashcut/parsers/gsap-parser-acorn";
+import { unrollComputedTimeline } from "@smashcut/parsers";
 import {
   updateAnimationInScript,
   addAnimationToScript,
@@ -67,7 +67,7 @@ import {
   scalePositionsInScript,
   dedupePositionWritesInScript,
   syncPositionHoldsBeforeKeyframes,
-} from "@hyperframes/parsers/gsap-writer-acorn";
+} from "@smashcut/parsers/gsap-writer-acorn";
 import {
   removeElementFromHtml,
   patchElementInHtml,
@@ -98,7 +98,7 @@ import { resolveGsapWriter } from "./gsapMutationCapabilities.js";
  * for the recast write path (the default until the migration gate graduates).
  */
 async function loadGsapParser() {
-  return import("@hyperframes/parsers/gsap-parser-recast");
+  return import("@smashcut/parsers/gsap-parser-recast");
 }
 
 // ── Shared helpers ──────────────────────────────────────────────────────────
@@ -434,7 +434,7 @@ function recordMutationReceipt(
   html: string,
 ): { version: string; writeToken: string } {
   const version = fileContentVersion(html);
-  const writeToken = createWriteToken(c.req.header("X-Hyperframes-Write-Token"));
+  const writeToken = createWriteToken(c.req.header("X-Smashcut-Write-Token"));
   recordFileWriteReceipt(absPath, { path: filePath, version, writeToken });
   return { version, writeToken };
 }
@@ -778,28 +778,28 @@ function stripStudioEditsFromTarget(document: Document, selector: string): numbe
       if (!isHTMLElement(el)) continue;
       const htmlEl = el;
       let touched = false;
-      // Manual path offset (--hf-studio-offset / translate) — a GSAP position tween
+      // Manual path offset (--sc-studio-offset / translate) — a GSAP position tween
       // now owns position, so the stale offset channel must go.
-      if (el.getAttribute("data-hf-studio-path-offset")) {
-        const originalTranslate = el.getAttribute("data-hf-studio-original-inline-translate");
-        htmlEl.style.removeProperty("--hf-studio-offset-x");
-        htmlEl.style.removeProperty("--hf-studio-offset-y");
+      if (el.getAttribute("data-sc-studio-path-offset")) {
+        const originalTranslate = el.getAttribute("data-sc-studio-original-inline-translate");
+        htmlEl.style.removeProperty("--sc-studio-offset-x");
+        htmlEl.style.removeProperty("--sc-studio-offset-y");
         if (originalTranslate) {
           htmlEl.style.setProperty("translate", originalTranslate);
         } else {
           htmlEl.style.removeProperty("translate");
         }
-        el.removeAttribute("data-hf-studio-path-offset");
-        el.removeAttribute("data-hf-studio-original-translate");
-        el.removeAttribute("data-hf-studio-original-inline-translate");
+        el.removeAttribute("data-sc-studio-path-offset");
+        el.removeAttribute("data-sc-studio-original-translate");
+        el.removeAttribute("data-sc-studio-original-inline-translate");
         touched = true;
       }
-      // Manual rotation (--hf-studio-rotation / rotate) — likewise, a GSAP rotation
+      // Manual rotation (--sc-studio-rotation / rotate) — likewise, a GSAP rotation
       // set/tween now owns rotation, so clear the legacy CSS-var channel.
-      if (el.getAttribute("data-hf-studio-rotation")) {
-        const originalRotate = el.getAttribute("data-hf-studio-original-inline-rotate");
-        const originalOrigin = el.getAttribute("data-hf-studio-original-rotation-transform-origin");
-        htmlEl.style.removeProperty("--hf-studio-rotation");
+      if (el.getAttribute("data-sc-studio-rotation")) {
+        const originalRotate = el.getAttribute("data-sc-studio-original-inline-rotate");
+        const originalOrigin = el.getAttribute("data-sc-studio-original-rotation-transform-origin");
+        htmlEl.style.removeProperty("--sc-studio-rotation");
         if (originalRotate) {
           htmlEl.style.setProperty("rotate", originalRotate);
         } else {
@@ -810,11 +810,11 @@ function stripStudioEditsFromTarget(document: Document, selector: string): numbe
         } else {
           htmlEl.style.removeProperty("transform-origin");
         }
-        el.removeAttribute("data-hf-studio-rotation");
-        el.removeAttribute("data-hf-studio-rotation-draft");
-        el.removeAttribute("data-hf-studio-original-rotate");
-        el.removeAttribute("data-hf-studio-original-inline-rotate");
-        el.removeAttribute("data-hf-studio-original-rotation-transform-origin");
+        el.removeAttribute("data-sc-studio-rotation");
+        el.removeAttribute("data-sc-studio-rotation-draft");
+        el.removeAttribute("data-sc-studio-original-rotate");
+        el.removeAttribute("data-sc-studio-original-inline-rotate");
+        el.removeAttribute("data-sc-studio-original-rotation-transform-origin");
         touched = true;
       }
       if (touched) stripped++;
@@ -825,7 +825,7 @@ function stripStudioEditsFromTarget(document: Document, selector: string): numbe
   return stripped;
 }
 
-// A studio path-offset (--hf-studio-offset / data-hf-studio-path-offset) and a GSAP
+// A studio path-offset (--sc-studio-offset / data-sc-studio-path-offset) and a GSAP
 // position tween both drive translate — keeping both stacks the offsets (a gesture or
 // drag recorded over a stale offset plays shoved off-position). When a committed tween
 // writes a position property, the tween owns position, so the stale offset must go.
@@ -837,7 +837,7 @@ function keyframesWritePosition(
   );
 }
 
-// A studio rotation edit (--hf-studio-rotation / data-hf-studio-rotation) and a GSAP
+// A studio rotation edit (--sc-studio-rotation / data-sc-studio-rotation) and a GSAP
 // rotation tween both drive rotate — keeping both stacks them. When a committed keyframe
 // set writes a rotation property, the tween owns rotation, so the stale CSS-var channel
 // must go (the position twin of this is `keyframesWritePosition`).
@@ -1130,7 +1130,7 @@ function resolveReplacementEaseEach(
 
 // Mutations that can change a position tween's first keyframe (value/existence/timing)
 // and therefore require the pre-keyframe hold-`set`s to be re-synced afterwards.
-// `syncPositionHoldsBeforeKeyframes` rebuilds all `hf-hold` sets from scratch: it acts
+// `syncPositionHoldsBeforeKeyframes` rebuilds all `sc-hold` sets from scratch: it acts
 // on every tween that has keyframes whose first percentage carries a position prop and
 // whose start is > 0. So any mutation that creates such a tween, retargets it, or moves
 // its start across the t=0 boundary must trigger a re-sync.
@@ -1225,7 +1225,7 @@ async function prepareGsapMutationScript(
   let block = extractGsapScriptBlock(html);
   if (!block && (firstMutation.type === "add" || firstMutation.type === "add-with-keyframes")) {
     const compId = html.match(/data-composition-id="([^"]+)"/)?.[1] ?? "main";
-    const { GSAP_CDN } = await import("@hyperframes/core");
+    const { GSAP_CDN } = await import("@smashcut/core");
     const bootstrap = [
       `<script src="${GSAP_CDN}"></script>`,
       "<script>",
@@ -1279,7 +1279,7 @@ async function applyGsapMutations(
   let writer: "recast" | "acorn";
   try {
     writer = resolveGsapWriter({
-      HYPERFRAMES_GSAP_WRITER: process.env["HYPERFRAMES_GSAP_WRITER"],
+      SMASHCUT_GSAP_WRITER: process.env["SMASHCUT_GSAP_WRITER"],
     });
   } catch (error) {
     return c.json({ error: error instanceof Error ? error.message : String(error) }, 400);
@@ -1764,7 +1764,7 @@ async function executeGsapMutationRecast(
         return respond({ error: "fromProperties is only valid for method=fromTo" }, 400);
       }
       // A new position/rotation animation owns that channel — strip the matching
-      // legacy studio CSS var (--hf-studio-offset / --hf-studio-rotation) so it can't
+      // legacy studio CSS var (--sc-studio-offset / --sc-studio-rotation) so it can't
       // double with the tween, matching add-with-keyframes/replace-with-keyframes.
       if (
         Object.keys(body.properties).some((k) => {
@@ -2388,7 +2388,7 @@ export function registerFileRoutes(api: Hono, adapter: StudioApiAdapter): void {
       }
     }
     const version = fileContentVersion(body);
-    const writeToken = createWriteToken(c.req.header("X-Hyperframes-Write-Token"));
+    const writeToken = createWriteToken(c.req.header("X-Smashcut-Write-Token"));
     recordFileWriteReceipt(res.absPath, { path: res.filePath, version, writeToken });
     c.header("ETag", version);
 
@@ -2590,7 +2590,7 @@ export function registerFileRoutes(api: Hono, adapter: StudioApiAdapter): void {
     let writer: "recast" | "acorn";
     try {
       writer = resolveGsapWriter({
-        HYPERFRAMES_GSAP_WRITER: process.env["HYPERFRAMES_GSAP_WRITER"],
+        SMASHCUT_GSAP_WRITER: process.env["SMASHCUT_GSAP_WRITER"],
       });
     } catch (error) {
       return c.json({ error: error instanceof Error ? error.message : String(error) }, 400);
@@ -2665,7 +2665,7 @@ export function registerFileRoutes(api: Hono, adapter: StudioApiAdapter): void {
       const writeToken = createWriteToken(
         typeof body.transactionToken === "string"
           ? body.transactionToken
-          : c.req.header("X-Hyperframes-Write-Token"),
+          : c.req.header("X-Smashcut-Write-Token"),
       );
       const written: FoldedAtomicCutFile[] = [];
       try {

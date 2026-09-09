@@ -32,10 +32,10 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
   causal click, or carrying the eye across a scene that would otherwise read as
   static or stale.
 
-  mount contract: this file is a HyperFrames sub-composition, loaded by a host via
+  mount contract: this file is a SmashCut sub-composition, loaded by a host via
   data-composition-src, never opened standalone. The runtime clones ONLY the
   <template> contents into the host slot (see
-  skills/hyperframes-core/references/sub-compositions.md); everything outside
+  skills/smashcut-core/references/sub-compositions.md); everything outside
   <template>, including this <head>, is discarded at render. The root is #root:
   elastic, no data-width/data-height declared here, it fills whatever box the host
   clip gives it (position:absolute; inset:0). See demo.html for the mount usage
@@ -260,19 +260,19 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
           }
           // Under mount, the runtime resolves this file's own declared
           // variables merged with the host clip's per-instance
-          // data-variable-values through a scoped window.__hyperframes,
-          // shadowed in just for this file's script. window.__hfVariables
+          // data-variable-values through a scoped window.__smashcut,
+          // shadowed in just for this file's script. window.__scVariables
           // stays in the merge too, as a raw fallback for the (non-mount)
           // case where this file is driven by an older render/preview path.
           var scopedVariables = {};
           try {
-            if (window.__hyperframes && typeof window.__hyperframes.getVariables === "function") {
-              scopedVariables = window.__hyperframes.getVariables() || {};
+            if (window.__smashcut && typeof window.__smashcut.getVariables === "function") {
+              scopedVariables = window.__smashcut.getVariables() || {};
             }
           } catch (error) {
             /* no scoped variables API in this context, fall through */
           }
-          var vars = Object.assign({}, DEFAULTS, window.__hfVariables || {}, scopedVariables);
+          var vars = Object.assign({}, DEFAULTS, window.__scVariables || {}, scopedVariables);
 
           function clampPercent(value, fallback) {
             var n = Number(value);
@@ -442,7 +442,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 
 ## Install
 
-<InstallCommand command="npx hyperframes add oversized-cursor" item="oversized-cursor" />
+<InstallCommand command="npx smashcut add oversized-cursor" item="oversized-cursor" />
 
 That writes one file: `compositions/components/oversized-cursor.html`.
 
@@ -500,10 +500,10 @@ defaults, so this behaves exactly like the preview above until you change one:
   causal click, or carrying the eye across a scene that would otherwise read as
   static or stale.
 
-  mount contract: this file is a HyperFrames sub-composition, loaded by a host via
+  mount contract: this file is a SmashCut sub-composition, loaded by a host via
   data-composition-src, never opened standalone. The runtime clones ONLY the
   <template> contents into the host slot (see
-  skills/hyperframes-core/references/sub-compositions.md); everything outside
+  skills/smashcut-core/references/sub-compositions.md); everything outside
   <template>, including this <head>, is discarded at render. The root is #root:
   elastic, no data-width/data-height declared here, it fills whatever box the host
   clip gives it (position:absolute; inset:0). See demo.html for the mount usage
@@ -728,19 +728,19 @@ defaults, so this behaves exactly like the preview above until you change one:
           }
           // Under mount, the runtime resolves this file's own declared
           // variables merged with the host clip's per-instance
-          // data-variable-values through a scoped window.__hyperframes,
-          // shadowed in just for this file's script. window.__hfVariables
+          // data-variable-values through a scoped window.__smashcut,
+          // shadowed in just for this file's script. window.__scVariables
           // stays in the merge too, as a raw fallback for the (non-mount)
           // case where this file is driven by an older render/preview path.
           var scopedVariables = {};
           try {
-            if (window.__hyperframes && typeof window.__hyperframes.getVariables === "function") {
-              scopedVariables = window.__hyperframes.getVariables() || {};
+            if (window.__smashcut && typeof window.__smashcut.getVariables === "function") {
+              scopedVariables = window.__smashcut.getVariables() || {};
             }
           } catch (error) {
             /* no scoped variables API in this context, fall through */
           }
-          var vars = Object.assign({}, DEFAULTS, window.__hfVariables || {}, scopedVariables);
+          var vars = Object.assign({}, DEFAULTS, window.__scVariables || {}, scopedVariables);
 
           function clampPercent(value, fallback) {
             var n = Number(value);

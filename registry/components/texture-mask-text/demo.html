@@ -50,7 +50,7 @@
             sans-serif;
         }
 
-        .hf-texture-text {
+        .sc-texture-text {
           color: #fff;
           -webkit-mask-size: var(--mask-size, cover);
           mask-size: var(--mask-size, cover);
@@ -250,7 +250,7 @@
             shadowWrap.className = "shadow-wrap";
 
             const sample = document.createElement("div");
-            sample.className = "hf-texture-text sample";
+            sample.className = "sc-texture-text sample";
             sample.style.webkitMaskImage = `url("masks/${item.slug}.png")`;
             sample.style.maskImage = `url("masks/${item.slug}.png")`;
             sample.textContent = item.sample;

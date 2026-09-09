@@ -38,7 +38,7 @@ describe("groupAutomationElement", () => {
     expect(lanes[0]?.name).toBeTruthy();
   });
 
-  // The write has to land on `<hf-audio-group>`, not on a member clip.
+  // The write has to land on `<sc-audio-group>`, not on a member clip.
   it("carries the group's DOM id, so a lane edit addresses the group element", () => {
     expect(groupAutomationElement(GROUP, 60).domId).toBe("voiceover");
   });

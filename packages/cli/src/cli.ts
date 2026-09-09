@@ -45,7 +45,7 @@ import { existsSync } from "node:fs";
 
 // ── Fast-path exits ─────────────────────────────────────────────────────────
 // Check --version before importing anything heavy. This makes
-// `hyperframes --version` near-instant (~10ms vs ~80ms).
+// `smashcut --version` near-instant (~10ms vs ~80ms).
 import { VERSION } from "./version.js";
 
 const argv = process.argv.slice(2);
@@ -172,7 +172,7 @@ const subCommands = Object.fromEntries(
 
 const main = defineCommand({
   meta: {
-    name: "hyperframes",
+    name: "smashcut",
     version: VERSION,
     description: "Create and render HTML video compositions",
   },
@@ -376,7 +376,7 @@ function reportPostRenderTerminationEvent(
   error: Error,
 ): void {
   process.stderr.write(
-    `  [hyperframes] Post-render ${label} (render already succeeded): ${error.message}\n`,
+    `  [smashcut] Post-render ${label} (render already succeeded): ${error.message}\n`,
   );
   emitCliErrorEvent(kind, error);
 }

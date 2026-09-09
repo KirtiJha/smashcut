@@ -9,7 +9,7 @@ const PROJECT_ID = "smoke-test";
 export const SMOKE_COMPOSITION_HTML =
   '<!doctype html><html><body><div data-composition-id="root" data-width="1920" ' +
   'data-height="1080" data-duration="1" data-start="0"><div class="clip" ' +
-  'data-hf-id="title" data-start="0" data-duration="1">Test</div></div></body></html>';
+  'data-sc-id="title" data-start="0" data-duration="1">Test</div></div></body></html>';
 const SMOKE_THUMBNAIL_SVG =
   '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="9"><rect width="16" height="9"/></svg>';
 

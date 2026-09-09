@@ -10,20 +10,20 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
   previewSrc="/public/catalog/components/logo-sting.json"
   compositionId="logo-sting"
   compositionSrc="compositions/components/logo-sting.html"
-  variables={[{"id":"wordmark","type":"string","role":"content","label":"Wordmark","description":"Brand name displayed in the final lockup.","default":"HYPERFRAMES"},{"id":"accent","type":"enum","role":"style","label":"Accent","description":"Color of the single impact ring.","default":"green","options":[{"value":"green","label":"Green"},{"value":"blue","label":"Blue"},{"value":"violet","label":"Violet"}]}]}
+  variables={[{"id":"wordmark","type":"string","role":"content","label":"Wordmark","description":"Brand name displayed in the final lockup.","default":"SMASHCUT"},{"id":"accent","type":"enum","role":"style","label":"Accent","description":"Color of the single impact ring.","default":"green","options":[{"value":"green","label":"Green"},{"value":"blue","label":"Blue"},{"value":"violet","label":"Violet"}]}]}
 >
 
 ```html logo-sting.html
 <!doctype html>
 <!--
-  logo-sting: HyperFrames video primitive (brand / impact / reveal)
+  logo-sting: SmashCut video primitive (brand / impact / reveal)
 
   Concept: a wordmark lands from scale 1.15 with the slam ease. Its impact
   triggers one accent ring and exactly one frame of white, then the finished
   lockup holds completely still.
 
   Variables:
-    - wordmark (string, default "HYPERFRAMES"): the brand name.
+    - wordmark (string, default "SMASHCUT"): the brand name.
     - accent (green | blue | violet, default green): the ring color.
 
   Envelope (fixed IN, elastic HOLD, no OUT, never timeScale):
@@ -41,7 +41,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
   data-composition-id="logo-sting"
   data-composition-duration="2.2"
   data-composition-variables='[
-    { "id": "wordmark", "type": "string", "role": "content", "label": "Wordmark", "description": "Brand name displayed in the final lockup.", "default": "HYPERFRAMES" },
+    { "id": "wordmark", "type": "string", "role": "content", "label": "Wordmark", "description": "Brand name displayed in the final lockup.", "default": "SMASHCUT" },
     { "id": "accent", "type": "enum", "role": "style", "label": "Accent", "description": "Color of the single impact ring.", "default": "green", "options": [{ "value": "green", "label": "Green" }, { "value": "blue", "label": "Blue" }, { "value": "violet", "label": "Violet" }] }
   ]'
 >
@@ -135,8 +135,8 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
             var ring = root.querySelector(".ls-ring");
             var flash = root.querySelector(".ls-flash");
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             var accentColors = {
@@ -147,7 +147,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
             var accent = Object.prototype.hasOwnProperty.call(accentColors, vars.accent)
               ? vars.accent
               : "green";
-            var wordmarkText = vars.wordmark == null ? "HYPERFRAMES" : String(vars.wordmark);
+            var wordmarkText = vars.wordmark == null ? "SMASHCUT" : String(vars.wordmark);
 
             wordmark.textContent = wordmarkText;
             root.style.setProperty("--ls-accent", accentColors[accent]);
@@ -200,7 +200,7 @@ import { VariablesExplorer } from "/snippets/variables-explorer.jsx";
 
 ## Install
 
-<InstallCommand command="npx hyperframes add logo-sting" item="logo-sting" />
+<InstallCommand command="npx smashcut add logo-sting" item="logo-sting" />
 
 That writes one file: `compositions/components/logo-sting.html`.
 
@@ -218,7 +218,7 @@ want to change on the element:
 
 | Variable | Default | Accepts | What it does |
 | --- | --- | --- | --- |
-| `wordmark` | `HYPERFRAMES` | string | Brand name displayed in the final lockup. |
+| `wordmark` | `SMASHCUT` | string | Brand name displayed in the final lockup. |
 | `accent` | `green` | `green`, `blue`, `violet` | Color of the single impact ring. |
 
 Set them with `data-variable-values` on the element that mounts it. These are the
@@ -228,7 +228,7 @@ defaults, so this behaves exactly like the preview above until you change one:
 <div
   data-composition-id="logo-sting"
   data-composition-src="compositions/components/logo-sting.html"
-  data-variable-values='{"wordmark":"HYPERFRAMES","accent":"green"}'
+  data-variable-values='{"wordmark":"SMASHCUT","accent":"green"}'
 ></div>
 ```
 
@@ -239,14 +239,14 @@ defaults, so this behaves exactly like the preview above until you change one:
 ```html
 <!doctype html>
 <!--
-  logo-sting: HyperFrames video primitive (brand / impact / reveal)
+  logo-sting: SmashCut video primitive (brand / impact / reveal)
 
   Concept: a wordmark lands from scale 1.15 with the slam ease. Its impact
   triggers one accent ring and exactly one frame of white, then the finished
   lockup holds completely still.
 
   Variables:
-    - wordmark (string, default "HYPERFRAMES"): the brand name.
+    - wordmark (string, default "SMASHCUT"): the brand name.
     - accent (green | blue | violet, default green): the ring color.
 
   Envelope (fixed IN, elastic HOLD, no OUT, never timeScale):
@@ -264,7 +264,7 @@ defaults, so this behaves exactly like the preview above until you change one:
   data-composition-id="logo-sting"
   data-composition-duration="2.2"
   data-composition-variables='[
-    { "id": "wordmark", "type": "string", "role": "content", "label": "Wordmark", "description": "Brand name displayed in the final lockup.", "default": "HYPERFRAMES" },
+    { "id": "wordmark", "type": "string", "role": "content", "label": "Wordmark", "description": "Brand name displayed in the final lockup.", "default": "SMASHCUT" },
     { "id": "accent", "type": "enum", "role": "style", "label": "Accent", "description": "Color of the single impact ring.", "default": "green", "options": [{ "value": "green", "label": "Green" }, { "value": "blue", "label": "Blue" }, { "value": "violet", "label": "Violet" }] }
   ]'
 >
@@ -358,8 +358,8 @@ defaults, so this behaves exactly like the preview above until you change one:
             var ring = root.querySelector(".ls-ring");
             var flash = root.querySelector(".ls-flash");
             var vars =
-              window.__hyperframes && window.__hyperframes.getVariables
-                ? window.__hyperframes.getVariables()
+              window.__smashcut && window.__smashcut.getVariables
+                ? window.__smashcut.getVariables()
                 : {};
 
             var accentColors = {
@@ -370,7 +370,7 @@ defaults, so this behaves exactly like the preview above until you change one:
             var accent = Object.prototype.hasOwnProperty.call(accentColors, vars.accent)
               ? vars.accent
               : "green";
-            var wordmarkText = vars.wordmark == null ? "HYPERFRAMES" : String(vars.wordmark);
+            var wordmarkText = vars.wordmark == null ? "SMASHCUT" : String(vars.wordmark);
 
             wordmark.textContent = wordmarkText;
             root.style.setProperty("--ls-accent", accentColors[accent]);

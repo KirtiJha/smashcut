@@ -1,5 +1,5 @@
 {
-  "name": "@hyperframes/lint",
+  "name": "@smashcut/lint",
   "version": "0.8.33",
   "repository": {
     "type": "git",
@@ -53,7 +53,7 @@
     "prepublishOnly": "echo skip"
   },
   "dependencies": {
-    "@hyperframes/parsers": "workspace:*",
+    "@smashcut/parsers": "workspace:*",
     "htmlparser2": "^10.1.0",
     "linkedom": "^0.18.12",
     "postcss": "^8.5.8",

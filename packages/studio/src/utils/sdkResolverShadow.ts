@@ -15,8 +15,8 @@
  * Telemetry-only — never writes to disk, never affects the user-visible edit.
  */
 
-import { openComposition } from "@hyperframes/sdk";
-import type { Composition, JsonPatchOp } from "@hyperframes/sdk";
+import { openComposition } from "@smashcut/sdk";
+import type { Composition, JsonPatchOp } from "@smashcut/sdk";
 import type { PatchOperation } from "./sourcePatcher";
 import { STUDIO_SDK_RESOLVER_SHADOW_ENABLED } from "../components/editor/manualEditingAvailability";
 import { patchOpsToSdkEditOps } from "./sdkOpMapping";
@@ -72,14 +72,14 @@ type FlatEl = NonNullable<ReturnType<Composition["getElement"]>>;
 type AttrMap = Record<string, string | null>;
 
 /**
- * Resolve an hf-id to its snapshot the SAME way the SDK dispatch path does
+ * Resolve an sc-id to its snapshot the SAME way the SDK dispatch path does
  * (engine/model.ts resolveScoped), NOT via Composition.getElement.
  *
  * getElement is canonical-only for a bare id by design — it deliberately will
  * not resolve a bare id to a non-canonical (sub-composition) element, so that
  * removeElement(bareId) and getElement(bareId) agree on the same instance
  * (session.subcomp.test "ambiguous bare id" suite). But the cutover persist
- * path dispatches the studio's bare data-hf-id, and dispatch resolves it via
+ * path dispatches the studio's bare data-sc-id, and dispatch resolves it via
  * resolveScoped, which locates the leaf anywhere (canonical preferred, else
  * first match). So getElement under-resolves a bare leaf that lives inside an
  * inlined sub-composition (scopedId "host/leaf") — exactly the false
@@ -88,11 +88,11 @@ type AttrMap = Record<string, string | null>;
  * Mirror resolveScoped here: exact scoped-path match, then canonical bare
  * match, then first bare match — the resolvability dispatch actually has.
  */
-// Count static `data-hf-id="<id>"` occurrences (both quote styles) in source.
+// Count static `data-sc-id="<id>"` occurrences (both quote styles) in source.
 // Substring split, not regex — no escaping, and the id never contains a quote.
 function countHfIdInSource(source: string, id: string): number {
   return (
-    source.split(`data-hf-id="${id}"`).length - 1 + (source.split(`data-hf-id='${id}'`).length - 1)
+    source.split(`data-sc-id="${id}"`).length - 1 + (source.split(`data-sc-id='${id}'`).length - 1)
   );
 }
 
@@ -181,15 +181,15 @@ export function sdkResolverShadowCheck(
   sourceContent?: string,
 ): SdkResolverMismatch[] {
   if (!resolveSnapshot(session, hfId)) {
-    // Runtime-node filter: an hf-id absent from the on-disk source the SDK
+    // Runtime-node filter: an sc-id absent from the on-disk source the SDK
     // parsed was never in the static DOM — it belongs to an element a
     // composition <script> creates at runtime (e.g. caption word/group spans),
     // which the SDK session cannot model by design. That is NOT a resolver bug,
-    // so suppress it. An hf-id PRESENT in source but missing from the session IS
+    // so suppress it. An sc-id PRESENT in source but missing from the session IS
     // a genuine resolver divergence (the v0.6.110 class) — keep emitting that.
     // ponytail: substring match; biases toward keeping signal on a loose hit.
     if (sourceContent !== undefined && !sourceContent.includes(hfId)) return [];
-    // Loose match here vs. countHfIdInSource's strict data-hf-id="..." match in the
+    // Loose match here vs. countHfIdInSource's strict data-sc-id="..." match in the
     // caller (runResolverShadow) means an emitted event can carry sourceHfIdCount: 0 —
     // see the comment on that field in runResolverShadow for what 0 means in that case.
     return [{ kind: "element_not_found", hfId }];
@@ -352,7 +352,7 @@ export function runResolverShadow(
       // sessionElementCount > 0 + element_not_found = runtime-only element;
       // sessionElementCount === 0 = session is empty/broken (actionable).
       sessionElementCount: session.getElements().length,
-      // Count of data-hf-id="<id>" occurrences in source for an emitted
+      // Count of data-sc-id="<id>" occurrences in source for an emitted
       // element_not_found. >1 = duplicate ids → resolver picked the wrong
       // instance; =1 = single static node the SDK parse dropped (foreign-content
       // exclusion / sub-comp inlining gap); =0 = the runtime-node filter above
@@ -381,7 +381,7 @@ export function runResolverShadow(
  * No-op when the shadow flag is off; never throws; never mutates the session.
  */
 /**
- * Source-truth check for a missed hf-id: read the target file and decide
+ * Source-truth check for a missed sc-id: read the target file and decide
  * whether the miss is a runtime-generated node (id absent from source —
  * suppress, the SDK cannot model it by design) or a reportable divergence
  * (id present → strict attribute count for the event; read failure → fail
@@ -433,14 +433,14 @@ export async function recordResolverParity(
       hfId,
       opLabel,
       sessionElementCount,
-      // sourceHfIdCount: strict data-hf-id="..." attribute count. Can be 0 even
+      // sourceHfIdCount: strict data-sc-id="..." attribute count. Can be 0 even
       // on an emitted (non-suppressed) event — the suppression check above is a
       // loose substring match (biased toward keeping signal); see the longer
       // comment on this field in runResolverShadow for the full explanation.
       ...(strictCount !== undefined ? { sourceHfIdCount: strictCount } : {}),
       // Loose suppression check matched (kept this event) but the strict
       // attribute count came back 0 — hfId appeared as plain text (class name,
-      // comment, script string) but never as a data-hf-id="..." attribute.
+      // comment, script string) but never as a data-sc-id="..." attribute.
       // Lets telemetry consumers filter this cohort without parsing the
       // sourceHfIdCount comment above.
       ...(strictCount === 0 ? { sourceLooseMatchOnly: true } : {}),

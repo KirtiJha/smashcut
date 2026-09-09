@@ -4,7 +4,7 @@
  *
  * Writes each catalog item's compiled composition to
  * `docs/public/catalog/<type>/<name>.json` so the docs site can mount it in a
- * live `<hyperframes-player>` instead of an uploaded MP4.
+ * live `<smashcut-player>` instead of an uploaded MP4.
  *
  * Why JSON and not the composition HTML itself: the docs host publishes only
  * JSON and image files out of `docs/public`. `.html`, `.js` and `.css` are
