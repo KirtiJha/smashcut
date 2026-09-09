@@ -4,24 +4,24 @@ import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { buildSync } from "esbuild";
 import {
-  HYPERFRAME_RUNTIME_ARTIFACTS,
-  HYPERFRAME_RUNTIME_CONTRACT,
-  loadHyperframeRuntimeSource,
+  SMASHCUT_RUNTIME_ARTIFACTS,
+  SMASHCUT_RUNTIME_CONTRACT,
+  loadSmashcutRuntimeSource,
 } from "../src/inline-scripts/smashcut";
 
 const thisDir = dirname(fileURLToPath(import.meta.url));
 const distDir = resolve(thisDir, "../dist");
-const iifePath = resolve(distDir, HYPERFRAME_RUNTIME_ARTIFACTS.iife);
-const esmPath = resolve(distDir, HYPERFRAME_RUNTIME_ARTIFACTS.esm);
-const manifestPath = resolve(distDir, HYPERFRAME_RUNTIME_ARTIFACTS.manifest);
+const iifePath = resolve(distDir, SMASHCUT_RUNTIME_ARTIFACTS.iife);
+const esmPath = resolve(distDir, SMASHCUT_RUNTIME_ARTIFACTS.esm);
+const manifestPath = resolve(distDir, SMASHCUT_RUNTIME_ARTIFACTS.manifest);
 
-const runtimeSourceRaw = loadHyperframeRuntimeSource();
+const runtimeSourceRaw = loadSmashcutRuntimeSource();
 if (runtimeSourceRaw === null) {
   throw new Error("Cannot build runtime artifact: entry.ts not found at expected path");
 }
 const runtimeSource = `${runtimeSourceRaw}\n`;
 const runtimeSha256 = createHash("sha256").update(runtimeSource, "utf8").digest("hex");
-const buildId = process.env.HYPERFRAME_RUNTIME_BUILD_ID?.trim() || "dev";
+const buildId = process.env.SMASHCUT_RUNTIME_BUILD_ID?.trim() || "dev";
 const runtimeEntryPath = resolve(thisDir, "../src/runtime/entry.ts");
 const esmBuild = buildSync({
   entryPoints: [runtimeEntryPath],
@@ -36,14 +36,14 @@ const esmBuild = buildSync({
 const esmSource = `${esmBuild.outputFiles[0]?.text ?? ""}\n`;
 
 const manifest = {
-  version: process.env.HYPERFRAME_RUNTIME_VERSION?.trim() || "0.1.0",
+  version: process.env.SMASHCUT_RUNTIME_VERSION?.trim() || "0.1.0",
   buildId,
   sha256: runtimeSha256,
   artifacts: {
-    iife: HYPERFRAME_RUNTIME_ARTIFACTS.iife,
-    esm: HYPERFRAME_RUNTIME_ARTIFACTS.esm,
+    iife: SMASHCUT_RUNTIME_ARTIFACTS.iife,
+    esm: SMASHCUT_RUNTIME_ARTIFACTS.esm,
   },
-  contract: HYPERFRAME_RUNTIME_CONTRACT,
+  contract: SMASHCUT_RUNTIME_CONTRACT,
 };
 
 mkdirSync(distDir, { recursive: true });
@@ -53,7 +53,7 @@ writeFileSync(manifestPath, `${JSON.stringify(manifest, null, 2)}\n`, "utf8");
 
 // ── Generate src/generated/runtime-inline.ts ──────────────────────────────
 // This file is compiled by tsc into dist/ and provides the production-safe
-// getHyperframeRuntimeScript() that returns the IIFE as a string constant —
+// getSmashcutRuntimeScript() that returns the IIFE as a string constant —
 // no esbuild, no file I/O, no import.meta.url arithmetic.
 const generatedDir = resolve(thisDir, "../src/generated");
 mkdirSync(generatedDir, { recursive: true });
@@ -70,7 +70,7 @@ writeFileSync(
     " * This is the production-safe path: no esbuild, no file I/O,",
     " * no import.meta.url arithmetic.",
     " */",
-    "export function getHyperframeRuntimeScript(): string {",
+    "export function getSmashcutRuntimeScript(): string {",
     "  return RUNTIME_IIFE;",
     "}",
     "",
@@ -80,7 +80,7 @@ writeFileSync(
 
 console.log(
   JSON.stringify({
-    event: "hyperframe_runtime_artifacts_generated",
+    event: "smashcut_runtime_artifacts_generated",
     buildId,
     distDir,
     iifePath,

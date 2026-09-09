@@ -130,11 +130,11 @@ async function main(): Promise<void> {
   stageFfmpeg(stagingDir);
 
   // 3b. Stage the smashcut runtime manifest + IIFE as siblings of
-  //     handler.mjs. The producer's `hyperframeRuntimeLoader` checks
+  //     handler.mjs. The producer's `smashcutRuntimeLoader` checks
   //     SIBLING_MANIFEST_PATH first, so dropping the manifest alongside
   //     the bundled handler at /var/task/smashcut.manifest.json lets
-  //     renderChunk find it without needing PRODUCER_HYPERFRAME_MANIFEST_PATH.
-  stageHyperframeRuntime(stagingDir);
+  //     renderChunk find it without needing PRODUCER_SMASHCUT_MANIFEST_PATH.
+  stageSmashcutRuntime(stagingDir);
 
   // 4. If we're on the chrome-headless-shell fallback, stage that binary.
   if (opts.source === "chrome-headless-shell") {
@@ -328,7 +328,7 @@ function resolveModuleDir(moduleName: string): string {
   );
 }
 
-function stageHyperframeRuntime(stagingDir: string): void {
+function stageSmashcutRuntime(stagingDir: string): void {
   const coreDist = resolve(monorepoRoot, "packages/core/dist");
   const manifestSrc = join(coreDist, "smashcut.manifest.json");
   const iifeSrc = join(coreDist, "smashcut.runtime.iife.js");

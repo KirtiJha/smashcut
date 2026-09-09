@@ -10,7 +10,7 @@ import {
   maskNonScannableRanges,
   resolveExistingLocalAsset,
 } from "@smashcut/parsers/asset-resolution";
-import type { HyperframeLintFinding } from "./types.js";
+import type { SmashcutLintFinding } from "./types.js";
 import { mediaSrcTagRe } from "./utils";
 
 /** Structurally compatible with `project.ts`'s (unexported) `HtmlSource` —
@@ -122,7 +122,7 @@ export function collectLocalVideoCandidates(
  */
 export async function lintHevcPreviewCodec(
   candidates: Map<string, string>,
-): Promise<HyperframeLintFinding[]> {
+): Promise<SmashcutLintFinding[]> {
   if (candidates.size === 0) return [];
 
   const ffprobePath = findFfBinary("ffprobe", { configuredMustExist: true });

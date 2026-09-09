@@ -1,22 +1,22 @@
 import { buildSmashcutRuntimeScript } from "./smashcutRuntime.engine";
-import { HYPERFRAME_BRIDGE_SOURCES, HYPERFRAME_RUNTIME_GLOBALS } from "./runtimeContract";
+import { SMASHCUT_BRIDGE_SOURCES, SMASHCUT_RUNTIME_GLOBALS } from "./runtimeContract";
 
-export const HYPERFRAME_RUNTIME_ARTIFACTS = {
+export const SMASHCUT_RUNTIME_ARTIFACTS = {
   iife: "smashcut.runtime.iife.js",
   esm: "smashcut.runtime.mjs",
   manifest: "smashcut.manifest.json",
 } as const;
 
-export type HyperframeRuntimeContract = {
-  globals: typeof HYPERFRAME_RUNTIME_GLOBALS;
-  messageSources: typeof HYPERFRAME_BRIDGE_SOURCES;
+export type SmashcutRuntimeContract = {
+  globals: typeof SMASHCUT_RUNTIME_GLOBALS;
+  messageSources: typeof SMASHCUT_BRIDGE_SOURCES;
 };
 
-export const HYPERFRAME_RUNTIME_CONTRACT: HyperframeRuntimeContract = {
-  globals: HYPERFRAME_RUNTIME_GLOBALS,
-  messageSources: HYPERFRAME_BRIDGE_SOURCES,
+export const SMASHCUT_RUNTIME_CONTRACT: SmashcutRuntimeContract = {
+  globals: SMASHCUT_RUNTIME_GLOBALS,
+  messageSources: SMASHCUT_BRIDGE_SOURCES,
 };
 
-export function loadHyperframeRuntimeSource(): string | null {
+export function loadSmashcutRuntimeSource(): string | null {
   return buildSmashcutRuntimeScript();
 }

@@ -1,5 +1,5 @@
 import { FONT_ALIAS_KEYS, resolveAliasDisplayName } from "@smashcut/parsers/composition";
-import type { LintContext, HyperframeLintFinding } from "../context";
+import type { LintContext, SmashcutLintFinding } from "../context";
 import { isRegistrySourceFile, isRegistryInstalledFile } from "./composition";
 
 const GENERIC_FAMILIES = new Set([
@@ -162,7 +162,7 @@ function collectGoogleFontFamilies(
   return families;
 }
 
-export const fontRules: Array<(ctx: LintContext) => HyperframeLintFinding[]> = [
+export const fontRules: Array<(ctx: LintContext) => SmashcutLintFinding[]> = [
   // system_font_will_alias — only for distributed / Lambda renders, where
   // system-font capture is disabled and the alias substitution does NOT happen,
   // so the font silently falls back to whatever the OS provides. Under a local
@@ -189,7 +189,7 @@ export const fontRules: Array<(ctx: LintContext) => HyperframeLintFinding[]> = [
   // font_family_without_font_face
   ({ styles, source, rawSource, options }) => {
     if (isRegistrySourceFile(options.filePath) || isRegistryInstalledFile(rawSource)) return [];
-    const findings: HyperframeLintFinding[] = [];
+    const findings: SmashcutLintFinding[] = [];
     const declared = extractFontFaceFamilies(styles);
     const used = extractUsedFontFamilies(styles);
     const googleFonts = collectGoogleFontFamilies(source, styles);

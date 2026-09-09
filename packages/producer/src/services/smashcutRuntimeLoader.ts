@@ -22,14 +22,14 @@ const MANIFEST_CANDIDATES: readonly string[] = [
   MODULE_RELATIVE_MANIFEST_PATH,
 ];
 
-type HyperframeRuntimeManifest = {
+type SmashcutRuntimeManifest = {
   sha256?: string;
   artifacts?: {
     iife?: string;
   };
 };
 
-export type ResolvedHyperframeRuntime = {
+export type ResolvedSmashcutRuntime = {
   manifestPath: string;
   runtimePath: string;
   expectedSha256: string;
@@ -37,8 +37,8 @@ export type ResolvedHyperframeRuntime = {
   runtimeSource: string;
 };
 
-export function resolveHyperframeManifestPath(): string {
-  const envOverride = process.env.PRODUCER_HYPERFRAME_MANIFEST_PATH;
+export function resolveSmashcutManifestPath(): string {
+  const envOverride = process.env.PRODUCER_SMASHCUT_MANIFEST_PATH;
   if (envOverride) {
     return envOverride;
   }
@@ -50,43 +50,43 @@ export function resolveHyperframeManifestPath(): string {
 }
 
 export function triedManifestPaths(): readonly string[] {
-  return process.env.PRODUCER_HYPERFRAME_MANIFEST_PATH
-    ? [process.env.PRODUCER_HYPERFRAME_MANIFEST_PATH]
+  return process.env.PRODUCER_SMASHCUT_MANIFEST_PATH
+    ? [process.env.PRODUCER_SMASHCUT_MANIFEST_PATH]
     : MANIFEST_CANDIDATES;
 }
 
-export function getVerifiedHyperframeRuntimeSource(): string {
-  return resolveVerifiedHyperframeRuntime().runtimeSource;
+export function getVerifiedSmashcutRuntimeSource(): string {
+  return resolveVerifiedSmashcutRuntime().runtimeSource;
 }
 
-export function resolveVerifiedHyperframeRuntime(): ResolvedHyperframeRuntime {
-  const manifestPath = resolveHyperframeManifestPath();
+export function resolveVerifiedSmashcutRuntime(): ResolvedSmashcutRuntime {
+  const manifestPath = resolveSmashcutManifestPath();
   if (!existsSync(manifestPath)) {
     const tried = triedManifestPaths().join(", ");
     throw new Error(
-      `[HyperframeRuntimeLoader] Missing manifest. Tried: ${tried}. Searched from cwd=${process.cwd()}. Build core runtime artifacts before rendering.`,
+      `[SmashcutRuntimeLoader] Missing manifest. Tried: ${tried}. Searched from cwd=${process.cwd()}. Build core runtime artifacts before rendering.`,
     );
   }
 
   const manifestRaw = readFileSync(manifestPath, "utf8");
-  const manifest = JSON.parse(manifestRaw) as HyperframeRuntimeManifest;
+  const manifest = JSON.parse(manifestRaw) as SmashcutRuntimeManifest;
   const runtimeFileName = manifest.artifacts?.iife;
   if (!runtimeFileName || !manifest.sha256) {
     throw new Error(
-      `[HyperframeRuntimeLoader] Invalid manifest at ${manifestPath}; missing iife artifact or sha256.`,
+      `[SmashcutRuntimeLoader] Invalid manifest at ${manifestPath}; missing iife artifact or sha256.`,
     );
   }
 
   const runtimePath = resolve(dirname(manifestPath), runtimeFileName);
   if (!existsSync(runtimePath)) {
-    throw new Error(`[HyperframeRuntimeLoader] Missing runtime artifact at ${runtimePath}.`);
+    throw new Error(`[SmashcutRuntimeLoader] Missing runtime artifact at ${runtimePath}.`);
   }
 
   const runtimeSource = readFileSync(runtimePath, "utf8");
   const runtimeSha = createHash("sha256").update(runtimeSource, "utf8").digest("hex");
   if (runtimeSha !== manifest.sha256) {
     throw new Error(
-      `[HyperframeRuntimeLoader] Runtime checksum mismatch. expected=${manifest.sha256} actual=${runtimeSha}`,
+      `[SmashcutRuntimeLoader] Runtime checksum mismatch. expected=${manifest.sha256} actual=${runtimeSha}`,
     );
   }
   return {

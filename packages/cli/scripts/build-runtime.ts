@@ -10,7 +10,7 @@ const manifest = JSON.parse(readFileSync(resolve(coreDistDir, "smashcut.manifest
 const iifeFileName = manifest.artifacts?.iife ?? "smashcut.runtime.iife.js";
 
 // Copy the pre-built artifacts from core/dist — these have matching SHA256
-// checksums. Do NOT regenerate via loadHyperframeRuntimeSource() as that
+// checksums. Do NOT regenerate via loadSmashcutRuntimeSource() as that
 // produces output without the trailing newline, causing a checksum mismatch.
 copyFileSync(resolve(coreDistDir, "smashcut.manifest.json"), "dist/smashcut.manifest.json");
 copyFileSync(resolve(coreDistDir, iifeFileName), `dist/${iifeFileName}`);

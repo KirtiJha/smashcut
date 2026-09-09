@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { lintHyperframeHtml, shouldBlockRender } from "./browser.js";
+import { lintSmashcutHtml, shouldBlockRender } from "./browser.js";
 
 // Guards that @smashcut/lint/browser exposes a working, node-free rule engine.
 // (The platform:"browser" tsup build is the compile-time node-free guarantee;
@@ -9,7 +9,7 @@ describe("@smashcut/lint/browser", () => {
     const html = `<html><body>
       <div data-composition-id="main" data-width="1920" data-height="1080"></div>
     </body></html>`;
-    const result = await lintHyperframeHtml(html, { filePath: "index.html" });
+    const result = await lintSmashcutHtml(html, { filePath: "index.html" });
     expect(typeof result.ok).toBe("boolean");
     expect(Array.isArray(result.findings)).toBe(true);
   });

@@ -2,7 +2,7 @@ import { afterEach, describe, expect, it } from "vitest";
 import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { loadHyperframeRuntimeSource } from "@smashcut/core";
+import { loadSmashcutRuntimeSource } from "@smashcut/core";
 import { loadRuntimeSource } from "./runtimeSource.js";
 import { findFFmpeg, findFFprobe } from "../browser/ffmpeg.js";
 import { createStudioServer, type StudioServer } from "./studioServer.js";
@@ -29,7 +29,7 @@ afterEach(() => {
 
 describe("loadRuntimeSource", () => {
   it("loads runtime source from the published core entrypoint", async () => {
-    await expect(loadRuntimeSource()).resolves.toBe(loadHyperframeRuntimeSource());
+    await expect(loadRuntimeSource()).resolves.toBe(loadSmashcutRuntimeSource());
   });
 });
 

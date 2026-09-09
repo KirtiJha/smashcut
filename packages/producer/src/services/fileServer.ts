@@ -28,7 +28,7 @@ import { Readable } from "node:stream";
 import { join, extname, resolve, sep } from "node:path";
 import { injectScriptsAtHeadStart, injectScriptsIntoHtml } from "@smashcut/core/compiler";
 import { fpsToNumber, type Fps } from "@smashcut/core";
-import { getVerifiedHyperframeRuntimeSource } from "./hyperframeRuntimeLoader.js";
+import { getVerifiedSmashcutRuntimeSource } from "./smashcutRuntimeLoader.js";
 import { getHfEarlyStub } from "../generated/sc-early-stub-inline.js";
 import { defaultLogger, type ProducerLogger } from "../logger.js";
 
@@ -770,7 +770,7 @@ export function createFileServer(options: FileServerOptions): Promise<FileServer
     ...(options.preHeadScripts ?? []),
   ];
   // Default scripts: Smashcut runtime in <head>, render mode in </body>
-  const headScripts = options.headScripts ?? [getVerifiedHyperframeRuntimeSource()];
+  const headScripts = options.headScripts ?? [getVerifiedSmashcutRuntimeSource()];
   const bodyScripts = options.bodyScripts ?? [buildRenderModeScript(options.fps), HF_BRIDGE_SCRIPT];
 
   const app = new Hono();

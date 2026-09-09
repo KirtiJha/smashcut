@@ -9,12 +9,12 @@ export type RuntimeJson =
   | RuntimeJson[]
   | { [key: string]: RuntimeJson };
 
-import type { HyperframeControlAction } from "../inline-scripts/runtimeContract.js";
-import type { HyperframePickerElementInfo } from "../inline-scripts/pickerApi.js";
+import type { SmashcutControlAction } from "../inline-scripts/runtimeContract.js";
+import type { SmashcutPickerElementInfo } from "../inline-scripts/pickerApi.js";
 import type { RuntimeProtocolV1 } from "./protocol.js";
 
 type RuntimeBridgeControlActionBase =
-  | HyperframeControlAction
+  | SmashcutControlAction
   | "tick"
   | "set-volume"
   | "set-media-output-muted"
@@ -105,7 +105,7 @@ export type RuntimeDiagnosticMessage = {
   details: Record<string, RuntimeJson>;
 };
 
-export type RuntimePickerElementInfo = HyperframePickerElementInfo;
+export type RuntimePickerElementInfo = SmashcutPickerElementInfo;
 
 export type RuntimePickerHoveredMessage = {
   source: "sc-preview";

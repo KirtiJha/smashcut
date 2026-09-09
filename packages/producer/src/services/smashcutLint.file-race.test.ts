@@ -2,7 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { join, resolve } from "node:path";
 import { tmpdir } from "node:os";
 import { execFileSync } from "node:child_process";
-import { prepareHyperframeLintBody } from "./hyperframeLint.js";
+import { prepareSmashcutLintBody } from "./smashcutLint.js";
 
 const hooks = vi.hoisted(() => {
   const state: {
@@ -54,7 +54,7 @@ vi.mock("node:fs", async (importOriginal) => {
     },
   };
 });
-vi.mock("@smashcut/lint", () => ({ lintHyperframeHtml: vi.fn() }));
+vi.mock("@smashcut/lint", () => ({ lintSmashcutHtml: vi.fn() }));
 const fs = await vi.importActual<typeof import("node:fs")>("node:fs");
 let root: string;
 let projectDir: string;
@@ -78,7 +78,7 @@ function writeEntry(name: string, html = "<html>checked</html>") {
   return path;
 }
 function prepare(entryFile?: string) {
-  return prepareHyperframeLintBody({ projectDir, entryFile });
+  return prepareSmashcutLintBody({ projectDir, entryFile });
 }
 function expected(entryFile: string, html = "<html>checked</html>") {
   return { prepared: { entryFile, html, source: "projectDir" } };
@@ -128,7 +128,7 @@ describe("project entry reads", () => {
     fs.symlinkSync(target, join(projectDir, "index.html"), "file");
     const linkedProject = join(root, "linked-project");
     fs.symlinkSync(projectDir, linkedProject, process.platform === "win32" ? "junction" : "dir");
-    expect(prepareHyperframeLintBody({ projectDir: linkedProject })).toEqual(
+    expect(prepareSmashcutLintBody({ projectDir: linkedProject })).toEqual(
       expected("index.html", "linked"),
     );
   });
@@ -155,11 +155,11 @@ describe("project entry reads", () => {
     expect(hooks.descriptors.size).toBe(0);
   });
   it("keeps inline HTML and files-payload entry selection unchanged", () => {
-    expect(prepareHyperframeLintBody({ html: "", entryFile: " custom.html " })).toEqual({
+    expect(prepareSmashcutLintBody({ html: "", entryFile: " custom.html " })).toEqual({
       prepared: { html: "", entryFile: "custom.html", source: "html" },
     });
     expect(
-      prepareHyperframeLintBody({ files: { "src/index.html": "source", "index.html": "" } }),
+      prepareSmashcutLintBody({ files: { "src/index.html": "source", "index.html": "" } }),
     ).toEqual({ prepared: { html: "source", entryFile: "src/index.html", source: "files" } });
   });
 });

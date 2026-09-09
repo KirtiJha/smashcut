@@ -127,7 +127,7 @@ testGsapAdapterFallsBackToSeek();
 
 console.log(
   JSON.stringify({
-    event: "hyperframe_runtime_seek_verified",
+    event: "smashcut_runtime_seek_verified",
     assertions: 3,
   }),
 );

@@ -525,7 +525,7 @@
       "packages/lint/src/rules/media.test.ts",
       "packages/lint/src/rules/slideshow.test.ts",
       "packages/lint/src/rules/textures.test.ts",
-      "packages/lint/src/hyperframeLinter.test.ts",
+      "packages/lint/src/smashcutLinter.test.ts",
       // slideshowPanelHelpers.ts: setSlideNotes/addFragment/addHotspot share an
       // intentional parallel shape (signature + mapSlidesIn → exists-check →
       // map/append); the per-slide mutation differs, so a shared abstraction

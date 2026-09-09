@@ -18,7 +18,7 @@ npm install @smashcut/core
 | **Parsers**        | `parseHtml` — extract timeline elements from HTML; `parseGsapScript` — parse GSAP animations         |
 | **Generators**     | `generateSmashcutHtml` — produce valid Smashcut HTML from a composition spec                   |
 | **Compiler**       | `compileTimingAttrs` — resolve `data-start` / `data-duration` into absolute times                    |
-| **Linter**         | `lintHyperframeHtml` — validate Smashcut HTML (missing attributes, overlapping tracks, etc.)      |
+| **Linter**         | `lintSmashcutHtml` — validate Smashcut HTML (missing attributes, overlapping tracks, etc.)      |
 | **Runtime**        | IIFE script injected into the browser — manages seek, media playback, and the `window.__sc` protocol |
 | **Frame Adapters** | Pluggable animation drivers (GSAP, Lottie, CSS, or custom)                                           |
 
@@ -76,9 +76,9 @@ const html = generateSmashcutHtml(spec);
 ## Linting
 
 ```typescript
-import { lintHyperframeHtml } from "@smashcut/core/lint";
+import { lintSmashcutHtml } from "@smashcut/core/lint";
 
-const result = lintHyperframeHtml(htmlString);
+const result = lintSmashcutHtml(htmlString);
 // result.findings: { severity, message, elementId }[]
 ```
 

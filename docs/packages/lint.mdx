@@ -31,16 +31,16 @@ The lint package has a single entry point:
 
 ```typescript
 import {
-  lintHyperframeHtml,
+  lintSmashcutHtml,
   lintMediaUrls,
   lintProject,
   shouldBlockRender,
 } from '@smashcut/lint';
 import type {
-  HyperframeLintResult,
-  HyperframeLintFinding,
-  HyperframeLintSeverity,   // "error" | "warning" | "info"
-  HyperframeLinterOptions,
+  SmashcutLintResult,
+  SmashcutLintFinding,
+  SmashcutLintSeverity,   // "error" | "warning" | "info"
+  SmashcutLinterOptions,
   ProjectLintResult,
 } from '@smashcut/lint';
 ```
@@ -48,9 +48,9 @@ import type {
 ## Linting a Single Composition
 
 ```typescript
-import { lintHyperframeHtml, lintMediaUrls } from '@smashcut/lint';
+import { lintSmashcutHtml, lintMediaUrls } from '@smashcut/lint';
 
-const result = await lintHyperframeHtml(html, { filePath: 'index.html' });
+const result = await lintSmashcutHtml(html, { filePath: 'index.html' });
 // result.ok, result.errorCount, result.warningCount, result.findings
 
 for (const finding of result.findings) {
@@ -72,7 +72,7 @@ import type { ProjectLintResult } from '@smashcut/lint';
 
 const result: ProjectLintResult = await lintProject('./my-composition');
 // result.totalErrors, result.totalWarnings, result.results[]
-//   each result entry: { file, result: HyperframeLintResult }
+//   each result entry: { file, result: SmashcutLintResult }
 
 if (shouldBlockRender(true, false, result.totalErrors, result.totalWarnings)) {
   throw new Error(`Lint found ${result.totalErrors} blocking error(s)`);
@@ -84,15 +84,15 @@ if (shouldBlockRender(true, false, result.totalErrors, result.totalWarnings)) {
 The rule engine runs **fully client-side** — no Node.js, no filesystem, no server round-trip. Import from the `@smashcut/lint/browser` entry to validate composition HTML directly in a browser-only editor or tool:
 
 ```typescript
-import { lintHyperframeHtml, shouldBlockRender } from '@smashcut/lint/browser';
+import { lintSmashcutHtml, shouldBlockRender } from '@smashcut/lint/browser';
 
-const result = await lintHyperframeHtml(htmlString, { filePath: 'index.html' });
+const result = await lintSmashcutHtml(htmlString, { filePath: 'index.html' });
 if (!result.ok) {
   for (const f of result.findings) console.warn(f.code, f.message);
 }
 ```
 
-The browser entry exposes `lintHyperframeHtml`, `lintMediaUrls`, and `shouldBlockRender` — everything that operates on an HTML string. It is built with a browser target and contains **zero `node:` builtins**, so it bundles cleanly for the client (verified at build time).
+The browser entry exposes `lintSmashcutHtml`, `lintMediaUrls`, and `shouldBlockRender` — everything that operates on an HTML string. It is built with a browser target and contains **zero `node:` builtins**, so it bundles cleanly for the client (verified at build time).
 
 <Info>
   `lintProject` (which walks a project **directory**) is filesystem-based and is **not** part of the browser entry — import it from the main `@smashcut/lint` entry in Node.

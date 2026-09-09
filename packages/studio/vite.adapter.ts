@@ -249,7 +249,7 @@ export function createViteAdapter(
 
     async lint(html: string, opts?: { filePath?: string }) {
       const mod = await server.ssrLoadModule("@smashcut/core/lint");
-      return await mod.lintHyperframeHtml(html, opts);
+      return await mod.lintSmashcutHtml(html, opts);
     },
 
     async lintProject(projectDir: string) {

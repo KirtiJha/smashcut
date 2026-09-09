@@ -15,8 +15,8 @@ async function loadRuntimeSourceForDev(
     const mod = await server.ssrLoadModule(
       resolve(__dirname, "../core/src/inline-scripts/smashcut.ts"),
     );
-    if (typeof mod.loadHyperframeRuntimeSource === "function") {
-      return mod.loadHyperframeRuntimeSource();
+    if (typeof mod.loadSmashcutRuntimeSource === "function") {
+      return mod.loadSmashcutRuntimeSource();
     }
   } catch (err) {
     console.warn("[Studio] Failed to load runtime source from core:", err);

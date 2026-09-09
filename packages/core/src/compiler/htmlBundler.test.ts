@@ -7,7 +7,7 @@ import { afterEach, beforeEach, describe, it, expect, vi } from "vitest";
 import { bundleToSingleHtml, emitRootCompositionVariableStyles } from "./htmlBundler";
 import { resetUnknownEnumWarnings } from "../runtime/getVariables";
 import { sanitizeCssValue } from "../runtime/applyVariableBindings";
-import { getHyperframeRuntimeScript } from "../generated/runtime-inline";
+import { getSmashcutRuntimeScript } from "../generated/runtime-inline";
 
 function makeTempProject(files: Record<string, string>): string {
   const dir = mkdtempSync(join(tmpdir(), "sc-bundler-test-"));
@@ -209,7 +209,7 @@ describe("bundleToSingleHtml", () => {
     expect(bundled).not.toContain("SECRET_MARKER_LEAKED");
   });
 
-  it("produces a self-contained runtime script when no HYPERFRAME_RUNTIME_URL is set", async () => {
+  it("produces a self-contained runtime script when no SMASHCUT_RUNTIME_URL is set", async () => {
     // Regression guard: hf#XXX. The bundler used to emit
     // <script ... src=""></script> when no runtime URL was configured. An
     // empty src resolves to the page URL itself, which Chrome flags as an
@@ -222,13 +222,13 @@ describe("bundleToSingleHtml", () => {
 </body></html>`,
     });
 
-    const previousUrl = process.env.HYPERFRAME_RUNTIME_URL;
-    delete process.env.HYPERFRAME_RUNTIME_URL;
+    const previousUrl = process.env.SMASHCUT_RUNTIME_URL;
+    delete process.env.SMASHCUT_RUNTIME_URL;
     let bundled: string;
     try {
       bundled = await bundleToSingleHtml(dir);
     } finally {
-      if (previousUrl !== undefined) process.env.HYPERFRAME_RUNTIME_URL = previousUrl;
+      if (previousUrl !== undefined) process.env.SMASHCUT_RUNTIME_URL = previousUrl;
     }
 
     const runtimeBlock = bundled.match(
@@ -262,16 +262,16 @@ describe("bundleToSingleHtml", () => {
 </body></html>`,
     });
 
-    const previousUrl = process.env.HYPERFRAME_RUNTIME_URL;
-    delete process.env.HYPERFRAME_RUNTIME_URL;
+    const previousUrl = process.env.SMASHCUT_RUNTIME_URL;
+    delete process.env.SMASHCUT_RUNTIME_URL;
     let bundled: string;
     try {
       bundled = await bundleToSingleHtml(dir);
     } finally {
-      if (previousUrl !== undefined) process.env.HYPERFRAME_RUNTIME_URL = previousUrl;
+      if (previousUrl !== undefined) process.env.SMASHCUT_RUNTIME_URL = previousUrl;
     }
 
-    const original = getHyperframeRuntimeScript();
+    const original = getSmashcutRuntimeScript();
     // Sanity: the built runtime exercises this regression (no `$&` means the
     // test would tautologically pass even with the broken implementation).
     expect(original).toContain("$&");

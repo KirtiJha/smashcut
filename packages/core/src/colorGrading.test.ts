@@ -17,7 +17,7 @@ import {
   normalizeHfColorGradingWithVariables,
   serializeHfColorGrading,
 } from "./colorGrading";
-import { lintHyperframeHtml } from "./lint";
+import { lintSmashcutHtml } from "./lint";
 
 describe("color grading", () => {
   it("derives grade and effect preset views from their actual payloads", () => {
@@ -45,10 +45,10 @@ describe("color grading", () => {
       </body></html>
     `;
 
-    const valid = await lintHyperframeHtml(html(serializeHfColorGrading(grading)));
+    const valid = await lintSmashcutHtml(html(serializeHfColorGrading(grading)));
     expect(valid.findings.filter((finding) => finding.severity === "error")).toEqual([]);
 
-    const invalid = await lintHyperframeHtml(html('{"effects":{"notARealEffect":1}}'));
+    const invalid = await lintSmashcutHtml(html('{"effects":{"notARealEffect":1}}'));
     expect(invalid.findings).toEqual(
       expect.arrayContaining([
         expect.objectContaining({

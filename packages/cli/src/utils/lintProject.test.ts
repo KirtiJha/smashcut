@@ -2,7 +2,7 @@ import { describe, it, expect, afterEach } from "vitest";
 import { mkdirSync, mkdtempSync, writeFileSync, rmSync } from "node:fs";
 import { join } from "node:path";
 import { tmpdir } from "node:os";
-import type { HyperframeLintFinding } from "@smashcut/core/lint";
+import type { SmashcutLintFinding } from "@smashcut/core/lint";
 import { hasDefinitiveEntryMismatch, lintProject, shouldBlockRender } from "./lintProject.js";
 
 function tmpProject(name: string): string {
@@ -1167,7 +1167,7 @@ describe("missing_or_empty_sub_composition", () => {
   async function lintSubComp(
     srcPath: string,
     subCompFiles?: Record<string, string>,
-  ): Promise<{ finding: HyperframeLintFinding | undefined; totalErrors: number }> {
+  ): Promise<{ finding: SmashcutLintFinding | undefined; totalErrors: number }> {
     const project = makeProject(htmlWithSubComp(srcPath), subCompFiles);
     const { totalErrors, results } = await lintProject(project);
     const finding = results

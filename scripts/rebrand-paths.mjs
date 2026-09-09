@@ -6,7 +6,7 @@
  * deepest-first is required, or renaming a parent directory invalidates every
  * child path still queued behind it.
  *
- * Logo assets are deliberately NOT renamed here. `hyperframes-logo-*.svg` is
+ * Logo assets are deliberately NOT renamed here. `smashcut-logo-*.svg` is
  * HeyGen's actual mark, and Apache-2.0 grants no trademark rights (section 6) —
  * shipping their logo under a `smashcut-logo` filename would be worse than
  * leaving it, because the name would assert it is ours. Those are listed for
@@ -36,21 +36,21 @@ const DRY = process.argv.includes("--dry-run");
  * anywhere, which also caught a blueprint *about* logo lockups and an example
  * that merely animates one. Those are ordinary files and must be renamed.
  */
-const TRADEMARK = /hyperframes-logo/i;
+const TRADEMARK = /smashcut-logo/i;
 
 const rename = (s) =>
   s
-    .replace(/HyperFrames/g, "SmashCut")
-    .replace(/Hyperframes/g, "Smashcut")
-    .replace(/hyperframes/g, "smashcut")
-    .replace(/HyperFrame/g, "SmashCut")
-    .replace(/Hyperframe/g, "Smashcut")
-    .replace(/hyperframe/g, "smashcut");
+    .replace(/SmashCut/g, "SmashCut")
+    .replace(/Smashcut/g, "Smashcut")
+    .replace(/smashcut/g, "smashcut")
+    .replace(/SmashCut/g, "SmashCut")
+    .replace(/Smashcut/g, "Smashcut")
+    .replace(/smashcut/g, "smashcut");
 
 const files = execFileSync("git", ["ls-files"], { encoding: "utf8", maxBuffer: 1 << 28 })
   .split("\n")
   .map((f) => f.trim())
-  .filter((f) => f && /hyperframe/i.test(f));
+  .filter((f) => f && /smashcut/i.test(f));
 
 // Every directory segment that needs renaming, and every file. Deepest first so
 // a parent rename never strands a queued child path.
@@ -58,7 +58,7 @@ const dirs = new Set();
 for (const f of files) {
   let d = dirname(f);
   while (d && d !== "." && d !== "/") {
-    if (/hyperframe/i.test(basename(d))) dirs.add(d);
+    if (/smashcut/i.test(basename(d))) dirs.add(d);
     d = dirname(d);
   }
 }

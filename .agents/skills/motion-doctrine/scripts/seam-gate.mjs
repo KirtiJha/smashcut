@@ -7,7 +7,7 @@
 //   probe   node seam-gate.mjs probe --t 44.8 --project <dir>   # list movers around a cut
 //
 // --project spawns a FRESH preview server (avoids the stale-bundle cache) with
-// HYPERFRAME_RUNTIME_URL unset. --url reuses a running server: restart it after
+// SMASHCUT_RUNTIME_URL unset. --url reuses a running server: restart it after
 // comp edits or you verify a stale build.
 // Ledger schema: see references/seam-gate.md next to this skill.
 
@@ -70,7 +70,7 @@ async function ensureServer() {
     if (!project) throw new Error("need --url or --project");
     const port = 5380 + Math.floor(Math.random() * 20);
     const env = { ...process.env };
-    delete env.HYPERFRAME_RUNTIME_URL; // wrong value fails silently as 200 HTML
+    delete env.SMASHCUT_RUNTIME_URL; // wrong value fails silently as 200 HTML
     // `preview` backgrounds itself when stdin/stdout aren't TTYs, which they never are here: the
     // launcher would exit 0 before the server is up and detach it out of our process group.
     const cmd = flag(

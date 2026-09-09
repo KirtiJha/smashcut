@@ -189,12 +189,12 @@ describe("@smashcut/core public API exports", () => {
   });
 
   describe("lint exports", () => {
-    it("exposes lintHyperframeHtml via the @smashcut/core/lint back-compat stub", async () => {
+    it("exposes lintSmashcutHtml via the @smashcut/core/lint back-compat stub", async () => {
       // Lint moved to @smashcut/lint; core's main entry no longer re-exports
       // it (that would cycle through the lint package). The subpath stub keeps
       // existing @smashcut/core/lint imports working.
       const lint = await import("./lint/index.js");
-      expect(typeof lint.lintHyperframeHtml).toBe("function");
+      expect(typeof lint.lintSmashcutHtml).toBe("function");
     });
   });
 
@@ -206,15 +206,15 @@ describe("@smashcut/core public API exports", () => {
 
   describe("inline-script exports", () => {
     it("exports smashcut runtime artifacts", () => {
-      expect(core.HYPERFRAME_RUNTIME_ARTIFACTS).toBeDefined();
-      expect(core.HYPERFRAME_RUNTIME_CONTRACT).toBeDefined();
-      expect(typeof core.loadHyperframeRuntimeSource).toBe("function");
+      expect(core.SMASHCUT_RUNTIME_ARTIFACTS).toBeDefined();
+      expect(core.SMASHCUT_RUNTIME_CONTRACT).toBeDefined();
+      expect(typeof core.loadSmashcutRuntimeSource).toBe("function");
     });
 
     it("exports runtime contract constants", () => {
-      expect(core.HYPERFRAME_RUNTIME_GLOBALS).toBeDefined();
-      expect(core.HYPERFRAME_BRIDGE_SOURCES).toBeDefined();
-      expect(core.HYPERFRAME_CONTROL_ACTIONS).toBeDefined();
+      expect(core.SMASHCUT_RUNTIME_GLOBALS).toBeDefined();
+      expect(core.SMASHCUT_BRIDGE_SOURCES).toBeDefined();
+      expect(core.SMASHCUT_CONTROL_ACTIONS).toBeDefined();
     });
 
     it("exports buildSmashcutRuntimeScript", () => {

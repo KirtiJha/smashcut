@@ -44,8 +44,8 @@ const bundledTemplatesDir = resolve(repoRoot, "packages/cli/src/templates");
 const remoteTemplatesDir = resolve(repoRoot, "registry/examples");
 const outputDir = resolve(repoRoot, "docs/images/templates");
 
-if (!process.env.PRODUCER_HYPERFRAME_MANIFEST_PATH) {
-  process.env.PRODUCER_HYPERFRAME_MANIFEST_PATH = resolve(
+if (!process.env.PRODUCER_SMASHCUT_MANIFEST_PATH) {
+  process.env.PRODUCER_SMASHCUT_MANIFEST_PATH = resolve(
     repoRoot,
     "packages/core/dist/smashcut.manifest.json",
   );

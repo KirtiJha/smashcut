@@ -1,7 +1,7 @@
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import { loadHyperframeRuntimeSource } from "../src/inline-scripts/smashcut";
+import { loadSmashcutRuntimeSource } from "../src/inline-scripts/smashcut";
 
 function assert(condition: unknown, message: string): void {
   if (!condition) {
@@ -9,8 +9,8 @@ function assert(condition: unknown, message: string): void {
   }
 }
 
-const runtimeSource = loadHyperframeRuntimeSource();
-assert(runtimeSource !== null, "loadHyperframeRuntimeSource() returned null — entry.ts not found");
+const runtimeSource = loadSmashcutRuntimeSource();
+assert(runtimeSource !== null, "loadSmashcutRuntimeSource() returned null — entry.ts not found");
 
 const requiredSnippets = [
   "window.__player",
@@ -100,7 +100,7 @@ try {
 
 console.log(
   JSON.stringify({
-    event: "hyperframe_runtime_contract_verified",
+    event: "smashcut_runtime_contract_verified",
     requiredSnippetsChecked: requiredSnippets.length,
   }),
 );

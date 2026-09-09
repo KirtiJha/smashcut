@@ -8,9 +8,9 @@ import {
   constants,
 } from "node:fs";
 import { resolve, join, relative, isAbsolute, sep } from "node:path";
-import { lintHyperframeHtml, type HyperframeLintResult } from "@smashcut/lint";
+import { lintSmashcutHtml, type SmashcutLintResult } from "@smashcut/lint";
 
-export interface PreparedHyperframeLintInput {
+export interface PreparedSmashcutLintInput {
   entryFile: string;
   html: string;
   source: "projectDir" | "files" | "html";
@@ -73,7 +73,7 @@ function readEntryHtml(filePath: string): string | null {
 function readProjectEntryFile(
   projectDir: string,
   preferredEntryFile?: string,
-): PreparedHyperframeLintInput | { error: string } {
+): PreparedSmashcutLintInput | { error: string } {
   const absProjectDir = resolve(projectDir);
   if (!existsSync(absProjectDir) || !statSync(absProjectDir).isDirectory()) {
     return { error: `Project directory not found: ${absProjectDir}` };
@@ -108,9 +108,9 @@ function readProjectEntryFile(
   };
 }
 
-export function prepareHyperframeLintBody(
+export function prepareSmashcutLintBody(
   body: Record<string, unknown>,
-): { prepared: PreparedHyperframeLintInput } | { error: string } {
+): { prepared: PreparedSmashcutLintInput } | { error: string } {
   const requestedEntryFile =
     typeof body.entryFile === "string" && body.entryFile.trim().length > 0
       ? body.entryFile.trim()
@@ -151,8 +151,8 @@ export function prepareHyperframeLintBody(
   return { error: "Missing lint source: provide projectDir, files, or html" };
 }
 
-export async function runHyperframeLint(
-  prepared: PreparedHyperframeLintInput,
-): Promise<HyperframeLintResult> {
-  return lintHyperframeHtml(prepared.html, { filePath: prepared.entryFile });
+export async function runSmashcutLint(
+  prepared: PreparedSmashcutLintInput,
+): Promise<SmashcutLintResult> {
+  return lintSmashcutHtml(prepared.html, { filePath: prepared.entryFile });
 }

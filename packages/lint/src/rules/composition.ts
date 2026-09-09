@@ -1,4 +1,4 @@
-import type { LintContext, HyperframeLintFinding, ExtractedBlock, OpenTag } from "../context";
+import type { LintContext, SmashcutLintFinding, ExtractedBlock, OpenTag } from "../context";
 import {
   findHtmlTag,
   readAttr,
@@ -30,7 +30,7 @@ const CAPTION_CUE_TOKEN =
 // counts every one that isn't display:none-hidden. Threshold sits below the
 // observed 40-element repro (25) so authors get lead time; adjust here if
 // noise/signal shifts, since a per-rule config option would also require
-// plumbing through HyperframeLinterOptions across every embedder.
+// plumbing through SmashcutLinterOptions across every embedder.
 const HEAVY_OVERLAY_ELEMENT_COUNT_WARN = 25;
 const HEAVY_OVERLAY_EXEMPT_TAGS = new Set([
   "audio",
@@ -258,7 +258,7 @@ function isInsideInertTemplate(tag: OpenTag, tags: readonly OpenTag[]): boolean 
   );
 }
 
-export const compositionRules: Array<(ctx: LintContext) => HyperframeLintFinding[]> = [
+export const compositionRules: Array<(ctx: LintContext) => SmashcutLintFinding[]> = [
   // duplicate_composition_id catches meta-tag/root collisions that create duplicate composition entries.
   ({ tags }) => {
     const tagsByCompositionId = new Map<string, string[]>();
@@ -282,7 +282,7 @@ export const compositionRules: Array<(ctx: LintContext) => HyperframeLintFinding
       tagsByCompositionId.set(compositionId, matchingTags);
     }
 
-    const findings: HyperframeLintFinding[] = [];
+    const findings: SmashcutLintFinding[] = [];
     for (const [compositionId, matchingTags] of tagsByCompositionId) {
       if (matchingTags.length < 2) continue;
 
@@ -404,7 +404,7 @@ export const compositionRules: Array<(ctx: LintContext) => HyperframeLintFinding
       trackCounts.set(track, (trackCounts.get(track) ?? 0) + 1);
     }
 
-    const findings: HyperframeLintFinding[] = [];
+    const findings: SmashcutLintFinding[] = [];
     for (const [track, count] of trackCounts) {
       if (count <= MAX_TIMED_ELEMENTS_PER_TRACK) continue;
       const splitTarget = options.isSubComposition
@@ -424,7 +424,7 @@ export const compositionRules: Array<(ctx: LintContext) => HyperframeLintFinding
   // deprecated_data_layer + deprecated_data_end
   // fallow-ignore-next-line complexity
   ({ tags }) => {
-    const findings: HyperframeLintFinding[] = [];
+    const findings: SmashcutLintFinding[] = [];
     for (const tag of tags) {
       const timing = readTagTiming(tag.raw);
       if (timing.diagnostics.some(({ code }) => code === "deprecated-layer")) {
@@ -467,7 +467,7 @@ export const compositionRules: Array<(ctx: LintContext) => HyperframeLintFinding
 
   // split_data_attribute_selector
   ({ scripts, styles }) => {
-    const findings: HyperframeLintFinding[] = [];
+    const findings: SmashcutLintFinding[] = [];
     const splitDataAttrSelectorPattern =
       /\[data-composition-id=(["'])([^"'\]]+)\1\s+(data-[\w:-]+)=(["'])([^"'\]]*)\4\]/g;
     const scan = (content: string) => {
@@ -496,7 +496,7 @@ export const compositionRules: Array<(ctx: LintContext) => HyperframeLintFinding
 
   // template_literal_selector
   ({ scripts }) => {
-    const findings: HyperframeLintFinding[] = [];
+    const findings: SmashcutLintFinding[] = [];
     for (const script of scripts) {
       const templateLiteralSelectorPattern =
         /(?:querySelector|querySelectorAll)\s*\(\s*`[^`]*\$\{[^}]+\}[^`]*`\s*\)/g;
@@ -523,7 +523,7 @@ export const compositionRules: Array<(ctx: LintContext) => HyperframeLintFinding
   // timed_element_missing_clip_class
   // fallow-ignore-next-line complexity
   ({ tags }) => {
-    const findings: HyperframeLintFinding[] = [];
+    const findings: SmashcutLintFinding[] = [];
     // `img` sits here for the same reason `video` and `audio` already did: the
     // three media primitives are authored without `class="clip"` in the
     // canonical clip block (packages/core/docs/core.md), so requiring it on the
@@ -568,7 +568,7 @@ export const compositionRules: Array<(ctx: LintContext) => HyperframeLintFinding
 
   // standalone_composition_wrapped_in_template
   ({ rawSource, options }) => {
-    const findings: HyperframeLintFinding[] = [];
+    const findings: SmashcutLintFinding[] = [];
     if (options.isSubComposition) return findings;
     const trimmed = rawSource.trimStart().toLowerCase();
     if (trimmed.startsWith("<template")) {
@@ -588,7 +588,7 @@ export const compositionRules: Array<(ctx: LintContext) => HyperframeLintFinding
 
   // root_composition_missing_html_wrapper
   ({ rawSource, rootTag, options }) => {
-    const findings: HyperframeLintFinding[] = [];
+    const findings: SmashcutLintFinding[] = [];
     if (options.isSubComposition) return findings;
     const trimmed = rawSource.trimStart().toLowerCase();
     // Compositions inside <template> are caught by standalone_composition_wrapped_in_template
@@ -651,7 +651,7 @@ export const compositionRules: Array<(ctx: LintContext) => HyperframeLintFinding
   // requestanimationframe_in_composition
   ({ scripts, rawSource, options }) => {
     if (isRegistrySourceFile(options.filePath) || isRegistryInstalledFile(rawSource)) return [];
-    const findings: HyperframeLintFinding[] = [];
+    const findings: SmashcutLintFinding[] = [];
     for (const script of scripts) {
       const stripped = stripJsCode(script.content);
       if (/requestAnimationFrame\s*\(/.test(stripped)) {
@@ -676,7 +676,7 @@ export const compositionRules: Array<(ctx: LintContext) => HyperframeLintFinding
   // the parse failure so authors notice before render time.
   // fallow-ignore-next-line complexity
   ({ tags }) => {
-    const findings: HyperframeLintFinding[] = [];
+    const findings: SmashcutLintFinding[] = [];
     for (const tag of tags) {
       const raw = readJsonAttr(tag.raw, "data-variable-values");
       if (!raw) continue;
@@ -726,7 +726,7 @@ export const compositionRules: Array<(ctx: LintContext) => HyperframeLintFinding
     // and returns null for files this rule should skip.
     const declared = declaredIdsForBindingCheck(tags);
     if (!declared) return [];
-    const findings: HyperframeLintFinding[] = [];
+    const findings: SmashcutLintFinding[] = [];
     for (const tag of tags) {
       for (const attr of ["data-var-src", "data-var-text"]) {
         const id = readAttr(tag.raw, attr)?.trim();
@@ -786,7 +786,7 @@ export const compositionRules: Array<(ctx: LintContext) => HyperframeLintFinding
       ];
     }
 
-    const findings: HyperframeLintFinding[] = [];
+    const findings: SmashcutLintFinding[] = [];
     const knownTypes = new Set<string>(COMPOSITION_VARIABLE_TYPES);
     // Ids whose value the runtime pushes through isSafeMediaUrl: every
     // data-var-src binding, plus image-typed variables (always consumed as a
@@ -914,7 +914,7 @@ export const compositionRules: Array<(ctx: LintContext) => HyperframeLintFinding
     const tailCovered = (exceptIndex: number) =>
       timed.some((t) => t.tag.index !== exceptIndex && t.end >= rootDuration - EPSILON);
 
-    const findings: HyperframeLintFinding[] = [];
+    const findings: SmashcutLintFinding[] = [];
     for (const t of timed) {
       if (readAttr(t.tag.raw, "data-composition-src") === null) continue; // external slot only
       if (t.start > START_TOLERANCE) continue; // must start at the composition start

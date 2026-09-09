@@ -1,8 +1,8 @@
 import fs from "node:fs";
 import path from "node:path";
-import { lintHyperframeHtml, type HyperframeLintResult } from "@smashcut/lint";
+import { lintSmashcutHtml, type SmashcutLintResult } from "@smashcut/lint";
 
-function formatCounts(result: HyperframeLintResult): string {
+function formatCounts(result: SmashcutLintResult): string {
   const parts = [`${result.warningCount} warning${result.warningCount === 1 ? "" : "s"}`];
   if (result.infoCount > 0) {
     parts.push(`${result.infoCount} info${result.infoCount === 1 ? "" : "s"}`);
@@ -10,7 +10,7 @@ function formatCounts(result: HyperframeLintResult): string {
   return parts.join(", ");
 }
 
-function formatHumanOutput(result: HyperframeLintResult, resolvedPath: string): string {
+function formatHumanOutput(result: SmashcutLintResult, resolvedPath: string): string {
   const counts = result.ok
     ? formatCounts(result)
     : `${result.errorCount} error${result.errorCount === 1 ? "" : "s"}, ${formatCounts(result)}`;
@@ -54,7 +54,7 @@ async function main() {
   }
 
   const html = fs.readFileSync(resolvedPath, "utf-8");
-  const result = await lintHyperframeHtml(html, { filePath: resolvedPath });
+  const result = await lintSmashcutHtml(html, { filePath: resolvedPath });
 
   if (jsonOutput) {
     console.log(JSON.stringify(result, null, 2));

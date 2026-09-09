@@ -1,6 +1,6 @@
 import type { RuntimeSeekOptions, RuntimeTimelineMessage, RuntimeTimelineLike } from "./types";
 import type { RuntimeColorGradingApi } from "./colorGrading";
-import type { HyperframePickerApi } from "../inline-scripts/pickerApi";
+import type { SmashcutPickerApi } from "../inline-scripts/pickerApi";
 import type { PlayerAPI } from "../core.types";
 import type { ClipTree } from "./clipTree";
 
@@ -92,7 +92,7 @@ declare global {
      * restoration, and arbitrary composition nesting cannot drift.
      */
     __scResolveMediaStartSeconds?: (element: Element) => number;
-    __HF_PICKER_API?: HyperframePickerApi;
+    __HF_PICKER_API?: SmashcutPickerApi;
     gsap?: {
       timeline: (params?: { paused?: boolean }) => RuntimeTimelineLike;
       parseEase?: (

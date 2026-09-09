@@ -1,15 +1,15 @@
 export type {
-  HyperframeLintSeverity,
-  HyperframeLintFinding,
-  HyperframeLintResult,
-  HyperframeLinterOptions,
+  SmashcutLintSeverity,
+  SmashcutLintFinding,
+  SmashcutLintResult,
+  SmashcutLinterOptions,
   LintTimings,
 } from "./types.js";
 export {
-  lintHyperframeHtml,
+  lintSmashcutHtml,
   lintMediaUrls,
   LINT_RULE_COUNT,
   LINT_RULE_GROUP_COUNTS,
-} from "./hyperframeLinter.js";
+} from "./smashcutLinter.js";
 export { lintProject, shouldBlockRender } from "./project.js";
 export type { ProjectLintResult } from "./project.js";

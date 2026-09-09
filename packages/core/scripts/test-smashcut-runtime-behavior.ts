@@ -27,7 +27,7 @@ assert(
 
 console.log(
   JSON.stringify({
-    event: "hyperframe_runtime_behavior_verified",
+    event: "smashcut_runtime_behavior_verified",
     baselineBytes: baseline.length,
     parityEnabledBytes: parityEnabled.length,
     parityDisabledBytes: parityDisabled.length,

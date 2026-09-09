@@ -1,11 +1,11 @@
 // fallow-ignore-file code-duplication
 import { describe, it, expect } from "vitest";
-import { lintHyperframeHtml } from "../hyperframeLinter.js";
+import { lintSmashcutHtml } from "../smashcutLinter.js";
 
 describe("composition rules", () => {
   describe("canonical timing contract", () => {
     it("rejects deprecated attributes even when canonical attributes are also present", async () => {
-      const result = await lintHyperframeHtml(`<!doctype html><html><body>
+      const result = await lintSmashcutHtml(`<!doctype html><html><body>
         <div data-composition-id="main" data-start="0" data-duration="5">
           <div class="clip" data-start="1" data-duration="2" data-end="9" data-track-index="1" data-layer="4"></div>
         </div>
@@ -17,7 +17,7 @@ describe("composition rules", () => {
     });
 
     it("uses canonical timing when deprecated attributes conflict", async () => {
-      const result = await lintHyperframeHtml(`<!doctype html><html><body>
+      const result = await lintSmashcutHtml(`<!doctype html><html><body>
         <div data-composition-id="main" data-start="0" data-duration="5">
           <div id="a" class="clip" data-start="0" data-duration="2" data-end="9" data-track-index="1"></div>
           <div id="b" class="clip" data-start="2" data-duration="2" data-track-index="1"></div>
@@ -37,7 +37,7 @@ describe("composition rules", () => {
     // routed as "check --strict passes but StaticGuard still logs
     // deprecated-attribute noise" (ts=1784548892, ts=1784541122).
     it("does not flag deprecated_data_end when compiled data-end matches data-duration", async () => {
-      const result = await lintHyperframeHtml(`<!doctype html><html><body>
+      const result = await lintSmashcutHtml(`<!doctype html><html><body>
         <div data-composition-id="main" data-width="1920" data-height="1080" data-start="0" data-duration="30">
           <audio id="bgm" src="bgm.mp3" data-start="0" data-duration="18" data-end="18"></audio>
           <audio id="narration" src="narr.mp3" data-start="5" data-duration="10" data-end="15"></audio>
@@ -53,7 +53,7 @@ describe("composition rules", () => {
     // `deprecated_data_end`, with a message that names the disagreement so
     // the author can spot the drift rather than reading the legacy phrasing.
     it("still flags deprecated_data_end when data-end disagrees with data-duration", async () => {
-      const result = await lintHyperframeHtml(`<!doctype html><html><body>
+      const result = await lintSmashcutHtml(`<!doctype html><html><body>
         <div data-composition-id="main" data-width="1920" data-height="1080" data-start="0" data-duration="30">
           <audio id="bgm" src="bgm.mp3" data-start="0" data-duration="18" data-end="20"></audio>
         </div>
@@ -72,7 +72,7 @@ describe("composition rules", () => {
         i === 0 ? "<html><body>" : `<!-- filler ${i} -->`,
       ).join("\n");
 
-      const result = await lintHyperframeHtml(html, {
+      const result = await lintSmashcutHtml(html, {
         filePath: "/project/compositions/scene.html",
       });
       const finding = result.findings.find((f) => f.code === "composition_file_too_large");
@@ -85,7 +85,7 @@ describe("composition rules", () => {
         i === 0 ? "<html><body>" : `<!-- filler ${i} -->`,
       ).join("\n");
 
-      const result = await lintHyperframeHtml(html, { filePath: "/project/index.html" });
+      const result = await lintSmashcutHtml(html, { filePath: "/project/index.html" });
       const finding = result.findings.find((f) => f.code === "composition_file_too_large");
       expect(finding).toBeUndefined();
     });
@@ -96,7 +96,7 @@ describe("composition rules", () => {
           i === 0 ? "<html><body>" : `<!-- filler ${i} -->`,
         ).join("\n") + "\n";
 
-      const result = await lintHyperframeHtml(html, { filePath: "/project/index.html" });
+      const result = await lintSmashcutHtml(html, { filePath: "/project/index.html" });
       const finding = result.findings.find((f) => f.code === "composition_file_too_large");
       expect(finding).toBeUndefined();
     });
@@ -111,7 +111,7 @@ describe("composition rules", () => {
   </body>
 </html>`;
 
-      const result = await lintHyperframeHtml(html, { filePath: "/project/index.html" });
+      const result = await lintSmashcutHtml(html, { filePath: "/project/index.html" });
       const finding = result.findings.find((f) => f.code === "composition_file_too_large");
       expect(finding).toBeUndefined();
     });
@@ -121,7 +121,7 @@ describe("composition rules", () => {
         i === 0 ? "<html><body>" : `<!-- filler ${i} -->`,
       ).join("\n");
 
-      const result = await lintHyperframeHtml(html, {
+      const result = await lintSmashcutHtml(html, {
         filePath: "/project/registry/blocks/data-chart/data-chart.html",
       });
       const finding = result.findings.find((f) => f.code === "composition_file_too_large");
@@ -133,7 +133,7 @@ describe("composition rules", () => {
         i === 0 ? "<html><body>" : `<!-- filler ${i} -->`,
       ).join("\n");
 
-      const result = await lintHyperframeHtml(html, {
+      const result = await lintSmashcutHtml(html, {
         filePath: "/project/compositions/data-chart.html",
       });
       const finding = result.findings.find((f) => f.code === "composition_file_too_large");
@@ -148,7 +148,7 @@ describe("composition rules", () => {
           i === 0 ? "<html><body>" : `<!-- filler ${i} -->`,
         ).join("\n");
 
-      const result = await lintHyperframeHtml(html, {
+      const result = await lintSmashcutHtml(html, {
         filePath: "/project/compositions/data-chart.html",
       });
       const finding = result.findings.find((f) => f.code === "composition_file_too_large");
@@ -160,7 +160,7 @@ describe("composition rules", () => {
         i === 0 ? "<html><body>" : `<!-- filler ${i} -->`,
       ).join("\n");
 
-      const result = await lintHyperframeHtml(html, {
+      const result = await lintSmashcutHtml(html, {
         filePath: "/project/compositions/scene.html",
         isSubComposition: true,
       });
@@ -179,7 +179,7 @@ describe("composition rules", () => {
   </div>
 </body></html>`;
 
-      const result = await lintHyperframeHtml(html, {
+      const result = await lintSmashcutHtml(html, {
         filePath: "/project/compositions/scene.html",
       });
       const finding = result.findings.find((f) => f.code === "timeline_track_too_dense");
@@ -198,7 +198,7 @@ describe("composition rules", () => {
   </div>
 </body></html>`;
 
-      const result = await lintHyperframeHtml(html, { filePath: "/project/index.html" });
+      const result = await lintSmashcutHtml(html, { filePath: "/project/index.html" });
       const finding = result.findings.find((f) => f.code === "timeline_track_too_dense");
       expect(finding).toBeUndefined();
     });
@@ -214,7 +214,7 @@ describe("composition rules", () => {
   </div>
 </body></html>`;
 
-      const result = await lintHyperframeHtml(html, { filePath: "/project/index.html" });
+      const result = await lintSmashcutHtml(html, { filePath: "/project/index.html" });
       const finding = result.findings.find((f) => f.code === "timeline_track_too_dense");
       expect(finding).toBeUndefined();
     });
@@ -231,7 +231,7 @@ describe("composition rules", () => {
   </div>
 </body></html>`;
 
-      const result = await lintHyperframeHtml(html, { filePath: "/project/index.html" });
+      const result = await lintSmashcutHtml(html, { filePath: "/project/index.html" });
       const finding = result.findings.find((f) => f.code === "timeline_track_too_dense");
       expect(finding).toBeUndefined();
     });
@@ -247,7 +247,7 @@ describe("composition rules", () => {
   </div>
 </body></html>`;
 
-      const result = await lintHyperframeHtml(html, { filePath: "/project/index.html" });
+      const result = await lintSmashcutHtml(html, { filePath: "/project/index.html" });
       const finding = result.findings.find((f) => f.code === "timeline_track_too_dense");
       expect(finding).toBeUndefined();
     });
@@ -263,7 +263,7 @@ describe("composition rules", () => {
   </div>
 </body></html>`;
 
-      const result = await lintHyperframeHtml(html, { filePath: "/project/index.html" });
+      const result = await lintSmashcutHtml(html, { filePath: "/project/index.html" });
       const finding = result.findings.find((f) => f.code === "timeline_track_too_dense");
       expect(finding).toBeUndefined();
     });
@@ -281,7 +281,7 @@ describe("composition rules", () => {
 </body>
 </html>`;
 
-      const result = await lintHyperframeHtml(html);
+      const result = await lintSmashcutHtml(html);
       const finding = result.findings.find((f) => f.code === "duplicate_composition_id");
       expect(finding).toBeDefined();
       expect(finding?.severity).toBe("error");
@@ -295,7 +295,7 @@ describe("composition rules", () => {
 </body>
 </html>`;
 
-      const result = await lintHyperframeHtml(html);
+      const result = await lintSmashcutHtml(html);
       const finding = result.findings.find((f) => f.code === "duplicate_composition_id");
       expect(finding).toBeUndefined();
     });
@@ -310,7 +310,7 @@ describe("composition rules", () => {
 </body>
 </html>`;
 
-      const result = await lintHyperframeHtml(html);
+      const result = await lintSmashcutHtml(html);
       const finding = result.findings.find((f) => f.code === "duplicate_composition_id");
       expect(finding).toBeUndefined();
     });
@@ -332,7 +332,7 @@ describe("composition rules", () => {
 </body>
 </html>`;
 
-      const result = await lintHyperframeHtml(html);
+      const result = await lintSmashcutHtml(html);
       expect(result.findings.find((f) => f.code === "duplicate_composition_id")).toBeUndefined();
     });
 
@@ -353,7 +353,7 @@ describe("composition rules", () => {
 </body>
 </html>`;
 
-      const result = await lintHyperframeHtml(html);
+      const result = await lintSmashcutHtml(html);
       const finding = result.findings.find((f) => f.code === "duplicate_composition_id");
       expect(finding).toBeDefined();
       expect(finding?.message).toContain("main");
@@ -366,7 +366,7 @@ describe("composition rules", () => {
   <template><div data-composition-id="main"></div></template>
 </body></html>`;
 
-      const result = await lintHyperframeHtml(html);
+      const result = await lintSmashcutHtml(html);
       const finding = result.findings.find((f) => f.code === "duplicate_composition_id");
       expect(finding).toBeUndefined();
     });
@@ -378,7 +378,7 @@ describe("composition rules", () => {
   <meta data-composition-id="&#109;ain">
 </body></html>`;
 
-      const result = await lintHyperframeHtml(html);
+      const result = await lintSmashcutHtml(html);
       const finding = result.findings.find((f) => f.code === "duplicate_composition_id");
       expect(finding).toBeDefined();
     });
@@ -390,7 +390,7 @@ describe("composition rules", () => {
   <meta data-composition-id="main" data-composition-id="other">
 </body></html>`;
 
-      const result = await lintHyperframeHtml(html);
+      const result = await lintSmashcutHtml(html);
       const finding = result.findings.find((f) => f.code === "duplicate_composition_id");
       expect(finding).toBeDefined();
     });
@@ -410,7 +410,7 @@ describe("composition rules", () => {
     window.__timelines["main"] = tl;
   </script>
 </body></html>`;
-    const result = await lintHyperframeHtml(html);
+    const result = await lintSmashcutHtml(html);
     const finding = result.findings.find((f) => f.code === "template_literal_selector");
     expect(finding).toBeDefined();
     expect(finding?.severity).toBe("error");
@@ -428,7 +428,7 @@ describe("composition rules", () => {
     window.__timelines["main"] = tl;
   </script>
 </body></html>`;
-    const result = await lintHyperframeHtml(html);
+    const result = await lintSmashcutHtml(html);
     const finding = result.findings.find((f) => f.code === "template_literal_selector");
     expect(finding).toBeDefined();
   });
@@ -446,7 +446,7 @@ describe("composition rules", () => {
     window.__timelines["main"] = tl;
   </script>
 </body></html>`;
-    const result = await lintHyperframeHtml(html);
+    const result = await lintSmashcutHtml(html);
     const finding = result.findings.find((f) => f.code === "template_literal_selector");
     expect(finding).toBeUndefined();
   });
@@ -467,7 +467,7 @@ describe("composition rules", () => {
     </script>
   </div>
 </template>`;
-    const result = await lintHyperframeHtml(html, { filePath: "compositions/scene.html" });
+    const result = await lintSmashcutHtml(html, { filePath: "compositions/scene.html" });
     const findings = result.findings.filter((f) => f.code === "split_data_attribute_selector");
     expect(findings.length).toBe(1);
     expect(findings[0]?.severity).toBe("error");
@@ -484,7 +484,7 @@ describe("composition rules", () => {
     // window.__timelines["main"] = gsap.timeline({ paused: true });
   </script>
 </body></html>`;
-    const result = await lintHyperframeHtml(html, { filePath: "compositions/main.html" });
+    const result = await lintSmashcutHtml(html, { filePath: "compositions/main.html" });
     const findings = result.findings.filter(
       (f) => f.code === "root_composition_missing_duration_source",
     );
@@ -503,7 +503,7 @@ describe("composition rules", () => {
     window.__timelines["main"] = gsap.timeline({ paused: true });
   </script>
 </body></html>`;
-    const result = await lintHyperframeHtml(html, { filePath: "compositions/main.html" });
+    const result = await lintSmashcutHtml(html, { filePath: "compositions/main.html" });
     const findings = result.findings.filter((f) => f.code === "split_data_attribute_selector");
     expect(findings.length).toBe(1);
     expect(findings[0]?.severity).toBe("error");
@@ -521,7 +521,7 @@ describe("composition rules", () => {
     window.__timelines["main"] = gsap.timeline({ paused: true });
   </script>
 </body></html>`;
-    const result = await lintHyperframeHtml(html);
+    const result = await lintSmashcutHtml(html);
     expect(result.findings.find((f) => f.code === "template_literal_selector")).toBeUndefined();
   });
 
@@ -536,7 +536,7 @@ describe("composition rules", () => {
     window.__timelines["main"] = gsap.timeline({ paused: true });
   </script>
 </body></html>`;
-    const result = await lintHyperframeHtml(html);
+    const result = await lintSmashcutHtml(html);
     const finding = result.findings.find((f) => f.code === "template_literal_selector");
     expect(finding?.severity).toBe("error");
     expect(finding?.snippet).toContain("data-composition-id");
@@ -556,7 +556,7 @@ describe("composition rules", () => {
     window.__timelines["main"] = gsap.timeline({ paused: true });
   </script>
 </body></html>`;
-    const result = await lintHyperframeHtml(html);
+    const result = await lintSmashcutHtml(html);
     expect(result.findings.filter((f) => f.code === "split_data_attribute_selector")).toHaveLength(
       0,
     );
@@ -574,7 +574,7 @@ describe("composition rules", () => {
     window.__timelines["c1"] = gsap.timeline({ paused: true });
   </script>
 </body></html>`;
-      const result = await lintHyperframeHtml(html);
+      const result = await lintSmashcutHtml(html);
       const finding = result.findings.find((f) => f.code === "timed_element_missing_clip_class");
       expect(finding).toBeDefined();
       // A warning, not an error: the runtime hides the element either way (see
@@ -594,7 +594,7 @@ describe("composition rules", () => {
     window.__timelines["c1"] = gsap.timeline({ paused: true });
   </script>
 </body></html>`;
-      const result = await lintHyperframeHtml(html);
+      const result = await lintSmashcutHtml(html);
       const finding = result.findings.find((f) => f.code === "timed_element_missing_clip_class");
       expect(finding).toBeUndefined();
     });
@@ -615,7 +615,7 @@ describe("composition rules", () => {
     window.__timelines["c1"] = gsap.timeline({ paused: true });
   </script>
 </body></html>`;
-      const result = await lintHyperframeHtml(html);
+      const result = await lintSmashcutHtml(html);
       const finding = result.findings.find((f) => f.code === "timed_element_missing_clip_class");
       expect(finding).toBeUndefined();
     });
@@ -636,7 +636,7 @@ describe("composition rules", () => {
     window.__timelines["my-video"] = gsap.timeline({ paused: true });
   </script>
 </body></html>`;
-      const result = await lintHyperframeHtml(html);
+      const result = await lintSmashcutHtml(html);
       const blocking = result.findings.filter((f) => f.severity !== "info");
       expect(blocking.map((f) => `${f.severity}:${f.code}`)).toEqual([]);
     });
@@ -654,7 +654,7 @@ describe("composition rules", () => {
     window.__timelines["c1"] = gsap.timeline({ paused: true });
   </script>
 </body></html>`;
-      const result = await lintHyperframeHtml(html);
+      const result = await lintSmashcutHtml(html);
       const finding = result.findings.find((f) => f.code === "timed_element_missing_clip_class");
       expect(finding).toBeUndefined();
     });
@@ -687,7 +687,7 @@ describe("composition rules", () => {
     window.__timelines["no-limits"] = tl;
   </script>
 </div>`;
-      const result = await lintHyperframeHtml(html, { filePath: "index.html" });
+      const result = await lintSmashcutHtml(html, { filePath: "index.html" });
       const finding = result.findings.find(
         (f) => f.code === "root_composition_missing_html_wrapper",
       );
@@ -707,7 +707,7 @@ describe("composition rules", () => {
     window.__timelines["main"] = gsap.timeline({ paused: true });
   </script>
 </body></html>`;
-      const result = await lintHyperframeHtml(html);
+      const result = await lintSmashcutHtml(html);
       const finding = result.findings.find(
         (f) => f.code === "root_composition_missing_html_wrapper",
       );
@@ -722,7 +722,7 @@ describe("composition rules", () => {
     window.__timelines["main"] = gsap.timeline({ paused: true });
   </script>
 </body></html>`;
-      const result = await lintHyperframeHtml(html);
+      const result = await lintSmashcutHtml(html);
       const finding = result.findings.find(
         (f) => f.code === "root_composition_missing_html_wrapper",
       );
@@ -736,7 +736,7 @@ describe("composition rules", () => {
     window.__timelines["sub"] = gsap.timeline({ paused: true });
   </script>
 </div>`;
-      const result = await lintHyperframeHtml(html, { isSubComposition: true });
+      const result = await lintSmashcutHtml(html, { isSubComposition: true });
       const finding = result.findings.find(
         (f) => f.code === "root_composition_missing_html_wrapper",
       );
@@ -745,7 +745,7 @@ describe("composition rules", () => {
 
     it("does not flag HTML without composition attributes", async () => {
       const html = `<div id="hello"><p>Not a composition</p></div>`;
-      const result = await lintHyperframeHtml(html);
+      const result = await lintSmashcutHtml(html);
       const finding = result.findings.find(
         (f) => f.code === "root_composition_missing_html_wrapper",
       );
@@ -759,7 +759,7 @@ describe("composition rules", () => {
     window.__timelines["bare"] = gsap.timeline({ paused: true });
   </script>
 </div>`;
-      const result = await lintHyperframeHtml(html);
+      const result = await lintSmashcutHtml(html);
       const finding = result.findings.find(
         (f) => f.code === "root_composition_missing_html_wrapper",
       );
@@ -778,7 +778,7 @@ describe("composition rules", () => {
     </script>
   </div>
 </template>`;
-      const result = await lintHyperframeHtml(html);
+      const result = await lintSmashcutHtml(html);
       const finding = result.findings.find(
         (f) => f.code === "standalone_composition_wrapped_in_template",
       );
@@ -795,7 +795,7 @@ describe("composition rules", () => {
     </script>
   </div>
 </template>`;
-      const result = await lintHyperframeHtml(html, { isSubComposition: true });
+      const result = await lintSmashcutHtml(html, { isSubComposition: true });
       const finding = result.findings.find(
         (f) => f.code === "standalone_composition_wrapped_in_template",
       );
@@ -814,7 +814,7 @@ describe("composition rules", () => {
     window.__timelines["c1"] = gsap.timeline({ paused: true });
   </script>
 </body></html>`;
-      const result = await lintHyperframeHtml(html);
+      const result = await lintSmashcutHtml(html);
       const finding = result.findings.find(
         (f) => f.code === "requestanimationframe_in_composition",
       );
@@ -832,7 +832,7 @@ describe("composition rules", () => {
     window.__timelines["c1"] = gsap.timeline({ paused: true });
   </script>
 </body></html>`;
-      const result = await lintHyperframeHtml(html);
+      const result = await lintSmashcutHtml(html);
       const finding = result.findings.find(
         (f) => f.code === "requestanimationframe_in_composition",
       );
@@ -850,7 +850,7 @@ describe("composition rules", () => {
     window.__timelines["c1"] = gsap.timeline({ paused: true });
   </script>
 </body></html>`;
-      const result = await lintHyperframeHtml(html);
+      const result = await lintSmashcutHtml(html);
       const finding = result.findings.find(
         (f) => f.code === "requestanimationframe_in_composition",
       );
@@ -869,7 +869,7 @@ describe("composition rules", () => {
     window.__timelines["c1"] = gsap.timeline({ paused: true });
   </script>
 </body></html>`;
-      const result = await lintHyperframeHtml(html);
+      const result = await lintSmashcutHtml(html);
       expect(
         result.findings.find((f) => f.code === "requestanimationframe_in_composition"),
       ).toBeUndefined();
@@ -886,7 +886,7 @@ describe("composition rules", () => {
     window.__timelines["c1"] = gsap.timeline({ paused: true });
   </script>
 </body></html>`;
-      const result = await lintHyperframeHtml(html);
+      const result = await lintSmashcutHtml(html);
       expect(
         result.findings.find((f) => f.code === "requestanimationframe_in_composition")?.severity,
       ).toBe("error");
@@ -898,7 +898,7 @@ describe("composition rules", () => {
       const html = `<!DOCTYPE html><html><body>
   <div data-composition-id="c1" data-width="320" data-height="180" data-duration="5"></div>
 </body></html>`;
-      const result = await lintHyperframeHtml(html);
+      const result = await lintSmashcutHtml(html);
       const finding = result.findings.find((f) => f.code === "missing_data_no_timeline");
       expect(finding).toBeDefined();
       expect(finding?.severity).toBe("warning");
@@ -908,7 +908,7 @@ describe("composition rules", () => {
       const html = `<!DOCTYPE html><html><body>
   <div data-composition-id="c1" data-no-timeline data-width="320" data-height="180" data-duration="5"></div>
 </body></html>`;
-      const result = await lintHyperframeHtml(html);
+      const result = await lintSmashcutHtml(html);
       expect(result.findings.find((f) => f.code === "missing_data_no_timeline")).toBeUndefined();
     });
 
@@ -920,13 +920,13 @@ describe("composition rules", () => {
     window.__timelines["c1"] = gsap.timeline({ paused: true });
   </script>
 </body></html>`;
-      const result = await lintHyperframeHtml(html);
+      const result = await lintSmashcutHtml(html);
       expect(result.findings.find((f) => f.code === "missing_data_no_timeline")).toBeUndefined();
     });
 
     it("does not warn when there is no root composition-id", async () => {
       const html = `<!DOCTYPE html><html><body><p>hello</p></body></html>`;
-      const result = await lintHyperframeHtml(html);
+      const result = await lintSmashcutHtml(html);
       expect(result.findings.find((f) => f.code === "missing_data_no_timeline")).toBeUndefined();
     });
 
@@ -935,7 +935,7 @@ describe("composition rules", () => {
       const html = `<!DOCTYPE html><html><body>
   <div data-composition-id="c1" title="add data-no-timeline here" data-width="320" data-height="180" data-duration="5"></div>
 </body></html>`;
-      const result = await lintHyperframeHtml(html);
+      const result = await lintSmashcutHtml(html);
       expect(result.findings.find((f) => f.code === "missing_data_no_timeline")).toBeDefined();
     });
 
@@ -945,13 +945,13 @@ describe("composition rules", () => {
       const html = `<!DOCTYPE html><html><body>
   <div data-composition-id="c1" data-no-timeline-start="0" data-width="320" data-height="180" data-duration="5"></div>
 </body></html>`;
-      const result = await lintHyperframeHtml(html);
+      const result = await lintSmashcutHtml(html);
       expect(result.findings.find((f) => f.code === "missing_data_no_timeline")).toBeDefined();
     });
 
     it("does not warn for sub-compositions", async () => {
       const html = `<template><div data-composition-id="c1" data-width="320" data-height="180" data-duration="5"></div></template>`;
-      const result = await lintHyperframeHtml(html, { isSubComposition: true });
+      const result = await lintSmashcutHtml(html, { isSubComposition: true });
       expect(result.findings.find((f) => f.code === "missing_data_no_timeline")).toBeUndefined();
     });
 
@@ -960,7 +960,7 @@ describe("composition rules", () => {
   <div data-composition-id="c1" data-width="320" data-height="180" data-duration="5"></div>
   <script src="app.js"></script>
 </body></html>`;
-      const result = await lintHyperframeHtml(html);
+      const result = await lintSmashcutHtml(html);
       expect(result.findings.find((f) => f.code === "missing_data_no_timeline")).toBeUndefined();
     });
   });
@@ -986,7 +986,7 @@ describe("composition rules", () => {
     window.__timelines["docs"] = gsap.timeline({ paused: true });
   </script>
 </body></html>`;
-      const result = await lintHyperframeHtml(html);
+      const result = await lintSmashcutHtml(html);
       const finding = result.findings.find(
         (f) => f.code === "root_composition_missing_data_duration",
       );
@@ -1010,7 +1010,7 @@ describe("composition rules", () => {
     window.__timelines["loopy"] = tl;
   </script>
 </body></html>`;
-      const result = await lintHyperframeHtml(html);
+      const result = await lintSmashcutHtml(html);
       // The deprecated rule must not fire.
       const removedFinding = result.findings.find(
         (f) => f.code === "root_composition_missing_data_duration",
@@ -1032,7 +1032,7 @@ describe("composition rules", () => {
     <div class="clip" data-start="0" data-duration="1"></div>
   </div>
 </template>`;
-      const result = await lintHyperframeHtml(html, { isSubComposition: true });
+      const result = await lintSmashcutHtml(html, { isSubComposition: true });
       const finding = result.findings.find((f) => f.code === "root_composition_missing_data_start");
       expect(finding).toBeUndefined();
     });
@@ -1043,7 +1043,7 @@ describe("composition rules", () => {
       const html = `<html data-composition-variables='[{"id":"hero","type":"image","label":"Hero","default":"a.jpg"}]'><body>
 <img id="i" data-start="0" data-duration="2" data-var-src="heroImge" src="a.jpg" />
 </body></html>`;
-      const result = await lintHyperframeHtml(html);
+      const result = await lintSmashcutHtml(html);
       const finding = result.findings.find((f) => f.code === "unknown_variable_binding");
       expect(finding).toBeDefined();
       expect(finding?.severity).toBe("warning");
@@ -1055,14 +1055,14 @@ describe("composition rules", () => {
 <h1 data-var-text="title">x</h1>
 </body></html>`;
       expect(
-        (await lintHyperframeHtml(declared)).findings.some(
+        (await lintSmashcutHtml(declared)).findings.some(
           (f) => f.code === "unknown_variable_binding",
         ),
       ).toBe(false);
 
       const fragment = `<div class="clip" data-start="0" data-duration="2" data-var-text="hostProvided">x</div>`;
       expect(
-        (await lintHyperframeHtml(fragment)).findings.some(
+        (await lintSmashcutHtml(fragment)).findings.some(
           (f) => f.code === "unknown_variable_binding",
         ),
       ).toBe(false);
@@ -1074,7 +1074,7 @@ describe("composition rules", () => {
       const html = `<html><body>
 <div data-composition-id="card-1" data-composition-src="card.html" data-variable-values='{not json'></div>
 </body></html>`;
-      const result = await lintHyperframeHtml(html);
+      const result = await lintSmashcutHtml(html);
       const finding = result.findings.find((f) => f.code === "invalid_variable_values_json");
       expect(finding).toBeDefined();
       expect(finding?.severity).toBe("error");
@@ -1084,7 +1084,7 @@ describe("composition rules", () => {
       const html = `<html><body>
 <div data-composition-src="card.html" data-variable-values='[1,2,3]'></div>
 </body></html>`;
-      const result = await lintHyperframeHtml(html);
+      const result = await lintSmashcutHtml(html);
       const finding = result.findings.find((f) => f.code === "invalid_variable_values_json");
       expect(finding).toBeDefined();
       expect(finding?.message).toMatch(/must be a JSON object/);
@@ -1094,7 +1094,7 @@ describe("composition rules", () => {
       const html = `<html><body>
 <div data-composition-src="card.html" data-variable-values='"hello"'></div>
 </body></html>`;
-      const result = await lintHyperframeHtml(html);
+      const result = await lintSmashcutHtml(html);
       const finding = result.findings.find((f) => f.code === "invalid_variable_values_json");
       expect(finding).toBeDefined();
     });
@@ -1103,7 +1103,7 @@ describe("composition rules", () => {
       const html = `<html><body>
 <div data-composition-src="card.html" data-variable-values='{"title":"Hello","count":3}'></div>
 </body></html>`;
-      const result = await lintHyperframeHtml(html);
+      const result = await lintSmashcutHtml(html);
       const finding = result.findings.find((f) => f.code === "invalid_variable_values_json");
       expect(finding).toBeUndefined();
     });
@@ -1112,7 +1112,7 @@ describe("composition rules", () => {
       const html = `<html><body>
 <div data-composition-src="card.html"></div>
 </body></html>`;
-      const result = await lintHyperframeHtml(html);
+      const result = await lintSmashcutHtml(html);
       const finding = result.findings.find((f) => f.code === "invalid_variable_values_json");
       expect(finding).toBeUndefined();
     });
@@ -1121,7 +1121,7 @@ describe("composition rules", () => {
   describe("invalid_composition_variables_declaration", () => {
     it("warns when data-composition-variables is unparseable JSON", async () => {
       const html = `<html data-composition-variables='[{not json'><body><div data-composition-id="x"></div></body></html>`;
-      const result = await lintHyperframeHtml(html);
+      const result = await lintSmashcutHtml(html);
       const finding = result.findings.find(
         (f) => f.code === "invalid_composition_variables_declaration",
       );
@@ -1130,7 +1130,7 @@ describe("composition rules", () => {
 
     it("warns when data-composition-variables is not an array", async () => {
       const html = `<html data-composition-variables='{"title":"Hello"}'><body><div data-composition-id="x"></div></body></html>`;
-      const result = await lintHyperframeHtml(html);
+      const result = await lintSmashcutHtml(html);
       const finding = result.findings.find(
         (f) => f.code === "invalid_composition_variables_declaration",
       );
@@ -1140,7 +1140,7 @@ describe("composition rules", () => {
 
     it("warns per-entry when an entry is missing required fields", async () => {
       const html = `<html data-composition-variables='[{"id":"ok","type":"string","label":"Ok","default":"x"},{"id":"bad"}]'><body><div data-composition-id="x"></div></body></html>`;
-      const result = await lintHyperframeHtml(html);
+      const result = await lintSmashcutHtml(html);
       const findings = result.findings.filter(
         (f) => f.code === "invalid_composition_variables_declaration",
       );
@@ -1151,7 +1151,7 @@ describe("composition rules", () => {
 
     it("warns when a declaration uses an unknown type", async () => {
       const html = `<html data-composition-variables='[{"id":"x","type":"date","label":"X","default":"y"}]'><body><div data-composition-id="x"></div></body></html>`;
-      const result = await lintHyperframeHtml(html);
+      const result = await lintSmashcutHtml(html);
       const finding = result.findings.find(
         (f) => f.code === "invalid_composition_variables_declaration",
       );
@@ -1165,7 +1165,7 @@ describe("composition rules", () => {
         {"id":"count","type":"number","label":"Count","default":3},
         {"id":"theme","type":"enum","label":"Theme","default":"light","options":[{"value":"light","label":"Light"}]}
       ]'><body><div data-composition-id="x"></div></body></html>`;
-      const result = await lintHyperframeHtml(html);
+      const result = await lintSmashcutHtml(html);
       const finding = result.findings.find(
         (f) => f.code === "invalid_composition_variables_declaration",
       );
@@ -1183,7 +1183,7 @@ describe("composition rules", () => {
         },
       ]).replaceAll('"', "&quot;");
       const html = `<html data-composition-variables='${declarations}'><body><div data-composition-id="x"></div></body></html>`;
-      const result = await lintHyperframeHtml(html);
+      const result = await lintSmashcutHtml(html);
       const finding = result.findings.find(
         (f) => f.code === "invalid_composition_variables_declaration",
       );
@@ -1192,7 +1192,7 @@ describe("composition rules", () => {
 
     it("does not warn when data-composition-variables is absent", async () => {
       const html = `<html><body><div data-composition-id="x"></div></body></html>`;
-      const result = await lintHyperframeHtml(html);
+      const result = await lintSmashcutHtml(html);
       const finding = result.findings.find(
         (f) => f.code === "invalid_composition_variables_declaration",
       );
@@ -1206,7 +1206,7 @@ describe("composition rules", () => {
 
     it("errors on an image variable defaulting to a file:// URL", async () => {
       const html = `<html data-composition-variables='[{"id":"bg","type":"image","label":"BG","default":"file:///abs/assets/blue.png"}]'><body><img data-composition-id="x" src="assets/red.png" data-var-src="bg"></body></html>`;
-      const finding = find(await lintHyperframeHtml(html));
+      const finding = find(await lintSmashcutHtml(html));
       expect(finding).toBeDefined();
       expect(finding?.severity).toBe("error");
       expect(finding?.message).toMatch(/authored fallback/);
@@ -1214,7 +1214,7 @@ describe("composition rules", () => {
 
     it("errors on a non-image variable that a data-var-src binding consumes as a URL", async () => {
       const html = `<html data-composition-variables='[{"id":"clip","type":"string","label":"Clip","default":"file:///abs/a.mp4"}]'><body><video data-composition-id="x" src="a.mp4" data-var-src="clip"></video></body></html>`;
-      expect(find(await lintHyperframeHtml(html))).toBeDefined();
+      expect(find(await lintSmashcutHtml(html))).toBeDefined();
     });
 
     it("stays quiet for relative, http(s) and data:image defaults", async () => {
@@ -1223,12 +1223,12 @@ describe("composition rules", () => {
         {"id":"b","type":"image","label":"B","default":"https://example.com/b.png"},
         {"id":"c","type":"image","label":"C","default":"data:image/png;base64,iVBORw0KGgo="}
       ]'><body><img data-composition-id="x" src="r.png" data-var-src="a"></body></html>`;
-      expect(find(await lintHyperframeHtml(html))).toBeUndefined();
+      expect(find(await lintSmashcutHtml(html))).toBeUndefined();
     });
 
     it("does not treat an unbound scalar variable as a URL", async () => {
       const html = `<html data-composition-variables='[{"id":"note","type":"string","label":"Note","default":"mailto:hi@example.com"}]'><body><div data-composition-id="x"></div></body></html>`;
-      expect(find(await lintHyperframeHtml(html))).toBeUndefined();
+      expect(find(await lintSmashcutHtml(html))).toBeUndefined();
     });
   });
 
@@ -1241,7 +1241,7 @@ describe("composition rules", () => {
           <img src="../capture/assets/logo.svg" alt="logo">
         </div>
       </body></html>`;
-      const result = await lintHyperframeHtml(html, {
+      const result = await lintSmashcutHtml(html, {
         filePath: "/project/compositions/scene.html",
       });
       const finding = result.findings.find((f) => f.code === RULE_CODE);
@@ -1256,7 +1256,7 @@ describe("composition rules", () => {
           <video src="../assets/clip.mp4" muted></video>
         </div>
       </body></html>`;
-      const result = await lintHyperframeHtml(html, {
+      const result = await lintSmashcutHtml(html, {
         filePath: "/project/compositions/scene.html",
       });
       const finding = result.findings.find((f) => f.code === RULE_CODE);
@@ -1271,7 +1271,7 @@ describe("composition rules", () => {
           <video src="../../assets/clip.mp4" muted></video>
         </div>
       </body></html>`;
-      const result = await lintHyperframeHtml(html, {
+      const result = await lintSmashcutHtml(html, {
         filePath: "/project/compositions/frames/scene.html",
       });
       const finding = result.findings.find((f) => f.code === RULE_CODE);
@@ -1285,7 +1285,7 @@ describe("composition rules", () => {
       </head><body>
         <div data-composition-id="x"></div>
       </body></html>`;
-      const result = await lintHyperframeHtml(html, {
+      const result = await lintSmashcutHtml(html, {
         filePath: "/project/compositions/scene.html",
       });
       const finding = result.findings.find((f) => f.code === RULE_CODE);
@@ -1301,7 +1301,7 @@ describe("composition rules", () => {
         </style>
         <div data-composition-id="x"></div>
       </body></html>`;
-      const result = await lintHyperframeHtml(html, {
+      const result = await lintSmashcutHtml(html, {
         filePath: "/project/compositions/scene.html",
       });
       const finding = result.findings.find((f) => f.code === RULE_CODE);
@@ -1315,7 +1315,7 @@ describe("composition rules", () => {
           <div style="background-image: url('../assets/hero.png');"></div>
         </div>
       </body></html>`;
-      const result = await lintHyperframeHtml(html, {
+      const result = await lintSmashcutHtml(html, {
         filePath: "/project/compositions/scene.html",
       });
       const finding = result.findings.find((f) => f.code === RULE_CODE);
@@ -1330,7 +1330,7 @@ describe("composition rules", () => {
         </div>
         <style>.hero { background-image: url('capture/assets/hero.png'); }</style>
       </body></html>`;
-      const result = await lintHyperframeHtml(html, {
+      const result = await lintSmashcutHtml(html, {
         filePath: "/project/compositions/scene.html",
       });
       const finding = result.findings.find((f) => f.code === RULE_CODE);
@@ -1343,7 +1343,7 @@ describe("composition rules", () => {
           <video src="assets/x.mp4" muted></video>
         </div>
       </body></html>`;
-      const result = await lintHyperframeHtml(html, {
+      const result = await lintSmashcutHtml(html, {
         filePath: "/project/compositions/scene.html",
       });
       const finding = result.findings.find((f) => f.code === RULE_CODE);
@@ -1358,7 +1358,7 @@ describe("composition rules", () => {
           <style>.hero { background-image: url('https://example.com/hero.png'); }</style>
         </div>
       </body></html>`;
-      const result = await lintHyperframeHtml(html, {
+      const result = await lintSmashcutHtml(html, {
         filePath: "/project/compositions/scene.html",
       });
       const finding = result.findings.find((f) => f.code === RULE_CODE);
@@ -1372,7 +1372,7 @@ describe("composition rules", () => {
           <style>.hero { background-image: url('data:image/svg+xml,%3Csvg/%3E'); }</style>
         </div>
       </body></html>`;
-      const result = await lintHyperframeHtml(html, {
+      const result = await lintSmashcutHtml(html, {
         filePath: "/project/compositions/scene.html",
       });
       const finding = result.findings.find((f) => f.code === RULE_CODE);
@@ -1385,7 +1385,7 @@ describe("composition rules", () => {
           <video src="/absolute/path.mp4" muted></video>
         </div>
       </body></html>`;
-      const result = await lintHyperframeHtml(html, {
+      const result = await lintSmashcutHtml(html, {
         filePath: "/project/compositions/scene.html",
       });
       const finding = result.findings.find((f) => f.code === RULE_CODE);
@@ -1398,7 +1398,7 @@ describe("composition rules", () => {
           <a href="#section">jump</a>
         </div>
       </body></html>`;
-      const result = await lintHyperframeHtml(html, {
+      const result = await lintSmashcutHtml(html, {
         filePath: "/project/compositions/scene.html",
       });
       const finding = result.findings.find((f) => f.code === RULE_CODE);
@@ -1411,7 +1411,7 @@ describe("composition rules", () => {
           <img src="../assets/should-be-ignored.png">
         </div>
       </body></html>`;
-      const result = await lintHyperframeHtml(html, {
+      const result = await lintSmashcutHtml(html, {
         filePath: "/project/registry/blocks/data-chart/data-chart.html",
       });
       const finding = result.findings.find((f) => f.code === RULE_CODE);
@@ -1424,7 +1424,7 @@ describe("composition rules", () => {
           <img src="../assets/should-be-ignored.png">
         </div>
       </body></html>`;
-      const result = await lintHyperframeHtml(html, {
+      const result = await lintSmashcutHtml(html, {
         filePath: "/project/compositions/data-chart.html",
       });
       const finding = result.findings.find((f) => f.code === RULE_CODE);
@@ -1437,7 +1437,7 @@ describe("composition rules", () => {
           <img src="../capture/assets/logo.svg" alt="logo">
         </div>
       </body></html>`;
-      const result = await lintHyperframeHtml(html, {
+      const result = await lintSmashcutHtml(html, {
         filePath: "/project/compositions/scene.html",
       });
       // The old code is gone; the new code subsumes it.
@@ -1459,7 +1459,7 @@ describe("composition rules", () => {
   <div data-composition-id="main" data-width="1920" data-height="1080" data-duration="5">مرحبا</div>
 </body>
 </html>`;
-      const result = await lintHyperframeHtml(html);
+      const result = await lintSmashcutHtml(html);
       const finding = find(result.findings);
       expect(finding).toBeDefined();
       expect(finding?.severity).toBe("error");
@@ -1471,7 +1471,7 @@ describe("composition rules", () => {
       const html = `<html dir="AUTO"><body>
   <div data-composition-id="main" data-width="1920" data-height="1080" data-duration="5"></div>
 </body></html>`;
-      const result = await lintHyperframeHtml(html);
+      const result = await lintSmashcutHtml(html);
       const finding = find(result.findings);
       expect(finding).toBeDefined();
       expect(finding?.fixHint).toContain('dir="auto"');
@@ -1481,7 +1481,7 @@ describe("composition rules", () => {
       const html = `<html dir="ltr"><body>
   <div data-composition-id="main" data-width="1920" data-height="1080" data-duration="5"></div>
 </body></html>`;
-      const result = await lintHyperframeHtml(html);
+      const result = await lintSmashcutHtml(html);
       expect(find(result.findings)).toBeUndefined();
     });
 
@@ -1489,7 +1489,7 @@ describe("composition rules", () => {
       const html = `<html dir="bogus"><body>
   <div data-composition-id="main" data-width="1920" data-height="1080" data-duration="5"></div>
 </body></html>`;
-      const result = await lintHyperframeHtml(html);
+      const result = await lintSmashcutHtml(html);
       expect(find(result.findings)).toBeUndefined();
     });
 
@@ -1497,7 +1497,7 @@ describe("composition rules", () => {
       const html = `<html><body>
   <div data-composition-id="main" data-width="1920" data-height="1080" data-duration="5"></div>
 </body></html>`;
-      const result = await lintHyperframeHtml(html);
+      const result = await lintSmashcutHtml(html);
       expect(find(result.findings)).toBeUndefined();
     });
 
@@ -1507,7 +1507,7 @@ describe("composition rules", () => {
     <p style="direction: rtl;">مرحبا</p>
   </div>
 </body></html>`;
-      const result = await lintHyperframeHtml(html);
+      const result = await lintSmashcutHtml(html);
       expect(find(result.findings)).toBeUndefined();
     });
   });
@@ -1522,7 +1522,7 @@ describe("composition rules", () => {
           <div id="decision-tree-comp" data-composition-id="decision-tree" data-composition-src="compositions/decision_tree.html" data-start="0" data-duration="15"></div>
         </div>
       </body></html>`;
-      const result = await lintHyperframeHtml(html, { filePath: "/project/index.html" });
+      const result = await lintSmashcutHtml(html, { filePath: "/project/index.html" });
       const finding = find(result.findings);
       expect(finding).toBeDefined();
       expect(finding?.severity).toBe("warning");
@@ -1536,7 +1536,7 @@ describe("composition rules", () => {
           <div data-composition-id="sub" data-composition-src="compositions/sub.html" data-start="0.3" data-duration="15"></div>
         </div>
       </body></html>`;
-      const result = await lintHyperframeHtml(html, { filePath: "/project/index.html" });
+      const result = await lintSmashcutHtml(html, { filePath: "/project/index.html" });
       expect(find(result.findings)).toBeDefined();
     });
 
@@ -1546,7 +1546,7 @@ describe("composition rules", () => {
           <div data-composition-id="sub" data-composition-src="compositions/sub.html" data-start="0.5" data-duration="15"></div>
         </div>
       </body></html>`;
-      const result = await lintHyperframeHtml(html, { filePath: "/project/index.html" });
+      const result = await lintSmashcutHtml(html, { filePath: "/project/index.html" });
       expect(find(result.findings)).toBeDefined();
     });
 
@@ -1557,7 +1557,7 @@ describe("composition rules", () => {
           <div data-composition-id="body" data-composition-src="compositions/body.html" data-start="15" data-duration="45"></div>
         </div>
       </body></html>`;
-      const result = await lintHyperframeHtml(html, { filePath: "/project/index.html" });
+      const result = await lintSmashcutHtml(html, { filePath: "/project/index.html" });
       expect(find(result.findings)).toBeUndefined();
     });
 
@@ -1567,7 +1567,7 @@ describe("composition rules", () => {
           <div data-composition-id="sub" data-composition-src="compositions/sub.html" data-start="0" data-duration="15"></div>
         </div>
       </body></html>`;
-      const result = await lintHyperframeHtml(html, { filePath: "/project/index.html" });
+      const result = await lintSmashcutHtml(html, { filePath: "/project/index.html" });
       expect(find(result.findings)).toBeUndefined();
     });
 
@@ -1577,7 +1577,7 @@ describe("composition rules", () => {
           <div data-composition-id="sub" data-composition-src="compositions/sub.html" data-start="0" data-duration="30"></div>
         </div>
       </body></html>`;
-      const result = await lintHyperframeHtml(html, { filePath: "/project/index.html" });
+      const result = await lintSmashcutHtml(html, { filePath: "/project/index.html" });
       expect(find(result.findings)).toBeUndefined();
     });
 
@@ -1587,7 +1587,7 @@ describe("composition rules", () => {
           <div class="clip" data-start="0" data-duration="15"></div>
         </div>
       </body></html>`;
-      const result = await lintHyperframeHtml(html, { filePath: "/project/index.html" });
+      const result = await lintSmashcutHtml(html, { filePath: "/project/index.html" });
       expect(find(result.findings)).toBeUndefined();
     });
 
@@ -1597,7 +1597,7 @@ describe("composition rules", () => {
           <div data-composition-id="sub" data-composition-src="compositions/sub.html" data-start="0" data-duration="15"></div>
         </div>
       </body></html>`;
-      const result = await lintHyperframeHtml(html, { filePath: "/project/index.html" });
+      const result = await lintSmashcutHtml(html, { filePath: "/project/index.html" });
       expect(find(result.findings)).toBeUndefined();
     });
 
@@ -1607,7 +1607,7 @@ describe("composition rules", () => {
           <div data-composition-id="sub" data-composition-src="compositions/sub.html" data-start="40" data-duration="5"></div>
         </div>
       </body></html>`;
-      const result = await lintHyperframeHtml(html, { filePath: "/project/index.html" });
+      const result = await lintSmashcutHtml(html, { filePath: "/project/index.html" });
       expect(find(result.findings)).toBeUndefined();
     });
 
@@ -1618,7 +1618,7 @@ describe("composition rules", () => {
           <div class="clip" data-start="0"></div>
         </div>
       </body></html>`;
-      const result = await lintHyperframeHtml(html, { filePath: "/project/index.html" });
+      const result = await lintSmashcutHtml(html, { filePath: "/project/index.html" });
       expect(find(result.findings)).toBeUndefined();
     });
   });
@@ -1633,7 +1633,7 @@ describe("composition rules", () => {
           <div>static content</div>
         </div>
       </body></html>`;
-      const result = await lintHyperframeHtml(html);
+      const result = await lintSmashcutHtml(html);
       const finding = find(result.findings);
       expect(finding).toBeDefined();
       expect(finding?.severity).toBe("error");
@@ -1645,7 +1645,7 @@ describe("composition rules", () => {
           <div>static content</div>
         </div>
       </body></html>`;
-      const result = await lintHyperframeHtml(html);
+      const result = await lintSmashcutHtml(html);
       expect(find(result.findings)).toBeUndefined();
     });
 
@@ -1658,7 +1658,7 @@ describe("composition rules", () => {
           window.__timelines["main"] = tl;
         </script>
       </body></html>`;
-      const result = await lintHyperframeHtml(html);
+      const result = await lintSmashcutHtml(html);
       expect(find(result.findings)).toBeUndefined();
     });
 
@@ -1672,7 +1672,7 @@ describe("composition rules", () => {
           window.__timelines[spec.id] = tl;
         </script>
       </body></html>`;
-      const result = await lintHyperframeHtml(html);
+      const result = await lintSmashcutHtml(html);
       expect(find(result.findings)).toBeUndefined();
     });
 
@@ -1686,7 +1686,7 @@ describe("composition rules", () => {
           <div class="box"></div>
         </div>
       </body></html>`;
-      const result = await lintHyperframeHtml(html);
+      const result = await lintSmashcutHtml(html);
       expect(find(result.findings)).toBeUndefined();
     });
 
@@ -1699,7 +1699,7 @@ describe("composition rules", () => {
           document.querySelector(".box").animate([{ opacity: 0 }, { opacity: 1 }], { duration: 2000 });
         </script>
       </body></html>`;
-      const result = await lintHyperframeHtml(html);
+      const result = await lintSmashcutHtml(html);
       expect(find(result.findings)).toBeUndefined();
     });
 
@@ -1721,7 +1721,7 @@ describe("composition rules", () => {
           window.__scLottie.push(anim);
         </script>
       </body></html>`;
-      const result = await lintHyperframeHtml(html);
+      const result = await lintSmashcutHtml(html);
       expect(find(result.findings)).toBeUndefined();
     });
 
@@ -1735,7 +1735,7 @@ describe("composition rules", () => {
           <div class="spinner"></div>
         </div>
       </body></html>`;
-      const result = await lintHyperframeHtml(html);
+      const result = await lintSmashcutHtml(html);
       const finding = find(result.findings);
       expect(finding).toBeDefined();
       expect(finding?.severity).toBe("error");
@@ -1760,7 +1760,7 @@ describe("composition rules", () => {
           <div class="spinner"></div>
         </div>
       </body></html>`;
-      const result = await lintHyperframeHtml(html);
+      const result = await lintSmashcutHtml(html);
       const finding = find(result.findings);
       expect(finding).toBeDefined();
       expect(finding?.severity).toBe("error");
@@ -1779,7 +1779,7 @@ describe("composition rules", () => {
           <div class="spinner"></div>
         </div>
       </body></html>`;
-      const result = await lintHyperframeHtml(html);
+      const result = await lintSmashcutHtml(html);
       expect(find(result.findings)).toBeUndefined();
     });
 
@@ -1794,7 +1794,7 @@ describe("composition rules", () => {
           const scene = new THREE.Scene();
         </script>
       </body></html>`;
-      const result = await lintHyperframeHtml(html);
+      const result = await lintSmashcutHtml(html);
       const finding = find(result.findings);
       expect(finding).toBeDefined();
       expect(finding?.severity).toBe("error");
@@ -1811,7 +1811,7 @@ describe("composition rules", () => {
           const scene = new THREE.Scene();
         </script>
       </body></html>`;
-      const result = await lintHyperframeHtml(html);
+      const result = await lintSmashcutHtml(html);
       expect(find(result.findings)).toBeUndefined();
     });
 
@@ -1821,7 +1821,7 @@ describe("composition rules", () => {
           <div>static content</div>
         </div>
       </template>`;
-      const result = await lintHyperframeHtml(html, {
+      const result = await lintSmashcutHtml(html, {
         filePath: "compositions/scene.html",
         isSubComposition: true,
       });
@@ -1837,7 +1837,7 @@ describe("composition rules", () => {
           // document.querySelector(".box").animate([{ opacity: 0 }, { opacity: 1 }], { duration: 2000 });
         </script>
       </body></html>`;
-      const result = await lintHyperframeHtml(html);
+      const result = await lintSmashcutHtml(html);
       const finding = find(result.findings);
       expect(finding).toBeDefined();
       expect(finding?.severity).toBe("error");
@@ -1853,7 +1853,7 @@ describe("composition rules", () => {
           <div class="box"></div>
         </div>
       </body></html>`;
-      const result = await lintHyperframeHtml(html);
+      const result = await lintSmashcutHtml(html);
       const finding = find(result.findings);
       expect(finding).toBeDefined();
       expect(finding?.severity).toBe("error");
@@ -1868,7 +1868,7 @@ describe("composition rules", () => {
           document.querySelector(".box").animate({ opacity: [0, 1] }, { duration: 2000 });
         </script>
       </body></html>`;
-      const result = await lintHyperframeHtml(html);
+      const result = await lintSmashcutHtml(html);
       expect(find(result.findings)).toBeUndefined();
     });
 
@@ -1882,7 +1882,7 @@ describe("composition rules", () => {
           <div class="marquee"></div>
         </div>
       </body></html>`;
-      const result = await lintHyperframeHtml(html);
+      const result = await lintSmashcutHtml(html);
       expect(find(result.findings)).toBeUndefined();
     });
 
@@ -1900,7 +1900,7 @@ describe("composition rules", () => {
           <div class="spinner"></div>
         </div>
       </body></html>`;
-      const result = await lintHyperframeHtml(html);
+      const result = await lintSmashcutHtml(html);
       const finding = find(result.findings);
       expect(finding).toBeDefined();
       expect(finding?.severity).toBe("error");
@@ -1920,7 +1920,7 @@ describe("composition rules", () => {
           <div class="spinner"></div>
         </div>
       </body></html>`;
-      const result = await lintHyperframeHtml(html);
+      const result = await lintSmashcutHtml(html);
       expect(find(result.findings)).toBeUndefined();
     });
   });
@@ -1946,7 +1946,7 @@ describe("composition rules", () => {
         40,
         (i) => `<div id="ov-${i}" style="filter: blur(6px); opacity: 0.6"></div>`,
       );
-      const result = await lintHyperframeHtml(wrap(overlays));
+      const result = await lintSmashcutHtml(wrap(overlays));
       const finding = result.findings.find(
         (f) => f.code === "composition_heavy_overlay_count_high",
       );
@@ -1960,7 +1960,7 @@ describe("composition rules", () => {
     it("warns when 30 elements share a clip-path class defined in a <style> block", async () => {
       const head = `<style>.clipped { clip-path: circle(50%); }</style>`;
       const overlays = repeat(30, (i) => `<div id="c-${i}" class="clipped"></div>`);
-      const result = await lintHyperframeHtml(wrap(overlays, head));
+      const result = await lintSmashcutHtml(wrap(overlays, head));
       const finding = result.findings.find(
         (f) => f.code === "composition_heavy_overlay_count_high",
       );
@@ -1976,7 +1976,7 @@ describe("composition rules", () => {
         8,
         (i) => `<div id="r-${i}" style="background: radial-gradient(circle, red, blue)"></div>`,
       );
-      const result = await lintHyperframeHtml(wrap(blur + clip + radial, head));
+      const result = await lintSmashcutHtml(wrap(blur + clip + radial, head));
       const finding = result.findings.find(
         (f) => f.code === "composition_heavy_overlay_count_high",
       );
@@ -1986,7 +1986,7 @@ describe("composition rules", () => {
 
     it("does not warn when only 5 blur overlays are present (well below threshold)", async () => {
       const overlays = repeat(5, (i) => `<div id="ov-${i}" style="filter: blur(6px)"></div>`);
-      const result = await lintHyperframeHtml(wrap(overlays));
+      const result = await lintSmashcutHtml(wrap(overlays));
       const finding = result.findings.find(
         (f) => f.code === "composition_heavy_overlay_count_high",
       );
@@ -1995,7 +1995,7 @@ describe("composition rules", () => {
 
     it("does not warn on 40 plain non-overlay divs (no heavy CSS anywhere)", async () => {
       const overlays = repeat(40, (i) => `<div id="p-${i}">plain ${i}</div>`);
-      const result = await lintHyperframeHtml(wrap(overlays));
+      const result = await lintSmashcutHtml(wrap(overlays));
       const finding = result.findings.find(
         (f) => f.code === "composition_heavy_overlay_count_high",
       );
@@ -2007,7 +2007,7 @@ describe("composition rules", () => {
         30,
         (i) => `<div id="hidden-${i}" style="filter: blur(6px); opacity: 0"></div>`,
       );
-      const result = await lintHyperframeHtml(wrap(overlays));
+      const result = await lintSmashcutHtml(wrap(overlays));
       const finding = result.findings.find(
         (f) => f.code === "composition_heavy_overlay_count_high",
       );
@@ -2020,7 +2020,7 @@ describe("composition rules", () => {
         30,
         (i) => `<div id="hidden-${i}" style="filter: blur(6px); visibility: hidden"></div>`,
       );
-      const result = await lintHyperframeHtml(wrap(overlays));
+      const result = await lintSmashcutHtml(wrap(overlays));
       const finding = result.findings.find(
         (f) => f.code === "composition_heavy_overlay_count_high",
       );
@@ -2032,7 +2032,7 @@ describe("composition rules", () => {
         40,
         (i) => `<div id="gone-${i}" style="filter: blur(6px); display: none"></div>`,
       );
-      const result = await lintHyperframeHtml(wrap(overlays));
+      const result = await lintSmashcutHtml(wrap(overlays));
       const finding = result.findings.find(
         (f) => f.code === "composition_heavy_overlay_count_high",
       );
@@ -2041,7 +2041,7 @@ describe("composition rules", () => {
 
     it("does not warn on registry source files (block library authoring surface)", async () => {
       const overlays = repeat(40, (i) => `<div id="ov-${i}" style="filter: blur(6px)"></div>`);
-      const result = await lintHyperframeHtml(wrap(overlays), {
+      const result = await lintSmashcutHtml(wrap(overlays), {
         filePath: "/project/registry/blocks/blur-hero/blur-hero.html",
       });
       const finding = result.findings.find(
@@ -2059,7 +2059,7 @@ describe("composition rules", () => {
             ${overlays}
           </div>
         </body></html>`;
-      const result = await lintHyperframeHtml(html, {
+      const result = await lintSmashcutHtml(html, {
         filePath: "/project/compositions/blur-hero.html",
       });
       const finding = result.findings.find(
@@ -2070,7 +2070,7 @@ describe("composition rules", () => {
 
     it("does not warn when 24 heavy overlays are present (just below threshold)", async () => {
       const overlays = repeat(24, (i) => `<div id="ov-${i}" style="filter: blur(6px)"></div>`);
-      const result = await lintHyperframeHtml(wrap(overlays));
+      const result = await lintSmashcutHtml(wrap(overlays));
       const finding = result.findings.find(
         (f) => f.code === "composition_heavy_overlay_count_high",
       );
@@ -2079,7 +2079,7 @@ describe("composition rules", () => {
 
     it("ignores `clip-path: none` (does not count as a heavy overlay)", async () => {
       const overlays = repeat(40, (i) => `<div id="none-${i}" style="clip-path: none"></div>`);
-      const result = await lintHyperframeHtml(wrap(overlays));
+      const result = await lintSmashcutHtml(wrap(overlays));
       const finding = result.findings.find(
         (f) => f.code === "composition_heavy_overlay_count_high",
       );
@@ -2093,7 +2093,7 @@ describe("composition rules", () => {
       const clipHead = `<style>.clipped { clip-path: circle(50%); }</style>${head}`;
       const clipped = repeat(29, (i) => `<div id="c-${i}" class="clipped"></div>`);
       const idHit = `<div id="hero-0"></div>`;
-      const result = await lintHyperframeHtml(wrap(clipped + idHit, clipHead));
+      const result = await lintSmashcutHtml(wrap(clipped + idHit, clipHead));
       const finding = result.findings.find(
         (f) => f.code === "composition_heavy_overlay_count_high",
       );
@@ -2103,7 +2103,7 @@ describe("composition rules", () => {
 
     it("uses sub-composition-flavored fix hint when isSubComposition is set", async () => {
       const overlays = repeat(30, (i) => `<div id="ov-${i}" style="filter: blur(6px)"></div>`);
-      const result = await lintHyperframeHtml(wrap(overlays), {
+      const result = await lintSmashcutHtml(wrap(overlays), {
         isSubComposition: true,
       });
       const finding = result.findings.find(
@@ -2123,7 +2123,7 @@ describe("composition rules", () => {
           ${overlays}
         </div>
       </body></html>`;
-      const result = await lintHyperframeHtml(html);
+      const result = await lintSmashcutHtml(html);
       const finding = result.findings.find(
         (f) => f.code === "composition_heavy_overlay_count_high",
       );

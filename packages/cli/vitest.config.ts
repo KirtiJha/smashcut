@@ -6,7 +6,7 @@ export default defineConfig({
     alias: [
       // Resolve the bare @smashcut/core entry to TypeScript source, not built
       // dist. The published dist intentionally omits runtime/entry.ts, so the
-      // dist build of loadHyperframeRuntimeSource() returns null — which makes
+      // dist build of loadSmashcutRuntimeSource() returns null — which makes
       // studioServer.test.ts's runtime-source equality assertion diverge. Tests
       // run under bun against source; subpath imports (@smashcut/core/*) keep
       // resolving via the package's export conditions.

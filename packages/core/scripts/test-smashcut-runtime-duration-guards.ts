@@ -41,7 +41,7 @@ assert(
 
 console.log(
   JSON.stringify({
-    event: "hyperframe_runtime_duration_guards_verified",
+    event: "smashcut_runtime_duration_guards_verified",
     initPath,
     timelinePath,
   }),

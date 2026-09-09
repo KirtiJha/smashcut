@@ -41,8 +41,8 @@ async function buildFromSource(): Promise<string | null> {
   if (!existsSync(ENTRY_TS)) return null;
   try {
     const mod = await import("@smashcut/core");
-    if (typeof mod.loadHyperframeRuntimeSource === "function") {
-      const source = mod.loadHyperframeRuntimeSource();
+    if (typeof mod.loadSmashcutRuntimeSource === "function") {
+      const source = mod.loadSmashcutRuntimeSource();
       if (source) return source;
     }
   } catch {
@@ -56,8 +56,8 @@ async function buildFromSource(): Promise<string | null> {
 async function getInlinedRuntime(): Promise<string | null> {
   try {
     const mod = await import("@smashcut/core");
-    if (typeof mod.getHyperframeRuntimeScript === "function") {
-      return mod.getHyperframeRuntimeScript() ?? null;
+    if (typeof mod.getSmashcutRuntimeScript === "function") {
+      return mod.getSmashcutRuntimeScript() ?? null;
     }
   } catch {
     // Not available — fall through to artifact

@@ -482,7 +482,7 @@ jobs:
       - name: Verify producer lint entry reads on Windows
         if: matrix.lane == 'studio-engine-cli'
         shell: pwsh
-        run: bunx vitest run packages/producer/src/services/hyperframeLint.file-race.test.ts --maxWorkers=2
+        run: bunx vitest run packages/producer/src/services/smashcutLint.file-race.test.ts --maxWorkers=2
 
       - name: Verify Windows frame staging
         if: matrix.lane == 'studio-engine-cli'

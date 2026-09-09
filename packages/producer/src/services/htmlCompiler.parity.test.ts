@@ -13,7 +13,7 @@ import {
 // engine/src/services/videoFrameExtractor.test.ts reaching into core's runtime.
 import { loadExternalCompositions } from "../../../core/src/runtime/compositionLoader.js";
 import { compileForRender } from "./htmlCompiler.js";
-import { getVerifiedHyperframeRuntimeSource } from "./hyperframeRuntimeLoader.js";
+import { getVerifiedSmashcutRuntimeSource } from "./smashcutRuntimeLoader.js";
 
 const tempDirs: string[] = [];
 
@@ -88,7 +88,7 @@ async function contracts(files: Record<string, string>) {
   });
   const servedRender = injectScriptsIntoHtml(
     render.html,
-    [getVerifiedHyperframeRuntimeSource()],
+    [getVerifiedSmashcutRuntimeSource()],
     [],
     true,
   );

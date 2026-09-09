@@ -127,10 +127,10 @@ export { quantizeTimeToFrame } from "./utils/parityContract.js";
 export { resolveRenderPaths, type RenderPaths } from "./utils/paths.js";
 
 export {
-  prepareHyperframeLintBody,
-  runHyperframeLint,
-  type PreparedHyperframeLintInput,
-} from "./services/hyperframeLint.js";
+  prepareSmashcutLintBody,
+  runSmashcutLint,
+  type PreparedSmashcutLintInput,
+} from "./services/smashcutLint.js";
 
 // ── Distributed render primitives ───────────────────────────────────────────
 // The full surface lives at `@smashcut/producer/distributed`; we

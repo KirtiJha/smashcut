@@ -24,7 +24,7 @@
     },
     "packages/aws-lambda": {
       "name": "@smashcut/aws-lambda",
-      "version": "0.8.14",
+      "version": "0.8.33",
       "dependencies": {
         "@aws-sdk/client-s3": "^3.700.0",
         "@aws-sdk/client-sfn": "^3.700.0",
@@ -57,7 +57,7 @@
     },
     "packages/cli": {
       "name": "@smashcut/cli",
-      "version": "0.8.14",
+      "version": "0.8.33",
       "bin": {
         "smashcut": "./bin/smashcut.mjs",
       },
@@ -108,7 +108,7 @@
     },
     "packages/core": {
       "name": "@smashcut/core",
-      "version": "0.8.14",
+      "version": "0.8.33",
       "dependencies": {
         "@chenglou/pretext": "^0.0.5",
         "@smashcut/lint": "workspace:*",
@@ -133,7 +133,7 @@
     },
     "packages/engine": {
       "name": "@smashcut/engine",
-      "version": "0.8.14",
+      "version": "0.8.33",
       "dependencies": {
         "@hono/node-server": "^2.0.5",
         "@smashcut/core": "workspace:^",
@@ -152,7 +152,7 @@
     },
     "packages/gcp-cloud-run": {
       "name": "@smashcut/gcp-cloud-run",
-      "version": "0.8.14",
+      "version": "0.8.33",
       "dependencies": {
         "@google-cloud/storage": "^7.14.0",
         "@google-cloud/workflows": "^4.2.0",
@@ -173,7 +173,7 @@
     },
     "packages/lint": {
       "name": "@smashcut/lint",
-      "version": "0.8.14",
+      "version": "0.8.33",
       "dependencies": {
         "@smashcut/parsers": "workspace:*",
         "htmlparser2": "^10.1.0",
@@ -191,7 +191,7 @@
     },
     "packages/parsers": {
       "name": "@smashcut/parsers",
-      "version": "0.8.14",
+      "version": "0.8.33",
       "dependencies": {
         "@babel/parser": "^7.27.0",
         "acorn": "^8.17.0",
@@ -211,7 +211,7 @@
     },
     "packages/player": {
       "name": "@smashcut/player",
-      "version": "0.8.14",
+      "version": "0.8.33",
       "dependencies": {
         "@smashcut/core": "workspace:*",
       },
@@ -226,7 +226,7 @@
     },
     "packages/producer": {
       "name": "@smashcut/producer",
-      "version": "0.8.14",
+      "version": "0.8.33",
       "dependencies": {
         "@fontsource/archivo-black": "^5.2.8",
         "@fontsource/eb-garamond": "^5.2.7",
@@ -271,7 +271,7 @@
     },
     "packages/sdk": {
       "name": "@smashcut/sdk",
-      "version": "0.8.14",
+      "version": "0.8.33",
       "dependencies": {
         "@smashcut/core": "workspace:*",
         "@smashcut/parsers": "workspace:*",
@@ -301,7 +301,7 @@
     },
     "packages/shader-transitions": {
       "name": "@smashcut/shader-transitions",
-      "version": "0.8.14",
+      "version": "0.8.33",
       "dependencies": {
         "html2canvas": "^1.4.1",
       },
@@ -313,7 +313,7 @@
     },
     "packages/studio": {
       "name": "@smashcut/studio",
-      "version": "0.8.14",
+      "version": "0.8.33",
       "dependencies": {
         "@codemirror/autocomplete": "^6.20.1",
         "@codemirror/commands": "^6.10.3",
@@ -326,13 +326,13 @@
         "@codemirror/state": "^6.6.0",
         "@codemirror/theme-one-dark": "^6.1.2",
         "@codemirror/view": "6.40.0",
+        "@mcp-b/global": "^5.0.1",
+        "@phosphor-icons/react": "^2.1.10",
         "@smashcut/core": "workspace:*",
         "@smashcut/parsers": "workspace:*",
         "@smashcut/player": "workspace:*",
         "@smashcut/sdk": "workspace:*",
         "@smashcut/studio-server": "workspace:*",
-        "@mcp-b/global": "^5.0.1",
-        "@phosphor-icons/react": "^2.1.10",
         "@tanstack/react-virtual": "^3.14.6",
         "bpm-detective": "^2.0.5",
         "dompurify": "^3.2.4",
@@ -365,7 +365,7 @@
     },
     "packages/studio-server": {
       "name": "@smashcut/studio-server",
-      "version": "0.8.14",
+      "version": "0.8.33",
       "dependencies": {
         "@smashcut/core": "workspace:*",
         "@smashcut/parsers": "workspace:*",
@@ -730,34 +730,6 @@
 
     "@hono/node-server": ["@hono/node-server@2.0.12", "", { "peerDependencies": { "hono": "^4" } }, "sha512-eWpQYr67tqJLeaSUl0Q+TquuYfUdTibpOJlUMV2FfUP7+KqCC5TufnwnlXL6mobZBJbGAYRd7ZvEBDCbLInjhg=="],
 
-    "@smashcut/aws-lambda": ["@smashcut/aws-lambda@workspace:packages/aws-lambda"],
-
-    "@smashcut/cli": ["@smashcut/cli@workspace:packages/cli"],
-
-    "@smashcut/core": ["@smashcut/core@workspace:packages/core"],
-
-    "@smashcut/engine": ["@smashcut/engine@workspace:packages/engine"],
-
-    "@smashcut/gcp-cloud-run": ["@smashcut/gcp-cloud-run@workspace:packages/gcp-cloud-run"],
-
-    "@smashcut/lint": ["@smashcut/lint@workspace:packages/lint"],
-
-    "@smashcut/parsers": ["@smashcut/parsers@workspace:packages/parsers"],
-
-    "@smashcut/player": ["@smashcut/player@workspace:packages/player"],
-
-    "@smashcut/producer": ["@smashcut/producer@workspace:packages/producer"],
-
-    "@smashcut/sdk": ["@smashcut/sdk@workspace:packages/sdk"],
-
-    "@smashcut/sdk-playground": ["@smashcut/sdk-playground@workspace:packages/sdk-playground"],
-
-    "@smashcut/shader-transitions": ["@smashcut/shader-transitions@workspace:packages/shader-transitions"],
-
-    "@smashcut/studio": ["@smashcut/studio@workspace:packages/studio"],
-
-    "@smashcut/studio-server": ["@smashcut/studio-server@workspace:packages/studio-server"],
-
     "@img/colour": ["@img/colour@1.1.0", "", {}, "sha512-Td76q7j57o/tLVdgS746cYARfSyxk8iEfRxewL9h4OMzYhbW4TAcppl0mT4eyqXddh6L/jwoM75mo7ixa/pCeQ=="],
 
     "@img/sharp-darwin-arm64": ["@img/sharp-darwin-arm64@0.35.3", "", { "optionalDependencies": { "@img/sharp-libvips-darwin-arm64": "1.3.2" }, "os": "darwin", "cpu": "arm64" }, "sha512-RMnFX7YQsMoh7lWfcM4NEHHymBX/rLuKNPVM84XE9ONPcaSCDgE7CHIHpSgPcO2xcRthgBy1HfNO319mwhIAkg=="],
@@ -1109,6 +1081,34 @@
     "@simple-libs/child-process-utils": ["@simple-libs/child-process-utils@1.0.2", "", { "dependencies": { "@simple-libs/stream-utils": "^1.2.0" } }, "sha512-/4R8QKnd/8agJynkNdJmNw2MBxuFTRcNFnE5Sg/G+jkSsV8/UBgULMzhizWWW42p8L5H7flImV2ATi79Ove2Tw=="],
 
     "@simple-libs/stream-utils": ["@simple-libs/stream-utils@1.2.0", "", {}, "sha512-KxXvfapcixpz6rVEB6HPjOUZT22yN6v0vI0urQSk1L8MlEWPDFCZkhw2xmkyoTGYeFw7tWTZd7e3lVzRZRN/EA=="],
+
+    "@smashcut/aws-lambda": ["@smashcut/aws-lambda@workspace:packages/aws-lambda"],
+
+    "@smashcut/cli": ["@smashcut/cli@workspace:packages/cli"],
+
+    "@smashcut/core": ["@smashcut/core@workspace:packages/core"],
+
+    "@smashcut/engine": ["@smashcut/engine@workspace:packages/engine"],
+
+    "@smashcut/gcp-cloud-run": ["@smashcut/gcp-cloud-run@workspace:packages/gcp-cloud-run"],
+
+    "@smashcut/lint": ["@smashcut/lint@workspace:packages/lint"],
+
+    "@smashcut/parsers": ["@smashcut/parsers@workspace:packages/parsers"],
+
+    "@smashcut/player": ["@smashcut/player@workspace:packages/player"],
+
+    "@smashcut/producer": ["@smashcut/producer@workspace:packages/producer"],
+
+    "@smashcut/sdk": ["@smashcut/sdk@workspace:packages/sdk"],
+
+    "@smashcut/sdk-playground": ["@smashcut/sdk-playground@workspace:packages/sdk-playground"],
+
+    "@smashcut/shader-transitions": ["@smashcut/shader-transitions@workspace:packages/shader-transitions"],
+
+    "@smashcut/studio": ["@smashcut/studio@workspace:packages/studio"],
+
+    "@smashcut/studio-server": ["@smashcut/studio-server@workspace:packages/studio-server"],
 
     "@smithy/core": ["@smithy/core@3.24.3", "", { "dependencies": { "@aws-crypto/crc32": "5.2.0", "@smithy/types": "^4.14.2", "tslib": "^2.6.2" } }, "sha512-Ep/7tPamGY8mgESE3LyLKtxJyy6U52WWAqr/3wial47Sj4u3PiIF73AOGI27UyLy9duTkhZbgzodOfLV4TduZg=="],
 

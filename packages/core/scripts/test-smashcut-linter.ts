@@ -4,7 +4,7 @@ import { mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { lintHyperframeHtml } from "@smashcut/lint";
+import { lintSmashcutHtml } from "@smashcut/lint";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const VALID_COMPOSITION = `
@@ -24,7 +24,7 @@ const VALID_COMPOSITION = `
 </html>`;
 
 async function testCleanFixturePasses() {
-  const result = await lintHyperframeHtml(VALID_COMPOSITION, { filePath: "valid.html" });
+  const result = await lintSmashcutHtml(VALID_COMPOSITION, { filePath: "valid.html" });
 
   assert.equal(result.ok, true, "valid composition should pass without lint errors");
   assert.equal(result.errorCount, 0, "valid composition should have zero lint errors");
@@ -46,7 +46,7 @@ async function testDetectsMissingCompositionHostId() {
     </html>
   `;
 
-  const result = await lintHyperframeHtml(html);
+  const result = await lintSmashcutHtml(html);
   const codes = result.findings.map((finding) => finding.code);
 
   assert.equal(result.ok, false, "missing composition ids should fail lint");
@@ -72,7 +72,7 @@ async function testDetectsOverlappingGsapTweens() {
     </html>
   `;
 
-  const result = await lintHyperframeHtml(html);
+  const result = await lintSmashcutHtml(html);
   const overlapFinding = result.findings.find(
     (finding) => finding.code === "overlapping_gsap_tweens",
   );

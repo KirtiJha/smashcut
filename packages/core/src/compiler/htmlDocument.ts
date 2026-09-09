@@ -10,9 +10,9 @@ const RUNTIME_SRC_MARKERS = [
 ];
 
 const RUNTIME_INLINE_MARKERS = [
-  "__hyperframeRuntimeBootstrapped",
-  "__hyperframeRuntime",
-  "__hyperframeRuntimeTeardown",
+  "__smashcutRuntimeBootstrapped",
+  "__smashcutRuntime",
+  "__smashcutRuntimeTeardown",
   "__HF_EXPORT_RENDER_SEEK_CONFIG",
   "window.__player =",
 ];

@@ -1,9 +1,9 @@
 import { afterEach, describe, it, expect, vi } from "vitest";
-import { lintHyperframeHtml, lintMediaUrls } from "./hyperframeLinter.js";
+import { lintSmashcutHtml, lintMediaUrls } from "./smashcutLinter.js";
 
 afterEach(() => vi.unstubAllGlobals());
 
-describe("lintHyperframeHtml — orchestrator", () => {
+describe("lintSmashcutHtml — orchestrator", () => {
   const validComposition = `
 <html>
 <body>
@@ -21,14 +21,14 @@ describe("lintHyperframeHtml — orchestrator", () => {
 </html>`;
 
   it("reports no errors for a valid composition", async () => {
-    const result = await lintHyperframeHtml(validComposition);
+    const result = await lintSmashcutHtml(validComposition);
     expect(result.ok).toBe(true);
     expect(result.errorCount).toBe(0);
   });
 
   it("attaches filePath to findings when option is set", async () => {
     const html = "<html><body><div></div></body></html>";
-    const result = await lintHyperframeHtml(html, { filePath: "test.html" });
+    const result = await lintSmashcutHtml(html, { filePath: "test.html" });
     for (const finding of result.findings) {
       expect(finding.file).toBe("test.html");
     }
@@ -40,7 +40,7 @@ describe("lintHyperframeHtml — orchestrator", () => {
   <div id="root"></div>
   <script>const tl = gsap.timeline();</script>
 </body></html>`;
-    const result = await lintHyperframeHtml(html);
+    const result = await lintSmashcutHtml(html);
     const codes = result.findings.map((f) => `${f.code}|${f.message}`);
     const uniqueCodes = [...new Set(codes)];
     expect(codes.length).toBe(uniqueCodes.length);
@@ -59,7 +59,7 @@ describe("lintHyperframeHtml — orchestrator", () => {
     window.__timelines["my-comp"] = tl;
   </script>
 </template>`;
-    const result = await lintHyperframeHtml(html, { filePath: "compositions/my-comp.html" });
+    const result = await lintSmashcutHtml(html, { filePath: "compositions/my-comp.html" });
     const missing = result.findings.filter(
       (f) => f.code === "missing-composition-id" || f.code === "missing-dimensions",
     );
@@ -87,7 +87,7 @@ describe("lintHyperframeHtml — orchestrator", () => {
     </template>
   </body>
 </html>`;
-    const result = await lintHyperframeHtml(html, { filePath: "compositions/my-comp.html" });
+    const result = await lintSmashcutHtml(html, { filePath: "compositions/my-comp.html" });
     const rootFindings = result.findings.filter(
       (f) => f.code === "root_missing_composition_id" || f.code === "root_missing_dimensions",
     );
@@ -117,7 +117,7 @@ describe("lintHyperframeHtml — orchestrator", () => {
     </template>
   </body>
 </html>`;
-    const result = await lintHyperframeHtml(html, { filePath: "compositions/my-comp.html" });
+    const result = await lintSmashcutHtml(html, { filePath: "compositions/my-comp.html" });
     const rootFindings = result.findings.filter(
       (f) => f.code === "root_missing_composition_id" || f.code === "root_missing_dimensions",
     );

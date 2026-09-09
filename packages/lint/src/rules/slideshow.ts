@@ -1,4 +1,4 @@
-import type { LintContext, HyperframeLintFinding } from "../context";
+import type { LintContext, SmashcutLintFinding } from "../context";
 import type { LintRule } from "../types";
 import { readAttr, readDecodedAttr } from "../utils";
 import {
@@ -49,7 +49,7 @@ function extractScenesFromClips(ctx: LintContext): Scene[] {
 
 export const slideshowRules: LintRule<LintContext>[] = [
   (ctx) => {
-    const findings: HyperframeLintFinding[] = [];
+    const findings: SmashcutLintFinding[] = [];
 
     let manifest;
     try {

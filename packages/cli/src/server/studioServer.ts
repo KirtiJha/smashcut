@@ -445,8 +445,8 @@ export function createStudioServer(options: StudioServerOptions): StudioServer {
     },
 
     async lint(html: string, opts?: { filePath?: string }) {
-      const { lintHyperframeHtml } = await import("@smashcut/lint");
-      return await lintHyperframeHtml(html, opts);
+      const { lintSmashcutHtml } = await import("@smashcut/lint");
+      return await lintSmashcutHtml(html, opts);
     },
 
     async lintProject(dir: string) {

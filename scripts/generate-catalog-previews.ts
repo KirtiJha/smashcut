@@ -51,8 +51,8 @@ const scriptDir = dirname(fileURLToPath(import.meta.url));
 const repoRoot = resolve(scriptDir, "..");
 const registryDir = resolve(repoRoot, "registry");
 
-if (!process.env.PRODUCER_HYPERFRAME_MANIFEST_PATH) {
-  process.env.PRODUCER_HYPERFRAME_MANIFEST_PATH = resolve(
+if (!process.env.PRODUCER_SMASHCUT_MANIFEST_PATH) {
+  process.env.PRODUCER_SMASHCUT_MANIFEST_PATH = resolve(
     repoRoot,
     "packages/core/dist/smashcut.manifest.json",
   );

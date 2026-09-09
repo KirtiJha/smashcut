@@ -10,10 +10,10 @@
  * exported here — import it from the main `@smashcut/lint` entry in Node.
  */
 export type {
-  HyperframeLintSeverity,
-  HyperframeLintFinding,
-  HyperframeLintResult,
-  HyperframeLinterOptions,
+  SmashcutLintSeverity,
+  SmashcutLintFinding,
+  SmashcutLintResult,
+  SmashcutLinterOptions,
 } from "./types.js";
-export { lintHyperframeHtml, lintMediaUrls } from "./hyperframeLinter.js";
+export { lintSmashcutHtml, lintMediaUrls } from "./smashcutLinter.js";
 export { shouldBlockRender } from "./shouldBlockRender.js";

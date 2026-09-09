@@ -5,8 +5,8 @@ import { pretext } from "../text/pretext";
 import { getVariables } from "./getVariables";
 import { clearRuntimeData, registerRuntimeDataHandler, setRuntimeData } from "./runtimeData";
 
-type HyperframeWindow = Window & {
-  __hyperframeRuntimeBootstrapped?: boolean;
+type SmashcutWindow = Window & {
+  __smashcutRuntimeBootstrapped?: boolean;
   __smashcut?: {
     fitTextFontSize: typeof fitTextFontSize;
     getVariables: typeof getVariables;
@@ -19,7 +19,7 @@ type HyperframeWindow = Window & {
 
 // Inline composition scripts can run before DOMContentLoaded.
 // Ensure timeline registry exists at script evaluation time.
-(window as HyperframeWindow).__timelines = (window as HyperframeWindow).__timelines || {};
+(window as SmashcutWindow).__timelines = (window as SmashcutWindow).__timelines || {};
 
 // Stamp color-graded elements with their authored inline opacity BEFORE the
 // composition's animation scripts (and the grading hide) mutate it — must run
@@ -29,7 +29,7 @@ installAuthoredOpacityCapture();
 // Expose runtime helpers immediately so composition scripts can use them
 // before DOMContentLoaded (font sizing runs during script evaluation, and
 // getVariables is read by composition setup before the timeline is built).
-(window as HyperframeWindow).__smashcut = {
+(window as SmashcutWindow).__smashcut = {
   fitTextFontSize,
   getVariables,
   pretext,
@@ -38,17 +38,17 @@ installAuthoredOpacityCapture();
   clearRuntimeData,
 };
 
-function bootstrapHyperframeRuntime(): void {
-  const win = window as HyperframeWindow;
-  if (win.__hyperframeRuntimeBootstrapped) {
+function bootstrapSmashcutRuntime(): void {
+  const win = window as SmashcutWindow;
+  if (win.__smashcutRuntimeBootstrapped) {
     return;
   }
-  win.__hyperframeRuntimeBootstrapped = true;
+  win.__smashcutRuntimeBootstrapped = true;
   initSandboxRuntimeModular();
 }
 
 if (document.readyState === "loading") {
-  document.addEventListener("DOMContentLoaded", bootstrapHyperframeRuntime, { once: true });
+  document.addEventListener("DOMContentLoaded", bootstrapSmashcutRuntime, { once: true });
 } else {
-  bootstrapHyperframeRuntime();
+  bootstrapSmashcutRuntime();
 }

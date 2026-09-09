@@ -309,7 +309,7 @@ export function buildSubCompositionHtml(
   }
 
   // A composition file may ship a baked inline runtime (from a prior export:
-  // data-smashcut-runtime / __hyperframeRuntime…). The studio injects its own
+  // data-smashcut-runtime / __smashcutRuntime…). The studio injects its own
   // preview runtime below, so strip the baked one from the body — otherwise it's
   // double-loaded AND the baked inline copy can fail to parse inline (the
   // "Unexpected token '<'" SyntaxError seen on comps with a baked runtime).

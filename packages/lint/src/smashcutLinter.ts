@@ -1,7 +1,7 @@
 import type {
-  HyperframeLintFinding,
-  HyperframeLintResult,
-  HyperframeLinterOptions,
+  SmashcutLintFinding,
+  SmashcutLintResult,
+  SmashcutLinterOptions,
   LintRule,
   LintTimings,
 } from "./types";
@@ -64,7 +64,7 @@ export const LINT_RULE_GROUP_COUNTS: Readonly<Record<string, number>> = Object.f
 );
 
 /** Two rules reporting the same problem on the same element report it once. */
-function dedupeKeyFor(finding: HyperframeLintFinding): string {
+function dedupeKeyFor(finding: SmashcutLintFinding): string {
   return [
     finding.code,
     finding.severity,
@@ -82,8 +82,8 @@ function dedupeKeyFor(finding: HyperframeLintFinding): string {
 async function runRules(
   ctx: LintContext,
   filePath: string | undefined,
-): Promise<{ findings: HyperframeLintFinding[]; timings: Omit<LintTimings, "totalMs"> }> {
-  const findings: HyperframeLintFinding[] = [];
+): Promise<{ findings: SmashcutLintFinding[]; timings: Omit<LintTimings, "totalMs"> }> {
+  const findings: SmashcutLintFinding[] = [];
   const seen = new Set<string>();
   const groupMs: Record<string, number> = {};
   let slowestRule = "";
@@ -109,10 +109,10 @@ async function runRules(
 }
 
 function collectFindings(
-  produced: readonly HyperframeLintFinding[],
+  produced: readonly SmashcutLintFinding[],
   seen: Set<string>,
   filePath: string | undefined,
-  into: HyperframeLintFinding[],
+  into: SmashcutLintFinding[],
 ): void {
   for (const finding of produced) {
     const dedupeKey = dedupeKeyFor(finding);
@@ -122,10 +122,10 @@ function collectFindings(
   }
 }
 
-export async function lintHyperframeHtml(
+export async function lintSmashcutHtml(
   html: string,
-  options: HyperframeLinterOptions = {},
-): Promise<HyperframeLintResult> {
+  options: SmashcutLinterOptions = {},
+): Promise<SmashcutLintResult> {
   const startedAt = performance.now();
   const ctx = buildLintContext(html, options);
   const { findings, timings } = await runRules(ctx, options.filePath);
@@ -178,19 +178,19 @@ function extractMediaUrls(html: string): Array<{
  * Async lint pass: HEAD-checks every remote media URL in the HTML.
  * Returns findings for URLs that are unreachable (non-2xx status or network error).
  *
- * Call this after `lintHyperframeHtml()` and merge the findings.
+ * Call this after `lintSmashcutHtml()` and merge the findings.
  *
  * @param timeoutMs - per-request timeout (default 8000ms)
  */
 export async function lintMediaUrls(
   html: string,
   options: { timeoutMs?: number } = {},
-): Promise<HyperframeLintFinding[]> {
+): Promise<SmashcutLintFinding[]> {
   const urls = extractMediaUrls(html);
   if (urls.length === 0) return [];
 
   const timeout = options.timeoutMs ?? 8000;
-  const findings: HyperframeLintFinding[] = [];
+  const findings: SmashcutLintFinding[] = [];
 
   const seen = new Set<string>();
   const unique = urls.filter((u) => {

@@ -14,8 +14,8 @@ const hooks = vi.hoisted(() => ({
   opened: 0,
 }));
 vi.mock("@smashcut/core", () => ({
-  loadHyperframeRuntimeSource: () => hooks.source,
-  getHyperframeRuntimeScript: () => hooks.inlined || null,
+  loadSmashcutRuntimeSource: () => hooks.source,
+  getSmashcutRuntimeScript: () => hooks.inlined || null,
 }));
 vi.mock("node:path", async (importOriginal) => {
   const actual = await importOriginal<typeof path>();

@@ -93,7 +93,7 @@ for (const fixture of blockedMessages) {
 
 console.log(
   JSON.stringify({
-    event: "hyperframe_runtime_security_fixtures_verified",
+    event: "smashcut_runtime_security_fixtures_verified",
     allowedRuntimeFixtures: allowedRuntimeFixtures.length,
     blockedRuntimeFixtures: blockedRuntimeFixtures.length,
     allowedMessages: allowedMessages.length,

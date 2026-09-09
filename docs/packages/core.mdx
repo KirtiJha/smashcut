@@ -135,9 +135,9 @@ The compiler also exposes lower-level timing helpers such as
 ## Check the static contract
 
 ```ts
-import { validateHyperframeHtmlContract } from "@smashcut/core/compiler";
+import { validateSmashcutHtmlContract } from "@smashcut/core/compiler";
 
-const result = await validateHyperframeHtmlContract(html);
+const result = await validateSmashcutHtmlContract(html);
 
 if (!result.isValid) {
   console.error(result.missingKeys);

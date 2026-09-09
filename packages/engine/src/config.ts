@@ -904,8 +904,8 @@ export function resolveConfig(overrides?: Partial<EngineConfig>): EngineConfig {
       DEFAULT_CONFIG.pageNavigationTimeout,
     ),
 
-    verifyRuntime: env("PRODUCER_VERIFY_HYPERFRAME_RUNTIME") !== "false",
-    runtimeManifestPath: env("PRODUCER_HYPERFRAME_MANIFEST_PATH"),
+    verifyRuntime: env("PRODUCER_VERIFY_SMASHCUT_RUNTIME") !== "false",
+    runtimeManifestPath: env("PRODUCER_SMASHCUT_MANIFEST_PATH"),
 
     extractCacheDir: resolveExtractCacheDirFromEnv(env),
     extractCacheMaxBytes:

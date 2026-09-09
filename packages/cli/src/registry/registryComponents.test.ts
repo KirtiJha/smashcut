@@ -1,7 +1,7 @@
 import { existsSync, readFileSync, readdirSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import { lintHyperframeHtml } from "@smashcut/lint";
+import { lintSmashcutHtml } from "@smashcut/lint";
 import { describe, expect, it } from "vitest";
 
 const componentsDir = resolve(
@@ -22,7 +22,7 @@ async function invalidInstallableMedia(entryName: string): Promise<string[]> {
 
   for (const file of manifest.files) {
     if (file.type !== "smashcut:snippet" || !file.path.endsWith(".html")) continue;
-    const result = await lintHyperframeHtml(readFileSync(join(itemDir, file.path), "utf8"), {
+    const result = await lintSmashcutHtml(readFileSync(join(itemDir, file.path), "utf8"), {
       isSubComposition: true,
     });
     for (const finding of result.findings) {
@@ -38,7 +38,7 @@ async function invalidDemoMedia(entryName: string): Promise<string[]> {
   const demoPath = join(componentsDir, entryName, "demo.html");
   if (!existsSync(demoPath)) return [];
 
-  const result = await lintHyperframeHtml(readFileSync(demoPath, "utf8"));
+  const result = await lintSmashcutHtml(readFileSync(demoPath, "utf8"));
   return result.findings
     .filter((finding) => finding.code === "media_missing_src")
     .map((finding) => `${entryName}/demo.html: ${finding.code}`);

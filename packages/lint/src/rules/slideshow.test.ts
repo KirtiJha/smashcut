@@ -1,8 +1,8 @@
 import { describe, it, expect } from "vitest";
-import { lintHyperframeHtml } from "../hyperframeLinter.js";
+import { lintSmashcutHtml } from "../smashcutLinter.js";
 
 async function findSlideshow(html: string) {
-  const result = await lintHyperframeHtml(html, { isSubComposition: true });
+  const result = await lintSmashcutHtml(html, { isSubComposition: true });
   return result.findings.filter((f) => f.code.startsWith("slideshow_"));
 }
 

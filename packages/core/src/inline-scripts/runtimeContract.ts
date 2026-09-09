@@ -1,4 +1,4 @@
-export const HYPERFRAME_RUNTIME_GLOBALS = {
+export const SMASHCUT_RUNTIME_GLOBALS = {
   player: "__player",
   playerReady: "__playerReady",
   renderReady: "__renderReady",
@@ -6,12 +6,12 @@ export const HYPERFRAME_RUNTIME_GLOBALS = {
   clipManifest: "__clipManifest",
 } as const;
 
-export const HYPERFRAME_BRIDGE_SOURCES = {
+export const SMASHCUT_BRIDGE_SOURCES = {
   parent: "sc-parent",
   preview: "sc-preview",
 } as const;
 
-export const HYPERFRAME_CONTROL_ACTIONS = [
+export const SMASHCUT_CONTROL_ACTIONS = [
   "play",
   "pause",
   "seek",
@@ -23,4 +23,4 @@ export const HYPERFRAME_CONTROL_ACTIONS = [
   "disable-pick-mode",
 ] as const;
 
-export type HyperframeControlAction = (typeof HYPERFRAME_CONTROL_ACTIONS)[number];
+export type SmashcutControlAction = (typeof SMASHCUT_CONTROL_ACTIONS)[number];

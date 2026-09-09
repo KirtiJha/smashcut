@@ -7,25 +7,25 @@ const THIS_DIR = dirname(fileURLToPath(import.meta.url));
 const SIBLING_PATH = resolve(THIS_DIR, "smashcut.manifest.json");
 const MONOREPO_PATH = resolve(THIS_DIR, "../../../core/dist/smashcut.manifest.json");
 
-describe("resolveHyperframeManifestPath", () => {
-  const originalEnv = process.env.PRODUCER_HYPERFRAME_MANIFEST_PATH;
+describe("resolveSmashcutManifestPath", () => {
+  const originalEnv = process.env.PRODUCER_SMASHCUT_MANIFEST_PATH;
 
   beforeEach(() => {
-    delete process.env.PRODUCER_HYPERFRAME_MANIFEST_PATH;
+    delete process.env.PRODUCER_SMASHCUT_MANIFEST_PATH;
   });
 
   afterEach(() => {
     if (originalEnv !== undefined) {
-      process.env.PRODUCER_HYPERFRAME_MANIFEST_PATH = originalEnv;
+      process.env.PRODUCER_SMASHCUT_MANIFEST_PATH = originalEnv;
     } else {
-      delete process.env.PRODUCER_HYPERFRAME_MANIFEST_PATH;
+      delete process.env.PRODUCER_SMASHCUT_MANIFEST_PATH;
     }
   });
 
-  it("returns env var when PRODUCER_HYPERFRAME_MANIFEST_PATH is set", async () => {
-    process.env.PRODUCER_HYPERFRAME_MANIFEST_PATH = "/custom/path/manifest.json";
-    const { resolveHyperframeManifestPath } = await import("./hyperframeRuntimeLoader.js");
-    expect(resolveHyperframeManifestPath()).toBe("/custom/path/manifest.json");
+  it("returns env var when PRODUCER_SMASHCUT_MANIFEST_PATH is set", async () => {
+    process.env.PRODUCER_SMASHCUT_MANIFEST_PATH = "/custom/path/manifest.json";
+    const { resolveSmashcutManifestPath } = await import("./smashcutRuntimeLoader.js");
+    expect(resolveSmashcutManifestPath()).toBe("/custom/path/manifest.json");
   });
 
   it("sibling path resolves to same directory as the module file", () => {
@@ -41,8 +41,8 @@ describe("resolveHyperframeManifestPath", () => {
     // asserted on string positions inside `const candidates = [...]`. We
     // prove the behavioural invariant instead: the resolver returns the
     // first candidate that actually exists on disk.
-    const { resolveHyperframeManifestPath } = await import("./hyperframeRuntimeLoader.js");
-    const resolved = resolveHyperframeManifestPath();
+    const { resolveSmashcutManifestPath } = await import("./smashcutRuntimeLoader.js");
+    const resolved = resolveSmashcutManifestPath();
     expect(existsSync(resolved)).toBe(true);
     // The sibling would win when present. In dev, the monorepo-relative
     // core/dist is the real fallback; either way the path must exist.
@@ -56,45 +56,45 @@ describe("resolveHyperframeManifestPath", () => {
       // Skip if core hasn't been built — this is expected in CI before build
       return;
     }
-    const { resolveHyperframeManifestPath } = await import("./hyperframeRuntimeLoader.js");
-    expect(resolveHyperframeManifestPath()).toBe(MONOREPO_PATH);
+    const { resolveSmashcutManifestPath } = await import("./smashcutRuntimeLoader.js");
+    expect(resolveSmashcutManifestPath()).toBe(MONOREPO_PATH);
   });
 });
 
-describe("hyperframeRuntimeLoader error path (#3370)", () => {
-  const originalEnv = process.env.PRODUCER_HYPERFRAME_MANIFEST_PATH;
+describe("smashcutRuntimeLoader error path (#3370)", () => {
+  const originalEnv = process.env.PRODUCER_SMASHCUT_MANIFEST_PATH;
 
   beforeEach(() => {
-    delete process.env.PRODUCER_HYPERFRAME_MANIFEST_PATH;
+    delete process.env.PRODUCER_SMASHCUT_MANIFEST_PATH;
   });
 
   afterEach(() => {
     if (originalEnv !== undefined) {
-      process.env.PRODUCER_HYPERFRAME_MANIFEST_PATH = originalEnv;
+      process.env.PRODUCER_SMASHCUT_MANIFEST_PATH = originalEnv;
     } else {
-      delete process.env.PRODUCER_HYPERFRAME_MANIFEST_PATH;
+      delete process.env.PRODUCER_SMASHCUT_MANIFEST_PATH;
     }
   });
 
-  it("names the env-override path when PRODUCER_HYPERFRAME_MANIFEST_PATH is set and missing", async () => {
+  it("names the env-override path when PRODUCER_SMASHCUT_MANIFEST_PATH is set and missing", async () => {
     // Force the env-override branch with a missing file. The thrown error
     // must name the override, not any fallback candidate.
-    process.env.PRODUCER_HYPERFRAME_MANIFEST_PATH = "/nonexistent/override/manifest.json";
-    const { resolveVerifiedHyperframeRuntime } = await import("./hyperframeRuntimeLoader.js");
-    expect(() => resolveVerifiedHyperframeRuntime()).toThrow(
+    process.env.PRODUCER_SMASHCUT_MANIFEST_PATH = "/nonexistent/override/manifest.json";
+    const { resolveVerifiedSmashcutRuntime } = await import("./smashcutRuntimeLoader.js");
+    expect(() => resolveVerifiedSmashcutRuntime()).toThrow(
       /nonexistent\/override\/manifest\.json/,
     );
   });
 
-  it("triedManifestPaths returns only the override when PRODUCER_HYPERFRAME_MANIFEST_PATH is set", async () => {
-    process.env.PRODUCER_HYPERFRAME_MANIFEST_PATH = "/another/missing/override.json";
-    const { triedManifestPaths } = await import("./hyperframeRuntimeLoader.js");
+  it("triedManifestPaths returns only the override when PRODUCER_SMASHCUT_MANIFEST_PATH is set", async () => {
+    process.env.PRODUCER_SMASHCUT_MANIFEST_PATH = "/another/missing/override.json";
+    const { triedManifestPaths } = await import("./smashcutRuntimeLoader.js");
     expect(triedManifestPaths()).toEqual(["/another/missing/override.json"]);
   });
 
   it("triedManifestPaths lists every candidate when no override is set", async () => {
-    delete process.env.PRODUCER_HYPERFRAME_MANIFEST_PATH;
-    const { triedManifestPaths } = await import("./hyperframeRuntimeLoader.js");
+    delete process.env.PRODUCER_SMASHCUT_MANIFEST_PATH;
+    const { triedManifestPaths } = await import("./smashcutRuntimeLoader.js");
     const tried = triedManifestPaths();
     expect(tried.length).toBeGreaterThanOrEqual(4);
     // The first candidate must be the sibling path so the user sees it

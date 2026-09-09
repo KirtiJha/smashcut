@@ -1,4 +1,4 @@
-import type { LintContext, HyperframeLintFinding } from "../context";
+import type { LintContext, SmashcutLintFinding } from "../context";
 import postcss from "postcss";
 import selectorParser from "postcss-selector-parser";
 import {
@@ -231,10 +231,10 @@ function findVisibleMarkupCommentLeak(source: string): string | null {
   return null;
 }
 
-export const coreRules: Array<(ctx: LintContext) => HyperframeLintFinding[]> = [
+export const coreRules: Array<(ctx: LintContext) => SmashcutLintFinding[]> = [
   // id_requires_css_escape
   ({ tags }) => {
-    const findings: HyperframeLintFinding[] = [];
+    const findings: SmashcutLintFinding[] = [];
     for (const tag of tags) {
       const id = readAttr(tag.raw, "id");
       if (!id || !/^\d/.test(id)) continue;
@@ -254,7 +254,7 @@ export const coreRules: Array<(ctx: LintContext) => HyperframeLintFinding[]> = [
   // root_missing_composition_id + root_missing_dimensions
   // fallow-ignore-next-line complexity
   ({ rootTag }) => {
-    const findings: HyperframeLintFinding[] = [];
+    const findings: SmashcutLintFinding[] = [];
     if (!rootTag || !readDecodedAttr(rootTag.raw, "data-composition-id")) {
       findings.push({
         code: "root_missing_composition_id",
@@ -332,7 +332,7 @@ export const coreRules: Array<(ctx: LintContext) => HyperframeLintFinding[]> = [
       return [];
     }
     if (/(?:^|\s)data-no-timeline(?=[\s=/]|$)/i.test(rootTag?.attrs || "")) return [];
-    const findings: HyperframeLintFinding[] = [];
+    const findings: SmashcutLintFinding[] = [];
     if (
       !TIMELINE_REGISTRY_INIT_PATTERN.test(source) &&
       !TIMELINE_REGISTRY_ASSIGN_PATTERN.test(source) &&
@@ -361,7 +361,7 @@ export const coreRules: Array<(ctx: LintContext) => HyperframeLintFinding[]> = [
 
   // timeline_id_mismatch
   ({ source, compositionIds }) => {
-    const findings: HyperframeLintFinding[] = [];
+    const findings: SmashcutLintFinding[] = [];
     const htmlCompIds = new Set(compositionIds);
     const timelineRegKeys = new Set<string>();
     for (const key of extractTimelineRegistryKeys(source)) {
@@ -382,7 +382,7 @@ export const coreRules: Array<(ctx: LintContext) => HyperframeLintFinding[]> = [
 
   // CSS selector safety
   ({ styles }) => {
-    const findings: HyperframeLintFinding[] = [];
+    const findings: SmashcutLintFinding[] = [];
     const reportedRepeatedIds = new Set<string>();
     const reportedHiddenStyleSelectors = new Set<string>();
     for (const style of styles) {
@@ -450,7 +450,7 @@ export const coreRules: Array<(ctx: LintContext) => HyperframeLintFinding[]> = [
 
   // invalid_inline_script_syntax (JS parse error)
   ({ scripts }) => {
-    const findings: HyperframeLintFinding[] = [];
+    const findings: SmashcutLintFinding[] = [];
     for (const script of scripts) {
       const attrs = script.attrs || "";
       if (
@@ -475,7 +475,7 @@ export const coreRules: Array<(ctx: LintContext) => HyperframeLintFinding[]> = [
 
   // host_missing_composition_id
   ({ tags }) => {
-    const findings: HyperframeLintFinding[] = [];
+    const findings: SmashcutLintFinding[] = [];
     for (const tag of tags) {
       const src = readAttr(tag.raw, "data-composition-src");
       if (!src) continue;
@@ -494,7 +494,7 @@ export const coreRules: Array<(ctx: LintContext) => HyperframeLintFinding[]> = [
 
   // scoped_css_missing_wrapper
   ({ styles, compositionIds }) => {
-    const findings: HyperframeLintFinding[] = [];
+    const findings: SmashcutLintFinding[] = [];
     const scopedCssCompositionIds = new Set<string>();
     for (const style of styles) {
       for (const compId of extractCompositionIdsFromCss(style.content)) {
@@ -517,7 +517,7 @@ export const coreRules: Array<(ctx: LintContext) => HyperframeLintFinding[]> = [
 
   // studio_missing_editable_id
   ({ tags, rootTag }) => {
-    const findings: HyperframeLintFinding[] = [];
+    const findings: SmashcutLintFinding[] = [];
     for (const tag of tags) {
       if (rootTag && tag.index === rootTag.index) continue;
       if (!isStudioTimelineElement(tag)) continue;
@@ -541,7 +541,7 @@ export const coreRules: Array<(ctx: LintContext) => HyperframeLintFinding[]> = [
 
   // non_deterministic_code
   ({ scripts }) => {
-    const findings: HyperframeLintFinding[] = [];
+    const findings: SmashcutLintFinding[] = [];
     const patterns: Array<{
       pattern: RegExp;
       label: string;

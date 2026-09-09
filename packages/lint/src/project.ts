@@ -16,8 +16,8 @@ import {
   resolveLocalAssetCandidates,
 } from "@smashcut/parsers/asset-resolution";
 import { collectLocalVideoCandidates, lintHevcPreviewCodec } from "./hevcPreviewLint.js";
-import { lintHyperframeHtml } from "./hyperframeLinter.js";
-import type { HyperframeLintFinding, HyperframeLintResult } from "./types.js";
+import { lintSmashcutHtml } from "./smashcutLinter.js";
+import type { SmashcutLintFinding, SmashcutLintResult } from "./types.js";
 import type { ParsableDocumentLike } from "@smashcut/parsers/sub-composition-validity";
 import { mediaSrcTagRe } from "./utils";
 
@@ -50,7 +50,7 @@ function querySelectorAllIncludingTemplates(root: ParentNode, selector: string):
 }
 
 export interface ProjectLintResult {
-  results: Array<{ file: string; result: HyperframeLintResult; contentHash: string }>;
+  results: Array<{ file: string; result: SmashcutLintResult; contentHash: string }>;
   totalErrors: number;
   totalWarnings: number;
   totalInfos: number;
@@ -171,7 +171,7 @@ export async function lintProject(
   let totalInfos = 0;
 
   const rootHtml = readFileSync(indexPath, "utf-8");
-  const rootResult = await lintHyperframeHtml(rootHtml, {
+  const rootResult = await lintSmashcutHtml(rootHtml, {
     filePath: indexPath,
     externalStyles: collectExternalStyles(projectDir, rootHtml, rootCompSrcPath),
   });
@@ -210,7 +210,7 @@ export async function lintProject(
       // Anchored to the file's ROOT element so a real composition that merely
       // inlines snippet markup (or mentions the token in text) is still linted.
       if (isSnippetFragment(html)) continue;
-      const result = await lintHyperframeHtml(html, {
+      const result = await lintSmashcutHtml(html, {
         filePath,
         isSubComposition: true,
         externalStyles: collectExternalStyles(projectDir, html, compSrcPath),
@@ -260,7 +260,7 @@ export async function lintProject(
 function lintBlankRootWithStandaloneComposition(
   rootHtml: string,
   htmlSources: HtmlSource[],
-): HyperframeLintFinding[] {
+): SmashcutLintFinding[] {
   const { document: rootDocument } = parseHTML(rootHtml);
   const root = rootDocument.querySelector("body [data-composition-id]");
   // A no-media scaffold has no rendered descendants and can silently mask an authored file below.
@@ -301,8 +301,8 @@ function lintBlankRootWithStandaloneComposition(
 function lintProjectAudioFiles(
   projectDir: string,
   htmlSources: HtmlSource[],
-): HyperframeLintFinding[] {
-  const findings: HyperframeLintFinding[] = [];
+): SmashcutLintFinding[] {
+  const findings: SmashcutLintFinding[] = [];
 
   let audioFiles: string[];
   try {
@@ -335,8 +335,8 @@ function lintProjectAudioFiles(
 function lintAudioSrcNotFound(
   projectDir: string,
   htmlSources: HtmlSource[],
-): HyperframeLintFinding[] {
-  const findings: HyperframeLintFinding[] = [];
+): SmashcutLintFinding[] {
+  const findings: SmashcutLintFinding[] = [];
 
   const audioSrcRe = mediaSrcTagRe("audio");
 
@@ -376,8 +376,8 @@ function lintAudioSrcNotFound(
 function lintMissingLocalAsset(
   projectDir: string,
   htmlSources: HtmlSource[],
-): HyperframeLintFinding[] {
-  const findings: HyperframeLintFinding[] = [];
+): SmashcutLintFinding[] {
+  const findings: SmashcutLintFinding[] = [];
 
   const localAssetSrcRe = mediaSrcTagRe("video|img|source");
 
@@ -435,7 +435,7 @@ function lintMissingLocalAsset(
 function lintTextureMaskAssetNotFound(
   projectDir: string,
   htmlSources: HtmlSource[],
-): HyperframeLintFinding[] {
+): SmashcutLintFinding[] {
   const missing = new Map<string, string>();
 
   for (const { html, compSrcPath } of htmlSources) {
@@ -476,8 +476,8 @@ function lintTextureMaskAssetNotFound(
   ];
 }
 
-function lintMultipleRootCompositions(projectDir: string): HyperframeLintFinding[] {
-  const findings: HyperframeLintFinding[] = [];
+function lintMultipleRootCompositions(projectDir: string): SmashcutLintFinding[] {
+  const findings: SmashcutLintFinding[] = [];
   try {
     const rootHtmlFiles = readdirSync(projectDir).filter(
       (file) => file.endsWith(".html") && !file.startsWith("._"),
@@ -505,8 +505,8 @@ function lintMultipleRootCompositions(projectDir: string): HyperframeLintFinding
   return findings;
 }
 
-function lintDuplicateAudioTracks(htmlSources: HtmlSource[]): HyperframeLintFinding[] {
-  const findings: HyperframeLintFinding[] = [];
+function lintDuplicateAudioTracks(htmlSources: HtmlSource[]): SmashcutLintFinding[] {
+  const findings: SmashcutLintFinding[] = [];
   function extractAttr(tag: string, name: string): string | null {
     const re = new RegExp(`\\b${name}\\s*=\\s*["']([^"']+)["']`, "i");
     const m = tag.match(re);
@@ -582,7 +582,7 @@ function lintDuplicateAudioTracks(htmlSources: HtmlSource[]): HyperframeLintFind
 function lintMissingOrEmptySubComposition(
   projectDir: string,
   rootHtml: string,
-): HyperframeLintFinding[] {
+): SmashcutLintFinding[] {
   // Dedup by src path — the same reference can appear from nested sub-comps.
   const checked = new Map<string, { srcPath: string; problem: string }>();
   const visited = new Set<string>();
@@ -632,7 +632,7 @@ function lintMissingOrEmptySubComposition(
 
   walk(rootHtml);
 
-  const findings: HyperframeLintFinding[] = [];
+  const findings: SmashcutLintFinding[] = [];
   for (const { srcPath, problem } of checked.values()) {
     findings.push({
       code: "missing_or_empty_sub_composition",

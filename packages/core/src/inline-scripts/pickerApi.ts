@@ -1,46 +1,46 @@
-export type HyperframePickerBoundingBox = {
+export type SmashcutPickerBoundingBox = {
   x: number;
   y: number;
   width: number;
   height: number;
 };
 
-export type HyperframePickerElementInfo = {
+export type SmashcutPickerElementInfo = {
   id: string | null;
   tagName: string;
   selector: string;
   label: string;
-  boundingBox: HyperframePickerBoundingBox;
+  boundingBox: SmashcutPickerBoundingBox;
   textContent: string | null;
   src: string | null;
   dataAttributes: Record<string, string>;
 };
 
-export type HyperframePickerApi = {
+export type SmashcutPickerApi = {
   enable: () => void;
   disable: () => void;
   isActive: () => boolean;
-  getHovered: () => HyperframePickerElementInfo | null;
-  getSelected: () => HyperframePickerElementInfo | null;
+  getHovered: () => SmashcutPickerElementInfo | null;
+  getSelected: () => SmashcutPickerElementInfo | null;
   getCandidatesAtPoint: (
     clientX: number,
     clientY: number,
     limit?: number,
-  ) => HyperframePickerElementInfo[];
+  ) => SmashcutPickerElementInfo[];
   pickAtPoint: (
     clientX: number,
     clientY: number,
     index?: number,
-  ) => HyperframePickerElementInfo | null;
+  ) => SmashcutPickerElementInfo | null;
   pickManyAtPoint: (
     clientX: number,
     clientY: number,
     indexes?: number[],
-  ) => HyperframePickerElementInfo[];
+  ) => SmashcutPickerElementInfo[];
 };
 
 declare global {
   interface Window {
-    __HF_PICKER_API?: HyperframePickerApi;
+    __HF_PICKER_API?: SmashcutPickerApi;
   }
 }

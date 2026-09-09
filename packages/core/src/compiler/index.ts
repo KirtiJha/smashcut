@@ -58,9 +58,9 @@ export {
 
 // Static guard
 export {
-  validateHyperframeHtmlContract,
-  type HyperframeStaticFailureReason,
-  type HyperframeStaticGuardResult,
+  validateSmashcutHtmlContract,
+  type SmashcutStaticFailureReason,
+  type SmashcutStaticGuardResult,
 } from "./staticGuard";
 
 // Composition isolation helpers

@@ -250,18 +250,18 @@ export { parseCubeLut, CubeLutParseError, type ParseCubeLutOptions } from "./col
 
 // Inline scripts
 export {
-  HYPERFRAME_RUNTIME_ARTIFACTS,
-  HYPERFRAME_RUNTIME_CONTRACT,
-  loadHyperframeRuntimeSource,
-  type HyperframeRuntimeContract,
+  SMASHCUT_RUNTIME_ARTIFACTS,
+  SMASHCUT_RUNTIME_CONTRACT,
+  loadSmashcutRuntimeSource,
+  type SmashcutRuntimeContract,
 } from "./inline-scripts/smashcut";
 export {
-  HYPERFRAME_RUNTIME_GLOBALS,
-  HYPERFRAME_BRIDGE_SOURCES,
-  HYPERFRAME_CONTROL_ACTIONS,
-  type HyperframeControlAction,
+  SMASHCUT_RUNTIME_GLOBALS,
+  SMASHCUT_BRIDGE_SOURCES,
+  SMASHCUT_CONTROL_ACTIONS,
+  type SmashcutControlAction,
 } from "./inline-scripts/runtimeContract";
-export { getHyperframeRuntimeScript } from "./generated/runtime-inline";
+export { getSmashcutRuntimeScript } from "./generated/runtime-inline";
 export {
   buildSmashcutRuntimeScript,
   type SmashcutRuntimeBuildOptions,
@@ -275,9 +275,9 @@ export {
 export { redactKnownPaths, redactTelemetryString } from "./telemetryRedaction";
 export { isSafePath, resolveWithinProject } from "./safePath";
 export type {
-  HyperframePickerApi,
-  HyperframePickerBoundingBox,
-  HyperframePickerElementInfo,
+  SmashcutPickerApi,
+  SmashcutPickerBoundingBox,
+  SmashcutPickerElementInfo,
 } from "./inline-scripts/pickerApi";
 
 // Frame adapters

@@ -57,9 +57,16 @@ const RENAME = [
   [/Hyperframes/g, "Smashcut"],
   [/HYPERFRAMES/g, "SMASHCUT"],
   [/hyperframes/g, "smashcut"],
-  [/HyperFrame\b/g, "SmashCut"],
-  [/Hyperframe\b/g, "Smashcut"],
-  [/hyperframe\b/g, "smashcut"],
+  // No word boundary: the brand also appears inside compound identifiers
+  // (HyperframeHtml, hyperframeLinter, HyperframeLintFinding). An earlier pass
+  // used \b here while the path rename did not, so files were renamed to
+  // smashcutLinter.ts while their imports still said hyperframeLinter — the
+  // build broke on modules that had been renamed out from under it. No English
+  // word contains "hyperframe", so the boundary buys nothing and costs that.
+  [/HyperFrame/g, "SmashCut"],
+  [/Hyperframe/g, "Smashcut"],
+  [/HYPERFRAME/g, "SMASHCUT"],
+  [/hyperframe/g, "smashcut"],
   // Runtime identifiers. `hf-` only when a letter or digit follows, so a stray
   // "hf-" in prose is left alone; `__hf` only as a global prefix.
   [/\bhf-(?=[a-z0-9])/g, "sc-"],
