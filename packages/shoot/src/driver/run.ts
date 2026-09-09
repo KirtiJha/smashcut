@@ -61,6 +61,13 @@ export interface RunResult {
    */
   captions: { t: number; text: string }[];
   /**
+   * Cards the spec asked for, recorded rather than filmed.
+   *
+   * The drive writes down what a `scene:` step wanted and leaves the picture
+   * alone; the composition builds it. See `ShotCard`.
+   */
+  cards: ShotCard[];
+  /**
    * The size of the encoded picture, when one was encoded.
    *
    * Reported by the encoder rather than derived from the spec: the output is
@@ -362,6 +369,7 @@ export async function record(
       outputs: [],
       timeline: beats,
       captions,
+      cards,
       sfx,
       say: say.map((c) => ({ t: c.t, text: c.text })),
     };
@@ -876,6 +884,7 @@ export async function record(
       outputs,
       timeline: beats,
       captions,
+      cards,
       sfx,
       say: say.map((c) => ({ t: c.t, text: c.text })),
       ...(encodedSize ? { size: encodedSize } : {}),

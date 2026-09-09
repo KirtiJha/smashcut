@@ -41,6 +41,10 @@ export { specSchema } from "./spec/schema.js";
 export type { Spec, SpecInput, Step, StepInput } from "./spec/schema.js";
 export { schemaDirective, SCHEMA_URL } from "./spec/schema-url.js";
 
+// Filming a demo end to end.
+export { shoot } from "./shoot/shoot.js";
+export type { ShootOptions, ShootOutcome } from "./shoot/shoot.js";
+
 // The shot manifest — the seam between filming and cutting.
 export { buildManifest } from "./shoot/manifest.js";
 export type {
