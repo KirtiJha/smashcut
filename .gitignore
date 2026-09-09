@@ -188,3 +188,6 @@ tmp/
 
 # Local Chrome-for-Testing downloads (large binaries, never commit)
 chrome/
+
+# Footage and manifests a shoot writes into an example project.
+examples/*/shot/
