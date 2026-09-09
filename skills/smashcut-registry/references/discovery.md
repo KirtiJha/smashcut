@@ -21,7 +21,7 @@ npx smashcut catalog --human-friendly
 When the CLI is unavailable, the top-level `registry.json` lists all available items:
 
 ```bash
-curl -s https://raw.githubusercontent.com/heygen-com/hyperframes/main/registry/registry.json
+curl -s https://raw.githubusercontent.com/KirtiJha/smashcut/main/registry/registry.json
 ```
 
 Each entry has `name` and `type` (`smashcut:example`, `smashcut:block`, or `smashcut:component`).

@@ -546,7 +546,7 @@ function buildRenderModeScript(fps: Fps | undefined): string {
  * Early stub: ensures `window.__sc` exists *before* any user `<script>` in
  * `<body>` executes, and batches GSAP timeline construction via
  * requestAnimationFrame to prevent the main-thread hang described in
- * https://github.com/heygen-com/hyperframes/issues/1231.
+ * https://github.com/KirtiJha/smashcut/issues/1231.
  *
  * Source: packages/producer/stubs/sc-early-stub.ts
  * Generated: packages/producer/src/generated/sc-early-stub-inline.ts

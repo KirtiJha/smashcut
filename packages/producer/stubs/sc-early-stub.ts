@@ -15,7 +15,7 @@
  *
  *   2. Intercept `window.gsap` assignment and batch `timeline.to/from/fromTo/set`
  *      calls via requestAnimationFrame to prevent the main-thread hang described
- *      in https://github.com/heygen-com/hyperframes/issues/1231.
+ *      in https://github.com/KirtiJha/smashcut/issues/1231.
  *
  * GSAP batching background
  * ─────────────────────────────────────────────────────────────────────────────

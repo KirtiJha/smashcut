@@ -164,7 +164,7 @@ function runSkillsRemove(names: string[], opts: { global: boolean }): Promise<vo
 // freshness comes from --full-depth (see GLOBAL_INSTALL_ARGS_TAIL), which clones the
 // repo at latest `main`; the URL just names what to clone. Our freshness check
 // resolves "latest" straight from GitHub too, so install and check agree.
-const SOURCES = [{ name: "SmashCut", url: "https://github.com/heygen-com/hyperframes" }];
+const SOURCES = [{ name: "SmashCut", url: "https://github.com/KirtiJha/smashcut" }];
 
 // Fan SmashCut' own skills out to every other installed agent. Scope by the
 // lock's source attribution (the same definition prune uses) — NOT by listing
@@ -721,7 +721,7 @@ const updateCommand = defineCommand({
     // triggered. This is where `init` and the stale-skills nudge both lead;
     // pulling the complete skill set here is exactly what users complained
     // about. Explicit full set: `smashcut skills` or `npx skills add
-    // heygen-com/hyperframes --all`.
+    // KirtiJha/smashcut --all`.
     //
     // Note: the upstream `skills add` CLI has no `--dir` flag (it installs into
     // the resolved agent dirs), so `--dir` here scopes only the *prune* detection
@@ -760,7 +760,7 @@ const updateCommand = defineCommand({
       // DELETES. Without it, resolveLatestManifest takes the findRepoManifest
       // shortcut: any `skills-manifest.json` within 16 parent dirs of cwd
       // becomes "latest". SmashCut' own repo manifest declares
-      // `source: heygen-com/hyperframes`, so a checkout (or any project
+      // `source: KirtiJha/smashcut`, so a checkout (or any project
       // carrying a copy) matches attribution and every published skill absent
       // from that local file is deleted globally as "no longer published".
       // An explicit `--source` still wins — canonical only decides what

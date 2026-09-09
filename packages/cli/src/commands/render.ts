@@ -928,7 +928,7 @@ export async function renderLocal(
   } catch (error: unknown) {
     maybeConsumeDeParallelRouterTrial(deParallelRouterActive, job, options.quiet);
     // The render container sets `ENV CONTAINER=true`; suggesting `--docker`
-    // from inside it is a misdirection (heygen-com/hyperframes#3370).
+    // from inside it is a misdirection (KirtiJha/smashcut#3370).
     const inContainer = process.env.CONTAINER === "true";
     handleRenderError(
       error,
@@ -1333,7 +1333,7 @@ function persistDeParallelRouterTrialFired(): boolean {
  * After a trial-armed render, persist that the router's OWN bet actually
  * failed — its self-verify/generic-failure safety net fired (recorded as
  * anything other than a clean `"routed"`, e.g. `"reverted"`, or a stall/hang
- * outcome — heygen-com/hyperframes#3441) — or that the render-count backstop
+ * outcome — KirtiJha/smashcut#3441) — or that the render-count backstop
  * (`DE_PARALLEL_ROUTER_TRIAL_MAX_RENDERS`) was reached, so it's never
  * enabled again for this install. A clean "routed" (the render succeeded
  * with no fallback) does NOT consume the trial by itself — the whole point
@@ -1376,7 +1376,7 @@ function maybeConsumeDeParallelRouterTrial(
   // itself. Under a shipped default that would switch the feature off
   // behind the user's back after 25 good renders — so a clean "routed" (no
   // fallback needed) must NOT trip. But narrowing the positive check to the
-  // single string "reverted" (heygen-com/hyperframes#3441) meant any other
+  // single string "reverted" (KirtiJha/smashcut#3441) meant any other
   // non-success signal the observability layer might ever record — a stall,
   // a timeout, a future outcome value — would silently fall through to "not
   // fired" instead of tripping. `outcome` is `undefined`-filtered above, so

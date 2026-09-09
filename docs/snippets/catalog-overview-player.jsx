@@ -20,7 +20,7 @@ export const CatalogOverviewPlayer = ({ title, children }) => {
     typeof window !== "undefined" &&
     (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1");
   const catalogBase = localDocs
-    ? "https://raw.githubusercontent.com/heygen-com/hyperframes/main/docs"
+    ? "https://raw.githubusercontent.com/KirtiJha/smashcut/main/docs"
     : "";
   const assetBase = localDocs ? "https://hyperframes.heygen.com" : "";
   const scenes = JSON.stringify([

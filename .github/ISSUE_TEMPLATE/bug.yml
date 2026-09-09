@@ -6,7 +6,7 @@ body:
     attributes:
       value: |
         Thanks for taking the time to report a bug! Before filing, please:
-        - Search [existing issues](https://github.com/heygen-com/hyperframes/issues) to avoid duplicates
+        - Search [existing issues](https://github.com/KirtiJha/smashcut/issues) to avoid duplicates
         - Make sure the issue reproduces without custom extensions or plugins
         - Test on the latest version (`npx smashcut upgrade`)
 

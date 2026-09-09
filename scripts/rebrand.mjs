@@ -6,7 +6,7 @@
  * and each of them is silent:
  *
  *  1. **Third-party URLs.** `hyperframes.heygen.com` is upstream's real site and
- *     `heygen-com/hyperframes` is their real repository. Renaming the brand
+ *     `KirtiJha/smashcut` is their real repository. Renaming the brand
  *     inside those invents addresses that do not exist, and worse, implies
  *     HeyGen hosts this fork. Both are protected.
  *  2. **Provider plumbing.** HeyGen is a *service this software calls* — the

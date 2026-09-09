@@ -203,7 +203,7 @@ bun run set-version 0.2.0 --no-tag   # updates package.json files only
 
 ## Reporting Issues
 
-- Use [GitHub Issues](https://github.com/heygen-com/hyperframes/issues) for bug reports and feature requests
+- Use [GitHub Issues](https://github.com/KirtiJha/smashcut/issues) for bug reports and feature requests
 - Search existing issues before creating a new one
 - Include reproduction steps for bugs
 

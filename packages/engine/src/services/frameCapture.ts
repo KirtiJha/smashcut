@@ -4478,7 +4478,7 @@ export function getCapturePerfSummary(session: CaptureSession): CapturePerfSumma
   // path fail instead, which is a worse outcome than a slow-but-correct
   // render. Whether artifact validation (or this session) should eventually
   // gate on the ratio — and where that decision belongs — is tracked as an
-  // explicit follow-up: https://github.com/heygen-com/hyperframes/issues/3482
+  // explicit follow-up: https://github.com/KirtiJha/smashcut/issues/3482
   // ("Fast-capture: fallback-ratio guard for #3423 x #3429 seam"), rather
   // than decided unilaterally in this review-response commit.
   if (frames > 0 && ncprFallbacks / frames > DE_FALLBACK_RATIO_WARN_THRESHOLD) {

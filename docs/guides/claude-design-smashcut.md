@@ -1,7 +1,7 @@
 # Claude Design + SmashCut (Template-First)
 
 > ⚠️ **Doing a "Send to SmashCut" import (sending your design to HeyGen as a URL, not a downloaded ZIP)?**
-> **Use the Send-to guide instead:** https://raw.githubusercontent.com/heygen-com/hyperframes/main/docs/guides/claude-design-send-to-smashcut.md
+> **Use the Send-to guide instead:** https://raw.githubusercontent.com/KirtiJha/smashcut/main/docs/guides/claude-design-send-to-smashcut.md
 >
 > This Template-First guide is for the **Download-ZIP** flow. Its authoring rules differ from Send-to, and following it for a Send-to import yields a low-fidelity result.
 
@@ -1230,9 +1230,9 @@ tl.to("#s5-headline", { backgroundSize: "100% 30%", duration: 0.6, ease: "power2
 
 Everything critical is inlined above. These are for edge cases:
 
-- Core composition contract (data attributes, sub-comp wiring): https://github.com/heygen-com/hyperframes/blob/main/skills/smashcut/SKILL.md
-- Motion theory (easing as emotion, direction rules): https://github.com/heygen-com/hyperframes/blob/main/skills/smashcut-creative/references/motion-principles.md
-- Typography (full banned list, weight contrast, OpenType): https://github.com/heygen-com/hyperframes/blob/main/skills/smashcut-creative/references/typography.md
-- Transitions (shader catalog, CSS transition patterns): https://github.com/heygen-com/hyperframes/blob/main/skills/smashcut-animation/transitions/overview.md
-- Captions synced to audio: https://github.com/heygen-com/hyperframes/blob/main/skills/embedded-captions/SKILL.md
+- Core composition contract (data attributes, sub-comp wiring): https://github.com/KirtiJha/smashcut/blob/main/skills/smashcut/SKILL.md
+- Motion theory (easing as emotion, direction rules): https://github.com/KirtiJha/smashcut/blob/main/skills/smashcut-creative/references/motion-principles.md
+- Typography (full banned list, weight contrast, OpenType): https://github.com/KirtiJha/smashcut/blob/main/skills/smashcut-creative/references/typography.md
+- Transitions (shader catalog, CSS transition patterns): https://github.com/KirtiJha/smashcut/blob/main/skills/smashcut-animation/transitions/overview.md
+- Captions synced to audio: https://github.com/KirtiJha/smashcut/blob/main/skills/embedded-captions/SKILL.md
 - Full docs: https://hyperframes.heygen.com/

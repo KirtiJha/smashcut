@@ -11,7 +11,7 @@ separate namespaces, on purpose:
   project-local skill dir.
 - `skills/` — **marketplace-distributable**, installed into other
   projects via `npx smashcut skills` or `npx skills add
-heygen-com/hyperframes`.
+KirtiJha/smashcut`.
 
 ## Weekly changelog video
 

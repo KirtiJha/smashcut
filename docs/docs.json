@@ -41,7 +41,7 @@
         "description": "Report a bug or request a feature",
         "icon": "github",
         "iconType": "brands",
-        "href": "https://github.com/heygen-com/hyperframes/issues/new"
+        "href": "https://github.com/KirtiJha/smashcut/issues/new"
       }
     ]
   },
@@ -931,7 +931,7 @@
   },
   "footer": {
     "socials": {
-      "github": "https://github.com/heygen-com/hyperframes",
+      "github": "https://github.com/KirtiJha/smashcut",
       "x": "https://x.com/HeyGen",
       "instagram": "https://www.instagram.com/heygen_official/"
     },
@@ -983,7 +983,7 @@
           },
           {
             "label": "GitHub",
-            "href": "https://github.com/heygen-com/hyperframes"
+            "href": "https://github.com/KirtiJha/smashcut"
           }
         ]
       }
@@ -993,7 +993,7 @@
     "links": [
       {
         "type": "github",
-        "href": "https://github.com/heygen-com/hyperframes"
+        "href": "https://github.com/KirtiJha/smashcut"
       }
     ],
     "primary": {

@@ -98,7 +98,7 @@ describe("smashcutRuntimeLoader error path (#3370)", () => {
     const tried = triedManifestPaths();
     expect(tried.length).toBeGreaterThanOrEqual(4);
     // The first candidate must be the sibling path so the user sees it
-    // first in the error message (heygen-com/hyperframes#3370).
+    // first in the error message (KirtiJha/smashcut#3370).
     expect(tried[0]).toBe(
       resolve(dirname(fileURLToPath(import.meta.url)), "smashcut.manifest.json"),
     );

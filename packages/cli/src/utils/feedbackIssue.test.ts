@@ -51,7 +51,7 @@ describe("buildIssueUrl", () => {
   it("strips a trailing .git from the repo url", () => {
     const url = buildIssueUrl({
       ...base,
-      repoUrl: "https://github.com/heygen-com/hyperframes.git",
+      repoUrl: "https://github.com/KirtiJha/smashcut.git",
     });
     expect(url.startsWith(`${SMASHCUT_REPO_URL}/issues/new?`)).toBe(true);
   });

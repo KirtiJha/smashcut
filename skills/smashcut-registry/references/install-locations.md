@@ -21,7 +21,7 @@ Created automatically by `smashcut init`. If it doesn't exist when you run `add`
 ```json
 {
   "$schema": "https://hyperframes.heygen.com/schema/smashcut.json",
-  "registry": "https://raw.githubusercontent.com/heygen-com/hyperframes/main/registry",
+  "registry": "https://raw.githubusercontent.com/KirtiJha/smashcut/main/registry",
   "paths": {
     "blocks": "compositions",
     "components": "compositions/components",

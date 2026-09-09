@@ -312,7 +312,7 @@ Full documentation: [hyperframes.heygen.com/introduction](https://hyperframes.he
 SmashCut is used in production at [HeyGen](https://www.heygen.com), with community examples from teams like [tldraw](https://tldraw.com), [TanStack](https://tanstack.com), and others in [ADOPTERS.md](ADOPTERS.md). Open a PR if your team is using SmashCut.
 
 - Questions and ideas: [Discord](https://discord.gg/EbK98HBPdk)
-- Bugs and feature requests: [GitHub Issues](https://github.com/heygen-com/hyperframes/issues)
+- Bugs and feature requests: [GitHub Issues](https://github.com/KirtiJha/smashcut/issues)
 - User research: [Book a casual 30-minute conversation with the SmashCut team](https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ2cSpKoDgmcmRrgekrnrgqmvPT8W6F2Zg6e7MY7IJqaZKwpn_I0NdTHkN390iguMepE_NVg8ezb?gv=true) — no preparation or sales pitch
 - Security reports: [SECURITY.md](SECURITY.md)
 - Contributions: [CONTRIBUTING.md](CONTRIBUTING.md)
@@ -338,7 +338,7 @@ git lfs install
 If you only need source files, you can skip LFS content:
 
 ```bash
-GIT_LFS_SKIP_SMUDGE=1 git clone https://github.com/heygen-com/hyperframes.git
+GIT_LFS_SKIP_SMUDGE=1 git clone https://github.com/KirtiJha/smashcut.git
 ```
 
 ## License

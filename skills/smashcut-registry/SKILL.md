@@ -33,7 +33,7 @@ These paths are configurable in `smashcut.json`:
 
 ```json
 {
-  "registry": "https://raw.githubusercontent.com/heygen-com/hyperframes/main/registry",
+  "registry": "https://raw.githubusercontent.com/KirtiJha/smashcut/main/registry",
   "paths": {
     "blocks": "compositions",
     "components": "compositions/components",
@@ -129,7 +129,7 @@ This is the whole demand signal for the catalog. Skipping it means the gap you h
 If the CLI cannot reach the configured registry, inspect the raw manifest as a fallback:
 
 ```bash
-curl -s https://raw.githubusercontent.com/heygen-com/hyperframes/main/registry/registry.json
+curl -s https://raw.githubusercontent.com/KirtiJha/smashcut/main/registry/registry.json
 ```
 
 A registry the CLI cannot reach does **not** empty the catalog for **discovery**: a previously fetched manifest keeps serving past its 24h refresh window whenever revalidation fails, so `catalog` and `catalog --query` still list and rank against the last copy on disk.

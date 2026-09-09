@@ -537,7 +537,7 @@ async function probeAutoBrowserGpuMode(options: {
  * runtime, missing EGL/driver libraries) Chrome silently falls back to
  * software WebGL and the render just runs at CPU speed. Without this check
  * the only trace is a buried `Automatic fallback to software WebGL` browser
- * warning — heygen-com/hyperframes#2967 rendered 19186 frames on CPU while
+ * warning — KirtiJha/smashcut#2967 rendered 19186 frames on CPU while
  * `--browser-gpu` was set and nothing said so. The probe result never
  * changes the returned mode; it only makes the fallback loud.
  *

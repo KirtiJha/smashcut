@@ -4,7 +4,7 @@
   "description": "WebGL shader transitions for SmashCut compositions",
   "repository": {
     "type": "git",
-    "url": "https://github.com/heygen-com/hyperframes",
+    "url": "https://github.com/KirtiJha/smashcut",
     "directory": "packages/shader-transitions"
   },
   "files": [

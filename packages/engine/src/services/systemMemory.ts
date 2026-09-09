@@ -154,7 +154,7 @@ export function getSystemTotalMb(): number {
 /**
  * Total-RAM ceiling (MiB) at or below which the host is treated as
  * memory-constrained. Tuned to the 8 GB laptops in
- * heygen-com/hyperframes#1218 / #1219: on those boxes the default render
+ * KirtiJha/smashcut#1218 / #1219: on those boxes the default render
  * shape (probe Chrome + a throwaway calibration Chrome + N capture
  * workers) thrashes, so the pipeline collapses to its cheapest form.
  *
