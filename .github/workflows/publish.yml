@@ -161,6 +161,7 @@ jobs:
           publish_pkg "@smashcut/studio" "@smashcut/studio"
           publish_pkg "@smashcut/aws-lambda" "@smashcut/aws-lambda"
           publish_pkg "@smashcut/gcp-cloud-run" "@smashcut/gcp-cloud-run"
+          publish_pkg "@smashcut/shoot" "@smashcut/shoot"
 
           # CLI is @smashcut/cli in the monorepo but published as unscoped "smashcut" on npm.
           # Rewrite the name in package.json before publishing, then use npm publish directly
@@ -173,6 +174,18 @@ jobs:
               const p = 'packages/cli/package.json';
               const pkg = JSON.parse(fs.readFileSync(p, 'utf8'));
               pkg.name = 'smashcut';
+              // This package is published with plain \`npm publish\` rather than
+              // through pnpm, and npm does not understand the workspace:
+              // protocol — it ships the spec verbatim, so \`npm i smashcut\`
+              // fails on a dependency it cannot resolve. pnpm rewrites these
+              // for every other package; here it has to be done by hand.
+              for (const field of ['dependencies', 'devDependencies', 'peerDependencies']) {
+                for (const [name, range] of Object.entries(pkg[field] ?? {})) {
+                  if (String(range).startsWith('workspace:')) {
+                    pkg[field][name] = '^' + process.env.VERSION;
+                  }
+                }
+              }
               fs.writeFileSync(p, JSON.stringify(pkg, null, 2) + '\n');
             "
             echo "📦 Publishing smashcut@${VERSION}..."

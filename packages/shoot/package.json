@@ -2,6 +2,11 @@
   "name": "@smashcut/shoot",
   "version": "0.8.33",
   "description": "Drive a real application — a web app, a locally running app, or a CLI — through an asserted flow, film it, and write the shot manifest the composition pipeline cuts against.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/KirtiJha/smashcut",
+    "directory": "packages/shoot"
+  },
   "files": [
     "dist",
     "README.md"
