@@ -343,6 +343,7 @@ function patchVideoSrc(
   dir: string,
   videoFilename: string | undefined,
   durationSeconds?: number,
+  hasAudio = true,
 ): void {
   const htmlFiles = readdirSync(dir, { withFileTypes: true, recursive: true })
     .filter((e) => e.isFile() && e.name.endsWith(".html"))
@@ -351,6 +352,17 @@ function patchVideoSrc(
   for (const file of htmlFiles) {
     let content = readFileSync(file, "utf-8");
     if (videoFilename) {
+      // A silent source still needs its <audio> element removed. The template
+      // pairs every video with one, which is right for footage that carries a
+      // track and fatal for footage that does not: the compiler rejects the
+      // project with "composition asset(s) do not match their authored media
+      // element type (expected: audio)". Screen recordings of an app with no
+      // narration are silent as a rule, so this is the common case, not the
+      // exotic one.
+      if (!hasAudio) {
+        content = content.replace(/<audio[^>]*src="__VIDEO_SRC__"[^>]*>[\s\S]*?<\/audio>/g, "");
+        content = content.replace(/<audio[^>]*src="__VIDEO_SRC__"[^>]*>/g, "");
+      }
       content = content.replaceAll("__VIDEO_SRC__", videoFilename);
     } else {
       // Remove video elements with placeholder src
@@ -382,7 +394,7 @@ async function handleVideoFile(
   videoPath: string,
   destDir: string,
   interactive: boolean,
-): Promise<{ meta: VideoMeta; localVideoName: string }> {
+): Promise<{ meta: VideoMeta; localVideoName: string; probed: boolean }> {
   const probed = probeVideo(videoPath);
   let meta: VideoMeta = { ...DEFAULT_META };
   let localVideoName = basename(videoPath);
@@ -469,7 +481,7 @@ async function handleVideoFile(
     copyFileSync(videoPath, resolve(destDir, localVideoName));
   }
 
-  return { meta, localVideoName };
+  return { meta, localVideoName, probed: probed !== undefined };
 }
 
 // ---------------------------------------------------------------------------
@@ -557,6 +569,8 @@ async function scaffoldProject(
   tailwind = false,
   resolution?: CanvasResolution,
   authoringSkill?: string,
+  /** False when the source video carries no audio track. See patchVideoSrc. */
+  videoHasAudio = true,
 ): Promise<void> {
   mkdirSync(destDir, { recursive: true });
 
@@ -569,7 +583,7 @@ async function scaffoldProject(
   } else {
     await fetchRemoteTemplate(templateId, destDir);
   }
-  patchVideoSrc(destDir, localVideoName, durationSeconds);
+  patchVideoSrc(destDir, localVideoName, durationSeconds, videoHasAudio);
   if (tailwind) writeTailwindSupport(destDir);
   if (resolution) applyResolutionPreset(destDir, resolution);
 
@@ -862,6 +876,7 @@ export default defineCommand({
 
       let localVideoName: string | undefined;
       let videoDuration: number | undefined;
+    let videoHasAudio = true;
       let sourceFilePath: string | undefined;
 
       // Handle video
@@ -870,6 +885,12 @@ export default defineCommand({
         const result = await handleVideoFile(videoPath, destDir, false);
         localVideoName = result.localVideoName;
         videoDuration = result.meta.durationSeconds;
+        // Only a successful probe can say a video is silent. When ffprobe is
+        // missing, `probeVideo` returns undefined and the defaults claim no
+        // audio — trusting that would drop a real track and render a silent
+        // film, which fails quietly. A kept element on silent footage fails
+        // loudly at compile instead, and loud beats quiet.
+        videoHasAudio = result.probed ? result.meta.hasAudio : true;
         console.log(
           `Video: ${result.meta.width}x${result.meta.height}, ${result.meta.durationSeconds.toFixed(1)}s`,
         );
@@ -914,6 +935,7 @@ export default defineCommand({
           tailwind,
           resolutionPreset,
           args.skill,
+          videoHasAudio,
         );
       } catch (err) {
         console.error(
@@ -1016,6 +1038,7 @@ export default defineCommand({
     let localVideoName: string | undefined;
     let sourceFilePath: string | undefined;
     let videoDuration: number | undefined;
+    let videoHasAudio = true;
 
     if (videoFlag) {
       const videoPath = resolve(videoFlag);
@@ -1029,6 +1052,12 @@ export default defineCommand({
       const result = await handleVideoFile(videoPath, destDir, true);
       localVideoName = result.localVideoName;
       videoDuration = result.meta.durationSeconds;
+        // Only a successful probe can say a video is silent. When ffprobe is
+        // missing, `probeVideo` returns undefined and the defaults claim no
+        // audio — trusting that would drop a real track and render a silent
+        // film, which fails quietly. A kept element on silent footage fails
+        // loudly at compile instead, and loud beats quiet.
+        videoHasAudio = result.probed ? result.meta.hasAudio : true;
     } else if (audioFlag) {
       const audioPath = resolve(audioFlag);
       if (!existsSync(audioPath)) {
@@ -1129,6 +1158,7 @@ export default defineCommand({
         tailwind,
         resolutionPreset,
         args.skill,
+        videoHasAudio,
       );
       if (!isBundled) {
         spin.stop(c.success(`Downloaded ${templateId}`));

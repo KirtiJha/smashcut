@@ -1,0 +1,11 @@
+{
+  "name": "demo-film",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "npx --yes smashcut@0.8.33 preview",
+    "check": "npx --yes smashcut@0.8.33 check",
+    "render": "npx --yes smashcut@0.8.33 render",
+    "publish": "npx --yes smashcut@0.8.33 publish"
+  }
+}
