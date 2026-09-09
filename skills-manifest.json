@@ -1,84 +1,88 @@
 {
   "source": "KirtiJha/smashcut",
   "skills": {
+    "app-demo-video": {
+      "hash": "2e66e4868d440c13",
+      "files": 1
+    },
     "embedded-captions": {
-      "hash": "1677ab00946eb80c",
+      "hash": "c956e27075a517f9",
       "files": 142
     },
     "faceless-explainer": {
-      "hash": "a7080101c30ceeb7",
+      "hash": "9dd3cca2b62400ab",
       "files": 24
     },
     "figma": {
-      "hash": "642cce1b5e211182",
+      "hash": "ac5e5503b3961407",
       "files": 2
     },
     "general-video": {
-      "hash": "16898c02677d09bc",
+      "hash": "d0802d0583fcddb5",
       "files": 4
     },
-    "smashcut": {
-      "hash": "f09636f3307817ab",
-      "files": 17
-    },
-    "smashcut-animation": {
-      "hash": "4252b08a4905b5ba",
-      "files": 121
-    },
-    "smashcut-audio": {
-      "hash": "84035d8ce2a61fbc",
-      "files": 7
-    },
-    "smashcut-cli": {
-      "hash": "1a691d7069bc158e",
-      "files": 11
-    },
-    "smashcut-core": {
-      "hash": "6921c3b1dbeefb30",
-      "files": 20
-    },
-    "smashcut-creative": {
-      "hash": "f3b201ca29eae92a",
-      "files": 78
-    },
-    "smashcut-keyframes": {
-      "hash": "6bc62531ecea9a52",
-      "files": 3
-    },
-    "smashcut-registry": {
-      "hash": "0142a8e09bbe7e2c",
-      "files": 12
-    },
     "media-use": {
-      "hash": "591daf2adb78e1cd",
+      "hash": "3ba6dbd65c35f172",
       "files": 156
     },
     "motion-graphics": {
-      "hash": "853ac75cbab69036",
+      "hash": "d629853b0f1c0bec",
       "files": 23
     },
     "music-to-video": {
-      "hash": "39282be90a90f89f",
+      "hash": "f6d80c4c4ab37659",
       "files": 132
     },
     "pr-to-video": {
-      "hash": "e3c6d1527c04a804",
+      "hash": "94c8bbe3615a07cd",
       "files": 30
     },
     "product-launch-video": {
-      "hash": "71226b200d8adae3",
+      "hash": "905dc224c9f416ba",
       "files": 30
     },
     "remotion-to-smashcut": {
-      "hash": "79fcf8e9641d126e",
+      "hash": "284cbdf8c656c271",
       "files": 70
     },
     "slideshow": {
-      "hash": "c68fb51d48b80802",
+      "hash": "15448edee001f789",
       "files": 2
     },
+    "smashcut": {
+      "hash": "9549ff3a320f6ee1",
+      "files": 18
+    },
+    "smashcut-animation": {
+      "hash": "5ec09aca505f7753",
+      "files": 121
+    },
+    "smashcut-audio": {
+      "hash": "66d6d52fe4164dbe",
+      "files": 7
+    },
+    "smashcut-cli": {
+      "hash": "4d013434f45473b6",
+      "files": 11
+    },
+    "smashcut-core": {
+      "hash": "bf2c3ae84e468d97",
+      "files": 20
+    },
+    "smashcut-creative": {
+      "hash": "a797ab1ca3d71ad6",
+      "files": 78
+    },
+    "smashcut-keyframes": {
+      "hash": "fbec1c79238f077a",
+      "files": 3
+    },
+    "smashcut-registry": {
+      "hash": "9a9ca98d399ac2d5",
+      "files": 12
+    },
     "talking-head-recut": {
-      "hash": "2eaa83d6889537a5",
+      "hash": "09b4906dee7ae5e8",
       "files": 28
     }
   }
