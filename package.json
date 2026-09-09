@@ -11,7 +11,7 @@
   "type": "module",
   "scripts": {
     "dev": "bun run studio",
-    "build": "bun run --filter '@smashcut/{parsers,lint,studio-server}' build && bun run --filter @smashcut/core build && bun run --filter '@smashcut/{core,engine,producer,player,studio,shader-transitions,aws-lambda,gcp-cloud-run,sdk}' build && bun run --filter @smashcut/cli build && bun run --filter @smashcut/sdk-playground build",
+    "build": "bun run --filter '@smashcut/{parsers,lint,studio-server}' build && bun run --filter @smashcut/core build && bun run --filter '@smashcut/{core,engine,producer,player,studio,shader-transitions,aws-lambda,gcp-cloud-run,sdk}' build && bun run --filter @smashcut/shoot build && bun run --filter @smashcut/cli build && bun run --filter @smashcut/sdk-playground build",
     "build:producer": "bun run --filter @smashcut/producer build",
     "studio": "bun run --filter @smashcut/studio dev",
     "build:smashcut-runtime": "bun run --filter @smashcut/core build:smashcut-runtime",
@@ -56,7 +56,7 @@
     "package:codex-plugin": "node scripts/package-codex-plugin.mjs",
     "upload:docs-images": "bash scripts/upload-docs-images.sh",
     "host:registry-assets": "bun run scripts/host-registry-assets.ts",
-    "prepare": "test -d .git && lefthook install || true",
+    "prepare": "test -d .git && lefthook install || true; node scripts/prepare-install.mjs",
     "lint:registry-items": "node scripts/lint-registry-items.mjs"
   },
   "devDependencies": {
@@ -87,5 +87,8 @@
     "@types/react-dom": "^19.0.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
+  },
+  "bin": {
+    "smashcut": "packages/cli/bin/smashcut.mjs"
   }
 }
