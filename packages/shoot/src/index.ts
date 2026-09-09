@@ -45,6 +45,10 @@ export { schemaDirective, SCHEMA_URL } from "./spec/schema-url.js";
 export { shoot } from "./shoot/shoot.js";
 export type { ShootOptions, ShootOutcome } from "./shoot/shoot.js";
 
+// Seeding a plan from what was recorded.
+export { seedFrames, storyboardFromShot } from "./shoot/storyboard.js";
+export type { SeededFrame } from "./shoot/storyboard.js";
+
 // The shot manifest — the seam between filming and cutting.
 export { buildManifest } from "./shoot/manifest.js";
 export type {

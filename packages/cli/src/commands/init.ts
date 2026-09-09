@@ -379,6 +379,30 @@ function patchVideoSrc(
   }
 }
 
+/**
+ * Seed STORYBOARD.md from a shoot manifest.
+ *
+ * The manifest is the only reason filming through SmashCut beats dropping an
+ * mp4 into an editor: it carries every beat and caption at the instant the
+ * driver caused it. Without this the plan layer starts blank and an author
+ * re-derives the structure by scrubbing the footage — which is precisely the
+ * work the manifest exists to remove.
+ */
+async function seedStoryboard(destDir: string, shotDir: string): Promise<void> {
+  const { storyboardFromShot } = await import("@smashcut/shoot");
+  const shot = JSON.parse(readFileSync(join(shotDir, "shots.json"), "utf-8")) as Parameters<
+    typeof storyboardFromShot
+  >[0];
+  writeFileSync(
+    join(destDir, "STORYBOARD.md"),
+    storyboardFromShot(shot, { footage: "footage.mp4" }),
+    "utf-8",
+  );
+  // The manifest travels with the project, so later steps can still cut
+  // against beats the storyboard only summarises.
+  copyFileSync(join(shotDir, "shots.json"), join(destDir, "shots.json"));
+}
+
 async function patchTranscript(dir: string, transcriptPath: string): Promise<void> {
   const { loadTranscript, patchCaptionHtml } = await import("../whisper/normalize.js");
   const { words } = loadTranscript(transcriptPath);
@@ -707,6 +731,11 @@ export default defineCommand({
       description: "Path to a video file (MP4, WebM, MOV)",
       alias: "v",
     },
+    shot: {
+      type: "string",
+      description:
+        "A 'smashcut shoot' output directory — mounts its footage and seeds STORYBOARD.md from the shot manifest",
+    },
     "video-legacy": {
       type: "string",
       description: "[renamed] Use --video (or -v) instead of -V.",
@@ -782,7 +811,16 @@ export default defineCommand({
       console.error(c.error(`--example requires a value; received flag "${exampleFlag}" instead.`));
       failCommand();
     }
-    const videoFlag = args.video;
+    // `--shot <dir>` is `--video <dir>/footage.mp4` plus the manifest beside it.
+    // Resolved here so every later branch sees an ordinary video path and only
+    // the storyboard seeding has to know a shoot was involved.
+    const shotFlag = args.shot;
+    const shotDir = shotFlag ? resolve(String(shotFlag)) : undefined;
+    if (shotDir && !existsSync(join(shotDir, "shots.json"))) {
+      console.error(c.error(`No shots.json in ${shotDir}. Run 'smashcut shoot' first.`));
+      failCommand();
+    }
+    const videoFlag = shotDir ? join(shotDir, "footage.mp4") : args.video;
     const audioFlag = args.audio;
     const skipTranscribe = args["skip-transcribe"] === true;
     // Temporary measure while the skills.sh registry sync lags GitHub main: the
@@ -937,6 +975,7 @@ export default defineCommand({
           args.skill,
           videoHasAudio,
         );
+        if (shotDir) await seedStoryboard(destDir, shotDir);
       } catch (err) {
         console.error(
           c.error(
@@ -1160,6 +1199,7 @@ export default defineCommand({
         args.skill,
         videoHasAudio,
       );
+      if (shotDir) await seedStoryboard(destDir, shotDir);
       if (!isBundled) {
         spin.stop(c.success(`Downloaded ${templateId}`));
       }
