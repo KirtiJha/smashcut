@@ -17,7 +17,10 @@
       "import": "./src/index.ts",
       "types": "./src/index.ts"
     },
-    "./package.json": "./package.json"
+    "./package.json": {
+      "import": "./package.json",
+      "types": "./package.json"
+    }
   },
   "scripts": {
     "build": "tsup",
@@ -40,5 +43,17 @@
     "tsx": "^4.21.0",
     "typescript": "^5.0.0",
     "vitest": "^3.2.4"
+  },
+  "publishConfig": {
+    "exports": {
+      ".": {
+        "import": "./dist/index.js",
+        "types": "./dist/index.d.ts"
+      },
+      "./package.json": {
+        "import": "./package.json",
+        "types": "./package.json"
+      }
+    }
   }
 }

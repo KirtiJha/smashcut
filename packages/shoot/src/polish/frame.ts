@@ -168,7 +168,7 @@ function windowChrome(a: DecorArgs): string {
 }
 
 /** Solid color, or a linear gradient built from any colors found in the string. */
-function backgroundFill(bg: string, w: number, h: number): { fill: string; def: string } {
+function backgroundFill(bg: string, _w: number, _h: number): { fill: string; def: string } {
   const colors = bg.match(/#[0-9a-fA-F]{3,8}|rgba?\([^)]*\)/g);
   if (bg.includes("gradient") && colors && colors.length >= 2) {
     const stops = colors

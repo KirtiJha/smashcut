@@ -1,0 +1,18 @@
+{
+  "package": "@smashcut/shoot",
+  "localNodeRuntime": true,
+  "subpaths": {
+    ".": {
+      "source": "./src/index.ts",
+      "runtime": "./dist/index.js",
+      "types": "./dist/index.d.ts",
+      "environments": ["bun", "node"]
+    },
+    "./package.json": {
+      "source": "./package.json",
+      "runtime": "./package.json",
+      "types": "./package.json",
+      "environments": ["bun", "node"]
+    }
+  }
+}

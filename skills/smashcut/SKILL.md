@@ -54,9 +54,10 @@ Use the first matching row. Match the requested **deliverable**, not a word or f
 | 5        | Build a beat-synced video from a music track, with no narration or website capture                                 | `/music-to-video`          |
 | 6        | Create an explicitly short, unnarrated, motion-first unit, typically under 10s                                     | `/motion-graphics`         |
 | 7        | Explain a GitHub pull request or code change from a PR reference                                                   | `/pr-to-video`             |
-| 8        | Market or showcase a website, product site, app, or company from a URL or site-specific brief                      | `/product-launch-video`    |
-| 9        | Explain a topic, article, or notes with invented visuals and no product or site capture                            | `/faceless-explainer`      |
-| 10       | Any other custom video or composition                                                                              | `/general-video`           |
+| 8        | Demonstrate software being *used* — drive a web app, a local app, or a CLI through a real flow and film it          | `/app-demo-video`          |
+| 9        | Market or showcase a website, product site, app, or company from a URL or site-specific brief                      | `/product-launch-video`    |
+| 10       | Explain a topic, article, or notes with invented visuals and no product or site capture                            | `/faceless-explainer`      |
+| 11       | Any other custom video or composition                                                                              | `/general-video`           |
 
 Before finalizing the route, read `references/routes/<workflow>.md` — one small file per route: the canonical input/output/trigger contract (available before lazy-installed workflow skills are present) plus that route's interview entry. If the candidate does not satisfy its contract, continue routing instead of forcing the match. Read only the matched route's file.
 
@@ -64,6 +65,7 @@ Before finalizing the route, read `references/routes/<workflow>.md` — one smal
 
 - A short animated title, logo sting, stat hit, chart hit, map hit, or standalone lower-third is `/motion-graphics` when it is unnarrated and motion is the message. A static title card, narrated sequence, longer montage, or custom loop is `/general-video`.
 - An explicitly short motion graphic may use a URL, tweet, article, or screenshot as source material. A generic "make a video from this site" request is `/product-launch-video`.
+- A request naming a URL is `/app-demo-video` only when the video needs something to **happen** in the product — a click, a form filled, a command run. `/product-launch-video` reads a site's design and clicks nothing; `/app-demo-video` operates the software and films the result. When a request could be either, ask which. A CLI has no design to read, so a terminal demo is always `/app-demo-video`.
 - Existing footage with captions routes to `/embedded-captions`; footage with designed information cards routes to `/talking-head-recut`. Retiming, reordering, recoloring, reframing, or remixing footage is a custom edit and falls through to `/general-video`.
 - A music file selects `/music-to-video` only when its beat grid drives the piece. Music used as a bed does not override the subject-matched route.
 - "I want a storyboard" changes the review process, not the workflow. With no other routing signal, use `/general-video`. A confirmed sketched board may itself be the requested deliverable; the review loop defines that stop point.

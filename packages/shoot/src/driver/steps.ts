@@ -9,9 +9,6 @@ import {
   showCard,
   showImage,
   hideImage,
-  showScene,
-  seekScene,
-  hideScene,
   smoothScroll,
   spotlight,
   toPlaywrightSelector,
@@ -177,7 +174,7 @@ export async function runStep(step: Step, ctx: StepContext, i: number): Promise<
   }
 
   if ("click" in step) {
-    const box = await pointAt(ctx, step.click, cinematic);
+    await pointAt(ctx, step.click, cinematic);
     // Snap before the click: the interactive build shows the state you act on,
     // with the target as its hotspot, and advances to the result.
     if (cinematic) ctx.sfx.push({ t: ctx.now(), kind: "click" });
@@ -187,7 +184,7 @@ export async function runStep(step: Step, ctx: StepContext, i: number): Promise<
   }
 
   if ("dblclick" in step) {
-    const box = await pointAt(ctx, step.dblclick, cinematic);
+    await pointAt(ctx, step.dblclick, cinematic);
     await locate(page, step.dblclick).dblclick();
     await ctx.rec.hold(HOLD.afterClick);
     return;
@@ -224,14 +221,14 @@ export async function runStep(step: Step, ctx: StepContext, i: number): Promise<
   }
 
   if ("hover" in step) {
-    const box = await pointAt(ctx, step.hover, cinematic);
+    await pointAt(ctx, step.hover, cinematic);
     await locate(page, step.hover).hover();
     return;
   }
 
   if ("type" in step) {
     const { selector, text, delay } = step.type;
-    const box = await pointAt(ctx, selector, cinematic);
+    await pointAt(ctx, selector, cinematic);
     const loc = locate(page, selector);
     if (cinematic) ctx.sfx.push({ t: ctx.now(), kind: "click" });
     await loc.click();
@@ -529,7 +526,7 @@ export async function runStep(step: Step, ctx: StepContext, i: number): Promise<
       }
       await showImage(page, loaded.dataUri, media.as, media.corner);
       await ctx.rec.hold(Math.min(500, media.ms));
-      const label = media.alt ?? ("mermaid" in media ? "Diagram" : media.file);
+      const _label = media.alt ?? ("mermaid" in media ? "Diagram" : media.file);
       await ctx.rec.hold(Math.max(0, media.ms - 500));
       await hideImage(page);
       await ctx.rec.hold(HOLD.afterCard);

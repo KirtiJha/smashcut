@@ -24,7 +24,7 @@ import { describeStep } from "../heal/selectors.js";
 import { encode, writeStoryboard } from "../encode/encode.js";
 import { resolveCutRange, sliceFrames, sliceTimeline, sliceSpans, cutDuration } from "../encode/cut.js";
 import { renderWithZoom } from "../polish/render.js";
-import { framingEnabled, compositesCaptions } from "../polish/frame.js";
+import { compositesCaptions } from "../polish/frame.js";
 
 import { narrate } from "../narrate/index.js";
 import { audioEnabled, localizeCues, missingVoiceLines, planAudio } from "../narrate/audio.js";
@@ -967,9 +967,6 @@ function previewPath(output: string): string {
   return output.replace(/(\.[^.]+)$/, ".preview$1");
 }
 
-function pathSlug(v: string): string {
-  return v.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 32) || "path";
-}
 
 /**
  * Run a step, retrying transient failures when repeating it is provably safe

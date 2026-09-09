@@ -15,7 +15,7 @@ import { applyMocks } from "../mock/mock.js";
 import { chat, loadLlmConfig, messageText, type LlmConfig } from "../ai/llm.js";
 import { stepSelector, withStepSelector, describeStep } from "./selectors.js";
 import { deterministicCandidates } from "./candidates.js";
-import { log, ReelError } from "../util/log.js";
+import { log } from "../util/log.js";
 
 export interface Fix {
   index: number; // 1-based step number
@@ -108,7 +108,7 @@ export async function heal(loaded: LoadedSpec, opts: { write: boolean }): Promis
       try {
         await runStep(step, ctx, i);
         continue; // step still works
-      } catch (err) {
+      } catch {
         const sel = stepSelector(step);
         if (!sel) {
           unresolved.push({ index: i + 1, label: describeStep(step), reason: "not a selector-based step" });

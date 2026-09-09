@@ -94,8 +94,8 @@ describe("outPath", () => {
   // rule on both platforms rather than passing on Linux by luck.
   const paths = [
     "/demos/out/demo.mp4",
-    "C:\demos\out\demo.mp4",
-    "\\server\share\demo.mp4",
+    "C:demosoutdemo.mp4",
+    "\\serversharedemo.mp4",
     "out/demo.mp4",
     "demo.mp4",
   ];

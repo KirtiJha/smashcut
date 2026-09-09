@@ -324,11 +324,18 @@ export function storyboardFrame(
   return Math.min(frameCount - 1, Math.max(0, Math.round((at / 1000) * fps)));
 }
 
-/** Load sharp lazily so a missing native binary degrades gracefully. */
-async function loadSharp(): Promise<typeof import("sharp")> {
+/**
+ * Load sharp lazily so a missing native binary degrades gracefully.
+ *
+ * Typed as the *default* export rather than the module namespace. The runtime
+ * always returned the default — that is what is callable — but sharp 0.33 typed
+ * its namespace as callable too, so the wrong annotation compiled anyway. 0.35
+ * does not, and the error surfaces at every call site rather than here.
+ */
+async function loadSharp(): Promise<typeof import("sharp").default> {
   try {
     const mod = await import("sharp");
-    return (mod.default ?? mod) as unknown as typeof import("sharp");
+    return (mod.default ?? mod) as unknown as typeof import("sharp").default;
   } catch (err) {
     throw new Error(`Auto-zoom needs the "sharp" package: ${(err as Error).message}`);
   }
