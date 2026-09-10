@@ -42,8 +42,8 @@ export type { Spec, SpecInput, Step, StepInput } from "./spec/schema.js";
 export { schemaDirective, SCHEMA_URL } from "./spec/schema-url.js";
 
 // Filming a demo end to end.
-export { shoot } from "./shoot/shoot.js";
-export type { ShootOptions, ShootOutcome } from "./shoot/shoot.js";
+export { shoot, checkShoot } from "./shoot/shoot.js";
+export type { ShootOptions, ShootOutcome, ShootCheckOutcome } from "./shoot/shoot.js";
 
 // Seeding a plan from what was recorded.
 export { seedFrames, storyboardFromShot } from "./shoot/storyboard.js";

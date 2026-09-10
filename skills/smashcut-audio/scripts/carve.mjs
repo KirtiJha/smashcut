@@ -264,7 +264,23 @@ function decode(path) {
   return new Float32Array(raw.buffer, raw.byteOffset, raw.length / 4);
 }
 
-const attrOf = (tag, name) => tag.match(new RegExp(`\\s${name}="([^"]*)"`, "i"))?.[1] ?? null;
+/**
+ * Read an attribute, however the author quoted it.
+ *
+ * Single quotes are not an edge case here — they are the normal way to write
+ * these very attributes, because their values are JSON and JSON is full of `"`.
+ * The skill's own examples are single-quoted (`data-fx-chain='{"version":1,…}'`).
+ * Matching only `name="…"` made every caller fail silently and differently: a
+ * single-quoted `src` dropped the element from `mediaElements` entirely, so a
+ * voice was never analysed; a single-quoted `data-audio-group` made a grouped
+ * mix look ungrouped; and a single-quoted `data-automation` was neither carried
+ * forward nor stripped, so the author's hand-drawn lanes were discarded AND a
+ * second `data-automation` was appended — which the HTML parser then dropped,
+ * because a duplicate attribute is not an error, the first one simply wins.
+ * The net effect was a carve that reported success and did nothing.
+ */
+export const attrOf = (tag, name) =>
+  tag.match(new RegExp(`\\s${name}=("|')([^]*?)\\1`, "i"))?.[2] ?? null;
 
 const unescapeAttr = (value) =>
   value
@@ -275,12 +291,12 @@ const unescapeAttr = (value) =>
 const escapeAttr = (value) => value.replace(/&/g, "&amp;").replace(/"/g, "&quot;");
 
 /** Every media element with a src, as {id, tag, kind}. */
-function mediaElements(html) {
+export function mediaElements(html) {
   const found = [];
   for (const match of html.matchAll(/<(audio|video)\b[^>]*>/gi)) {
     const tag = match[0];
     // `\sid=` and not `id=`: `data-sc-id` would match first.
-    const id = tag.match(/\sid="([^"]+)"/)?.[1];
+    const id = attrOf(tag, "id");
     if (id && attrOf(tag, "src")) found.push({ id, tag, kind: match[1].toLowerCase() });
   }
   return found;
@@ -539,7 +555,9 @@ async function main() {
 
   let stripped = bedTag;
   for (const attr of ["data-fx-carve", "data-fx-chain", "data-automation"]) {
-    stripped = stripped.replace(new RegExp(`\\s${attr}="[^"]*"`, "i"), "");
+    // Both quote styles, or a single-quoted attribute survives the strip and the
+    // rewrite lands beside it as a duplicate the browser silently discards.
+    stripped = stripped.replace(new RegExp(`\\s${attr}=("|')[^]*?\\1`, "i"), "");
   }
   // Inserted before the tag's own closing ">", which is the only place they can
   // go: `stripped` is the opening tag alone, so appending would land outside it.

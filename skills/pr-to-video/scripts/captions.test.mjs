@@ -185,7 +185,7 @@ test("a weight token buried in a longer run is not read as a weight", () => {
 // and the three copies are meant to be byte-identical. This PR alone had to land the same
 // two-axis fix in all three; a future one that lands in only one drifts silently.
 test("captions.mjs is byte-identical across the three workflows that ship it", () => {
-  const [first, ...rest] = ["product-launch-video", "faceless-explainer", "pr-to-video"].map(
+  const [first, ...rest] = ["product-launch-video", "faceless-explainer", "pr-to-video", "app-demo-video"].map(
     (skill) => ({
       skill,
       source: readFileSync(new URL(`../../${skill}/scripts/captions.mjs`, import.meta.url), "utf8"),
@@ -197,7 +197,7 @@ test("captions.mjs is byte-identical across the three workflows that ship it", (
 });
 
 test("every build-frame.mjs copy stages the style axis it promises", () => {
-  for (const skill of ["product-launch-video", "faceless-explainer", "pr-to-video"]) {
+  for (const skill of ["product-launch-video", "faceless-explainer", "pr-to-video", "app-demo-video"]) {
     const source = readFileSync(
       new URL(`../../${skill}/scripts/build-frame.mjs`, import.meta.url),
       "utf8",

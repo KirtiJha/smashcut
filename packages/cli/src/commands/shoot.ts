@@ -1,5 +1,5 @@
 import { defineCommand } from "citty";
-import { shoot } from "@smashcut/shoot";
+import { shoot, checkShoot } from "@smashcut/shoot";
 import { loadSpec } from "@smashcut/shoot";
 import { failCommand } from "../utils/commandResult.js";
 import { normalizeErrorMessage } from "../utils/errorMessage.js";
@@ -34,9 +34,10 @@ import type { Example } from "./_examples.js";
 export const examples: Example[] = [
   ["Film a demo into ./shot/", "smashcut shoot demo.smashcut.yaml"],
   ["Film to a different directory", "smashcut shoot demo.smashcut.yaml -o taskflow-shot"],
+  ["Let the composition do all the framing", "smashcut shoot demo.smashcut.yaml --flat"],
   [
-    "Let the composition do all the framing",
-    "smashcut shoot demo.smashcut.yaml --flat",
+    "Verify every selector without filming (run this first)",
+    "smashcut shoot demo.smashcut.yaml --check",
   ],
 ];
 
@@ -62,6 +63,12 @@ export default defineCommand({
       description: "No camera moves at all — the composition does its own framing",
       default: false,
     },
+    check: {
+      type: "boolean",
+      description:
+        "Drive the flow and verify every selector, without filming — fast, and writes nothing",
+      default: false,
+    },
     json: {
       type: "boolean",
       description: "Emit the result as JSON, for agents",
@@ -71,6 +78,20 @@ export default defineCommand({
   async run({ args }) {
     try {
       const loaded = await loadSpec(args.spec as string);
+
+      // Run this first when a spec is new or the app has moved under it: a
+      // selector that resolves to nothing fails here in seconds instead of
+      // after the driver has operated the whole app at human speed.
+      if (args.check) {
+        const res = await checkShoot(loaded, {
+          out: args.out as string,
+          flat: Boolean(args.flat),
+          version: "0.8.33",
+        });
+        if (args.json) console.log(JSON.stringify(res, null, 2));
+        return;
+      }
+
       const res = await shoot(loaded, {
         out: args.out as string,
         flat: Boolean(args.flat),

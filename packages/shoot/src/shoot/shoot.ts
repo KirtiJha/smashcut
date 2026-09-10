@@ -47,6 +47,50 @@ export interface ShootOutcome {
   shot: ShotManifest;
 }
 
+export interface ShootCheckOutcome {
+  /** Every step ran and every selector resolved. */
+  ok: true;
+  steps: number;
+  beats: number;
+  captions: number;
+  durationMs: number;
+}
+
+/**
+ * Drive the flow without filming it.
+ *
+ * A shoot costs real wall time — the driver operates the app at human speed and
+ * then encodes what it saw — and a single selector that resolves to nothing
+ * throws away all of it. That is the expensive failure: not a wrong selector,
+ * but a wrong selector discovered at step 74 of 94, four times in a row, each
+ * discovery costing another full run.
+ *
+ * The driver has always had a mode for this (`check`: real navigation, real
+ * state waits, no holds, no encode); it simply was not reachable from `shoot`.
+ * Nothing is written, because a `shots.json` produced without footage would be
+ * a manifest describing a recording that does not exist — and the manifest is
+ * the seam the composition trusts.
+ */
+export async function checkShoot(
+  loaded: LoadedSpec,
+  opts: ShootOptions,
+): Promise<ShootCheckOutcome> {
+  const prepared = footageSpec(loaded, opts);
+  const res = await record(prepared, "check");
+
+  log.info(
+    `Flow OK — ${loaded.spec.steps.length} steps, ${res.timeline.length} beats, ` +
+      `${res.captions.length} captions. Nothing was filmed.`,
+  );
+  return {
+    ok: true,
+    steps: loaded.spec.steps.length,
+    beats: res.timeline.length,
+    captions: res.captions.length,
+    durationMs: res.durationMs,
+  };
+}
+
 /**
  * Strip a spec down to footage.
  *
@@ -149,13 +193,17 @@ async function resolveNarration(
   if (cues.length === 0) return [];
   const spec = loaded.spec;
   if (!audioEnabled(spec.audio, spec.output.audio, cues)) {
-    log.info(`${cues.length} spoken lines, and no \`audio.voice\` to say them — the film will carry the text only.`);
+    log.info(
+      `${cues.length} spoken lines, and no \`audio.voice\` to say them — the film will carry the text only.`,
+    );
     return cues.map((c) => ({ t: c.t, text: c.text }));
   }
 
   // Reported before anything is attempted: reading the cache needs no key, and
   // knowing the track will be short is worth more before a render than after.
-  const missing = await missingVoiceLines(cues, spec.audio.voice, loaded.dir).catch(() => cues.map((c) => c.text));
+  const missing = await missingVoiceLines(cues, spec.audio.voice, loaded.dir).catch(() =>
+    cues.map((c) => c.text),
+  );
   if (missing.length) {
     log.warn(`${missing.length} of ${cues.length} spoken lines have no audio in the voice cache.`);
   }

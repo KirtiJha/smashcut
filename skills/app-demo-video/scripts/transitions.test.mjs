@@ -6,9 +6,9 @@ import { join } from "node:path";
 import test from "node:test";
 
 const workflowScripts = [
-  ["product-launch-video", new URL("./transitions.mjs", import.meta.url).pathname],
+  ["app-demo-video", new URL("./transitions.mjs", import.meta.url).pathname],
+  ["product-launch-video", new URL("../../product-launch-video/scripts/transitions.mjs", import.meta.url).pathname],
   ["pr-to-video", new URL("../../pr-to-video/scripts/transitions.mjs", import.meta.url).pathname],
-  ["app-demo-video", new URL("../../app-demo-video/scripts/transitions.mjs", import.meta.url).pathname],
 ];
 
 function runInject(script, rootId) {

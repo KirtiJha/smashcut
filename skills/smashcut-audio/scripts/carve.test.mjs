@@ -5,7 +5,7 @@ import { mkdirSync, mkdtempSync, rmSync, symlinkSync, writeFileSync } from "node
 import { tmpdir } from "node:os";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { carveSources, groupSourceRefusal, loadCore } from "./carve.mjs";
+import { attrOf, carveSources, groupSourceRefusal, loadCore, mediaElements } from "./carve.mjs";
 
 const SCRIPTS_DIR = dirname(fileURLToPath(import.meta.url));
 
@@ -236,4 +236,58 @@ test("members is required, so dropping it cannot silently restore the group form
   const voices = [voice("vo1", "voiceover"), voice("vo2", "voiceover")];
   assert.throws(() => carveSources(voices, bed("bgm", "music")), TypeError);
   assert.throws(() => groupSourceRefusal(voices, bed("bgm", "music")), TypeError);
+});
+
+/**
+ * Single-quoted attributes.
+ *
+ * These are not exotic: the values are JSON, JSON is full of `"`, and the
+ * skill's own documented examples are written `data-fx-chain='{"version":1,…}'`.
+ * Reading only `name="…"` failed silently and differently at each call site —
+ * a bed was never found, a group looked absent, and hand-drawn lanes were both
+ * dropped from the carry-forward and left in place for the rewrite to duplicate.
+ */
+test("attrOf reads a single-quoted value", () => {
+  const tag = `<audio id='bgm' src='bgm.wav' data-automation='{"version":1,"lanes":[]}'></audio>`;
+  assert.equal(attrOf(tag, "id"), "bgm");
+  assert.equal(attrOf(tag, "src"), "bgm.wav");
+  assert.equal(attrOf(tag, "data-automation"), '{"version":1,"lanes":[]}');
+});
+
+test("attrOf still reads a double-quoted value, and mixed quoting on one tag", () => {
+  const tag = `<audio id="bgm" src='bgm.wav' data-volume="0.4"></audio>`;
+  assert.equal(attrOf(tag, "id"), "bgm");
+  assert.equal(attrOf(tag, "src"), "bgm.wav");
+  assert.equal(attrOf(tag, "data-volume"), "0.4");
+});
+
+test("attrOf does not let one quote style swallow the next attribute", () => {
+  // A greedy or quote-agnostic match would run from the first ' to a later one
+  // and hand back a value spanning two attributes.
+  const tag = `<audio id='a' data-label='x' data-volume='0.5'></audio>`;
+  assert.equal(attrOf(tag, "id"), "a");
+  assert.equal(attrOf(tag, "data-label"), "x");
+  assert.equal(attrOf(tag, "data-volume"), "0.5");
+});
+
+test("attrOf returns null for an absent attribute", () => {
+  assert.equal(attrOf(`<audio id="a" src="a.wav"></audio>`, "data-automation"), null);
+});
+
+test("attrOf does not match a longer attribute ending in the same name", () => {
+  // `\s` before the name is what stops `data-sc-id` answering for `id`.
+  assert.equal(attrOf(`<audio data-sc-id="wrong" id="right" src="a.wav">`, "id"), "right");
+});
+
+test("mediaElements finds a single-quoted element, which decides whether it is carved at all", () => {
+  const html = `
+    <audio id='bgm' src='bgm.wav'></audio>
+    <audio id="vo-1" src="vo/1.wav"></audio>
+    <video id='roll' src='footage.mp4'></video>
+    <audio id="no-src"></audio>`;
+  const found = mediaElements(html);
+  assert.deepEqual(
+    found.map((f) => [f.id, f.kind]),
+    [["bgm", "audio"], ["vo-1", "audio"], ["roll", "video"]],
+  );
 });
