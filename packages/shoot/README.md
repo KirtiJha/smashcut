@@ -14,6 +14,14 @@ smashcut shoot demo.yaml --out shot
 
 Out comes `footage.mp4` and `shots.json`.
 
+Verify the flow first — this drives the app but films nothing, and a selector
+that resolves to nothing fails in seconds instead of after the driver has
+operated the whole product at human speed:
+
+```bash
+smashcut shoot demo.yaml --check
+```
+
 ## The manifest is the point
 
 A bare `.mp4` is a poor handoff. A composition needs to *time* things against
